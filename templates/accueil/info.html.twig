@@ -1,3 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/accueil/info/info.css') }}">
+{% endblock %}
+
+{% block body %}
+
 <section id="infos" class="section bg-background">
     <div class="container">
         <div class="section-content">
@@ -111,10 +120,17 @@
                     </div>
                 </div>
                 
-                <div class="requirements-action">
-                    <a href="#contact" class="btn btn-hero btn-lg">Contactez-nous pour plus d'infos</a>
-                </div>
+<div class="requirements-action">
+    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@chmsaleux.fr" 
+       target="_blank" 
+       class="btn btn-hero btn-lg">
+       Contactez-nous pour plus d'infos
+    </a>
+</div>
+
             </div>
         </div>
     </div>
 </section>
+
+{% endblock %}

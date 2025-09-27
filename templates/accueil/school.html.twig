@@ -1,3 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/accueil/ecole/ecole.css') }}">
+{% endblock %}
+
+{% block body %}
+
 <section id="ecole" class="section bg-background">
   <div class="container">
     <div class="section-content">
@@ -56,3 +65,5 @@
     </div>
   </div>
 </section>
+
+{% endblock %}
