@@ -1,3 +1,4 @@
+
 /* ============================
    SECTION ACTUALITÉS
 ============================ */
@@ -8,27 +9,26 @@
 .news-section {
   padding: 60px 20px;
   text-align: center;
-  background: #fff;
-  color: #1f2937;
+  background: transparent;
 }
 
 .news-title {
     font-size: 34px;
     font-weight: 900;
-    color: #005b94;
+    color: #fff;
+    margin-top: 20px;
 }
 
 .news-title span {
-  color: #005b94;
+  color: #fff;
 }
 
 .news-subtitle {
   font-size: 1.1em !important;
   font-weight: 500;
-  color: #4b5563;
-  margin-top: 0;
-  margin-bottom: 50px;
-  line-height: 1.6;
+  color: #CBD5E1;
+  margin-top: -10px;
+  margin-bottom: 40px;
 }
 
 .news-grid {
@@ -49,13 +49,35 @@
   text-decoration: none;
   cursor: pointer;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
   background: #514747;
+
+  /* État avant apparition */
+  opacity: 0;
+  transform: translateY(15px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
+}
+
+.news-card.reveal {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .news-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .news-card img {
@@ -103,6 +125,7 @@
   font-size: 1.1rem;
   transition: all 0.3s ease;
   display: inline-block;
+  text-transform: uppercase;
 }
 
 .btn-news:hover {
@@ -146,10 +169,10 @@
    SECTION FAQ
 ============================ */
 .faq-section {
-  max-width: 1200px;
-  margin: 80px auto;
-  padding: 60px 30px;
-  background: #ffffff;
+  max-width: 1130px;
+  margin: 60px auto;
+  padding: 40px 30px;
+  background: #F5F5F5;
   color: #1f2937;
   border-radius: 0px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
@@ -158,13 +181,13 @@
 /* --- Header --- */
 .faq-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-top: -60px;
 }
 
 .faq-header h2 {
   font-size: 2.2rem;
   font-weight: 900;
-  color: #005b94;
+  color: #2B2B2B;
   text-transform: uppercase;
   margin-bottom: 10px;
 }
@@ -283,9 +306,8 @@
 /* --- Encadré contact --- */
 .faq-contact {
   flex: 1;
-  background: #EBEBEB;
+  background: #fff;
   padding: 30px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
   text-align: left;
   border-top: 4px solid #005b94;
 }
@@ -299,7 +321,7 @@
 .faq-contact h3 {
   font-size: 1.2rem;
   font-weight: 800;
-  color: #005b94;
+  color: #2B2B2B;
   margin-bottom: 12px;
 }
 

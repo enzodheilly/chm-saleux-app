@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation d'inscription</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style type="text/css">
+        /* Ajustement titres sur mobile */
+        @media only screen and (max-width: 480px) {
+            h2 { font-size: 18px !important; }
+            h3 { font-size: 18px !important; }
+        }
+    </style>
+
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin:0; padding:20px;">
+
+    <div style="background: #ffffff; border-radius: 10px; padding: 30px 25px; max-width: 500px; margin: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); line-height:1.6; text-align:center;">
+
+         <div style="margin-bottom:25px;">
+            <img src="https://ci3.googleusercontent.com/meips/ADKq_Nbd-OO8ZyUb6y2eeEHHSnVNdD2OPlmRJ_-HTGO0-Ump5s5dUXnE9gdclGpgAR9ndxvIE9_5DgHlnLfg97JJ-4j3-3HkdOA-7QBH5p82gzZ78OTe1nWhGd5rwuFtGmBqQs-fpbiGtaJVNt3alIOQCy0RUg=s0-d-e1-ft#https://raw.githubusercontent.com/enzodheilly/projet-chm/main/public/images/favicon/icon.png" 
+                 alt="CHM Saleux Logo" 
+                 style="max-width: 60px; width: 100%; height: auto;">
+        </div>
+
+<!-- Bande de titre avec fond -->
+<div style="background-color: #005b94; border-radius: 10px 10px 0 0; padding: 15px 20px; margin-bottom: 20px; text-align:center;">
+    <h2 style="color: #ffffff; margin:0; font-size:22px; line-height:1.4;">
+        Confirmation d'inscription
+    </h2>
+</div>
+
+        <p style="margin-bottom:15px;">Bonjour <strong>{{ app.user.firstName }}</strong>,</p>
+
+        <p style="margin-bottom:20px;">
+            Vous avez demandé votre inscription à l’événement suivant :
+        </p>
+
+        <h3 style="color:#003366; margin:10px 0 15px 0; font-size:20px;">
+            {{ event.title }}
+        </h3>
+
+<div style="color:#555; font-size:15px; margin-bottom:25px; text-align:center;">
+    <!-- Date -->
+    <p style="margin:5px 0;"><strong>Date :</strong> {{ event.startAt|date('d/m/Y') }}</p>
+
+    <!-- Heure (format flexible) -->
+    <p style="margin:5px 0;">
+        <strong>Heure :</strong> 
+        {% if event.endAt %}
+            de {{ event.startAt|date('H\hi') }} à {{ event.endAt|date('H\hi') }}
+        {% else %}
+            à partir de {{ event.startAt|date('H\hi') }}
+        {% endif %}
+    </p>
+
+    <!-- Lieu -->
+    <p style="margin:5px 0;"><strong>Lieu :</strong> {{ event.location ?? 'Non communiqué' }}</p>
+</div>
+
+        <p style="margin-bottom:20px;">
+            Pour confirmer votre inscription, cliquez sur le bouton ci-dessous :
+        </p>
+
+        <div style="margin-bottom:25px;">
+            <a href="{{ confirmUrl }}" 
+               style="display:inline-block; background-color:#005b94; color:white;
+                      padding:10px 18px; text-decoration:none; border-radius:6px;
+                      font-weight:bold; font-size:14px; letter-spacing:0.5px; text-transform:uppercase; min-width:180px;">
+                Confirmer mon inscription
+            </a>
+        </div>
+
+        <p style="font-size:14px; color: #555; margin-bottom:25px;">
+            À bientôt !
+        </p>
+
+        <hr style="border:none; border-top:1px solid #ddd; margin:25px 0;">
+
+        <p style="font-size:13px; color:#666; line-height:1.5;">
+            <strong>CHM SALEUX</strong><br>
+            8 rue Max Dormoy – Complexe multisports de la Grenouillère – 80480 Saleux<br>
+            Siège social : 79 rue Roger Salengro – 80480 Saleux<br>
+            Tél : 03.22.89.72.57 • Email : chm.saleux@orange.fr<br>
+            Agréé Jeunesse et Sports – Association loi 1901<br><br>
+            Vous recevez cet e-mail car vous êtes inscrit à un événement du CHM Saleux.
+        </p>
+
+    </div>
+
+</body>
+</html>

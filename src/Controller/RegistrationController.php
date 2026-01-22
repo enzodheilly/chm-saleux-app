@@ -30,21 +30,13 @@ class RegistrationController extends AbstractController
         UserRepository $userRepo
     ): Response {
         try {
-            // Déjà connecté ?
             if ($this->getUser()) {
-                return new JsonResponse([
-                    'success' => false,
-                    'errors'  => ['Vous êtes déjà connecté.']
-                ], 400);
+                return new JsonResponse(['success' => false, 'errors' => ['Vous êtes déjà connecté.']], 400);
             }
 
-            // 🔒 Vérification Turnstile
             $turnstileResponse = $request->request->get('cf-turnstile-response');
             if (!$turnstileResponse) {
-                return new JsonResponse([
-                    'success' => false,
-                    'errors'  => ['Vérification anti-robot manquante.']
-                ], 400);
+                return new JsonResponse(['success' => false, 'errors' => ['Vérification anti-robot manquante.']], 400);
             }
 
             $client = new Client();
@@ -57,77 +49,35 @@ class RegistrationController extends AbstractController
             ]);
 
             $result = json_decode($response->getBody(), true);
-
             if (empty($result['success']) || $result['success'] !== true) {
-                return new JsonResponse([
-                    'success' => false,
-                    'errors'  => ['Vérification anti-robot échouée. Merci de réessayer.']
-                ], 400);
+                return new JsonResponse(['success' => false, 'errors' => ['Vérification anti-robot échouée. Merci de réessayer.']], 400);
             }
 
-            // Récupération *propre* des données envoyées par la modale
             $data = $request->request->all('registration_form');
-            $firstName   = trim($data['firstName'] ?? '');
-            $lastName    = trim($data['lastName'] ?? '');
-            $email       = trim($data['email'] ?? '');
-            $accepted    = (bool)($data['acceptedTerms'] ?? false);
+            $firstName = trim($data['firstName'] ?? '');
+            $lastName = trim($data['lastName'] ?? '');
+            $email = strtolower(trim($data['email'] ?? '')); // 🔹 normalisation
+            $accepted = (bool)($data['acceptedTerms'] ?? false);
 
-            $passArray   = $data['password'] ?? [];
-            $password1   = $passArray['first']  ?? '';
-            $password2   = $passArray['second'] ?? '';
+            $passArray = $data['password'] ?? [];
+            $password1 = $passArray['first'] ?? '';
+            $password2 = $passArray['second'] ?? '';
 
             $errors = [];
 
-            // Validations serveur
-            if (!$accepted) {
-                $errors[] = "Vous devez accepter les conditions générales pour continuer.";
-            }
+            if (!$accepted) $errors[] = "Vous devez accepter les conditions générales pour continuer.";
+            if ($firstName === '') $errors[] = "Le prénom est obligatoire.";
+            if ($lastName === '') $errors[] = "Le nom est obligatoire.";
+            if ($email === '') $errors[] = "L’email est obligatoire.";
+            elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Cette adresse email n’est pas valide.";
+            elseif ($userRepo->findOneBy(['email' => $email])) $errors[] = "Cette adresse email est déjà utilisée.";
 
-            if ($firstName === '') {
-                $errors[] = "Le prénom est obligatoire.";
-            }
-            if ($lastName === '') {
-                $errors[] = "Le nom est obligatoire.";
-            }
+            if ($password1 === '' || $password2 === '') $errors[] = "Les deux champs mot de passe sont obligatoires.";
+            elseif ($password1 !== $password2) $errors[] = "Les mots de passe doivent correspondre.";
+            elseif (strlen($password1) < 12) $errors[] = "Votre mot de passe doit contenir au moins 12 caractères.";
 
-            if ($email === '') {
-                $errors[] = "L’email est obligatoire.";
-            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors[] = "Cette adresse email n’est pas valide.";
-            } elseif ($userRepo->findOneBy(['email' => $email])) {
-                $errors[] = "Cette adresse email est déjà utilisée.";
-            }
+            if (!empty($errors)) return new JsonResponse(['success' => false, 'errors' => $errors], 400);
 
-            if ($password1 === '' || $password2 === '') {
-                $errors[] = "Les deux champs mot de passe sont obligatoires.";
-            } elseif ($password1 !== $password2) {
-                $errors[] = "Les mots de passe doivent correspondre.";
-            } else {
-                if (strlen($password1) < 12) {
-                    $errors[] = "Votre mot de passe doit contenir au moins 12 caractères.";
-                }
-                if (!preg_match('/[A-Z]/', $password1)) {
-                    $errors[] = "Votre mot de passe doit contenir au moins une majuscule.";
-                }
-                if (!preg_match('/[a-z]/', $password1)) {
-                    $errors[] = "Votre mot de passe doit contenir au moins une minuscule.";
-                }
-                if (!preg_match('/\d/', $password1)) {
-                    $errors[] = "Votre mot de passe doit contenir au moins un chiffre.";
-                }
-                if (!preg_match('/[\W_]/', $password1)) {
-                    $errors[] = "Votre mot de passe doit contenir au moins un caractère spécial.";
-                }
-            }
-
-            if (!empty($errors)) {
-                return new JsonResponse([
-                    'success' => false,
-                    'errors'  => $errors
-                ], 400);
-            }
-
-            // Création de l'utilisateur
             $user = new User();
             $user->setFirstName($firstName);
             $user->setLastName($lastName);
@@ -153,30 +103,22 @@ class RegistrationController extends AbstractController
                     ->from('no-reply@monsite.com')
                     ->to($user->getEmail())
                     ->subject('Votre code de vérification - CHM Saleux')
-                    ->html("
-                        <p>Bonjour <strong>{$user->getFirstName()}</strong>,</p>
-                        <p>Merci de vous être inscrit sur le site du CHM Saleux 💪</p>
-                        <p>Voici votre code de vérification :</p>
-                        <h2 style='font-size: 24px; letter-spacing: 4px; color: #005b94;'>{$code}</h2>
-                        <p>Ce code est valable pendant <strong>15 minutes</strong>.</p>
-                        <p>Entrez-le sur la page de vérification pour activer votre compte.</p>
-                    ");
+                    ->html("<p>Bonjour <strong>{$user->getFirstName()}</strong>,</p>
+                            <p>Merci de vous être inscrit sur le site du CHM Saleux 💪</p>
+                            <p>Voici votre code de vérification :</p>
+                            <h2 style='font-size: 24px; letter-spacing: 4px; color: #005b94;'>{$code}</h2>
+                            <p>Ce code est valable pendant <strong>15 minutes</strong>.</p>
+                            <p>Entrez-le sur la page de vérification pour activer votre compte.</p>");
                 $mailer->send($emailMessage);
                 $logger->add('Email de vérification', sprintf('Email envoyé à %s', $user->getEmail()));
             } catch (\Throwable $e) {
                 $logger->add('Erreur email', sprintf('Échec d’envoi à %s : %s', $user->getEmail(), $e->getMessage()));
             }
 
-            return new JsonResponse([
-                'success' => true,
-                'message' => 'Compte créé avec succès. Un code de vérification a été envoyé par e-mail.'
-            ]);
+            return new JsonResponse(['success' => true, 'message' => 'Compte créé avec succès. Un code de vérification a été envoyé par e-mail.']);
         } catch (\Throwable $e) {
             $logger->add('Erreur inscription', 'Erreur inattendue : ' . $e->getMessage());
-            return new JsonResponse([
-                'success' => false,
-                'errors'  => ['Erreur serveur : ' . $e->getMessage()]
-            ], 500);
+            return new JsonResponse(['success' => false, 'errors' => ['Erreur serveur : ' . $e->getMessage()]], 500);
         }
     }
 }

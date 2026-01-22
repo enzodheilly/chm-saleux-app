@@ -1,40 +1,54 @@
 <div class="slider-section">
-	<div class="slider-title">NOS NOUVELLES MACHINES</div>
+	<div class="slider-title">NOS NOUVEAUX ÉQUIPEMENTS</div>
 	<div class="slider-subtitle">
 		Découvrez les toutes dernières arrivées dans notre salle ! Des équipements modernes et performants pour améliorer vos entraînements.
 	</div>
 
 	<div class="slider-wrapper">
-		<button class="nav-button left">&#10094;</button>
 
 		<div class="slider-container">
-			<div class="slider">
-				<div class="slide active">
-					<img src="/images/section3/machine1.jpg" alt="Nouvelle machine 1">
-					<p>Chest press inclinée</p>
-				</div>
-				<div class="slide">
-					<img src="/images/section3/machine2.jpg" alt="Nouvelle machine 2">
-					<p>Poulie vis à vis</p>
-				</div>
-				<div class="slide">
-					<img src="/images/section3/machine3.jpg" alt="Nouvelle machine 3">
-					<p>Cross-over 4 postes</p>
-				</div>
-				<div class="slide">
-					<img src="/images/section3/machine4.jpg" alt="Nouvelle machine 4">
-					<p>Hip thrust machine</p>
-				</div>
-				<div class="slide">
-					<img src="/images/section3/machine5.jpg" alt="Nouvelle machine 5">
-					<p>Banc inclinable</p>
-				</div>
-			</div>
-		</div>
-
-		<button class="nav-button right">&#10095;</button>
-	</div>
+<div class="slider">
+    {% for machine in machines %}
+        <div class="slide {{ loop.first ? 'active' : '' }}">
+            <img src="{{ asset('uploads/machines/' ~ machine.image) }}" alt="{{ machine.name }}">
+            <p>{{ machine.name }}</p>
+            <a href="#" class="discover1">Découvrir</a>
+        </div>
+    {% endfor %}
 </div>
 
+		</div>
+	</div>
+
+	<div class="equipment-benefits">
+  <h3>Pourquoi ces nouveaux équipements ?</h3>
+
+  <p>
+    Chaque année, notre club investit dans de nouveaux équipements afin de permettre
+    à nos adhérents de s’entraîner avec du matériel toujours plus moderne,
+    performant et adapté à tous les niveaux.
+    Nous sélectionnons nos machines pour leur ergonomie, leur robustesse
+    et leur efficacité, afin de garantir des entraînements sûrs et optimisés.
+  </p>
+
+  <div class="benefits-grid">
+    <div class="benefit">
+      <strong>✔ Innovation continue</strong>
+      <span>Des équipements renouvelés régulièrement pour rester à la pointe</span>
+    </div>
+
+    <div class="benefit">
+      <strong>✔ Performance & confort</strong>
+      <span>Mouvements fluides, charges maîtrisées et ergonomie optimale</span>
+    </div>
+
+    <div class="benefit">
+      <strong>✔ Sécurité pour tous</strong>
+      <span>Matériel adapté aux débutants comme aux sportifs confirmés</span>
+    </div>
+  </div>
+</div>
+
+</div>
 
  <script src="{{ asset('js/accueil/section3/section3.js') }}" defer></script>

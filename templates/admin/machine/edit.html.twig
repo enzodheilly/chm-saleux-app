@@ -1,0 +1,75 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}✏ Modifier {{ machine.name }}{% endblock %}
+
+{% block stylesheets %}
+<style>
+/* mêmes styles que la page ajout */
+#current-image, #image-preview {
+	margin-top: 1rem;
+	max-width: 250px;
+	border-radius: 6px;
+	border: 1px solid var(--border);
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="main-content">
+	<div class="dashboard-container">
+
+		<h1>✏ Modifier la machine : <span style="color:var(--accent);">{{ machine.name }}</span></h1>
+
+		<div class="section-card">
+
+			{% for message in app.flashes('success') %}
+				<div class="alert-success">{{ message }}</div>
+			{% endfor %}
+
+			{{ form_start(form) }}
+
+			<div class="form-group" style="margin-bottom: 1rem;">
+				{{ form_label(form.name, 'Nom de la machine') }}
+				{{ form_widget(form.name) }}
+				{{ form_errors(form.name) }}
+			</div>
+
+			<div class="form-group" style="margin-bottom: 1rem;">
+				<label>Image actuelle :</label>
+				<img id="current-image" src="{{ asset('uploads/machines/' ~ machine.image) }}" alt="Image actuelle">
+
+				<br><br>
+				{{ form_label(form.image, 'Changer l’image') }}
+				{{ form_widget(form.image) }}
+				{{ form_errors(form.image) }}
+
+				<img id="image-preview" style="display:none;">
+			</div>
+
+			<div class="form-actions">
+				<button class="btn-success">💾 Enregistrer</button>
+				<a href="{{ path('admin_machine_list') }}" class="btn-secondary">⬅️ Retour</a>
+			</div>
+
+			{{ form_end(form) }}
+
+		</div>
+	</div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+	const input = document.querySelector("input[type='file']");
+	const preview = document.getElementById("image-preview");
+
+	input.addEventListener("change", () => {
+		const file = input.files[0];
+		if (!file) return;
+
+		preview.src = URL.createObjectURL(file);
+		preview.style.display = "block";
+	});
+});
+</script>
+
+{% endblock %}

@@ -216,8 +216,38 @@
 		<div class="submenu" id="contentMenu">
 			<a href="{{ path('admin_pages_index') }}">Pages</a>
 			<a href="{{ path('admin_articles_index') }}">Articles</a>
+			<a href="{{ path('admin_articles_new') }}">Créer un article</a> {# <-- Ajouté #}
 		</div>
 
+		<!-- 🗓️ Gestion des événements -->
+<a href="#" onclick="toggleMenu('eventMenu')">🗓️ Événements ▾</a>
+<div class="submenu" id="eventMenu">
+    <a href="{{ path('admin_event_index') }}">Liste des événements</a>
+    <a href="{{ path('admin_event_new') }}">Ajouter un événement</a>
+</div>
+
+<!-- 🛠️ Gestion des machines -->
+<a href="#" onclick="toggleMenu('machineMenu')">🛠️ Machines ▾</a>
+<div class="submenu" id="machineMenu">
+    <a href="{{ path('admin_machine_list') }}">Liste des machines</a>
+    <a href="{{ path('admin_machine_new') }}">Ajouter une machine</a>
+</div>
+
+
+<!-- 🛒 Gestion des produits -->
+<a href="#" onclick="toggleMenu('productMenu')">🛒 Produits ▾</a>
+<div class="submenu" id="productMenu">
+    <a href="{{ path('admin_product_index') }}">Liste des produits</a>
+    <a href="{{ path('admin_product_new') }}">Ajouter un produit</a>
+</div>
+
+
+		<!-- 🏆 Gestion des compétitions -->
+<a href="#" onclick="toggleMenu('competitionMenu')">🏆 Compétitions ▾</a>
+<div class="submenu" id="competitionMenu">
+    <a href="{{ path('admin_competition_index') }}">Liste des compétitions</a>
+    <a href="{{ path('admin_competition_new') }}">Ajouter une compétition</a>
+</div>
 		<!-- 🧩 Nouveau menu Newsletter -->
 		<a href="#" onclick="toggleMenu('newsletterMenu')">💌 Newsletter ▾</a>
 		<div class="submenu" id="newsletterMenu">
@@ -232,6 +262,14 @@
 		<div class="submenu" id="eliosMenu">
 			<a href="{{ path('admin_clubinfo_index') }}">Informations du club</a>
 		</div>
+
+		<!-- 🏋️ Gestion des athlètes -->
+<a href="#" onclick="toggleMenu('athleteMenu')">🏋️ Athlètes ▾</a>
+<div class="submenu" id="athleteMenu">
+    <a href="{{ path('admin_athlete_index') }}">Liste des athlètes</a>
+    <a href="{{ path('admin_athlete_new') }}">Ajouter un athlète</a>
+</div>
+
 
 		<hr class="sidebar-separator">
 

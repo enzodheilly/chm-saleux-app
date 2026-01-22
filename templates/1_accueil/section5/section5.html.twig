@@ -1,20 +1,57 @@
-<section class="social-section">
-	<div class="container">
-		<h2>Rejoignez-nous sur les Réseaux Sociaux</h2>
-		<p>Restez connecté avec notre salle d’haltérophilie, découvrez nos événements, conseils et moments forts.</p>
-		<div class="social-links">
-			<a href="https://instagram.com/chmsaleux" target="_blank" class="instagram">
-				<i class="fa-brands fa-instagram"></i>
-				Instagram
-			</a>
-			<a href="https://facebook.com/chmsaleux1" target="_blank" class="facebook">
-				<i class="fa-brands fa-facebook"></i>
-				Facebook
-			</a>
-			<a href="#" target="_blank" class="tiktok">
-				<i class="fa-brands fa-tiktok"></i>
-				TikTok
-			</a>
-		</div>
-	</div>
+<!-- ==================== SECTION APP MOBILE ==================== -->
+<section class="app-mobile-section">
+  <div class="app-mobile-container">
+    <!-- Texte et accroche -->
+    <div class="app-mobile-text">
+      <h2>CHM SALEUX BIENTÔT DANS VOTRE POCHE</h2>
+      
+      <!-- Nouvelle zone explicative -->
+      <div class="app-description">
+        <p>
+          Notre application vous permet de gérer facilement vos activités avec le club. Vous pourrez consulter le planning, réserver vos séances, suivre vos progrès et rester connecté avec notre communauté, le tout depuis votre smartphone.
+        </p>
+      </div>
+      
+      <p>
+        Retrouvez toutes nos fonctionnalités directement sur votre smartphone : planning, réservations, suivi de vos entraînements et plus encore !
+      </p>
+
+      <!-- Texte au-dessus du logo et boutons -->
+      <h3 class="download-text">Télécharge l'app <span>CHM Saleux</span></h3>
+
+      <!-- Ligne logo + boutons -->
+      <div class="logo-buttons-line">
+        <!-- Logo de l'application -->
+        <div class="app-logo">
+          <img src="{{ asset('images/app-logo.png') }}" alt="Logo CHM Saleux">
+        </div>
+
+        <!-- Boutons -->
+        <div class="app-buttons">
+          <a href="#" class="app-btn store ios">
+            <img src="{{ asset('images/apple-logo.png') }}" alt="Apple Logo" class="store-logo">
+            <div class="store-text">
+              <span class="top-text">Bientôt disponible sur</span>
+              <span class="bottom-text">Apple Store</span>
+            </div>
+          </a>
+
+          <a href="#" class="app-btn store android">
+            <img src="{{ asset('images/google-play-logo.png') }}" alt="Google Play Logo" class="store-logo">
+            <div class="store-text">
+              <span class="top-text">Bientôt disponible sur</span>
+              <span class="bottom-text">Google Play</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visuel téléphone -->
+    <div class="app-mobile-image">
+      <img rel="preload" src="{{ asset('images/mockup.png') }}" alt="Image du club">
+    </div>
+  </div>
 </section>
+
+ <script src="{{ asset('js/accueil/section5/section5.js') }}" defer></script>

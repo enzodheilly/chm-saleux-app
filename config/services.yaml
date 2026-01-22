@@ -1,13 +1,19 @@
 # config/services.yaml
 parameters:
+    # 🖼️ Dossier d'upload pour les images
+    upload_dir: "%kernel.project_dir%/public/uploads"
+    competitions_upload_dir: "%kernel.project_dir%/public/uploads/competitions"
+    images_directory: "%kernel.project_dir%/public/uploads"
+    machines_directory: "%kernel.project_dir%/public/uploads/machines"
+    uploads_directory: "%kernel.project_dir%/public/uploads"
 
 services:
     # ============================================================
     # ⚙️ CONFIGURATION PAR DÉFAUT
     # ============================================================
     _defaults:
-        autowire: true # Injection automatique des dépendances
-        autoconfigure: true # Enregistre automatiquement les tags requis
+        autowire: true
+        autoconfigure: true
         bind:
             $projectDir: "%kernel.project_dir%"
 
@@ -38,14 +44,11 @@ services:
     # ============================================================
     App\EventListener\LoginAttemptListener:
         tags:
-            # 🔴 Tentatives de connexion échouées
             - {
                   name: kernel.event_listener,
                   event: Symfony\Component\Security\Core\Event\AuthenticationFailureEvent,
                   method: onAuthenticationFailure,
               }
-
-            # 🟢 Connexions réussies
             - {
                   name: kernel.event_listener,
                   event: Symfony\Component\Security\Http\Event\InteractiveLoginEvent,

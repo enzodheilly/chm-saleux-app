@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: LicenceRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Licence
 {
     #[ORM\Id]
@@ -26,7 +27,7 @@ class Licence
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $expiryDate = null;
 
-    // ✅ Relation vers User modifiée pour SET NULL à la suppression
+    // Relation vers User avec SET NULL à la suppression
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'licences')]
     #[ORM\JoinColumn(onDelete: 'SET NULL', nullable: true)]
     private ?User $user = null;
@@ -45,6 +46,8 @@ class Licence
 
     #[ORM\Column(type: 'boolean')]
     private bool $alreadyAssociated = false;
+
+    // ================= Getters / Setters =================
 
     public function getId(): ?int
     {
@@ -159,5 +162,17 @@ class Licence
     {
         $this->alreadyAssociated = $alreadyAssociated;
         return $this;
+    }
+
+    // ================= Doctrine Lifecycle Callbacks =================
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updateAssociation(): void
+    {
+        // Si la licence n'a pas de user, alreadyAssociated devient false
+        if ($this->user === null) {
+            $this->alreadyAssociated = false;
+        }
     }
 }

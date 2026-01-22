@@ -43,3 +43,8 @@ admin_settings:
 admin_activity:
     path: /admin/activity
     controller: App\Controller\Admin\AdminActivityController::index
+
+user_licence_delete:
+    path: /licence/delete
+    controller: App\Controller\LicenceController::delete
+    methods: [POST]

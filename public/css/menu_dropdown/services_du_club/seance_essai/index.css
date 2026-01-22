@@ -1,0 +1,231 @@
+.overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 0;
+		}
+
+.hero-header {
+    position: relative;
+    margin-top: 120px;
+    width: 100%;
+    height: 65vh; /* ajustable */
+    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+
+    /* diagonale sur le bas */
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
+}
+
+
+/* Fond flou + filtre bleu foncé */
+.hero-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    filter: blur(40px);
+    transform: scale(4.1);
+    z-index: 0; /* derrière le texte */
+}
+
+/* Filtre bleu foncé */
+.hero-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 41, 82, 0.65); /* ← bleu plus foncé */
+    z-index: 1;
+}
+
+/* Image décorative diagonale sur la droite du hero */
+.hero-diagonal-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;          /* occupe toute la hauteur du hero */
+    width: 55%;            /* moitié droite du hero */
+    overflow: hidden;
+    z-index: 2;            /* au-dessus du fond mais derrière le texte si nécessaire */
+    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%); /* diagonale */
+}
+
+.hero-diagonal-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;              /* garde les proportions */
+    object-position: center 30%;    /* descend l’image */
+    display: block;
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.3));
+}
+
+
+/* Contenu visible au-dessus */
+.hero-header > .hero-content {
+    position: relative;
+    z-index: 2; /* texte au-dessus du fond */
+}
+
+		.hero-content {
+			position: relative;
+			z-index: 1;
+			margin-top: 100px;
+			animation: fadeInUp 1s ease-out;
+		}
+
+		.hero-content h1 {
+			font-size: 3rem;
+			font-weight: 900;
+			max-width: 700px;
+			text-align: left;
+			margin: 0 0 1rem;
+			text-transform: uppercase;
+			color: #fff;
+			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+			margin-right:640px;
+			margin-top: -130px;
+			letter-spacing: 2px;
+		}
+		.hero-content p {
+			font-size: 1.1rem;
+			line-height: 1.8;
+			color: #CBD5E1;
+			margin-bottom: 2rem;
+            max-width: 520px;
+            margin-right: 660px;
+            text-align: left;
+		}
+
+		@media(max-width: 768px) {
+			.hero-content h1 {
+				font-size: 3.2rem;
+			}
+			.hero-content p {
+				font-size: 1.1rem;
+			}
+		}
+
+		@keyframes fadeInUp {
+			from {
+				opacity: 0;
+				transform: translateY(20px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+/* ===============================
+   SECTION ESSAI
+================================ */
+
+.essai-section {
+    padding: 80px 20px;
+    color: #fff;
+}
+
+.essai-section .container {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.essai-title {
+    font-size: 2.2rem;
+    font-weight: 900;
+    margin-bottom: 30px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.essai-intro {
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin-bottom: 30px;
+    color: #CBD5E1;
+    line-height: 1.6;
+}
+
+.essai-section p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #CBD5E1;
+    margin-bottom: 20px;
+}
+
+/* Boutons */
+.essai-actions {
+    margin-top: 40px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: 0.3s ease;
+}
+
+.btn-primary {
+    background: #005b94;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #003f66;
+}
+
+/* ===============================
+   ANIMATION
+================================ */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 768px) {
+    .hero-header {
+        flex-direction: column;
+        height: auto;
+        clip-path: none;
+    }
+
+    .hero-content {
+        max-width: 100%;
+        margin: 40px 20px;
+        text-align: center;
+    }
+
+    .hero-diagonal-image {
+        width: 100%;
+        height: 220px;
+        clip-path: none;
+    }
+
+    .essai-actions {
+        flex-direction: column;
+    }
+}

@@ -43,3 +43,27 @@ slides.forEach((slide, i) => {
 
 // Initialisation
 showSlide(currentIndex);
+
+document.addEventListener("DOMContentLoaded", function() {
+    const options = {
+        threshold: 0.3 // déclenche quand 30% de la section est visible
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting){
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target); // une seule fois
+            }
+        });
+    }, options);
+
+    // Observer les titres et labels de la section ambassadeurs
+    document.querySelectorAll(
+        ".ambassador-section .section-title, " +
+        ".ambassador-section .section-title2, " +
+        ".ambassador-section .section-label"
+    ).forEach(el => {
+        observer.observe(el);
+    });
+});

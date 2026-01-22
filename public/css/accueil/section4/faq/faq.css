@@ -1,25 +1,69 @@
+	
 	.overlay {
 			position: absolute;
 			top: 0;
 			left: 0;
 			width: 100%;
 			height: 100%;
-			background: rgba(0, 0, 0, 0.5);
 			z-index: 0;
 		}
 
-		.hero-header {
-			position: relative;
-			width: 100%;
-			height: 40vh;
-			background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('') center/cover no-repeat;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			color: var(--text-light);
-			text-align: center;
-			overflow: hidden;
-		}
+.hero-header {
+    position: relative;
+    width: 100%;
+    height: 60vh; /* ajustable */
+    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+
+    /* diagonale sur le bas */
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 0% 100%);
+}
+
+/* Fond flou + filtre bleu foncé */
+.hero-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    filter: blur(40px);
+    transform: scale(4.1);
+    z-index: 0; /* derrière le texte */
+}
+
+/* Filtre bleu foncé */
+.hero-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 41, 82, 0.65); /* ← bleu plus foncé */
+    z-index: 1;
+}
+
+/* Image de transition */
+.hero-transition-image {
+    position: absolute;
+    bottom: 20px; /* dépasse du header de 80px, ajustable */
+    right: 240px;       /* alignée à droite */
+    z-index: 5;     /* au-dessus du header mais sous le contenu si besoin */
+}
+
+.hero-transition-image img {
+    width: 510px;   /* ajustable selon le rendu */
+    height: auto;
+    object-fit: cover;
+    display: block;
+	filter: drop-shadow(0 0 5px white);
+}
+
+/* Contenu visible au-dessus */
+.hero-header > .hero-content {
+    position: relative;
+    z-index: 2; /* texte au-dessus du fond */
+}
 
 		.hero-content {
 			position: relative;
@@ -29,13 +73,21 @@
 		}
 
 		.hero-content h1 {
-			font-size: 5rem;
+			font-size: 3rem;
 			font-weight: 900;
+			max-width: 500px;
+			text-align: left;
 			margin: 0 0 1rem;
 			text-transform: uppercase;
-			letter-spacing: 5px;
 			color: white;
 			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+			margin-right: 753px;
+			margin-top: -45px;
+			letter-spacing: 2px;
+		}
+
+		.hero-content h1 span{
+			color:#005b94;
 		}
 
 		.hero-content p {
@@ -64,156 +116,179 @@
 				transform: translateY(0);
 			}
 		}
-		/* ================= FAQ ================= */
-		.faq-container {
-			display: flex;
-			max-width: 1600px;
-			width: 95%;
-			margin: 5rem auto;
-			gap: 3rem;
-			font-size: 1.1rem; /* taille de base augmentée */
-			line-height: 1.7;
+
+				/* ===== HEADER ===== */
+		.contact-header {
+			text-align: center;
 		}
 
-		/* ----- SIDEBAR ----- */
-		.faq-sidebar {
-			flex: 0.8;
-			min-width: 260px;
-			background-color: #fff;
-			padding: 2.5rem 2rem;
-			border-radius: 0;
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-			position: sticky;
-			top: 2rem;
-		}
-
-		.faq-sidebar h3 {
-			font-size: 2rem;
-			text-transform: uppercase;
-			margin-bottom: 1rem;
-			line-height: 1.2;
+		.contact-header h1 {
+			font-size: 2.2rem;
 			font-weight: 900;
-			color: #005b94;
-		}
-
-		.faq-sidebar h3 span {
-			color: #ff6600;
-		}
-		.faq-sidebar a {
-			color: #ff7e5f;
-			text-decoration: none;
-			font-weight: 800;
-			font-size: 1.1rem;
-			transition: color 0.3s ease;
-		}
-		.faq-sidebar ul {
-			list-style: none;
-			padding: 0;
-			margin: 0;
-		}
-
-		.faq-sidebar ul li {
-			border-bottom: 1px solid #eee;
-		}
-
-		.faq-sidebar ul li a {
-			display: block;
-			position: relative;
-			padding: 0.9rem 25px 0.9rem 0;
-			color: black;
-			text-decoration: none;
-			font-size: 1.1rem;
-			font-weight: 800;
-			transition: color 0.3s, transform 0.2s;
-		}
-
-		.faq-sidebar ul li a::after {
-			content: "➔"; /* flèche simple → */
-			position: absolute;
-			right: 0;
-			top: 50%;
-			transform: translateY(-50%);
-			color: #555; /* couleur flèche par défaut */
-			transition: transform 0.3s, color 0.3s;
-		}
-		.faq-sidebar ul li a:hover::after {
-			color: #ff6600; /* couleur flèche au survol */
-		}
-		.faq-sidebar ul li a:hover {
-			color: #ff6600;
-		}
-
-		/* ----- CONTENU FAQ ----- */
-		.faq-content {
-			flex: 2.5;
-			background: #fff;
-			padding: 3rem;
-			border-radius: 0;
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-		}
-
-		.faq-content h2 {
-			font-size: 2rem;
 			text-transform: uppercase;
-			font-weight: 900;
-			margin-bottom: 1.5rem;
-			color: #005b94;
+			color: #fff;
 		}
-		.faq-content p {
+
+				.contact-header p {
 			font-size: 1.1rem;
-			color: black;
-			margin-bottom: 1rem;
+			font-weight: 500;
+			color: #CBD5E1;
 		}
-		.faq-content a {
-			color: #ff7e5f;
-			font-weight: 600;
-			text-decoration: none;
-		}
-		/* ----- QUESTIONS / RÉPONSES ----- */
-		.faq-item {
-			border-top: 1px solid #eee;
-			padding: 1rem 0;
-		}
+		
+/* Conteneur principal FAQ */
+.faq-container {
+    display: flex;
+    gap: 3rem;
+    max-width: 1227px;
+    width: 95%;
+    margin: 5rem auto;
+    font-size: 1.1rem;
+	align-items: flex-start; /* <-- aligne tous les enfants en haut */
+}
 
-		.faq-question {
-			display: flex;
-			justify-content: space-between;
-			font-weight: 800;
-			cursor: pointer;
-			color: #1f2937;
-			padding-right: 1rem;
-		}
+/* ===== SIDEBAR ===== */
+.faq-sidebar {
+    flex: 0.8;
+    min-width: 260px;
+    background-color: #F5F5F5;
+    padding: 2.5rem 2rem;
+    border-radius: 0;
+    
+    /* Sticky parfaitement aligné */
+    position: sticky;
+    top: 0; /* commence exactement en haut du conteneur */
 
-		/* --- Icône + / - animée façon pro --- */
-		.faq-question span {
-			display: inline-block;
-			font-weight: bold;
-			font-size: 1.5rem;
-			color: #005b94;
-			transition: transform 0.35s ease, color 0.3s ease, opacity 0.2s ease;
-			transform-origin: center;
-		}
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* assure le haut aligné */
+}
 
-		.faq-item.active .faq-question span {
-			transform: rotate(180deg);
-			color: #ff6600; /* petit accent visuel quand c’est ouvert */
-		}
+.faq-sidebar h3 {
+    font-size: 2rem;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    font-weight: 900;
+    color: #005b94;
+}
 
-		/* Ajout d’une animation subtile d’apparition de la réponse */
-		.faq-answer {
-			max-height: 0;
-			overflow: hidden;
-			color: #4b5563;
-			font-size: 1.1rem;
-			line-height: 1.6;
-			transition: max-height 0.4s ease, opacity 0.3s ease;
-			opacity: 0;
-		}
+.faq-sidebar h3 span {
+    color: #ff6600;
+}
 
-		.faq-item.active .faq-answer {
-			max-height: 500px; /* assez grand pour tout le contenu */
-			opacity: 1;
-		}
+.faq-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.faq-sidebar ul li {
+    border-bottom: 1px solid #eee;
+}
+
+.faq-sidebar ul li a {
+    display: block;
+    padding: 0.9rem 25px 0.9rem 0;
+    color: black;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 800;
+    transition: color 0.3s, transform 0.2s;
+    position: relative;
+}
+
+.faq-sidebar ul li a::after {
+    content: "➔";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #555;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.faq-sidebar ul li a:hover::after {
+    color: #ff6600;
+}
+
+.faq-sidebar ul li a:hover {
+    color: #ff6600;
+    transform: translateX(12px);
+}
+
+/* ===== CONTENU ===== */
+.faq-content {
+    flex: 2.5;
+    background: #F5F5F5;
+    padding: 3rem;
+    border-radius: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Titres & paragraphes */
+.faq-content h2 {
+    font-size: 2rem;
+    text-transform: uppercase;
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+    color: #005b94;
+}
+
+.faq-content p {
+    font-size: 1.1rem;
+    color: black;
+    margin-bottom: 1rem;
+}
+
+.faq-content a {
+    color: #ff7e5f;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* Questions / réponses */
+.faq-item {
+    border-top: 1px solid #eee;
+    padding: 1rem 0;
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 800;
+    cursor: pointer;
+    color: #1f2937;
+    padding-right: 1rem;
+}
+
+.faq-question span {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #005b94;
+    transition: transform 0.35s ease, color 0.3s ease, opacity 0.2s ease;
+    transform-origin: center;
+}
+
+.faq-item.active .faq-question span {
+    transform: rotate(180deg);
+    color: #ff6600;
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    color: #4b5563;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 500px;
+    opacity: 1;
+}
 
 		@media(max-width: 900px) {
 			.faq-container {
@@ -229,7 +304,7 @@
 
 		/* ================= CONTACT STYLE BASIC-FIT (COULEUR CHM SALEUX) ================= */
 		.basicfit-style {
-			background: #fff;
+			background: #F5F5F5;
 			text-align: center;
 			padding: 4rem 1rem;
 		}
@@ -335,8 +410,35 @@
 
 				@media(max-width: 1536px) {
 		.hero-header {
-			height: 55vh;
+			height: 65vh;
+		}
+
+				.faq-container {
+			max-width: 1227px;
+		}
+
+			.faq-content {
+				max-width: 750px;
 		}
 		}
 
-		
+		.test{
+			background: #1E293B;
+			position: relative;
+			padding:140px 0;
+			max-width: 30%;
+			margin-top: -115px;
+			margin-left: 125px;
+			z-index: 4;
+			text-align: center;
+		}
+
+		.test p{
+			padding: 5px 40px;
+			text-align: left;
+			margin-top: -110px;
+			font-size: 1.2rem;
+			color: #CBD5E1;
+		}
+
+

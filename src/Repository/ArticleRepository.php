@@ -5,7 +5,6 @@
 namespace App\Repository;
 
 use App\Entity\Article;
-use App\Entity\Categorie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,24 +16,17 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     /**
-     * Récupère les articles filtrés par catégorie (nom), date et pagination.
+     * Récupère les articles filtrés par catégorie (string), date et pagination.
      */
-    public function findFilteredArticles(?int $categorieId, ?string $dateFrom, ?string $dateTo, int $page, int $limit): array
+    public function findFilteredArticles(?string $categorieName, ?string $dateFrom, ?string $dateTo, int $page, int $limit): array
     {
         $qb = $this->createQueryBuilder('a')
-            ->leftJoin('a.categorie', 'c')
-            ->addSelect('c')
             ->orderBy('a.publishedAt', 'DESC');
 
-        // 🔹 Filtre par catégorie (par nom, pas ID)
-        if ($categorieId) {
-            $em = $this->getEntityManager();
-            $categorie = $em->getRepository(Categorie::class)->find($categorieId);
-
-            if ($categorie) {
-                $qb->andWhere('LOWER(c.name) = LOWER(:catname)')
-                    ->setParameter('catname', $categorie->getName());
-            }
+        // 🔹 Filtre par catégorie (string)
+        if ($categorieName) {
+            $qb->andWhere('LOWER(a.categorie) = LOWER(:catname)')
+                ->setParameter('catname', $categorieName);
         }
 
         // 🔹 Filtre par date "de"

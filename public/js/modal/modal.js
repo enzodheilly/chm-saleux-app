@@ -427,7 +427,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-
 // ============================================================
 //  MOT DE PASSE OUBLIÉ — Étape 1 : demande d'email
 // ============================================================
@@ -438,6 +437,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const btn = document.getElementById("resetRequestBtn");
     const errorBox = document.getElementById("resetError");
+    const modalStepReset = document.getElementById("modal-step-reset-email");
 
     const btnText = btn.querySelector(".btn-text");
     const spinner = btn.querySelector(".btn-spinner");
@@ -458,9 +458,20 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             const data = await res.json();
 
-            errorBox.textContent = data.message;
-            errorBox.className = data.success ? "success" : "error";
-            errorBox.style.display = "block";
+            if (data.success) {
+                // ✅ On vide tout le contenu du modal et on affiche uniquement le message
+                modalStepReset.innerHTML = `
+                    <h3 class="modal-title" style="font-weight:800;line-height: 2.4;">MOT DE PASSE OUBLIÉ</h3>
+                    <p class="modal-subtitle" style="color:green; font-weight:600;">
+                        ${data.message}
+                    </p>
+                `;
+            } else {
+                // message d'erreur classique
+                errorBox.textContent = data.message || "⚠️ Erreur serveur.";
+                errorBox.className = "error";
+                errorBox.style.display = "block";
+            }
         } catch {
             errorBox.textContent = "⚠️ Erreur serveur.";
             errorBox.className = "error";
@@ -472,6 +483,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.disabled = false;
     });
 });
+
 
 
 // ============================================================
@@ -642,3 +654,75 @@ document.addEventListener("DOMContentLoaded", () => {
         rules.special.classList.toggle("valid", /[^A-Za-z0-9]/.test(v));
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const toggles = document.querySelectorAll(".toggle-password");
+
+    toggles.forEach(toggle => {
+        toggle.addEventListener("click", () => {
+            const targetId = toggle.getAttribute("data-target");
+            const input = document.getElementById(targetId);
+            if (!input) return;
+
+            const eyeOpen = toggle.querySelector(".eye-open");
+            const eyeClosed = toggle.querySelector(".eye-closed");
+
+            const isPassword = input.type === "password";
+
+            // toggle type
+            input.type = isPassword ? "text" : "password";
+
+            // toggle icons
+            eyeOpen.classList.toggle("hide", isPassword);  // cacher l’œil ouvert si on montre le mdp
+            eyeClosed.classList.toggle("hide", !isPassword); // cacher l’œil fermé si on masque
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const backToLoginFromReset = document.getElementById("js-back-to-login-from-reset");
+
+    if (backToLoginFromReset) {
+        backToLoginFromReset.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            // cacher l'étape reset final
+            document.getElementById("modal-step-reset-new").style.display = "none";
+
+            // afficher login
+            document.getElementById("modal-step-login").style.display = "block";
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('setPasswordModal');
+    if(modal){
+        modal.classList.add('is-open');
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('setPasswordModal');
+    if (modal) {
+        modal.classList.add('is-open');
+        document.documentElement.style.overflow = 'hidden'; // <-- bloque le scroll du body
+
+        // Si tu as un bouton de fermeture, tu dois rétablir le scroll
+        const closeBtn = modal.querySelector('.js-close-set-password'); // ajoute cette classe au bouton fermer
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('is-open');
+                document.documentElement.style.overflow = ''; // <-- rétablit le scroll
+            });
+        }
+
+        // Afficher les messages flash si besoin
+        const errorMessages = modal.querySelectorAll('.form-error-message');
+        errorMessages.forEach(msg => msg.style.display = 'block');
+
+        const successMessages = modal.querySelectorAll('.form-success-message');
+        successMessages.forEach(msg => msg.style.display = 'block');
+    }
+});
+

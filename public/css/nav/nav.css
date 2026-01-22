@@ -9,9 +9,7 @@
 		/* Banner info */
 		.info-banner {
 			width: 100%;
-			background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
-			font-weight: 700;
-			font-size: 1.6rem;
+			background: #0F172A;
 			padding: 0.72rem 0; /* tu peux ajuster pour changer la hauteur */
 			position: relative; /* important pour que le contenu reste bien placé */
 		}
@@ -29,11 +27,8 @@
 			display: flex;
 			position: relative;
 			align-items: center;
-			gap: 1rem; /* espace entre chaque jour */
-			color: #005b94;
-			font-size: 1rem;
-			font-weight: 700;
-			left: 17.8rem; /* décale un peu à gauche */
+			font-size: 0.85rem;
+			font-weight: 400;
 		}
 
 		.info-banner-horaire p {
@@ -41,9 +36,26 @@
 			color:#fff;
 			align-items: center;
 			margin: 0;
-			font-weight: 700;
-			gap: 0.25rem; /* espace entre icône et texte */
+			font-weight: 400;
+			margin-left: 25px;
+			font-size: 0.85rem;
+			gap: 0.6rem; /* espace entre icône et texte */
 		}
+
+		.info-banner-socials {
+	display: flex;
+	align-items: center;
+}
+
+.info-banner-socials a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	text-decoration: none;
+	transition: transform 0.2s ease, color 0.2s ease;
+}
 
 		.info-banner-horaire i {
 			font-size: 1rem;
@@ -54,14 +66,13 @@
 			display: flex;
 			align-items: center;
 			gap: 1rem;
-			margin-right: 18.7rem; /* rapproche les liens vers le centre */
 		}
 
 		.info-link {
 			color: #fff;
 			text-decoration: none;
-			font-weight: 700;
-			font-size: 1rem;
+			font-weight: 500;
+			font-size: 0.8rem;
 			transition: 0.3s;
 		}
 		.info-link i {
@@ -103,18 +114,15 @@
 			position: fixed;
 			top: 0;
 			width: 100vw;
-			background: transparent;
+			background: #F5F5F5;
 			backdrop-filter: blur(12px);
 			box-shadow: none;
-			z-index: 1000;
+			z-index: 9999;			
 			overflow-x: hidden;
+			overflow: visible;
 			box-sizing: border-box;
 			transition: background 0.3s ease, color 0.3s ease;
 		}
-
-		nav.scrolled {
-    background: #000000; /* ou couleur de ton choix */
-}
 
 		/* Nav content */
 		.nav-content {
@@ -143,30 +151,31 @@
 			height: 3.5rem;
 		}
 		.logo-rectangle img {
-			max-height: 100%;
+			max-height: 230%;
 			width: auto;
 			object-fit: contain;
+			margin-left:-30px;
+			margin-top: 9px;
 		}
 
 		/* Liens centrés */
 		.nav-links-center {
 			display: flex;
 			align-items: center;
-			font-size: 1.1rem;
-			font-family: "BBH Sans Bartle", sans-serif;
+			font-size: 1rem;
 			font-weight: 600;
-			margin-left: 5rem; /* décale l'ensemble des liens vers la droite */
+			margin-left: 3.5rem; /* décale l'ensemble des liens vers la droite */
 			position: relative;
 		}
 
 		.nav-links-center a {
 			position: relative;
 			text-decoration: none;
-			color: #e6e6e6;
+			color: #454545;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			padding: 0 2rem; /* espace égal gauche/droite autour du texte */
+			padding: 0 1rem; /* espace égal gauche/droite autour du texte */
 			transition: 0.3s;
 		}
 
@@ -191,15 +200,15 @@
 
 		/* Bouton inscription */
 		.btn-inscription {
-			padding: 0.4rem 1.6rem;
+			padding: 0.4rem 1.3rem;
 			background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
 			color: white;
-			font-size: 1.1rem;
+			font-size: 1rem;
 			border-radius: 0;
 			font-weight: 800;
 			text-decoration: none;
 			transition: 0.3s;
-			margin-left: 1.2rem;
+			margin-left: 220px;
 		}
 
 		.btn-inscription:hover {
@@ -207,55 +216,28 @@
 			box-shadow: 0 6px 18px rgba(0, 91, 148, 0.5);
 		}
 
-		/* Hamburger */
-		.nav-mobile-toggle {
-			display: none;
-			font-size: 1.8rem;
-			cursor: pointer;
-		}
+.btn-ai-assistant {
+    position: relative;
+    left: 180px; /* décale de 50px vers la droite */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #003d66;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
 
-		/* Mobile menu */
-		.nav-mobile {
-			display: none;
-			flex-direction: column;
-			gap: 0.5rem;
-			padding: 1rem;
-			background: #fff;
-			position: absolute;
-			top: 100%;
-			left: 0;
-			width: 100%;
-			box-sizing: border-box;
-			z-index: 999;
-		}
 
-		.nav-mobile.show {
-			display: flex;
-		}
+.btn-ai-assistant:hover {
+    background-color: #005b94;
+    transform: scale(1.1);
+}
 
-		.nav-mobile-link {
-			text-decoration: none;
-			color: black;
-			padding: 0.5rem 0.75rem;
-			border-radius: 0.5rem;
-		}
-
-		.nav-mobile-link:hover {
-			background: #f97316;
-			color: white;
-		}
-
-		/* Texte mobile */
-		.nav-mobile-title {
-			display: none; /* caché sur desktop */
-			font-weight: 600;
-			font-size: 1rem;
-			color: #0d0d0d;
-			text-align: center;
-			position: absolute;
-			left: 50%;
-			transform: translateX(-50%);
-		}
 
 		/* Responsive */
 		@media(max-width: 768px) {
@@ -335,8 +317,10 @@
 
 /* --- Exemples d’utilisation des variables CSS --- */
 :root {
-    --horaire-left: 7.5rem;      /* Décalage horaire horizontal */
-    --links-gap: 0.8rem;        /* Espacement entre les liens */
-    --links-right: 8.3rem;       /* Décalage des liens à droite */
+    --horaire-left: 2rem;      /* Décalage horaire horizontal */
+    --links-gap: 2.3rem;        /* Espacement entre les liens */
+    --links-right: 4.5rem;       /* Décalage des liens à droite */
 }
 }
+
+
