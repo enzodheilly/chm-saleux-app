@@ -183,6 +183,10 @@ class NewsletterController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
+        // Récupérer le prénom si l'abonné est lié à un utilisateur
+        $user = $subscriber->getUser();
+        $firstName = $user ? $user->getFirstName() : null;
+
         $email = $subscriber->getEmail();
 
         $em->remove($subscriber);
@@ -192,14 +196,14 @@ class NewsletterController extends AbstractController
 
         return $this->render('emails/unsubscribed.html.twig', [
             'email' => $email,
+            'firstName' => $firstName,
         ]);
     }
-
 
     // =======================================================
     // ✉️ TEST MAIL LOCAL
     // =======================================================
-    #[Route('/test/mail', name: 'test_mail')]
+    /*#[Route('/test/mail', name: 'test_mail')]
     public function testMail(MailerInterface $mailer): Response
     {
         $fakeSubscriber = new class {
@@ -226,5 +230,31 @@ class NewsletterController extends AbstractController
         $mailer->send($email);
 
         return new Response('✅ E-mail de test envoyé avec succès !');
-    }
+    }*/
+
+    /*#[Route('/test/mail-unsubscribe', name: 'test_mail_unsubscribe')]
+    public function testMailUnsubscribe(MailerInterface $mailer): Response
+    {
+        // 🔹 Abonné factice
+        $fakeSubscriber = new class {
+            public function getEmail(): string
+            {
+                return 'enzodheilly134@gmail.com';
+            }
+        };
+
+        // 🔹 Envoi du mail
+        $email = (new TemplatedEmail())
+            ->from('CHM Saleux <no-reply@chmsaleux.fr>')
+            ->to($fakeSubscriber->getEmail())
+            ->subject('❌ Désinscription newsletter CHM Saleux')
+            ->htmlTemplate('emails/unsubscribed.html.twig')
+            ->context([
+                'subscriberEmail' => $fakeSubscriber->getEmail(), // ✅ variable renommée
+            ]);
+
+        $mailer->send($email);
+
+        return new Response('✅ Mail de test de désinscription envoyé !');
+    }*/
 }

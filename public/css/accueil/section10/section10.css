@@ -1,0 +1,256 @@
+
+
+/* CONTAINER */
+.container {
+  margin-right: 180px;
+  margin-bottom: 90px;
+  background-color: transparent;
+}
+
+/* TITRE H2 */
+h2 {
+  margin-top:75px;
+  color: #fff;
+  font-weight: 900;
+  margin-bottom: 30px;
+  font-size: 2.2rem;
+  text-transform: uppercase;
+}
+
+/* BOUTON */
+.course-content .btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #005b94;
+  color: #fff;
+  text-decoration: none;
+  width: 100%;
+  font-weight: 800;
+  font-size: 1rem;
+  text-transform: uppercase;
+  text-align: center;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.course-content .btn:hover {
+  background: #333;
+  transform: translateY(-3px);
+  color: #fff;
+}
+
+.side-image {
+  position: relative;
+  display: flex;
+  gap: 20px;
+}
+
+/* IMAGE À DROITE (optionnelle) */
+.side-image img {
+  position: relative;
+  z-index: 2;
+  width: 300px;     
+  height: 450px;
+  object-fit: contain;
+  margin-top: -45px;
+  margin-left: 200px;
+  
+}
+
+.side-image::after {
+  content: '';
+  position: absolute;
+  bottom: 0;                  /* place l'ombre au sol */
+  left: 70%;
+  top: 86%;
+  transform: translateX(-50%) skewX(-15deg) scaleX(1.3); /* perspective légère */
+  width: 50%;                 /* largeur de l'ombre */
+  height: 20px;               /* hauteur de l'ombre */
+  background: rgba(0, 0, 0, 0.35);
+  filter: blur(12px);
+  border-radius: 50%;         /* forme ovale */
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* TEXTE DERRIÈRE */
+.bg-texts {
+  position: absolute;
+  top: 50%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+  display: flex;                 /* ⬅️ OBLIGATOIRE */
+  flex-direction: column;        /* ⬅️ texte en colonne */
+  align-items: center;
+  gap: 0px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* texte individuel */
+.bg-texts span {
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 0.85;      /* ⬅️ rapproche verticalement */
+  margin-top: 5px;      /* ⬅️ colle encore plus */
+  color: #FAFAF9;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  -webkit-text-stroke: 2px black;
+  white-space: nowrap;
+}
+
+.cours-section .text-and-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: nowrap; /* ⬅️ empêche le passage en dessous */
+}
+
+.course-card {
+  flex: 1; /* prend tout l'espace restant */
+  max-width: 650px;
+}
+
+/* WRAPPER GLOBAL */
+.collectif-wrapper {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+
+/* IMAGE À GAUCHE */
+.collectif-image img {
+  width: 460px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+/* TEXTE À DROITE */
+.collectif-text {
+  max-width: 600px;
+}
+
+.collectif-text p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #CBD5E1;
+  text-align: left;
+}
+
+/* BOUTON */
+.btn-collectif {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 25px;
+  background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
+  color: #fff;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 800;
+  transition: 0.3s;
+  border-radius: 4px;
+}
+
+.btn-collectif:hover {
+  background: #333;
+  transform: translateY(-3px);
+}
+
+/* SECTION AVIS */
+.avis-section {
+  margin-top: 80px;
+  margin-bottom: 130px;
+}
+
+.avis-section h2 {
+  margin-bottom: 50px;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+/* WRAPPER */
+.avis-wrapper {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* CARTE AVIS - version plus petite */
+.avis-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 15px;           /* réduit de 20px à 15px */
+  max-width: 350px;        /* réduit de 350px à 250px */
+  margin-left: 10px;       /* réduit l’espace à gauche */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.avis-card:hover {
+  transform: translateY(-5px); /* un peu moins de levée */
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* TEXTE */
+.avis-text {
+  font-style: italic;
+  color: #444;
+  line-height: 1.4;        /* un peu plus compact */
+  margin-bottom: 15px;     /* réduit l’espace sous le texte */
+}
+
+/* NOM */
+.avis-name {
+  font-weight: 600;
+  color: #111;
+  font-size: 0.9rem;       /* légèrement plus petit */
+}
+
+/* ÉTOILES */
+.avis-stars {
+  color: #f5b301;
+  margin-bottom: 10px;
+  font-size: 16px;         /* plus petit */
+}
+
+
+/* RESPONSIVE MOBILE */
+@media (max-width: 768px) {
+  .courses {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .course-card {
+    width: 95%;
+  }
+
+  .course-banner img {
+    height: 250px;
+  }
+
+  .side-image img {
+    width: 90%;
+    height: auto;
+  }
+
+    .collectif-wrapper {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .collectif-image img {
+    width: 90%;
+  }
+
+  .collectif-text p {
+    text-align: center;
+  }
+}

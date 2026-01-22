@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Horaires - CHM Saleux{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/menu_dropdown/a_propos_de_notre_club/horaires/index.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<header class="hero-header">
+    <div class="overlay"></div>
+
+    <!-- Image diagonale sur la droite -->
+    <div class="hero-diagonal-image">
+        <img src="{{ asset('images/menu_dropdown/a_propos_de_notre_club/horaires/1.jpg') }}" alt="Image Musculation Club">
+    </div>
+
+    <!-- Contenu texte -->
+    <div class="hero-content">
+        <h1>Horaires du club</h1>
+        <p>Consultez nos horaires et restez informés des fermetures exceptionnelles.</p>
+    </div>
+</header>
+
+
+<section class="horaire-section">
+    <div class="container">
+        <h1 class="horaire-title">Horaires du CHM Saleux</h1>
+
+        <p class="horaire-intro">
+            Au CHM Saleux, vous pouvez vous entraîner aux horaires suivants.  
+            Attention, notre club est géré par des bénévoles, et les horaires peuvent varier légèrement en fonction de leur disponibilité.
+        </p>
+
+        <div class="horaire-days">
+            <div class="horaire-day">
+                <h2>Lundi / Mercredi / Vendredi</h2>
+                <p>10H - 12H / 16H - 20H</p>
+            </div>
+
+            <div class="horaire-day">
+                <h2>Mardi / Jeudi</h2>
+                <p>10H - 12H / 16H - 19H30</p>
+            </div>
+        </div>
+
+        <div class="horaire-info">
+            <p>
+                La salle est fermée le week-end.  
+                Lors des jours de compétition, la salle ferme exceptionnellement à 18H45 le vendredi afin de préparer l’installation du plateau de tirage et le matériel nécessaire pour la compétition du lendemain.  
+                Ces compétitions ne se déroulent pas toujours à Saleux.
+            </p>
+
+            <p>
+                En cas de fortes chutes de neige ou d’événements exceptionnels, restez connectés via notre groupe WhatsApp et nos réseaux sociaux, car des fermetures ponctuelles peuvent survenir.
+            </p>
+
+            <p>
+                Nos horaires peuvent varier exceptionnellement en fonction de la disponibilité de nos bénévoles.  
+                Nous vous remercions de votre compréhension.
+            </p>
+
+            <h3>Résumé des horaires :</h3>
+            <ul>
+                <li><strong>Lundi / Mercredi / Vendredi :</strong> 10H - 12H / 16H - 20H</li>
+                <li><strong>Mardi / Jeudi :</strong> 10H - 12H / 16H - 19H30</li>
+                <li><strong>Week-end :</strong> fermé</li>
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock %}

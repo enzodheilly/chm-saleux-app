@@ -1,47 +1,69 @@
 <!DOCTYPE html>
 <html lang="fr">
-	<head>
-		<meta charset="UTF-8">
-		<title>Confirmation d’inscription à la newsletter</title>
-	</head>
-	<body style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px;">
-		<div style="background: white; border-radius: 8px; padding: 20px; max-width: 500px; margin: auto; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
-			<h2 style="color: #003366;">Bienvenue dans la newsletter du CHM Saleux 💪</h2>
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation d’inscription à la newsletter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+        /* Ajustement des titres sur mobile */
+        @media only screen and (max-width: 480px) {
+            h2 { font-size: 18px !important; }
+        }
+    </style>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; margin:0;">
 
-			<p>Bonjour{{ subscriber is defined and subscriber ? ' ' ~ (subscriber.getFirstname() ?? '') : '' }},</p>
+    <div style="background: #ffffff; border-radius: 10px; padding: 30px 25px; max-width: 500px; margin: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); line-height:1.6; text-align:center;">
 
+        <!-- Logo en haut -->
+        <div style="margin-bottom:25px;">
+            <img src="https://ci3.googleusercontent.com/meips/ADKq_Nbd-OO8ZyUb6y2eeEHHSnVNdD2OPlmRJ_-HTGO0-Ump5s5dUXnE9gdclGpgAR9ndxvIE9_5DgHlnLfg97JJ-4j3-3HkdOA-7QBH5p82gzZ78OTe1nWhGd5rwuFtGmBqQs-fpbiGtaJVNt3alIOQCy0RUg=s0-d-e1-ft#https://raw.githubusercontent.com/enzodheilly/projet-chm/main/public/images/favicon/icon.png" 
+                 alt="CHM Saleux Logo" 
+                 style="max-width: 60px; width: 100%; height: auto;">
+        </div>
 
-			<p>
-				Merci de vous être inscrit à notre newsletter !  
-																            Pour confirmer votre inscription, cliquez sur le bouton ci-dessous :
-			</p>
+<!-- Bande de titre avec fond -->
+<div style="background-color: #005b94; border-radius: 10px 10px 0 0; padding: 15px 20px; margin-bottom: 20px;">
+    <h2 style="color: #ffffff; margin:0; font-size:22px; line-height:1.4;">
+        Confirmation d’inscription à la newsletter
+    </h2>
+</div>
 
-			<p style="text-align: center; margin: 25px 0;">
-				<a href="{{ confirmUrl }}" style="display:inline-block; background-color:#ff6600; color:white;
-																								                      padding:12px 22px; text-decoration:none; border-radius:6px;
-																								                      font-weight:bold; letter-spacing:0.3px;">
-					✅ Confirmer mon inscription
-				</a>
-			</p>
+        <p style="margin-bottom:15px;">
+            Bonjour{{ subscriber is defined and subscriber ? ' ' ~ (subscriber.getFirstname() ?? '') : '' }},
+        </p>
 
-			<p style="font-size: 0.9rem; color: #555;">
-				Si vous n’avez pas demandé cette inscription, ignorez simplement cet e-mail.
-			</p>
+        <p style="margin-bottom:20px;">
+            Merci de vous être inscrit à notre newsletter !  
+            Pour confirmer votre inscription, cliquez sur le bouton ci-dessous :
+        </p>
 
-			<hr
-			style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+        <div style="margin-bottom:25px;">
+            <a href="{{ confirmUrl }}" 
+               style="display:inline-block; background-color:#005b94; color:white;
+                      padding:10px 18px; text-decoration:none; border-radius:6px;
+                      font-weight:bold; font-size:14px; letter-spacing:0.5px; text-transform:uppercase; min-width:180px;">
+                Confirmer mon inscription
+            </a>
+        </div>
 
-			<!-- 🔗 Lien de désinscription -->
-			<hr style="border:none; border-top:1px solid #ddd; margin:20px 0;">
-			<p style="font-size:13px; color:#666;">
-				Vous recevez cet e-mail car vous êtes abonné à la newsletter du CHM Saleux.<br>
-				<a href="{{ subscriber.getUnsubscribeUrl() }}" style="color:#d32f2f;">Se désabonner</a>
-			</p>
+        <p style="font-size: 0.9rem; color: #555; margin-bottom:25px;">
+            Si vous n’avez pas demandé cette inscription, ignorez simplement cet e-mail.
+        </p>
 
+        <hr style="border:none; border-top:1px solid #ddd; margin:25px 0;">
 
-			<p style="margin-top: 30px; font-size: 0.85rem; color: #888; text-align:center;">
-				— L’équipe du CHM Saleux 🏋️‍♂️
-			</p>
-		</div>
-	</body>
+        <p style="font-size:13px; color:#666; line-height:1.5;">
+            <strong>CHM SALEUX</strong><br>
+            8 rue Max Dormoy – Complexe multisports de la Grenouillère – 80480 Saleux<br>
+            Siège social : 79 rue Roger Salengro – 80480 Saleux<br>
+            Tél : 03.22.89.72.57 • Email : chm.saleux@orange.fr<br>
+            Agréé Jeunesse et Sports – Association loi 1901<br><br>
+            Vous recevez cet e-mail car vous êtes abonné à la newsletter du CHM Saleux.<br>
+            <a href="{{ subscriber.getUnsubscribeUrl() }}" style="color:#ff4444 !important;">Se désabonner</a>
+        </p>
+
+    </div>
+
+</body>
 </html>

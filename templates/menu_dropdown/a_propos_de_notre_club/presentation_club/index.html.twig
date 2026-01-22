@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Le club - CHM Saleux
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/menu_dropdown/a_propos_de_notre_club/presentation_club/index.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<header class="hero-header">
+    <div class="overlay"></div>
+
+    <!-- Image diagonale sur la droite -->
+    <div class="hero-diagonal-image">
+        <img src="{{ asset('images/menu_dropdown/a_propos_de_notre_club/presentation_club/1.jpg') }}" alt="Image Musculation Club">
+    </div>
+
+    <!-- Contenu texte -->
+    <div class="hero-content">
+        <h1>notre histoire</h1>
+<p>Une aventure née d’une passion, construite avec le temps et partagée avec vous chaque jour.</p>
+    </div>
+</header>
+<main class="club-page">
+
+    {# ========================== HISTOIRE ========================== #}
+    <section id="club-histoire" class="club-section club-section-alt">
+        <div class="container club-section-grid">
+            <div class="club-text-block">
+                <h2>NOTRE HISTOIRE</h2>
+            <p>
+    Fondé en 1984 au cœur de Saleux par Michel et Francine, le CHM est né d’une volonté simple : offrir un espace sérieux, chaleureux et accessible où chacun peut évoluer en musculation. Au fil des années, le club s’est développé autour de valeurs fortes telles que la progression, le partage et le respect. Grâce à l’engagement de ses fondateurs et de ses membres, le CHM est devenu un lieu incontournable pour tous ceux qui souhaitent s’entraîner dans une ambiance conviviale et motivante.
+</p>
+
+                <p>
+                    Des centaines d’adhérents sont passés par nos bancs, chacun avec son objectif : prise de masse, perte de poids, préparation physique, bien-être ou performance. Le CHM Saleux est devenu un acteur incontournable du sport local.
+                </p>
+            </div>
+
+            <div class="club-image-block">
+                <img src="{{ asset('images/menu_dropdown/a_propos_de_notre_club/presentation_club/2.jpg') }}" alt="Photo du club">
+            </div>
+        </div>
+    </section>
+
+    {# ========================== PRÉSIDENT ========================== #}
+    <section id="club-president" class="club-section">
+        <div class="container club-section-grid">
+            <div class="club-president-photo">
+                <img src="{{ asset('images/club/president.jpg') }}" alt="Président du CHM Saleux">
+            </div>
+
+            <div class="club-president-text">
+                <h2>NOTRE PRÉSIDENT</h2>
+                <h3>Florian ROHAUT</h3>
+
+                <p>
+                    À la tête du club, Florian porte les valeurs fondatrices du CHM : passion, discipline et convivialité. Ancien compétiteur, il met son expérience au service de tous, du débutant au confirmé.
+                </p>
+                <p>
+                    Sous son impulsion, le club s’est modernisé tout en conservant l’esprit associatif qui fait sa force : entraide, respect et motivation collective.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    {# ========================== VALEURS ========================== #}
+    <section class="club-section">
+        <div class="container">
+            <h2>NOS VALEURS</h2>
+
+            <div class="club-values-grid">
+                <article class="club-value-card">
+                    <h3>Dépassement de soi</h3>
+                    <p>La progression se construit dans la constance. Au CHM, nous valorisons l’effort intelligent et durable.</p>
+                </article>
+
+                <article class="club-value-card">
+                    <h3>Respect & convivialité</h3>
+                    <p>Quel que soit ton niveau, tu es accueilli ici avec bienveillance. L’esprit du club : se soutenir et progresser ensemble.</p>
+                </article>
+
+                <article class="club-value-card">
+                    <h3>Accessibilité</h3>
+                    <p>Débuter ici ne demande aucune condition préalable. Tu évolues à ton rythme, accompagné si besoin.</p>
+                </article>
+
+                <article class="club-value-card">
+                    <h3>Encadrement & sécurité</h3>
+                    <p>Nos priorités : technique, charge adaptée, sécurité et prévention des blessures.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    {# ========================== BUREAU ========================== #}
+    <section id="club-bureau" class="club-section club-section-alt">
+        <div class="container">
+            <h2>LE BUREAU DU CLUB</h2>
+
+            <div class="club-bureau-grid">
+
+                <article class="bureau-card">
+                    <img src="{{ asset('images/club/bureau-president.png') }}" alt="Président du club">
+                    <h3>Président</h3>
+                    <p>Florian ROHAUT</p>
+                </article>
+
+                <article class="bureau-card">
+                    <img src="{{ asset('images/club/bureau-secretaire.png') }}" alt="Secrétaire du club">
+                    <h3>Secrétaire</h3>
+                    <p>Ema BERTRAND</p>
+                </article>
+
+                <article class="bureau-card">
+                    <img src="{{ asset('images/club/bureau-tresorier.png') }}" alt="Trésorier du club">
+                    <h3>Trésorier</h3>
+                    <p>Aurore BERTRAND</p>
+                </article>
+
+                <article class="bureau-card">
+                    <img src="{{ asset('images/club/bureau-membre.png') }}" alt="Membre du bureau">
+                    <h3>Membre</h3>
+                    <p>Marianne NOM</p>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    {# ========================== ALBUM ========================== #}
+    <section class="next-section album-section">
+        <div class="container">
+            <h2 class="section-title">ALBUM PHOTOS DU CLUB</h2>
+
+            <div class="album-marquee">
+                <div class="album-track">
+                    {% for i in 1..17 %}
+                        <div class="album-slide"><img src="{{ asset('images/club' ~ i ~ '.jpg') }}" alt="Photo du club {{ i }}"></div>
+                    {% endfor %}
+                    {% for i in 1..17 %}
+                        <div class="album-slide"><img src="{{ asset('images/club' ~ i ~ '.jpg') }}" alt="Photo du club {{ i }}"></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# ========================== CTA FINAL ========================== #}
+    <section class="club-cta-final">
+        <div class="container">
+            <h2>ENVIE DE REJOINDRE LE CHM SALEUX ?</h2>
+            <p>Viens découvrir le club lors de ta première séance. Pas de pression : juste l’envie de progresser dans une ambiance motivante.</p>
+
+            <div class="club-cta-actions">
+                <a href="#" class="btn-primary js-open-register-modal">CRÉER MON COMPTE</a>
+            </div>
+        </div>
+    </section>
+
+</main>
+{% endblock %}

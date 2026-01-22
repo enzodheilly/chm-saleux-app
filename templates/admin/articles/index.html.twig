@@ -146,6 +146,8 @@
 						<th>ID</th>
 						<th>Titre</th>
 						<th>Résumé</th>
+						<th>Image</th>
+						<th>Catégorie</th>
 						<th>Date de publication</th>
 						<th>Actions</th>
 					</tr>
@@ -155,15 +157,29 @@
 						<tr>
 							<td>{{ article.id }}</td>
 							<td>{{ article.title }}</td>
-							<td>{{ article.summary|length > 80 ? article.summary|slice(0, 80) ~ '...' : article.summary }}</td>
+<td>
+    {% if article.photo %}
+        <img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}" 
+             style="width:80px; height:60px; object-fit:cover; border-radius:4px;">
+    {% else %}
+        —
+    {% endif %}
+</td>
+							<td>{{ article.categorie ? article.categorie : '—' }}</td>
+							<td>{{ article.description|length > 80 ? article.description|slice(0, 80) ~ '...' : article.description }}</td>
 							<td>{{ article.publishedAt ? article.publishedAt|date('d/m/Y H:i') : '—' }}</td>
-							<td>
-								<div class="actions">
-									<a href="#" class="action-edit">Modifier</a>
-									<span>|</span>
-									<a href="#" class="action-delete" onclick="return confirm('Supprimer cet article ?')">Supprimer</a>
-								</div>
-							</td>
+					<td>
+    <div class="actions">
+        <a href="{{ path('admin_articles_edit', {id: article.id}) }}" class="action-edit">Modifier</a>
+        <span>|</span>
+
+        <form method="post" action="{{ path('admin_articles_delete', {id: article.id}) }}" style="display:inline;" onsubmit="return confirm('Supprimer cet article ?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+            <button class="action-delete" type="submit">Supprimer</button>
+        </form>
+    </div>
+</td>
+
 
 						</tr>
 					{% else %}

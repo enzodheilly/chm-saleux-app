@@ -1,0 +1,192 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Liste des compétitions{% endblock %}
+
+{% block stylesheets %}
+<style>
+:root {
+    --bg-dark: #0e0e10;
+    --bg-darker: #141416;
+    --bg-light: #1c1c1f;
+    --text-main: #e5e7eb;
+    --text-muted: #9ca3af;
+    --accent: #ff6600;
+    --border: #2a2a2d;
+}
+
+body {
+    margin: 0;
+    font-family: "Inter", system-ui, sans-serif;
+}
+
+.main-content {
+    flex: 1;
+    margin-left: 100px;
+    padding: 2rem 1rem;
+    background: var(--bg-dark);
+    min-height: 100vh;
+}
+
+.dashboard-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #fff;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+}
+
+.section-card {
+    background: var(--bg-light);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    overflow-x: auto; /* permet le scroll horizontal */
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--text-main);
+    min-width: 800px; /* largeur minimum pour ne pas casser la table */
+}
+
+.table thead {
+    background: var(--bg-darker);
+}
+
+.table th,
+.table td {
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+}
+
+.table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.btn-add {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.6rem 1.2rem;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.btn-edit {
+    color: #60a5fa;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.btn-delete {
+    color: #f87171;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+img {
+    max-width: 70px;
+    border-radius: 5px;
+    height: auto;
+}
+
+/* Responsive pour écrans plus petits */
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .table {
+        min-width: 600px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="main-content">
+    <div class="dashboard-container">
+
+        <h1>🏋️‍♂️ Toutes les compétitions</h1>
+
+        <a href="{{ path('admin_competition_new') }}" class="btn-add">➕ Ajouter une compétition</a>
+
+        <div class="section-card">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Titre</th>
+                        <th>Catégorie</th>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Photo</th>
+                        <th>Résultats</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for comp in competitions %}
+                    <tr>
+                        <td>{{ comp.id }}</td>
+                        <td>{{ comp.titre }}</td>
+                        <td>{{ comp.equipe ? (comp.equipe == 'male' ? 'Masculine' : 'Féminine') : '-' }}</td>
+                        <td>{{ comp.date|date("d/m/Y") }}</td>
+                        <td>{{ comp.type ?: '-' }}</td>
+                        <td>
+                            {% if comp.image %}
+                                <img src="{{ asset('uploads/competitions/' ~ comp.image) }}" alt="Image compétition">
+                            {% else %}
+                                <span style="color:var(--text-muted)">Aucune</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if comp.results|length > 0 %}
+                                <ul style="padding-left:1rem; margin:0;">
+                                    {% for result in comp.results %}
+                                        <li>
+                                            {{ result.prenom }} - ÉJ: {{ result.epauleJete }} | Tirage: {{ result.arracher }} | Total: {{ result.total }} 
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <span style="color:var(--text-muted)">Aucun résultat</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a class="btn-edit" href="{{ path('admin_competition_edit', {id: comp.id}) }}">Modifier</a> |
+                            <a class="btn-delete" 
+                               href="{{ path('admin_competition_delete', {id: comp.id}) }}"
+                               onclick="return confirm('Supprimer cette compétition ?');">
+                               Supprimer
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="8" style="text-align:center; color: var(--text-muted); padding:1rem;">
+                            Aucune compétition enregistrée.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

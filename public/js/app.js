@@ -1,62 +1,44 @@
-// CHM Saleux - JavaScript functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const logoContainer = document.getElementById('logo3d');
+    if (!logoContainer) return;
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Initialize Lucide icons
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
+    console.log("Logo 3D : chemin du fichier →", logoContainer.dataset.logo);
 
-    // Mobile menu toggle
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    logoContainer.appendChild(renderer.domElement);
 
-    if (mobileMenuBtn && mobileMenu) {
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-    }
+    const light = new THREE.AmbientLight(0xffffff, 1);
+    scene.add(light);
 
-    // Mobile dropdown toggle
-    document.querySelectorAll('.mobile-dropdown-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const menu = btn.nextElementSibling;
-            menu.classList.toggle('hidden');
-            btn.classList.toggle('active');
-        });
+    const loader = new THREE.GLTFLoader();
+    loader.load(logoContainer.dataset.logo, function(gltf) {
+        scene.add(gltf.scene);
+        gltf.scene.rotation.y = Math.PI;
+    }, undefined, function(error) {
+        console.error("Erreur lors du chargement du logo GLB :", error);
     });
 
-    // Desktop dropdown arrow rotation on hover
-    const dropdowns = document.querySelectorAll('.dropdown');
-    dropdowns.forEach(drop => {
-        const toggle = drop.querySelector('.dropdown-toggle');
-        drop.addEventListener('mouseenter', () => toggle.classList.add('active'));
-        drop.addEventListener('mouseleave', () => toggle.classList.remove('active'));
-    });
+    camera.position.z = 5;
 
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href').substring(1);
-            const targetElement = document.getElementById(targetId);
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80, // Adjust for fixed nav
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-
-    // Contact form handling
-    const contactForm = document.querySelector('.contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function () {
-            const submitBtn = this.querySelector('button[type="submit"]');
-            if (submitBtn) {
-                submitBtn.textContent = 'Envoi en cours...';
-                submitBtn.disabled = true;
-            }
-        });
+    function resizeRenderer() {
+        const width = logoContainer.clientWidth;
+        const height = logoContainer.clientHeight;
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
     }
+
+    window.addEventListener('resize', resizeRenderer);
+    resizeRenderer();
+
+    function animate() {
+        requestAnimationFrame(animate);
+        scene.children.forEach(child => {
+            if (child.type === "Group") child.rotation.y += 0.01;
+        });
+        renderer.render(scene, camera);
+    }
+    animate();
 });

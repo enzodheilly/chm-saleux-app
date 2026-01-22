@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SecurityLogRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SecurityLogRepository::class)]
@@ -177,5 +178,10 @@ class SecurityLog
     {
         $this->browser = $browser;
         return $this;
+    }
+
+    public function isSuccess(): ?bool
+    {
+        return $this->success;
     }
 }

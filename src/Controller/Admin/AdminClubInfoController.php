@@ -3,8 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ClubInfo;
-use App\Form\ClubInfoNewType;
-use App\Form\ClubInfoEditType;
+use App\Form\ClubInfoType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,10 +16,8 @@ class AdminClubInfoController extends AbstractController
     #[Route('/', name: 'admin_clubinfo_index')]
     public function index(EntityManagerInterface $em): Response
     {
-        $infos = $em->getRepository(ClubInfo::class)->findAll();
-
         return $this->render('admin/club_info/index.html.twig', [
-            'infos' => $infos,
+            'infos' => $em->getRepository(ClubInfo::class)->findAll(),
         ]);
     }
 
@@ -28,59 +25,58 @@ class AdminClubInfoController extends AbstractController
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         $info = new ClubInfo();
-        $form = $this->createForm(ClubInfoNewType::class, $info);
+
+        $form = $this->createForm(ClubInfoType::class, $info);
         $form->handleRequest($request);
 
-        // Récupère toutes les catégories existantes
-        $existingCategories = array_map(
-            fn($i) => strtolower(trim($i->getCategory())),
-            $em->getRepository(ClubInfo::class)->findAll()
-        );
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $newCategory = strtolower(trim($info->getCategory()));
+            $em->persist($info);
+            $em->flush();
 
-            if (in_array($newCategory, $existingCategories, true)) {
-                $this->addFlash('error', '⚠️ Cette catégorie existe déjà.');
-            } else {
-                $em->persist($info);
-                $em->flush();
-                $this->addFlash('success', '✅ Nouvelle information ajoutée !');
-                return $this->redirectToRoute('admin_clubinfo_index');
-            }
+            $this->addFlash('success', '✅ Nouvelle information ajoutée !');
+            return $this->redirectToRoute('admin_clubinfo_index');
         }
 
-        return $this->render('admin/club_info/new.html.twig', [
+        return $this->render('admin/club_info/form.html.twig', [
             'form' => $form->createView(),
             'title' => 'Ajouter une information',
-            'existingCategories' => $existingCategories,
         ]);
     }
 
     #[Route('/edit/{id}', name: 'admin_clubinfo_edit')]
-    public function edit(ClubInfo $info, Request $request, EntityManagerInterface $em): Response
-    {
-        $form = $this->createForm(ClubInfoEditType::class, $info);
+    public function edit(
+        ClubInfo $info,
+        Request $request,
+        EntityManagerInterface $em
+    ): Response {
+        $form = $this->createForm(ClubInfoType::class, $info);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
+
             $this->addFlash('success', '✅ Information mise à jour !');
             return $this->redirectToRoute('admin_clubinfo_index');
         }
 
-        return $this->render('admin/club_info/edit.html.twig', [
+        return $this->render('admin/club_info/form.html.twig', [
             'form' => $form->createView(),
             'title' => 'Modifier une information',
         ]);
     }
 
-    #[Route('/delete/{id}', name: 'admin_clubinfo_delete')]
-    public function delete(ClubInfo $info, EntityManagerInterface $em): Response
-    {
-        $em->remove($info);
-        $em->flush();
-        $this->addFlash('success', '🗑️ Information supprimée.');
+    #[Route('/delete/{id}', name: 'admin_clubinfo_delete', methods: ['POST'])]
+    public function delete(
+        ClubInfo $info,
+        Request $request,
+        EntityManagerInterface $em
+    ): Response {
+        if ($this->isCsrfTokenValid('delete' . $info->getId(), $request->request->get('_token'))) {
+            $em->remove($info);
+            $em->flush();
+            $this->addFlash('success', '🗑️ Information supprimée.');
+        }
+
         return $this->redirectToRoute('admin_clubinfo_index');
     }
 }

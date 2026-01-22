@@ -1,3 +1,5 @@
+
+<main>
 <section class="news-section">
 	<h2 class="news-title">
 		DÉCOUVREZ LES
@@ -7,25 +9,30 @@
 		Suivez les performances, événements et moments forts de notre club !
 	</p>
 	<div class="news-grid">
-		{% for article in articles|slice(0, 4) %}
-			<a href="{{ path('article_show', { id: article.id }) }}" class="news-card">
-				<img src="{{ asset(article.image) }}" alt="{{ article.title }}">
-				<div class="news-overlay">
-					<h4>{{ article.title }}</h4>
-					<p>{{ article.summary }}</p>
-				</div>
-			</a>
-		{% else %}
-			<p>Aucune actualité pour le moment.</p>
-		{% endfor %}
+{% for article in articles|slice(0, 18) %}
+    <a href="{{ path('article_show', { id: article.id }) }}" class="news-card">
+        {% if article.photo %}
+            <img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}">
+        {% else %}
+            <img src="{{ asset('images/default-article.png') }}" alt="Image par défaut">
+        {% endif %}
+        <div class="news-overlay">
+            <h4>
+                {{ article.title|length > 30 ? article.title|slice(0, 30) ~ '...' : article.title }}
+            </h4>
+            <p>
+                {{ article.description|length > 50 ? article.description|slice(0,50) ~ '...' : article.description }}
+            </p>
+        </div>
+    </a>
+{% else %}
+    <p>Aucune actualité pour le moment.</p>
+{% endfor %}
+
+
 	</div>
 
-	<div class="button-wrap">
-  <a href="actualites" class="btn-club">
-    <span style="color:black;">VOIR PLUS D'ACTUALITÉS</span>
-  </a>
-  <div class="button-shadow"></div>
-</div> 
+        <a href="{{ path('actualites') }}" class="btn-news">Voir plus d'actualités</a>
 
 </section>
 <section class="faq-section">
@@ -52,7 +59,7 @@
 			</div>
 
 			<div class="faq-item">
-				<button class="faq-question">Quelle est la différence entre les licences compétition jeune et adulte ?</button>
+				<button class="faq-question">Quelle est la différence entre les licences ?</button>
 				<div class="faq-answer">
 					La licence compétition jeune (14-20 ans) inclut un encadrement adapté et des compétitions juniors, tandis que la licence adulte donne accès complet à la salle et aux compétitions officielles.
 				</div>
@@ -76,7 +83,7 @@
 		</div>
 
 		<div class="faq-contact">
-			<h3>Vous ne trouvez pas votre réponse ?</h3>
+			<h3>VOUS NE TROUVEZ PAS VOTRE RÉPONSE ?</h3>
 			<p>Contactez-nous pour toute question spécifique, notre équipe se fera un plaisir de vous répondre.</p>
 
 			<div class="button-wrap">
@@ -88,5 +95,5 @@
 		</div>
 	</div>
 </section>
-
+</main>
  <script src="{{ asset('js/accueil/section4/faq.js') }}" defer></script>

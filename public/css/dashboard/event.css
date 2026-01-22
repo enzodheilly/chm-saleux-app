@@ -1,0 +1,187 @@
+/* ===============================
+   PAGE ÉVÉNEMENTS - DARK THEME
+   =============================== */
+
+/* Wrapper principal */
+#tab-event .tab-inner {
+    display: flex;
+}
+
+/* Colonne principale */
+#tab-event .main-column {
+    flex: 1 1 auto;
+    min-width: 0;       /* nécessaire pour flex shrink */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-top: 2rem;
+}
+
+/* Wrapper des cards */
+#tab-event .card-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: transparent;
+    padding: 0;          /* pas de padding ici */
+    border-radius: 0;
+    width: 100%;         /* prend toute la largeur disponible */
+    box-sizing: border-box;
+    position: relative;  /* pour overlay */
+}
+
+#tab-event .event-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+#tab-event .event-card {
+    margin-right: -16px; /* pousse un peu la carte vers la droite */
+}
+
+
+/* Image de l'événement */
+#tab-event .event-img {
+    width: 120px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+/* Infos événements */
+#tab-event .event-card .flex-1 {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    color: #fff;
+}
+
+/* ===============================
+   COLONNE DROITE - OUTILS
+   =============================== */
+#tab-event .sidebar-right-tools {
+    width: 410px;
+    flex-shrink: 0;
+    padding-left: 2em;
+    border-left: 1px solid #2a2f37;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: #fff;
+    margin-top: 30px;
+}
+
+/* Titre colonne droite */
+#tab-event .sidebar-right-tools > span {
+    display: block;
+    font-weight: 800;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+}
+
+/* Boutons outils */
+#tab-event .btn-outils {
+    display: flex;
+    align-items: center;
+    gap: 7.5px;
+    background-color: black;
+    color: #fff;
+    border: none;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    position: relative;
+    padding: 3px 40px 3px 3px;
+}
+
+/* Flèche droite sur chaque bouton */
+#tab-event .btn-outils::after {
+    content: "›";
+    position: absolute;
+    right: 22px;
+    top: 40%;
+    transform: translateY(-50%);
+    font-size: 28px;
+    color: var(--primary);
+    transition: transform 0.2s ease;
+}
+
+/* Carte conseils prévention */
+#tab-event .prevention-card-infographic {
+    background: #1f1f1f;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+    padding: 1rem;
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 8px;
+    margin-top: 90px;
+    margin-right: 1.5rem;
+}
+
+#tab-event .prevention-card-infographic:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.45);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    #tab-event .sidebar-right-tools {
+        display: none;
+    }
+}
+
+@media (max-width: 700px) {
+    #tab-event .event-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }   
+    #tab-event .event-card .flex-1 {
+        justify-content: center;
+    }
+    #tab-event .btn-secondary {
+        width: 100%;
+    }
+}
+
+/* Base commune à tous les boutons d’action */
+.btn-base {
+  padding: 0.4rem 1.3rem;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: var(--transition);
+}
+
+.btn-primary {
+  padding: 0.4rem 1.3rem;
+  background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.btn-secondary {
+  background-color: transparent; /* fond transparent pour contraste */
+  color: #fff;                   /* texte blanc */
+  border: 2px solid #fff;        /* bordure blanche */
+  border-radius: 8px;            /* coins arrondis */
+  padding: 0.5rem 1.2rem;        /* espace intérieur */
+  font-weight: bold;             /* texte en gras */
+  cursor: pointer;               /* curseur main */
+  transition: all 0.3s ease;    /* animation douce au survol */
+}
+
+.btn-secondary:hover {
+  background-color: #fff;        /* fond blanc au survol */
+  color: #000;                   /* texte noir au survol */
+  transform: translateY(-2px);   /* léger effet de levée */
+}

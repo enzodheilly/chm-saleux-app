@@ -136,4 +136,9 @@ class NewsletterSubscriber
     {
         return $this->email ?? 'Abonné sans email';
     }
+
+    public function isConfirmed(): ?bool
+    {
+        return $this->isConfirmed;
+    }
 }

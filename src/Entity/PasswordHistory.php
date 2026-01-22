@@ -57,4 +57,11 @@ class PasswordHistory
     {
         return $this->changedAt;
     }
+
+    public function setChangedAt(\DateTimeImmutable $changedAt): static
+    {
+        $this->changedAt = $changedAt;
+
+        return $this;
+    }
 }

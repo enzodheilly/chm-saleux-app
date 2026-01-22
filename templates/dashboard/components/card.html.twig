@@ -1,0 +1,21 @@
+<div class="card {{ class }}">
+
+    {% if image is defined and image %}
+        <!-- MODE IMAGE (overlay + gradient) -->
+        <div class="card-image-overlay">
+            <img src="{{ asset(image) }}" alt="Image">
+
+            <div class="card-gradient"></div>
+
+            <div class="card-content-overlay">
+                {{ content|raw }}
+            </div>
+        </div>
+
+    {% else %}
+        <!-- MODE NORMAL (pour la LICENCE) -->
+        <div class="card-content">
+            {{ content|raw }}
+        </div>
+    {% endif %}
+</div>

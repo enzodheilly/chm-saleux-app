@@ -7,6 +7,7 @@ use App\Service\SystemLoggerService;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -122,4 +123,46 @@ class VerifyCodeController extends AbstractController
             return $this->json(['success' => false, 'message' => 'Erreur lors de l’envoi du code.'], 500);
         }
     }
+
+    /*#[Route('/test/verify-code', name: 'test_verify_code')]
+    public function testVerifyCode(MailerInterface $mailer): Response
+    {
+        // 🧑‍💻 Fake user
+        $fakeUser = new class {
+            public function getFirstName(): string
+            {
+                return 'Enzo';
+            }
+            public function getEmail(): string
+            {
+                return 'enzodheilly134@gmail.com';
+            }
+        };
+
+        // 🔢 Génère un code de vérification fictif
+        $fakeCode = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        $expiresAt = new \DateTimeImmutable('+15 minutes');
+
+        // 📧 Envoi du mail via template Twig
+        try {
+            $email = (new \Symfony\Bridge\Twig\Mime\TemplatedEmail())
+                ->from('no-reply@monsite.com')
+                ->to($fakeUser->getEmail())
+                ->subject('Test - Code de vérification')
+                ->htmlTemplate('emails/licence_code.html.twig')
+                ->context([
+                    'user' => $fakeUser,
+                    'code' => $fakeCode,
+                    'expiresAt' => $expiresAt,
+                    'firstName' => $fakeUser->getFirstName(),
+
+                ]);
+
+            $mailer->send($email);
+
+            return new Response("✅ Mail de test pour le code de vérification envoyé à {$fakeUser->getEmail()} !");
+        } catch (\Throwable $e) {
+            return new Response("❌ Erreur lors de l'envoi du mail : " . $e->getMessage(), 500);
+        }
+    }*/
 }
