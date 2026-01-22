@@ -1,91 +1,92 @@
-<nav
-	class="nav-fixed">
-	<!-- Banner info -->
-	<div class="info-banner">
-		<div class="info-banner-content">
-			<div class="info-banner-horaire">
-				<p>
-					<i class="fa-solid fa-clock" style="margin-right: 2px;"></i>
-					<strong>Lundi / Mercredi / Vendredi :</strong>
-					10H-12H / 16H-20H
-				</p>
-				<p>
-					<i class="fa-solid fa-clock" style="margin-right: 2px;"></i>
-					<strong>Mardi / Jeudi :</strong>
-					10H-12H / 16H-19H30
-				</p>
-			</div>
+<nav class="nav-fixed">
+    <!-- Banner info -->
+    <div class="info-banner">
+        <div class="info-banner-content">
+            <div class="info-banner-horaire">
+                <p>
+                    <img src="{{ asset('images/nav/test.png') }}" alt="Logo FFHM" style="height: 24px; vertical-align: middle;">
+                    <strong>Club affilié FFHM</strong>
+                </p>
 
-			<div class="info-banner-links">
-				<a href="{{ path('contact') }}" class="info-link">
-					<i class="fa-solid fa-envelope"></i>Contact
-				</a>
+                <p>
+                    <i class="fa-solid fa-location-dot" style="color: #fff;"></i>
+                    <strong>Saleux – Complexe sportif</strong>
+                </p>
 
-				{# ✅ Si l'utilisateur est connecté #}
-				{% if app.user %}
-					<a href="{{ path('app_logout') }}" class="info-link">
-						<i class="fa-solid fa-right-from-bracket"></i>Déconnexion
-					</a>
-				{% else %}
-					{# ✅ Si l'utilisateur n'est pas connecté #}
-					<a href="{{ path('app_login') }}" class="info-link">
-						<i class="fa-solid fa-user"></i>Mon espace adhérent
-					</a>
-				{% endif %}
-			</div>
-		</div>
-	</div>
+                <p>
+                    <i class="fa-solid fa-phone" style="color: #fff;"></i>
+                    <strong>03.22.89.72.57</strong>
+                </p>
 
-	<!-- Navigation -->
-	<div
-		class="nav-content">
-		<!-- Logo -->
-		<div class="nav-logo-container">
-			<div class="logo-rectangle">
-				<img src="{{ asset('images/logo/logo-chm.png') }}" alt="CHM Saleux"/>
-			</div>
-		</div>
+                <p class="info-banner-socials">
+                    <strong style="font-size:0.86rem;">Suivez-nous :</strong>
 
-		<!-- Desktop links -->
-		<div class="nav-links-center">
-			<a href="{{ path('home') }}">ACCUEIL</a>
-			<a href="{{ path('app_club') }}">LE CLUB</a>
-			<a href="{{ path('halterophilie') }}">HALTÉROPHILIE</a>
-			<a href="{{ path('ecole') }}">NOTRE ÉCOLE</a>
-			<a href="#">COMPÉTITIONS</a>
-		</div>
+                    <a href="https://www.facebook.com/chmsaleux1/?ref=br_rs" target="_blank" rel="noopener" aria-label="Facebook du club">
+                        <i class="fa-brands fa-facebook" style="color: #fff;"></i>
+                    </a>
 
-		<!-- Desktop button -->
-		{% if app.user %}
-			<a href="{{ path('dashboard') }}" class="btn-inscription">Mon espace adhérent</a>
-		{% else %}
-			<a href="#" class="btn-inscription js-open-register-modal">S'INSCRIRE</a>
-		{% endif %}
+                    <a href="https://www.instagram.com/chmsaleux/" target="_blank" rel="noopener" aria-label="Instagram du club">
+                        <i class="fa-brands fa-instagram" style="color: #fff;"></i>
+                    </a>
 
-		<!-- Hamburger -->
-		<div class="nav-mobile-toggle" id="mobile-menu-btn">
-			<i class="fa fa-bars"></i>
-		</div>
+                    <a href="https://www.youtube.com/@chmsaleux4431" target="_blank" rel="noopener" aria-label="YouTube du club">
+                        <i class="fa-brands fa-youtube" style="color: #fff;"></i>
+                    </a>
+                </p>
+            </div>
 
-		<!-- Mobile menu -->
-		<div class="nav-mobile" id="mobile-menu">
-			<a href="{{ path('home') }}" class="nav-mobile-link">Accueil</a>
-			<a href="#" class="nav-mobile-link">Le Club</a>
-			<a href="{{ path('halterophilie') }}" class="nav-mobile-link">Haltérophilie</a>
-			<a href="{{ path('ecole') }}" class="nav-mobile-link">Notre École</a>
-			<a href="#" class="nav-mobile-link">Compétitions</a>
+            <div class="info-banner-links">
+                <a href="{{ path('contact') }}" class="info-link">
+                    <i class="fa-solid fa-headset"></i> Service client
+                </a>
 
-			{% if app.user %}
-				<a href="{{ path('dashboard') }}" class="nav-mobile-link">Mon espace adhérent</a>
-				<a href="{{ path('app_logout') }}" class="nav-mobile-link">Déconnexion</a>
-			{% else %}
-				<a href="{{ path('app_login') }}" class="nav-mobile-link">Connexion</a>
-				<a href="{{ path('app_register') }}" class="nav-mobile-link">Inscription</a>
-			{% endif %}
-		</div>
-	</div>
+                {% if app.user %}
+                    <a href="{{ path('app_logout') }}" class="info-link">
+                        <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+                    </a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="info-link">
+                        <i class="fa-regular fa-user"></i> Mon espace adhérent
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-content">
+        <!-- Logo (toujours le même) -->
+        <div class="nav-logo-container">
+            <div class="logo-rectangle">
+                <img id="nav-logo" src="{{ asset('images/logo/test.png') }}" alt="CHM Saleux"/>
+            </div>
+        </div>
+
+        <!-- Desktop links -->
+        <div class="nav-links-center">
+            <a href="{{ path('home') }}">Accueil</a>
+            <a class="nav-link has-arrow" id="club-hover-link">Club & membres du bureau<i class="fa-solid fa-chevron-down nav-arrow"></i></a>
+            <a href="{{ path('halterophilie') }}">Nos tarifs</a>
+            <a href="{{ path('ecole') }}">Notre école</a>
+            <a href="{{ path('competition') }}">Competitions & résultats</a>
+        </div>
+
+        <!-- Desktop buttons -->
+        <div class="nav-buttons">
+            <!-- Chatbot IA : toujours visible -->
+            <a href="#" class="btn-ai-assistant" title="Assistant IA">
+                <i class="fa-solid fa-robot"></i>
+            </a>
+
+            {% if app.user %}
+                <a href="{{ path('dashboard') }}" class="btn-inscription">Mon espace</a>
+            {% else %}
+                <a href="#" class="btn-inscription js-open-register-modal">S'INSCRIRE</a>
+            {% endif %}
+        </div>
+    </div>
 </nav>
 
 {% block javascripts %}
-	 <script src="{{ asset('js/nav/nav.js') }}"></script>
+    <script src="{{ asset('js/nav/nav.js') }}"></script>
 {% endblock %}

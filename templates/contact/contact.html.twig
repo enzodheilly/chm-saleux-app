@@ -8,6 +8,27 @@
 {% endblock %}
 
 {% block body %}
+
+	<header class="hero-header">
+		<div class="overlay"></div>
+		<div class="hero-content">
+<h1>Besoin d’informations ?
+<span>Notre équipe vous répond</span></h1>
+</header>
+
+<div class="hero-transition-image">
+    <img src="{{ asset('images/club/contact.jpg') }}" alt="Transition image">
+</div>
+
+	<section class="test">
+	    <p>
+        Retrouvez ici les réponses aux questions les plus fréquentes posées par les membres 
+        et futurs adhérents du CHM Saleux. Notre objectif est de vous guider et de vous aider 
+        à trouver rapidement l’information dont vous avez besoin : abonnement, entraînement, 
+        équipements, compétitions ou encore démarches pratiques.
+    </p>
+	</section>
+	
 	<section class="contact-section">
 
 		{% for message in app.flashes('success') %}

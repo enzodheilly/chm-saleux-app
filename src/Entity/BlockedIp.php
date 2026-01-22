@@ -77,4 +77,11 @@ class BlockedIp
     {
         return $this->expiresAt && $this->expiresAt < new \DateTimeImmutable();
     }
+
+    public function setBlockedAt(\DateTimeImmutable $blockedAt): static
+    {
+        $this->blockedAt = $blockedAt;
+
+        return $this;
+    }
 }

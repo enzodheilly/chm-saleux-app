@@ -1,0 +1,37 @@
+{% block stylesheets %}
+    {# CSS global du menu dropdown #}
+    <link rel="stylesheet" href="{{ asset('css/menu_dropdown/index.css') }}">
+    
+    {# CSS spécifique à chaque page #}
+    {% block page_stylesheets %}{% endblock %}
+{% endblock %}
+
+<div id="club-panel" class="nav-hover-panel">
+    <div class="nav-hover-panel-content">
+        <div class="panel-column">
+            <h3>Services du Club</h3>
+            <a href="{{ path('halterophilie') }}">Haltérophilie</a>
+            <a href="{{ path('musculation') }}">Musculation</a>
+            <a href="#">Cours collectifs</a>
+            <a href="#">Les zones d'entrainement</a>
+            <a href="{{ path('seance_essai') }}">Séance d'essai</a>
+            <a href="#">Événements organisés</a>
+            <a href="#">Sauna</a>
+        </div>
+
+        <div class="panel-column">
+            <h3>Membres du bureau</h3>
+            <a href="#">Le Président</a>
+            <a href="#">Le Trésorier</a>
+            <a href="#">La Secrétaire</a>
+            <a href="#">Les membres du bureau</a>
+        </div>
+
+        <div class="panel-column">
+            <h3>A propos de notre club</h3>
+            <a href="{{ path('app_club') }}">Présentation du club</a>
+            <a href="{{ path('labels_club') }}">Les labels du club</a>
+            <a href="{{ path('horaires') }}">Les horaires</a>
+        </div>
+    </div>
+</div>

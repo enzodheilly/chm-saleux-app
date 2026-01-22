@@ -1,65 +1,165 @@
-.social-section {
-		padding: 3rem 1rem;
-		text-align: center;
-		background-image: url("data:image/svg+xml, %3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1000%26quot%3b)' fill='none'%3e%3crect width='1440' height='560' x='0' y='0' fill='rgba(255%2c 255%2c 255%2c 1)'%3e%3c/rect%3e%3cpath d='M1254.729856019074 226.83015028101255L1286.3034883635225 389.2624073574152 1417.1621130954768 195.25651793656405z' fill='rgba(28%2c 83%2c 142%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M461.1980576015258-88.3472695771929L380.0025514413875 23.408757125127266 572.954084303846-7.151763417054582z' fill='rgba(28%2c 83%2c 142%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M924.7387891994968 281.9490592352009L927.810435336435 468.089476716226 1068.7458102402163 386.720400077187z' fill='rgba(28%2c 83%2c 142%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M489.37754220366224 149.27331973096128L409.1506605198019 156.29226238833465 459.7925153477921 273.12311358543855z' fill='rgba(28%2c 83%2c 142%2c 0.4)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M1265.3066123689302 393.8816971338896L1364.9760140810818 279.4456125788561 1235.2170902508503 251.86450188349988z' fill='rgba(28%2c 83%2c 142%2c 0.4)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M1304.6059007179915 163.48556381321583L1180.1073611296592 260.7544833146573 1277.3762806311008 385.2530229029895 1401.8748202194329 287.98410340154805z' fill='rgba(28%2c 83%2c 142%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1000'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3cstyle%3e %40keyframes float1 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(-10px%2c 0)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float1 %7b animation: float1 5s infinite%3b %7d %40keyframes float2 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(-5px%2c -5px)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float2 %7b animation: float2 4s infinite%3b %7d %40keyframes float3 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(0%2c -10px)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float3 %7b animation: float3 6s infinite%3b %7d %3c/style%3e%3c/defs%3e%3c/svg%3e"); /* fond très clair */
-	}
 
-	.social-section h2 {
-		font-size: 2rem;
-		font-weight: bold;
-		margin-bottom: 0.5rem;
+.app-mobile-section {
+  background: transparent;
+  padding: 4rem 2rem;
+  color: #fff;
+}
 
-		/* Gradient sur le texte */
-		background: #005b94;
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
+.app-mobile-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1300px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
 
-		/* Pour Firefox */
-		background-clip: text;
-		color: transparent;
-	}
+.app-mobile-text {
+  flex: 1;
+  min-width: 300px;
+  margin-top: -200px;
+}
 
-	.social-section p {
-		color: black;
-		margin-bottom: 2rem;
-	}
+.app-mobile-text h2 {
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  margin-left: 20px;
+}
 
-	.social-links {
-		display: flex;
-		justify-content: center;
-		gap: 1.5rem;
-		flex-wrap: wrap;
-	}
+.app-mobile-text p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  max-width: 500px;
+  color: #CBD5E1;
+  margin-left: 23px;
+}
 
-	.social-links a {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		font-weight: 500;
-		text-decoration: none;
-		color: black;
-		font-size: 1.1rem;
-		transition: transform 0.2s ease, color 0.3s ease, text-shadow 0.3s ease;
-	}
+.app-description p {
+  color: #CBD5E1;
+}
 
-	.social-links a i {
-		font-size: 1.4rem;
-	}
+/* Texte “Télécharge l’app …” */
+.download-text {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #fff;
+  text-transform: uppercase;
+  margin-left: 23px;
+  text-align: left;
+}
 
-	/* Couleurs vives au survol */
-	.social-links a.instagram:hover {
-		color: #e1306c;
-		text-shadow: 0 0 8px rgba(225, 48, 108, 0.4);
-	}
-	.social-links a.facebook:hover {
-		color: #3b82f6;
-		text-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
-	}
-	.social-links a.tiktok:hover {
-		color: #00f5d4;
-		text-shadow: 0 0 8px rgba(0, 245, 212, 0.4);
-	}
+.download-text span{
+  color: #F26C00
+;
+}
 
-	.social-links a:hover {
-		transform: scale(1.1);
-	}
+/* Ligne logo + boutons */
+.logo-buttons-line {
+  display: flex;
+  align-items: center; /* logo centré verticalement avec les boutons */
+  gap: 10px;
+  margin-left: 13px;
+  margin-top: -20px;
+}
+
+/* Logo de l'application */
+.app-logo img {
+  width:80px;
+  height: auto;
+}
+
+/* Conteneur boutons */
+.app-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: nowrap; /* boutons côte à côte */
+}
+
+/* Boutons */
+.app-btn.store {
+  display: flex;
+  align-items: center; /* logo centré verticalement */
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  transition: background 0.3s, transform 0.2s;
+  color: #000;
+  background-color: #fff;
+  border: 1px solid black;
+}
+
+/* Logo dans les boutons */
+.store-logo {
+  width: 30px;
+  height: 30px;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+/* Texte dans les boutons */
+.store-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1;
+}
+
+.top-text {
+  font-size: 0.85rem;
+}
+
+.bottom-text {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Couleurs spécifiques iOS / Android */
+.app-btn.store.ios:hover,
+.app-btn.store.android:hover {
+  background-color: #f0f0f0;
+}
+
+.app-mobile-image {
+  flex: 1;
+  text-align: center;
+}
+
+.app-mobile-image img {
+  max-width: 70%;
+  height: auto;
+  border-radius: 30px;
+  margin-top: 0px;
+  opacity: 0;
+  transform: translateY(300px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Image visible quand la section est à l'écran */
+.app-mobile-image img.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 992px) {
+  .app-mobile-container {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+
+  .app-mobile-text p,
+  .download-text,
+  .logo-buttons-line {
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .logo-buttons-line {
+    flex-direction: column;
+    gap: 15px;
+  }
+}

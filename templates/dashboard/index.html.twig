@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    {% include 'dashboard/nav.html.twig' %}
+{% endblock %}
+
+{% block footer %}{% endblock %}
+{% block newsletter_script %}{% endblock %}
+
+{% block title %}CHM Saleux – Espace membre{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/dashboard/dashboard.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/dashboard/nav.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard/licence.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard/event.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard/boutique.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard/user.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard/sidebar.css') }}">
+
+{% endblock %}
+
+{% block body %}
+
+<div id="dashboard-loader" style="
+    position: fixed;
+    inset: 0;
+    background: #0D0D0D; /* fond blanc total */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+">
+    <!-- Spinner + logo centré -->
+    <div style="position: relative; width:90px; height:90px;">
+        
+        <!-- Spinner -->
+        <div style="
+            width:90px;
+            height:90px;
+            border:3px solid #ddd;
+            border-top-color:#000;
+            border-radius:50%;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top:0; left:0;
+        "></div>
+
+        <!-- Logo centré, tourne doucement -->
+        <img src="{{ asset('images/favicon/icon.png') }}" alt="Logo Club" style="
+            width:50px;
+            height:50px;
+            position: absolute;
+            top:50%;
+            left:50%;
+            transform: translate(-50%, -50%) rotate(0deg);
+            animation: logo-spin 3s linear infinite;
+        ">
+    </div>
+</div>
+
+<div id="dashboard-overlay"></div> {# doit être avant tout le reste pour couvrir tout #}
+
+<div class="dashboard-wrapper">
+
+{% include 'dashboard/sidebar.html.twig' %}
+	
+	<div class="dashboard-main">
+		
+		{% include 'dashboard/user_profile.html.twig' %}
+		
+		<div class="dashboard-content">
+			
+			{% include 'dashboard/tabs/dashboard.html.twig' %}
+			{% include 'dashboard/tabs/licence.html.twig' %}
+			{% include 'dashboard/tabs/planning.html.twig' %}
+            {% include 'dashboard/tabs/event.html.twig' %}
+			{% include 'dashboard/tabs/messages.html.twig' %}
+            {% include 'dashboard/tabs/boutique.html.twig' with {'produits': produits} %}
+            {% include 'dashboard/change_password_sidebar.html.twig' %}
+			
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ asset('js/dashboard/avatar-upload.js') }}"></script>
+    <script src="{{ asset('js/dashboard/calendar.js') }}"></script>
+    <script src="{{ asset('js/dashboard/licence.js') }}"></script>
+    <script src="{{ asset('js/dashboard/loader.js') }}"></script>
+    <script src="{{ asset('js/dashboard/sidebar.js') }}"></script>
+    <script src="{{ asset('js/dashboard/refresh.js') }}"></script>
+    <script src="{{ asset('js/dashboard/tabs.js') }}"></script>
+    <script src="{{ asset('js/dashboard/event.js') }}"></script>
+    <script src="{{ asset('js/dashboard/boutique.js') }}"></script>
+    <script src="{{ asset('js/dashboard/nav.js') }}"></script>
+
+
+{% endblock %}

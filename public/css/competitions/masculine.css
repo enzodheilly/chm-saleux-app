@@ -1,0 +1,476 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+
+/* -------------------------------
+   GLOBAL
+---------------------------------*/
+body {
+    scroll-behavior: smooth;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+a:hover {
+    opacity: 0.85;
+}
+
+.overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 0;
+		}
+
+.hero-header {
+    position: relative;
+    width: 100%;
+    height: 65.3vh; /* ajustable */
+    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+
+    /* diagonale sur le bas */
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 0% 100%);
+}
+
+
+/* Fond flou + filtre bleu foncé */
+.hero-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    filter: blur(40px);
+    transform: scale(4.1);
+    z-index: 0; /* derrière le texte */
+}
+
+/* Filtre bleu foncé */
+.hero-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 41, 82, 0.65); /* ← bleu plus foncé */
+    z-index: 1;
+}
+
+/* Image de transition */
+.hero-transition-image {
+    position: absolute;
+	bottom: -80px;
+    bottom: 73px; /* dépasse du header de 80px, ajustable */
+    right: 230px;       /* alignée à droite */
+    z-index: 5;     /* au-dessus du header mais sous le contenu si besoin */
+	top:150px
+}
+
+.hero-transition-image img {
+    width: 450px;   /* ajustable selon le rendu */
+    height: auto;
+    object-fit: cover;
+    display: block;
+}
+.hero-transition-image img {
+    filter: drop-shadow(0 0  5px white);
+}
+
+/* Contenu visible au-dessus */
+.hero-header > .hero-content {
+    position: relative;
+    z-index: 2; /* texte au-dessus du fond */
+}
+
+		.hero-content {
+			position: relative;
+			z-index: 1;
+			margin-top: 100px;
+			animation: fadeInUp 1s ease-out;
+		}
+
+		.hero-content h1 {
+			font-size: 3rem;
+			font-weight: 900;
+			max-width: 850px;
+			text-align: left;
+			margin: 0 0 1rem;
+			text-transform: uppercase;
+			color: white;
+			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+			margin-right: 450px;
+			margin-top: -50px;
+			letter-spacing: 2px;
+		}
+
+		.hero-content h1 span{
+			color:#005b94;
+		}
+
+		.hero-content p {
+			font-size: 1.9rem;
+			color: #CBD5E1;
+            margin-left: -10px;
+            max-width: 700px;
+            font-weight: 600;
+		}
+
+        .hero-content p span{
+            margin-right: 310px;
+        }
+
+		@media(max-width: 768px) {
+			.hero-content h1 {
+				font-size: 3.2rem;
+			}
+			.hero-content p {
+				font-size: 1.1rem;
+			}
+		}
+
+		@keyframes fadeInUp {
+			from {
+				opacity: 0;
+				transform: translateY(20px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}		
+/* -------------------------------
+   TITRES DE SECTION
+---------------------------------*/
+H1{
+    text-align: center;
+    margin: 60px auto 30px;
+    font-size: 2.2rem;
+    font-weight: 900;
+    position: relative;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+/* -------------------------------
+   ATHLETE SLIDER
+---------------------------------*/
+.athlete-slider-section {
+    position: relative;
+    padding: 60px 20px;
+    background: transparent;
+    overflow: hidden;
+}
+.athlete-slider {
+    position: relative;
+    overflow: hidden;
+    margin-top: 40px;
+}
+
+.athlete-track-wrapper {
+    overflow: hidden;
+}
+
+.athlete-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.athlete-slide {
+    min-width: calc(25% - 20px);
+    margin: 0 10px;
+    text-align: center;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.athlete-slide img {
+    width: 100%;
+    max-width: 260px;
+    height: auto;
+    border-radius: 16px;
+    transform: scale(1);
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.athlete-slide.active img {
+    transform: scale(1.2);
+    opacity: 1;
+}
+
+.athlete-info-center {
+    margin-top: 12px;
+    color: #CBD5E1;
+}
+
+.athlete-info-center h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.athlete-info-center p {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* NAVIGATION SLIDER */
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 10;
+    padding: 0 14px;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.nav-arrow:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.nav-arrow.left { left: 10px; }
+.nav-arrow.right { right: 10px; }
+
+/* RESPONSIVE SLIDER */
+@media (max-width: 1024px) {
+    .athlete-slide { min-width: calc(33.33% - 16px); }
+}
+@media (max-width: 768px) {
+    .athlete-slide { min-width: calc(50% - 12px); }
+}
+@media (max-width: 480px) {
+    .athlete-slide { min-width: 100%; margin: 0; }
+}
+
+/* -------------------------------
+   CLASSEMENT TABLE
+---------------------------------*/
+.ranking-section {
+    padding: 40px 20px;
+}
+
+.ranking-table {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.ranking-table th {
+    background: #ff0055;
+    color: white;
+    padding: 14px 20px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.ranking-table td {
+    padding: 12px 20px;
+    border-top: 1px solid #eee;
+}
+
+.ranking-table tr:nth-child(even) { background: #fafafa; }
+
+/* -------------------------------
+   DERNIÈRE COMPÉTITION
+---------------------------------*/
+/* --- CARD PRINCIPALE --- */
+.last-competition-card {
+    max-width: 950px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 12px 38px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f1f1f1;
+    transition: transform 0.25s ease, box-shadow 0.3s ease;
+}
+
+.last-competition-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+}
+
+/* --- HEADER COMPÉTITION --- */
+.competition-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.competition-info-text h3 {
+    font-size: 28px;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: #2a2a2a;
+}
+
+.competition-info-text p {
+    font-size: 15px;
+    margin-bottom: 5px;
+    color: #666;
+}
+
+/* --- PHOTO COMPÉTITION --- */
+.competition-photo img {
+    max-width: 220px;
+    border-radius: 14px;
+    object-fit: cover;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.competition-photo img:hover {
+    transform: scale(1.03);
+}
+
+/* --- TABLEAU DES RÉSULTATS --- */
+.results-table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+/* Style plus moderne du tableau */
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+    background: #fafafa;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* En-têtes du tableau */
+.results-table th {
+    padding: 14px 10px;
+    background: #f7f7f7;
+    font-weight: 700;
+    color: #333;
+    font-size: 14px;
+    border-bottom: 2px solid #e5e5e5;
+}
+
+/* Contenu du tableau */
+.results-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #444;
+}
+
+/* Ligne survolée */
+.results-table tbody tr:hover {
+    background: #fff;
+    transition: 0.2s;
+}
+
+/* Dernière ligne sans bordure */
+.results-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* -------------------------------
+   HISTORIQUE
+---------------------------------*/
+.history-section {
+    padding: 60px 20px;
+}
+
+.history-list {
+    display: flex;
+    flex-wrap: wrap; /* permet aux cards de passer à la ligne si pas assez de place */
+    gap: 20px; /* espace entre les cards */
+    justify-content: center; /* centrer les cards horizontalement */
+}
+
+.history-card {
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    width: 300px; /* largeur fixe pour chaque card */
+}
+
+.history-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.card-banner {
+    width: 100%;
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+}
+
+.card-content {
+    padding: 20px 24px;
+}
+
+.card-content h3 {
+    margin-bottom: 8px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.card-content p {
+    margin: 4px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+/* BOUTON VOIR PLUS */
+.more-results {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.more-btn {
+    display: inline-block;
+    background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    text-decoration: none;
+}
+
+.more-btn:hover {
+    background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
+    transform: translateY(-3px);
+}
+
+/* Responsive : les cards prennent 100% sur petits écrans */
+@media (max-width: 768px) {
+    .history-card {
+        width: 100%;
+    }
+}
+
+/* -------------------------------
+   RESPONSIVE GLOBAL
+---------------------------------*/
+@media (max-width: 600px) {
+    .hero-content h1 { font-size: 28px; }
+    .hero-header { height: 280px; padding: 15px; }
+}

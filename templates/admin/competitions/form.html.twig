@@ -1,0 +1,200 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block stylesheets %}
+<style>
+:root {
+    --bg-dark: #0e0e10;
+    --bg-darker: #141416;
+    --bg-light: #1c1c1f;
+    --text-main: #e5e7eb;
+    --text-muted: #9ca3af;
+    --accent: #ff6600;
+    --border: #2a2a2d;
+}
+
+body {
+    font-family: "Inter", system-ui, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-main);
+}
+
+.main-content {
+    flex: 1;
+    margin-left: 100px;
+    padding: 2.5rem 3rem;
+    background: var(--bg-dark);
+    min-height: 100vh;
+}
+
+.dashboard-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto; /* centre le contenu proprement */
+    padding: 0 1rem;
+    transform: none; /* enlève la déformation */
+}
+
+.dashboard-container h1 {
+    font-size: 2.3rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.section-card {
+    background: var(--bg-light);
+    border: 1px solid var(--border);
+    padding: 1.5rem 1.3rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: var(--text-main);
+}
+
+input[type="text"], input[type="date"], input[type="file"], select, textarea {
+    width: 97.5%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg-darker);
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+
+.btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    display: inline-block;
+}
+
+.btn:hover {
+    background: #e25500;
+}
+
+.result-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.result-table th, .result-table td {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+}
+
+.result-table th {
+    background: var(--bg-darker);
+    font-weight: 600;
+}
+
+.add-result-btn {
+    margin-top: 0.8rem;
+    margin-bottom: 1rem;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="main-content">
+    <div class="dashboard-container">
+        <h1>🏋️‍♂️ {{ title }}</h1>
+
+        <div class="section-card">
+            {{ form_start(form) }}
+            
+            {{ form_row(form.titre) }}
+            {{ form_row(form.date) }}
+            {{ form_row(form.lieu) }}
+            {{ form_row(form.equipe) }}
+            {{ form_row(form.type) }}
+            {{ form_row(form.image) }}
+
+            <h3>Résultats</h3>
+            <table class="result-table" id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Épaulé-Jeté</th>
+                        <th>Arraché</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody data-prototype="{{ form_widget(form.results.vars.prototype)|e('html_attr') }}">
+                    {% for result in form.results %}
+                        <tr class="result-item">
+                            <td>{{ form_widget(result.nom) }}</td>
+                            <td>{{ form_widget(result.prenom) }}</td>
+                            <td>{{ form_widget(result.epauleJete) }}</td>
+                            <td>{{ form_widget(result.arracher) }}</td>
+                            <td>{{ form_widget(result.total) }}</td>
+                            <td><button type="button" class="btn remove-result">Supprimer</button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="button" class="btn" id="addResultBtn">Ajouter un résultat</button>
+
+            <button type="submit" class="btn">Enregistrer</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const tableBody = document.querySelector('#resultsTable tbody');
+    const addBtn = document.getElementById('addResultBtn');
+
+    // Récupère le prototype depuis Symfony
+    let prototype = tableBody.dataset.prototype;
+    let index = tableBody.querySelectorAll('tr').length;
+
+    addBtn.addEventListener('click', () => {
+        let newRowHtml = prototype.replace(/__name__/g, index);
+        let tempDiv = document.createElement('tr');
+        tempDiv.innerHTML = newRowHtml;
+        let newRow = tempDiv.firstElementChild || tempDiv;
+        // Ajoute le bouton supprimer
+        let td = document.createElement('td');
+        td.innerHTML = '<button type="button" class="btn remove-result">Supprimer</button>';
+        newRow.appendChild(td);
+        tableBody.appendChild(newRow);
+        index++;
+    });
+
+    tableBody.addEventListener('click', (e) => {
+        if(e.target.classList.contains('remove-result')) {
+            e.target.closest('tr').remove();
+        }
+    });
+});
+</script>
+{% endblock %}
+

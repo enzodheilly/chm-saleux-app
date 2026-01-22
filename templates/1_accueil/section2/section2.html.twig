@@ -1,190 +1,138 @@
 <main class="pricing-hero" role="main" aria-labelledby="abonnement-title">
-	<div class="pricing-head" role="region" aria-label="Introduction abonnements">
-		<div class="pricing-left">
-			<h1 id="abonnement-title" class="pricing-title">
-				<span>
-					SELECTIONNE L’ABONNEMENT QUI TE CORRESPOND
-					<span style="color: var(--orange);"></span>
-				</span>
-			</h1>
-			<p class="pricing-sub">
-Avec plus de 800 m² d’espace d’entraînement, retrouve tout ce qu’il te faut pour progresser : Cardio, Musculation, Haltérophilie, et même des cours collectifs chaque semaine pour te dépasser dans une super ambiance ! Découvre nos 4 forfaits annuels, adaptés à tous les niveaux à partir de 4,17 €/semaine 🔥
-			</p>
-		</div>
-	</div>
-
-	<section
-		id="abonnements" class="pricing-grid" aria-label="Liste des abonnements">
-
-		<!-- Compétition -->
-		<article class="card">
-    <!--<div class="badge">+21 ans</div>-->
-    <h3 class="card-title">COMPÉTITION</h3>
-    <div class="price-row">
-        <div class="price">90€<sup>00</sup></div>
-        <div class="period">/ an</div>
+  <div class="pricing-head" role="region" aria-label="Introduction abonnements">
+    <div class="pricing-left">
+      <h1 id="abonnement-title" class="pricing-title">
+        <span>
+          SELECTIONNE L’ABONNEMENT QUI TE CORRESPOND
+          <span style="color: var(--orange);"></span>
+        </span>
+      </h1>
+      <p class="pricing-sub">
+        Avec plus de 800 m² d’espace d’entraînement, retrouve tout ce qu’il te faut pour progresser : Cardio, Musculation, Haltérophilie, et même des cours collectifs chaque semaine pour te dépasser dans une super ambiance ! Découvre nos 4 forfaits annuels, adaptés à tous les niveaux à partir de 70 €/ an 🔥
+      </p>
     </div>
-    <div class="subprice">Soit 7,50€/mois</div>
- <ul class="features">
-    <li>
-        <img src="images/avantages.png" alt="" class="feature-icon">
-        Licence compétition officielle
-    </li>
-    <li>
-        <img src="images/avantages.png" alt="" class="feature-icon">
-        Accès complet à la salle
-    </li>
-    <li>
-        <img src="images/avantages.png" alt="" class="feature-icon">
-        Encadrement par coachs diplômés
-    </li>
-    <li>
-        <img src="images/avantages.png" alt="" class="feature-icon">
-        Participation aux compétitions
-    </li>
-</ul>
+  </div>
 
-    <div class="text-center mt-3">
-        <div class="button-wrap-payment">
-            <a href="{{ path('paiement_type', { type: 'competition' }) }}" class="btn-payment">
-                <span style="color:black;">CHOISIR COMPÉTITION</span>
-            </a>
-            <div class="button-shadow"></div>
-        </div>
-    </div>
-</article>
+<div class="segmented-toggle">
+  <input type="checkbox" id="toggle" />
+  <div class="toggle-bg"></div>
 
-
-		<!-- Jeunes -->
-		<article
-			class="card">
-			<!--<div class="badge">Jeunes</div>-->
-			<h3 class="card-title">JEUNES</h3>
-			<div class="price-row">
-				<div class="price">70€<sup>00</sup>
-				</div>
-				<div class="period">/ an</div>
-			</div>
-			<div class="subprice">Soit 5,83€/mois</div>
-		<ul class="features">
-    <li>
-        <img src="images/avantages.png" alt="" class="feature-icon">
-        Licence adaptée
-    </li>
-    <li>
-        <img src="images/avantages.png" alt="" class="feature-icon">
-        Encadrement spécialisé
-    </li>
-    <li>
-        <img src="images/avantages.png" alt="" class="feature-icon">
-        Accès aux entraînements dédiés
-    </li>
-    <li>
-        <img src="images/avantages.png" alt="" class="feature-icon">
-        Accompagnement en compétition
-    </li>
-</ul>
-
-			<div class="text-center mt-3">
-				<div class="button-wrap-payment">
-            <a href="{{ path('paiement_type', { type: 'jeunes' }) }}" class="btn-payment">
-                <span style="color:black;">CHOISIR JEUNES</span>
-            </a>
-            <div class="button-shadow"></div>
-        </div>
-			</div>
-		</article>
-
-		<!-- Loisir -->
-		<article class="card">
-			<h3 class="card-title">LOISIR & MUSCU</h3>
-	<div class="price-row">
-    <div class="price price-large">200€<sup>00</sup></div>
-    <div class="period">/ an</div>
+  <div class="toggle-option left">Standard</div>
+  <div class="toggle-option right">Étudiant</small></div>
 </div>
 
-			<div class="subprice">Soit 16,66€/mois</div>
-		<ul class="features">
-    <li>
-        <img src="images/avantages.png" alt="" class="feature-icon">
-        Accès libre salle musculation
-    </li>
-    <li>
-        <img src="images/avantages.png" alt="" class="feature-icon">
-        Haltérophilie loisir encadrée
-    </li>
-    <li>
-        <img src="images/avantages.png" alt="" class="feature-icon">
-        Cardio & cours collectifs
-    </li>
-    <li>
-        <img src="images/avantages.png" alt="" class="feature-icon">
-        Ambiance conviviale
-    </li>
+  <section id="abonnements" class="pricing-grid" aria-label="Liste des abonnements">
+
+       <!-- Enfants 
+    <article class="card disabled">
+      <h3 class="card-title">ENFANTS</h3>
+      <div class="price-row">
+        <div class="price4">50€<sup>00</sup></div>
+        <div class="period">/ an</div>
+      </div>
+      <div class="subprice4">Soit 4,17€/mois</div>
+      <ul class="features">
+        <li><img src="images/avantages.png" alt="" class="feature-icon">Initiation sécurisée</li>
+        <li><img src="images/avantages.png" alt="" class="feature-icon">Encadrement par coachs</li>
+        <li><img src="images/avantages.png" alt="" class="feature-icon">Ateliers ludiques</li>
+        <li><img src="images/avantages.png" alt="" class="feature-icon">Participation aux événements jeunes</li>
+      </ul>
+      <div class="text-center mt-3">
+        <a href="{{ path('paiement_type', { type: 'enfants' }) }}" class="btn-classic">CHOISIR</a>
+      </div>
+    </article>
+    -->
+
+    <!-- Jeunes -->
+    <article class="card">
+      <h3 class="card-title">JEUNES</h3>
+      <div class="price-row">
+        <div class="price2">70€<sup>00</sup></div>
+        <div class="period">/ an</div>
+      </div>
+      <div class="subprice2">Soit 5,83€/mois</div>
+<div class="trial-box">
+  <i class="fa-solid fa-calendar-check"></i>
+  Séance d’essai possible avant inscription
+</div>
+
+<ul class="features">
+<li><i class="fa-solid fa-door-open feature-icon"></i> Accès complet à la salle</li>
+  <li><i class="fa-solid fa-user-tie feature-icon"></i>Encadrement par coachs qualifiés</li>
+  <li><i class="fa-solid fa-shower feature-icon"></i> Vestiaires & douches</li>
+  <li><i class="fa-solid fa-trophy feature-icon"></i> Challenges & événements sportifs</li>
+  <li><i class="fa-solid fa-shield-halved feature-icon"></i>Apprentissage des bases techniques en toute sécurité</li>
+  <li><i class="fa-solid fa-chart-line feature-icon"></i>Suivi de la progression et accompagnement</li>
+  <li><i class="fa-solid fa-bullseye feature-icon"></i>Séances adaptées à l’âge et au niveau</li>
+
 </ul>
 
-			<div class="text-center mt-3">
-				<div class="button-wrap-payment">
-            <a href="{{ path('paiement_type', { type: 'loisir' }) }}" class="btn-payment">
-                <span style="color:black;">CHOISIR MUSCU</span>
-            </a>
-            <div class="button-shadow"></div>
-        </div>
-			</div>
-		</article>
+    </article>
 
-		<!-- Enfants -->
-		<article
-			class="card">
-			<!--<div class="badge">Enfant</div>-->
-			<h3 class="card-title">ENFANTS</h3>
-			<div class="price-row">
-				<div class="price">50€<sup>00</sup>
-				</div>
-				<div class="period">/ an</div>
-			</div>
-			<div class="subprice">Soit 4,17€/mois</div>
-			<ul class="features">
-    <li>
-        <img src="images/avantages.png" alt="" class="feature-icon">
-        Initiation sécurisée
-    </li>
-    <li>
-        <img src="images/avantages.png" alt="" class="feature-icon">
-        Encadrement par coachs
-    </li>
-    <li>
-        <img src="images/avantages.png" alt="" class="feature-icon">
-        Ateliers ludiques
-    </li>
-    <li>
-        <img src="images/avantages.png" alt="" class="feature-icon">
-        Participation aux événements jeunes
-    </li>
+            <!-- Loisir -->
+    <article class="card card-featured">
+        <span class="badge-featured">Le plus populaire</span>
+      <h3 class="card-title">LOISIR & MUSCU</h3>
+      <div class="price-row">
+        <div class="price3">200€<sup>00</sup></div>
+        <div class="period">/ an</div>
+      </div>
+      <div class="subprice3">Soit 16,66€/mois</div>
+<div class="trial-box">
+  <i class="fa-solid fa-calendar-check"></i>
+  Séance d’essai possible avant inscription
+</div>
+
+<ul class="features">
+  <li><i class="fa-solid fa-door-open feature-icon"></i> Accès complet à la salle</li>
+  <li><i class="fa-solid fa-user-tie feature-icon"></i>Encadrement par coachs qualifiés</li>
+  <li><i class="fa-solid fa-shower feature-icon"></i> Vestiaires & douches</li>
+  <li><i class="fa-solid fa-hot-tub-person feature-icon"></i> Accès au sauna</li>
+  <li><i class="fa-solid fa-trophy feature-icon"></i> Challenges & événements sportifs</li>
+  <li><i class="fa-solid fa-weight-hanging feature-icon"></i> Haltérophilie loisir encadrée</li>
+  <li><i class="fa-solid fa-heart-pulse feature-icon"></i> Cardio & cours collectifs</li>
+  <li><i class="fa-solid fa-people-group feature-icon"></i> Ambiance conviviale</li>
+  <li><i class="fa-solid fa-clock feature-icon"></i> Accès libre a la zone Haltérophilie</li>
+</ul>
+    </article>
+
+        <!-- Compétition -->
+    <article class="card">
+      <h3 class="card-title">COMPÉTITION</h3>
+      <div class="price-row">
+        <div class="price1">90€<sup>00</sup></div>
+        <div class="period">/ an</div>
+      </div>
+      <div class="subprice1">Soit 7,50€/mois</div>
+<div class="trial-box">
+  <i class="fa-solid fa-calendar-check"></i>
+  Séance d’essai possible avant inscription
+</div>
+
+
+<ul class="features">
+<li><i class="fa-solid fa-door-open feature-icon"></i> Accès complet à la salle</li>
+<li><i class="fa-solid fa-user-tie feature-icon"></i>Encadrement par coachs qualifiés</li>
+  <li><i class="fa-solid fa-shower feature-icon"></i> Vestiaires & douches</li>
+  <li><i class="fa-solid fa-hot-tub-person feature-icon"></i> Accès au sauna</li>
+  <li><i class="fa-solid fa-trophy feature-icon"></i> Challenges & événements sportifs</li>
+  <li><i class="fa-solid fa-id-card feature-icon"></i> Licence compétition officielle</li>
+  <li><i class="fa-solid fa-medal feature-icon"></i> Participation aux compétitions</li>
 </ul>
 
-			<div class="text-center mt-3">
-				<div class="button-wrap-payment">
-            <a href="{{ path('paiement_type', { type: 'enfants' }) }}" class="btn-payment">
-                <span style="color:black;">CHOISIR ENFANTS</span>
-            </a>
-            <div class="button-shadow"></div>
-        </div>
-			</div>
-		</article>
-	</section>
+    </article>
 
-	<div class="pricing-foot">
-		<div class="disclaimer">
-			⚠️
-			<strong>Note :</strong>
-			Avant d’effectuer le paiement, veuillez vous assurer d’avoir bien rempli le
-			<strong>formulaire de licence</strong>.<br>
-			Une fois le paiement effectué, merci de remettre le formulaire complété directement
-																								  au bureau du club.<br>
-			Si vous ne l’avez pas encore, vous pouvez le télécharger
-			<a href="URL_DU_FORMULAIRE" target="_blank">ici</a>.
-		</div>
-	</div>
+  </section>
 
+  <div class="pricing-foot">
+    <div class="disclaimer">
+      ⚠️ <strong>Note :</strong> Avant d’effectuer le paiement, veuillez vous assurer d’avoir bien rempli le
+      <strong>formulaire de licence</strong>.<br>
+      Une fois le paiement effectué, merci de remettre le formulaire complété directement au bureau du club.<br>
+      Si vous ne l’avez pas encore, vous pouvez le télécharger
+      <a href="URL_DU_FORMULAIRE" target="_blank">ici</a>.
+    </div>
+  </div>
 </main>
+
+<script src="{{ asset('js/accueil/section2/section2.js') }}"></script>

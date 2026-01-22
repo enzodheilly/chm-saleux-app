@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Équipe Féminine - Compétitions{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('css/competitions/masculine.css') }}">
+{% endblock %}
+
+{% block body %}
+<header class="hero-header" style="
+    background-image: url('{{ asset('images/male-team.jpg') }}');
+    background-size: cover;
+    background-position: center 20%;
+">
+    <a href="{{ path('competition') }}" class="back-button">
+         Retour
+    </a>
+
+    <div class="hero-content">
+        <h1>Équipe Masculine <span>CHM Saleux</span></h1>
+        <p>Retrouvez toutes les compétitions et les résultats <span>de notre équipe masculine</span></p>
+    </div>
+</header>
+
+<section class="athlete-slider-section">
+        <h1> les membres de Notre équipe</h1>
+
+    <div class="athlete-slider">
+
+        <button class="nav-arrow left" id="prevAthlete">‹</button>
+
+        <!-- Wrapper manquant dans ton HTML -->
+        <div class="athlete-track-wrapper">
+            <div class="athlete-track" id="athleteTrack">
+
+                {% for athlete in athletes %}
+                    <div class="athlete-slide">
+                        <img 
+                            src="{{ asset('uploads/athletes/' ~ athlete.image) }}" 
+                            alt="{{ athlete.prenom }}"
+                        >
+
+                        <div class="athlete-info-center">
+                            <h3>{{ athlete.prenom }} {{ athlete.nom }}</h3>
+                            <p>Catégorie {{ athlete.categorie }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <button class="nav-arrow right" id="nextAthlete">›</button>
+
+    </div>
+</section>
+
+
+<!-- SECTION CLASSEMENT -->
+<section class="ranking-section">
+    <h1>Classement de l’Équipe</h1>
+
+    <table class="ranking-table">
+        <thead>
+            <tr>
+                <th>Place</th>
+                <th>Athlète</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rank in classement %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ rank.prenom }} {{ rank.nom }}</td>
+                    <td>{{ rank.points }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+
+<!-- DERNIÈRE COMPÉTITION -->
+<section class="last-competition-section">
+    <h1>Dernière Compétition</h1>
+
+    {% set lastCompetition = competitions|last %}
+
+    {% if lastCompetition %}
+        <div class="last-competition-card">
+            <h3>{{ lastCompetition.titre }}</h3>
+            <p><strong>Date :</strong> {{ lastCompetition.date|date('d/m/Y') }}</p>
+            <p><strong>Lieu :</strong> {{ lastCompetition.lieu }}</p>
+
+            <h4>Résultats des Athlètes</h4>
+            <div class="results-grid">
+                {% for result in lastCompetition.results %}
+                    <div class="result-item">
+                        <h5>{{ result.prenom }}</h5>
+                        <p><strong>Épaulé-Jeté :</strong> {{ result.epauleJete }} kg</p>
+                        <p><strong>Tirage :</strong> {{ result.tirage }} kg</p>
+                        <p><strong>Total :</strong> {{ result.total }} kg</p>
+                        <p><strong>Place :</strong> {{ result.place }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="more-results">
+            <a class="more-btn" href="#historique">Voir plus de résultats</a>
+        </div>
+
+    {% else %}
+        <p>Aucune compétition trouvée.</p>
+    {% endif %}
+</section>
+
+
+<!-- HISTORIQUE COMPLET -->
+<section id="historique" class="history-section">
+    <h1>Historique des Compétitions</h1>
+
+    <div class="history-list">
+        {% for comp in competitions %}
+            <div class="history-item">
+                <h3>{{ comp.titre }}</h3>
+                <p><strong>Date :</strong> {{ comp.date|date('d/m/Y') }}</p>
+                <p><strong>Lieu :</strong> {{ comp.lieu }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
+
+
+{% block javascripts %}
+{{ parent() }}
+	 <script src="{{ asset('js/competitions/competitions.js') }}"></script>
+{% endblock %}

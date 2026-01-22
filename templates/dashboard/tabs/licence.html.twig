@@ -1,0 +1,141 @@
+<div class="tab" id="tab-licence">
+  <div class="tab-inner">
+
+    <!-- Colonne principale -->
+    <div class="main-column">
+
+      <!-- Header -->
+      <div class="card-header">
+        <span>Votre licence</span>
+      </div>
+
+      <!-- Wrapper des cards -->
+      <div class="card-wrapper">
+
+        {% set licence = app.user.licences|first %}
+
+{% if licence %}
+  <!-- Affichage infos licence -->
+  <div class="event-card flex-row align-center justify-start" style="padding:1rem; gap:2.5rem; flex-wrap:wrap;">
+    <!-- Titre + numéro -->
+    <div class="licence-title-block">
+      <span class="uppercase font-bold">{{ licence.type }}</span>
+      <span class="small-text" style="margin-top:-3px;color:#fff;">N°{{ licence.number }}</span>
+    </div>
+    <!-- Nom + prénom -->
+    <div class="flex items-center" style="min-width:150px;margin-left:30px;">
+      <span class="small-text" style="color:#fff;">{{ app.user.lastName|upper }} {{ app.user.firstName|upper }}</span>
+    </div>
+    <!-- Prix -->
+    <div class="flex items-center" style="min-width:80px;margin-left:0px">
+      <span class="small-text" style="color:#fff;">
+        {{ licence.forfait ? licence.forfait.getPrix() : 'Non défini' }} €
+      </span>
+    </div>
+    <!-- Date de fin -->
+    <div class="flex items-center" style="min-width:100px;margin-left:35px;">
+      <span class="small-text" style="color:#fff;">Expire le : {{ licence.expiryDate|date('d/m/Y') }}</span>
+    </div>
+    <!-- Statut -->
+    <div class="flex-1 text-right flex-row align-center justify-end gap-1">
+      <span class="status-dot"></span>
+      <span style="margin-right:20px; color:{{ user.licenceStatus == 'Active' ? '#0CFF00' : '#FF0000' }};">
+        {{ user.licenceStatus|capitalize }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Avantages -->
+  {% if licence.benefits is not empty %}
+    <div class="card-header">
+      <span style="margin-left:-20px;">Vos avantages</span>
+    </div>
+    <div class="event-card flex-row justify-between" style="padding:1rem; gap:2rem;">
+      <ul class="licence-benefits" style="list-style-type: disc; padding-left: 1rem;">
+        {% for benefit in licence.benefits %}
+          <li>{{ benefit }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+{% else %}
+  <!-- Ajouter licence si pas de licence -->
+      <div class="event-card flex-row align-center justify-center">
+          <button class="btn-primary" id="open-licence-modal">Ajouter ma licence</button>
+        </div>
+
+  <!-- Modal ajout licence -->
+  <div id="licence-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h3>Ajouter votre licence</h3>
+      <form id="licence-form" data-url="{{ path('add_licence') }}">
+        <input type="text" name="licence_number" placeholder="Entrez votre numéro de licence" required>
+        <button type="submit" class="btn-primary">Valider</button>
+      </form>
+      <div class="licence-help-link">
+        <a href="#">Vous ne connaissez pas votre numéro de licence ?</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal confirmation suppression licence -->
+  <div id="delete-licence-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h3>Confirmer la suppression</h3>
+      <p style="color:#111;">Voulez-vous vraiment supprimer votre licence ?</p>
+      <div class="flex-row gap-2 justify-end" style="margin-top:1rem;">
+        <button class="btn-secondary" id="cancel-delete-btn">Annuler</button>
+        <button class="btn-danger" id="confirm-delete-btn">Supprimer</button>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+
+
+
+      </div>
+
+    </div>
+
+    <!-- Colonne droite -->
+    <div class="sidebar-right-tools flex-column gap-1">
+      <span>Outils complémentaires</span>
+
+      <div class="separator" style="height: 1px; width: 93%; background: #ccc;"></div>
+
+      <a href="/faq" class="btn-outils">
+        <img src="{{ asset('images/help-icon.png') }}" alt="Aide" style="width:22px; height:22px;">
+        J'ai besoin d'aide
+      </a>
+
+      <div class="separator" style="height: 1px; width: 93%; background: #ccc;"></div>
+
+      <div class="card prevention-card-infographic">
+        <div class="card-header">
+          <h4 class="card-title">Conseils pour l’événement</h4>
+        </div>
+        <div class="card-body">
+          <div class="prevention-item">
+            <img src="{{ asset('images/towel-icon.png') }}" alt="Serviette" class="prevention-icon">
+            <p>Venez avec votre serviette.</p>
+          </div>
+          <div class="prevention-item">
+            <img src="{{ asset('images/friend-icon.png') }}" alt="Convivialité" class="prevention-icon">
+            <p>Pensez à être convivial avec les autres participants.</p>
+          </div>
+          <div class="prevention-item">
+            <img src="{{ asset('images/coach-icon.png') }}" alt="Coach" class="prevention-icon">
+            <p>N’hésitez pas à demander de l’aide aux organisateurs si besoin.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+

@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Labels du Club - CHM Saleux{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/menu_dropdown/a_propos_de_notre_club/labels/index.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<header class="hero-header">
+    <div class="overlay"></div>
+
+    <!-- Image diagonale sur la droite -->
+    <div class="hero-diagonal-image">
+        <img src="{{ asset('images/menu_dropdown/a_propos_de_notre_club/labels/1.jpg') }}" alt="Labels du Club CHM Saleux">
+    </div>
+
+    <!-- Contenu texte -->
+    <div class="hero-content">
+        <h1>Les labels du club</h1>
+        <p>Découvrez les distinctions et certifications obtenues par le CHM Saleux auprès de la FFHM.</p>
+    </div>
+</header>
+
+<section class="labels-section">
+    <div class="container">
+        <h1 class="labels-title">Nos labels actuels</h1>
+
+        <p class="labels-intro">
+            Le CHM Saleux est fier de ses labels qui témoignent de la qualité de son encadrement, de ses formations et de son engagement pour la santé et le bien-être des pratiquants.
+        </p>
+
+        <div class="labels-list">
+            <ul>
+                <li><strong>Label Club Formateur</strong> : reconnaissance de notre excellence dans la formation des jeunes haltérophiles.</li>
+                <li><strong>Label École d'Haltérophilie</strong> : attestant de notre école structurée et adaptée aux différents niveaux.</li>
+                <li><strong>Label Santé Musculation Loisir</strong> : pour les activités de remise en forme et de bien-être ouvertes à tous.</li>
+                                <li><strong>Label Santé Musculation Bien-être</strong> : pour la promotion de la pratique sécurisée et adaptée de la musculation.</li>
+            </ul>
+        </div>
+
+        <div class="labels-info">
+            <p>
+                Ces labels sont délivrés par la Fédération Française d’Haltérophilie, Musculation, Force Athlétique et Culturisme (FFHM) et sont régulièrement contrôlés afin de garantir la qualité de nos programmes et de nos encadrants.
+            </p>
+
+            <p>
+                Ils reflètent notre engagement à offrir un environnement sûr, formateur et agréable pour tous nos membres, que ce soit pour la performance, le loisir ou le bien-être.
+            </p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

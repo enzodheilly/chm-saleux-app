@@ -18,30 +18,70 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function updateSlider() {
         const slidesToShow = getSlidesToShow();
-
         const slideWidth = slides[0].offsetWidth + 20; // marge / padding
 
-        // éviter dépassement
-        if (currentIndex > slides.length - slidesToShow) {
-            currentIndex = slides.length - slidesToShow;
-        }
+        if (currentIndex > slides.length - slidesToShow) currentIndex = slides.length - slidesToShow;
         if (currentIndex < 0) currentIndex = 0;
 
         slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
     }
 
-    rightBtn.addEventListener('click', () => {
-        currentIndex++;
-        updateSlider();
-    });
+    // ⚠️ Ajouter event listeners seulement si les boutons existent
+    if (rightBtn) {
+        rightBtn.addEventListener('click', () => {
+            currentIndex++;
+            updateSlider();
+        });
+    }
 
-    leftBtn.addEventListener('click', () => {
-        currentIndex--;
-        updateSlider();
-    });
+    if (leftBtn) {
+        leftBtn.addEventListener('click', () => {
+            currentIndex--;
+            updateSlider();
+        });
+    }
 
     window.addEventListener('resize', updateSlider);
-
-    // Charger après que les images soient prêtes
     window.addEventListener("load", updateSlider);
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+	const options = {
+		threshold: 0.3 // déclenche quand 30% de la section est visible
+	};
+
+	const observer = new IntersectionObserver((entries, observer) => {
+		entries.forEach(entry => {
+			if(entry.isIntersecting){
+				entry.target.classList.add("visible");
+				observer.unobserve(entry.target); // une seule fois
+			}
+		});
+	}, options);
+
+	// Observer le titre et le sous-titre
+	document.querySelectorAll(".slider-title, .slider-subtitle").forEach(el => {
+		observer.observe(el);
+	});
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const benefits = document.querySelectorAll(".benefit");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target); // animation une seule fois
+        }
+      });
+    },
+    {
+      threshold: 0.2
+    }
+  );
+
+  benefits.forEach(benefit => observer.observe(benefit));
 });

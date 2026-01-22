@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Haltérophilie - CHM Saleux{% endblock %}
+
+{% block body %}
+<section class="practice-detail">
+    <h1>Haltérophilie</h1>
+    <img src="{{ asset('images/1.jpg') }}" alt="Haltérophilie">
+    <p>
+        Découvrez notre espace d'haltérophilie, équipé de matériel de pointe, encadré par des entraîneurs diplômés.
+        Que vous soyez débutant ou compétiteur, nos programmes sont adaptés à tous les niveaux.
+    </p>
+    <a href="{{ path('home') }}" class="btn-back">← Retour à l'accueil</a>
+</section>
+{% endblock %}

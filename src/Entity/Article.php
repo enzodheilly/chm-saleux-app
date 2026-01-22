@@ -1,5 +1,5 @@
 <?php
-// src/Entity/Article.php
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,26 +9,26 @@ class Article
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
-    private $id;
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    #[ORM\Column(type: "string", length: 255)]
-    private $title;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $title = null;
 
-    #[ORM\Column(type: "text")]
-    private $summary;
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $publishedAt = null;
 
-    #[ORM\Column(type: "string", length: 255)]
-    private $image;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $categorie = null;
 
-    #[ORM\Column(type: "datetime")]
-    private $publishedAt;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $description = null;
 
-    #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: "articles")]
-    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
-    private ?Categorie $categorie = null;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $photo = null;
 
-    // Getters / Setters
+    // ✅ Getters & Setters
+
     public function getId(): ?int
     {
         return $this->id;
@@ -38,29 +38,11 @@ class Article
     {
         return $this->title;
     }
+
     public function setTitle(string $title): self
     {
         $this->title = $title;
-        return $this;
-    }
 
-    public function getSummary(): ?string
-    {
-        return $this->summary;
-    }
-    public function setSummary(string $summary): self
-    {
-        $this->summary = $summary;
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-    public function setImage(string $image): self
-    {
-        $this->image = $image;
         return $this;
     }
 
@@ -68,17 +50,45 @@ class Article
     {
         return $this->publishedAt;
     }
+
     public function setPublishedAt(\DateTimeInterface $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
+
         return $this;
     }
 
-    public function getCategorie(): ?Categorie
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): self
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?string
     {
         return $this->categorie;
     }
-    public function setCategorie(?Categorie $categorie): self
+
+    // Setter
+    public function setCategorie(?string $categorie): self
     {
         $this->categorie = $categorie;
         return $this;

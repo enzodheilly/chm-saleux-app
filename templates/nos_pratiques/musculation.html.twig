@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Musculation - CHM Saleux{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/nos_pratiques/musculation.css') }}">
+{% endblock %}
+
+
+{% block body %}
+<section class="practice-detail">
+    <div class="container">
+        <h1>Musculation</h1>
+        <p class="practice-intro">
+            Notre espace musculation offre un environnement optimal pour développer votre force et votre endurance.
+            Des coachs expérimentés vous accompagnent dans vos séances personnalisées.
+        </p>
+
+        <div class="zones-container">
+            <div class="zone">
+                <img src="{{ asset('images/zones/pecs.jpg') }}" alt="Coin Pecs">
+                <div class="zone-title">Coin Pecs</div>
+                <p class="zone-description">Équipements pour travailler le développé couché, les pectoraux et la poitrine.</p>
+            </div>
+            <div class="zone">
+                <img src="{{ asset('images/zones/bras.jpg') }}" alt="Coin Bras">
+                <div class="zone-title">Coin Bras</div>
+                <p class="zone-description">Haltères, barres et machines pour les biceps, triceps et avant-bras.</p>
+            </div>
+            <div class="zone">
+                <img src="{{ asset('images/zones/jambes.jpg') }}" alt="Coin Jambes">
+                <div class="zone-title">Coin Jambes</div>
+                <p class="zone-description">Squat racks, presses et machines pour quadriceps, fessiers et mollets.</p>
+            </div>
+            <div class="zone">
+                <img src="{{ asset('images/zones/cardio.jpg') }}" alt="Coin Cardio">
+                <div class="zone-title">Coin Cardio</div>
+                <p class="zone-description">Tapis de course, vélos, elliptique et rameurs pour l'endurance.</p>
+            </div>
+        </div>
+
+        <a href="{{ path('home') }}" class="btn-back">← Retour à l'accueil</a>
+    </div>
+</section>
+{% endblock %}

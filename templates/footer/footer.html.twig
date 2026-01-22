@@ -9,31 +9,30 @@
 
     <div class="footer-main">
 
-        <!-- Identité -->
+        <!-- Logo + texte -->
         <div class="footer-column footer-brand">
-            <h3>CHM SALEUX</h3>
-            <p>
-                Club d’Haltérophilie & Musculation à Saleux.
-                Un lieu convivial pour se dépasser, progresser,
-                et partager la passion du sport.
-            </p>
+            <img src="{{ asset('images/favicon/icon.png') }}" alt="CHM Saleux Logo" class="footer-logo">
+<p>
+    Repoussez vos limites, vivez votre passion.
+</p>
         </div>
 
-        <!-- Contact -->
-        <div class="footer-column contact">
-            <h4>Nous contacter</h4>
+        <!-- Mini plan du site -->
+        <div class="footer-column footer-nav">
+            <h4>Plan du site</h4>
             <ul>
-                <li><strong>Adresse :</strong> 12 Rue du Stade, 80480 Saleux</li>
-                <li><strong>Téléphone :</strong> 03 22 00 00 00</li>
-                <li><strong>Email :</strong>
-                    <a href="mailto:contact@chmsaleux.fr">contact@chmsaleux.fr</a>
-                </li>
+                <li><a href="#">Accueil</a></li>
+                <li><a href="#">Club et membres du bureau</a></li>
+                <li><a href="#">Nos tarifs</a></li>
+                <li><a href="#">Notre école</a></li>
+                <li><a href="#">Compétitions & résultats</a></li>
+                <li><a href="#">Nous contacter</a></li>
             </ul>
         </div>
 
-        <!-- Newsletter -->
-        <div class="footer-column newsletter">
-            <h4>Newsletter</h4>
+        <!-- Newsletter (prend le reste de l'espace) -->
+        <div class="footer-column-newsletter" style="flex:1">
+            <h4>Inscription à la newsletter du CHM Saleux</h4>
 
             {% if app.user and isSubscribed %}
                 <p class="already-subscribed">
@@ -46,7 +45,7 @@
                 </p>
 
             {% else %}
-                <p>Recevez les actualités et événements du CHM directement dans votre boîte mail.</p>
+                <p class="texte">Recevez les actualités et événements du CHM directement dans votre boîte mail.</p>
 
                 <form id="newsletter-form" method="POST" action="{{ path('newsletter_subscribe') }}">
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('newsletter') }}">
@@ -55,22 +54,20 @@
                         <input type="email" name="email" placeholder="Votre email"
                                value="{{ app.user ? app.user.email : '' }}" required>
 
-<div class="button-wrap">
-    <button type="submit" id="newsletter-submit" class="btn-club btn-newsletter">
-        <span class="btn-text">S’ABONNER</span>
+                        <div class="button-wrap">
+                            <button type="submit" id="newsletter-submit" class="btn-club btn-newsletter">
+                                <span class="btn-text" style="color:white;">S’ABONNER</span>
 
-        <span class="icon-layer">
-            <span class="spinner"></span>
-            <span class="checkmark">✔</span>
-        </span>
-    </button>
+                                <span class="icon-layer">
+                                    <span class="spinner"></span>
+                                    <span class="checkmark">✔</span>
+                                </span>
+                            </button>
 
-    <div class="button-shadow"></div>
-</div>
-
+                            <div class="button-shadow"></div>
+                        </div>
 
                     </div>
-                    
 
                     <div id="turnstile-newsletter"
                          class="cf-turnstile cf-turnstile-newsletter"
@@ -80,8 +77,15 @@
                     <div id="newsletterSuccess" class="newsletter-feedback newsletter-success"></div>
                     <div id="newsletterError" class="newsletter-feedback newsletter-error"></div>
                 </form>
+
+                <p class="newsletter-footer-text">
+    Vous pouvez vous désabonner à tout moment. Pour en savoir plus sur la protection de vos données, veuillez 
+    <a href="{{ path('page_show', {'slug': 'confidentialite'}) }}">cliquer ici</a>.
+</p>
+
             {% endif %}
         </div>
+
     </div>
 
     <!-- FULL WIDTH BANDE PAIEMENT + RÉSEAUX -->

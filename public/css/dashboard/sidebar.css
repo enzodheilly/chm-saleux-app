@@ -1,0 +1,82 @@
+/* ===============================
+   SIDEBAR
+   =============================== */
+.sidebar {
+    width: 91px;
+    background: var(--bg-sidebar);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+    height: 100vh;
+    /* On enlève overflow ici */
+}
+
+.sidebar-content {
+    flex-grow: 1;
+    padding-top: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+     overflow-y: auto;
+     margin-top: 70px;
+}
+
+.sidebar nav{
+  margin-top:0px;
+}
+
+.sidebar-content .return-button {
+    margin: 1rem auto;
+    margin-top: 160px;
+    padding: 0.6rem 0.8rem;
+    width: 80%;
+    background: transparent;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.75rem;
+    display: flex;
+    text-decoration: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    gap: 0.4rem; /* ⭐ espace entre la flèche et le texte */
+}
+
+.return-button::before {
+    content: "←"; /* ⭐ flèche ajoutée ici */
+    display: inline-block;
+}
+
+/* Nav item */
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
+    width: 100%;
+    padding: 12px 0;
+    background: transparent;
+    border: none;
+    color: black;
+    cursor: pointer;
+    font-size: 0.85rem;
+    text-align: center;
+    transition: background 0.2s ease;
+    border-radius: 0;
+    position: relative;
+}
+.nav-item.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--primary);
+    border-radius: 0 2px 2px 0;
+}
+

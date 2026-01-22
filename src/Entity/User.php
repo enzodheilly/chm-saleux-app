@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -76,6 +77,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private ?string $licenceNumber = null;
 
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    private ?string $licenceType = null;
+
     #[ORM\Column(type: 'string', length: 20, nullable: true, options: ["default" => "Inactive"])]
     private ?string $licenceStatus = 'Inactive';
 
@@ -85,14 +89,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Payment::class, orphanRemoval: true)]
     private Collection $payments;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $needsPassword = false;
+
     #[ORM\Column(type: "blob", nullable: true)]
     private $profileImage;
+
+    #[ORM\Column(type: "string", length: 20, nullable: true)]
+    private ?string $phone = null;
+
+    #[ORM\Column(type: "boolean")]
+    private bool $phoneVerified = false;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $profileImageMime = null;
 
     #[ORM\Column(type: "datetime", nullable: true)]
     private ?\DateTimeInterface $profileImageUpdatedAt = null;
+
+    #[ORM\ManyToMany(targetEntity: Event::class, inversedBy: "attendees")]
+    #[ORM\JoinTable(name: "event_attendees")]
+    private Collection $events;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserEvent::class, cascade: ['persist', 'remove'])]
+    private Collection $userEvents;
 
     #[ORM\Column(type: "boolean")]
     private bool $acceptedTerms = false;
@@ -114,6 +134,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->licences = new ArrayCollection();
         $this->passwordHistories = new ArrayCollection();
         $this->securityLogs = new ArrayCollection();
+        $this->events = new ArrayCollection();
+        $this->userEvents = new ArrayCollection();
     }
 
     #[ORM\PreUpdate]
@@ -359,6 +381,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->licenceNumber = $licenceNumber;
         return $this;
     }
+    public function getLicenceType(): ?string
+    {
+        return $this->licenceType;
+    }
+
+    public function setLicenceType(?string $licenceType): self
+    {
+        $this->licenceType = $licenceType;
+        return $this;
+    }
+
 
     public function getLicenceStatus(): ?string
     {
@@ -550,6 +583,92 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             }
         }
 
+        return $this;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function isAcceptedTerms(): ?bool
+    {
+        return $this->acceptedTerms;
+    }
+
+    // Getter
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
+            // 🔹 Synchronisation côté inverse
+            $event->addAttendee($this);
+        }
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->events->removeElement($event)) {
+            $event->removeAttendee($this);
+        }
+        return $this;
+    }
+
+    public function getUserEvents(): Collection
+    {
+        return $this->userEvents;
+    }
+
+    // Vérifie si user est inscrit
+    public function getEventStatus(Event $event): ?string
+    {
+        foreach ($this->userEvents as $ue) {
+            if ($ue->getEvent() === $event) {
+                return $ue->getStatus();
+            }
+        }
+        return null; // pas inscrit
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    // Setter
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone;
+        return $this;
+    }
+
+    public function isPhoneVerified(): bool
+    {
+        return $this->phoneVerified;
+    }
+
+    public function setPhoneVerified(bool $verified): self
+    {
+        $this->phoneVerified = $verified;
+        return $this;
+    }
+
+    public function getNeedsPassword(): bool
+    {
+        return $this->needsPassword;
+    }
+
+    public function setNeedsPassword(bool $needsPassword): self
+    {
+        $this->needsPassword = $needsPassword;
         return $this;
     }
 }

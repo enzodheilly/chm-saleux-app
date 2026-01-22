@@ -1,0 +1,397 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700 &display=swap');
+
+		body {
+			color: #1a1a1a;
+			scroll-behavior: smooth;
+		}
+
+.hero-header {
+    position: relative;
+    height: 60vh; /* hauteur fixe */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+}
+
+/* Conteneur des 3 images */
+.hero-backgrounds {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 60px;
+    left: 0;
+}
+
+/* Chaque image */
+.hero-bg {
+    flex: 1; /* toutes les images ont la même largeur */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Overlay sombre pour lisibilité du texte */
+.hero-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1;
+    pointer-events: none;
+}
+		.hero-content {
+			max-width: 900px;
+			padding: 2rem;
+			animation: fadeInUp 1.2s ease-out;
+			z-index: 2;
+			margin-top: 140px;
+		}
+		.hero-content h1 {
+			font-size: 3.5rem;
+			font-weight: 900;
+			text-transform: uppercase;
+			margin-bottom: 1.5rem;
+		}
+		.hero-content p {
+			font-size: 1.1rem;
+			margin-bottom: 2rem;
+			color: #CBD5E1;
+			font-weight: 500;
+		}
+
+        .calendar-section h2{
+            color:#fff;
+        }
+
+		/* ================= CALENDRIER ================= */
+.calendar-fake {
+    max-width: 800px;
+    margin: 2rem auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    padding: 1rem;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.calendar-header h3 {
+    font-size: 1.5rem;
+    color: #005b94;
+}
+
+.calendar-header button {
+    background: #005b94;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.day-label {
+    font-weight: bold;
+    text-align: center;
+    color: #444;
+}
+
+.day {
+    height: 80px;
+    background: #f5f5f5;
+    border-radius: 6px;
+    text-align: center;
+    padding-top: 10px;
+    position: relative;
+}
+
+.day.competition {
+    background: #ffe0b2;
+    font-weight: bold;
+    color: #ff6600;
+}
+
+.day .comp-text {
+    display: block;
+    font-size: 0.7rem;
+    color: #005b94;
+    margin-top: 4px;
+}
+
+/* Responsive */
+@media(max-width: 600px) {
+    .calendar-days {
+        grid-template-columns: repeat(7, 1fr);
+    }
+    .day {
+        height: 60px;
+        font-size: 0.8rem;
+    }
+}
+
+
+/* ================= DERNIÈRES COMPÉTITIONS ================= */
+.last-competitions-section {
+    padding: 4rem 2rem;
+    background: transparent;
+}
+
+.last-competitions-section h2 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 2rem;
+    color: #fff;
+    text-align: center;
+}
+
+.teams-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.team-competitions {
+    flex: 1;
+    min-width: 300px;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+    position: relative;
+}
+
+.team-banner {
+    width: 100%;
+    height: 250px; /* hauteur de la bannière */
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.team-banner-text {
+    position: absolute;
+    bottom: 15px; /* position du texte */
+    left: 15px;
+    color: #fff;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.6);
+}
+
+.team-banner-text h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 900;
+}
+
+.team-competitions ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.team-competitions li {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.team-competitions li a {
+    color: #005b94;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.team-competitions li a:hover {
+    text-decoration: underline;
+}
+
+.btn-history {
+    display: inline-block;
+    margin: 1rem 0;
+    padding: 0.6rem 1.2rem;
+    background: #005b94;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.btn-history:hover {
+    background: #ff6600;
+}
+
+.history-list {
+    margin-top: 1rem;
+    padding-left: 1rem;
+}
+
+.history-list ul {
+    list-style: disc;
+    padding-left: 1rem;
+}
+
+.history-list li {
+    margin-bottom: 0.5rem;
+}
+
+/* ======== NOUVELLES CARTES D'ÉQUIPE (IMAGE PLEIN CONTAINER) ======== */
+
+.team-card {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    height: 320px;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    background: #000;
+    flex: 1;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.team-card:hover {
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+/* Image pleine largeur */
+.team-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.5s ease;
+}
+
+/* Overlay dégradé + contenu */
+.team-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 25px;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.05),
+        rgba(0, 0, 0, 0.7)
+    );
+}
+
+/* Titre */
+.team-overlay h3 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 15px;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+
+/* Bouton */
+.team-btn {
+    padding: 10px 20px;
+    background: #005b94;
+    color: #fff;
+    width: 50%;
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.team-btn:hover {
+    background: #ff6600;
+}
+
+
+/* Bouton "Voir l'historique" */
+.btn-history {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 25px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-history:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .history-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .history-section h2 {
+        font-size: 2rem;
+    }
+
+    #history-display {
+        padding: 20px;
+    }
+}
+
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 992px) {
+    .teams-container {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .table-header, .table-row {
+        grid-template-columns: 1fr 1fr; /* réduit le nombre de colonnes sur petit écran */
+    }
+
+    .table-header div:nth-child(3),
+    .table-row div:nth-child(3) {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-header h1 {
+        font-size: 2rem;
+    }
+
+    .last-competitions-section h2,
+    .competitions-results-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .team-competitions {
+        padding: 1.5rem;
+    }
+}

@@ -1,0 +1,147 @@
+.nos-pratiques {
+  position: relative;
+  width: 100%;
+  min-height: 600px;
+  background: url("../../../images/club/ok.jpg") center / cover no-repeat; /* image nette */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Calque flou + filtre bleu foncé */
+.nos-pratiques::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 41, 82, 0.65); /* bleu foncé */
+  backdrop-filter: blur(40px);       /* flou séparé */
+  -webkit-backdrop-filter: blur(40px); /* compatibilité Safari */
+  z-index: 1;
+}
+
+/* Contenu au-dessus */
+.nos-pratiques > * {
+  position: relative;
+  z-index: 2;
+}
+
+.section-title {
+  color: #fff;
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin: 40px 40px 40px; /* espace autour du titre */
+  text-align: left;
+  z-index: 10;
+  text-transform: uppercase;
+  margin-left:60px
+}
+
+.images-container .image {
+  flex: 1;
+  position: relative;
+}
+
+/* Titre centré */
+.image-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 2.2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  z-index: 5;
+  pointer-events: none;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.7);
+}
+
+/* (optionnel) léger assombrissement pour lisibilité */
+.images-container .image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.60);
+  z-index: 2;
+  transition: background 0.4s ease; /* animation fluide */
+}
+
+/* AU SURVOL : le filtre disparaît */
+.images-container .image:hover::after {
+  background: rgba(0,0,0,0.35);
+}
+
+/* Conteneur pour les images */
+.images-container {
+  display: flex;
+  width: 100%;
+  height: 420px; /* ✅ hauteur réduite mais élégante */
+  position: relative;
+  padding: 0 4vw;
+}
+
+.images-container .image {
+  flex: 1;
+  position: relative;
+}
+
+.images-container .image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Effet séparation diagonale "/" */
+.images-container .left {
+  clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+}
+
+.images-container .right {
+  clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
+  margin-left: -20px;
+}
+
+/* Bouton Découvrir */
+.discover-btn1 {
+  position: absolute;
+  top: calc(50% + 60px); /* sous le titre */
+  left: 50%;
+  transform: translate(-50%, 10px);
+  padding: 12px 32px;
+  border: 2px solid #fff;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  background: transparent;
+  text-decoration: none;
+  opacity: 0;
+  z-index: 5;
+  transition: all 0.4s ease;
+}
+
+/* Apparition au hover */
+.images-container .image:hover .discover-btn1 {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Effet hover bouton */
+.discover-btn1:hover {
+  background: #fff;
+  color: #003d66;
+}
+
+@media (max-width: 900px) {
+  .images-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .images-container .left,
+  .images-container .right {
+    clip-path: none;
+    height: 300px;
+  }
+}

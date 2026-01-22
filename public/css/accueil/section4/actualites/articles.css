@@ -3,14 +3,7 @@
 		--primary: #004a97;
 		--secondary: #007bff;
 		--light-bg: #f5f6fa;
-		--text-color: #1c1c1c;
 		--muted: #888;
-	}
-
-	body {
-		background: var(--light-bg);
-		font-family: 'Poppins', sans-serif;
-		color: var(--text-color);
 	}
 
 	/* ---- HEADER BANNER ---- */
@@ -93,8 +86,7 @@
 		outline: none;
 		border-color: var(--primary);
 		box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
-		background-color: #fff;
-	}
+		}
 
 
 	/* ---- BUTTON ---- */
@@ -202,7 +194,6 @@
 	.news-card {
 		display: flex;
 		flex-direction: column;
-		background: #fff;
 		border-radius: 0;
 		overflow: hidden;
 		transition: all 0.3s ease;
@@ -217,7 +208,7 @@
 	/* ---- IMAGE ---- */
 	.news-card img {
 		width: 100%;
-		height: 210px;
+		height: 260px;
 		object-fit: cover;
 		transition: transform 0.4s ease;
 	}
@@ -248,7 +239,7 @@
 	.news-info h3 {
 		font-size: 1.05rem;
 		font-weight: 800;
-		color: #005b94;
+		color: #fff;
 		text-transform: uppercase;
 		line-height: 1.4;
 		margin-bottom: 12px;
@@ -257,7 +248,7 @@
 	/* Texte */
 	.news-info p {
 		font-size: 0.95rem;
-		color: #333;
+		color: #CBD5E1;
 		line-height: 1.55;
 		flex-grow: 1;
 		margin-bottom: 20px;

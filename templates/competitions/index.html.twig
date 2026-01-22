@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Compétitions & Résultats{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('css/competitions/competitions.css') }}">
+{% endblock %}
+
+{% block body %}
+<header class="hero-header" style="
+    background-image: url('{{ asset('images/90.jpg') }}');
+    background-size: cover;
+    background-position: center 20%;
+">
+    <div class="hero-content">
+        <h1>COMPÉTITIONS & RÉSULTATS</h1>
+        <p>Retrouvez toutes les compétitions et les résultats de nos athlètes</p>
+    </div>
+</header>
+
+<main>
+
+<!-- ================= CALENDRIER ================= --> <section class="section calendar-section"> <div class="section-content"> <h2>Calendrier des prochaines compétitions</h2> <div class="calendar-container"> <div class="calendar-fake"> <div class="calendar-header"> <button class="prev-month">&lt;</button> <h3>Décembre 2025</h3> <button class="next-month">&gt;</button> </div> <div class="calendar-days"> <div class="day-label">Lun</div> <div class="day-label">Mar</div> <div class="day-label">Mer</div> <div class="day-label">Jeu</div> <div class="day-label">Ven</div> <div class="day-label">Sam</div> <div class="day-label">Dim</div> {% for day in 1..31 %} {% set competition = day in [5,12,20] %} <div class="day{% if competition %} competition{% endif %}"> {{ day }} {% if competition %} <span class="comp-text">Compétition</span> {% endif %} </div> {% endfor %} </div> </div> </div> </div> </section>
+
+    <!-- ================= DERNIÈRES COMPÉTITIONS ================= -->
+    <section class="section last-competitions-section">
+        <div class="section-content">
+            <h2>Dernières compétitions</h2>
+<div class="teams-container">
+
+    <a href="{{ path('competitions_feminine') }}" class="team-card">
+        <div class="team-image" style="background-image: url('{{ asset('images/female-team.jpg') }}');"></div>
+        <div class="team-overlay">
+            <h3>Équipe féminine</h3>
+            <button class="team-btn">Voir les détails</button>
+        </div>
+    </a>
+
+    <a href="{{ path('competitions_masculine') }}" class="team-card">
+        <div class="team-image" style="background-image: url('{{ asset('images/male-team.jpg') }}');"></div>
+        <div class="team-overlay">
+            <h3>Équipe masculine</h3>
+            <button class="team-btn">Voir les détails</button>
+        </div>
+    </a>
+
+</div>
+
+        </div>
+    </section>
+</main>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }} {# charge d'abord le JS du base.html.twig #}
+    <script src="{{ asset('js/competitions/competitions.js') }}"></script>
+{% endblock %}
