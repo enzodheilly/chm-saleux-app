@@ -85,6 +85,9 @@ class NewsletterController extends AbstractController
         $em->persist($subscriber);
         $em->flush();
 
+        // ✅ LOG : Nouvel abonné
+        $logger->add('Newsletter', sprintf('Nouvelle inscription (en attente) : %s', $emailInput));
+
         // 📧 Envoi e-mail de confirmation
         $this->sendConfirmationEmail($subscriber, $mailer, $logger);
 
@@ -160,7 +163,8 @@ class NewsletterController extends AbstractController
         $subscriber->setConfirmationToken(null);
         $em->flush();
 
-        $logger->add('Confirmation newsletter', sprintf('Inscription confirmée pour %s', $subscriber->getEmail()));
+        // ✅ LOG : Confirmation OK
+        $logger->add('Newsletter', sprintf('Inscription confirmée pour %s', $subscriber->getEmail()));
         $this->addFlash('success', 'Votre abonnement à la newsletter a bien été confirmé !');
 
         return $this->redirectToRoute('home');
@@ -192,6 +196,7 @@ class NewsletterController extends AbstractController
         $em->remove($subscriber);
         $em->flush();
 
+        // ✅ LOG : Désinscription
         $logger->add('Désinscription newsletter', sprintf('L’adresse %s s’est désinscrite.', $email));
 
         return $this->render('emails/unsubscribed.html.twig', [
@@ -199,62 +204,4 @@ class NewsletterController extends AbstractController
             'firstName' => $firstName,
         ]);
     }
-
-    // =======================================================
-    // ✉️ TEST MAIL LOCAL
-    // =======================================================
-    /*#[Route('/test/mail', name: 'test_mail')]
-    public function testMail(MailerInterface $mailer): Response
-    {
-        $fakeSubscriber = new class {
-            public function getFirstname(): string
-            {
-                return 'Enzo';
-            }
-            public function getUnsubscribeUrl(): string
-            {
-                return 'https://chmsaleux.fr/newsletter/unsubscribe/faketoken';
-            }
-        };
-
-        $email = (new TemplatedEmail())
-            ->from('CHM Saleux <no-reply@chmsaleux.fr>')
-            ->to('enzo.dheilly78@gmail.com')
-            ->subject('📬 Test de mail CHM Saleux')
-            ->htmlTemplate('emails/confirm.html.twig')
-            ->context([
-                'subscriber' => $fakeSubscriber,
-                'confirmUrl' => 'https://chmsaleux.fr/newsletter/confirm/faketoken'
-            ]);
-
-        $mailer->send($email);
-
-        return new Response('✅ E-mail de test envoyé avec succès !');
-    }*/
-
-    /*#[Route('/test/mail-unsubscribe', name: 'test_mail_unsubscribe')]
-    public function testMailUnsubscribe(MailerInterface $mailer): Response
-    {
-        // 🔹 Abonné factice
-        $fakeSubscriber = new class {
-            public function getEmail(): string
-            {
-                return 'enzodheilly134@gmail.com';
-            }
-        };
-
-        // 🔹 Envoi du mail
-        $email = (new TemplatedEmail())
-            ->from('CHM Saleux <no-reply@chmsaleux.fr>')
-            ->to($fakeSubscriber->getEmail())
-            ->subject('❌ Désinscription newsletter CHM Saleux')
-            ->htmlTemplate('emails/unsubscribed.html.twig')
-            ->context([
-                'subscriberEmail' => $fakeSubscriber->getEmail(), // ✅ variable renommée
-            ]);
-
-        $mailer->send($email);
-
-        return new Response('✅ Mail de test de désinscription envoyé !');
-    }*/
 }

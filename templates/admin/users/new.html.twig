@@ -1,135 +1,203 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Nouvel utilisateur
-{% endblock %}
+{% block title %}Nouvel utilisateur{% endblock %}
 
 {% block stylesheets %}
-	<style>
-	/* ------------------------- PAGE AJOUT UTILISATEUR ------------------------- */:root
-	{
-		--bg-dark: #0e0e10;
-		--bg-light: #1c1c1f;
-		--text-main: #e5e7eb;
-		--accent: #ff6600;
-		--border: #2a2a2d;
-	}
+<style>
+    /* =================== PAGE STYLE =================== */
+    .dashboard-container {
+        width: 100%;
+        max-width: 1000px; /* On limite la largeur pour la lisibilité du formulaire */
+        margin: 0 auto;
+    }
 
-	body {
-		font-family: "Poppins", system-ui, sans-serif;
-		background: var(--bg-dark);
-		color: var(--text-main);
-		margin: 0;
-		padding: 0;
-	}
+    /* Header */
+    .page-header {
+        margin-bottom: 2rem;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 1rem;
+    }
+    .page-header h1 {
+        margin: 0;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--text-main);
+        letter-spacing: -0.5px;
+    }
+    .page-header p {
+        margin: 5px 0 0 0;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
 
-	.form-container {
-		max-width: 520px;
-		margin: 3rem auto;
-		padding: 2rem 2.5rem;
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-		transition: all 0.3s ease;
-	}
+    /* Carte du formulaire */
+    .form-card {
+        background: var(--bg-light);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 2rem;
+    }
 
-	.form-container:hover {
-		box-shadow: 0 0 25px rgba(255, 102, 0, 0.1);
-	}
+    /* Styles des Champs Symfony */
+    /* Note : Symfony entoure souvent les form_row d'une div. On cible ces divs ici. */
+    .form-card > form > div {
+        margin-bottom: 1.5rem;
+    }
 
-	.form-container h1 {
-		font-size: 1.9rem;
-		font-weight: 700;
-		margin-bottom: 1.8rem;
-		color: #fff;
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-	}
+    /* Labels */
+    label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-main);
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-	form div {
-		margin-bottom: 1.2rem;
-	}
+    /* Inputs & Selects */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select {
+        width: 100%;
+        background: var(--bg-darker); /* Fond légèrement plus foncé que la carte */
+        border: 1px solid var(--border);
+        color: var(--text-main);
+        padding: 0.7rem 1rem;
+        border-radius: 4px;
+        font-size: 0.95rem;
+        outline: none;
+        transition: border-color 0.2s;
+        box-sizing: border-box; /* Important pour ne pas déborder */
+    }
 
-	/* Champs du formulaire */
-	input[type="text"],
-	input[type="email"],
-	input[type="password"],
-	select {
-		width: 100%;
-		padding: 0.7rem 1rem;
-		border: 1px solid var(--border);
-		background: var(--bg-dark);
-		color: var(--text-main);
-		font-size: 1rem;
-		transition: border-color 0.2s, background 0.2s;
-	}
+    input:focus,
+    select:focus {
+        border-color: var(--accent);
+    }
 
-	input:focus,
-	select:focus {
-		outline: none;
-		border-color: var(--accent);
-		background: #1f1f22;
-	}
+    /* Gestion des erreurs (Symfony helper) */
+    .invalid-feedback, ul li {
+        color: #ef4444;
+        font-size: 0.85rem;
+        margin-top: 5px;
+        list-style: none;
+    }
 
-	/* Bouton principal */
-	button[type="submit"] {
-		width: 100%;
-		padding: 0.8rem 1rem;
-		border: none;
-		background: var(--accent);
-		color: #fff;
-		font-weight: 600;
-		font-size: 1rem;
-		cursor: pointer;
-		transition: background 0.2s ease, transform 0.1s ease;
-	}
+    /* Zone des Actions (Boutons) */
+    .form-actions {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: flex-end; /* Alignement à droite standard pro */
+        gap: 1rem;
+    }
 
-	button[type="submit"]:hover {
-		background: #e25500;
-		transform: translateY(-2px);
-	}
+    /* Bouton Principal */
+    .btn-submit {
+        background: var(--accent);
+        color: #fff;
+        padding: 0.7rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+    }
+    .btn-submit:hover {
+        background: var(--accent-hover);
+    }
 
-	/* Lien retour */
-	.back-link {
-		display: inline-block;
-		margin-top: 1.4rem;
-		color: var(--text-main);
-		text-decoration: none;
-		font-weight: 500;
-		transition: color 0.2s ease;
-	}
+    /* Bouton Secondaire (Annuler) */
+    .btn-cancel {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        padding: 0.7rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 500;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+    }
+    .btn-cancel:hover {
+        border-color: var(--text-muted);
+        color: var(--text-main);
+    }
 
-	.back-link:hover {
-		color: var(--accent);
-	}
+    /* Layout en grille pour Nom/Prénom (Optionnel, rend le form plus compact) */
+    .row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+    @media(max-width: 700px) { .row-2 { grid-template-columns: 1fr; gap: 0; } }
 
-	/* Animation légère */
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-			transform: translateY(10px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
+</style>
+{% endblock %}
 
-	.form-container {
-		animation: fadeIn 0.4s ease-out;
-	}
-</style>{% endblock %}{% block body %}
-<div class="form-container">
-	<h1>➕ Ajouter un utilisateur</h1>
+{% block body %}
+<div class="dashboard-container">
+    
+    {# En-tête sobre #}
+    <div class="page-header">
+        <h1>Nouvel utilisateur</h1>
+        <p>Remplissez les informations ci-dessous pour créer un nouveau compte.</p>
+    </div>
 
-	{{ form_start(form) }}
-	{{ form_row(form.firstName) }}
-	{{ form_row(form.lastName) }}
-	{{ form_row(form.email) }}
-	{{ form_row(form.password) }}
-	{{ form_row(form.roles) }}
-	<button type="submit">Créer</button>
-	{{ form_end(form) }}
+    <div class="form-card">
+        {{ form_start(form) }}
+        
+        <div class="row-2">
+            <div>
+                {{ form_label(form.firstName, 'Prénom') }}
+                {{ form_widget(form.firstName, {'attr': {'placeholder': 'Ex: Jean'}}) }}
+                {{ form_errors(form.firstName) }}
+            </div>
+            <div>
+                {{ form_label(form.lastName, 'Nom') }}
+                {{ form_widget(form.lastName, {'attr': {'placeholder': 'Ex: Dupont'}}) }}
+                {{ form_errors(form.lastName) }}
+            </div>
+        </div>
 
-	<a href="{{ path('admin_users_index') }}" class="back-link">← Retour</a>
-</div>{% endblock %}
+        <div>
+            {{ form_label(form.email, 'Adresse Email') }}
+            {{ form_widget(form.email, {'attr': {'placeholder': 'jean.dupont@exemple.com'}}) }}
+            {{ form_errors(form.email) }}
+        </div>
+
+        <div>
+            {{ form_label(form.password, 'Mot de passe') }}
+            {{ form_widget(form.password) }}
+            {{ form_errors(form.password) }}
+            <small style="color: var(--text-muted); font-size: 0.8rem; margin-top:5px; display:block;">
+                Le mot de passe doit contenir au moins 6 caractères.
+            </small>
+        </div>
+
+        <div>
+            {{ form_label(form.roles, 'Rôle et Permissions') }}
+            {{ form_widget(form.roles) }}
+            {{ form_errors(form.roles) }}
+        </div>
+
+        <div class="form-actions">
+            <a href="{{ path('admin_users_index') }}" class="btn-cancel">
+                Annuler
+            </a>
+            <button type="submit" class="btn-submit">
+                Créer l'utilisateur
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{% endblock %}

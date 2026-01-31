@@ -7,18 +7,26 @@
 {% endblock %}
 
 {% block body %}
-<header class="hero-header" style="
-    background-image: url('{{ asset('images/male-team.jpg') }}');
-    background-size: cover;
-    background-position: center 20%;
-">
-    <a href="{{ path('competition') }}" class="back-button">
+
+<header class="hero-header">
+    <div class="overlay"></div>
+
+        <a href="{{ path('competition') }}" class="back-button">
+         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+         </svg>
          Retour
     </a>
 
+    <!-- Image diagonale sur la droite -->
+    <div class="hero-diagonal-image">
+        <img src="{{ asset('images/competitions/2.jpg') }}" alt="Image Musculation Club">
+    </div>
+
+    <!-- Contenu texte -->
     <div class="hero-content">
-        <h1>Équipe Masculine <span>CHM Saleux</span></h1>
-        <p>Retrouvez toutes les compétitions et les résultats <span>de notre équipe masculine</span></p>
+        <h1>Équipe masculine & résultats</h1>
+        <p>Suivez de près le parcours de nos athlètes au fil de la saison. Retrouvez ici l’intégralité des classements, les performances individuelles et l’évolution des records <span>de notre équipe masculine.</span></p>
     </div>
 </header>
 
@@ -27,7 +35,11 @@
 
     <div class="athlete-slider">
 
-        <button class="nav-arrow left" id="prevAthlete">‹</button>
+            <button id="prevAthlete" class="nav-arrow left" aria-label="Précédent">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+    </button>
 
         <!-- Wrapper manquant dans ton HTML -->
         <div class="athlete-track-wrapper">
@@ -50,7 +62,11 @@
             </div>
         </div>
 
-        <button class="nav-arrow right" id="nextAthlete">›</button>
+            <button id="nextAthlete" class="nav-arrow right" aria-label="Suivant">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+    </button>
 
     </div>
 </section>

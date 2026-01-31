@@ -441,4 +441,114 @@
 			color: #CBD5E1;
 		}
 
+		/* ========================================================= */
+/* ============= RESPONSIVE PAGE INFO/FAQ (FINAL) ========== */
+/* ========================================================= */
+
+@media (max-width: 992px) {
+
+    /* 1. HEADER : ON LE DESCEND ET ON L'AGRANDIT EN BAS */
+    .hero-header {
+        height: auto;
+        /* HAUT (140px pour descendre le titre) | GAUCHE/DROITE | BAS (220px pour l'image) */
+        padding: 140px 20px 220px;
+        
+        /* Diagonale */
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    /* 2. TITRE : CENTRÉ */
+    .hero-content {
+        margin-top: 0;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    .hero-content h1 {
+        margin: 0 !important; /* Annule la marge desktop */
+        text-align: center;
+        font-size: 2rem; /* Taille ajustée pour mobile */
+        max-width: 100%;
+        line-height: 1.3;
+    }
+
+    /* 3. IMAGE : REMONTE SUR LE FOND BLEU */
+    .hero-transition-image {
+        position: relative;
+        /* Reset positions */
+        top: -40px; bottom: auto; right: auto; left: auto;
+        
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        
+        /* On remonte l'image pour qu'elle chevauche la diagonale */
+        margin-top: -160px; 
+        z-index: 5;
+    }
+
+    .hero-transition-image img {
+        width: 100%;            
+        max-width: 320px;
+        height: auto;
+        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
+    }
+
+    /* 4. BLOC TEXTE "TEST" (EN DESSOUS) */
+    .test {
+        position: relative;
+        max-width: 90%;
+        
+        /* Reset marges */
+        margin: 30px auto 40px; 
+        top: auto; 
+        left: auto;
+        
+        padding: 25px;
+        background: #1E293B;
+        text-align: center;
+        border-radius: 8px;
+    }
+
+    .test p {
+        padding: 0;
+        margin-top: 0;
+        font-size: 1rem;
+        text-align: center; /* ou left selon préférence */
+        color: #CBD5E1;
+        line-height: 1.6;
+    }
+
+    /* --- SUITE : FAQ RESPONSIVE --- */
+    .faq-container {
+        flex-direction: column;
+        padding: 0 1rem;
+        width: 100%;
+        margin: 2rem auto;
+    }
+
+    .faq-sidebar {
+        width: 100%;
+        position: relative;
+        top: 0;
+        margin-bottom: 0;
+    }
+
+    .faq-content {
+        width: 100%;
+        padding: 1.5rem;
+    }
+    
+    .faq-contact-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+}
 

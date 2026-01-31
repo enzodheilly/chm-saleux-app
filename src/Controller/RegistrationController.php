@@ -95,6 +95,9 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            // ✅ LOG : Inscription réussie
+            $logger->add('Inscription', sprintf('Nouvel utilisateur inscrit : %s (%s %s)', $email, $firstName, $lastName));
+
             $session->set('verify_email', $user->getEmail());
 
             // Envoi du mail

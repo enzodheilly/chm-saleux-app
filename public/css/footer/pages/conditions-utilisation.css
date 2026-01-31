@@ -1,51 +1,100 @@
-/* ======================= STYLE GLOBAL PAGES LEGALES ======================= */
-
-/* Section hero (optionnelle en haut de page) */
-.hero-header {
-	position: relative;
-	width: 100%;
-	height: 40vh;
-	background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
-		url('http://chm-saleux.fr/wp-content/uploads/2018/06/IMAG1090.jpg') center/cover no-repeat;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: #fff;
-	text-align: center;
-	overflow: hidden;
+.overlay,
+.hero-header::before,
+.hero-header::after {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
 }
 
 .overlay {
-	position: absolute;
-	inset: 0;
-	background: rgba(0, 0, 0, 0.5);
-	z-index: 0;
+    width: 100%;
+    height: 100%;
 }
 
+.hero-header {
+    position: relative;
+    margin-top: 120px;
+    width: 100%;
+    height: 63vh;
+    background: url("../../../../images/club/ok.jpg") center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    clip-path: polygon(0 0, 100% 0, 100% 72%, 0% 100%);
+    text-align: center;
+}
+
+.hero-header::before {
+    content: "";
+    background: inherit;
+    filter: blur(40px);
+    transform: scale(4.1);
+}
+
+.hero-header::after {
+    content: "";
+    background: rgba(0, 41, 82, 0.65);
+}
+
+/* Image diagonale */
+.hero-diagonal-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 55%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 2;
+    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.hero-diagonal-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 120%;
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.3));
+}
+
+/* Texte hero */
 .hero-content {
-	position: relative;
-	z-index: 1;
-	margin-top: 80px;
+    position: relative;
+    z-index: 3;
+    margin-top: 100px;
+    animation: fadeInUp 1s ease-out;
+    text-align: left;
 }
 
 .hero-content h1 {
-	font-size: clamp(2.5rem, 5vw, 5rem);
-	font-weight: 900;
-	margin-bottom: 1rem;
-    margin-top: 30px;
-	font-family: 'Bebas Neue', sans-serif;
-	text-transform: uppercase;
-	letter-spacing: 4px;
-	color: var(--bg-white);
-	text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    font-size: 3rem;
+    font-weight: 900;
+    max-width: 700px;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    margin: -130px 640px 1rem 0;
+    letter-spacing: 2px;
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #CBD5E1;
+    max-width: 520px;
+    margin: 0 660px 2rem 0;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 /* ===================== STYLE GLOBAL PAGES LEGALES ===================== */
 
 /* Corps de page */
 body {
-	background-color: #fff;
 	color: #111;
-	font-family: "Poppins", "Helvetica Neue", Arial, sans-serif;
 	font-size: 16px;
 	line-height: 1.75;
 	margin: 0;
@@ -143,7 +192,6 @@ body {
 /* Titres en gras ou majuscules pour style juridique */
 strong {
 	font-weight: 600;
-	color: #000;
 	text-transform: none;
 }
 

@@ -1,53 +1,120 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}✏️ Modifier un produit{% endblock %}
+{% block title %}Modifier le produit{% endblock %}
+
+{% block stylesheets %}
+<style>
+    /* ... Mêmes styles que NEW ... */
+    .dashboard-container { width: 100%; max-width: 800px; margin: 0 auto; }
+    .page-header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
+    .form-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; }
+    .form-card > form > div { margin-bottom: 1.5rem; }
+    label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    input[type="text"], input[type="number"], input[type="file"], textarea { width: 100%; background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-main); padding: 0.7rem 1rem; border-radius: 4px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; box-sizing: border-box; }
+    input:focus, textarea:focus { border-color: var(--accent); }
+    textarea { min-height: 120px; line-height: 1.5; font-family: inherit; resize: vertical; }
+    .row-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+    @media(max-width: 600px) { .row-2 { grid-template-columns: 1fr; gap: 0; } }
+
+    /* Image Preview */
+    .img-preview-container { display: flex; gap: 20px; align-items: flex-start; margin-top: 10px; }
+    .img-box { text-align: center; }
+    .img-box span { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 5px; }
+    .preview-img { max-width: 120px; border-radius: 4px; border: 1px solid var(--border); }
+
+    /* Actions Edit */
+    .form-actions { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .btn-submit { background: var(--accent); color: #fff; padding: 0.7rem 1.5rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+    .btn-submit:hover { background: var(--accent-hover); }
+    .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 500; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; transition: 0.2s; }
+    .btn-cancel:hover { border-color: var(--text-muted); color: var(--text-main); }
+    .btn-delete { color: #ef4444; background: none; border: none; font-size: 0.9rem; cursor: pointer; font-weight: 500; padding: 0.5rem 0; opacity: 0.8; transition: opacity 0.2s; }
+    .btn-delete:hover { opacity: 1; text-decoration: underline; }
+</style>
+{% endblock %}
 
 {% block body %}
-<div class="main-content">
-    <div class="dashboard-container">
-        <h1>✏️ Modifier le produit "{{ produit.titre }}"</h1>
+<div class="dashboard-container">
+    
+    <div class="page-header">
+        <h1>Modifier le produit</h1>
+        <p>Édition de : {{ produit.titre }}</p>
+    </div>
 
-        <div class="section-card">
-            {% for message in app.flashes('success') %}
-                <div class="alert-success">{{ message }}</div>
-            {% endfor %}
-            {% for message in app.flashes('error') %}
-                <div class="alert-error">{{ message }}</div>
-            {% endfor %}
+    <div class="form-card">
+        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
 
-            {{ form_start(form) }}
-
-            <div class="form-group" style="margin-bottom: 1rem;">
-                {{ form_label(form.titre, 'Titre du produit') }}
+        <div class="row-2">
+            <div>
+                {{ form_label(form.titre, 'Nom du produit') }}
                 {{ form_widget(form.titre) }}
-                {{ form_errors(form.titre) }}
             </div>
-
-            <div class="form-group" style="margin-bottom: 1rem;">
-                {{ form_label(form.description, 'Description') }}
-                {{ form_widget(form.description) }}
-                {{ form_errors(form.description) }}
-            </div>
-
-            <div class="form-group" style="margin-bottom: 1rem;">
+            <div>
                 {{ form_label(form.prix, 'Prix (€)') }}
                 {{ form_widget(form.prix) }}
-                {{ form_errors(form.prix) }}
             </div>
-
-            <div class="form-group" style="margin-bottom: 1rem;">
-                {{ form_label(form.image, 'Image du produit') }}
-                {{ form_widget(form.image) }}
-                {{ form_errors(form.image) }}
-            </div>
-
-            <div class="form-actions">
-                <button class="btn-success">💾 Enregistrer</button>
-                <a href="{{ path('admin_product_index') }}" class="btn-secondary">⬅️ Retour</a>
-            </div>
-
-            {{ form_end(form) }}
         </div>
+
+        <div>
+            {{ form_label(form.description, 'Description') }}
+            {{ form_widget(form.description) }}
+        </div>
+
+        <div>
+            {{ form_label(form.image, 'Photo') }}
+            {{ form_widget(form.image) }}
+            
+            <div class="img-preview-container">
+                {% if produit.image %}
+                    <div class="img-box">
+                        <span>Actuelle</span>
+                        <img src="{{ asset('uploads/' ~ produit.image) }}" alt="Actuelle" class="preview-img">
+                    </div>
+                {% endif %}
+                
+                <div class="img-box" id="new-preview-box" style="display:none;">
+                    <span>Nouvelle</span>
+                    <img id="image-preview" alt="Nouvelle" class="preview-img">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn-delete" onclick="if(confirm('⚠️ Attention : Voulez-vous vraiment supprimer ce produit ?')) document.getElementById('delete-form').submit();">
+                Supprimer
+            </button>
+
+            <div style="display: flex; gap: 10px;">
+                <a href="{{ path('admin_product_index') }}" class="btn-cancel">Annuler</a>
+                <button type="submit" class="btn-submit">Mettre à jour</button>
+            </div>
+        </div>
+
+        {{ form_end(form) }}
     </div>
+
+    <form id="delete-form" method="post" action="{{ path('admin_product_delete', {id: produit.id}) }}" style="display: none;">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ produit.id) }}">
+    </form>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const input = document.querySelector("input[type='file']");
+    const preview = document.getElementById("image-preview");
+    const previewBox = document.getElementById("new-preview-box");
+
+    if (input) {
+        input.addEventListener("change", () => {
+            const file = input.files[0];
+            if (file) {
+                preview.src = URL.createObjectURL(file);
+                previewBox.style.display = "block";
+            }
+        });
+    }
+});
+</script>
 {% endblock %}

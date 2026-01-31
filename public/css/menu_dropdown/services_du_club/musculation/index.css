@@ -1,16 +1,8 @@
-		@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700 &display=swap');
 
 		* {
 			margin: 0;
 			padding: 0;
 			box-sizing: border-box;
-		}
-
-		body {
-			font-family: 'Poppins', sans-serif;
-			color: #1a1a1a;
-			scroll-behavior: smooth;
-			overflow-x: hidden;
 		}
 
 		/* Hero Header */
@@ -19,7 +11,7 @@
 			width: 100%;
 			height: 100vh;
 background: linear-gradient(135deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), 
-            url("../../../../images/club/ok.jpg") 
+            url("../../../../images/club/ok.jpg")
             center/cover no-repeat;
 			display: flex;
 			justify-content: center;
@@ -34,7 +26,6 @@ background: linear-gradient(135deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
 			z-index: 1;
 			max-width: 900px;
 			padding: 2rem;
-			animation: fadeInUp 1.2s ease-out;
 		}
 
 		.hero-content h1 {
@@ -53,7 +44,6 @@ background: linear-gradient(135deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
 			font-weight: 300;
 			margin-bottom: 2.5rem;
 			letter-spacing: 0.5px;
-			transition: color 0.3s ease;
 		}
 
 		.cta-button {
@@ -64,22 +54,33 @@ background: linear-gradient(135deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
   text-decoration: none;
   font-weight: 800;
   font-size: 1.1rem;
-  transition: all 0.3s ease;
   display: inline-block;
   text-transform: uppercase;
 		}
 
-
-		@keyframes fadeInUp {
-			from {
-				opacity: 0;
-				transform: translateY(40px);
-			}
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}
+		        .back-button {
+    /* 1. POSITIONNEMENT : On le sort du flux pour le mettre en haut à gauche */
+    position: absolute; 
+    top: -70.5px;      /* Espace depuis le haut */
+    right: 125.8%;     /* Espace depuis la gauche */
+    
+    /* 2. COUCHE : On le force à passer au-dessus du filtre bleu (qui est à 1) */
+    z-index: 10;    
+    
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    
+    /* 3. COULEUR : On met blanc car le fond est sombre */
+    color: #ffffff; 
+    
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
 
 		main {
 			background: transparent;
@@ -156,53 +157,6 @@ background: linear-gradient(135deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
 			object-fit: cover;
 		}
 
-		@media(max-width: 1024px) {
-			.section {
-				gap: 3rem;
-			}
-			.hero-content h1 {
-				font-size: 3rem;
-			}
-		}
-
-		@media(max-width: 900px) {
-			.section {
-				flex-direction: column;
-				padding: 4rem 5%;
-			}
-			.section:nth-child(even) {
-				flex-direction: column;
-			}
-			.section-image {
-				max-width: 100%;
-			}
-			.hero-content h1 {
-				font-size: 2.5rem;
-			}
-			.section-content h2 {
-				font-size: 2.2rem;
-			}
-		}
-
-		@media(max-width: 600px) {
-			.hero-content h1 {
-				font-size: 2rem;
-				letter-spacing: 1px;
-			}
-			.hero-content p {
-				font-size: 1.1rem;
-			}
-			.section {
-				padding: 3rem 5%;
-			}
-			.section-content h2 {
-				font-size: 1.8rem;
-			}
-			.section-content p {
-				font-size: 1rem;
-			}
-		}
-
 		@keyframes fadeIn {
 			from {
 				opacity: 0;
@@ -211,3 +165,106 @@ background: linear-gradient(135deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
 				opacity: 1;
 			}
 		}
+
+		/* ==========================================================
+   📱 MOBILE RESPONSIVE (MAX-WIDTH: 900px)
+   ========================================================== */
+
+@media (max-width: 900px) {
+
+    /* --- 1. HERO HEADER (CENTRÉ OU GAUCHE) --- */
+    .hero-header {
+        height: auto;
+        min-height: 85vh;
+        padding-top: 100px; /* Éviter la navbar */
+        padding-bottom: 60px;
+        /* On garde le fond image sombre pour le contraste */
+    }
+
+    .hero-content {
+        padding: 0 25px;
+        text-align: left; /* Aligné à gauche comme tes autres pages */
+        max-width: 100%;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem; /* Taille adaptée pour mobile */
+        line-height: 1.1;
+        letter-spacing: 1px;
+		font-weight: 900;
+        margin-bottom: 20px;
+        text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-content p {
+        font-size: 1.15rem;
+        line-height: 1.6;
+        margin-bottom: 35px;
+        color: #f1f1f1;
+    }
+
+    .cta-button {
+        width: 100%; /* Bouton pleine largeur facile à cliquer */
+        text-align: center;
+        padding: 16px 20px;
+        font-size: 1.1rem;
+    }
+
+    /* --- 2. SECTIONS (EMPILEMENT VERTICAL) --- */
+    .section {
+        flex-direction: column !important; /* Force l'empilement */
+        padding: 60px 20px;
+        gap: 35px;
+    }
+
+    .section-content {
+        order: 1; /* Texte en premier */
+        width: 100%;
+        text-align: left;
+    }
+
+    .section-content h2 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        line-height: 1.2;
+    }
+
+    .section-content p {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        margin-bottom: 15px;
+        text-align: left;
+    }
+
+    /* --- 3. IMAGES DES SECTIONS --- */
+    .section-image {
+        order: 2; /* Image en deuxième */
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .section-image img {
+        width: 100%;
+        height: auto;
+        border-radius: 12px; /* Coins un peu plus doux sur mobile */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        transform: none !important; /* On annule les effets hover PC */
+    }
+
+    /* --- 4. AJUSTEMENT POUR LES ÉLÉMENTS SPÉCIFIQUES --- */
+    .section-content p b {
+        color: #4da3ff; /* Bleu un peu plus clair pour la lisibilité sur mobile */
+    }
+}
+
+/* Ajustements pour les très petits écrans (iPhone SE, etc.) */
+@media (max-width: 400px) {
+    .hero-content h1 {
+        font-size: 2.1rem;
+    }
+    
+    .section-content h2 {
+        font-size: 1.7rem;
+    }
+}

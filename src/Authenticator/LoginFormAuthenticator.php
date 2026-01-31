@@ -2,7 +2,6 @@
 
 namespace App\Authenticator;
 
-use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Service\SystemLoggerService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException; // Important
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator;
@@ -19,8 +19,6 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
-use Symfony\Component\Security\Http\SecurityRequestAttributes;
-use Symfony\Component\Security\Http\SecurityRequestAttributesInterface;
 
 class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -54,13 +52,13 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
             new UserBadge($email, function ($userIdentifier) use ($password, $ip) {
                 $user = $this->userRepository->findOneBy(['email' => $userIdentifier]);
 
-                // ❌ Utilisateur inexistant
+                // 1. Utilisateur inconnu
                 if (!$user) {
-                    $this->logger->add('Échec de connexion', sprintf('Tentative avec un email inconnu (%s)', $userIdentifier));
+                    // On lance juste l'erreur, le log se fera dans onAuthenticationFailure
                     throw new CustomUserMessageAuthenticationException('Adresse e-mail ou mot de passe incorrect.');
                 }
 
-                // 🔒 Compte verrouillé
+                // 2. Compte verrouillé
                 if ($user->getLockedUntil() && $user->getLockedUntil() > new \DateTimeImmutable()) {
                     $remaining = $user->getLockedUntil()->getTimestamp() - time();
                     $minutes = ceil($remaining / 60);
@@ -69,33 +67,34 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
                     );
                 }
 
-                // 📧 Compte non vérifié
+                // 3. Email non vérifié
                 if (!$user->isVerified()) {
                     throw new CustomUserMessageAuthenticationException('Veuillez vérifier votre e-mail avant de vous connecter.');
                 }
 
-                // 🔑 Mot de passe incorrect
+                // 4. Mot de passe incorrect
                 if (!$this->passwordHasher->isPasswordValid($user, $password)) {
                     $failed = ($user->getFailedAttempts() ?? 0) + 1;
                     $user->setFailedAttempts($failed);
 
+                    // Si on atteint 5 essais, on bloque
                     if ($failed >= 5) {
                         $user->setLockedUntil(new \DateTimeImmutable('+3 minutes'));
-                        $this->logger->add('Blocage de compte', sprintf('Compte %s bloqué 3 min.', $user->getEmail()));
+                        // Ici on peut logger le blocage spécifique car on modifie l'user
+                        $this->logger->add('Sécurité', sprintf('Compte %s verrouillé (5 échecs).', $user->getEmail()));
                     }
 
                     $this->entityManager->flush();
+
                     throw new CustomUserMessageAuthenticationException('Adresse e-mail ou mot de passe incorrect.');
                 }
 
-                // ✅ Succès : réinitialise les compteurs
+                // ✅ Succès : Reset des compteurs
                 $user->setFailedAttempts(0);
                 $user->setLockedUntil(null);
                 $user->setLastLoginAt(new \DateTimeImmutable());
                 $user->setLastLoginIp($ip);
                 $this->entityManager->flush();
-
-                $this->logger->add('Connexion réussie', sprintf('Utilisateur %s connecté depuis %s', $user->getEmail(), $ip));
 
                 return $user;
             }),
@@ -109,32 +108,55 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): Response
     {
+        /** @var \App\Entity\User $user */
         $user = $token->getUser();
-        $this->logger->add('Connexion réussie', sprintf('Utilisateur %s connecté.', $user->getEmail()));
 
-        // ⚡ Force la session à être écrite AVANT de renvoyer la réponse JSON
-        $request->getSession()->save();
+        // Log de connexion réussie
+        $this->logger->add('Connexion', sprintf('Utilisateur %s connecté (IP: %s)', $user->getEmail(), $request->getClientIp()));
 
+        // ⚡ DÉTECTION DU RÔLE POUR LA REDIRECTION
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+            // Si c'est un admin -> On l'envoie vers la route secrète
+            $redirectUrl = $this->router->generate('admin_dashboard');
+        } else {
+            // Si c'est un membre -> On l'envoie vers l'accueil
+            $redirectUrl = $this->router->generate('home');
+        }
+
+        // On renvoie l'URL au Javascript qui fera la redirection
         return new JsonResponse([
             'success' => true,
             'message' => 'Connexion réussie',
-            'redirect' => $this->router->generate('home'),
+            'redirect' => $redirectUrl,
         ]);
     }
 
-
-    public function onAuthenticationFailure(Request $request, \Throwable $exception): Response
+    // ❌ C'est ICI qu'on loggue TOUTES les erreurs (Mauvais MDP, User inconnu, etc.)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
-        // ✅ Retour JSON avec le message d’erreur
+        $email = $request->request->get('email', 'Inconnu');
+        $ip = $request->getClientIp();
+
+        // On récupère le message d'erreur (ex: "Adresse e-mail ou mot de passe incorrect")
+        // getMessageKey() récupère le message brut passé dans CustomUserMessageAuthenticationException
+        $errorMessage = $exception->getMessageKey();
+
+        // Traduction manuelle rapide pour les messages internes de Symfony si besoin
+        if ($errorMessage == 'Invalid credentials.') {
+            $errorMessage = 'Identifiants incorrects.';
+        }
+
+        // On enregistre le log
+        $this->logger->add('Échec Connexion', sprintf('Pour: %s (IP: %s) - Raison: %s', $email, $ip, $errorMessage));
+
         return new JsonResponse([
             'success' => false,
-            'message' => $exception->getMessage() ?: 'Identifiants incorrects',
+            'message' => $errorMessage,
         ], 401);
     }
 
     protected function getLoginUrl(Request $request): string
     {
-        // Ne sert plus vraiment, mais doit exister
         return $this->router->generate('app_login');
     }
 }

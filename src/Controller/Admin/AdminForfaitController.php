@@ -17,8 +17,9 @@ class AdminForfaitController extends AbstractController
     #[Route('/', name: 'admin_forfait_index', methods: ['GET'])]
     public function index(ForfaitRepository $forfaitRepository): Response
     {
+        // On trie par prix croissant pour l'affichage
         return $this->render('admin/forfait/index.html.twig', [
-            'forfaits' => $forfaitRepository->findAll(),
+            'forfaits' => $forfaitRepository->findBy([], ['prix' => 'ASC']),
         ]);
     }
 

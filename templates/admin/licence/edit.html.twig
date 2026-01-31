@@ -1,182 +1,152 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Modifier une licence
-{% endblock %}
+{% block title %}Modifier la licence{% endblock %}
 
 {% block stylesheets %}
-	<style>:root
-	{
-		--bg-dark: #0e0e10;
-		--bg-darker: #141416;
-		--bg-light: #1c1c1f;
-		--text-main: #e5e7eb;
-		--text-muted: #9ca3af;
-		--accent: #ff6600;
-		--border: #2a2a2d;
-		--danger: #ef4444;
-	}
+<style>
+    /* ... On reprend exactement les styles de NEW pour la cohérence ... */
+    .dashboard-container { width: 100%; max-width: 1000px; margin: 0 auto; }
+    .page-header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
+    
+    .form-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; }
+    .form-card > form > div { margin-bottom: 1.5rem; }
+    
+    label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    input[type="text"], input[type="email"], input[type="date"], select { width: 100%; background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-main); padding: 0.7rem 1rem; border-radius: 4px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; box-sizing: border-box; }
+    input:focus, select:focus { border-color: var(--accent); }
+    
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media(max-width: 700px) { .row-2 { grid-template-columns: 1fr; gap: 0; } }
 
-	body {
-		font-family: "Inter", system-ui, sans-serif;
-		background: var(--bg-dark);
-		color: var(--text-main);
-		margin: 0;
-		min-height: 100vh;
-	}
+    .form-actions { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; } /* Différence : Space-between pour le bouton supprimer à gauche */
 
-	.admin-container {
-		margin-left: 100px;
-		padding: 2.5rem 3rem;
-		background: var(--bg-dark);
-		min-height: 100vh;
-	}
+    .btn-submit { background: var(--accent); color: #fff; padding: 0.7rem 1.5rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+    .btn-submit:hover { background: var(--accent-hover); }
 
-	h1 {
-		font-size: 2.3rem;
-		font-weight: 800;
-		color: #fff;
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-		margin-bottom: 2.5rem;
-	}
+    .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 500; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; transition: 0.2s; }
+    .btn-cancel:hover { border-color: var(--text-muted); color: var(--text-main); }
+    
+    .btn-delete { color: #ef4444; background: none; border: none; font-size: 0.9rem; cursor: pointer; font-weight: 500; padding: 0.5rem 0; opacity: 0.8; transition: opacity 0.2s; }
+    .btn-delete:hover { opacity: 1; text-decoration: underline; }
 
-	.card {
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		border-radius: 12px;
-		padding: 2rem;
-		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-		max-width: 800px;
-	}
+    /* Box Avantages Dynamique */
+    .avantages-preview { margin-top: 1rem; padding: 1rem; background: rgba(255, 102, 0, 0.05); border: 1px dashed var(--accent); border-radius: 4px; display: none; }
+    .avantages-preview h4 { margin: 0 0 0.8rem 0; font-size: 0.9rem; color: var(--accent); text-transform: uppercase; font-weight: 700; }
+    .avantages-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem; }
+    .avantages-list li { font-size: 0.85rem; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+    .avantages-list li::before { content: "✓"; color: var(--accent); font-weight: bold; }
+</style>
+{% endblock %}
 
-	form label {
-		display: block;
-		font-weight: 600;
-		color: var(--text-main);
-		margin-bottom: 0.4rem;
-	}
+{% block body %}
+<div class="dashboard-container">
+    
+    <div class="page-header">
+        <h1>Modifier la licence</h1>
+        <p>Mise à jour des informations pour la licence #{{ licence.number }}</p>
+    </div>
 
-	form input[type="text"],
-	form input[type="email"],
-	form input[type="date"],
-	form select {
-		width: 100%;
-		background: var(--bg-darker);
-		color: var(--text-main);
-		border: 1px solid var(--border);
-		padding: 0.7rem 1rem;
-		border-radius: 6px;
-		font-size: 0.95rem;
-		outline: none;
-		transition: border-color 0.2s ease;
-		margin-bottom: 1rem;
-	}
+    <div class="form-card">
+        {{ form_start(form) }}
+        
+        <div class="row-2">
+            <div>
+                {{ form_label(form.firstName, 'Prénom') }}
+                {{ form_widget(form.firstName) }}
+            </div>
+            <div>
+                {{ form_label(form.lastName, 'Nom') }}
+                {{ form_widget(form.lastName) }}
+            </div>
+        </div>
 
-	form input:focus,
-	form select:focus {
-		border-color: var(--accent);
-	}
+        <div class="row-2">
+            <div>
+                {{ form_label(form.email, 'Email') }}
+                {{ form_widget(form.email) }}
+            </div>
+            <div>
+                {{ form_label(form.number, 'Numéro de Licence') }}
+                {{ form_widget(form.number) }}
+            </div>
+        </div>
 
-	.btn {
-		display: inline-block;
-		font-weight: 600;
-		padding: 0.75rem 1.5rem;
-		border-radius: 8px;
-		cursor: pointer;
-		border: none;
-		text-decoration: none;
-		text-align: center;
-		transition: all 0.2s ease;
-	}
+        <div class="row-2">
+            <div>
+                {{ form_label(form.forfait, 'Forfait Associé') }}
+                {{ form_widget(form.forfait) }}
+                <div id="forfait-avantages" class="avantages-preview"></div>
+            </div>
+            <div>
+                {{ form_label(form.expiryDate, 'Date d\'Expiration') }}
+                {{ form_widget(form.expiryDate) }}
+            </div>
+        </div>
 
-	.btn-primary {
-		background: var(--accent);
-		color: #fff;
-		box-shadow: 0 3px 10px rgba(255, 102, 0, 0.3);
-	}
-	.btn-primary:hover {
-		background: #e25500;
-		transform: translateY(-2px);
-	}
+        <div class="form-actions">
+            <button type="button" class="btn-delete" onclick="if(confirm('⚠️ Attention : Cette action est irréversible.\n\nVoulez-vous vraiment supprimer la licence {{ licence.number }} ?')) document.getElementById('delete-form').submit();">
+                Supprimer cette licence
+            </button>
 
-	.btn-danger {
-		background: var(--danger);
-		color: #fff;
-	}
-	.btn-danger:hover {
-		background: #dc2626;
-	}
+            <div style="display: flex; gap: 10px;">
+                <a href="{{ path('admin_licence_index') }}" class="btn-cancel">Annuler</a>
+                <button type="submit" class="btn-submit">Mettre à jour</button>
+            </div>
+        </div>
 
-	.avantages-box {
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		padding: 1rem 1.2rem;
-		border-radius: 8px;
-		margin-top: 1.5rem;
-		color: var(--text-main);
-	}
+        {{ form_end(form) }}
+    </div>
 
-	.avantages-box h4 {
-		margin-bottom: 0.6rem;
-		font-size: 1.1rem;
-		color: var(--accent);
-	}
-
-	.avantages-box ul li {
-		margin-bottom: 0.3rem;
-	}
-</style>{% endblock %}{% block body %}
-<div class="admin-container">
-	<h1>📝 Modifier la licence #{{ licence.id }}</h1>
-
-	<div class="card">
-		{{ form_start(form) }}
-		{{ form_widget(form) }}
-		<button type="submit" class="btn btn-primary mt-3">💾 Mettre à jour</button>
-		{{ form_end(form) }}
-	</div>
-
-	<form method="post" action="{{ path('admin_licence_delete', {id: licence.id}) }}" class="mt-4" onsubmit="return confirm('Confirmer la suppression ?')">
-		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ licence.id) }}">
-		<button class="btn btn-danger mt-3">🗑️ Supprimer</button>
-	</form>
+    <form id="delete-form" method="post" action="{{ path('admin_licence_delete', {id: licence.id}) }}" style="display: none;">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ licence.id) }}">
+    </form>
 
 </div>
 
- <script>
+<script>
 document.addEventListener('DOMContentLoaded', () => {
-	const selectForfait = document.querySelector('#licence_forfait');
-	if (!selectForfait) return;
+    const selectForfait = document.querySelector('#licence_forfait');
+    const avantagesBox = document.getElementById('forfait-avantages');
 
-	const avantagesBox = document.createElement('div');
-	avantagesBox.classList.add('avantages-box');
-	selectForfait.closest('.form-group')?.after(avantagesBox);
+    if (!selectForfait) return;
 
-	selectForfait.addEventListener('change', async () => {
-		const forfaitId = selectForfait.value;
-		if (!forfaitId) {
-			avantagesBox.innerHTML = '';
-			return;
-		}
+    async function loadAvantages() {
+        const id = selectForfait.value;
+        if (!id) {
+            avantagesBox.style.display = 'none';
+            return;
+        }
 
-		try {
-			const resp = await fetch(`/admin/licences/forfait/${forfaitId}/avantages`);
-			if (!resp.ok) throw new Error('Erreur réseau');
-			const data = await resp.json();
+        try {
+            const resp = await fetch(`/admin/licences/forfait/${id}/avantages`);
+            const data = await resp.json();
 
-			if (data.avantages && data.avantages.length > 0) {
-				avantagesBox.innerHTML = `
-					<h4>Avantages inclus dans le forfait <b>${data.nom}</b> :</h4>
-					<ul>${data.avantages.map(a => `<li>✔️ ${a}</li>`).join('')}</ul>
-				`;
-			} else {
-				avantagesBox.innerHTML = `<p style="color:#9ca3af;">Aucun avantage défini pour ce forfait.</p>`;
-			}
-		} catch (e) {
-			console.error(e);
-			avantagesBox.innerHTML = `<p style="color:#ef4444;">Impossible de charger les avantages.</p>`;
-		}
-	});
+            if (data.avantages && data.avantages.length > 0) {
+                const cleanList = data.avantages.map(a => {
+                    const parts = a.split('|');
+                    return parts.length > 1 ? parts[1].trim() : a;
+                });
+
+                avantagesBox.innerHTML = `
+                    <h4>Inclus dans ${data.nom} :</h4>
+                    <ul class="avantages-list">
+                        ${cleanList.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                `;
+                avantagesBox.style.display = 'block';
+            } else {
+                avantagesBox.style.display = 'none';
+            }
+        } catch (e) {
+            console.error("Erreur", e);
+            avantagesBox.style.display = 'none';
+        }
+    }
+
+    selectForfait.addEventListener('change', loadAvantages);
+    if(selectForfait.value) loadAvantages();
 });
-</script>{% endblock %}
+</script>
+{% endblock %}

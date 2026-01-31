@@ -1,0 +1,313 @@
+.overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 0;
+		}
+
+.hero-header {
+    position: relative;
+    margin-top: 120px;
+    width: 100%;
+    height: 65vh; /* ajustable */
+    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    /* diagonale sur le bas */
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
+}
+
+
+/* Fond flou + filtre bleu foncé */
+.hero-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    filter: blur(40px);
+    transform: scale(4.1);
+    z-index: 0; /* derrière le texte */
+}
+
+/* Filtre bleu foncé */
+.hero-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 41, 82, 0.65); /* ← bleu plus foncé */
+    z-index: 1;
+}
+
+/* Image décorative diagonale sur la droite du hero */
+.hero-diagonal-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;          /* occupe toute la hauteur du hero */
+    width: 55%;            /* moitié droite du hero */
+    overflow: hidden;
+    z-index: 2;            /* au-dessus du fond mais derrière le texte si nécessaire */
+    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%); /* diagonale */
+}
+
+.hero-diagonal-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.3)); /* optionnel : ombre douce */
+    transform: scale(1.1); /* léger zoom pour mieux couvrir le clip-path */
+}
+
+/* Contenu visible au-dessus */
+.hero-header > .hero-content {
+    position: relative;
+    z-index: 2; /* texte au-dessus du fond */
+}
+
+		.hero-content {
+			position: relative;
+			z-index: 1;
+			margin-top: 100px;
+		}
+
+		.hero-content h1 {
+			font-size: 2.5rem;
+			font-weight: 800;
+			max-width: 600px;
+			text-align: left;
+            text-transform: uppercase;
+			margin: 0 0 1rem;
+			color: white;
+			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+			margin-right:690px;
+			margin-top: -130px;
+			letter-spacing: 2px;
+		}
+		.hero-content p {
+			font-size: 1.1rem;
+			line-height: 1.8;
+			color: #CBD5E1;
+			margin-bottom: 2rem;
+            max-width: 570px;
+            margin-right: 660px;
+            text-align: left;
+		}	
+
+        /* Le bouton Retour */
+.back-button {
+    /* 1. POSITIONNEMENT : On le sort du flux pour le mettre en haut à gauche */
+    position: absolute; 
+    top: 35px;      /* Espace depuis le haut */
+    left: 100px;     /* Espace depuis la gauche */
+    
+    /* 2. COUCHE : On le force à passer au-dessus du filtre bleu (qui est à 1) */
+    z-index: 10;    
+    
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    
+    /* 3. COULEUR : On met blanc car le fond est sombre */
+    color: #ffffff; 
+    
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* ===============================
+   SECTION ÉVÉNEMENTS
+================================ */
+
+.evenements-section {
+    padding: 80px 20px;
+    color: #fff;
+}
+
+.evenements-section .container {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.evenements-title {
+    font-size: 2.2rem;
+    font-weight: 900;
+    margin-bottom: 30px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.evenements-intro {
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin-bottom: 30px;
+    color: #CBD5E1;
+    line-height: 1.6;
+}
+
+.evenements-section p,
+.evenements-list li {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #CBD5E1;
+    margin-bottom: 20px;
+}
+
+.evenements-list {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 30px;
+}
+
+/* Boutons */
+.evenements-actions {
+    margin-top: 40px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: 0.3s ease;
+}
+
+.btn-primary {
+    background: #005b94;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #003f66;
+}
+
+/* ==========================================================
+   📱 MOBILE RESPONSIVE (MAX-WIDTH: 900px)
+   ========================================================== */
+
+@media (max-width: 900px) {
+
+    /* --- 1. HERO HEADER (Layout Vertical Standard) --- */
+    .hero-header {
+        padding-top: 140px;
+        margin-top: 0;
+        height: auto;
+        min-height: 100vh;
+        background: transparent;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        clip-path: none;
+    }
+
+    /* On s'assure que les filtres de fond sont bien présents */
+    .hero-header::before,
+    .hero-header::after {
+        display: block !important;
+        position: absolute;
+        inset: 0;
+        height: 100%;
+    }
+
+    /* LE TEXTE (Haut) */
+    .hero-content {
+        order: 1;
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        padding: 0 25px;
+        text-align: left;
+        margin-top: 0 !important;
+    }
+
+    .hero-content h1 {
+        font-size: 2.4rem;
+        line-height: 1.2;
+        margin: 0 0 20px 0 !important;
+        margin-right: 0 !important; /* Annule le décalage PC */
+        max-width: 100%;
+    }
+
+    .hero-content p {
+        font-size: 1.1rem;
+        font-weight: 500;
+        line-height: 1.6;
+        margin-right: 0 !important; /* Annule le décalage PC */
+        max-width: 100% !important;
+        margin-bottom: 30px;
+    }
+
+    /* L'IMAGE (Bas avec Zoom) */
+    .hero-diagonal-image {
+        order: 2;
+        position: relative !important;
+        display: block !important;
+        width: 100%;
+        height: 280px;
+        margin-top: auto;
+        z-index: 5;
+        overflow: hidden;
+        clip-path: polygon(0 15%, 100% 0, 100% 100%, 0% 100%);
+    }
+
+    .hero-diagonal-image img {
+        transform-origin: center center;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* --- 2. SECTION ÉVÉNEMENTS (CONTENU) --- */
+    
+    .evenements-section {
+        padding: 50px 20px;
+    }
+
+    .evenements-title {
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+        text-align: left; /* Alignement gauche uniforme */
+    }
+
+    .evenements-intro, 
+    .evenements-section p,
+    .evenements-list li {
+        font-size: 1rem;
+        text-align: left;
+    }
+    
+    .evenements-list {
+        padding-left: 1.2rem;
+    }
+
+    /* --- 3. ACTIONS (BOUTONS) --- */
+    
+    .evenements-actions {
+        flex-direction: column; /* Boutons empilés */
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%; /* Pleine largeur pour le confort tactile */
+        text-align: center;
+        padding: 15px 20px;
+        font-size: 1.1rem;
+    }
+}

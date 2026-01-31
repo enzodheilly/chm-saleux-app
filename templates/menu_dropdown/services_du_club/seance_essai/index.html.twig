@@ -11,17 +11,25 @@
 <header class="hero-header">
     <div class="overlay"></div>
 
-    <!-- Image diagonale -->
+        <a href="{{ path('home') }}" class="back-button">
+         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+         </svg>
+         Home
+    </a>
+
+    <!-- Image diagonale sur la droite -->
     <div class="hero-diagonal-image">
-        <img src="{{ asset('images/menu_dropdown/services_du_club/journee_essai/1.jpg') }}" alt="Journée d’essai CHM Saleux">
+        <img src="{{ asset('images/menu_dropdown/services_du_club/journee_essai/1.jpg') }}" alt="Image Musculation Club">
     </div>
 
-    <!-- Texte -->
+    <!-- Contenu texte -->
     <div class="hero-content">
-        <h1>Notre séance d’essai</h1>
-        <p>Découvrez le club, l’ambiance et nos équipements sans engagement.</p>
+        <h1>Séance d'essai</h1>
+        <p>Venez découvrir l’ambiance du club sans aucun engagement. Profitez d’une session offerte pour tester nos équipements, rencontrer les coachs et vous faire votre propre avis <span>avant de nous rejoindre.</span></p>
     </div>
 </header>
+
 
 <section class="essai-section">
     <div class="container">

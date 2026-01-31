@@ -88,10 +88,13 @@
   font-size: 1.1rem;
 }
 
-/* MOBILE */
+/* ========================================================= */
+/* ================= MOBILE SPÉCIFIQUE ===================== */
+/* ========================================================= */
+
 @media (max-width: 768px) {
-  .slider-track img {
-    flex: 0 0 85%;
-    height: 300px;
+  /* On cache complètement la section hero sur les écrans < 768px */
+  .hero {
+    display: none !important;
   }
 }

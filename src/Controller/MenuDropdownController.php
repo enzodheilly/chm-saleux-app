@@ -29,16 +29,8 @@ class MenuDropdownController extends AbstractController
     #[Route('/cours-collectifs', name: 'cours_collectifs')]
     public function coursCollectifs(): Response
     {
-        return $this->render('menu_dropdown/cours_collectifs.html.twig', [
+        return $this->render('menu_dropdown/services_du_club/cours_collectifs/cours_collectifs.html.twig', [
             'page_title' => 'Cours collectifs',
-        ]);
-    }
-
-    #[Route('/zones-entrainement', name: 'zones_entrainement')]
-    public function zonesEntrainement(): Response
-    {
-        return $this->render('menu_dropdown/zones_entrainement.html.twig', [
-            'page_title' => "Les zones d'entraînement",
         ]);
     }
 
@@ -53,8 +45,16 @@ class MenuDropdownController extends AbstractController
     #[Route('/evenements', name: 'evenements')]
     public function evenements(): Response
     {
-        return $this->render('menu_dropdown/evenements.html.twig', [
+        return $this->render('menu_dropdown/services_du_club/evenements/evenements.html.twig', [
             'page_title' => 'Événements organisés',
+        ]);
+    }
+
+    #[Route('/sauna', name: 'sauna')]
+    public function sauna(): Response
+    {
+        return $this->render('menu_dropdown/services_du_club/sauna/sauna.html.twig', [
+            'page_title' => 'sauna',
         ]);
     }
 
@@ -62,7 +62,7 @@ class MenuDropdownController extends AbstractController
     #[Route('/president', name: 'president')]
     public function president(): Response
     {
-        return $this->render('menu_dropdown/president.html.twig', [
+        return $this->render('menu_dropdown/membres_du_bureau/president/president.html.twig', [
             'page_title' => 'Le Président',
         ]);
     }
@@ -70,7 +70,7 @@ class MenuDropdownController extends AbstractController
     #[Route('/tresorier', name: 'tresorier')]
     public function tresorier(): Response
     {
-        return $this->render('menu_dropdown/tresorier.html.twig', [
+        return $this->render('menu_dropdown/membres_du_bureau/tresorier/tresorier.html.twig', [
             'page_title' => 'Le Trésorier',
         ]);
     }
@@ -78,7 +78,7 @@ class MenuDropdownController extends AbstractController
     #[Route('/secretaire', name: 'secretaire')]
     public function secretaire(): Response
     {
-        return $this->render('menu_dropdown/secretaire.html.twig', [
+        return $this->render('menu_dropdown/membres_du_bureau/secretaire/secretaire.html.twig', [
             'page_title' => 'La Secrétaire',
         ]);
     }
@@ -86,7 +86,7 @@ class MenuDropdownController extends AbstractController
     #[Route('/membres-bureau', name: 'membres_bureau')]
     public function membresBureau(): Response
     {
-        return $this->render('menu_dropdown/membres_bureau.html.twig', [
+        return $this->render('menu_dropdown/membres_du_bureau/membre_bureau/membre_bureau.html.twig', [
             'page_title' => 'Les membres du bureau',
         ]);
     }

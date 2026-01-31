@@ -1,210 +1,122 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Abonnés à la newsletter
-{% endblock %}
+{% block title %}Abonnés newsletter{% endblock %}
 
 {% block stylesheets %}
-	<style>:root
-	{
-		--bg-dark: #0e0e10;
-		--bg-darker: #141416;
-		--bg-light: #1c1c1f;
-		--text-main: #e5e7eb;
-		--text-muted: #9ca3af;
-		--accent: #fff;
-		--border: #2a2a2d;
-	}
+<style>
+    /* =================== PAGE STYLE =================== */
+    .dashboard-container { width: 100%; max-width: 1600px; margin: 0 auto; }
 
-	/* --- CONTENEUR PRINCIPAL --- */
-	.main-content {
-		flex: 1;
-		margin-left: 100px;
-		padding: 2.5rem 3rem;
-		background: var(--bg-dark);
-		color: var(--text-main);
-		box-sizing: border-box;
-	}
+    /* Header */
+    .page-header {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;
+    }
+    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
 
-	.dashboard-container {
-		transform: scale(1.00); /* au lieu de 1.15 */
-		transform-origin: top left;
-		width: 243.9%; /* limite le débordement */
-		margin-left: 1.5rem; /* pour centrer légèrement à cause de la sidebar */
-	}
+    /* Toolbar */
+    .toolbar { display: flex; gap: 1rem; align-items: center; }
+    .search-input {
+        background: transparent; border: 1px solid var(--border); color: var(--text-main);
+        padding: 0.6rem 1rem; border-radius: 4px; outline: none; min-width: 300px; font-size: 0.9rem;
+    }
+    .search-input:focus { border-color: var(--accent); }
 
-	.page-title {
-		font-size: 2.2rem;
-		font-weight: 800;
-		color: #fff;
-		margin-bottom: 2.5rem;
-	}
+    /* Table */
+    .content-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; }
+    .table-responsive { overflow-x: auto; }
+    .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    
+    .table th {
+        background: var(--bg-darker); color: var(--text-muted); font-weight: 600; text-align: left;
+        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); text-transform: uppercase;
+        font-size: 0.75rem; letter-spacing: 1px;
+    }
+    .table td {
+        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle;
+    }
+    .table tr:last-child td { border-bottom: none; }
+    .table tr:hover { background: rgba(255,255,255,0.01); }
 
-	/* --- SECTION CARD --- */
-	.section-card {
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		padding: 1.8rem 1.6rem;
-		margin-bottom: 2.2rem;
-	}
+    /* Status Badges */
+    .badge {
+        font-size: 0.75rem; font-weight: 700; text-transform: uppercase; padding: 4px 8px; border-radius: 4px;
+        letter-spacing: 0.5px;
+    }
+    .badge-confirmed { color: #22c55e; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); }
+    .badge-pending { color: #f59e0b; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); }
 
-	.section-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		border-bottom: 1px solid var(--border);
-		padding-bottom: 0.8rem;
-		margin-bottom: 1.2rem;
-	}
+    /* Flash Messages */
+    .flash-success {
+        background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2);
+        padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-weight: 500;
+    }
+</style>
+{% endblock %}
 
-	.section-title {
-		font-size: 1.1rem;
-		font-weight: 600;
-		color: #fff;
-	}
+{% block body %}
+<div class="dashboard-container">
+    
+    {% for message in app.flashes('success') %}
+        <div class="flash-success">{{ message }}</div>
+    {% endfor %}
 
-	.table-toolbar {
-		display: flex;
-		gap: 0.6rem;
-	}
+    <div class="page-header">
+        <div>
+            <h1>Abonnés Newsletter</h1>
+            <p>Liste des adresses email inscrites à la liste de diffusion.</p>
+        </div>
+        <div class="toolbar">
+            <input type="text" id="searchSubs" class="search-input" placeholder="Rechercher un email...">
+        </div>
+    </div>
 
-	.search-bar {
-		padding: 0.45rem 0.8rem;
-		border: 1px solid var(--border);
-		background: var(--bg-darker);
-		color: var(--text-main);
-		font-size: 0.9rem;
-		outline: none;
-	}
-	.search-bar:focus {
-		border-color: var(--accent);
-	}
-
-	/* --- TABLE --- */
-	.table {
-		width: 100%;
-		border-collapse: collapse;
-		font-size: 0.95rem;
-		color: var(--text-main);
-	}
-
-	.table thead {
-		background: var(--bg-darker);
-		color: #fff;
-	}
-	.table th,
-	.table td {
-		padding: 0.8rem 1rem;
-		text-align: left;
-	}
-	.table th {
-		font-weight: 600;
-		color: var(--accent);
-		border-bottom: 2px solid var(--border);
-	}
-	.table tbody tr {
-		border-bottom: 1px solid var(--border);
-		transition: background 0.2s;
-	}
-	.table tbody tr:hover {
-		background: rgba(255, 102, 0, 0.07);
-	}
-
-	/* --- STATUTS --- */
-	.status-success {
-		color: #22c55e;
-		font-weight: 600;
-	}
-	.status-failed {
-		color: #ef4444;
-		font-weight: 600;
-	}
-
-	/* --- FLASH --- */
-	.flash-success {
-		background: linear-gradient(135deg,#2e7d32,#1b5e20);
-		color: #fff;
-		padding: 12px 16px;
-		margin-bottom: 20px;
-		text-align: center;
-		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-	}
-
-	/* --- RESPONSIVE --- */
-	@media(max-width: 900px) {
-		.main-content {
-			margin-left: 0;
-			padding: 1.5rem;
-		}
-		.section-header {
-			flex-direction: column;
-			align-items: flex-start;
-			gap: 1rem;
-		}
-	}
-</style>{% endblock %}{% block body %}
-<div class="main-content">
-	<div class="dashboard-container">
-		<h1 class="page-title">💌 Abonnés à la newsletter</h1>
-
-		{% for message in app.flashes('success') %}
-			<div class="flash-success">{{ message }}</div>
-		{% endfor %}
-
-		<div class="section-card">
-			<div class="section-header">
-				<h3 class="section-title">Liste des abonnés</h3>
-				<div class="table-toolbar">
-					<input type="text" id="searchSubs" class="search-bar" placeholder="Rechercher...">
-				</div>
-			</div>
-
-			{% if subscribers is not empty %}
-				<div class="table-responsive">
-					<table class="table" id="subsTable">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th>Email</th>
-								<th>Date d’inscription</th>
-								<th>Confirmé</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for s in subscribers %}
-								<tr>
-									<td>{{ loop.index }}</td>
-									<td>{{ s.email }}</td>
-									<td>{{ s.subscribedAt|date('d/m/Y H:i') }}</td>
-									<td>
-										{% if s.isConfirmed %}
-											<span class="status-success">Oui</span>
-										{% else %}
-											<span class="status-failed">Non</span>
-										{% endif %}
-									</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-			{% else %}
-				<p style="text-align:center;color:var(--text-muted);">Aucun abonné trouvé.</p>
-			{% endif %}
-		</div>
-	</div>
+    <div class="content-card">
+        <div class="table-responsive">
+            <table class="table" id="subsTable">
+                <thead>
+                    <tr>
+                        <th width="60">#</th>
+                        <th>Email</th>
+                        <th>Date d'inscription</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in subscribers %}
+                        <tr>
+                            <td><span style="color: var(--text-muted); font-family: monospace;">{{ loop.index }}</span></td>
+                            <td><strong>{{ s.email }}</strong></td>
+                            <td style="color: var(--text-muted);">{{ s.subscribedAt|date('d/m/Y à H:i') }}</td>
+                            <td>
+                                {% if s.isConfirmed %}
+                                    <span class="badge badge-confirmed">Confirmé</span>
+                                {% else %}
+                                    <span class="badge badge-pending">En attente</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" style="text-align: center; padding: 4rem; color: var(--text-muted);">
+                                Aucun abonné dans la base de données.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
- <script>
-document.addEventListener('DOMContentLoaded', function(){
-    const input = document.getElementById('searchSubs');
+<script>
+document.getElementById('searchSubs').addEventListener('keyup', function() {
+    const val = this.value.toLowerCase();
     const rows = document.querySelectorAll('#subsTable tbody tr');
-    if (!input) return;
-
-    input.addEventListener('keyup', function(){
-        const q = this.value.toLowerCase();
-        rows.forEach(r => {
-            r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
-        });
+    rows.forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(val) ? '' : 'none';
     });
 });
-</script>{% endblock %}
+</script>
+{% endblock %}

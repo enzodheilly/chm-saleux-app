@@ -1,75 +1,104 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}✏ Modifier {{ machine.name }}{% endblock %}
+{% block title %}Modifier la machine{% endblock %}
 
 {% block stylesheets %}
 <style>
-/* mêmes styles que la page ajout */
-#current-image, #image-preview {
-	margin-top: 1rem;
-	max-width: 250px;
-	border-radius: 6px;
-	border: 1px solid var(--border);
-}
+    /* ... Mêmes styles que NEW ... */
+    .dashboard-container { width: 100%; max-width: 800px; margin: 0 auto; }
+    .page-header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
+    .form-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; }
+    .form-card > form > div { margin-bottom: 1.5rem; }
+    label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    input[type="text"], input[type="file"] { width: 100%; background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-main); padding: 0.7rem 1rem; border-radius: 4px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; box-sizing: border-box; }
+    input:focus { border-color: var(--accent); }
+
+    /* Image Preview */
+    .img-preview-container { display: flex; gap: 20px; align-items: flex-start; margin-top: 10px; }
+    .img-box { text-align: center; }
+    .img-box span { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 5px; }
+    .preview-img { max-width: 150px; border-radius: 4px; border: 1px solid var(--border); }
+
+    /* Actions Edit */
+    .form-actions { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .btn-submit { background: var(--accent); color: #fff; padding: 0.7rem 1.5rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+    .btn-submit:hover { background: var(--accent-hover); }
+    .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 500; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; transition: 0.2s; }
+    .btn-cancel:hover { border-color: var(--text-muted); color: var(--text-main); }
+    .btn-delete { color: #ef4444; background: none; border: none; font-size: 0.9rem; cursor: pointer; font-weight: 500; padding: 0.5rem 0; opacity: 0.8; transition: opacity 0.2s; }
+    .btn-delete:hover { opacity: 1; text-decoration: underline; }
 </style>
 {% endblock %}
 
 {% block body %}
-<div class="main-content">
-	<div class="dashboard-container">
+<div class="dashboard-container">
+    
+    <div class="page-header">
+        <h1>Modifier la machine</h1>
+        <p>Mise à jour : {{ machine.name }}</p>
+    </div>
 
-		<h1>✏ Modifier la machine : <span style="color:var(--accent);">{{ machine.name }}</span></h1>
+    <div class="form-card">
+        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
 
-		<div class="section-card">
+        <div>
+            {{ form_label(form.name, 'Nom de l\'équipement') }}
+            {{ form_widget(form.name) }}
+        </div>
 
-			{% for message in app.flashes('success') %}
-				<div class="alert-success">{{ message }}</div>
-			{% endfor %}
+        <div>
+            {{ form_label(form.image, 'Photo') }}
+            {{ form_widget(form.image) }}
+            
+            <div class="img-preview-container">
+                <div class="img-box">
+                    <span>Actuelle</span>
+                    <img src="{{ asset('uploads/machines/' ~ machine.image) }}" alt="Actuelle" class="preview-img">
+                </div>
+                
+                <div class="img-box" id="new-preview-box" style="display:none;">
+                    <span>Nouvelle</span>
+                    <img id="image-preview" alt="Nouvelle" class="preview-img">
+                </div>
+            </div>
+        </div>
 
-			{{ form_start(form) }}
+        <div class="form-actions">
+            <button type="button" class="btn-delete" onclick="if(confirm('⚠️ Attention : Voulez-vous vraiment supprimer cette machine ?')) document.getElementById('delete-form').submit();">
+                Supprimer
+            </button>
 
-			<div class="form-group" style="margin-bottom: 1rem;">
-				{{ form_label(form.name, 'Nom de la machine') }}
-				{{ form_widget(form.name) }}
-				{{ form_errors(form.name) }}
-			</div>
+            <div style="display: flex; gap: 10px;">
+                <a href="{{ path('admin_machine_list') }}" class="btn-cancel">Annuler</a>
+                <button type="submit" class="btn-submit">Mettre à jour</button>
+            </div>
+        </div>
 
-			<div class="form-group" style="margin-bottom: 1rem;">
-				<label>Image actuelle :</label>
-				<img id="current-image" src="{{ asset('uploads/machines/' ~ machine.image) }}" alt="Image actuelle">
+        {{ form_end(form) }}
+    </div>
 
-				<br><br>
-				{{ form_label(form.image, 'Changer l’image') }}
-				{{ form_widget(form.image) }}
-				{{ form_errors(form.image) }}
-
-				<img id="image-preview" style="display:none;">
-			</div>
-
-			<div class="form-actions">
-				<button class="btn-success">💾 Enregistrer</button>
-				<a href="{{ path('admin_machine_list') }}" class="btn-secondary">⬅️ Retour</a>
-			</div>
-
-			{{ form_end(form) }}
-
-		</div>
-	</div>
+    <form id="delete-form" method="post" action="{{ path('admin_machine_delete', {id: machine.id}) }}" style="display: none;">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ machine.id) }}">
+    </form>
 </div>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-	const input = document.querySelector("input[type='file']");
-	const preview = document.getElementById("image-preview");
+    const input = document.querySelector("input[type='file']");
+    const preview = document.getElementById("image-preview");
+    const previewBox = document.getElementById("new-preview-box");
 
-	input.addEventListener("change", () => {
-		const file = input.files[0];
-		if (!file) return;
-
-		preview.src = URL.createObjectURL(file);
-		preview.style.display = "block";
-	});
+    if (input) {
+        input.addEventListener("change", () => {
+            const file = input.files[0];
+            if (file) {
+                preview.src = URL.createObjectURL(file);
+                previewBox.style.display = "block";
+            }
+        });
+    }
 });
 </script>
-
 {% endblock %}

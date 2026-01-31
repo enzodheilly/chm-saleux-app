@@ -11,12 +11,21 @@
 {% endblock %}
 
 {% block body %}
+
 	<header class="hero-header">
-		<div class="overlay"></div>
-		<div class="hero-content">
-			<h1>{{ page.title }}</h1>
-		</div>
-	</header>
+    <div class="overlay"></div>
+
+    <!-- Image diagonale -->
+    <div class="hero-diagonal-image">
+        <img src="{{ asset('images/page.jpg') }}" alt="Le Président CHM Saleux">
+    </div>
+
+    <!-- Texte -->
+    <div class="hero-content">
+       <h1>{{ page.title }}</h1>
+        <p>Découvrez le président du CHM Saleux et son rôle au sein du club.</p>
+    </div>
+</header>
 
 	<section class="page-section">
 		{{ page.content|raw }}

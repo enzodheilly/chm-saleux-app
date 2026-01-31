@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Entity\PasswordHistory;
+use App\Entity\PasswordHistory; // ✅ Import Manquant ajouté
 use App\Repository\PasswordHistoryRepository;
 use App\Service\SystemLoggerService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,16 +25,13 @@ class ResetPasswordController extends AbstractController
         EntityManagerInterface $em,
         MailerInterface $mailer,
         SystemLoggerService $logger,
-        Environment $twig  // ✅ Injection de Twig
+        Environment $twig
     ): Response {
         $data = json_decode($request->getContent(), true);
         $email = $data['email'] ?? null;
 
         if (!$email) {
-            return $this->json([
-                'success' => false,
-                'message' => '⚠️ Email manquant.'
-            ], 400);
+            return $this->json(['success' => false, 'message' => '⚠️ Email manquant.'], 400);
         }
 
         $user = $em->getRepository(User::class)->findOneBy(['email' => $email]);
@@ -43,10 +40,7 @@ class ResetPasswordController extends AbstractController
             $lastRequest = $user->getLastResetRequestAt();
 
             if ($lastRequest && $lastRequest > $now->modify('-60 seconds')) {
-                return $this->json([
-                    'success' => false,
-                    'message' => 'Veuillez patienter avant une nouvelle demande.'
-                ], 429);
+                return $this->json(['success' => false, 'message' => 'Veuillez patienter avant une nouvelle demande.'], 429);
             }
 
             $token = Uuid::v4()->toRfc4122();
@@ -55,29 +49,25 @@ class ResetPasswordController extends AbstractController
             $user->setLastResetRequestAt($now);
             $em->flush();
 
-            // URL de réinitialisation
-            $resetUrl = $this->generateUrl('app_reset_password', ['token' => $token], 0); // URL absolue
+            $logger->add('Sécurité', sprintf('Demande de réinitialisation mot de passe pour %s (IP: %s)', $email, $request->getClientIp()));
 
-            // ✅ Contenu du mail via Twig
+            $resetUrl = $this->generateUrl('app_reset_password', ['token' => $token], 0);
+
             $htmlContent = $twig->render('emails/reset_password.html.twig', [
                 'user' => $user,
                 'resetUrl' => $resetUrl
             ]);
 
             $emailMessage = (new Email())
-                ->from('no-reply@monsite.com')
+                ->from('enzodheilly134@gmail.com')
                 ->to($user->getEmail())
                 ->subject('Réinitialisation de votre mot de passe')
                 ->html($htmlContent);
 
             $mailer->send($emailMessage);
-            $logger->add('Demande de réinitialisation', sprintf('Lien envoyé à %s', $user->getEmail()));
         }
 
-        return $this->json([
-            'success' => true,
-            'message' => 'Un mail vous a été envoyé pour réinitialiser votre mot de passe.'
-        ]);
+        return $this->json(['success' => true, 'message' => 'Un mail vous a été envoyé pour réinitialiser votre mot de passe.']);
     }
 
     #[Route('/reset-password/{token}', name: 'app_reset_password', methods: ['GET'])]
@@ -91,7 +81,6 @@ class ResetPasswordController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         SystemLoggerService $logger,
-        PasswordHistoryRepository $passwordHistoryRepo,
         PasswordHasherFactoryInterface $passwordHasherFactory
     ): Response {
         $data = json_decode($request->getContent(), true);
@@ -107,18 +96,31 @@ class ResetPasswordController extends AbstractController
             return $this->json(['success' => false, 'message' => 'Lien invalide ou expiré.'], 400);
         }
 
+        // --- 🛡️ SÉCURITÉ : Vérification Historique ---
         $hasher = $passwordHasherFactory->getPasswordHasher($user);
-        $lastPasswords = $passwordHistoryRepo->findLast($user, 5);
+
+        // 1. Vérif mot de passe actuel (même si on le change, on évite de remettre le même)
+        if ($user->getPassword() && $hasher->verify($user->getPassword(), $newPassword)) {
+            return $this->json(['success' => false, 'message' => 'Vous ne pouvez pas réutiliser votre mot de passe actuel.'], 400);
+        }
+
+        // 2. Vérif des 5 derniers mots de passe
+        // On utilise findBy standard pour être sûr que ça marche
+        $lastPasswords = $em->getRepository(PasswordHistory::class)->findBy(
+            ['user' => $user],
+            ['changedAt' => 'DESC'],
+            5
+        );
 
         foreach ($lastPasswords as $history) {
             if ($hasher->verify($history->getPasswordHash(), $newPassword)) {
-                return $this->json([
-                    'success' => false,
-                    'message' => 'Ce mot de passe a déjà été utilisé récemment. Veuillez en choisir un autre.'
-                ], 400);
+                return $this->json(['success' => false, 'message' => 'Ce mot de passe a déjà été utilisé récemment.'], 400);
             }
         }
 
+        // --- ✅ SAUVEGARDE ---
+
+        // 1. Archiver l'ancien (s'il existe)
         if ($user->getPassword()) {
             $oldHistory = new PasswordHistory();
             $oldHistory->setUser($user);
@@ -126,19 +128,21 @@ class ResetPasswordController extends AbstractController
             $em->persist($oldHistory);
         }
 
+        // 2. Mettre le nouveau
         $newHash = $hasher->hash($newPassword);
         $user->setPassword($newHash);
+
+        // Nettoyage token
         $user->setResetToken(null);
         $user->setResetTokenExpiresAt(null);
         $user->setLastResetRequestAt(null);
 
         $em->flush();
-        $passwordHistoryRepo->pruneOldPasswords($user);
 
-        $logger->add(
-            'Changement de mot de passe',
-            sprintf('Le mot de passe de %s a été modifié avec succès.', $user->getEmail())
-        );
+        // Optionnel : Nettoyage vieux historique ici si tu as la méthode
+        // $passwordHistoryRepo->pruneOldPasswords($user); 
+
+        $logger->add('Sécurité', sprintf('Le mot de passe de %s a été réinitialisé avec succès.', $user->getEmail()));
 
         return $this->json(['success' => true]);
     }

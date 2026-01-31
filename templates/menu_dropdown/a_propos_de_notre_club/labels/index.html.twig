@@ -11,15 +11,22 @@
 <header class="hero-header">
     <div class="overlay"></div>
 
+        <a href="{{ path('home') }}" class="back-button">
+         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+         </svg>
+         Home
+    </a>
+
     <!-- Image diagonale sur la droite -->
     <div class="hero-diagonal-image">
-        <img src="{{ asset('images/menu_dropdown/a_propos_de_notre_club/labels/1.jpg') }}" alt="Labels du Club CHM Saleux">
+        <img src="{{ asset('images/menu_dropdown/a_propos_de_notre_club/labels/1.jpg') }}" alt="Image Musculation Club">
     </div>
 
     <!-- Contenu texte -->
-    <div class="hero-content">
-        <h1>Les labels du club</h1>
-        <p>Découvrez les distinctions et certifications obtenues par le CHM Saleux auprès de la FFHM.</p>
+<div class="hero-content">
+        <h1>Labels & Certifications</h1>
+        <p>La reconnaissance de notre savoir-faire. De l'école d'haltérophilie au label Sport-Santé, découvrez les certifications qui valident notre engagement pédagogique auprès <span>de tous les publics.</span></p>
     </div>
 </header>
 

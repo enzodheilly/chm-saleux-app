@@ -6,9 +6,17 @@
   <div class="collectif-wrapper">
 
     <!-- PHOTO À GAUCHE -->
-    <div class="collectif-image">
-      <img src="{{ asset('images/club/cours-co.jpg') }}" alt="Cours Collectifs">
-    </div>
+        <div class="trdc-silhouette">
+            <div class="text-wall">
+                COURS COLLECTIFS<br>
+                COURS COLLECTIFS<br>
+                COURS COLLECTIFS<br>
+                COURS COLLECTIFS
+            </div>
+
+            <img src="{{ asset('images/menu_dropdown/services_du_club/cours_collectifs/12.jpg') }}"
+                 alt="Silhouette cours collectifs">
+        </div>
 
     <!-- TEXTE À DROITE -->
     <div class="collectif-text">
@@ -22,7 +30,7 @@
         et moments de cohésion. Venez vivre l’entraînement autrement !
       </p>
 
-      <a href="#" class="btn btn-collectif">En savoir plus</a>
+      <a href="{{ path('cours_collectifs') }}" class="btn btn-collectif">En savoir plus</a>
     </div>
 
   </div>
