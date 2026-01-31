@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Entity\User;
+use App\Service\SystemLoggerService; // ✅ Import du service
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use League\OAuth2\Client\Provider\GoogleUser;
@@ -23,17 +24,20 @@ class GoogleAuthenticator extends AbstractAuthenticator
     private EntityManagerInterface $em;
     private RouterInterface $router;
     private UserPasswordHasherInterface $passwordHasher;
+    private SystemLoggerService $logger; // ✅ Propriété
 
     public function __construct(
         ClientRegistry $clientRegistry,
         EntityManagerInterface $em,
         RouterInterface $router,
-        UserPasswordHasherInterface $passwordHasher
+        UserPasswordHasherInterface $passwordHasher,
+        SystemLoggerService $logger // ✅ Injection
     ) {
         $this->clientRegistry = $clientRegistry;
         $this->em = $em;
         $this->router = $router;
         $this->passwordHasher = $passwordHasher;
+        $this->logger = $logger;
     }
 
     public function supports(Request $request): bool
@@ -48,14 +52,12 @@ class GoogleAuthenticator extends AbstractAuthenticator
         /** @var GoogleUser $googleUser */
         $googleUser = $client->fetchUserFromToken($accessToken);
 
-        // 🔹 Normalisation email
         $email = strtolower(trim($googleUser->getEmail()));
         $firstName = $googleUser->getFirstName() ?? '';
         $lastName = $googleUser->getLastName() ?? '';
 
         return new Passport(
             new UserBadge($email, function ($userIdentifier) use ($email, $firstName, $lastName) {
-                // 🔹 Recherche insensible à la casse
                 $user = $this->em->getRepository(User::class)
                     ->createQueryBuilder('u')
                     ->where('LOWER(u.email) = :email')
@@ -64,7 +66,6 @@ class GoogleAuthenticator extends AbstractAuthenticator
                     ->getOneOrNullResult();
 
                 if ($user) {
-                    // 🔹 Complète prénom/nom si vide
                     if (empty($user->getFirstName()) && $firstName) {
                         $user->setFirstName($firstName);
                     }
@@ -75,11 +76,12 @@ class GoogleAuthenticator extends AbstractAuthenticator
                     return $user;
                 }
 
-                // 🔹 Aucun utilisateur trouvé → création
+                // 🔹 Création nouvel utilisateur
                 $user = new User();
                 $user->setEmail($email);
                 $user->setFirstName($firstName);
                 $user->setLastName($lastName);
+                $user->setIsVerified(true); // Google emails sont considérés vérifiés
 
                 $tempPassword = bin2hex(random_bytes(10));
                 $user->setPassword($this->passwordHasher->hashPassword($user, $tempPassword));
@@ -88,19 +90,37 @@ class GoogleAuthenticator extends AbstractAuthenticator
                 $this->em->persist($user);
                 $this->em->flush();
 
+                // ✅ LOG : Inscription Google
+                $this->logger->add('Inscription', "Nouvel utilisateur inscrit via Google : $email");
+
                 return $user;
             }),
             new CustomCredentials(fn() => true, $email)
         );
     }
-
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?RedirectResponse
     {
+        /** @var User $user */
+        $user = $token->getUser();
+
+        // Log de connexion
+        $this->logger->add('Connexion', sprintf('Connexion via Google réussie pour %s', $user->getEmail()));
+
+        // ⚡ REDIRECTION INTELLIGENTE
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+            // Si c'est un Admin -> Direction la page secrète
+            return new RedirectResponse($this->router->generate('admin_dashboard'));
+        }
+
+        // Si c'est un membre classique -> Direction l'accueil
         return new RedirectResponse($this->router->generate('home'));
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?RedirectResponse
     {
+        // ✅ LOG : Echec Connexion Google
+        $this->logger->add('Erreur Connexion', 'Échec connexion Google : ' . $exception->getMessage());
+
         return new RedirectResponse($this->router->generate('app_login'));
     }
 }

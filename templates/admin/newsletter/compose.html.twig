@@ -1,494 +1,200 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Créer une campagne
-{% endblock %}
+{% block title %}Nouvelle campagne{% endblock %}
 
 {% block stylesheets %}
-	<style>:root
-	{
-		--bg-dark: #0f1115;
-		--bg-card: #1a1c22;
-		--accent: #ff6600;
-		--border: #2a2d35;
-		--text-light: #f3f4f6;
-		--text-muted: #9ca3af;
-		--radius: 10px;
-	}
+<style>
+    /* =================== PAGE STYLE =================== */
+    .dashboard-container { width: 100%; max-width: 1600px; margin: 0 auto; }
+    
+    .page-header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
 
-	/* ====== PAGE STRUCTURE ====== */
-	.main-content {
-		padding: 2rem;
-		color: var(--text-light);
-		background: var(--bg-dark);
-		min-height: 100vh;
-		font-family: 'Inter', system-ui, sans-serif;
-	}
+    /* Layout Grid */
+    .compose-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; }
+    @media(max-width: 1000px) { .compose-grid { grid-template-columns: 1fr; } }
 
-	.page-title {
-		font-size: 1.8rem;
-		font-weight: 700;
-		color: var(--accent);
-		margin-bottom: 2rem;
-	}
+    /* Cards */
+    .panel { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; display: flex; flex-direction: column; height: 100%; }
+    
+    /* Form Elements */
+    .form-group { margin-bottom: 1.5rem; }
+    label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    
+    input[type="text"], select {
+        width: 100%; background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-main);
+        padding: 0.7rem 1rem; border-radius: 4px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; box-sizing: border-box;
+    }
+    input:focus, select:focus { border-color: var(--accent); }
 
-	.compose-layout {
-		display: grid;
-		grid-template-columns: 2fr 1.2fr;
-		gap: 2rem;
-	}
+    /* Toolbar Helper */
+    .editor-toolbar { display: flex; gap: 10px; margin-bottom: 1rem; }
+    .tool-btn {
+        background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-muted);
+        padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.8rem; cursor: pointer; transition: 0.2s;
+    }
+    .tool-btn:hover { border-color: var(--text-main); color: var(--text-main); }
 
-	.compose-left,
-	.compose-right {
-		background: var(--bg-card);
-		border: 1px solid var(--border);
-		border-radius: var(--radius);
-		padding: 2rem;
-		box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-		transition: 0.3s;
-	}
+    /* Preview Box */
+    .preview-box {
+        background: #fff; color: #000; border-radius: 4px; padding: 2rem;
+        flex: 1; min-height: 500px; overflow-y: auto; font-family: sans-serif;
+    }
+    
+    /* Actions */
+    .form-actions { margin-top: auto; padding-top: 2rem; display: flex; justify-content: flex-end; gap: 1rem; }
+    
+    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 500; cursor: pointer; }
+    .btn-secondary:hover { border-color: var(--text-main); color: var(--text-main); }
 
-	.compose-left:hover,
-	.compose-right:hover {
-		border-color: var(--accent);
-	}
+    .btn-primary { background: var(--accent); color: #fff; padding: 0.7rem 1.5rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .btn-primary:hover { background: var(--accent-hover); }
 
-	/* ====== FORM ====== */
-	.form-group {
-		display: flex;
-		flex-direction: column;
-		margin-bottom: 1.3rem;
-	}
+</style>
+{% endblock %}
 
-	.form-label {
-		font-weight: 500;
-		margin-bottom: 6px;
-		color: var(--text-muted);
-	}
+{% block body %}
+<div class="dashboard-container">
+    
+    <div class="page-header">
+        <h1>Rédiger une campagne</h1>
+        <p style="color: var(--text-muted); margin-top:5px;">Créez et envoyez votre newsletter aux abonnés.</p>
+    </div>
 
-	.form-input,
-	textarea,
-	select {
-		background: #111318;
-		color: var(--text-light);
-		border: 1px solid var(--border);
-		padding: 0.7rem 0.9rem;
-		border-radius: 6px;
-		font-size: 0.95rem;
-		transition: 0.2s;
-	}
+    <form method="POST" id="newsletterForm" class="compose-grid">
+        
+        <div class="panel">
+            
+            <div class="form-group">
+                <label for="templateSelect">Modèle de démarrage</label>
+                <select id="templateSelect">
+                    <option value="">Sélectionner un modèle...</option>
+                    <option value="basic">Newsletter Standard</option>
+                    <option value="promo">Offre Promotionnelle</option>
+                    <option value="announcement">Annonce Importante</option>
+                </select>
+            </div>
 
-	.form-input:focus,
-	textarea:focus,
-	select:focus {
-		outline: none;
-		border-color: var(--accent);
-		background: #15171c;
-	}
+            <div class="form-group">
+                <label for="subject">Objet du mail</label>
+                <input type="text" id="subject" name="subject" required placeholder="Ex: Les nouveautés de la semaine...">
+            </div>
 
-	#templateSelect,
-	#variableSelect,
-	#styleBlockSelect {
-		cursor: pointer;
-	}
+            <div class="form-group" style="flex:1; display:flex; flex-direction:column;">
+                <label>Contenu</label>
+                
+                <div class="editor-toolbar">
+                    <select id="variableSelect" style="width: auto;">
+                        <option value="">Insérer Variable...</option>
+                        <option value="{{ '{{ firstname }}' }}">Prénom</option>
+                        <option value="{{ '{{ lastname }}' }}">Nom</option>
+                        <option value="{{ '{{ unsubscribe_url }}' }}">Lien Désinscription</option>
+                    </select>
 
-	#saveTemplateBtn {
-		background: transparent;
-		color: var(--accent);
-		border: 1px solid var(--accent);
-		padding: 0.6rem 1rem;
-		border-radius: 6px;
-		font-weight: 500;
-		cursor: pointer;
-		transition: 0.2s;
-	}
-	#saveTemplateBtn:hover {
-		background: var(--accent);
-		color: #fff;
-	}
+                    <select id="styleBlockSelect" style="width: auto;">
+                        <option value="">Insérer Bloc...</option>
+                        <option value="button">Bouton Action</option>
+                        <option value="quote">Citation</option>
+                        <option value="highlight">Encadré Info</option>
+                    </select>
+                </div>
 
-	/* ====== BUTTONS ====== */
-	.btn,
-	.btn-secondary {
-		padding: 0.8rem 1.2rem;
-		border-radius: 6px;
-		font-weight: 600;
-		cursor: pointer;
-		transition: 0.25s;
-		border: none;
-	}
+                <textarea id="content" name="content" style="height: 100%; min-height: 400px;"></textarea>
+            </div>
 
-	.btn {
-		background: var(--accent);
-		color: #fff;
-	}
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" id="sendTestBtn">Envoyer un Test</button>
+                <button type="submit" class="btn-primary">Envoyer la Campagne</button>
+            </div>
+        </div>
 
-	.btn:hover {
-		background: #ff7b1b;
-		transform: translateY(-1px);
-	}
+        <div class="panel" style="background: var(--bg-darker);">
+            <div style="margin-bottom: 1rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 0.8rem;">
+                Aperçu en temps réel
+            </div>
+            <div id="preview" class="preview-box">
+                <div style="text-align: center; color: #999; margin-top: 50%;">
+                    Le contenu apparaîtra ici...
+                </div>
+            </div>
+        </div>
 
-	.btn-secondary {
-		background: #22252b;
-		color: var(--text-light);
-		border: 1px solid var(--border);
-	}
-
-	.btn-secondary:hover {
-		background: #2a2d34;
-		border-color: var(--accent);
-		color: var(--accent);
-	}
-
-	.form-actions {
-		display: flex;
-		justify-content: flex-end;
-		flex-wrap: wrap;
-		gap: 1rem;
-		margin-top: 1.5rem;
-	}
-
-	/* ====== PREVIEW ====== */
-	.preview-box {
-		background: #0f1115;
-		border: 1px solid var(--border);
-		border-radius: var(--radius);
-		padding: 1.2rem;
-		min-height: 400px;
-		overflow-y: auto;
-		color: #e5e7eb;
-		transition: all 0.3s ease;
-	}
-
-	.preview-box p {
-		margin: 0.6rem 0;
-	}
-
-	.preview-box em {
-		color: var(--text-muted);
-	}
-
-	/* ====== MODAL ====== */
-	.modal {
-		display: none;
-		position: fixed;
-		z-index: 999;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		background: rgba(0, 0, 0, 0.75);
-		justify-content: center;
-		align-items: center;
-	}
-
-	.modal-content {
-		background: var(--bg-card);
-		padding: 2rem;
-		border-radius: var(--radius);
-		width: 85%;
-		max-width: 900px;
-		max-height: 90vh;
-		overflow-y: auto;
-		border: 1px solid var(--border);
-		position: relative;
-	}
-
-	.modal-close {
-		position: absolute;
-		right: 1rem;
-		top: 1rem;
-		cursor: pointer;
-		font-size: 1.5rem;
-		color: var(--text-muted);
-		transition: 0.2s;
-	}
-	.modal-close:hover {
-		color: var(--accent);
-	}
-
-	/* ====== RESPONSIVE ====== */
-	@media(max-width: 1000px) {
-		.compose-layout {
-			grid-template-columns: 1fr;
-		}
-		.form-actions {
-			justify-content: center;
-		}
-		.compose-right {
-			order: -1;
-		}
-	}
-</style>{% endblock %}{% block body %}
-<div class="main-content">
-	<div class="dashboard-container">
-		<h1 class="page-title">📝 Nouvelle campagne newsletter</h1>
-
-		<div
-			class="compose-layout">
-			<!-- FORMULAIRE -->
-			<div class="compose-left">
-				<form
-					method="POST" id="newsletterForm">
-
-					<!-- 🧩 Modèles -->
-					<div class="form-group" style="display:flex;align-items:center;gap:10px;">
-						<div style="flex:1;">
-							<label class="form-label" for="templateSelect">🧩 Choisir un modèle :</label>
-							<select id="templateSelect" class="form-input">
-								<option value="">— Sélectionner un modèle —</option>
-								<option value="basic">📰 Newsletter simple</option>
-								<option value="promo">🔥 Offre promotionnelle</option>
-								<option value="announcement">📢 Annonce / Nouveauté</option>
-							</select>
-						</div>
-						<button type="button" id="saveTemplateBtn">💾 Enregistrer comme modèle</button>
-					</div>
-
-					<!-- 🎯 Variables dynamiques -->
-					<div class="form-group">
-						<label class="form-label" for="variableSelect">🔗 Insérer une variable personnalisée :</label>
-						<select id="variableSelect" class="form-input">
-							<option value="">— Choisir une variable —</option>
-							<option value="{{ '{{ firstname }}' }}">👤 Prénom</option>
-							<option value="{{ '{{ lastname }}' }}">👥 Nom</option>
-							<option value="{{ '{{ email }}' }}">📧 Adresse e-mail</option>
-							<option value="{{ '{{ unsubscribe_url }}' }}">🚪 Lien de désinscription</option>
-							<option value="{{ '{{ subscription_date }}' }}">🗓️ Date d’inscription</option>
-						</select>
-					</div>
-
-					<!-- 🎨 Blocs de style -->
-					<div class="form-group">
-						<label class="form-label" for="styleBlockSelect">🎨 Ajouter un bloc stylisé :</label>
-						<select id="styleBlockSelect" class="form-input">
-							<option value="">— Sélectionner un bloc —</option>
-							<option value="button">🔘 Bouton d’action</option>
-							<option value="highlight">🟧 Encadré de mise en avant</option>
-							<option value="quote">💬 Citation</option>
-							<option value="imageBanner">🖼️ Bannière d’image</option>
-							<option value="testimonial">💬 Témoignage client</option>
-							<option value="footer">📩 Pied de page pro</option>
-						</select>
-					</div>
-
-					<div class="form-group">
-						<label class="form-label" for="subject">Sujet :</label>
-						<input type="text" id="subject" name="subject" class="form-input" required>
-					</div>
-
-					<div class="form-group">
-						<label class="form-label" for="content">Contenu :</label>
-						<textarea id="content" name="content" rows="10"></textarea>
-					</div>
-
-					<div class="form-actions">
-						<button type="button" class="btn-secondary" id="previewBtn">👀 Prévisualiser</button>
-						<button type="button" class="btn-secondary" id="sendTestBtn">📨 Envoyer un test</button>
-						<button type="submit" class="btn">📤 Envoyer la campagne</button>
-					</div>
-				</form>
-			</div>
-
-			<!-- APERÇU EN DIRECT -->
-			<div class="compose-right">
-				<h3 style="color:#fff;margin-bottom:1rem;">👀 Aperçu du mail</h3>
-				<div id="preview" class="preview-box">
-					<p>
-						<em>Votre message apparaîtra ici en temps réel...</em>
-					</p>
-				</div>
-			</div>
-		</div>
-
-		<div style="margin-top:20px;">
-			<a href="{{ path('admin_newsletter_index') }}" style="color:#9ca3af;text-decoration:none;">⬅ Retour à la liste des abonnés</a>
-		</div>
-	</div>
+    </form>
 </div>
 
-<!-- MODAL -->
-<div id="previewModal" class="modal">
-	<div class="modal-content" id="modalContent">
-		<span class="modal-close" id="modalClose">&times;</span>
-		<div id="modalBody"></div>
-	</div>
-</div>
+<script src="https://cdn.tiny.cloud/1/tn2dgt5wrvywd1db8zi5vsznnk1y5jl2uw1ngfn9hjzckm5t/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
- <script src="https://cdn.tiny.cloud/1/tn2dgt5wrvywd1db8zi5vsznnk1y5jl2uw1ngfn9hjzckm5t/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
-
- <script>
-/* --- Mise à jour de l’aperçu --- */
+<script>
+/* UPDATE PREVIEW FUNCTION */
 function updatePreview() {
-  const subject = document.getElementById('subject').value;
-  const content = tinymce.get('content')?.getContent() || '';
-  document.getElementById('preview').innerHTML = `
-    <h2 style="margin-top:0;">${subject || '(Sujet du mail)'}</h2>
-    ${content || '<p><em>Commencez à rédiger votre contenu ici...</em></p>'}
-  `;
+    const subject = document.getElementById('subject').value;
+    const content = tinymce.get('content') ? tinymce.get('content').getContent() : '';
+    
+    const previewHtml = `
+        <div style="max-width:600px; margin:0 auto; font-family: Helvetica, Arial, sans-serif; line-height:1.6; color:#333;">
+            <div style="padding-bottom:20px; border-bottom:1px solid #eee; margin-bottom:20px;">
+                <h2 style="margin:0; color:#333; font-size:20px;">${subject || 'Objet du mail'}</h2>
+            </div>
+            <div>${content}</div>
+        </div>
+    `;
+    document.getElementById('preview').innerHTML = previewHtml;
 }
 
-/* --- Initialisation TinyMCE --- */
 document.addEventListener('DOMContentLoaded', () => {
-  tinymce.init({
-    selector: '#content',
-    plugins: 'link image lists table code visualblocks fullscreen hr charmap emoticons paste searchreplace wordcount',
-    toolbar: `
-      undo redo | blocks fontfamily fontsize |
-      bold italic underline strikethrough forecolor backcolor |
-      alignleft aligncenter alignright alignjustify |
-      bullist numlist outdent indent |
-      link image table hr emoticons |
-      removeformat code fullscreen
-    `,
-    menubar: 'file edit view insert format tools table help',
-    branding: false,
-    height: 520,
-    resize: false,
-    color_map: [
-      'ff6600', 'Orange CHM',
-      '0e0e10', 'Noir CHM',
-      'ffffff', 'Blanc',
-      '9ca3af', 'Gris clair'
-    ],
-    content_style: `
-      body { font-family:Inter,system-ui,sans-serif;font-size:15px;color:#222;line-height:1.55;padding:1rem; }
-      h1,h2,h3 { color:#ff6600; }
-      a { color:#ff6600; text-decoration:underline; }
-      .highlight { background:#fff7e6;padding:15px;border-left:5px solid #ff6600;margin:1rem 0; }
-      .quote { border-left:4px solid #ff6600;padding-left:12px;color:#555;font-style:italic; }
-      .btn-action { display:inline-block;background:#ff6600;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:bold; }
-      .signature { border-top:1px solid #ccc;margin-top:30px;padding-top:15px;color:#555;font-size:0.9rem; }
-    `,
-    setup: (editor) => editor.on('keyup change', updatePreview)
-  });
+    /* INIT TINYMCE */
+    tinymce.init({
+        selector: '#content',
+        plugins: 'link lists table code',
+        toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter | bullist numlist | link | code',
+        menubar: false,
+        height: '100%',
+        skin: 'oxide-dark',
+        content_css: 'dark',
+        setup: (editor) => {
+            editor.on('keyup change', updatePreview);
+        }
+    });
 
-  document.getElementById('subject').addEventListener('input', updatePreview);
+    document.getElementById('subject').addEventListener('input', updatePreview);
+
+    /* TEMPLATES */
+    const templates = {
+        basic: `<p>Bonjour {{ '{{ firstname }}' }},</p><p>Voici les dernières nouvelles...</p><p><a href="{{ '{{ unsubscribe_url }}' }}">Se désabonner</a></p>`,
+        promo: `<h2 style="color:#ff6600;">Offre Spéciale !</h2><p>Profitez de -20% sur tout.</p><p><a href="#" style="background:#ff6600; color:#fff; padding:10px 20px; text-decoration:none; border-radius:4px;">En profiter</a></p>`,
+        announcement: `<h2>Grande Nouvelle</h2><p>Nous avons le plaisir de vous annoncer...</p>`
+    };
+
+    document.getElementById('templateSelect').addEventListener('change', (e) => {
+        const val = e.target.value;
+        if(val && templates[val]) {
+            if(confirm('Remplacer le contenu actuel par ce modèle ?')) {
+                tinymce.get('content').setContent(templates[val]);
+                updatePreview();
+            }
+        }
+    });
+
+    /* VARIABLES & BLOCKS */
+    document.getElementById('variableSelect').addEventListener('change', (e) => {
+        if(e.target.value) {
+            tinymce.get('content').insertContent(e.target.value);
+            e.target.value = '';
+        }
+    });
+
+    document.getElementById('styleBlockSelect').addEventListener('change', (e) => {
+        const val = e.target.value;
+        let html = '';
+        if(val === 'button') html = `<br><a href="#" style="background:#ff6600; color:#fff; padding:10px 20px; text-decoration:none; border-radius:4px; font-weight:bold;">Cliquez ici</a><br>`;
+        if(val === 'quote') html = `<blockquote style="border-left:4px solid #ff6600; padding-left:15px; font-style:italic; color:#555;">Votre citation ici</blockquote>`;
+        if(val === 'highlight') html = `<div style="background:#f9f9f9; padding:15px; border:1px solid #ddd; border-radius:4px;"><strong>Info :</strong> Texte mis en avant.</div>`;
+        
+        if(html) {
+            tinymce.get('content').insertContent(html);
+            e.target.value = '';
+        }
+    });
 });
-
-/* --- 🎯 Variables dynamiques --- */
-document.getElementById('variableSelect')?.addEventListener('change', (e) => {
-  const value = e.target.value;
-  if (value && tinymce.get('content')) {
-    tinymce.activeEditor.execCommand('mceInsertContent', false, value);
-    e.target.value = '';
-  }
-});
-
-/* --- 🎨 Blocs stylisés --- */
-document.getElementById('styleBlockSelect')?.addEventListener('change', (e) => {
-  const selected = e.target.value;
-  let block = '';
-  if (selected === 'button') {
-    block = `<a href="#" class="btn-action">👉 En savoir plus</a>`;
-  } else if (selected === 'highlight') {
-    block = `<div class="highlight">✨ <strong>Info importante :</strong> ajoutez votre texte ici.</div>`;
-  } else if (selected === 'quote') {
-    block = `<blockquote class="quote">“Votre citation inspirante ici.”</blockquote>`;
-  } else if (selected === 'imageBanner') {
-    block = `<div style="text-align:center;margin:20px 0;">
-               <img src="https://via.placeholder.com/600x200.png?text=Banniere+Newsletter" 
-                    alt="Bannière" style="width:100%;border-radius:8px;">
-             </div>`;
-  } else if (selected === 'testimonial') {
-    block = `<div style="border-left:4px solid #ff6600;padding:15px;margin:20px 0;background:#fff7e6;">
-               <p>“Super expérience, l’équipe CHM est au top !”</p>
-               <p style="text-align:right;font-weight:bold;">– Un abonné fidèle 💪</p>
-             </div>`;
-  } else if (selected === 'footer') {
-    block = `<footer style="border-top:1px solid #ccc;margin-top:40px;padding-top:20px;color:#777;font-size:13px;text-align:center;">
-               Vous recevez cet e-mail car vous êtes abonné à notre newsletter.<br>
-               <a href="{{ '{{ unsubscribe_url }}' }}" style="color:#ff6600;">Se désabonner</a>
-             </footer>`;
-  }
-  if (block) tinymce.activeEditor.execCommand('mceInsertContent', false, block);
-  e.target.value = '';
-});
-
-/* --- ✍️ Signature automatique --- */
-function insertSignature() {
-  const signatureHTML = `
-    <div class="signature">
-      <p>Sportivement,<br><strong>L’équipe CHM</strong><br>
-      <a href="https://clubchm.fr" style="color:#ff6600;">www.clubchm.fr</a></p>
-    </div>
-  `;
-  tinymce.activeEditor.execCommand('mceInsertContent', false, signatureHTML);
-}
-
-/* --- 📋 Modèles prédéfinis --- */
-const emailTemplates = {
-  basic: `
-    <h1 style="color:#ff6600;">Bienvenue dans notre newsletter !</h1>
-    <p>Bonjour {{ '{{ firstname }}' }},</p>
-    <p>Merci de nous suivre ❤️. Voici les dernières nouvelles de la semaine :</p>
-    <ul>
-      <li>📰 Nouvel article sur notre blog</li>
-      <li>💡 Astuce de la semaine</li>
-      <li>🎁 Un petit bonus pour nos abonnés fidèles</li>
-    </ul>
-    <p>À très bientôt,<br>L’équipe <strong>CHM</strong></p>
-    <p><a href="{{ '{{ unsubscribe_url }}' }}">Se désabonner</a></p>
-  `,
-  promo: `
-    <h1 style="color:#ff6600;text-align:center;">🔥 Offre Spéciale Limitée !</h1>
-    <p>Bonjour {{ '{{ firstname }}' }},</p>
-    <p style="text-align:center;">Profitez de <strong>-30%</strong> sur toute la boutique jusqu’à dimanche soir 🎉</p>
-    <div style="text-align:center;margin:30px 0;">
-      <a href="#" style="background:#ff6600;color:#fff;padding:12px 24px;border-radius:5px;text-decoration:none;font-weight:bold;">JE PROFITE DE L’OFFRE</a>
-    </div>
-    <p>Ne manquez pas cette occasion de vous faire plaisir 😉</p>
-    <p><a href="{{ '{{ unsubscribe_url }}' }}">Se désabonner</a></p>
-  `,
-  announcement: `
-    <h1 style="color:#ff6600;">📢 Grande nouvelle !</h1>
-    <p>Bonjour {{ '{{ firstname }}' }},</p>
-    <p>Nous avons le plaisir de vous annoncer le lancement de notre <strong>nouvelle fonctionnalité</strong> 🎉</p>
-    <p>Découvrez-la dès maintenant et dites-nous ce que vous en pensez !</p>
-    <div style="text-align:center;margin:30px 0;">
-      <a href="#" style="background:#ff6600;color:#fff;padding:12px 24px;border-radius:5px;text-decoration:none;font-weight:bold;">Découvrir maintenant</a>
-    </div>
-    <p>Merci pour votre fidélité,<br>L’équipe <strong>CHM</strong></p>
-    <p><a href="{{ '{{ unsubscribe_url }}' }}">Se désabonner</a></p>
-  `
-};
-
-/* --- Sélection d’un modèle --- */
-document.addEventListener('DOMContentLoaded', () => {
-  const select = document.getElementById('templateSelect');
-  if (!select) return;
-
-  select.addEventListener('change', (e) => {
-    const key = e.target.value;
-    const tmpl = emailTemplates[key];
-    if (!key || !tmpl) return;
-
-    if (!tinymce.get('content')) {
-      console.warn('TinyMCE non initialisé');
-      return;
-    }
-
-    if (confirm("Voulez-vous remplacer le contenu actuel par ce modèle ?")) {
-      tinymce.get('content').setContent(tmpl);
-      updatePreview();
-    }
-  });
-});
-
-/* --- 🪄 Modal Preview --- */
-document.getElementById('previewBtn').addEventListener('click', () => {
-  const subject = document.getElementById('subject').value;
-  const content = tinymce.get('content').getContent();
-  document.getElementById('modalBody').innerHTML = `
-    <h2 style="margin-top:0;color:#ff6600;">${subject || '(Sujet du mail)'}</h2>
-    ${content || '<p><em>Aucun contenu...</em></p>'}
-  `;
-  document.getElementById('previewModal').style.display = 'flex';
-});
-document.getElementById('modalClose').addEventListener('click', () => {
-  document.getElementById('previewModal').style.display = 'none';
-});
-window.addEventListener('click', (e) => {
-  if (e.target.id === 'previewModal')
-    document.getElementById('previewModal').style.display = 'none';
-});
-</script>{% endblock %}
+</script>
+{% endblock %}

@@ -1,215 +1,267 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Gestion des licences
-{% endblock %}
+{% block title %}Gestion des licences{% endblock %}
 
 {% block stylesheets %}
-	<style>:root
-	{
-		--bg-dark: #0e0e10;
-		--bg-darker: #141416;
-		--bg-light: #1c1c1f;
-		--text-main: #e5e7eb;
-		--text-muted: #9ca3af;
-		--accent: #ff6600;
-		--border: #2a2a2d;
-	}
+<style>
+    /* =================== PAGE STYLE =================== */
+    .dashboard-container {
+        width: 100%;
+        max-width: 1600px;
+        margin: 0 auto;
+    }
 
-	body {
-		font-family: "Inter", system-ui, sans-serif;
-		background: var(--bg-dark);
-		color: var(--text-main);
-		margin: 0;
-		min-height: 100vh;
-	}
+    /* Header */
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 1.5rem;
+    }
+    .page-header h1 { 
+        margin: 0; 
+        font-size: 1.6rem; 
+        font-weight: 700; 
+        color: var(--text-main); 
+        letter-spacing: -0.5px;
+    }
+    .page-header p {
+        margin: 5px 0 0 0;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
 
-	.main-content {
-		flex: 1;
-		margin-left: 100px;
-		padding: 2.5rem 3rem;
-		display: flex;
-		flex-direction: column;
-		background: var(--bg-dark);
-		min-height: 100vh;
-	}
+    /* Toolbar */
+    .toolbar {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
 
-	/* ---------- HEADER ---------- */
-	h1 {
-		font-size: 2.3rem;
-		font-weight: 800;
-		color: #fff;
-		margin-bottom: 2.5rem;
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-	}
+    .search-input {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text-main);
+        padding: 0.6rem 1rem;
+        border-radius: 4px;
+        outline: none;
+        min-width: 300px;
+        font-size: 0.9rem;
+        transition: border-color 0.2s;
+    }
+    .search-input:focus { border-color: var(--accent); }
+    .search-input::placeholder { color: var(--text-muted); opacity: 0.6; }
 
-	/* ---------- BUTTONS ---------- */
-	.btn {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.6rem 1.2rem;
-		border: none;
-		border-radius: 6px;
-		font-weight: 600;
-		cursor: pointer;
-		text-decoration: none;
-		transition: all 0.2s ease;
-		font-size: 0.9rem;
-	}
+    .btn-primary {
+        background: var(--accent);
+        color: #fff;
+        padding: 0.6rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: 0.2s;
+        border: none;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .btn-primary:hover { background: var(--accent-hover); }
 
-	.btn-primary {
-		background: var(--accent);
-		color: #fff;
-		box-shadow: 0 3px 10px rgba(255, 102, 0, 0.25);
-	}
-	.btn-primary:hover {
-		background: #e25500;
-		transform: translateY(-2px);
-	}
+    /* Carte Principale */
+    .content-card {
+        background: var(--bg-light);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+    }
 
-	.btn-warning {
-		background: #f59e0b;
-		color: #000;
-	}
-	.btn-warning:hover {
-		background: #d97706;
-	}
+    /* Table */
+    .table-responsive { overflow-x: auto; }
+    .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    
+    .table th {
+        background: var(--bg-darker);
+        color: var(--text-muted);
+        font-weight: 600;
+        text-align: left;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+    }
+    
+    .table td {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--text-main);
+        vertical-align: middle;
+    }
+    .table tr:last-child td { border-bottom: none; }
+    .table tr:hover { background: rgba(255,255,255,0.01); }
 
-	.btn-danger {
-		background: #ef4444;
-		color: #fff;
-	}
-	.btn-danger:hover {
-		background: #dc2626;
-	}
+    /* Data Styling */
+    .licence-number {
+        font-family: "Courier New", Courier, monospace; /* Style Code */
+        font-weight: 700;
+        letter-spacing: 1px;
+        background: var(--bg-darker);
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        color: var(--text-main);
+        border: 1px solid var(--border);
+    }
 
-	.mb-3 {
-		margin-bottom: 1.5rem;
-	}
+    .info-primary { font-weight: 600; display: block; color: var(--text-main); }
+    .info-secondary { font-size: 0.8rem; color: var(--text-muted); }
 
-	/* ---------- TABLE ---------- */
-	.table {
-		width: 100%;
-		border-collapse: collapse;
-		font-size: 0.95rem;
-		color: #e5e7eb;
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-	}
+    /* Status Badges */
+    .badge {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 4px 8px;
+        border-radius: 4px;
+    }
+    .badge-active { color: #22c55e; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); }
+    .badge-expired { color: #ef4444; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
+    .badge-type { color: var(--accent); border: 1px solid var(--border); }
 
-	.table th {
-		background: var(--bg-darker);
-		padding: 0.9rem 1rem;
-		text-align: left;
-		font-weight: 600;
-		color: #fff;
-		border-bottom: 1px solid var(--border);
-	}
+    /* Actions */
+    .actions-cell {
+        display: flex;
+        gap: 15px;
+        justify-content: flex-end;
+    }
+    .action-link {
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-decoration: none;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+    .link-edit { color: var(--text-muted); }
+    .link-edit:hover { color: var(--text-main); text-decoration: underline; }
+    .link-delete { color: #ef4444; opacity: 0.8; }
+    .link-delete:hover { opacity: 1; text-decoration: underline; }
 
-	.table td {
-		padding: 0.9rem 1rem;
-		border-bottom: 1px solid var(--border);
-		vertical-align: top;
-	}
+</style>
+{% endblock %}
 
-	.table tbody tr:hover {
-		background: rgba(255, 255, 255, 0.03);
-	}
+{% block body %}
+<div class="dashboard-container">
+    
+    {# Header #}
+    <div class="page-header">
+        <div>
+            <h1>Licences</h1>
+            <p>Suivi des licences sportives et dates d'expiration</p>
+        </div>
+        <div class="toolbar">
+            <input type="text" id="searchLicence" class="search-input" placeholder="Nom, email ou numéro...">
+            <a href="{{ path('admin_licence_new') }}" class="btn-primary">
+                Créer une licence
+            </a>
+        </div>
+    </div>
 
-	/* ---------- LISTE D’AVANTAGES ---------- */
-	.table ul {
-		margin: 0;
-		padding-left: 1.2rem;
-	}
+    {# Table #}
+    <div class="content-card">
+        <div class="table-responsive">
+            <table class="table" id="licenceTable">
+                <thead>
+                    <tr>
+                        <th width="80">ID</th>
+                        <th>Numéro</th>
+                        <th>Titulaire</th>
+                        <th>Type</th>
+                        <th>Validité</th>
+                        <th>Statut</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for licence in licences %}
+                        {# Calcul de l'état (Active / Expirée) #}
+                        {% set isExpired = licence.expiryDate < date() %}
+                        
+                        <tr>
+                            <td style="color: var(--text-muted); font-family: monospace;">#{{ licence.id }}</td>
+                            
+                            <td>
+                                <span class="licence-number">{{ licence.number }}</span>
+                            </td>
 
-	.table li {
-		list-style: "✔️ ";
-		margin-bottom: 0.2rem;
-		color: var(--text-main);
-	}
+                            <td>
+                                <span class="info-primary search-target">{{ licence.firstName }} {{ licence.lastName }}</span>
+                                <span class="info-secondary search-target">{{ licence.email }}</span>
+                            </td>
 
-	/* ---------- ACTIONS ---------- */
-	.table .btn {
-		padding: 0.4rem 0.8rem;
-		font-size: 0.85rem;
-	}
+                            <td>
+                                <span class="badge badge-type">{{ licence.type|capitalize }}</span>
+                            </td>
 
-	.table .btn + form {
-		display: inline-block;
-		margin-left: 0.5rem;
-	}
+                            <td>
+                                <span class="info-primary">{{ licence.expiryDate ? licence.expiryDate|date('d/m/Y') : '—' }}</span>
+                            </td>
 
-	/* ---------- EMPTY STATE ---------- */
-	.text-center {
-		text-align: center;
-		color: var(--text-muted);
-		padding: 1rem;
-	}
+                            <td>
+                                {% if isExpired %}
+                                    <span class="badge badge-expired">Expirée</span>
+                                {% else %}
+                                    <span class="badge badge-active">Active</span>
+                                {% endif %}
+                            </td>
 
-	/* ---------- RESPONSIVE ---------- */
-	@media(max-width: 900px) {
-		.main-content {
-			margin-left: 0;
-			padding: 1.5rem;
-		}
+                            <td>
+                                <div class="actions-cell">
+                                    <a href="{{ path('admin_licence_edit', {id: licence.id}) }}" class="action-link link-edit">Modifier</a>
+                                    
+                                    <form method="post" action="{{ path('admin_licence_delete', {id: licence.id}) }}" onsubmit="return confirm('Supprimer définitivement la licence {{ licence.number }} ?');" style="display:inline;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ licence.id) }}">
+                                        <button class="action-link link-delete">Supprimer</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 4rem; color: var(--text-muted);">
+                                Aucune licence enregistrée.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-		.table {
-			font-size: 0.85rem;
-		}
+</div>
 
-		h1 {
-			font-size: 1.8rem;
-		}
-	}
-</style>{% endblock %}{% block body %}
-<div class="main-content">
-	<h1>🪪 Licences</h1>
+<script>
+    // Recherche simple en JS
+    document.getElementById('searchLicence').addEventListener('keyup', function() {
+        const val = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#licenceTable tbody tr');
 
-	<a href="{{ path('admin_licence_new') }}" class="btn btn-primary mb-3">+ Nouvelle licence</a>
-
-	<table class="table">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Prénom</th>
-				<th>Nom</th>
-				<th>Email</th>
-				<th>Numéro</th>
-				<th>Type</th>
-				<th>Date d’expiration</th>
-				<th>Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for licence in licences %}
-				<tr>
-					<td>{{ licence.id }}</td>
-					<td>{{ licence.firstName ?? '—' }}</td>
-					<td>{{ licence.lastName ?? '—' }}</td>
-					<td>{{ licence.email ?? '—' }}</td>
-					<td>{{ licence.number }}</td>
-					<td>{{ licence.type|capitalize }}</td>
-					<td>{{ licence.expiryDate ? licence.expiryDate|date('d/m/Y') : '—' }}</td>
-
-					<td>
-						<div class="actions">
-							<a href="{{ path('admin_licence_edit', {id: licence.id}) }}" class="btn btn-warning">✏️ Modifier</a>
-							<form method="post" action="{{ path('admin_licence_delete', {id: licence.id}) }}" onsubmit="return confirm('Supprimer cette licence ?');" style="display:inline-block;">
-								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ licence.id) }}">
-								<button class="btn btn-danger">🗑️ Supprimer</button>
-							</form>
-						</div>
-					</td>
-				</tr>
-			{% else %}
-				<tr>
-					<td colspan="8" class="text-center">Aucune licence trouvée</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-
-
-</div>{% endblock %}
+        rows.forEach(row => {
+            // On cherche dans le numéro et dans le nom/email
+            const number = row.querySelector('.licence-number')?.textContent.toLowerCase() || '';
+            const text = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase() || ''; // Colonne Titulaire
+            
+            if (number.includes(val) || text.includes(val)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
+{% endblock %}

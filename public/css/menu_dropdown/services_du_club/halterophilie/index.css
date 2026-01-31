@@ -1,4 +1,3 @@
-		@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700 &display=swap');
 
 		* {
 			margin: 0;
@@ -27,7 +26,6 @@
 			z-index: 1;
 			max-width: 900px;
 			padding: 2rem;
-			animation: fadeInUp 1.2s ease-out;
 		}
 
 		.hero-content h1 {
@@ -46,7 +44,6 @@
 			font-weight: 300;
 			margin-bottom: 2.5rem;
 			letter-spacing: 0.5px;
-			transition: color 0.3s ease;
 		}
 
 		.cta-button {
@@ -57,21 +54,33 @@
   text-decoration: none;
   font-weight: 800;
   font-size: 1.1rem;
-  transition: all 0.3s ease;
   display: inline-block;
   text-transform: uppercase;
 		}
-
-		@keyframes fadeInUp {
-			from {
-				opacity: 0;
-				transform: translateY(40px);
-			}
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}
+		
+		        .back-button {
+    /* 1. POSITIONNEMENT : On le sort du flux pour le mettre en haut à gauche */
+    position: absolute; 
+    top: -70.5px;      /* Espace depuis le haut */
+    right: 125.8%;     /* Espace depuis la gauche */
+    
+    /* 2. COUCHE : On le force à passer au-dessus du filtre bleu (qui est à 1) */
+    z-index: 10;    
+    
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    
+    /* 3. COULEUR : On met blanc car le fond est sombre */
+    color: #ffffff; 
+    
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
 
 		main {
 			background: transparent;
@@ -98,7 +107,7 @@
 
 		.section-content h2 {
 			font-size: 2.8rem;
-			font-weight: 700;
+			font-weight: 900;
 			background: linear-gradient(135deg, #0d47a1, #1976d2);
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;
@@ -153,88 +162,95 @@
 			box-shadow: 0 25px 60px rgba(13, 71, 161, 0.25);
 		}
 
-		.video-section {
-			padding: 6rem 5%;
-			background: linear-gradient(135deg, #0d47a1, #1976d2);
-			text-align: center;
-			color: white;
-		}
+/* ==========================================================
+   📱 MOBILE RESPONSIVE (MAX-WIDTH: 900px)
+   ========================================================== */
 
-		.video-section h2 {
-			font-size: 2.8rem;
-			font-weight: 700;
-			margin-bottom: 1rem;
-			text-transform: uppercase;
-		}
+@media (max-width: 900px) {
 
-		.video-container {
-			display: flex;
-			justify-content: center;
-			margin-top: 2rem;
-		}
+    /* --- 1. HERO HEADER (Adaptation Background) --- */
+    .hero-header {
+        /* On passe en hauteur auto minimum pour éviter de couper le texte */
+        height: auto;
+        min-height: 100vh;
+        
+        /* Alignement Vertical & Gauche */
+        flex-direction: column;
+        justify-content: center; /* Centre verticalement */
+        align-items: flex-start; /* Aligne le texte à GAUCHE */
+        text-align: left;        /* Aligne le texte à GAUCHE */
+        
+        padding-top: 100px;      /* Espace pour la navbar */
+        padding-bottom: 50px;
+    }
 
-		.video-container iframe {
-			border-radius: 20px;
-			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-			border: 4px solid rgba(255, 255, 255, 0.1);
-		}
+    .hero-content {
+        padding: 0 25px; /* Marges latérales propres */
+        max-width: 100%;
+        margin: 0;
+    }
 
-		@media(max-width: 1024px) {
-			.section {
-				gap: 3rem;
-			}
-			.hero-content h1 {
-				font-size: 3rem;
-			}
-		}
+    .hero-content h1 {
+        font-size: 2.35rem; /* Taille adaptée */
+        line-height: 1.1;
+        margin-bottom: 20px;
+        text-align: left;
+    }
 
-		@media(max-width: 900px) {
-			.section {
-				flex-direction: column;
-				padding: 4rem 5%;
-			}
-			.section:nth-child(even) {
-				flex-direction: column;
-			}
-			.section-image {
-				max-width: 100%;
-			}
-			.hero-content h1 {
-				font-size: 2.5rem;
-			}
-			.section-content h2 {
-				font-size: 2.2rem;
-			}
-			.video-container iframe {
-				width: 100%;
-				max-width: 560px;
-			}
-		}
+    .hero-content p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        text-align: left;
+        margin-bottom: 30px;
+    }
 
-		@media(max-width: 600px) {
-			.hero-content h1 {
-				font-size: 2rem;
-				letter-spacing: 1px;
-			}
-			.hero-content p {
-				font-size: 1.1rem;
-			}
-			.section {
-				padding: 3rem 5%;
-			}
-			.section-content h2 {
-				font-size: 1.8rem;
-			}
-			.section-content p {
-				font-size: 1rem;
-			}
-		}
+    .cta-button {
+        width: 100%; /* Bouton pleine largeur sur mobile */
+        text-align: center;
+        padding: 15px 20px;
+    }
 
-		@keyframes fadeIn {
-			from {
-				opacity: 0;
-			}
-			to {
-				opacity: 1;
-			}
-		}
+    /* --- 2. SECTIONS (Layout Vertical) --- */
+    .section {
+        flex-direction: column; /* Empilement vertical */
+        padding: 60px 20px;
+        gap: 40px;
+    }
+
+    /* Annule l'effet d'inversion des sections paires */
+    .section:nth-child(even) {
+        flex-direction: column;
+    }
+
+    .section-content {
+        order: 1; /* Le texte en PREMIER */
+        text-align: left; /* Alignement gauche strict */
+        width: 100%;
+    }
+
+    .section-content h2 {
+        font-size: 2rem;
+        line-height: 1.2;
+    }
+
+    .section-content p {
+        font-size: 1rem;
+        text-align: left;
+    }
+
+    /* --- 3. IMAGES DES SECTIONS --- */
+    .section-image {
+        order: 2; /* L'image en DEUXIÈME */
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .section-image img {
+        width: 100%;
+        border-radius: 12px;
+        /* On enlève le hover qui peut gêner sur tactile */
+        transform: none !important; 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+}

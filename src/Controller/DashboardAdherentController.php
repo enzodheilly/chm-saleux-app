@@ -52,10 +52,12 @@ class DashboardAdherentController extends AbstractController
         $events = $eventRepository->findBy([], ['date' => 'ASC', 'startTime' => 'ASC']);
         $produits = $this->em->getRepository(Produit::class)->findAll();
 
-        return $this->render('dashboard/index.html.twig', [
+        return $this->render('dashboard_test/index.html.twig', [
             'user' => $user,
             'events' => $events,
             'produits' => $produits,
+            'notifications' => $notifications,
+            'planning' => $planning,
         ]);
     }
 

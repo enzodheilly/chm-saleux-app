@@ -1,530 +1,270 @@
 {% extends 'admin/base_admin.html.twig' %}
-{% block title %}Tableau de bord Admin
-{% endblock %}
+
+{% block title %}Tableau de bord{% endblock %}
 
 {% block stylesheets %}
-	<style>
-	/* ------------------------- LAYOUT GÉNÉRAL ------------------------- */:root
-	{
-		--bg-dark: #0e0e10;
-		--bg-darker: #141416;
-		--bg-light: #1c1c1f;
-		--text-main: #e5e7eb;
-		--text-muted: #9ca3af;
-		--accent: #ff6600;
-		--border: #2a2a2d;
-	}
+<style>
+    /* =================== 🔒 LE STYLE "ÉCRAN TOTAL" (MODIFIÉ) =================== */
+    /* Cette classe force le bloc à prendre tout l'écran et à passer au-dessus du menu */
+    .gatekeeper-overlay {
+        position: fixed;       /* On le fixe par rapport à la fenêtre */
+        top: 0;
+        left: 0;
+        width: 100vw;          /* 100% de la largeur de l'écran */
+        height: 100vh;         /* 100% de la hauteur de l'écran */
+        background: var(--bg-darker, #1a1d21); /* Couleur de fond opaque pour cacher le reste */
+        z-index: 99999;        /* Un chiffre énorme pour être sûr d'être au-dessus de tout */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-	body {
-		font-family: "Inter", system-ui, sans-serif;
-		background: var(--bg-dark);
-		color: var(--text-main);
-		margin: 0;
-		min-height: 100vh;
-	}
+    .gatekeeper-card {
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+        border: 2px solid var(--accent);
+        padding: 40px;
+        background: var(--bg-light, #2a2f37); /* Un peu plus clair que le fond */
+        border-radius: 8px;
+        box-shadow: 0 0 50px rgba(0,0,0,0.5); /* Une ombre pour l'effet "Focus" */
+    }
 
-	/* ✅ Ajustement : marge à gauche pour la sidebar de 230px */
-	.main-content {
-		flex: 1;
-		margin-left: 100px;
-		padding: 2.5rem 3rem;
-		display: flex;
-		flex-direction: column;
-		box-sizing: border-box;
-		background: var(--bg-dark);
-		min-height: 100vh;
-	}
+    /* =================== DASHBOARD GRID (VOTRE STYLE HABITUEL) =================== */
+    .dashboard-container { width: 100%; max-width: 1600px; margin: 0 auto; }
+    .dashboard-header { margin-bottom: 2rem; }
+    .dashboard-header h1 { font-size: 1.8rem; font-weight: 800; margin: 0; color: var(--text-main); }
+    .dashboard-header p { color: var(--text-muted); margin-top: 5px; font-size: 0.9rem; }
 
-	.dashboard-container {
-		width: 100%;
-		max-width: none; /* ✅ enlève la limitation */
-	}
+    /* STATS CARDS */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .stat-card { background: var(--bg-light); border: 1px solid var(--border); padding: 1.5rem; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-color: var(--accent); }
+    .stat-label { color: var(--text-muted); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .stat-value { font-size: 2rem; font-weight: 800; color: var(--text-main); line-height: 1; }
+    .stat-trend { font-size: 0.8rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 5px; }
+    .trend-up { color: var(--success, #22c55e); }
+    .trend-neutral { color: var(--text-muted); }
 
-	/* ------------------------- TITRE ------------------------- */
-	.dashboard-container h1 {
-		font-size: 2.3rem;
-		font-weight: 800;
-		color: #fff;
-		text-align: left;
-		margin-bottom: 2.5rem;
-	}
+    /* CHARTS */
+    .charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .chart-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; }
+    .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .chart-title { font-weight: 700; color: var(--text-main); }
 
-	/* ------------------------- STATS ------------------------- */
-	.stats {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-		gap: 1.2rem;
-		margin-bottom: 2.5rem;
-	}
+    /* CONTENT GRID */
+    .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+    @media(max-width: 1200px) { .content-grid { grid-template-columns: 1fr; } }
 
-	.stat-card {
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		padding: 1.2rem 1rem;
-		text-align: center;
-		transition: border-color 0.2s ease, transform 0.2s ease;
-	}
-	.stat-card:hover {
-		border-color: var(--accent);
-		transform: translateY(-2px);
-	}
-	.stat-card h3 {
-		font-size: 0.9rem;
-		color: var(--text-muted);
-		margin-bottom: 0.4rem;
-		font-weight: 500;
-	}
-	.stat-card p {
-		font-size: 1.6rem;
-		font-weight: 700;
-		color: #fff;
-		margin: 0;
-	}
+    .section-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+    .section-header { padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .section-title { font-size: 1rem; font-weight: 700; color: var(--text-main); margin: 0; }
 
-	/* ------------------------- GRAPHIQUES ------------------------- */
-	.chart-container {
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		padding: 1.5rem;
-		margin-bottom: 2rem;
-		width: 100%;
-		box-sizing: border-box;
-	}
+    /* TABLES & LISTS */
+    .table-container { overflow-x: auto; }
+    .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .table th { background: var(--bg-darker); color: var(--text-muted); font-weight: 600; text-align: left; padding: 0.8rem 1.5rem; border-bottom: 1px solid var(--border); }
+    .table td { padding: 0.8rem 1.5rem; border-bottom: 1px solid var(--border); color: var(--text-main); }
+    .table tr:last-child td { border-bottom: none; }
+    .status-badge { padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; }
+    .status-success { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
+    .status-failed { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+    
+    .activity-list { padding: 0; margin: 0; list-style: none; }
+    .activity-item { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; gap: 1rem; }
+    .activity-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); margin-top: 5px; flex-shrink: 0; }
+    .activity-content { font-size: 0.9rem; color: var(--text-main); }
+    .activity-time { font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 4px; }
+    
+    .quick-actions { display: flex; gap: 10px; flex-wrap: wrap; padding: 1.5rem; }
+    .action-btn { background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-main); padding: 0.6rem 1rem; border-radius: 6px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: 0.2s; }
+    .action-btn:hover { border-color: var(--accent); color: var(--accent); }
+</style>
+{% endblock %}
 
-	/* ------------------------- SECTIONS ------------------------- */
-	.section-card {
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		padding: 1.5rem 1.3rem;
-		margin-bottom: 2rem;
-		width: 100%;
-		box-sizing: border-box;
-	}
+{% block body %}
 
-	.section-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-bottom: 1.2rem;
-		border-bottom: 1px solid var(--border);
-		padding-bottom: 0.8rem;
-	}
+{# ================================================================= #}
+{# 🔒 CAS 1 : MODE VERRUILLÉ (FULL SCREEN OVERLAY)                  #}
+{# ================================================================= #}
+{% if qrCodeContent is defined and qrCodeContent %}
 
-	.section-title {
-		font-size: 1rem;
-		font-weight: 600;
-		color: #fff;
-	}
+    {# Ce div va recouvrir TOUT l'écran, sidebar comprise #}
+    <div class="gatekeeper-overlay">
+        <div class="gatekeeper-card">
+            <h1 style="color: var(--accent); margin-bottom: 20px; font-size: 2rem;">🛑 Accès Restreint</h1>
+            <p style="color: var(--text-main); margin-bottom: 20px;">
+                Pour accéder aux données sensibles du club, vous devez sécuriser votre compte Administrateur.
+            </p>
+            
+            <div style="background: white; padding: 15px; display: inline-block; margin-bottom: 25px; border-radius: 12px;">
+                <img src="{{ qr_code_data_uri(qrCodeContent) }}" alt="QR Code" width="200" height="200">
+            </div>
 
-	/* ------------------------- TABLES ------------------------- */
-	.table {
-		width: 100%;
-		border-collapse: collapse;
-		font-size: 0.9rem;
-		color: #e5e7eb;
-	}
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px;">
+                Scannez ce code avec <strong>Google Authenticator</strong> puis entrez le code ci-dessous :
+            </p>
 
-	.table thead {
-		background: var(--bg-darker);
-		color: #fff;
-	}
-	.table th {
-		text-align: left;
-		padding: 0.8rem 1rem;
-		font-weight: 600;
-	}
-	.table td {
-		padding: 0.8rem 1rem;
-		border-bottom: 1px solid var(--border);
-	}
-	.table tbody tr:hover {
-		background: rgba(255, 255, 255, 0.03);
-	}
+            <form method="POST">
+                <input type="text" name="auth_code" placeholder="000 000" autofocus autocomplete="off"
+                       style="font-size: 2rem; text-align: center; letter-spacing: 5px; width: 100%; max-width: 250px; padding: 10px; background: var(--bg-dark); color: white; border: 1px solid var(--border); border-radius: 5px; margin-bottom: 20px;">
+                <br>
+                <button type="submit" class="action-btn" style="width: 100%; font-weight: bold; font-size: 1.1rem; padding: 1rem; background: var(--accent); color: white; border: none;">
+                    🔓 Déverrouiller le Dashboard
+                </button>
+            </form>
+            
+            <a href="{{ path('home') }}" style="display:block; margin-top:20px; color: var(--text-muted); text-decoration: underline;">Retourner à l'accueil du site</a>
+        </div>
+    </div>
 
-	.status-success {
-		color: #22c55e;
-		font-weight: 600;
-	}
-	.status-failed {
-		color: #ef4444;
-		font-weight: 600;
-	}
+{# ================================================================= #}
+{# 📊 CAS 2 : MODE NORMAL (DASHBOARD VISIBLE)                        #}
+{# ================================================================= #}
+{% else %}
 
-	/* ------------------------- TABLE TOOLBAR ------------------------- */
-	.table-toolbar {
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-	}
-	.search-bar {
-		padding: 0.45rem 0.8rem;
-		border: 1px solid var(--border);
-		background: var(--bg-darker);
-		color: var(--text-main);
-		font-size: 0.9rem;
-		outline: none;
-	}
-	.search-bar:focus {
-		border-color: var(--accent);
-	}
-	.btn {
-		background: var(--accent);
-		color: #fff;
-		border: none;
-		padding: 0.5rem 1rem;
-		font-weight: 600;
-		cursor: pointer;
-		transition: 0.2s;
-	}
-	.btn:hover {
-		background: #e25500;
-	}
+    <div class="dashboard-container">
+        
+        <div class="dashboard-header">
+            <h1>Vue d'ensemble</h1>
+            <p>Bienvenue sur votre espace d'administration.</p>
+        </div>
 
-	/* ------------------------- ACTIONS ------------------------- */
-	.actions-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-		gap: 1rem;
-	}
-	.action {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.6rem;
-		background: var(--bg-darker);
-		color: #fff;
-		border: 1px solid var(--border);
-		padding: 0.7rem 1rem;
-		font-weight: 500;
-		cursor: pointer;
-		transition: all 0.2s ease;
-	}
-	.action:hover {
-		background: var(--bg-light);
-		border-color: var(--accent);
-	}
+        {# ---------- 1. STATISTIQUES (GRID) ---------- #}
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Utilisateurs Totaux</div>
+                <div class="stat-value">{{ totalUsers|default(0) }}</div>
+                <div class="stat-trend trend-neutral">Inscrits</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Comptes Vérifiés</div>
+                <div class="stat-value">{{ verifiedUsers|default(0) }}</div>
+                <div class="stat-trend trend-up">Actifs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Abonnés Newsletter</div>
+                <div class="stat-value">{{ newsletterSubscribers|default(0) }}</div>
+                <div class="stat-trend trend-up">+{{ newSubscribersToday|default(0) }} aujourd'hui</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Connexions (24h)</div>
+                <div class="stat-value">{{ successfulAttempts|default(0) }}</div>
+                <div class="stat-trend trend-neutral">Authentifications</div>
+            </div>
+        </div>
 
-	/* ------------------------- ACTIVITÉ ------------------------- */
-	.activity-list {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-	}
-	.activity-item {
-		display: flex;
-		align-items: flex-start;
-		gap: 0.8rem;
-	}
-	.activity-dot {
-		width: 8px;
-		height: 8px;
-		background: var(--accent);
-		margin-top: 0.4rem;
-	}
-	.activity-text {
-		color: #e5e7eb;
-		font-weight: 500;
-	}
-	.activity-date {
-		color: #9ca3af;
-		font-size: 0.85rem;
-	}
+        {# ---------- 2. GRAPHIQUES ---------- #}
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span class="chart-title">Connexions (7 derniers jours)</span>
+                </div>
+                <canvas id="loginChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span class="chart-title">Nouveaux abonnés</span>
+                </div>
+                <canvas id="newsletterChart"></canvas>
+            </div>
+        </div>
 
-	/* ------------------------- RESPONSIVE ------------------------- */
-	@media(max-width: 900px) {
-		.main-content {
-			margin-left: 0;
-			padding: 1.5rem;
-		}
-		.logout-btn {
-			position: static;
-			margin-bottom: 1rem;
-		}
-	}
+        {# ---------- 3. CONTENU MIXTE ---------- #}
+        <div class="content-grid">
+            
+            <div class="section-card">
+                <div class="section-header">
+                    <h3 class="section-title">Dernières connexions</h3>
+                    <button class="action-btn" onclick="location.href='{{ path('admin_security_logs') }}'">Voir tout</button>
+                </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Utilisateur</th>
+                                <th>IP</th>
+                                <th>Date</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for attempt in recentAttempts|slice(0, 5) %}
+                                <tr>
+                                    <td><strong>{{ attempt.emailAttempt }}</strong></td>
+                                    <td>{{ attempt.ip ?? '-' }}</td>
+                                    <td>{{ attempt.createdAt|date('d/m H:i') }}</td>
+                                    <td>
+                                        {% if attempt.success %}
+                                            <span class="status-badge status-success">Succès</span>
+                                        {% else %}
+                                            <span class="status-badge status-failed">Échec</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr><td colspan="4" style="text-align:center; padding: 2rem;">Aucune donnée.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-	/* ✅ --- AJOUT POUR AGRANDIR LE CONTAINER ET LES ÉLÉMENTS --- */
-	.dashboard-container {
-		transform: scale(1.00); /* au lieu de 1.15 */
-		transform-origin: top left;
-		width: 98.622%; /* limite le débordement */
-		margin-left: 1.5rem; /* pour centrer légèrement à cause de la sidebar */
-	}
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div class="section-card" style="flex: 1;">
+                    <div class="section-header">
+                        <h3 class="section-title">Fil d'activité</h3>
+                    </div>
+                    <div class="activity-list">
+                        {% for item in recentActivity|default([])|slice(0, 5) %}
+                            <div class="activity-item">
+                                <div class="activity-dot"></div>
+                                <div style="flex: 1;">
+                                    <div class="activity-content">{{ item.text|raw }}</div>
+                                    <span class="activity-time">{{ item.date|date('d/m/Y à H:i') }}</span>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div style="padding: 1.5rem; text-align: center; color: var(--text-muted);">
+                                Rien à signaler aujourd'hui.
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	.main-content {
-		padding: 3rem 3.5rem;
-	}
+    {# SCRIPTS (Uniquement chargés si le Dashboard est affiché) #}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        Chart.defaults.color = '#9ca3af';
+        Chart.defaults.borderColor = '#2a2a2d';
+        
+        const loginsData = {{ loginsSuccessByDay|default([0,0,0,0,0,0,0])|json_encode|raw }};
+        const subsData   = {{ newSubscribersByDay|default([0,0,0,0,0,0,0])|json_encode|raw }};
+        const labels7    = {{ labels7|default(['L','M','M','J','V','S','D'])|json_encode|raw }};
 
-	/* ✅ Texte et éléments un peu plus grands mais pas exagérés */
-	.dashboard-container h1 {
-		font-size: 2.6rem;
-	}
+        // Sécurité JS : on vérifie que le canvas existe
+        const c1 = document.getElementById('loginChart');
+        if (c1) {
+            new Chart(c1.getContext('2d'), {
+                type: 'line',
+                data: { labels: labels7, datasets: [{ label: 'Connexions', data: loginsData, borderColor: '#ff6600', backgroundColor: 'rgba(255, 102, 0, 0.1)', borderWidth: 2, tension: 0.4, fill: true, pointRadius: 3 }] },
+                options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { borderDash: [2, 4] } }, x: { grid: { display: false } } } }
+            });
+        }
 
-	.stat-card h3 {
-		font-size: 1rem;
-	}
+        const c2 = document.getElementById('newsletterChart');
+        if (c2) {
+            new Chart(c2.getContext('2d'), {
+                type: 'bar',
+                data: { labels: labels7, datasets: [{ label: 'Nouveaux Inscrits', data: subsData, backgroundColor: '#e5e7eb', borderRadius: 4, barThickness: 20 }] },
+                options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { borderDash: [2, 4] } }, x: { grid: { display: false } } } }
+            });
+        }
+    </script>
 
-	.stat-card p {
-		font-size: 1.8rem;
-	}
+{% endif %}
 
-	.table {
-		font-size: 1rem;
-	}
-
-	.btn,
-	.action {
-		padding: 0.7rem 1.2rem;
-		font-size: 0.95rem;
-	}
-
-	.search-bar {
-		font-size: 0.95rem;
-		padding: 0.55rem 0.9rem;
-	}
-
-	.section-card {
-		padding: 1.8rem 1.6rem;
-		margin-bottom: 2.2rem;
-	}
-
-	/* ✅ Chart.js : taille proportionnée */
-	canvas {
-		width: 100% !important;
-		height: 105% !important;
-	}
-
-	.chart-container {
-		padding: 1.8rem;
-	}
-
-	.chartjs-render-monitor {
-		font-size: 1.1rem !important;
-	}
-</style>{% endblock %}{% block body %}
-
-<div class="main-content">
-
-	<div class="dashboard-container">
-		<h1>Tableau de bord Administrateur</h1>
-
-		{# ---------- STATS ---------- #}
-		<div class="stats">
-			<div class="stat-card">
-				<h3>Utilisateurs totaux</h3>
-				<p>{{ totalUsers|default(0) }}</p>
-			</div>
-			<div class="stat-card">
-				<h3>Comptes vérifiés</h3>
-				<p>{{ verifiedUsers|default(0) }}</p>
-			</div>
-			<div class="stat-card">
-				<h3>Connexions réussies</h3>
-				<p>{{ successfulAttempts|default(0) }}</p>
-			</div>
-			<div class="stat-card">
-				<h3>Échecs récents</h3>
-				<p>{{ failedAttempts|default(0) }}</p>
-			</div>
-			<div class="stat-card">
-				<h3>Abonnés newsletter</h3>
-				<p>{{ newsletterSubscribers|default(0) }}</p>
-			</div>
-		</div>
-
-		{# ---------- GRAPHIQUES ---------- #}
-		<div class="chart-container">
-			<canvas id="loginChart" height="90"></canvas>
-		</div>
-		<div class="chart-container">
-			<canvas id="newsletterChart" height="90"></canvas>
-		</div>
-
-		{# ---------- ACTIONS RAPIDES ---------- #}
-		<div class="section-card">
-			<div class="section-header">
-				<h3 class="section-title">⚡ Actions rapides</h3>
-			</div>
-			<div class="actions-grid">
-				<button class="action" onclick="location.href='{{ path('admin_users_new') }}'">➕ Créer un utilisateur</button>
-				<button class="action" onclick="location.href='{{ path('admin_newsletter_compose') }}'">✉️ Envoyer une newsletter</button>
-				<button class="action" onclick="exportTableToCSV('#logTable','journal_connexions.csv')">📤 Exporter logs</button>
-				<button class="action" onclick="exportTableToCSV('#subsTable','abonnés_newsletter.csv')">📤 Exporter abonnés</button>
-				<button class="action" onclick="location.href='{{ path('admin_security_purge_logs') }}'">🧹 Purger les logs</button>
-			</div>
-		</div>
-
-		{# ---------- JOURNAL DES CONNEXIONS ---------- #}
-		<div class="section-card">
-			<div class="section-header">
-				<h3 class="section-title">📋 Dernières tentatives de connexion</h3>
-				<div class="table-toolbar">
-					<input type="text" id="searchLogs" class="search-bar" placeholder="Rechercher...">
-					<button class="btn" onclick="exportTableToCSV('#logTable','journal_connexions.csv')">Exporter</button>
-				</div>
-			</div>
-
-			<div class="table-responsive">
-				<table class="table" id="logTable">
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>Utilisateur</th>
-							<th>Email</th>
-							<th>IP</th>
-							<th>OS</th>
-							<th>Navigateur</th>
-							<th>Statut</th>
-							<th>Date</th>
-						</tr>
-					</thead>
-
-					<tbody>
-						{% for attempt in recentAttempts %}
-							<tr>
-								<td>{{ attempt.id }}</td>
-								<td>{{ attempt.user ? attempt.user.firstName ~ ' ' ~ (attempt.user.lastName ?? '') : '—' }}</td>
-								<td>{{ attempt.emailAttempt }}</td>
-								<td>{{ attempt.ip ?? '—' }}</td>
-								<td>{{ attempt.os ?? '—' }}</td>
-								<td>{{ attempt.browser ?? '—' }}</td>
-								<td class="{{ attempt.success ? 'status-success' : 'status-failed' }}">
-									{{ attempt.success ? 'Succès' : 'Échec' }}
-								</td>
-								<td>{{ attempt.createdAt|date('d/m/Y H:i') }}</td>
-							</tr>
-						{% else %}
-							<tr>
-								<td colspan="8" style="text-align:center;">Aucune tentative trouvée.</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-
-				</table>
-			</div>
-		</div>
-		{# ---------- NEWSLETTER ---------- #}
-		<div class="section-card">
-			<div class="section-header">
-				<h3 class="section-title">📰 Abonnés newsletter</h3>
-				<div class="table-toolbar">
-					<input type="text" id="searchSubs" class="search-bar" placeholder="Rechercher...">
-					<button class="btn" onclick="location.href='{{ path('admin_newsletter_compose') }}'">Nouvelle campagne</button>
-				</div>
-			</div>
-
-			<div class="table-responsive">
-				<table class="table" id="subsTable">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>Utilisateur</th>
-							<th>Email</th>
-							<th>Statut</th>
-							<th>Date d’inscription</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for s in recentSubscribers|default([]) %}
-							<tr>
-								<td>{{ loop.index }}</td>
-								<td>
-									{% if s.user %}
-										{{ s.user.firstName ~ ' ' ~ (s.user.lastName ?? '') }}
-									{% else %}
-										—
-									{% endif %}
-								</td>
-								<td>{{ s.email }}</td>
-								<td>
-									{% if s.isConfirmed %}
-										<span class="status-success">Confirmé</span>
-									{% else %}
-										<span class="status-failed">Non confirmé</span>
-									{% endif %}
-								</td>
-								<td>{{ s.subscribedAt|date('d/m/Y H:i') }}</td>
-							</tr>
-						{% else %}
-							<tr>
-								<td colspan="5" style="text-align:center;">Aucun abonné récent.</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
-		</div>
-
-
-		{# ---------- ACTIVITÉ RÉCENTE ---------- #}
-		<div class="section-card">
-			<div class="section-header">
-				<h3 class="section-title">🕓 Activité récente</h3>
-			</div>
-			<div class="activity-list">
-				{% for item in recentActivity|default([]) %}
-					<div class="activity-item">
-						<div class="activity-dot"></div>
-						<div>
-							<div class="activity-text">{{ item.text|raw }}</div>
-							<div class="activity-date">{{ item.date|date('d/m/Y H:i') }}</div>
-						</div>
-					</div>
-				{% else %}
-					<div class="activity-item">
-						<div class="activity-dot"></div>
-						<div>Aucune activité pour le moment.</div>
-					</div>
-				{% endfor %}
-			</div>
-		</div>
-
-	</div>
-</div>
-
- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
- <script>
-															function toggleMenu(id){
-															  const el=document.getElementById(id);
-															  el.style.display = (el.style.display==='block')?'none':'block';
-															}
-															
-															/* --------- Recherche tables --------- */
-															function attachSearch(inputSel, tableSel){
-															  const input=document.querySelector(inputSel);
-															  const rows=document.querySelectorAll(tableSel+' tbody tr');
-															  if(!input) return;
-															  input.addEventListener('keyup',()=>{
-															    const q=input.value.toLowerCase();
-															    rows.forEach(r=>{ r.style.display = r.textContent.toLowerCase().includes(q)?'':'none'; });
-															  });
-															}
-															attachSearch('#searchLogs','#logTable');
-															attachSearch('#searchSubs','#subsTable');
-															
-															/* --------- Export CSV générique --------- */
-															function exportTableToCSV(selector, filename){
-															  const rows=[...document.querySelectorAll(selector+' tr')];
-															  const csv=rows.map(r=>[...r.querySelectorAll('th,td')].map(c=>('"'+c.textContent.replace(/"/g,'""')+'"')).join(',')).join('\n');
-															  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
-															  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; a.click();
-															}
-															
-															/* --------- Données graphiques (venues du contrôleur) --------- */
-															const loginsData = {{ loginsSuccessByDay|default([3,5,2,6,4,5,3])|json_encode|raw }};
-															const subsData   = {{ newSubscribersByDay|default([1,2,1,3,2,2,1])|json_encode|raw }};
-															const labels7    = {{ labels7|default(['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'])|json_encode|raw }};
-															
-															/* Connexions réussies */
-															new Chart(document.getElementById('loginChart'),{
-															  type:'line',
-															  data:{ labels: labels7, datasets:[{ label:'Connexions réussies', data: loginsData, borderColor:'#ff6600', tension:.35, fill:false }]},
-															  options:{ scales:{ y:{ beginAtZero:true } } }
-															});
-															
-															/* Nouveaux abonnés */
-															new Chart(document.getElementById('newsletterChart'),{
-															  type:'bar',
-															  data:{ labels: labels7, datasets:[{ label:'Nouveaux abonnés', data: subsData, backgroundColor:'#ff6600' }]},
-															  options:{ scales:{ y:{ beginAtZero:true } } }
-															});
-															</script>{% endblock %}
+{% endblock %}

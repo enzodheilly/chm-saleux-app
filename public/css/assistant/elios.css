@@ -1,0 +1,195 @@
+:root {
+    --elios-purple: #005b94; 
+    --elios-dark-bg: #f9f9fb;    /* Fond du chat (très clair) */
+    --elios-panel-bg: #ffffff;   /* Fond du panneau */
+    --elios-card-bg: #ffffff;    /* Fond des inputs/boutons */
+    --elios-border: #e0e0e0;     /* Bordures fines */
+    --elios-text: #2c3e50;       /* Texte principal (gris foncé) */
+    --elios-text-muted: #7f8c8d; /* Texte secondaire */
+    --nav-height: 125px;
+}
+
+/* PANNEAU ELIOS */
+.elios-panel {
+    display: flex;
+    position: fixed;
+    top: var(--nav-height);
+    right: 0;
+    bottom: 0;
+    width: 50%; 
+    height: calc(100vh - var(--nav-height));
+    background: var(--elios-panel-bg);
+    box-shadow: -10px 0 30px rgba(0,0,0,0.05); /* Ombre plus légère */
+    flex-direction: column;
+    overflow: hidden;
+    border-left: 1px solid var(--elios-border);
+    z-index: 10000;
+    font-family: 'Inter', sans-serif;
+    transform-origin: bottom right;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    transform: scale(0);
+    opacity: 0;
+    visibility: hidden;
+}
+
+.elios-panel.active { 
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Header */
+.elios-header {
+    position: absolute;
+    top: 0; right: 0; width: 100%;
+    z-index: 10; padding: 15px 25px;
+    display: flex; justify-content: flex-end;
+    pointer-events: none;
+}
+
+.elios-close-btn { 
+    pointer-events: auto; background: var(--elios-panel-bg);
+    border: 1px solid var(--elios-border); 
+    cursor: pointer; color: var(--elios-text); padding: 8px;
+    margin-right:10px ;
+    display: flex; align-items: center; justify-content: center;
+    transition: 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.elios-close-btn:hover { background: #ff4d4d; color: white; transform: rotate(90deg); border-color: #ff4d4d; }
+
+/* Corps du Chat */
+.elios-chat-body {
+    flex: 1;
+    padding: 60px 40px 20px 40px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: var(--elios-dark-bg);
+    scroll-behavior: smooth;
+}
+
+.chat-row { display: flex; flex-direction: column; margin-bottom: 8px; }
+
+/* Bulles Utilisateur */
+.user-row { align-items: flex-end; }
+.user-row .bubble { 
+    background: var(--elios-purple); color: white; 
+    padding: 12px 18px; max-width: 85%; font-size: 0.95rem;
+    border-radius: 18px 18px 4px 18px;
+    box-shadow: 0 4px 12px rgba(0, 91, 148, 0.2);
+}
+
+/* Style Bot (Clair) */
+.assistant-row { align-items: flex-start; }
+.bot-content-plain {
+    padding: 12px 0; max-width: 90%; font-size: 0.95rem;
+    line-height: 1.6; color: var(--elios-text) !important;
+}
+
+.chat-dot {
+    display: inline-block; width: 10px; height: 10px;
+    background: var(--elios-purple); border-radius: 50%;
+    margin-left: 6px; vertical-align: baseline;
+    opacity: 0.8;
+}
+
+/* Boutons Rapides - Style épuré */
+.quick-replies-container { width: 100%; margin: 10px 0; display: flex; flex-direction: column; gap: 8px; }
+.quick-btn {
+    background: var(--elios-card-bg); border: 1px solid var(--elios-border);
+    border-radius: 10px; padding: 14px 20px; color: var(--elios-text);
+    text-align: left; cursor: pointer; transition: 0.2s;
+    font-weight: 500;
+}
+.quick-btn:hover { 
+    border-color: var(--elios-purple); 
+    background: #f0f7ff; 
+    color: var(--elios-purple);
+    transform: translateX(8px); 
+}
+
+/* Footer */
+.elios-footer { 
+    padding: 25px 40px; 
+    border-top: 1px solid var(--elios-border); 
+    background: var(--elios-panel-bg); 
+}
+.elios-input-group {
+    display: flex; align-items: center; 
+    background: #ffffff;
+    border: 1px solid var(--elios-border); 
+    border-radius: 12px; padding: 5px 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+}
+#eliosInput { 
+    flex: 1; border: none; background: transparent; 
+    padding: 12px; color: var(--elios-text); outline: none; 
+}
+#eliosInput::placeholder { color: #a0aec0; }
+
+#eliosSendBtn { 
+    background: var(--elios-purple); color: white; 
+    border: none; width: 40px; height: 40px; 
+    border-radius: 10px; cursor: pointer;
+    transition: transform 0.2s;
+}
+#eliosSendBtn:hover { transform: scale(1.05); background: #004a7a; }
+
+/* Points d'attente */
+.typing-bubble { display: flex; gap: 4px; padding: 10px 0; }
+.typing-bubble .dot { 
+    width: 6px; height: 6px; 
+    background: #cbd5e0; /* Gris clair pour l'attente */
+    border-radius: 50%; 
+    animation: eliosTyping 1.4s infinite ease-in-out both; 
+}
+.typing-bubble .dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-bubble .dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes eliosTyping {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40% { transform: scale(1.1); opacity: 1; background: var(--elios-purple); }
+}
+
+@media (max-width: 992px) {
+    .elios-panel { width: 100%; top: 0; height: 100vh; transform-origin: center; }
+}
+
+/* Alignement des lignes du chat */
+.chat-row.assistant-row {
+    display: flex;
+    align-items: flex-start; /* Aligne l'avatar en haut du texte */
+    gap: 10px;
+    margin-bottom: 15px;
+    padding-left: 5px;
+}
+
+/* Style de l'avatar dans le chat */
+.elios-chat-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0; /* Empêche l'image de s'écraser */
+    border: 1px solid var(--elios-purple);
+    background: #003d66;
+}
+
+/* Ajustement du contenu bot pour enlever les marges inutiles */
+.bot-content-plain {
+    flex: 1; /* Prend le reste de la place */
+    background: transparent;
+    color: #eee;
+    padding-top: 5px; /* Aligne le haut du texte avec l'avatar */
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+/* Bulle utilisateur pour comparaison */
+.user-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}

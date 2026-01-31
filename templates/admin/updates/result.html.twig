@@ -1,15 +1,92 @@
 {% extends 'admin/base_admin.html.twig' %}
 
+{% block title %}Résultat de la mise à jour{% endblock %}
+
+{% block stylesheets %}
+<style>
+    /* =================== PAGE STYLE =================== */
+    .dashboard-container { width: 100%; max-width: 1000px; margin: 0 auto; }
+
+    /* Header */
+    .page-header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
+
+    /* Terminal / Console Style */
+    .terminal-window {
+        background-color: #09090b; /* Noir très profond */
+        border: 1px solid #333;
+        border-radius: 6px;
+        padding: 1.5rem;
+        font-family: "Consolas", "Monaco", "Courier New", monospace;
+        font-size: 0.9rem;
+        color: #d4d4d8;
+        overflow-x: auto;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+
+    .log-line {
+        display: block;
+        border-bottom: 1px solid rgba(255,255,255,0.03);
+        padding: 2px 0;
+    }
+    
+    /* Coloration syntaxique simple */
+    .log-line:before { content: "> "; color: #555; user-select: none; }
+    
+    .text-success { color: #22c55e; }
+    .text-error { color: #ef4444; }
+    .text-info { color: #3b82f6; }
+
+    /* Actions */
+    .btn-return {
+        background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-main);
+        padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 600; text-decoration: none;
+        display: inline-flex; align-items: center; transition: 0.2s;
+    }
+    .btn-return:hover { border-color: var(--text-muted); }
+
+</style>
+{% endblock %}
+
 {% block body %}
+<div class="dashboard-container">
+    
+    <div class="page-header">
+        <h1>Rapport d'exécution</h1>
+        <p>Détail des opérations effectuées sur le serveur.</p>
+    </div>
 
-	<h1>Résultat de la mise à jour</h1>
+    <div class="terminal-window">
+        {% if output is defined and output is not empty %}
+            {# On boucle sur 'output' et on appelle chaque ligne 'line' #}
+            {% for line in output %}
+                <span class="log-line">
+                    {# Petite logique pour colorer si succès ou erreur #}
+                    {% if 'success' in line|lower or 'ok' in line|lower %}
+                        <span class="text-success">{{ line }}</span>
+                    {% elseif 'error' in line|lower or 'fail' in line|lower or 'exception' in line|lower %}
+                        <span class="text-error">{{ line }}</span>
+                    {% else %}
+                        {{ line }}
+                    {% endif %}
+                </span>
+            {% endfor %}
+        {% else %}
+            <span class="log-line text-error">Aucune sortie de commande disponible ou variable 'output' manquante.</span>
+        {% endif %}
+        
+        <br>
+        <span class="log-line text-info">--- Fin du processus ---</span>
+    </div>
 
-	<pre>
+    <div>
+        <a href="{{ path('admin_updates_index') }}" class="btn-return">
+            ⬅ Retour aux mises à jour
+        </a>
+    </div>
 
-{{ line }}
-
-</pre>
-	{% for line in output %}{% endfor %}
-
-	<a href="{{ path('admin_updates_index') }}">⬅️ Retour</a>
+</div>
 {% endblock %}

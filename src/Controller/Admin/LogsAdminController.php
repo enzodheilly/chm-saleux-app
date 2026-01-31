@@ -2,22 +2,30 @@
 
 namespace App\Controller\Admin;
 
-use App\Repository\LogRepository;
+use App\Repository\LogRepository; // Assure-toi que c'est le bon Repository (SystemLogRepository ?)
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/admin/logs', name: 'admin_logs_')]
+// J'ai adapté la route pour qu'elle colle avec ton menu Sidebar "admin_security_logs"
+#[Route('/admin/security/logs', name: 'admin_security_logs')]
 class LogsAdminController extends AbstractController
 {
-    #[Route('/', name: 'index')]
-    public function index(LogRepository $logRepo): Response
+    public function __invoke(LogRepository $logRepo): Response
     {
-        // On récupère tous les logs système (classés du plus récent au plus ancien)
-        $systemLogs = $logRepo->findBy([], ['createdAt' => 'DESC']);
+        // On récupère seulement les 100 derniers logs pour ne pas surcharger la page
+        $limit = 100;
 
-        return $this->render('admin/logs/index.html.twig', [
+        $systemLogs = $logRepo->findBy(
+            [],                     // Critères (aucun = tout)
+            ['createdAt' => 'DESC'], // Tri (plus récent en premier)
+            $limit,                  // Limite
+            0                        // Offset (départ)
+        );
+
+        return $this->render('admin/security/logs.html.twig', [
             'systemLogs' => $systemLogs,
+            'logLimit' => $limit
         ]);
     }
 }

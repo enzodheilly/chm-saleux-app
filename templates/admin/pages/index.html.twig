@@ -1,237 +1,138 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}
-	{{ title }}
-{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block stylesheets %}
-	<style>:root
-	{
-		--bg-dark: #0e0e10;
-		--bg-darker: #141416;
-		--bg-light: #1c1c1f;
-		--text-main: #e5e7eb;
-		--text-muted: #9ca3af;
-		--accent: #ff6600;
-		--border: #2a2a2d;
-	}
+<style>
+    /* =================== PAGE STYLE =================== */
+    .dashboard-container { width: 100%; max-width: 1600px; margin: 0 auto; }
 
-	body {
-		font-family: "Inter", system-ui, sans-serif;
-		background: var(--bg-dark);
-		color: var(--text-main);
-	}
+    /* Header */
+    .page-header {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;
+    }
+    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
 
-	.main-content {
-		flex: 1;
-		margin-left: 100px;
-		padding: 2.5rem 3rem;
-		background: var(--bg-dark);
-		min-height: 100vh;
-	}
+    /* Toolbar */
+    .toolbar { display: flex; gap: 1rem; align-items: center; }
+    .search-input {
+        background: transparent; border: 1px solid var(--border); color: var(--text-main);
+        padding: 0.6rem 1rem; border-radius: 4px; outline: none; min-width: 300px; font-size: 0.9rem;
+    }
+    .search-input:focus { border-color: var(--accent); }
 
-	.dashboard-container {
-		transform: scale(1.00); /* au lieu de 1.15 */
-		transform-origin: top left;
-		width: 173%; /* limite le débordement */
-		margin-left: 1.5rem; /* pour centrer légèrement à cause de la sidebar */
-	}
+    .btn-primary {
+        background: var(--accent); color: #fff; padding: 0.6rem 1.5rem; border-radius: 4px;
+        font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.2s; border: none;
+        text-transform: uppercase; letter-spacing: 0.5px; text-decoration: none; display: inline-block;
+    }
+    .btn-primary:hover { background: var(--accent-hover); }
 
-	.dashboard-container h1 {
-		font-size: 2.3rem;
-		font-weight: 800;
-		color: #fff;
-		margin-bottom: 2rem;
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-	}
+    /* Table */
+    .content-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; }
+    .table-responsive { overflow-x: auto; }
+    .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    
+    .table th {
+        background: var(--bg-darker); color: var(--text-muted); font-weight: 600; text-align: left;
+        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); text-transform: uppercase;
+        font-size: 0.75rem; letter-spacing: 1px;
+    }
+    .table td {
+        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle;
+    }
+    .table tr:last-child td { border-bottom: none; }
+    .table tr:hover { background: rgba(255,255,255,0.01); }
 
-	.section-card {
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		padding: 1.5rem 1.3rem;
-		margin-bottom: 2rem;
-		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-	}
+    /* Slug Style */
+    .slug-code { font-family: monospace; color: var(--accent); background: rgba(255, 102, 0, 0.1); padding: 2px 6px; border-radius: 3px; font-size: 0.85rem; }
 
-	/* Header / Toolbar */
-	.section-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-bottom: 1.2rem;
-		border-bottom: 1px solid var(--border);
-		padding-bottom: 0.8rem;
-	}
+    /* Actions */
+    .actions-cell { display: flex; gap: 15px; justify-content: flex-end; }
+    .action-link { font-size: 0.85rem; font-weight: 500; text-decoration: none; border: none; background: none; cursor: pointer; padding: 0; }
+    .link-edit { color: var(--text-muted); }
+    .link-edit:hover { color: var(--text-main); text-decoration: underline; }
+    .link-delete { color: #ef4444; opacity: 0.8; }
+    .link-delete:hover { opacity: 1; text-decoration: underline; }
+</style>
+{% endblock %}
 
-	.section-title {
-		font-size: 1rem;
-		font-weight: 600;
-		color: #fff;
-		display: flex;
-		align-items: center;
-		gap: 0.4rem;
-	}
+{% block body %}
+<div class="dashboard-container">
+    
+    <div class="page-header">
+        <div>
+            <h1>{{ title }}</h1>
+            <p>Gérez les pages de contenu statique du site.</p>
+        </div>
+        <div class="toolbar">
+            <input type="text" id="searchPages" class="search-input" placeholder="Rechercher une page...">
+            <a href="{{ path('admin_pages_new') }}" class="btn-primary">Créer une page</a>
+        </div>
+    </div>
 
-	.table-toolbar {
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-	}
+    <div class="content-card">
+        <div class="table-responsive">
+            <table class="table" id="pagesTable">
+                <thead>
+                    <tr>
+                        <th width="60">ID</th>
+                        <th>Titre</th>
+                        <th>Slug (URL)</th>
+                        <th>Dernière mise à jour</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for page in pages %}
+                        <tr>
+                            <td><span style="color: var(--text-muted); font-family: monospace;">#{{ page.id }}</span></td>
+                            
+                            <td>
+                                <strong style="font-size: 0.95rem;">{{ page.title }}</strong>
+                            </td>
 
-	.search-bar {
-		padding: 0.45rem 0.8rem;
-		border: 1px solid var(--border);
-		background: var(--bg-darker);
-		color: var(--text-main);
-		font-size: 0.9rem;
-		outline: none;
-	}
-	.search-bar:focus {
-		border-color: var(--accent);
-	}
+                            <td>
+                                <span class="slug-code">/{{ page.slug }}</span>
+                            </td>
 
-	.btn {
-		background: var(--accent);
-		color: #fff;
-		border: none;
-		padding: 0.5rem 1rem;
-		font-weight: 600;
-		cursor: pointer;
-		transition: 0.2s;
-		display: flex;
-		align-items: center;
-		gap: 0.4rem;
-	}
-	.btn:hover {
-		background: #e25500;
-	}
+                            <td style="color: var(--text-muted);">
+                                {{ page.updatedAt ? page.updatedAt|date('d/m/Y à H:i') : 'Jamais modifié' }}
+                            </td>
 
-	/* Table */
-	.table {
-		width: 100%;
-		border-collapse: collapse;
-		font-size: 0.9rem;
-		color: #e5e7eb;
-	}
-
-	.table thead {
-		background: var(--bg-darker);
-		color: #fff;
-	}
-
-	.table th,
-	.table td {
-		text-align: left;
-		padding: 0.8rem 1rem;
-		border-bottom: 1px solid var(--border);
-	}
-
-	.table tbody tr:hover {
-		background: rgba(255, 255, 255, 0.03);
-	}
-
-	.action-edit {
-		color: #60a5fa;
-		text-decoration: none;
-		transition: color 0.2s;
-	}
-	.action-edit:hover {
-		color: #93c5fd;
-	}
-	.action-delete {
-		color: #ef4444;
-		text-decoration: none;
-		transition: color 0.2s;
-	}
-	.action-delete:hover {
-		color: #f87171;
-	}
-
-	.empty-row {
-		text-align: center;
-		padding: 1.2rem;
-		color: var(--text-muted);
-	}
-	.action-delete {
-		color: #ef4444;
-		font-weight: 600;
-		border: none;
-		background: none;
-		cursor: pointer;
-		padding: 0;
-		transition: color 0.2s ease;
-	}
-
-	.action-delete:hover {
-		color: #ff6666;
-	}
-</style>{% endblock %}{% block body %}
-<div class="main-content">
-	<div class="dashboard-container">
-		<h1>📄
-			{{ title }}</h1>
-
-		<div class="section-card">
-			<div class="section-header">
-				<h3 class="section-title">📋 Liste des pages</h3>
-				<div class="table-toolbar">
-					<input type="text" id="searchPages" class="search-bar" placeholder="Rechercher...">
-					<button class="btn" onclick="location.href='{{ path('admin_pages_new') }}'">Ajouter une page</button>
-
-				</div>
-			</div>
-
-			<table class="table" id="pagesTable">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>Titre</th>
-						<th>Slug</th>
-						<th>Dernière mise à jour</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for page in pages %}
-						<tr>
-							<td>{{ page.id }}</td>
-							<td>{{ page.title }}</td>
-							<td>{{ page.slug }}</td>
-							<td>{{ page.updatedAt ? page.updatedAt|date('d/m/Y H:i') : '-' }}</td>
-							<td>
-								<a href="{{ path('admin_pages_edit', { id: page.id }) }}" class="action-edit">Modifier</a>
-								|
-								<form method="post" action="{{ path('admin_pages_delete', { id: page.id }) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette page ?');" style="display:inline;">
-									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ page.id) }}">
-									<button class="action-delete">Supprimer</button>
-								</form>
-
-							</td>
-						</tr>
-					{% else %}
-						<tr>
-							<td colspan="5" class="empty-row">Aucune page trouvée.</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
+                            <td>
+                                <div class="actions-cell">
+                                    <a href="{{ path('admin_pages_edit', { id: page.id }) }}" class="action-link link-edit">Modifier</a>
+                                    
+                                    <form method="post" action="{{ path('admin_pages_delete', { id: page.id }) }}" onsubmit="return confirm('⚠️ Attention : Supprimer cette page peut casser des liens.\n\nConfirmer la suppression ?');" style="display:inline;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ page.id) }}">
+                                        <button class="action-link link-delete">Supprimer</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 4rem; color: var(--text-muted);">
+                                Aucune page créée pour le moment.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
- <script>
-function attachSearch(inputSel, tableSel) {
-	const input = document.querySelector(inputSel);
-	const rows = document.querySelectorAll(tableSel + ' tbody tr');
-	if (!input) return;
-	input.addEventListener('keyup', () => {
-		const q = input.value.toLowerCase();
-		rows.forEach(r => {
-			r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
-		});
-	});
-}
-attachSearch('#searchPages', '#pagesTable');
-</script>{% endblock %}
+<script>
+document.getElementById('searchPages').addEventListener('keyup', function() {
+    const val = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#pagesTable tbody tr');
+    rows.forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(val) ? '' : 'none';
+    });
+});
+</script>
+{% endblock %}

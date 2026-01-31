@@ -1,6 +1,6 @@
 # config/services.yaml
 parameters:
-    # 🖼️ Dossier d'upload pour les images
+    # 🖼️ Dossiers d'upload
     upload_dir: "%kernel.project_dir%/public/uploads"
     competitions_upload_dir: "%kernel.project_dir%/public/uploads/competitions"
     images_directory: "%kernel.project_dir%/public/uploads"
@@ -12,13 +12,15 @@ services:
     # ⚙️ CONFIGURATION PAR DÉFAUT
     # ============================================================
     _defaults:
-        autowire: true
-        autoconfigure: true
+        autowire: true # Injecte automatiquement les dépendances
+        autoconfigure: true # Enregistre automatiquement les services (tags, etc.)
         bind:
+            # Ces variables seront injectées par défaut dans tous tes constructeurs
             $projectDir: "%kernel.project_dir%"
+            $geminiApiKey: "%env(GEMINI_API_KEY)%"
 
     # ============================================================
-    # 📦 AUTO-DÉCOUVERTE DES SERVICES DU DOSSIER SRC/
+    # 📦 AUTO-DÉCOUVERTE DES SERVICES
     # ============================================================
     App\:
         resource: "../src/"
@@ -30,7 +32,7 @@ services:
             - "../src/Kernel.php"
 
     # ============================================================
-    # 🔐 AUTHENTICATOR PERSONNALISÉ (formulaire de connexion)
+    # 🔐 AUTHENTICATOR & LISTENERS
     # ============================================================
     App\Authenticator\LoginFormAuthenticator:
         arguments:
@@ -39,9 +41,6 @@ services:
             $userRepository: '@App\Repository\UserRepository'
             $entityManager: "@doctrine.orm.entity_manager"
 
-    # ============================================================
-    # 🧠 LISTENER : ENREGISTRE LES TENTATIVES DE CONNEXION
-    # ============================================================
     App\EventListener\LoginAttemptListener:
         tags:
             - {
@@ -61,14 +60,13 @@ services:
               }
 
     # ============================================================
-    # 📬 AUTRES SERVICES PERSONNALISÉS
+    # 🧱 SERVICES AVEC ARGUMENTS SPÉCIFIQUES
     # ============================================================
-    # Exemple :
-    # App\Service\MailService: ~
 
-    # ============================================================
-    # 🧱 CLOUDFLARE TURNSTILE - VERIFICATION CAPTCHA
-    # ============================================================
+    # Cloudflare Turnstile
     App\Service\TurnstileVerifierService:
         arguments:
             $secretKey: "%env(TURNSTILE_SECRET_KEY)%"
+
+    # Note : App\Service\EliosAiService n'a plus besoin d'être déclaré ici
+    # car $apiKey et $projectDir sont gérés par le 'bind' dans _defaults.

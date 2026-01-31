@@ -7,11 +7,20 @@
 {% endblock %}
 
 {% block body %}
+
 <header class="hero-header" style="
     background-image: url('{{ asset('images/90.jpg') }}');
     background-size: cover;
     background-position: center 20%;
 ">
+
+        <a href="{{ path('home') }}" class="back-button">
+         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+         </svg>
+         Home
+    </a>
+
     <div class="hero-content">
         <h1>COMPÉTITIONS & RÉSULTATS</h1>
         <p>Retrouvez toutes les compétitions et les résultats de nos athlètes</p>

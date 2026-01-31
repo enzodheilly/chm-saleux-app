@@ -2,18 +2,21 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+// ✅ Import pour la 2FA
+use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 
-#[ORM\Entity(repositoryClass: "App\Repository\UserRepository")]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['email'], message: 'Cette adresse email est déjà utilisée.')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -34,6 +37,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: "string", nullable: true)]
     private ?string $password = null;
+
+    // ✅ La clé secrète pour Google Authenticator
+    #[ORM\Column(type: "string", nullable: true)]
+    private ?string $googleAuthenticatorSecret = null;
+
+    // ✅ Le champ qui confirme si l'admin a bien scanné le code
+    #[ORM\Column(type: "boolean", options: ["default" => false])]
+    private bool $isTotpConfirmed = false;
 
     #[ORM\Column(type: "boolean")]
     private bool $isVerified = false;
@@ -392,7 +403,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-
     public function getLicenceStatus(): ?string
     {
         return $this->licenceStatus;
@@ -489,14 +499,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $data = null;
-
-        // ✅ Si le champ est un flux (BLOB)
         if (is_resource($this->profileImage)) {
-            // On revient au début du flux au cas où il aurait déjà été lu
             rewind($this->profileImage);
             $data = stream_get_contents($this->profileImage);
         } else {
-            // Sinon, c’est déjà une chaîne binaire (VARBINARY)
             $data = $this->profileImage;
         }
 
@@ -551,7 +557,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removePasswordHistory(PasswordHistory $passwordHistory): self
     {
         if ($this->passwordHistories->removeElement($passwordHistory)) {
-            // set the owning side to null (unless already changed)
             if ($passwordHistory->getUser() === $this) {
                 $passwordHistory->setUser(null);
             }
@@ -589,7 +594,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
 
@@ -598,7 +602,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->acceptedTerms;
     }
 
-    // Getter
     public function getEvents(): Collection
     {
         return $this->events;
@@ -608,7 +611,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->events->contains($event)) {
             $this->events->add($event);
-            // 🔹 Synchronisation côté inverse
             $event->addAttendee($this);
         }
         return $this;
@@ -627,7 +629,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->userEvents;
     }
 
-    // Vérifie si user est inscrit
     public function getEventStatus(Event $event): ?string
     {
         foreach ($this->userEvents as $ue) {
@@ -635,7 +636,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 return $ue->getStatus();
             }
         }
-        return null; // pas inscrit
+        return null;
     }
 
     public function getPhone(): ?string
@@ -643,7 +644,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->phone;
     }
 
-    // Setter
     public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
@@ -669,6 +669,46 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNeedsPassword(bool $needsPassword): self
     {
         $this->needsPassword = $needsPassword;
+        return $this;
+    }
+
+    // ==============================================================
+    // ✅ MÉTHODES OBLIGATOIRES POUR GOOGLE AUTHENTICATOR (2FA)
+    // ==============================================================
+
+    public function isGoogleAuthenticatorEnabled(): bool
+    {
+        // 🚨 POINT CRUCIAL : On ne bloque le login QUE si l'admin a déjà validé son code (isTotpConfirmed = true).
+        // S'il ne l'a pas fait, on retourne false, ce qui lui permet d'arriver au Dashboard.
+        // C'est ensuite le Dashboard qui le bloquera avec le QR code géant.
+        return in_array('ROLE_ADMIN', $this->getRoles())
+            && $this->googleAuthenticatorSecret !== null
+            && $this->isTotpConfirmed;
+    }
+
+    public function getGoogleAuthenticatorUsername(): string
+    {
+        return 'Chm Saleux (' . $this->email . ')';
+    }
+
+    public function getGoogleAuthenticatorSecret(): ?string
+    {
+        return $this->googleAuthenticatorSecret;
+    }
+
+    public function setGoogleAuthenticatorSecret(?string $googleAuthenticatorSecret): void
+    {
+        $this->googleAuthenticatorSecret = $googleAuthenticatorSecret;
+    }
+
+    public function isTotpConfirmed(): bool
+    {
+        return $this->isTotpConfirmed;
+    }
+
+    public function setIsTotpConfirmed(bool $isTotpConfirmed): self
+    {
+        $this->isTotpConfirmed = $isTotpConfirmed;
         return $this;
     }
 }

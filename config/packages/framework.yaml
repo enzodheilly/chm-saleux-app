@@ -1,14 +1,24 @@
-# see https://symfony.com/doc/current/reference/configuration/framework.html
+# config/packages/framework.yaml
 framework:
     secret: "%env(APP_SECRET)%"
 
-    # ✅ Configuration correcte des sessions
     session:
         enabled: true
         handler_id: null
+
+        # ✅ SÉCURITÉ CRITIQUE : Empêche le JavaScript de voler le cookie (Anti-XSS)
+        cookie_httponly: true
+
+        # ✅ SÉCURITÉ : Ne transmet le cookie qu'en HTTPS (auto détecte si dispo)
         cookie_secure: auto
+
+        # ✅ SÉCURITÉ : Empêche l'utilisation du cookie dans des iframes externes
         cookie_samesite: lax
-        cookie_lifetime: 0
+
+        # ⏱️ TIMEOUT : Déconnecte l'admin après 30 min d'inactivité (1800 secondes)
+        # C'est plus sûr que '0' car les gens ferment rarement leur navigateur.
+        cookie_lifetime: 1800
+        gc_maxlifetime: 1800
 
     #esi: true
     #fragments: true

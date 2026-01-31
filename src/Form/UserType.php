@@ -27,7 +27,12 @@ class UserType extends AbstractType
             ])
             ->add('password', PasswordType::class, [
                 'label' => 'Mot de passe',
-                'required' => false,
+
+                // 👇 C'est cette ligne magique qui empêche le bug du "null"
+                'mapped' => false,
+
+                'required' => false, // Permet de laisser vide à l'édition
+                'attr' => ['autocomplete' => 'new-password'],
             ])
             ->add('roles', ChoiceType::class, [
                 'label' => 'Rôle',

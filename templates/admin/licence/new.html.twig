@@ -1,259 +1,265 @@
+
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}➕ Ajouter une licence
-{% endblock %}
+{% block title %}Nouvelle licence{% endblock %}
 
 {% block stylesheets %}
-	<style>:root
-	{
-		--bg-dark: #0e0e10;
-		--bg-darker: #141416;
-		--bg-light: #1c1c1f;
-		--text-main: #e5e7eb;
-		--text-muted: #9ca3af;
-		--accent: #ff6600;
-		--border: #2a2a2d;
-		--success: #22c55e;
-	}
+<style>
+    /* =================== PAGE STYLE =================== */
+    .dashboard-container {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
 
-	body {
-		font-family: "Inter", system-ui, sans-serif;
-		background: var(--bg-dark);
-		color: var(--text-main);
-		margin: 0;
-		min-height: 100vh;
-	}
+    /* Header */
+    .page-header {
+        margin-bottom: 2rem;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 1rem;
+    }
+    .page-header h1 {
+        margin: 0;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--text-main);
+        letter-spacing: -0.5px;
+    }
+    .page-header p {
+        margin: 5px 0 0 0;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
 
-	.main-content {
-		flex: 1;
-		margin-left: 100px;
-		padding: 2.5rem 3rem;
-		display: flex;
-		flex-direction: column;
-		background: var(--bg-dark);
-		min-height: 100vh;
-	}
+    /* Carte Formulaire */
+    .form-card {
+        background: var(--bg-light);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 2rem;
+    }
 
-	.dashboard-container {
-		transform: scale(1.00);
-		transform-origin: top left;
-		width: 158%;
-		margin-left: 1.5rem;
-	}
+    /* Styles des Champs */
+    .form-card > form > div { margin-bottom: 1.5rem; }
 
-	h1 {
-		font-size: 2.3rem;
-		font-weight: 800;
-		color: #fff;
-		margin-bottom: 2.5rem;
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-	}
+    label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-	.section-card {
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		padding: 1.8rem;
-		max-width: 800px;
-	}
+    input[type="text"], input[type="email"], input[type="date"], select {
+        width: 100%;
+        background: var(--bg-darker);
+        border: 1px solid var(--border);
+        color: var(--text-main);
+        padding: 0.7rem 1rem;
+        border-radius: 4px;
+        font-size: 0.95rem;
+        outline: none;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+    }
+    
+    input:focus, select:focus { border-color: var(--accent); }
 
-	label {
-		display: block;
-		font-weight: 600;
-		margin-bottom: 0.5rem;
-		color: var(--text-main);
-	}
+    /* Grille 2 colonnes */
+    .row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+    @media(max-width: 700px) { .row-2 { grid-template-columns: 1fr; gap: 0; } }
 
-	input[type="text"],
-	input[type="email"],
-	textarea,
-	select {
-		width: 95%;
-		background: var(--bg-darker);
-		color: var(--text-main);
-		border: 1px solid var(--border);
-		padding: 0.7rem 1rem;
-		font-size: 0.95rem;
-		outline: none;
-		transition: border-color 0.2s ease;
-	}
+    /* Actions */
+    .form-actions {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+    }
 
-	input[type="text"]:focus,
-	input[type="email"]:focus,
-	select:focus,
-	textarea:focus {
-		border-color: var(--accent);
-	}
+    .btn-submit {
+        background: var(--accent);
+        color: #fff;
+        padding: 0.7rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+    }
+    .btn-submit:hover { background: var(--accent-hover); }
 
-	textarea {
-		resize: vertical;
-		min-height: 120px;
-	}
+    .btn-cancel {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        padding: 0.7rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 500;
+        text-decoration: none;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        transition: 0.2s;
+    }
+    .btn-cancel:hover { border-color: var(--text-muted); color: var(--text-main); }
 
-	.form-actions {
-		display: flex;
-		gap: 1rem;
-		margin-top: 1.8rem;
-	}
+    /* Box Avantages Dynamique */
+    .avantages-preview {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: rgba(255, 102, 0, 0.05);
+        border: 1px dashed var(--accent);
+        border-radius: 4px;
+        display: none; /* Caché par défaut */
+    }
+    .avantages-preview h4 {
+        margin: 0 0 0.8rem 0;
+        font-size: 0.9rem;
+        color: var(--accent);
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+    .avantages-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 0.5rem;
+    }
+    .avantages-list li {
+        font-size: 0.85rem;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .avantages-list li::before {
+        content: "✓";
+        color: var(--accent);
+        font-weight: bold;
+    }
 
-	.btn-success {
-		background: var(--accent);
-		color: #fff;
-		font-weight: 600;
-		padding: 0.75rem 1.5rem;
-		border: none;
-		cursor: pointer;
-		transition: background 0.2s ease, transform 0.2s ease;
-		box-shadow: 0 3px 10px rgba(255, 102, 0, 0.25);
-	}
+</style>
+{% endblock %}
 
-	.btn-success:hover {
-		background: #e25500;
-		transform: translateY(-2px);
-	}
+{% block body %}
+<div class="dashboard-container">
+    
+    <div class="page-header">
+        <h1>Créer une licence</h1>
+        <p>Enregistrez un nouveau membre licencié.</p>
+    </div>
 
-	.btn-secondary {
-		background: var(--bg-darker);
-		color: var(--text-main);
-		font-weight: 500;
-		padding: 0.75rem 1.5rem;
-		border: 1px solid var(--border);
-		cursor: pointer;
-		transition: background 0.2s ease;
-		text-decoration: none;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-	}
+    <div class="form-card">
+        {{ form_start(form) }}
+        
+        <div class="row-2">
+            <div>
+                {{ form_label(form.firstName, 'Prénom') }}
+                {{ form_widget(form.firstName, {'attr': {'placeholder': 'Ex: Thomas'}}) }}
+                {{ form_errors(form.firstName) }}
+            </div>
+            <div>
+                {{ form_label(form.lastName, 'Nom') }}
+                {{ form_widget(form.lastName, {'attr': {'placeholder': 'Ex: Martin'}}) }}
+                {{ form_errors(form.lastName) }}
+            </div>
+        </div>
 
-	.btn-secondary:hover {
-		background: #2a2a2d;
-	}
+        <div class="row-2">
+            <div>
+                {{ form_label(form.email, 'Email') }}
+                {{ form_widget(form.email, {'attr': {'placeholder': 'thomas.martin@email.com'}}) }}
+                {{ form_errors(form.email) }}
+            </div>
+            <div>
+                {{ form_label(form.number, 'Numéro de Licence') }}
+                {{ form_widget(form.number, {'attr': {'placeholder': 'Ex: 2024-00123'}}) }}
+                {{ form_errors(form.number) }}
+            </div>
+        </div>
 
-	.alert-success {
-		background: rgba(34, 197, 94, 0.15);
-		border: 1px solid rgba(34, 197, 94, 0.4);
-		color: var(--success);
-		padding: 0.8rem 1rem;
-		margin-bottom: 1.2rem;
-		font-weight: 500;
-	}
+        <div class="row-2">
+            <div>
+                {{ form_label(form.forfait, 'Forfait Associé') }}
+                {{ form_widget(form.forfait) }}
+                {{ form_errors(form.forfait) }}
+                
+                <div id="forfait-avantages" class="avantages-preview"></div>
+            </div>
+            <div>
+                {{ form_label(form.expiryDate, 'Date d\'Expiration') }}
+                {{ form_widget(form.expiryDate) }}
+                {{ form_errors(form.expiryDate) }}
+            </div>
+        </div>
 
-	.alert-error {
-		background: rgba(239, 68, 68, 0.15);
-		border: 1px solid rgba(239, 68, 68, 0.4);
-		color: #ef4444;
-		padding: 0.8rem 1rem;
-		margin-bottom: 1.2rem;
-		font-weight: 500;
-	}
+        <div class="form-actions">
+            <a href="{{ path('admin_licence_index') }}" class="btn-cancel">Annuler</a>
+            <button type="submit" class="btn-submit">Enregistrer la licence</button>
+        </div>
 
-	.avantages-box {
-		margin-top: 1.2rem;
-		padding: 1rem;
-		background: var(--bg-darker);
-		border: 1px solid var(--border);
-		border-radius: 6px;
-	}
-</style>{% endblock %}{% block body %}
-<div class="main-content">
-	<div class="dashboard-container">
-		<h1>➕ Ajouter une licence</h1>
+        {{ form_end(form) }}
+    </div>
 
-		<div class="section-card">
-
-			{% for message in app.flashes('error') %}
-				<div class="alert-error">{{ message }}</div>
-			{% endfor %}
-			{% for message in app.flashes('success') %}
-				<div class="alert-success">{{ message }}</div>
-			{% endfor %}
-
-			{{ form_start(form) }}
-
-			<div class="form-group" style="margin-bottom: 1rem;">
-				{{ form_label(form.firstName, 'Prénom du licencié') }}
-				{{ form_widget(form.firstName) }}
-				{{ form_errors(form.firstName) }}
-			</div>
-
-			<div class="form-group" style="margin-bottom: 1rem;">
-				{{ form_label(form.lastName, 'Nom du licencié') }}
-				{{ form_widget(form.lastName) }}
-				{{ form_errors(form.lastName) }}
-			</div>
-
-			<div class="form-group" style="margin-bottom: 1rem;">
-				{{ form_label(form.email, 'Adresse e-mail') }}
-				{{ form_widget(form.email) }}
-				{{ form_errors(form.email) }}
-			</div>
-
-			<div class="form-group" style="margin-bottom: 1rem;">
-				{{ form_label(form.number, 'Numéro de licence') }}
-				{{ form_widget(form.number) }}
-				{{ form_errors(form.number) }}
-			</div>
-
-			<div class="form-group" style="margin-bottom: 1rem;">
-				{{ form_label(form.forfait, 'Forfait') }}
-				{{ form_widget(form.forfait) }}
-				{{ form_errors(form.forfait) }}
-			</div>
-
-			<div id="forfait-avantages" class="avantages-box" style="display:none;"></div>
-
-			<div class="form-group" style="margin-bottom: 1rem;">
-				{{ form_label(form.expiryDate, 'Date d’expiration') }}
-				{{ form_widget(form.expiryDate) }}
-				{{ form_errors(form.expiryDate) }}
-			</div>
-
-			<div class="form-actions">
-				<button class="btn-success">💾 Enregistrer</button>
-				<a href="{{ path('admin_licence_index') }}" class="btn-secondary">⬅️ Retour</a>
-			</div>
-
-			{{ form_end(form) }}
-		</div>
-	</div>
 </div>
 
- <script>
+<script>
 document.addEventListener('DOMContentLoaded', () => {
-	const selectForfait = document.querySelector('#licence_forfait');
-	const avantagesBox = document.getElementById('forfait-avantages');
+    const selectForfait = document.querySelector('#licence_forfait'); // Vérifie l'ID généré par Symfony
+    const avantagesBox = document.getElementById('forfait-avantages');
 
-	if (!selectForfait) return;
+    if (!selectForfait) return;
 
-	selectForfait.addEventListener('change', async () => {
-		const id = selectForfait.value;
-		if (!id) {
-			avantagesBox.style.display = 'none';
-			return;
-		}
+    // Fonction pour charger et afficher les avantages
+    async function loadAvantages() {
+        const id = selectForfait.value;
+        if (!id) {
+            avantagesBox.style.display = 'none';
+            return;
+        }
 
-		avantagesBox.innerHTML = "<p>Chargement des avantages...</p>";
-		avantagesBox.style.display = "block";
+        try {
+            const resp = await fetch(`/admin/licences/forfait/${id}/avantages`);
+            const data = await resp.json();
 
-		try {
-			const resp = await fetch(`/admin/licences/forfait/${id}/avantages`);
-			const data = await resp.json();
+            if (data.avantages && data.avantages.length > 0) {
+                // Nettoyage des chaînes (enlève "fa-icon | ")
+                const cleanList = data.avantages.map(a => {
+                    const parts = a.split('|');
+                    return parts.length > 1 ? parts[1].trim() : a;
+                });
 
-			if (data.avantages && data.avantages.length > 0) {
-				avantagesBox.innerHTML = `
-					<h4 style="color:#ff6600;">Avantages du forfait <b>${data.nom}</b></h4>
-					<ul style="list-style:none;padding-left:0;margin-top:0.5rem;">
-						${data.avantages.map(a => `<li>✔️ ${a}</li>`).join('')}
-					</ul>
-				`;
-			} else {
-				avantagesBox.innerHTML = `<p style="color:#9ca3af;">Aucun avantage disponible pour ce forfait.</p>`;
-			}
-		} catch (e) {
-			avantagesBox.innerHTML = `<p style="color:#ef4444;">Erreur lors du chargement des avantages.</p>`;
-		}
-	});
+                avantagesBox.innerHTML = `
+                    <h4>Inclus dans ${data.nom} :</h4>
+                    <ul class="avantages-list">
+                        ${cleanList.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                `;
+                avantagesBox.style.display = 'block';
+            } else {
+                avantagesBox.style.display = 'none';
+            }
+        } catch (e) {
+            console.error("Erreur chargement avantages", e);
+            avantagesBox.style.display = 'none';
+        }
+    }
+
+    selectForfait.addEventListener('change', loadAvantages);
+    // Charger au démarrage si un forfait est déjà sélectionné (cas d'erreur formulaire)
+    if(selectForfait.value) loadAvantages();
 });
-</script>{% endblock %}
+</script>
+{% endblock %}

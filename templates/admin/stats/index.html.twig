@@ -1,138 +1,180 @@
 {% extends 'admin/base_admin.html.twig' %}
-{% block title %}
-	{{ title }}
-{% endblock %}
+
+{% block title %}Statistiques{% endblock %}
 
 {% block stylesheets %}
-	<style>:root
-	{
-		--bg-dark: #0e0e10;
-		--bg-darker: #141416;
-		--bg-light: #1c1c1f;
-		--text-main: #e5e7eb;
-		--text-muted: #9ca3af;
-		--accent: #ff6600;
-		--border: #2a2a2d;
-	}
-	body {
-		background: var(--bg-dark);
-		color: var(--text-main);
-		font-family: "Inter", system-ui, sans-serif;
-	}
-	.main-content {
-		margin-left: 100px;
-		padding: 2.5rem 3rem;
-		background: var(--bg-dark);
-		min-height: 100vh;
-	}
-	.dashboard-container {
-		transform: scale(1.00);
-		transform-origin: top left;
-		width: 98.332%;
-		margin-left: 1.5rem;
-		overflow-x: hidden; /* évite tout scroll horizontal */
-	}
+<style>
+    /* =================== PAGE STYLE =================== */
+    .dashboard-container { width: 100%; max-width: 1600px; margin: 0 auto; }
 
-	h1 {
-		font-size: 2.3rem;
-		font-weight: 800;
-		margin-bottom: 2rem;
-	}
-	.stats-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-		gap: 1.2rem;
-		margin-bottom: 2.5rem;
-	}
-	.stat-card {
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		padding: 1.5rem;
-		text-align: center;
-	}
-	.stat-card h3 {
-		color: var(--text-muted);
-		font-size: 1rem;
-		margin-bottom: 0.5rem;
-	}
-	.stat-card p {
-		color: #fff;
-		font-size: 1.8rem;
-		font-weight: 700;
-		margin: 0;
-	}
-	.chart-container {
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		padding: 1.5rem;
-		margin-bottom: 2rem;
-	}
-</style>{% endblock %}{% block body %}
-<div class="main-content">
-	<div class="dashboard-container">
-		<h1>📊
-			{{ title }}</h1>
+    /* Header */
+    .page-header {
+        margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;
+    }
+    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
 
-		<div class="stats-grid">
-			<div class="stat-card">
-				<h3>Utilisateurs</h3>
-				<p>{{ totalUsers }}</p>
-			</div>
-			<div class="stat-card">
-				<h3>Articles publiés</h3>
-				<p>{{ totalArticles }}</p>
-			</div>
-			<div class="stat-card">
-				<h3>Abonnés newsletter</h3>
-				<p>{{ newsletterSubscribers }}</p>
-			</div>
-		</div>
+    /* KPI Cards (Grid) */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
 
-		<div class="chart-container">
-			<h3>📈 Inscriptions (7 derniers jours)</h3>
-			<canvas id="usersChart" height="80"></canvas>
-		</div>
+    .stat-card {
+        background: var(--bg-light);
+        border: 1px solid var(--border);
+        padding: 1.5rem;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-2px); border-color: var(--accent); }
 
-		<div class="chart-container">
-			<h3>📰 Articles publiés (7 derniers jours)</h3>
-			<canvas id="articlesChart" height="80"></canvas>
-		</div>
-	</div>
+    .stat-label {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--text-main);
+        line-height: 1;
+    }
+
+    /* Charts Layout */
+    .charts-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+    @media(max-width: 1000px) { .charts-row { grid-template-columns: 1fr; } }
+
+    .chart-card {
+        background: var(--bg-light);
+        border: 1px solid var(--border);
+        padding: 1.5rem;
+        border-radius: 4px;
+    }
+
+    .chart-title {
+        margin: 0 0 1.5rem 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-main);
+    }
+
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="dashboard-container">
+    
+    <div class="page-header">
+        <h1>Statistiques</h1>
+        <p>Vue d'ensemble de l'activité du site et des inscriptions.</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-label">Utilisateurs Inscrits</span>
+            <span class="stat-value">{{ totalUsers }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Articles Publiés</span>
+            <span class="stat-value">{{ totalArticles }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Abonnés Newsletter</span>
+            <span class="stat-value">{{ newsletterSubscribers }}</span>
+        </div>
+        </div>
+
+    <div class="charts-row">
+        
+        <div class="chart-card">
+            <h3 class="chart-title">Inscriptions (7 derniers jours)</h3>
+            <canvas id="usersChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h3 class="chart-title">Activité éditoriale</h3>
+            <canvas id="articlesChart"></canvas>
+        </div>
+
+    </div>
 </div>
 
- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
- <script>
-const labels = {{ labels|json_encode|raw }};
-const userRegistrations = {{ userRegistrations|json_encode|raw }};
-const articlesPublished = {{ articlesPublished|json_encode|raw }};
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Configuration globale des couleurs pour le thème sombre
+    Chart.defaults.color = '#9ca3af';
+    Chart.defaults.borderColor = '#2a2a2d';
 
-// Graphique des utilisateurs
-new Chart(document.getElementById('usersChart'), {
-	type: 'line',
-	data: {
-		labels: labels,
-		datasets: [{
-			label: 'Inscriptions',
-			data: userRegistrations,
-			borderColor: '#ff6600',
-			tension: 0.4,
-			fill: false
-		}]
-	},
-	options: { scales: { y: { beginAtZero: true } } }
-});
+    const labels = {{ labels|json_encode|raw }};
+    const userRegistrations = {{ userRegistrations|json_encode|raw }};
+    const articlesPublished = {{ articlesPublished|json_encode|raw }};
 
-// Graphique des articles
-new Chart(document.getElementById('articlesChart'), {
-	type: 'bar',
-	data: {
-		labels: labels,
-		datasets: [{
-			label: 'Articles publiés',
-			data: articlesPublished,
-			backgroundColor: '#ff6600'
-		}]
-	},
-	options: { scales: { y: { beginAtZero: true } } }
-});
-</script>{% endblock %}
+    // 1. Graphique Inscriptions (Ligne courbée)
+    new Chart(document.getElementById('usersChart'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Nouveaux utilisateurs',
+                data: userRegistrations,
+                borderColor: '#ff6600',
+                backgroundColor: 'rgba(255, 102, 0, 0.1)',
+                borderWidth: 2,
+                tension: 0.4, // Courbe lisse
+                fill: true,
+                pointRadius: 4,
+                pointBackgroundColor: '#ff6600'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true, grid: { borderDash: [4, 4] } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 2. Graphique Articles (Barres)
+    new Chart(document.getElementById('articlesChart'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Articles publiés',
+                data: articlesPublished,
+                backgroundColor: '#3b82f6', // Bleu pour différencier
+                borderRadius: 4,
+                barThickness: 20
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+</script>
+{% endblock %}

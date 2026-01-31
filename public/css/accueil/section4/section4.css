@@ -1,11 +1,7 @@
+/* ========================================================= */
+/* =================== SECTION ACTUALITÉS ================== */
+/* ========================================================= */
 
-/* ============================
-   SECTION ACTUALITÉS
-============================ */
-
-/* ============================
-   SECTION ACTUALITÉS
-============================ */
 .news-section {
   padding: 60px 20px;
   text-align: center;
@@ -13,10 +9,11 @@
 }
 
 .news-title {
-    font-size: 34px;
-    font-weight: 900;
-    color: #fff;
-    margin-top: 20px;
+  font-size: 34px;
+  font-weight: 900;
+  color: #fff;
+  margin-top: 20px;
+  text-transform: uppercase;
 }
 
 .news-title span {
@@ -24,13 +21,14 @@
 }
 
 .news-subtitle {
-  font-size: 1.1em !important;
+  font-size: 1.1rem !important;
   font-weight: 500;
   color: #CBD5E1;
-  margin-top: -10px;
-  margin-bottom: 40px;
+  margin-top: 10px;
+  margin-bottom: 50px;
 }
 
+/* GRILLE */
 .news-grid {
   display: flex;
   flex-wrap: wrap;
@@ -39,6 +37,7 @@
   margin-bottom: 40px;
 }
 
+/* CARTE NEWS */
 .news-card {
   position: relative;
   width: 360px;
@@ -51,12 +50,10 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   background: #514747;
 
-  /* État avant apparition */
+  /* Animation d'apparition (gérée par JS scroll reveal) */
   opacity: 0;
   transform: translateY(15px);
-  transition:
-    opacity 0.8s ease-out,
-    transform 0.8s ease-out;
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
 .news-card.reveal {
@@ -67,17 +64,6 @@
 .news-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .news-card img {
@@ -91,13 +77,14 @@
   transform: scale(1.05);
 }
 
+/* OVERLAY TEXTE */
 .news-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
   padding: 20px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent 80%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 100%);
   color: #fff;
   text-align: left;
 }
@@ -106,23 +93,25 @@
   font-size: 1.1rem;
   font-weight: 700;
   margin: 0;
+  text-transform: uppercase;
 }
 
 .news-overlay p {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   margin-top: 5px;
   line-height: 1.4;
-  opacity: 0.95;
+  opacity: 0.9;
 }
 
+/* BOUTON VOIR TOUT */
 .btn-news {
   background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
   color: #fff;
-  padding: 12px 24px;
+  padding: 12px 30px;
   border-radius: 0px;
   text-decoration: none;
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: 1rem;
   transition: all 0.3s ease;
   display: inline-block;
   text-transform: uppercase;
@@ -130,58 +119,27 @@
 
 .btn-news:hover {
   background: #004472;
+  transform: translateY(-2px);
 }
 
-/* ============================
-   RESPONSIVE
-============================ */
+/* ========================================================= */
+/* ====================== SECTION FAQ ====================== */
+/* ========================================================= */
 
-/* Mobile : 1 carte par ligne */
-@media (max-width: 768px) {
-  .news-card {
-    width: 100%;
-    height: 220px;
-  }
-}
-
-/* PC portable : afficher exactement 3 cartes */
-@media (min-width: 769px) and (max-width: 1536px) {
-  .news-card {
-    width: 360px; /* largeur fixe */
-    height: 240px;
-  }
-
-  .news-card:nth-child(n+4) {
-    display: none; /* cache toutes les cartes après la 3ème */
-  }
-}
-
-/* Desktop : 4 cartes par ligne */
-@media (min-width: 1537px) {
-  .news-card {
-    width: 360px;
-    height: 240px;
-    display: block; /* s’assurer qu’elles sont visibles */
-  }
-}
-
-/* ============================
-   SECTION FAQ
-============================ */
 .faq-section {
   max-width: 1130px;
   margin: 60px auto;
   padding: 40px 30px;
   background: #F5F5F5;
   color: #1f2937;
-  border-radius: 0px;
+  border-radius: 0px; /* Style carré */
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
 }
 
-/* --- Header --- */
+/* --- HEADER FAQ --- */
 .faq-header {
   text-align: center;
-  margin-top: -60px;
+  margin-top: -60px; /* Effet de chevauchement sur Desktop */
 }
 
 .faq-header h2 {
@@ -200,7 +158,7 @@
   margin-bottom: 50px;
 }
 
-/* --- Layout --- */
+/* --- LAYOUT GLOBAL --- */
 .faq-page {
   display: flex;
   flex-direction: column;
@@ -219,7 +177,7 @@
   flex: 2;
 }
 
-/* --- Item --- */
+/* --- ACCORDÉON ITEM --- */
 .faq-item {
   border-bottom: 1px solid #e5e7eb;
   padding: 18px 0;
@@ -227,68 +185,62 @@
 }
 
 .faq-question {
-  all: unset;
+  all: unset; /* Reset complet */
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 1.1rem;
+  text-align: left;
+  color: #0f172a;
+  
   background: none !important;
   border: none !important;
   padding: 0;
   margin: 0;
-  font-family: inherit;
-  font-weight: 800;
-  font-size: 1.1rem;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #0f172a;
-  transition: color 0.3s ease, background 0.3s ease, transform 0s !important;
   transform: none !important;
 }
 
 .faq-question:hover {
-  background: none !important;
-  transform: none !important;
+  color: #005b94;
 }
 
+/* Le signe + / - */
 .faq-question::after {
-  all: unset;
   content: "+";
   font-weight: bold;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: #005b94;
+  margin-left: 15px;
   transition: transform 0.3s ease;
 }
 
 .faq-question.active::after {
-  all: unset;
-  content: "−";
+  content: "−"; /* Signe moins */
   transform: rotate(180deg);
 }
 
-/* --- Réponse --- */
+/* --- RÉPONSE --- */
 .faq-answer {
-  display: none;
-  padding-top: 10px;
+  display: none; /* Masqué par défaut (JS l'affiche) */
+  padding-top: 15px;
   color: #4b5563;
-  font-size: 1.1rem;
+  font-size: 1rem;
   line-height: 1.6;
   font-weight: 500;
   animation: fadeIn 0.3s ease;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- Lien vers toutes les FAQ --- */
+/* --- LIEN "VOIR PLUS" --- */
 .faq-more {
   margin-top: 25px;
   display: inline-block;
@@ -303,13 +255,14 @@
   text-decoration: underline;
 }
 
-/* --- Encadré contact --- */
+/* --- ENCADRÉ CONTACT --- */
 .faq-contact {
   flex: 1;
   background: #fff;
   padding: 30px;
   text-align: left;
   border-top: 4px solid #005b94;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
 @media (min-width: 1024px) {
@@ -323,48 +276,94 @@
   font-weight: 800;
   color: #2B2B2B;
   margin-bottom: 12px;
+  text-transform: uppercase;
 }
 
 .faq-contact p {
-  font-size: 1.1rem !important;
+  font-size: 1rem !important;
   font-weight: 500;
   color: #4b5563;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  line-height: 1.5;
 }
 
-/* --- Bouton contact --- */
+/* BOUTON CONTACT */
 .btn-faq {
   display: inline-block;
-background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
+  background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
   color: #fff;
   padding: 10px 22px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 800;
   text-decoration: none;
   border-radius: 0px;
+  text-transform: uppercase;
   transition: all 0.3s ease;
 }
 
 .btn-faq:hover {
   background: #004472;
+  transform: translateY(-2px);
 }
 
-/* ============================
-   RESPONSIVE
-============================ */
+/* ========================================================= */
+/* ================= RESPONSIVE (NEWS & FAQ) =============== */
+/* ========================================================= */
+
+/* --- MOBILE (Smartphone) --- */
 @media (max-width: 768px) {
+  
+  /* NEWS : Style des cartes */
   .news-card {
-    width: 100%;
-    height: 220px;
+    width: 100%; /* Prend toute la largeur */
+    height: 250px; 
   }
 
+  /* NEWS : On cache tout après la 3ème carte */
+  .news-card:nth-child(n+4) {
+    display: none !important;
+  }
+
+  /* FAQ */
   .faq-section {
     padding: 40px 20px;
+    margin: 40px auto;
+    width: 95%; /* Prend presque tout l'écran */
+  }
+
+  .faq-header {
+    margin-top: 0; /* IMPORTANT : On annule la marge négative sur mobile */
+  }
+  
+  .faq-header h2 {
+    font-size: 1.8rem;
   }
 
   .faq-contact {
     margin-left: 0;
     margin-top: 30px;
+    text-align: center; /* Centrer le bloc contact sur mobile */
   }
 }
 
+/* --- LAPTOP (PC Portable - Affichage 3 cartes) --- */
+@media (min-width: 769px) and (max-width: 1536px) {
+  .news-card {
+    width: 30%; /* Pour en mettre 3 */
+    min-width: 300px;
+    height: 240px;
+  }
+
+  .news-card:nth-child(n+4) {
+    display: none; /* Cache les cartes après la 3ème */
+  }
+}
+
+/* --- DESKTOP (Grand écran - Affichage 4 cartes) --- */
+@media (min-width: 1537px) {
+  .news-card {
+    width: 360px;
+    height: 240px;
+    display: block;
+  }
+}

@@ -45,12 +45,12 @@
 /* ========================================================= */
 
 :root {
-  --color: #005b94; /* violet (change-le en var(--orange) si tu veux ton style) */
+  --color: #005b94;
 }
 
 .segmented-toggle {
   position: relative;
-  width: 240px;          /* ajuste si besoin */
+  width: 240px;
   height: 55px;
   border: 2px solid var(--color);
   border-radius: 60px;
@@ -137,7 +137,7 @@
 }
 
 .pricing-hero .trial-box {
-  margin: 0rem 0 1rem;
+  margin: 0 auto 1rem; /* Centré avec auto */
   padding: 0.5rem 1rem;
   background: #fff7ed;
   border: 2px solid #f59e0b;
@@ -145,7 +145,7 @@
   font-size: 0.9rem;
   font-weight: 700;
   color: #2b2b2b;
-  text-align: left;
+  text-align: center; /* Centré */
 }
 
 /* ========================================================= */
@@ -158,7 +158,11 @@
   padding: 2.2rem 2rem;
   border-radius: 8px;
   border: none;
-  text-align: left;
+  
+  /* MODIFICATION : Centrage global dans la carte */
+  text-align: center;
+  align-items: center; 
+  
   display: flex;
   flex-direction: column;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
@@ -189,14 +193,19 @@
 .pricing-hero .price-row {
   display: flex;
   align-items: flex-end;
-  justify-content: flex-start;
+  
+  /* MODIFICATION : Centrage du prix */
+  justify-content: center;
+  
   gap: 0.3rem;
   margin-bottom: 1rem;
+  width: 100%;
 }
 
 .pricing-hero .trial-box {
   display: flex;
   align-items: center;
+  justify-content: center; /* Ajout centrage */
   gap: 10px;
 }
 
@@ -222,7 +231,8 @@
   font-size: 0.95rem;
   color: #6b7280;
   padding-bottom: 0px;
-  margin-left: -20px;
+  /* MODIFICATION : Suppression de la marge négative qui décale tout quand c'est centré */
+  margin-left: 0; 
   line-height: 0.2;
 }
 
@@ -243,12 +253,17 @@
   list-style: none;
   padding: 0;
   margin: 0 0 1.6rem;
-  text-align: left;
+  text-align: center; /* Centré */
+  width: 100%;
 }
 
 .pricing-hero .features li {
   display: flex;
   align-items: center;
+  
+  /* MODIFICATION : Centrage des éléments de la liste */
+  justify-content: center;
+  
   gap: 0.6rem;
   padding: 0.45rem 0;
   font-size: 0.95rem;
@@ -265,73 +280,31 @@
 /* =================== COULEURS PAR CARTE ================== */
 /* ========================================================= */
 
-.pricing-hero .card:nth-child(1) {
-  border-color: #2b2b2b;
-}
+/* Note: J'ai conservé tes styles de couleurs intacts */
+
+.pricing-hero .card:nth-child(1) { border-color: #2b2b2b; }
 .pricing-hero .card:nth-child(1) .card-title,
-.pricing-hero .card:nth-child(1) .price-row {
-  color: #2b2b2b;
-}
-.pricing-hero .card:nth-child(1) .btn-classic {
-  background: #2b2b2b;
-  color: #fff;
-}
-.pricing-hero .card:nth-child(1) .btn-classic:hover {
-  background: transparent;
-  color: #2b2b2b;
-  border-color: #2b2b2b;
-}
+.pricing-hero .card:nth-child(1) .price-row { color: #2b2b2b; }
+.pricing-hero .card:nth-child(1) .btn-classic { background: #2b2b2b; color: #fff; }
+.pricing-hero .card:nth-child(1) .btn-classic:hover { background: transparent; color: #2b2b2b; border-color: #2b2b2b; }
 
-.pricing-hero .card:nth-child(2) {
-  border-color: #2b2b2b;
-}
+.pricing-hero .card:nth-child(2) { border-color: #2b2b2b; }
 .pricing-hero .card:nth-child(2) .card-title,
-.pricing-hero .card:nth-child(2) .price-row {
-  color: #2b2b2b;
-}
-.pricing-hero .card:nth-child(2) .btn-classic {
-  background: #2b2b2b;
-  color: #fff;
-}
-.pricing-hero .card:nth-child(2) .btn-classic:hover {
-  background: transparent;
-  color: #2b2b2b;
-  border-color: #2b2b2b;
-}
+.pricing-hero .card:nth-child(2) .price-row { color: #2b2b2b; }
+.pricing-hero .card:nth-child(2) .btn-classic { background: #2b2b2b; color: #fff; }
+.pricing-hero .card:nth-child(2) .btn-classic:hover { background: transparent; color: #2b2b2b; border-color: #2b2b2b; }
 
-.pricing-hero .card:nth-child(3) {
-  border-color: #2b2b2b;
-}
+.pricing-hero .card:nth-child(3) { border-color: #2b2b2b; }
 .pricing-hero .card:nth-child(3) .card-title,
-.pricing-hero .card:nth-child(3) .price-row {
-  color: #2b2b2b;
-}
-.pricing-hero .card:nth-child(3) .btn-classic {
-  background: #2b2b2b;
-  color: #fff;
-}
-.pricing-hero .card:nth-child(3) .btn-classic:hover {
-  background: transparent;
-  color: #2b2b2b;
-  border-color: #2b2b2b;
-}
+.pricing-hero .card:nth-child(3) .price-row { color: #2b2b2b; }
+.pricing-hero .card:nth-child(3) .btn-classic { background: #2b2b2b; color: #fff; }
+.pricing-hero .card:nth-child(3) .btn-classic:hover { background: transparent; color: #2b2b2b; border-color: #2b2b2b; }
 
-.pricing-hero .card:nth-child(4) {
-  border-color: #2b2b2b;
-}
+.pricing-hero .card:nth-child(4) { border-color: #2b2b2b; }
 .pricing-hero .card:nth-child(4) .card-title,
-.pricing-hero .card:nth-child(4) .price-row {
-  color: #2b2b2b;
-}
-.pricing-hero .card:nth-child(4) .btn-classic {
-  background: #2b2b2b;
-  color: #fff;
-}
-.pricing-hero .card:nth-child(4) .btn-classic:hover {
-  background: transparent;
-  color: #2b2b2b;
-  border-color: #2b2b2b;
-}
+.pricing-hero .card:nth-child(4) .price-row { color: #2b2b2b; }
+.pricing-hero .card:nth-child(4) .btn-classic { background: #2b2b2b; color: #fff; }
+.pricing-hero .card:nth-child(4) .btn-classic:hover { background: transparent; color: #2b2b2b; border-color: #2b2b2b; }
 
 /* ========================================================= */
 /* ======================= FOOTER ========================== */
@@ -368,15 +341,21 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Tablette */
+/* --- TABLETTE (jusqu'à 1100px) --- */
 @media (max-width: 1100px) {
   .pricing-hero .pricing-grid {
     grid-template-columns: repeat(2, 1fr);
+    max-width: 700px; /* On limite la largeur pour centrer les 2 colonnes */
   }
 }
 
-/* Mobile */
+/* --- MOBILE (jusqu'à 768px) --- */
 @media (max-width: 768px) {
+  /* MODIFICATION : Réduction du padding container principal pour élargir l'espace utile */
+  .pricing-hero {
+    padding: 3rem 1rem 4rem; 
+  }
+
   .pricing-hero .pricing-title {
     font-size: 2rem;
   }
@@ -386,12 +365,24 @@
   }
 
   .pricing-hero .card {
-    padding: 2rem 1.6rem;
+    padding: 2rem 1.5rem;
   }
 }
 
+/* --- PETIT MOBILE (jusqu'à 640px) --- */
 @media (max-width: 640px) {
   .pricing-hero .pricing-grid {
     grid-template-columns: 1fr;
+    
+    /* MODIFICATION : Suppression du padding latéral de la grille */
+    /* Cela permet aux cartes de prendre toute la largeur disponible définie par .pricing-hero */
+    padding: 0;
+    
+    gap: 1.5rem;
+  }
+  
+  .segmented-toggle {
+    width: 100%;
+    max-width: 240px;
   }
 }

@@ -2,14 +2,115 @@
 
 {% block title %}Haltérophilie - CHM Saleux{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/nos_pratiques/halterophilie.css') }}">
+{% endblock %}
+
 {% block body %}
+
+<header class="hero-header">
+    <div class="overlay"></div>
+
+    <!-- Image diagonale -->
+    <div class="hero-diagonal-image">
+        <img src="{{ asset('images/nos_pratiques/halterophilie/1.jpg') }}" alt="Haltérophilie CHM Saleux">
+    </div>
+
+    <!-- Texte de présentation -->
+    <div class="hero-content">
+        <h1>HALTÉROPHILIE</h1>
+        <p>Force, explosivité, technique : découvrez la discipline olympique du CHM Saleux.</p>
+    </div>
+</header>
+
+
 <section class="practice-detail">
-    <h1>Haltérophilie</h1>
-    <img src="{{ asset('images/1.jpg') }}" alt="Haltérophilie">
-    <p>
-        Découvrez notre espace d'haltérophilie, équipé de matériel de pointe, encadré par des entraîneurs diplômés.
-        Que vous soyez débutant ou compétiteur, nos programmes sont adaptés à tous les niveaux.
-    </p>
-    <a href="{{ path('home') }}" class="btn-back">← Retour à l'accueil</a>
+    <div class="container">
+        
+        <h1>Haltérophilie</h1>
+        <p class="practice-intro">
+            Notre espace haltérophilie est conçu pour offrir des conditions d’entraînement dignes des salles spécialisées.
+            Les athlètes, du débutant au compétiteur, y trouvent un matériel adapté et des entraîneurs qualifiés.
+        </p>
+
+        <!-- Zone Podiums -->
+        <section class="zone-section" id="podiums">
+            <h2>Podiums & Plateformes</h2>
+            <img src="{{ asset('images/halterophilie/podiums.jpg') }}" alt="Podiums Haltérophilie">
+
+            <h3>Équipements :</h3>
+            <ul>
+                <li>3 à 5 plateformes d’haltérophilie</li>
+                <li>Dalles amortissantes</li>
+                <li>Espace sécurisé pour les barres tombées</li>
+            </ul>
+
+            <h3>Travail possible :</h3>
+            <ul>
+                <li>Arraché (Snatch)</li>
+                <li>Épaulé-jeté (Clean & Jerk)</li>
+                <li>Tirages techniques</li>
+                <li>Travail d’explosivité</li>
+            </ul>
+
+            <p class="zone-text">
+                Un espace conçu pour absorber les chocs et permettre un entraînement technique et sécurisé.
+            </p>
+        </section>
+
+
+        <!-- Zone Barres & Disques -->
+        <section class="zone-section" id="barres">
+            <h2>Barres & Disques</h2>
+            <img src="{{ asset('images/halterophilie/barres.jpg') }}" alt="Barres Haltérophilie">
+
+            <h3>Équipements :</h3>
+            <ul>
+                <li>Barres olympiques hommes (20 kg)</li>
+                <li>Barres olympiques femmes (15 kg)</li>
+                <li>Barres techniques aluminium</li>
+                <li>Disques bumper (5 à 25 kg)</li>
+                <li>Disques compétition IWF</li>
+            </ul>
+
+            <h3>Travail possible :</h3>
+            <ul>
+                <li>Progressions techniques</li>
+                <li>Travail de charge contrôlée</li>
+                <li>Préparation à la compétition</li>
+            </ul>
+
+            <p class="zone-text">
+                Le matériel officiel garantit une progression fluide et une préparation optimale aux compétitions.
+            </p>
+        </section>
+
+
+        <!-- Zone Accessoires -->
+        <section class="zone-section" id="accessoires">
+            <h2>Accessoires & Renfo</h2>
+            <img src="{{ asset('images/halterophilie/accessoires.jpg') }}" alt="Accessoires Haltérophilie">
+
+            <h3>Équipements :</h3>
+            <ul>
+                <li>Ceintures de maintien</li>
+                <li>Blocks d’arraché</li>
+                <li>Bandes de poignets / genoux</li>
+                <li>Bancs et supports techniques</li>
+            </ul>
+
+            <h3>Travail possible :</h3>
+            <ul>
+                <li>Renforcement spécifique</li>
+                <li>Mobilité & stabilité</li>
+                <li>Préparation physique générale</li>
+            </ul>
+
+            <p class="zone-text">
+                Idéal pour travailler la technique, la mobilité et le renforcement spécifique lié à l’haltérophilie.
+            </p>
+        </section>
+    </div>
 </section>
+
 {% endblock %}

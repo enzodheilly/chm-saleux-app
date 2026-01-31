@@ -37,7 +37,7 @@ class AdminClubInfoController extends AbstractController
             return $this->redirectToRoute('admin_clubinfo_index');
         }
 
-        return $this->render('admin/club_info/form.html.twig', [
+        return $this->render('admin/club_info/new.html.twig', [
             'form' => $form->createView(),
             'title' => 'Ajouter une information',
         ]);
@@ -59,7 +59,7 @@ class AdminClubInfoController extends AbstractController
             return $this->redirectToRoute('admin_clubinfo_index');
         }
 
-        return $this->render('admin/club_info/form.html.twig', [
+        return $this->render('admin/club_info/edit.html.twig', [
             'form' => $form->createView(),
             'title' => 'Modifier une information',
         ]);

@@ -1,24 +1,31 @@
+/* ========================================================= */
+/* ================= SECTION APP MOBILE ==================== */
+/* ========================================================= */
 
 .app-mobile-section {
   background: transparent;
   padding: 4rem 2rem;
   color: #fff;
+  overflow: hidden; /* Sécurité pour ne pas déborder */
 }
 
+/* CONTENEUR PRINCIPAL */
 .app-mobile-container {
   display: flex;
-  align-items: center;
+  align-items: center; /* Centre verticalement texte et image */
   justify-content: space-between;
   max-width: 1300px;
   margin: 0 auto;
-  flex-wrap: wrap;
   gap: 2rem;
 }
 
+/* BLOC TEXTE À GAUCHE */
 .app-mobile-text {
   flex: 1;
   min-width: 300px;
-  margin-top: -200px;
+  /* La marge négative Desktop (si tu veux remonter le texte) */
+  margin-top: -50px; 
+  padding-left: 20px;
 }
 
 .app-mobile-text h2 {
@@ -26,7 +33,6 @@
   font-weight: 900;
   margin-bottom: 1rem;
   text-transform: uppercase;
-  margin-left: 20px;
 }
 
 .app-mobile-text p {
@@ -34,132 +40,181 @@
   margin-bottom: 2rem;
   max-width: 500px;
   color: #CBD5E1;
-  margin-left: 23px;
-}
-
-.app-description p {
-  color: #CBD5E1;
+  line-height: 1.6;
 }
 
 /* Texte “Télécharge l’app …” */
 .download-text {
   font-size: 2rem;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   color: #fff;
   text-transform: uppercase;
-  margin-left: 23px;
   text-align: left;
 }
 
-.download-text span{
-  color: #F26C00
-;
+.download-text span {
+  color: #F26C00;
 }
 
-/* Ligne logo + boutons */
+/* LIGNE LOGO + BOUTONS */
 .logo-buttons-line {
   display: flex;
-  align-items: center; /* logo centré verticalement avec les boutons */
-  gap: 10px;
-  margin-left: 13px;
-  margin-top: -20px;
+  align-items: center;
+  gap: 20px;
 }
 
-/* Logo de l'application */
+/* Logo de l'application (carré) */
 .app-logo img {
-  width:80px;
+  width: 80px;
   height: auto;
+  border-radius: 18px; /* Joli arrondi sur le logo de l'app */
 }
 
-/* Conteneur boutons */
+/* Conteneur boutons (Apple + Android) */
 .app-buttons {
   display: flex;
   gap: 15px;
-  flex-wrap: nowrap; /* boutons côte à côte */
 }
 
-/* Boutons */
+/* STYLE DES BOUTONS STORES */
 .app-btn.store {
   display: flex;
-  align-items: center; /* logo centré verticalement */
+  align-items: center;
   text-decoration: none;
-  padding: 8px 15px;
+  padding: 8px 18px; /* Un peu plus large */
   border-radius: 8px;
-  transition: background 0.3s, transform 0.2s;
+  transition: all 0.3s ease;
   color: #000;
   background-color: #fff;
-  border: 1px solid black;
+  border: 1px solid #fff;
 }
 
-/* Logo dans les boutons */
+.app-btn.store:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(255,255,255,0.2);
+}
+
 .store-logo {
-  width: 30px;
-  height: 30px;
-  margin-right: 15px;
+  width: 28px;
+  height: 28px;
+  margin-right: 12px;
   flex-shrink: 0;
 }
 
-/* Texte dans les boutons */
 .store-text {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  line-height: 1;
+  line-height: 1.1;
+  text-align: left;
 }
 
 .top-text {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
 }
 
 .bottom-text {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-/* Couleurs spécifiques iOS / Android */
-.app-btn.store.ios:hover,
-.app-btn.store.android:hover {
-  background-color: #f0f0f0;
-}
-
+/* BLOC IMAGE À DROITE */
 .app-mobile-image {
   flex: 1;
   text-align: center;
+  position: relative;
 }
 
 .app-mobile-image img {
-  max-width: 70%;
+  max-width: 60%; /* Ajuste la taille de l'image desktop */
   height: auto;
   border-radius: 30px;
-  margin-top: 0px;
+  
+  /* Animation */
   opacity: 0;
-  transform: translateY(300px);
+  transform: translateY(100px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
-/* Image visible quand la section est à l'écran */
+/* Classe activée par JS (quand visible) */
 .app-mobile-image img.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ==================== RESPONSIVE ==================== */
+
+/* ========================================================= */
+/* ================= MOBILE SPÉCIFIQUE ===================== */
+/* ========================================================= */
+
 @media (max-width: 992px) {
+  
   .app-mobile-container {
-    flex-direction: column-reverse;
+    flex-direction: column; /* Texte en haut, image en bas */
     text-align: center;
+    gap: 40px;
+    padding-top: 0;
   }
 
-  .app-mobile-text p,
-  .download-text,
-  .logo-buttons-line {
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .logo-buttons-line {
+  /* RESET DU TEXTE */
+  .app-mobile-text {
+    width: 100%;
+    margin-top: 0;     /* IMPORTANT : on enlève la marge négative */
+    padding-left: 0;   /* On enlève le décalage gauche */
+    display: flex;
     flex-direction: column;
-    gap: 15px;
+    align-items: center;
+  }
+
+  .app-mobile-text h2, 
+  .download-text {
+    text-align: center;
+    margin-left: 0;
+  }
+
+  .app-mobile-text p {
+    text-align: center;
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 100%; /* Prend toute la largeur */
+  }
+  
+  /* BOUTONS ET LOGO CENTRÉS */
+  .logo-buttons-line {
+    flex-direction: column; /* Logo au dessus des boutons */
+    gap: 20px;
+    margin-left: 0;
+    justify-content: center;
+  }
+  
+  .app-buttons {
+    justify-content: center;
+    flex-wrap: wrap; /* Si l'écran est trop petit, les boutons passent l'un sous l'autre */
+  }
+
+  /* IMAGE */
+  .app-mobile-image img {
+    max-width: 60%; /* Taille image mobile */
+    margin-top: 20px;
+  }
+}
+
+/* TRES PETIT MOBILE */
+@media (max-width: 480px) {
+  .app-mobile-image img {
+    max-width: 90%; /* Image plus grande sur petit écran */
+  }
+  
+  .app-buttons {
+    flex-direction: column; /* Boutons l'un sous l'autre sur petit écran */
+    width: 100%;
+  }
+  
+  .app-btn.store {
+    justify-content: center; /* Centre le contenu du bouton */
+    width: 100%;
   }
 }

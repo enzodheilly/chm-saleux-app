@@ -1,216 +1,151 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Modifier un forfait
-{% endblock %}
+{% block title %}Modifier le forfait{% endblock %}
 
 {% block stylesheets %}
-	<style>:root
-	{
-		--bg-dark: #0e0e10;
-		--bg-darker: #141416;
-		--bg-light: #1c1c1f;
-		--text-main: #e5e7eb;
-		--text-muted: #9ca3af;
-		--accent: #ff6600;
-		--border: #2a2a2d;
-	}
+<style>
+    /* ... Mêmes styles que NEW pour la cohérence ... */
+    .dashboard-container { width: 100%; max-width: 1000px; margin: 0 auto; }
+    .page-header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
+    .form-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; }
+    .form-card > form > div { margin-bottom: 1.5rem; }
+    label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    input[type="text"], input[type="number"], select, textarea { width: 100%; background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-main); padding: 0.7rem 1rem; border-radius: 4px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; box-sizing: border-box; }
+    input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+    .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; }
+    @media(max-width: 800px) { .row-3 { grid-template-columns: 1fr; gap: 1rem; } }
+    .checkbox-row { display: flex; align-items: center; gap: 10px; padding: 1rem; background: var(--bg-darker); border: 1px solid var(--border); border-radius: 4px; }
+    .checkbox-row input[type="checkbox"] { width: auto; transform: scale(1.2); cursor: pointer; }
+    .checkbox-row label { margin: 0; color: var(--text-main); font-weight: 600; cursor: pointer; text-transform: none; font-size: 0.95rem; }
+    .help-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 1rem; border-radius: 4px; margin-top: 0.5rem; }
+    .help-box p { margin: 0 0 0.5rem 0; font-weight: 600; font-size: 0.85rem; color: var(--text-main); }
+    .help-box ul { margin: 0; padding-left: 1.2rem; color: var(--text-muted); font-size: 0.85rem; }
+    .help-box li { margin-bottom: 0.2rem; }
+    .help-box code { background: rgba(0,0,0,0.3); padding: 2px 5px; border-radius: 3px; font-family: monospace; color: var(--accent); }
 
-	body {
-		font-family: "Inter", system-ui, sans-serif;
-		background: var(--bg-dark);
-		color: var(--text-main);
-		margin: 0;
-		min-height: 100vh;
-	}
+    /* Actions Spécifiques Edit (Space Between) */
+    .form-actions { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    
+    .btn-submit { background: var(--accent); color: #fff; padding: 0.7rem 1.5rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+    .btn-submit:hover { background: var(--accent-hover); }
 
-	.main-content {
-		flex: 1;
-		margin-left: 100px;
-		padding: 2.5rem 3rem;
-		display: flex;
-		flex-direction: column;
-		box-sizing: border-box;
-		background: var(--bg-dark);
-		min-height: 100vh;
-	}
+    .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 500; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; transition: 0.2s; }
+    .btn-cancel:hover { border-color: var(--text-muted); color: var(--text-main); }
 
-	/* ---------- CONTAINER ---------- */
-	.dashboard-container {
-		transform: scale(1.00);
-		transform-origin: top left;
-		width: 103.8%;
-		max-width: none;
-		margin-left: 1.5rem;
-	}
+    .btn-delete { color: #ef4444; background: none; border: none; font-size: 0.9rem; cursor: pointer; font-weight: 500; padding: 0.5rem 0; opacity: 0.8; transition: opacity 0.2s; }
+    .btn-delete:hover { opacity: 1; text-decoration: underline; }
+</style>
+{% endblock %}
 
-	.dashboard-container h1 {
-		font-size: 2.3rem;
-		font-weight: 800;
-		color: #fff;
-		margin-bottom: 2.5rem;
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-	}
+{% block body %}
+<div class="dashboard-container">
+    
+    <div class="page-header">
+        <h1>Modifier le forfait</h1>
+        <p>Mise à jour des informations de l'offre : {{ forfait.nom }}</p>
+    </div>
 
-	/* ---------- FORM CARD ---------- */
-	.section-card {
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		padding: 1.8rem;
-		border-radius: 10px;
-		max-width: 800px;
-		width: 100%;
-		box-sizing: border-box;
-	}
+    <div class="form-card">
+        {{ form_start(form) }}
 
-	label {
-		display: block;
-		font-weight: 600;
-		margin-bottom: 0.4rem;
-		color: var(--text-main);
-	}
+        <div>
+            {{ form_label(form.nom) }}
+            {{ form_widget(form.nom) }}
+        </div>
 
-	input[type="text"],
-	textarea {
-		width: 100%;
-		background: var(--bg-darker);
-		color: var(--text-main);
-		border: 1px solid var(--border);
-		padding: 0.7rem 1rem;
-		font-size: 0.95rem;
-		outline: none;
-		border-radius: 6px;
-		transition: border-color 0.2s ease;
-		box-sizing: border-box;
-	}
+        <div class="row-3">
+            <div>
+                {{ form_label(form.prix) }}
+                {{ form_widget(form.prix) }}
+            </div>
+            <div>
+                {{ form_label(form.frequence) }}
+                {{ form_widget(form.frequence) }}
+            </div>
+            <div>
+                {{ form_label(form.mensualite) }}
+                {{ form_widget(form.mensualite) }}
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">Calculé à titre indicatif</div>
+            </div>
+        </div>
 
-	input[type="text"]:focus,
-	textarea:focus {
-		border-color: var(--accent);
-	}
+        <div class="checkbox-row" onclick="document.getElementById('{{ form.isPopular.vars.id }}').click()">
+            {{ form_widget(form.isPopular) }}
+            <label for="{{ form.isPopular.vars.id }}">Mettre en avant cette offre (Badge Populaire)</label>
+        </div>
 
-	textarea {
-		resize: vertical;
-		min-height: 120px;
-	}
+        <div style="margin-top: 1.5rem;">
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description) }}
+        </div>
 
-	.form-group {
-		margin-bottom: 1.4rem;
-	}
+        <div style="margin-top: 1.5rem;">
+            {{ form_label(form.avantages) }}
+            {{ form_widget(form.avantages, {'attr': {'rows': 8}}) }}
+            
+            <div class="help-box">
+                <p>Gestion des icônes :</p>
+                <ul>
+                    <li>Format : <code>nom-icone | Votre texte</code></li>
+                    <li>Exemple : <code>fa-trophy | Accès compétition</code></li>
+                </ul>
+            </div>
+        </div>
 
-	.btn-success {
-		background: var(--accent);
-		color: #fff;
-		font-weight: 600;
-		padding: 0.75rem 1.5rem;
-		border: none;
-		cursor: pointer;
-		transition: background 0.2s ease, transform 0.2s ease;
-		box-shadow: 0 3px 10px rgba(255, 102, 0, 0.25);
-		border-radius: 6px;
-	}
-	.btn-success:hover {
-		background: #e25500;
-		transform: translateY(-2px);
-	}
+        <div class="form-actions">
+            <button type="button" class="btn-delete" onclick="if(confirm('⚠️ Attention : Supprimer cette offre peut impacter les membres actifs.\n\nConfirmer la suppression ?')) document.getElementById('delete-form').submit();">
+                Supprimer l'offre
+            </button>
 
-	.btn-secondary {
-		background: var(--bg-darker);
-		color: var(--text-main);
-		font-weight: 500;
-		padding: 0.75rem 1.5rem;
-		border: 1px solid var(--border);
-		cursor: pointer;
-		transition: background 0.2s ease;
-		text-decoration: none;
-		border-radius: 6px;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.btn-secondary:hover {
-		background: #2a2a2d;
-	}
+            <div style="display: flex; gap: 10px;">
+                <a href="{{ path('admin_forfait_index') }}" class="btn-cancel">Annuler</a>
+                <button type="submit" class="btn-submit">Mettre à jour</button>
+            </div>
+        </div>
 
-	.form-actions {
-		display: flex;
-		gap: 1rem;
-		margin-top: 1.8rem;
-	}
+        {{ form_end(form) }}
+    </div>
 
-	/* ---------- ALERTS ---------- */
-	.alert-success {
-		background: rgba(34, 197, 94, 0.15);
-		border: 1px solid rgba(34, 197, 94, 0.4);
-		color: #22c55e;
-		padding: 0.8rem 1rem;
-		margin-bottom: 1.2rem;
-		font-weight: 500;
-		border-radius: 6px;
-	}
+    <form id="delete-form" method="post" action="{{ path('admin_forfait_delete', {id: forfait.id}) }}" style="display: none;">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ forfait.id) }}">
+    </form>
+</div>
 
-	.alert-error {
-		background: rgba(239, 68, 68, 0.15);
-		border: 1px solid rgba(239, 68, 68, 0.4);
-		color: #ef4444;
-		padding: 0.8rem 1rem;
-		margin-bottom: 1.2rem;
-		font-weight: 500;
-		border-radius: 6px;
-	}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const priceInput = document.getElementById('forfait_prix');
+    const freqSelect = document.getElementById('forfait_frequence');
+    const monthlyInput = document.getElementById('forfait_mensualite');
 
-	/* ---------- RESPONSIVE ---------- */
-	@media(max-width: 900px) {
-		.main-content {
-			margin-left: 0;
-			padding: 1.5rem;
-		}
-		.dashboard-container {
-			width: 100%;
-			margin-left: 0;
-		}
-	}
-</style>{% endblock %}{% block body %}
-<div class="main-content">
-	<div class="dashboard-container">
-		<h1>✏️ Modifier le forfait</h1>
+    function updateMonthlyPrice() {
+        let price = parseFloat(priceInput.value.replace(',', '.'));
+        const frequency = freqSelect.value; 
 
-		<div class="section-card">
-			{% for message in app.flashes('error') %}
-				<div class="alert-error">{{ message }}</div>
-			{% endfor %}
-			{% for message in app.flashes('success') %}
-				<div class="alert-success">{{ message }}</div>
-			{% endfor %}
+        if (isNaN(price) || price <= 0) {
+            monthlyInput.value = '';
+            return;
+        }
 
-			{{ form_start(form) }}
+        let monthly = 0;
+        let valid = false;
 
-			<div class="form-group">
-				{{ form_label(form.nom, 'Nom du forfait') }}
-				{{ form_widget(form.nom) }}
-				{{ form_errors(form.nom) }}
-			</div>
+        if (frequency === '/an') { monthly = price / 12; valid = true; } 
+        else if (frequency === '/trimestre') { monthly = price / 3; valid = true; } 
+        else if (frequency === '/semestre') { monthly = price / 6; valid = true; } 
+        else if (frequency === '/mois') { monthly = price; valid = true; }
 
-			<div class="form-group">
-				{{ form_label(form.description, 'Description') }}
-				{{ form_widget(form.description) }}
-				{{ form_errors(form.description) }}
-			</div>
+        if (valid) monthlyInput.value = monthly.toFixed(2);
+        else monthlyInput.value = '';
+    }
 
-			<div class="form-group">
-				{{ form_label(form.avantages, 'Avantages inclus') }}
-				<small class="text-muted d-block mb-2">Ajoute les avantages un par un</small>
-				{{ form_widget(form.avantages) }}
-				{{ form_errors(form.avantages) }}
-			</div>
-
-			<div class="form-actions">
-				<button class="btn-success">💾 Enregistrer</button>
-				<a href="{{ path('admin_forfait_index') }}" class="btn-secondary">⬅️ Retour</a>
-			</div>
-
-			{{ form_end(form) }}
-		</div>
-	</div>
-</div>{% endblock %}
+    if (priceInput && freqSelect && monthlyInput) {
+        priceInput.addEventListener('input', updateMonthlyPrice);
+        freqSelect.addEventListener('change', updateMonthlyPrice);
+        // Calcul initial au chargement pour le mode Edit
+        updateMonthlyPrice();
+    }
+});
+</script>
+{% endblock %}
