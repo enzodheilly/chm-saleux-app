@@ -12,17 +12,25 @@
 <header class="hero-header">
     <div class="overlay"></div>
 
+        <a href="{{ path('home') }}" class="back-button">
+         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+         </svg>
+         Home
+    </a>
+
     <!-- Image diagonale sur la droite -->
     <div class="hero-diagonal-image">
-        <img src="{{ asset('images/menu_dropdown/a_propos_de_notre_club/presentation_club/1.jpg') }}" alt="Image Musculation Club">
+        <img src="{{ asset('images/menu_dropdown/a_propos_de_notre_club/presentation_club/ddd.jpg') }}" alt="Image Musculation Club">
     </div>
 
     <!-- Contenu texte -->
-    <div class="hero-content">
-        <h1>notre histoire</h1>
-<p>Une aventure née d’une passion, construite avec le temps et partagée avec vous chaque jour.</p>
+<div class="hero-content">
+        <h1>Présentation du Club</h1>
+        <p>Notre club, c'est un peu votre deuxième maison. Découvrez l'histoire d'une association bâtie sur l'amitié et le partage, où l'on vient pour soulever des barres mais où l'on reste pour <span>les bons moments.</span></p>
     </div>
 </header>
+
 <main class="club-page">
 
     {# ========================== HISTOIRE ========================== #}
@@ -31,7 +39,7 @@
             <div class="club-text-block">
                 <h2>NOTRE HISTOIRE</h2>
             <p>
-    Fondé en 1984 au cœur de Saleux par Michel et Francine, le CHM est né d’une volonté simple : offrir un espace sérieux, chaleureux et accessible où chacun peut évoluer en musculation. Au fil des années, le club s’est développé autour de valeurs fortes telles que la progression, le partage et le respect. Grâce à l’engagement de ses fondateurs et de ses membres, le CHM est devenu un lieu incontournable pour tous ceux qui souhaitent s’entraîner dans une ambiance conviviale et motivante.
+    Fondé en 1984 au cœur de Saleux par Michel et Francine, le CHM est né d’une volonté simple : offrir un espace sérieux, chaleureux et accessible où chacun peut évoluer en halterophilie & musculation. Au fil des années, le club s’est développé autour de valeurs fortes telles que la progression, le partage et le respect. Grâce à l’engagement de ses fondateurs et de ses membres, le CHM est devenu un lieu incontournable pour tous ceux qui souhaitent s’entraîner dans une ambiance conviviale et motivante.
 </p>
 
                 <p>
@@ -121,7 +129,7 @@
                 </article>
 
                 <article class="bureau-card">
-                    <img src="{{ asset('images/club/bureau-membre.png') }}" alt="Membre du bureau">
+                    <img src="{{ asset('images/club/bg3.jpg') }}" alt="Membre du bureau">
                     <h3>Membre</h3>
                     <p>Marianne NOM</p>
                 </article>

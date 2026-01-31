@@ -1,0 +1,309 @@
+.overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 0;
+		}
+
+.hero-header {
+    position: relative;
+    margin-top: 120px;
+    width: 100%;
+    height: 65vh; /* ajustable */
+    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    /* diagonale sur le bas */
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
+}
+
+
+/* Fond flou + filtre bleu foncé */
+.hero-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    filter: blur(40px);
+    transform: scale(4.1);
+    z-index: 0; /* derrière le texte */
+}
+
+/* Filtre bleu foncé */
+.hero-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 41, 82, 0.65); /* ← bleu plus foncé */
+    z-index: 1;
+}
+
+/* Image décorative diagonale sur la droite du hero */
+.hero-diagonal-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;          /* occupe toute la hauteur du hero */
+    width: 55%;            /* moitié droite du hero */
+    overflow: hidden;
+    z-index: 2;            /* au-dessus du fond mais derrière le texte si nécessaire */
+    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%); /* diagonale */
+}
+
+.hero-diagonal-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.3)); /* optionnel : ombre douce */
+    transform: scale(1.1); /* léger zoom pour mieux couvrir le clip-path */
+}
+
+/* Contenu visible au-dessus */
+.hero-header > .hero-content {
+    position: relative;
+    z-index: 2; /* texte au-dessus du fond */
+}
+
+		.hero-content {
+			position: relative;
+			z-index: 1;
+			margin-top: 100px;
+		}
+
+		.hero-content h1 {
+			font-size: 2.5rem;
+			font-weight: 800;
+			max-width: 900px;
+			text-align: left;
+            text-transform: uppercase;
+			margin: 0 0 1rem;
+			color: white;
+			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+			margin-right:1050px;
+			margin-top: -179px;
+			letter-spacing: 2px;
+		}
+		.hero-content p {
+			font-size: 1.1rem;
+			line-height: 1.8;
+			color: #CBD5E1;
+			margin-bottom: 2rem;
+            max-width: 570px;
+            margin-right: 660px;
+            text-align: left;
+		}	
+
+        /* Le bouton Retour */
+.back-button {
+    /* 1. POSITIONNEMENT : On le sort du flux pour le mettre en haut à gauche */
+    position: absolute; 
+    top: 35px;      /* Espace depuis le haut */
+    left: 100px;     /* Espace depuis la gauche */
+    
+    /* 2. COUCHE : On le force à passer au-dessus du filtre bleu (qui est à 1) */
+    z-index: 10;    
+    
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    
+    /* 3. COULEUR : On met blanc car le fond est sombre */
+    color: #ffffff; 
+    
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* ===============================
+   SECTION TRÉSORIER
+================================ */
+
+.tresorier-section {
+    padding: 80px 20px;
+    color: #fff;
+}
+
+.tresorier-section .container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.tresorier-title {
+    font-size: 2.2rem;
+    font-weight: 900;
+    margin-bottom: 40px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.tresorier-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.tresorier-photo {
+    flex: 0 0 250px;
+}
+
+.tresorier-photo img {
+    width: 100%;
+    max-width: 250px;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.tresorier-text {
+    flex: 1;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #CBD5E1;
+}
+
+/* ==========================================================
+   📱 MOBILE RESPONSIVE (MAX-WIDTH: 900px)
+   ========================================================== */
+
+@media (max-width: 900px) {
+
+    /* --- 1. HERO HEADER (Layout Vertical & Clean) --- */
+    .hero-header {
+        padding-top: 140px;
+        margin-top: 0;
+        
+        height: auto;
+        min-height: 100vh;
+        background: transparent; /* Transparence pour voir le fond bleu */
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        clip-path: none;
+    }
+
+    /* Réactivation des backgrounds (flou + bleu) */
+    .hero-header::before,
+    .hero-header::after {
+        display: block !important;
+        position: absolute;
+        inset: 0;
+        height: 100%;
+    }
+
+    /* LE TEXTE (Haut) */
+    .hero-content {
+        order: 1;
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        padding: 0 25px;
+        text-align: left;
+        
+        /* Reset des marges */
+        margin-top: 0 !important;
+        margin-bottom: 20px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.4rem;
+        line-height: 1.2;
+        margin: 0 0 20px 0;
+        
+        /* IMPORTANT : Annulation des marges négatives du PC */
+        margin-left: 0 !important; 
+        margin-right: 0 !important; 
+        margin-top: 0 !important;
+        max-width: 100%;
+    }
+
+    .hero-content p {
+        font-size: 1.1rem;
+        font-weight: 500;
+        line-height: 1.6;
+        
+        /* IMPORTANT : Annulation des marges négatives */
+        margin-left: 0 !important;
+        max-width: 100% !important;
+        margin-bottom: 30px;
+        text-align: left;
+    }
+
+    /* L'IMAGE (Bas avec Zoom) */
+    .hero-diagonal-image {
+        order: 2;
+        position: relative !important;
+        display: block !important;
+        width: 100%;
+        height: 280px;
+        margin-top: auto;
+        z-index: 5;
+        overflow: hidden; /* Nécessaire pour le zoom */
+        
+        /* Coupe diagonale sur le HAUT de l'image */
+        clip-path: polygon(0 15%, 100% 0, 100% 100%, 0% 100%);
+    }
+
+    .hero-diagonal-image img {
+        /* Zoom activé pour remplir la largeur */
+        transform: scale(1.5); 
+        transform-origin: center center;
+        
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: none;
+    }
+
+    /* --- 2. SECTION TRÉSORIER --- */
+    
+    .tresorier-section {
+        padding: 50px 20px;
+    }
+
+    .tresorier-title {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+
+    .tresorier-content {
+        display: flex;
+        flex-direction: column; /* Colonne verticale */
+        gap: 30px;
+        align-items: center; /* Centre la photo */
+    }
+
+    .tresorier-photo {
+        /* On annule la largeur fixe du PC (flex: 0 0 250px) */
+        flex: none; 
+        width: 100%;
+        display: flex;
+        justify-content: center; /* Centre l'image horizontalement */
+        margin-bottom: 10px;
+    }
+
+    .tresorier-photo img {
+        max-width: 250px; /* Taille conservée */
+        width: 100%;
+        height: auto;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .tresorier-text {
+        flex: none; /* Annule le flex: 1 */
+        width: 100%;
+        margin-top: 0;
+        font-size: 1.05rem;
+        text-align: left; /* Texte aligné à gauche pour la lecture */
+    }
+}

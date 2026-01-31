@@ -20,11 +20,23 @@ class Forfait
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: 'json')]
-    private array $avantages = [];
-
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
     private ?string $prix = null;
+
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
+    private ?string $mensualite = null;
+
+    // NOUVEAU : Pour définir si c'est "/mois", "/an", "/trimestre"
+    #[ORM\Column(length: 20)]
+    private ?string $frequence = null;
+
+    // NOUVEAU : Le badge "Populaire"
+    #[ORM\Column(type: 'boolean')]
+    private bool $isPopular = false;
+
+    // On garde le JSON, mais on le gérera comme du texte dans le formulaire
+    #[ORM\Column(type: 'json')]
+    private array $avantages = [];
 
     public function getId(): ?int
     {
@@ -53,6 +65,39 @@ class Forfait
         return $this;
     }
 
+    public function getPrix(): ?string
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(?string $prix): self
+    {
+        $this->prix = $prix;
+        return $this;
+    }
+
+    public function getFrequence(): ?string
+    {
+        return $this->frequence;
+    }
+
+    public function setFrequence(string $frequence): self
+    {
+        $this->frequence = $frequence;
+        return $this;
+    }
+
+    public function isPopular(): bool
+    {
+        return $this->isPopular;
+    }
+
+    public function setIsPopular(bool $isPopular): self
+    {
+        $this->isPopular = $isPopular;
+        return $this;
+    }
+
     public function getAvantages(): array
     {
         return $this->avantages;
@@ -64,14 +109,14 @@ class Forfait
         return $this;
     }
 
-    public function getPrix(): ?string
+    public function getMensualite(): ?string
     {
-        return $this->prix;
+        return $this->mensualite;
     }
 
-    public function setPrix(?string $prix): self
+    public function setMensualite(?string $mensualite): self
     {
-        $this->prix = $prix;
+        $this->mensualite = $mensualite;
         return $this;
     }
 }

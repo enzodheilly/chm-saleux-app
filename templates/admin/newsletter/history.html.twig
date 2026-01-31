@@ -1,492 +1,239 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Historique des newsletters
-{% endblock %}
+{% block title %}Historique des campagnes{% endblock %}
 
 {% block stylesheets %}
-	<style>:root
-	{
-		--bg-dark: #0e0e10;
-		--bg-darker: #141416;
-		--bg-light: #1c1c1f;
-		--text-main: #e5e7eb;
-		--text-muted: #9ca3af;
-		--accent: #ff6600;
-		--border: #2a2a2d;
-	}
+<style>
+    /* =================== PAGE STYLE =================== */
+    .dashboard-container { width: 100%; max-width: 1600px; margin: 0 auto; }
 
-	.main-content {
-		flex: 1;
-		margin-left: 100px;
-		padding: 2.5rem 3rem;
-		background: var(--bg-dark);
-		color: var(--text-main);
-		min-height: 100vh;
-		box-sizing: border-box;
-	}
+    /* Stats Grid */
+    .stats-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;
+    }
+    .stat-card {
+        background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; padding: 1.5rem;
+    }
+    .stat-label { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; }
+    .stat-value { font-size: 2rem; font-weight: 700; color: var(--text-main); }
+    
+    /* Section Headers */
+    .section-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
 
-	.dashboard-container {
-		transform: scale(1.00); /* au lieu de 1.15 */
-		transform-origin: top left;
-		width: 95%; /* limite le débordement */
-		margin-left: 1.5rem; /* pour centrer légèrement à cause de la sidebar */
-	}
+    /* Filters */
+    .filter-select {
+        background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-main);
+        padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.85rem; outline: none; cursor: pointer;
+    }
 
-	.page-title {
-		font-size: 2.2rem;
-		font-weight: 800;
-		color: #fff;
-		margin-bottom: 2rem;
-	}
+    /* Chart Container */
+    .chart-container { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; padding: 1.5rem; margin-bottom: 2rem; }
 
-	.section-card {
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		padding: 2rem 1.8rem;
-		box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-		margin-bottom: 2.5rem;
-	}
+    /* Table Styles */
+    .content-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; }
+    .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .table th {
+        background: var(--bg-darker); color: var(--text-muted); font-weight: 600; text-align: left;
+        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); text-transform: uppercase; font-size: 0.75rem;
+    }
+    .table td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle; }
+    .table tr:hover { background: rgba(255,255,255,0.01); }
 
-	.section-title {
-		font-size: 1.1rem;
-		font-weight: 600;
-		color: #fff;
-		margin-bottom: 1.2rem;
-		border-bottom: 1px solid var(--border);
-		padding-bottom: 0.6rem;
-	}
+    /* Progress Bars */
+    .progress-wrapper { width: 100%; max-width: 120px; background: var(--bg-darker); border-radius: 2px; height: 6px; overflow: hidden; margin-bottom: 4px; }
+    .progress-bar { height: 100%; border-radius: 2px; }
+    .bg-open { background: #22c55e; }
+    .bg-click { background: #3b82f6; }
+    .progress-text { font-size: 0.75rem; color: var(--text-muted); }
 
-	.table {
-		width: 100%;
-		border-collapse: collapse;
-		font-size: 0.95rem;
-		color: var(--text-main);
-	}
+    /* Actions */
+    .btn-view {
+        background: transparent; border: 1px solid var(--border); color: var(--text-main);
+        padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: 0.2s;
+    }
+    .btn-view:hover { border-color: var(--accent); color: var(--accent); }
 
-	.table thead {
-		background: var(--bg-darker);
-		color: #fff;
-	}
+    /* Modal */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; }
+    .modal-content { background: #fff; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; padding: 2rem; border-radius: 4px; position: relative; color: #000; }
+    .modal-close { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; cursor: pointer; color: #666; }
+    .modal-close:hover { color: #000; }
 
-	.table th,
-	.table td {
-		padding: 0.8rem 1rem;
-		text-align: left;
-		border-bottom: 1px solid var(--border);
-	}
+</style>
+{% endblock %}
 
-	.table th {
-		color: var(--accent);
-		font-weight: 600;
-	}
+{% block body %}
+<div class="dashboard-container">
+    
+    <div style="margin-bottom: 2rem;">
+        <h1 style="margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main);">Performances Newsletter</h1>
+        <p style="color: var(--text-muted); margin-top: 5px;">Analyse des envois et de l'engagement.</p>
+    </div>
 
-	.table tbody tr:hover {
-		background: rgba(255, 102, 0, 0.07);
-	}
+    {# STATS GLOBALES #}
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Campagnes Envoyées</div>
+            <div class="stat-value">{{ messages|length }}</div>
+        </div>
+        
+        {% set totalRecipients = messages|reduce((carry, m) => carry + m.recipientCount, 0) %}
+        <div class="stat-card">
+            <div class="stat-label">Total Destinataires</div>
+            <div class="stat-value">{{ totalRecipients }}</div>
+        </div>
 
-	.btn {
-		background: var(--accent);
-		color: #fff;
-		border: none;
-		padding: 0.45rem 0.9rem;
-		border-radius: 6px;
-		font-weight: 600;
-		cursor: pointer;
-		transition: 0.2s;
-		font-size: 0.9rem;
-	}
-	.btn:hover {
-		background: #e25500;
-	}
+        {% set totalOpens = messages|reduce((carry, m) => carry + (m.openCount ?? 0), 0) %}
+        {% set avgOpenRate = totalRecipients > 0 ? (totalOpens / totalRecipients * 100) : 0 %}
+        <div class="stat-card">
+            <div class="stat-label">Taux d'Ouverture Moyen</div>
+            <div class="stat-value" style="color: #22c55e;">{{ avgOpenRate|number_format(1) }}%</div>
+        </div>
 
-	.empty-msg {
-		text-align: center;
-		color: var(--text-muted);
-		margin-top: 1.5rem;
-		font-size: 1rem;
-	}
+        {% set totalClicks = messages|reduce((carry, m) => carry + (m.clickCount ?? 0), 0) %}
+        {% set avgClickRate = totalRecipients > 0 ? (totalClicks / totalRecipients * 100) : 0 %}
+        <div class="stat-card">
+            <div class="stat-label">Taux de Clic Moyen</div>
+            <div class="stat-value" style="color: #3b82f6;">{{ avgClickRate|number_format(1) }}%</div>
+        </div>
+    </div>
 
-	/* --- MODALE --- */
-	.modal {
-		display: none;
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: rgba(0, 0, 0, 0.7);
-		justify-content: center;
-		align-items: center;
-		z-index: 1000;
-	}
-	.modal-content {
-		background: #fff;
-		color: #000;
-		max-width: 800px;
-		width: 90%;
-		padding: 2rem;
-		border-radius: 10px;
-		overflow-y: auto;
-		max-height: 90vh;
-		position: relative;
-	}
-	.modal-close {
-		position: absolute;
-		top: 10px;
-		right: 20px;
-		font-size: 1.5rem;
-		color: #333;
-		cursor: pointer;
-	}
+    {# GRAPHIQUE #}
+    <div class="chart-container">
+        <div class="section-title">
+            <span>Évolution des performances</span>
+            <select id="periodSelect" class="filter-select">
+                <option value="90">3 derniers mois</option>
+                <option value="30">30 derniers jours</option>
+                <option value="365">1 an</option>
+            </select>
+        </div>
+        <canvas id="newsletterStatsChart" height="80"></canvas>
+    </div>
 
-	.progress-bar-container {
-		position: relative;
-		background: #2e2e2e;
-		border-radius: 8px;
-		height: 16px;
-		overflow: hidden;
-		width: 120px;
-		cursor: pointer;
-		transition: transform 0.2s ease;
-	}
+    {# TABLEAU HISTORIQUE #}
+    <div class="content-card">
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--border);">
+            <h3 style="margin:0; font-size:1rem;">Historique détaillé</h3>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sujet</th>
+                    <th>Date d'envoi</th>
+                    <th>Volume</th>
+                    <th>Ouverture</th>
+                    <th>Clics</th>
+                    <th>Type</th>
+                    <th style="text-align: right;">Détails</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for msg in messages %}
+                    {% set openRate = msg.recipientCount > 0 ? (msg.openCount / msg.recipientCount * 100) : 0 %}
+                    {% set clickRate = msg.recipientCount > 0 ? (msg.clickCount / msg.recipientCount * 100) : 0 %}
+                    <tr>
+                        <td style="font-weight: 600;">{{ msg.subject }}</td>
+                        <td style="color: var(--text-muted);">{{ msg.sentAt|date('d/m/Y H:i') }}</td>
+                        <td>{{ msg.recipientCount }}</td>
+                        
+                        <td>
+                            <div class="progress-wrapper"><div class="progress-bar bg-open" style="width: {{ openRate }}%;"></div></div>
+                            <span class="progress-text">{{ openRate|number_format(1) }}%</span>
+                        </td>
+                        
+                        <td>
+                            <div class="progress-wrapper"><div class="progress-bar bg-click" style="width: {{ clickRate }}%;"></div></div>
+                            <span class="progress-text">{{ clickRate|number_format(1) }}%</span>
+                        </td>
 
-	.progress-bar-container:hover {
-		transform: scale(1.05);
-	}
-
-	.progress-bar {
-		height: 100%;
-		transition: width 0.6s ease;
-	}
-
-	.progress-bar.open-rate.high {
-		background: linear-gradient(90deg, #22c55e, #16a34a);
-	}
-	.progress-bar.open-rate.medium {
-		background: linear-gradient(90deg, #facc15, #eab308);
-	}
-	.progress-bar.open-rate.low {
-		background: linear-gradient(90deg, #f87171, #dc2626);
-	}
-
-	.progress-bar.click-rate.high {
-		background: linear-gradient(90deg, #3b82f6, #2563eb);
-	}
-	.progress-bar.click-rate.medium {
-		background: linear-gradient(90deg, #60a5fa, #3b82f6);
-	}
-	.progress-bar.click-rate.low {
-		background: linear-gradient(90deg, #f87171, #dc2626);
-	}
-
-	.progress-label {
-		position: absolute;
-		top: 0;
-		left: 50%;
-		transform: translateX(-50%);
-		font-size: 12px;
-		color: #fff;
-		font-weight: bold;
-		line-height: 16px;
-	}
-
-	/* 🌟 Tooltip custom */
-	.progress-bar-container::after {
-		content: attr(data-tooltip);
-		position: absolute;
-		bottom: 120%;
-		left: 50%;
-		transform: translateX(-50%);
-		background: rgba(0, 0, 0, 0.85);
-		color: #fff;
-		padding: 6px 10px;
-		border-radius: 6px;
-		font-size: 12px;
-		white-space: nowrap;
-		opacity: 0;
-		pointer-events: none;
-		transition: opacity 0.2s ease;
-	}
-
-	.progress-bar-container:hover::after {
-		opacity: 1;
-	}
-
-	#periodSelect {
-		background: #111318;
-		color: #fff;
-		border: 1px solid #333;
-		padding: 0.5rem 0.8rem;
-		border-radius: 6px;
-		font-size: 0.9rem;
-		cursor: pointer;
-	}
-	#periodSelect:hover {
-		border-color: #ff6600;
-	}
-
-	.stats-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-		gap: 1.5rem;
-		margin: 2rem 0;
-	}
-
-	.stat-card {
-		background: #1a1c22;
-		border: 1px solid #2a2d35;
-		border-radius: 10px;
-		padding: 1.2rem;
-		text-align: center;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-		transition: transform 0.25s ease, border-color 0.25s ease;
-	}
-
-	.stat-card:hover {
-		transform: translateY(-4px);
-		border-color: #ff6600;
-	}
-
-	.stat-card h4 {
-		color: #9ca3af;
-		font-size: 0.9rem;
-		margin-bottom: 0.5rem;
-	}
-
-	.stat-card p {
-		font-size: 1.6rem;
-		color: #fff;
-		font-weight: 600;
-	}
-</style>{% endblock %}{% block body %}
-<div class="main-content">
-	<div class="dashboard-container">
-		<h1 class="page-title">📊 Tableau de bord des newsletters</h1>
-
-		{# 🟢 SECTION STATISTIQUES GLOBALES #}
-		<div class="section-card" style="margin-bottom: 3rem;">
-			<h2 class="section-title">📈 Statistiques globales</h2>
-
-			<div class="stats-grid">
-				<div class="stat-card">
-					<h4>📨 Campagnes envoyées</h4>
-					<p>{{ messages|length }}</p>
-				</div>
-
-				{% set totalRecipients = messages|reduce((carry, m) => carry + m.recipientCount, 0) %}
-				<div class="stat-card">
-					<h4>👥 Destinataires totaux</h4>
-					<p>{{ totalRecipients }}</p>
-				</div>
-
-				{% set totalOpens = messages|reduce((carry, m) => carry + (m.openCount ?? 0), 0) %}
-				{% set avgOpenRate = totalRecipients > 0 ? (totalOpens / totalRecipients * 100) : 0 %}
-				<div class="stat-card">
-					<h4>📬 Taux d’ouverture moyen</h4>
-					<p>{{ avgOpenRate|number_format(1) }}%</p>
-				</div>
-
-				{% set totalClicks = messages|reduce((carry, m) => carry + (m.clickCount ?? 0), 0) %}
-				{% set avgClickRate = totalRecipients > 0 ? (totalClicks / totalRecipients * 100) : 0 %}
-				<div class="stat-card">
-					<h4>🖱️ Taux de clic moyen</h4>
-					<p>{{ avgClickRate|number_format(1) }}%</p>
-				</div>
-			</div>
-
-			<hr style="margin:2rem 0; border-color:#333;">
-
-			<div class="chart-section">
-				<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:1rem;">
-					<h3 style="color:#fff;">📉 Évolution des performances</h3>
-
-					<div>
-						<label for="periodSelect" style="color:#ccc;margin-right:8px;">Période :</label>
-						<select id="periodSelect" class="form-input" style="width:auto;display:inline-block;">
-							<option value="30">30 derniers jours</option>
-							<option value="90" selected>3 derniers mois</option>
-							<option value="365">1 an</option>
-							<option value="all">Toutes les campagnes</option>
-						</select>
-					</div>
-				</div>
-
-				<canvas id="newsletterStatsChart" height="120"></canvas>
-			</div>
-		</div>
-
-		{# 🟣 SECTION HISTORIQUE DES CAMPAGNES #}
-		<div class="section-card">
-			<h2 class="section-title">📚 Historique des campagnes</h2>
-
-			{% if messages is not empty %}
-				<table class="table">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>Sujet</th>
-							<th>Envoyée le</th>
-							<th>Envoyée par</th>
-							<th>Ciblés</th>
-							<th>Taux d’ouverture</th>
-							<th>Taux de clic</th>
-							<th>Type</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for msg in messages %}
-							{% set openRate = msg.recipientCount > 0 ? (msg.openCount / msg.recipientCount * 100) : 0 %}
-							{% set clickRate = msg.recipientCount > 0 ? (msg.clickCount / msg.recipientCount * 100) : 0 %}
-
-							<tr>
-								<td>{{ loop.index }}</td>
-								<td>{{ msg.subject }}</td>
-								<td>{{ msg.sentAt|date('d/m/Y H:i') }}</td>
-								<td>{{ msg.sentBy ?? '—' }}</td>
-								<td>{{ msg.recipientCount }}</td>
-
-								<!-- 📊 Taux d’ouverture -->
-								<td>
-									<div class="progress-bar-container" data-tooltip="{{ msg.openCount }} ouvertures sur {{ msg.recipientCount }} ({{ openRate|number_format(1) }}%)">
-										<div class="progress-bar open-rate {% if openRate < 20 %}low{% elseif openRate < 50 %}medium{% else %}high{% endif %}" style="width: {{ openRate }}%;"></div>
-										<span class="progress-label">{{ openRate|number_format(1) }}%</span>
-									</div>
-								</td>
-
-								<!-- 🖱️ Taux de clic -->
-								<td>
-									<div class="progress-bar-container" data-tooltip="{{ msg.clickCount }} clics sur {{ msg.recipientCount }} ({{ clickRate|number_format(1) }}%)">
-										<div class="progress-bar click-rate {% if clickRate < 5 %}low{% elseif clickRate < 15 %}medium{% else %}high{% endif %}" style="width: {{ clickRate }}%;"></div>
-										<span class="progress-label">{{ clickRate|number_format(1) }}%</span>
-									</div>
-								</td>
-
-								<td>{{ msg.isTest ? '🧪 Test' : '📬 Réelle' }}</td>
-
-								<td>
-									<button class="btn" onclick="showPreview({{ msg.id }})">👀 Voir</button>
-								</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			{% else %}
-				<p class="empty-msg">Aucune newsletter envoyée pour le moment.</p>
-			{% endif %}
-		</div>
-	</div>
+                        <td style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">
+                            {{ msg.isTest ? 'Test' : 'Prod' }}
+                        </td>
+                        
+                        <td style="text-align: right;">
+                            <button class="btn-view" onclick="showPreview({{ msg.id }})">Aperçu</button>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-muted);">Aucun historique disponible.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<!-- MODALE PREVIEW -->
 <div id="previewModal" class="modal">
-	<div class="modal-content">
-		<span class="modal-close" id="closeModal">&times;</span>
-		<div id="modalBody"></div>
-	</div>
+    <div class="modal-content">
+        <span class="modal-close" id="closeModal">&times;</span>
+        <div id="modalBody"></div>
+    </div>
 </div>
 
-{# ============================ JS ============================ #} <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
- <script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Data
 const campaigns = {{ messages|map(m => {id:m.id,subject:m.subject,content:m.content})|json_encode|raw }};
-const modal = document.getElementById('previewModal');
-const modalBody = document.getElementById('modalBody');
-const closeModal = document.getElementById('closeModal');
-
-function showPreview(id) {
-	const camp = campaigns.find(c => c.id === id);
-	if (!camp) return;
-	modalBody.innerHTML = `
-		<h2 style="color:#ff6600;margin-top:0;">${camp.subject}</h2>
-		<div style="background:#fff;color:#000;padding:1rem;border-radius:8px;">${camp.content}</div>
-	`;
-	modal.style.display = 'flex';
-}
-closeModal.addEventListener('click', () => modal.style.display = 'none');
-window.addEventListener('click', e => { if (e.target === modal) modal.style.display = 'none'; });
-
-document.addEventListener('DOMContentLoaded', function () {
-  const rawData = {{ messages|map(m => {
+const rawData = {{ messages|map(m => {
     subject: m.subject,
     sentAt: m.sentAt|date('Y-m-d'),
     recipientCount: m.recipientCount,
     openCount: m.openCount ?? 0,
     clickCount: m.clickCount ?? 0
-  })|json_encode|raw }};
+})|json_encode|raw }};
 
-  const ctx = document.getElementById('newsletterStatsChart').getContext('2d');
-  const periodSelect = document.getElementById('periodSelect');
-  let chartInstance;
+// Modal Logic
+const modal = document.getElementById('previewModal');
+const modalBody = document.getElementById('modalBody');
+const closeModal = document.getElementById('closeModal');
 
-  function filterData(periodDays) {
-    if (periodDays === 'all') return rawData;
-    const cutoff = new Date();
-    cutoff.setDate(cutoff.getDate() - parseInt(periodDays));
-    return rawData.filter(c => new Date(c.sentAt) >= cutoff);
-  }
+function showPreview(id) {
+    const camp = campaigns.find(c => c.id === id);
+    if (!camp) return;
+    modalBody.innerHTML = `<h2 style="margin-top:0; border-bottom:1px solid #eee; padding-bottom:10px;">${camp.subject}</h2><div style="padding-top:10px;">${camp.content}</div>`;
+    modal.style.display = 'flex';
+}
+closeModal.onclick = () => modal.style.display = 'none';
+window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
 
-  function renderChart(filtered) {
-    const labels = filtered.map(c => c.subject);
-    const openRates = filtered.map(c => c.recipientCount > 0 ? (c.openCount / c.recipientCount * 100) : 0);
-    const clickRates = filtered.map(c => c.recipientCount > 0 ? (c.clickCount / c.recipientCount * 100) : 0);
+// Chart Logic
+document.addEventListener('DOMContentLoaded', function () {
+    const ctx = document.getElementById('newsletterStatsChart').getContext('2d');
+    const periodSelect = document.getElementById('periodSelect');
+    let chartInstance;
 
-    if (chartInstance) chartInstance.destroy();
+    function renderChart(period) {
+        // Filtrage simple (logique à adapter selon besoin réel)
+        const filtered = rawData.slice(0, 10); // Prend les 10 dernières pour l'exemple
 
-    chartInstance = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'Taux d’ouverture (%)',
-            data: openRates,
-            borderColor: '#22c55e',
-            backgroundColor: 'rgba(34,197,94,0.15)',
-            borderWidth: 2,
-            tension: 0.4,
-            fill: true,
-            pointBackgroundColor: '#22c55e'
-          },
-          {
-            label: 'Taux de clic (%)',
-            data: clickRates,
-            borderColor: '#3b82f6',
-            backgroundColor: 'rgba(59,130,246,0.15)',
-            borderWidth: 2,
-            tension: 0.4,
-            fill: true,
-            pointBackgroundColor: '#3b82f6'
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { labels: { color: '#fff', font: { size: 13 } } },
-          tooltip: {
-            backgroundColor: 'rgba(30,30,30,0.9)',
-            titleColor: '#fff',
-            bodyColor: '#fff'
-          }
-        },
-        scales: {
-          x: {
-            ticks: { color: '#ccc' },
-            grid: { color: '#333' }
-          },
-          y: {
-            beginAtZero: true,
-            ticks: { color: '#ccc', callback: v => v + '%' },
-            grid: { color: '#333' }
-          }
-        }
-      }
-    });
-  }
+        const labels = filtered.map(c => c.subject.substring(0, 20) + '...');
+        const openRates = filtered.map(c => c.recipientCount > 0 ? (c.openCount / c.recipientCount * 100) : 0);
+        const clickRates = filtered.map(c => c.recipientCount > 0 ? (c.clickCount / c.recipientCount * 100) : 0);
 
-  // 🕒 Rendu initial (3 derniers mois)
-  renderChart(filterData(90));
-  periodSelect.addEventListener('change', e => renderChart(filterData(e.target.value)));
+        if (chartInstance) chartInstance.destroy();
+
+        chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    { label: 'Taux d\'ouverture', data: openRates, borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.1)', tension: 0.3, fill: true },
+                    { label: 'Taux de clic', data: clickRates, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', tension: 0.3, fill: true }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: true, labels: { color: '#9ca3af' } } },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#2a2a2d' }, ticks: { color: '#9ca3af' } },
+                    x: { grid: { display: false }, ticks: { color: '#9ca3af' } }
+                }
+            }
+        });
+    }
+
+    renderChart(90);
+    periodSelect.addEventListener('change', (e) => renderChart(e.target.value));
 });
-</script>{% endblock %}
+</script>
+{% endblock %}

@@ -316,3 +316,84 @@ background: transparent;		}
 			font-size: 1.2rem;
 			color:#CBD5E1;
 		}
+
+		/* ========================================================= */
+/* ============= RESPONSIVE HEADER CONTACT (FINAL) ========= */
+/* ========================================================= */
+
+@media (max-width: 992px) {
+
+    /* 1. HEADER : ESPACEMENT ET DIAGONALE */
+    .hero-header {
+        height: auto;
+        /* padding-top: 140px pour bien descendre le titre */
+        /* padding-bottom: 220px pour laisser de la place à la diagonale et l'image */
+        padding: 140px 20px 220px; 
+        
+        /* LA COUPURE DIAGONALE (Haut-Gauche vers Bas-Droite plus court) */
+        /* Cela crée un effet dynamique en bas du fond bleu */
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    /* 2. TITRE : PLUS PETIT ET CENTRÉ */
+    .hero-content {
+        width: 100%;
+        text-align: center;
+        margin-top: 0; 
+    }
+
+    .hero-content h1 {
+        margin: 0 auto !important; /* Centrage forcé */
+        text-align: center;
+        font-size: 2rem; /* Beaucoup plus petit (était 2rem) */
+        max-width: 100%;
+        line-height: 1.4;
+        padding: 0 10px; /* Sécurité pour ne pas coller aux bords */
+    }
+
+    /* 3. IMAGE : REMONTE SUR LA DIAGONALE */
+    .hero-transition-image {
+        position: relative;
+        top: auto; bottom: auto; right: auto; left: auto;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        
+        /* On fait remonter l'image pour qu'elle soit à cheval sur la coupure */
+        margin-top: -160px; 
+        
+        z-index: 5;
+    }
+
+    .hero-transition-image img {
+        width: 75%;            
+        max-width: 280px; /* Image un peu plus petite pour l'équilibre */
+        height: auto;
+        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
+    }
+
+    /* 4. BLOC TEXTE "TEST" */
+    .test {
+        position: relative;
+        max-width: 90%;
+        margin: 20px auto 40px; /* Un peu d'espace sous l'image */
+        top: auto; left: auto;
+        text-align: center;
+        padding: 20px;
+        background: #1E293B;
+        border-radius: 8px;
+        z-index: 6;
+    }
+
+    .test p {
+        padding: 0;
+        font-size: 1rem;
+        text-align: center;
+        color: #CBD5E1;
+    }
+}

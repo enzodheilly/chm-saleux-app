@@ -32,6 +32,7 @@ class AdminUsersController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            // Pour un nouveau, le mot de passe est obligatoire
             $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashedPassword);
 
@@ -43,6 +44,37 @@ class AdminUsersController extends AbstractController
         }
 
         return $this->render('admin/users/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    // ✅ NOUVELLE ROUTE D'ÉDITION
+    #[Route('/{id}/edit', name: 'edit')]
+    public function edit(Request $request, User $user, EntityManagerInterface $em, UserPasswordHasherInterface $hasher): Response
+    {
+        // On crée le formulaire avec l'utilisateur existant
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // On récupère la donnée brute du champ password du formulaire
+            $newPassword = $form->get('password')->getData();
+
+            // Si le champ a été rempli, on hache et on met à jour
+            if ($newPassword) {
+                $hashed = $hasher->hashPassword($user, $newPassword);
+                $user->setPassword($hashed);
+            }
+
+            $em->flush();
+
+            $this->addFlash('success', '✅ Utilisateur modifié avec succès.');
+            return $this->redirectToRoute('admin_users_index');
+        }
+
+        return $this->render('admin/users/edit.html.twig', [
+            'user' => $user,
             'form' => $form->createView(),
         ]);
     }

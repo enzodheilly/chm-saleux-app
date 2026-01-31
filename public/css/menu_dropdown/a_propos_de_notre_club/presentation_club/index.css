@@ -1,6 +1,3 @@
-/* ==========================================================
-   PAGE "LE CLUB" - CHM SALEUX
-   ========================================================== */
 .overlay {
 			position: absolute;
 			top: 0;
@@ -21,7 +18,6 @@
     justify-content: center;
     text-align: center;
     overflow: hidden;
-
     /* diagonale sur le bas */
     clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
 }
@@ -61,11 +57,10 @@
 .hero-diagonal-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover ;
+    object-fit: cover;
     display: block;
     filter: drop-shadow(0 0 10px rgba(0,0,0,0.3)); /* optionnel : ombre douce */
-    transform: scale(1); /* léger zoom pour mieux couvrir le clip-path */
-    transition: transform 0.5s ease;
+    transform: scale(1.1); /* léger zoom pour mieux couvrir le clip-path */
 }
 
 /* Contenu visible au-dessus */
@@ -78,20 +73,19 @@
 			position: relative;
 			z-index: 1;
 			margin-top: 100px;
-			animation: fadeInUp 1s ease-out;
 		}
 
 		.hero-content h1 {
-			font-size: 3rem;
-			font-weight: 900;
-			max-width: 700px;
+			font-size: 2.5rem;
+			font-weight: 800;
+			max-width: 900px;
 			text-align: left;
+            text-transform: uppercase;
 			margin: 0 0 1rem;
-			text-transform: uppercase;
 			color: white;
 			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-			margin-right:750px;
-			margin-top: -130px;
+			margin-right:770px;
+			margin-top: -179px;
 			letter-spacing: 2px;
 		}
 		.hero-content p {
@@ -102,28 +96,32 @@
             max-width: 570px;
             margin-right: 660px;
             text-align: left;
-		}
-
-		@media(max-width: 768px) {
-			.hero-content h1 {
-				font-size: 3.2rem;
-			}
-			.hero-content p {
-				font-size: 1.1rem;
-			}
-		}
-
-		@keyframes fadeInUp {
-			from {
-				opacity: 0;
-				transform: translateY(20px);
-			}
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
 		}	
 
+        /* Le bouton Retour */
+.back-button {
+    /* 1. POSITIONNEMENT : On le sort du flux pour le mettre en haut à gauche */
+    position: absolute; 
+    top: 35px;      /* Espace depuis le haut */
+    left: 100px;     /* Espace depuis la gauche */
+    
+    /* 2. COUCHE : On le force à passer au-dessus du filtre bleu (qui est à 1) */
+    z-index: 10;    
+    
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    
+    /* 3. COULEUR : On met blanc car le fond est sombre */
+    color: #ffffff; 
+    
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
 
 /* ==========================================================
    🧱 1. BASE GÉNÉRALE
@@ -197,6 +195,8 @@ h1, h2, h3 {
 
 .club-president-text p {
   margin-bottom: 1rem;
+  font-weight: 500;
+  font-size: 1.1rem;
 }
 
 /* ==========================================================
@@ -209,6 +209,8 @@ h1, h2, h3 {
 
 .club-text-block p {
   margin-bottom: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
 .club-section-grid {
@@ -339,14 +341,17 @@ h1, h2, h3 {
 }
 
 .club-cta-final h2 {
-  font-size: 2rem;
+  font-size: 2.2rem;
   margin-bottom: 1rem;
+  font-weight: 900;
 }
 
 .club-cta-final p {
   max-width: 600px;
   margin: 0 auto 2rem;
   color: #ccc;
+  font-weight: 500;
+  font-size: 1.1rem;
 }
 
 .club-cta-actions {
@@ -435,8 +440,9 @@ h1, h2, h3 {
 }
 
 .club-image-block img {
-    width: 100%;
+    width: 80%;
     border-radius: 10px;
+    margin-left: 100px;
     object-fit: cover;
 }
 
@@ -519,40 +525,186 @@ h1, h2, h3 {
     color: #4b5563;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    #club-bureau h2 {
-        font-size: 1.9rem;
-    }
-
-    .bureau-card {
-        padding: 25px 15px;
-    }
-
-    .bureau-card img {
-        width: 110px;
-        height: 110px;
-    }
+.club-section h3{
+  color:#111;
 }
+/* ==========================================================
+   📱 MOBILE RESPONSIVE (MAX-WIDTH: 900px)
+   ========================================================== */
 
-
-/* Responsive */
 @media (max-width: 900px) {
-    .club-section-grid {
-        grid-template-columns: 1fr;
+
+    /* --- 1. HEADER HERO (Gardé comme tu voulais) --- */
+    .hero-header {
+        padding-top: 50px; 
+        margin-top: 0;
+        height: auto;     
+        min-height: 100vh;
+        background: transparent;
+        display: flex;
+        flex-direction: column; 
+        justify-content: space-between; 
+        clip-path: none;
+    }
+
+    .hero-header::before,
+    .hero-header::after {
+        display: block !important;
+        position: absolute;
+        inset: 0;
+        height: 100%;
+    }
+
+    .hero-content {
+        order: 1;
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        padding: 0 25px;
+        text-align: left;
+        margin-bottom: 20px;
+    }
+
+    .hero-content h1 {
+        color: white; 
+        font-size: 2.4rem;
+        line-height: 1.2;
+        margin: 0 0 20px 0;
+        text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-content p {
+        color: #cbd5e1 !important;
+        font-size: 1.1rem;
+        font-weight: 500;
+        line-height: 1.6;
+        margin-right: 0 !important;
+        max-width: 100% !important;
+        margin-top: 15px;
+        margin-bottom: 30px;
+        text-align: left;
+    }
+
+    .hero-diagonal-image {
+        order: 2;
+        position: relative !important;
+        display: block !important;
+        width: 100%;
+        height: 280px;
+        margin-top: auto;
+        z-index: 5;
+        clip-path: polygon(0 15%, 100% 0, 100% 100%, 0% 100%);
+    }
+
+    .hero-diagonal-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: none;
+    }
+
+    /* --- 2. LAYOUT GÉNÉRAL --- */
+    .container {
+        width: 90%;
+        padding: 0;
+    }
+
+    .club-section {
+        padding: 50px 0;
+    }
+
+    /* Reset des grilles en colonne simple */
+    .club-section-grid, 
+    .club-equip-grid, 
+    .club-infos-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    /* --- 3. FIX PRÉSIDENT (CENTRAGE) --- */
+    #club-president .club-section-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Centre les éléments enfants */
+    }
+    
+    .club-president-photo {
+        width: 100%;
+        display: flex;       /* Active flexbox */
+        justify-content: center; /* Centre horizontalement l'image */
+        padding-left: 45px;
+        margin-bottom: 20px;
+    }
+    
+    .club-president-photo img {
+        transform: none !important; /* Force l'annulation du décalage PC */
+        margin: 0 auto !important;  /* Force les marges auto */
+        display: block;
+        max-width: 280px;
+        border-radius: 10px; /* Petit bonus esthétique */
+    }
+    
+    .club-president-text {
+        padding-left: 0;
+        margin-top: 0;
         text-align: center;
+        width: 100%;
     }
 
+    /* --- 4. FIX "NOS VALEURS" (CARTES) --- */
+    .club-values-grid {
+        display: grid;
+        grid-template-columns: 1fr; /* 1 seule colonne */
+        gap: 20px;
+    }
+
+    .club-value-card {
+        padding: 30px 20px;
+        text-align: center; /* Texte centré dans la carte */
+        background: #fff;   /* Fond blanc pour lisibilité */
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    /* CORRECTION DES TITRES DANS LES CARTES */
+    .club-value-card h3 {
+        color: #005b94;    /* Couleur Bleue (visible sur fond blanc) */
+        font-size: 1.5rem; /* Taille réduite (2.2rem était trop gros) */
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+
+    .club-value-card p {
+        color: #333;       /* Gris foncé pour le texte */
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    /* --- 5. AUTRES SECTIONS --- */
     .club-image-block img {
-        max-width: 80%;
-        margin: 0 auto;
+        margin-left: 0;
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
     }
-}
 
-@media (max-width: 1536px) {
-  .club-hero {
+    .album-marquee {
+        width: 100%;
+        margin-left: 0;
+    }
 
-  height: 65vh;
+    .album-slide img {
+        width: 260px;
+        height: 180px;
+    }
 
-}
+    .club-bureau-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+    }
+
+    .club-cta-final {
+        padding: 60px 20px;
+    }
 }

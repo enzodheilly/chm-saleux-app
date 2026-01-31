@@ -1,136 +1,85 @@
 <main class="pricing-hero" role="main" aria-labelledby="abonnement-title">
-  <div class="pricing-head" role="region" aria-label="Introduction abonnements">
+  <div class="pricing-head">
     <div class="pricing-left">
       <h1 id="abonnement-title" class="pricing-title">
-        <span>
-          SELECTIONNE L’ABONNEMENT QUI TE CORRESPOND
-          <span style="color: var(--orange);"></span>
-        </span>
+        <span>SELECTIONNE L’ABONNEMENT QUI TE CORRESPOND</span>
       </h1>
       <p class="pricing-sub">
-        Avec plus de 800 m² d’espace d’entraînement, retrouve tout ce qu’il te faut pour progresser : Cardio, Musculation, Haltérophilie, et même des cours collectifs chaque semaine pour te dépasser dans une super ambiance ! Découvre nos 4 forfaits annuels, adaptés à tous les niveaux à partir de 70 €/ an 🔥
+        Avec plus de 800 m² d’espace d’entraînement... (ton texte intro)
       </p>
     </div>
   </div>
 
-<div class="segmented-toggle">
-  <input type="checkbox" id="toggle" />
-  <div class="toggle-bg"></div>
-
-  <div class="toggle-option left">Standard</div>
-  <div class="toggle-option right">Étudiant</small></div>
-</div>
+  <div class="segmented-toggle">
+    <input type="checkbox" id="toggle" />
+    <div class="toggle-bg"></div>
+    <div class="toggle-option left">Standard</div>
+    <div class="toggle-option right">Étudiant</div>
+  </div>
 
   <section id="abonnements" class="pricing-grid" aria-label="Liste des abonnements">
-
-       <!-- Enfants 
-    <article class="card disabled">
-      <h3 class="card-title">ENFANTS</h3>
-      <div class="price-row">
-        <div class="price4">50€<sup>00</sup></div>
-        <div class="period">/ an</div>
-      </div>
-      <div class="subprice4">Soit 4,17€/mois</div>
-      <ul class="features">
-        <li><img src="images/avantages.png" alt="" class="feature-icon">Initiation sécurisée</li>
-        <li><img src="images/avantages.png" alt="" class="feature-icon">Encadrement par coachs</li>
-        <li><img src="images/avantages.png" alt="" class="feature-icon">Ateliers ludiques</li>
-        <li><img src="images/avantages.png" alt="" class="feature-icon">Participation aux événements jeunes</li>
-      </ul>
-      <div class="text-center mt-3">
-        <a href="{{ path('paiement_type', { type: 'enfants' }) }}" class="btn-classic">CHOISIR</a>
-      </div>
-    </article>
-    -->
-
-    <!-- Jeunes -->
-    <article class="card">
-      <h3 class="card-title">JEUNES</h3>
-      <div class="price-row">
-        <div class="price2">70€<sup>00</sup></div>
-        <div class="period">/ an</div>
-      </div>
-      <div class="subprice2">Soit 5,83€/mois</div>
-<div class="trial-box">
-  <i class="fa-solid fa-calendar-check"></i>
-  Séance d’essai possible avant inscription
-</div>
-
-<ul class="features">
-<li><i class="fa-solid fa-door-open feature-icon"></i> Accès complet à la salle</li>
-  <li><i class="fa-solid fa-user-tie feature-icon"></i>Encadrement par coachs qualifiés</li>
-  <li><i class="fa-solid fa-shower feature-icon"></i> Vestiaires & douches</li>
-  <li><i class="fa-solid fa-trophy feature-icon"></i> Challenges & événements sportifs</li>
-  <li><i class="fa-solid fa-shield-halved feature-icon"></i>Apprentissage des bases techniques en toute sécurité</li>
-  <li><i class="fa-solid fa-chart-line feature-icon"></i>Suivi de la progression et accompagnement</li>
-  <li><i class="fa-solid fa-bullseye feature-icon"></i>Séances adaptées à l’âge et au niveau</li>
-
-</ul>
-
-    </article>
-
-            <!-- Loisir -->
-    <article class="card card-featured">
+    
+    {# --- DÉBUT DE LA BOUCLE SUR LES FORFAITS --- #}
+    {% for plan in plans %}
+    
+    <article class="card {{ plan.isPopular ? 'card-featured' : '' }}">
+      
+      {# Badge Populaire #}
+      {% if plan.isPopular %}
         <span class="badge-featured">Le plus populaire</span>
-      <h3 class="card-title">LOISIR & MUSCU</h3>
+      {% endif %}
+
+      <h3 class="card-title">{{ plan.nom|upper }}</h3>
+      
       <div class="price-row">
-        <div class="price3">200€<sup>00</sup></div>
-        <div class="period">/ an</div>
+        {# On sépare les euros et les centimes pour le style #}
+        {% set priceParts = plan.prix|number_format(2, '.', ',')|split('.') %}
+        
+        <div class="price3"> {# Tu peux rendre cette classe dynamique si besoin #}
+            {{ priceParts[0] }}€<sup>{{ priceParts[1] }}</sup>
+        </div>
+        <div class="period">{{ plan.frequence }}</div>
       </div>
-      <div class="subprice3">Soit 16,66€/mois</div>
-<div class="trial-box">
-  <i class="fa-solid fa-calendar-check"></i>
-  Séance d’essai possible avant inscription
-</div>
 
-<ul class="features">
-  <li><i class="fa-solid fa-door-open feature-icon"></i> Accès complet à la salle</li>
-  <li><i class="fa-solid fa-user-tie feature-icon"></i>Encadrement par coachs qualifiés</li>
-  <li><i class="fa-solid fa-shower feature-icon"></i> Vestiaires & douches</li>
-  <li><i class="fa-solid fa-hot-tub-person feature-icon"></i> Accès au sauna</li>
-  <li><i class="fa-solid fa-trophy feature-icon"></i> Challenges & événements sportifs</li>
-  <li><i class="fa-solid fa-weight-hanging feature-icon"></i> Haltérophilie loisir encadrée</li>
-  <li><i class="fa-solid fa-heart-pulse feature-icon"></i> Cardio & cours collectifs</li>
-  <li><i class="fa-solid fa-people-group feature-icon"></i> Ambiance conviviale</li>
-  <li><i class="fa-solid fa-clock feature-icon"></i> Accès libre a la zone Haltérophilie</li>
-</ul>
-    </article>
+      {# Mensualité calculée #}
+      {% if plan.mensualite %}
+        <div class="subprice3">Soit {{ plan.mensualite|number_format(2, ',', ' ') }}€/mois</div>
+      {% else %}
+        <div class="subprice3" style="visibility: hidden;">-</div> {# Garde l'espace #}
+      {% endif %}
 
-        <!-- Compétition -->
-    <article class="card">
-      <h3 class="card-title">COMPÉTITION</h3>
-      <div class="price-row">
-        <div class="price1">90€<sup>00</sup></div>
-        <div class="period">/ an</div>
+      <div class="trial-box">
+        <i class="fa-solid fa-calendar-check"></i>
+        Séance d’essai possible avant inscription
       </div>
-      <div class="subprice1">Soit 7,50€/mois</div>
-<div class="trial-box">
-  <i class="fa-solid fa-calendar-check"></i>
-  Séance d’essai possible avant inscription
-</div>
 
-
-<ul class="features">
-<li><i class="fa-solid fa-door-open feature-icon"></i> Accès complet à la salle</li>
-<li><i class="fa-solid fa-user-tie feature-icon"></i>Encadrement par coachs qualifiés</li>
-  <li><i class="fa-solid fa-shower feature-icon"></i> Vestiaires & douches</li>
-  <li><i class="fa-solid fa-hot-tub-person feature-icon"></i> Accès au sauna</li>
-  <li><i class="fa-solid fa-trophy feature-icon"></i> Challenges & événements sportifs</li>
-  <li><i class="fa-solid fa-id-card feature-icon"></i> Licence compétition officielle</li>
-  <li><i class="fa-solid fa-medal feature-icon"></i> Participation aux compétitions</li>
-</ul>
+      <ul class="features">
+        {% for avantage in plan.avantages %}
+            {# --- LOGIQUE D'EXTRACTION DE L'ICÔNE --- #}
+            {% set parts = avantage|split('|') %}
+            
+            <li>
+                {% if parts|length > 1 %}
+                    {# Si on a mis un |, partie 1 = icone, partie 2 = texte #}
+                    <i class="fa-solid {{ parts[0]|trim }} feature-icon"></i> {{ parts[1]|trim }}
+                {% else %}
+                    {# Si pas de |, on met une icône par défaut (ex: check) #}
+                    <i class="fa-solid fa-check feature-icon"></i> {{ avantage }}
+                {% endif %}
+            </li>
+        {% endfor %}
+      </ul>
 
     </article>
+    
+    {% endfor %}
+    {# --- FIN DE LA BOUCLE --- #}
 
   </section>
 
   <div class="pricing-foot">
     <div class="disclaimer">
-      ⚠️ <strong>Note :</strong> Avant d’effectuer le paiement, veuillez vous assurer d’avoir bien rempli le
-      <strong>formulaire de licence</strong>.<br>
-      Une fois le paiement effectué, merci de remettre le formulaire complété directement au bureau du club.<br>
-      Si vous ne l’avez pas encore, vous pouvez le télécharger
-      <a href="URL_DU_FORMULAIRE" target="_blank">ici</a>.
+      ⚠️ <strong>Note :</strong> Avant d’effectuer le paiement... (ton texte disclaimer)
     </div>
   </div>
 </main>

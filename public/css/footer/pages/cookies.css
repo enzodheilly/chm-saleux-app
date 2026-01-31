@@ -1,69 +1,130 @@
-/* ==================== STYLE NEUTRE FINAL (NOIR & BLANC) ==================== */
-
-/* ---------- HERO HEADER ---------- */
-.hero-header {
-	position: relative;
-	width: 100%;
-	height: 40vh;
-	background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
-		url('http://chm-saleux.fr/wp-content/uploads/2018/06/IMAG1090.jpg') center/cover no-repeat;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: #fff;
-	text-align: center;
-	overflow: hidden;
-}
-
 .overlay {
-	position: absolute;
-	inset: 0;
-	background: rgba(0, 0, 0, 0.5);
-	z-index: 0;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 0;
+		}
+
+.hero-header {
+    position: relative;
+    margin-top: 120px;
+    width: 100%;
+    height: 65vh; /* ajustable */
+    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+
+    /* diagonale sur le bas */
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
 }
 
-.hero-content {
-	position: relative;
-	z-index: 1;
-	margin-top: 80px;
-	animation: fadeInUp 1s ease-out forwards;
+
+/* Fond flou + filtre bleu foncé */
+.hero-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    filter: blur(40px);
+    transform: scale(4.1);
+    z-index: 0; /* derrière le texte */
 }
 
-.hero-content h1 {
-	font-size: clamp(2.5rem, 5vw, 5rem);
-	font-weight: 900;
-	margin-bottom: -10px;
-	font-family: 'Bebas Neue', sans-serif;
-	text-transform: uppercase;
-	letter-spacing: 4px;
-	color: var(--bg-white);
-	text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+/* Filtre bleu foncé */
+.hero-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 41, 82, 0.65); /* ← bleu plus foncé */
+    z-index: 1;
 }
 
-.hero-content p {
-	font-size: clamp(1rem, 2vw, 1.4rem);
-	line-height: 1.7;
-	color: #e5e5e5;
-	margin-bottom: 2rem;
+/* Image décorative diagonale sur la droite du hero */
+.hero-diagonal-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;          /* occupe toute la hauteur du hero */
+    width: 55%;            /* moitié droite du hero */
+    overflow: hidden;
+    z-index: 2;            /* au-dessus du fond mais derrière le texte si nécessaire */
+    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%); /* diagonale */
 }
 
-/* Animation */
-@keyframes fadeInUp {
-	from {
-		opacity: 0;
-		transform: translateY(20px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+.hero-diagonal-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;              /* garde les proportions */
+    object-position: center 120%;    /* descend l’image */
+    display: block;
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.3));
 }
+
+
+/* Contenu visible au-dessus */
+.hero-header > .hero-content {
+    position: relative;
+    z-index: 2; /* texte au-dessus du fond */
+}
+
+		.hero-content {
+			position: relative;
+			z-index: 1;
+			margin-top: 100px;
+			animation: fadeInUp 1s ease-out;
+		}
+
+		.hero-content h1 {
+			font-size: 3rem;
+			font-weight: 900;
+			max-width: 700px;
+			text-align: left;
+			margin: 0 0 1rem;
+			text-transform: uppercase;
+			color: #fff;
+			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+			margin-right:750px;
+			margin-top: -130px;
+			letter-spacing: 2px;
+		}
+		.hero-content p {
+			font-size: 1.1rem;
+			line-height: 1.8;
+			color: #CBD5E1;
+			margin-bottom: 2rem;
+            max-width: 520px;
+            margin-right: 660px;
+            text-align: left;
+		}
+
+		@media(max-width: 768px) {
+			.hero-content h1 {
+				font-size: 3.2rem;
+			}
+			.hero-content p {
+				font-size: 1.1rem;
+			}
+		}
+
+		@keyframes fadeInUp {
+			from {
+				opacity: 0;
+				transform: translateY(20px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
 
 /* ---------- SECTION CONTENU ---------- */
 .section {
-	background-color: #fff;
 	color: #111;
-	font-family: "Poppins", "Helvetica Neue", Arial, sans-serif;
 	line-height: 1.75;
 	display: flex;
 	flex-direction: column;

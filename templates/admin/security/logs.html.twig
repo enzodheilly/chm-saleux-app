@@ -1,239 +1,248 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Journal des connexions
-{% endblock %}
+{% block title %}Journal des connexions{% endblock %}
 
 {% block stylesheets %}
-	<style>:root
-	{
-		--bg-dark: #0e0e10;
-		--bg-darker: #141416;
-		--bg-light: #1c1c1f;
-		--text-main: #e5e7eb;
-		--text-muted: #9ca3af;
-		--accent: #ff6600;
-		--border: #2a2a2d;
-	}
+<style>
+    /* =================== PAGE STYLE =================== */
+    .dashboard-container { width: 100%; max-width: 1600px; margin: 0 auto; }
 
-	body {
-		font-family: "Inter", system-ui, sans-serif;
-		background: var(--bg-dark);
-		color: var(--text-main);
-		margin: 0;
-		min-height: 100vh;
-	}
+    /* Header */
+    .page-header {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;
+    }
+    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
 
-	.main-content {
-		flex: 1;
-		margin-left: 100px;
-		padding: 2.5rem 3rem;
-		display: flex;
-		flex-direction: column;
-		background: var(--bg-dark);
-		min-height: 100vh;
-	}
+    /* Toolbar & Search */
+    .toolbar-container {
+        display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center;
+        margin-bottom: 1.5rem; background: var(--bg-light); padding: 1rem; border: 1px solid var(--border); border-radius: 4px;
+    }
 
-	.dashboard-container {
-		transform: scale(1.00);
-		transform-origin: top left;
-		width: 123.4%;
-		margin-left: 1.5rem;
-	}
+    .search-bar {
+        background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-main);
+        padding: 0.6rem 1rem; border-radius: 4px; outline: none; min-width: 250px; font-size: 0.9rem;
+    }
+    .search-bar:focus { border-color: var(--accent); }
 
-	h1 {
-		font-size: 2.3rem;
-		font-weight: 800;
-		color: #fff;
-		margin-bottom: 2.5rem;
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-	}
+    /* Filter Buttons */
+    .filter-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .filter-btn {
+        background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-muted);
+        padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: 0.2s;
+        text-transform: capitalize;
+    }
+    .filter-btn:hover { color: var(--text-main); border-color: var(--text-muted); }
+    .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-	/* -------- SECTION CARD -------- */
-	.section-card {
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		padding: 1.5rem 1.3rem;
-		margin-bottom: 2rem;
-	}
+    /* Purge Button */
+    .btn-danger {
+        background: transparent; color: #ef4444; padding: 0.6rem 1.5rem; border: 1px solid #ef4444; border-radius: 4px;
+        font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.2s;
+        text-transform: uppercase; letter-spacing: 0.5px; text-decoration: none; display: inline-block;
+    }
+    .btn-danger:hover { background: #ef4444; color: #fff; }
 
-	.section-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-bottom: 1.2rem;
-		border-bottom: 1px solid var(--border);
-		padding-bottom: 0.8rem;
-	}
+    /* Table */
+    .content-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; }
+    .table-responsive { overflow-x: auto; }
+    .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    
+    .table th {
+        background: var(--bg-darker); color: var(--text-muted); font-weight: 600; text-align: left;
+        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); text-transform: uppercase;
+        font-size: 0.75rem; letter-spacing: 1px;
+    }
+    .table td {
+        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle;
+    }
+    .table tr:last-child td { border-bottom: none; }
+    .table tr:hover { background: rgba(255,255,255,0.01); }
 
-	.section-title {
-		font-size: 1rem;
-		font-weight: 600;
-		color: #fff;
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-	}
+    /* Log Specifics */
+    .log-success { color: #22c55e; font-weight: 600; display:inline-flex; align-items:center; gap:5px; }
+    .log-failed { color: #ef4444; font-weight: 600; display:inline-flex; align-items:center; gap:5px; }
+    
+    .log-warning-row { background: rgba(245, 158, 11, 0.05) !important; }
+    .warning-icon { color: #f59e0b; margin-right: 5px; }
 
-	/* -------- TABLE -------- */
-	.table-logs {
-		width: 100%;
-		border-collapse: collapse;
-		font-size: 0.9rem;
-		color: var(--text-main);
-	}
+    .ip-address { font-family: monospace; color: var(--text-muted); background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; }
+    .browser-info { font-size: 0.8rem; color: var(--text-muted); }
 
-	.table-logs thead {
-		background: var(--bg-darker);
-	}
+    /* Flash */
+    .flash-success {
+        background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2);
+        padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-weight: 500;
+    }
+</style>
+{% endblock %}
 
-	.table-logs th {
-		text-align: left;
-		padding: 0.8rem 1rem;
-		font-weight: 600;
-		border-bottom: 1px solid var(--border);
-	}
+{% block body %}
+<div class="dashboard-container">
+    
+    {% for message in app.flashes('success') %}
+        <div class="flash-success">{{ message }}</div>
+    {% endfor %}
 
-	.table-logs td {
-		padding: 0.8rem 1rem;
-		border-bottom: 1px solid var(--border);
-	}
+    <div class="page-header">
+        <div>
+            <h1>Journal des connexions</h1>
+            <p>Historique des tentatives d'authentification et alertes de sécurité.</p>
+        </div>
+        <div>
+            <a href="{{ path('admin_security_purge_logs') }}" class="btn-danger" onclick="return confirm('Attention : Vous allez effacer TOUT l\'historique des connexions.\n\nConfirmer ?');">
+                Purger l'historique
+            </a>
+        </div>
+    </div>
 
-	.table-logs tbody tr:hover {
-		background: rgba(255, 255, 255, 0.03);
-	}
+    <div class="toolbar-container">
+        <div class="filter-group">
+            <button class="filter-btn active" data-filter="all">Tous</button>
+            <button class="filter-btn" data-filter="success">Succès</button>
+            <button class="filter-btn" data-filter="failed">Échecs</button>
+            <button class="filter-btn" data-filter="session">Alertes</button>
+        </div>
+        <div>
+            <input type="text" id="searchLogs" class="search-bar" placeholder="Rechercher (IP, Email)...">
+        </div>
+    </div>
 
-	.status-success {
-		color: #22c55e;
-		font-weight: 600;
-	}
+    <div class="content-card">
+        <div class="table-responsive">
+            <table class="table" id="logsTable">
+                <thead>
+                    <tr>
+                        <th width="50">ID</th>
+                        <th>Utilisateur / Email</th>
+                        <th>IP & Localisation</th>
+                        <th>Appareil</th>
+                        <th>Type d'événement</th>
+                        <th>Détail</th>
+                        <th>Résultat</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                        {# 
+                           Définition du statut pour le filtrage JS 
+                           Priority : Session > Failed > Success
+                        #}
+                        {% set rowStatus = 'success' %}
+                        {% if log.success == false %}
+                            {% set rowStatus = 'failed' %}
+                        {% endif %}
+                        {% if log.type == 'Session' %}
+                            {% set rowStatus = 'session' %}
+                        {% endif %}
 
-	.status-failed {
-		color: #ef4444;
-		font-weight: 600;
-	}
+                        <tr class="log-row {% if log.type == 'Session' %}log-warning-row{% endif %}" data-status="{{ rowStatus }}">
+                            <td style="color: var(--text-muted); font-size: 0.8rem;">#{{ log.id }}</td>
+                            
+                            <td>
+                                <strong>{{ log.emailAttempt ?? 'Système' }}</strong>
+                            </td>
 
-	.empty-row {
-		text-align: center;
-		padding: 1.2rem;
-		color: var(--text-muted);
-	}
+                            <td>
+                                <span class="ip-address">{{ log.ip ?? '—' }}</span>
+                            </td>
 
-	/* -------- BOUTON PURGE -------- */
-	.btn-purge {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.5rem;
-		margin-top: 1.5rem;
-		background: var(--accent);
-		color: #fff;
-		padding: 0.7rem 1.3rem;
-		border: none;
-		font-weight: 600;
-		text-decoration: none;
-		transition: 0.2s ease;
-		box-shadow: 0 3px 10px rgba(255, 102, 0, 0.25);
-	}
+                            <td>
+                                <div class="browser-info">
+                                    {{ log.os ?? '?' }} / {{ log.browser ?? '?' }}
+                                </div>
+                            </td>
 
-	.btn-purge:hover {
-		background: #e25500;
-		transform: translateY(-2px);
-	}
+                            <td>{{ log.type ?? 'Connexion' }}</td>
 
-	/* -------- MESSAGE FLASH -------- */
-	.alert-success {
-		background: rgba(34, 197, 94, 0.15);
-		border: 1px solid rgba(34, 197, 94, 0.4);
-		color: #22c55e;
-		padding: 0.8rem 1rem;
-		margin-bottom: 1.2rem;
-		font-weight: 500;
-	}
+                            <td>
+                                {% if log.type == 'Session' %}
+                                    <span class="warning-icon">⚠️</span>
+                                {% endif %}
+                                <span style="font-size: 0.85rem;">{{ log.message ?? '—' }}</span>
+                            </td>
 
-	@media(max-width: 900px) {
-		.main-content {
-			margin-left: 0;
-			padding: 1.5rem;
-		}
-		.dashboard-container {
-			width: 100%;
-			margin-left: 0;
-		}
-	}
-	.session-warning {
-		background-color: #fff4e6;
-	}
+                            <td>
+                                {% if log.success %}
+                                    <span class="log-success">✅ Succès</span>
+                                {% else %}
+                                    <span class="log-failed">❌ Échec</span>
+                                {% endif %}
+                            </td>
 
-	.session-warning .alert-icon {
-		margin-right: 4px;
-		color: #ff9900;
-		font-weight: bold;
-	}
-</style>{% endblock %}{% block body %}
-<div class="main-content">
-	<div class="dashboard-container">
-		<h1>🔒 Journal des connexions</h1>
+                            <td style="color: var(--text-muted); font-size: 0.85rem;">
+                                {{ log.createdAt|date('d/m/Y H:i:s') }}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 4rem; color: var(--text-muted);">
+                                Aucun journal d'activité enregistré.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <div id="noResults" style="display:none; text-align:center; padding:2rem; color:var(--text-muted);">
+                Aucune entrée ne correspond à vos filtres.
+            </div>
+        </div>
+    </div>
+</div>
 
-		<div class="section-card">
-			<div class="section-header">
-				<h3 class="section-title">📋 Historique des connexions</h3>
-			</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchLogs');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const tableRows = document.querySelectorAll('.log-row');
+    const noResultsMsg = document.getElementById('noResults');
 
-			{% for message in app.flashes('success') %}
-				<div class="alert-success">{{ message }}</div>
-			{% endfor %}
+    let currentFilter = 'all';
+    let currentSearch = '';
 
-			<table class="table-logs">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Email</th>
-						<th>Adresse IP</th>
-						<th>OS</th>
-						<th>Navigateur</th>
-						<th>Type</th>
-						{# ✅ Nouvelle colonne #}
-						<th>Message</th>
-						{# ✅ Nouvelle colonne #}
-						<th>Statut</th>
-						<th>Date</th>
-					</tr>
-				</thead>
+    function applyFilters() {
+        let visibleCount = 0;
 
-				<tbody>
-					{% for log in logs %}
-						<tr class="{% if log.type == 'Session' %}session-warning{% endif %}">
-							<td>{{ log.id }}</td>
-							<td>{{ log.emailAttempt ?? 'Système' }}</td>
-							<td>{{ log.ip ?? '—' }}</td>
-							<td>{{ log.os ?? '—' }}</td>
-							<td>{{ log.browser ?? '—' }}</td>
-							<td>{{ log.type ?? 'Connexion' }}</td>
-							{# 🔥 Type d’événement #}
-							<td>
-								{% if log.type == 'Session' %}
-									<span class="alert-icon">⚠️</span>
-								{% endif %}
-								{{ log.message ?? '—' }}
-							</td>
-							<td class="{{ log.success ? 'status-success' : 'status-failed' }}">
-								{{ log.success ? 'Succès' : 'Échec' }}
-							</td>
-							<td>{{ log.createdAt|date('d/m/Y H:i') }}</td>
-						</tr>
-					{% else %}
-						<tr>
-							<td colspan="9" class="empty-row">Aucune donnée trouvée.</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+        tableRows.forEach(row => {
+            const rowStatus = row.getAttribute('data-status'); // success, failed, session
+            const rowText = row.textContent.toLowerCase(); 
 
-			<a href="{{ path('admin_security_purge_logs') }}" class="btn-purge" onclick="return confirm('Confirmer la suppression de tous les logs ?')">
-				Purger le journal
-			</a>
-		</div>
-	</div>
-</div>{% endblock %}
+            // Filtre par catégorie
+            const matchesFilter = (currentFilter === 'all') || (rowStatus === currentFilter);
+            
+            // Filtre par recherche texte
+            const matchesSearch = rowText.includes(currentSearch);
+
+            if (matchesFilter && matchesSearch) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        noResultsMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
+    }
+
+    // Clic sur les boutons
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = btn.getAttribute('data-filter');
+            applyFilters();
+        });
+    });
+
+    // Recherche clavier
+    searchInput.addEventListener('keyup', (e) => {
+        currentSearch = e.target.value.toLowerCase();
+        applyFilters();
+    });
+});
+</script>
+{% endblock %}

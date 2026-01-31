@@ -16,6 +16,12 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+
+            # ✅ SÉCURITÉ #1 : Anti Brute-Force
+            login_throttling:
+                max_attempts: 3
+                interval: "15 minutes"
+
             custom_authenticators:
                 - App\Authenticator\LoginFormAuthenticator
                 - App\Security\GoogleAuthenticator
@@ -25,6 +31,12 @@ security:
                 login_path: app_login
                 check_path: app_login
                 enable_csrf: true
+
+            # 👇 AJOUTE CE BLOC ICI 👇
+            # C'est lui qui intercepte la connexion pour demander le code
+            two_factor:
+                auth_form_path: 2fa_login # Route pour afficher le formulaire du code
+                check_path: 2fa_login_check # Route pour vérifier le code
 
             logout:
                 path: app_logout
@@ -40,7 +52,18 @@ security:
             stateless: false
 
     access_control:
+        # Routes publiques
+        # ⚠️ IMPORTANT : Il faut laisser la route de la 2FA accessible
+        - { path: ^/2fa, role: PUBLIC_ACCESS }
+
         - { path: ^/connect/google, roles: PUBLIC_ACCESS }
+
+        # Espace Membre
         - { path: ^/dashboard, roles: ROLE_USER }
         - { path: ^/profile, roles: ROLE_USER }
+
+        # ✅ SÉCURITÉ #2 : Protection de ton URL secrète
+        - { path: ^/gestion-chm-secrete-92x, roles: ROLE_ADMIN }
+
+        # On laisse celle-ci par sécurité
         - { path: ^/admin, roles: ROLE_ADMIN }

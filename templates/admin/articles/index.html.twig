@@ -1,194 +1,155 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}
-	{{ title }}
-{% endblock %}
+{% block title %}Gestion des articles{% endblock %}
 
 {% block stylesheets %}
-	<style>:root
-	{
-		--bg-dark: #0e0e10;
-		--bg-darker: #141416;
-		--bg-light: #1c1c1f;
-		--text-main: #e5e7eb;
-		--text-muted: #9ca3af;
-		--accent: #ff6600;
-		--border: #2a2a2d;
-	}
+<style>
+    /* =================== PAGE STYLE =================== */
+    .dashboard-container { width: 100%; max-width: 1600px; margin: 0 auto; }
 
-	body {
-		font-family: "Inter", system-ui, sans-serif;
-		background: var(--bg-dark);
-		color: var(--text-main);
-		margin: 0;
-		min-height: 100vh;
-	}
+    /* Header */
+    .page-header {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;
+    }
+    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
 
-	.main-content {
-		flex: 1;
-		margin-left: 100px;
-		padding: 2.5rem 3rem;
-		background: var(--bg-dark);
-		min-height: 100vh;
-	}
+    /* Toolbar */
+    .toolbar { display: flex; gap: 1rem; align-items: center; }
+    .search-input {
+        background: transparent; border: 1px solid var(--border); color: var(--text-main);
+        padding: 0.6rem 1rem; border-radius: 4px; outline: none; min-width: 300px; font-size: 0.9rem;
+    }
+    .search-input:focus { border-color: var(--accent); }
 
-	.dashboard-container {
-		transform: scale(1.00);
-		transform-origin: top left;
-		width: 100.2%;
-		margin-left: 1.5rem;
-	}
+    .btn-primary {
+        background: var(--accent); color: #fff; padding: 0.6rem 1.5rem; border-radius: 4px;
+        font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.2s; border: none;
+        text-transform: uppercase; letter-spacing: 0.5px; text-decoration: none; display: inline-block;
+    }
+    .btn-primary:hover { background: var(--accent-hover); }
 
-	h1 {
-		font-size: 2.3rem;
-		font-weight: 800;
-		color: #fff;
-		margin-bottom: 2.5rem;
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-	}
+    /* Table */
+    .content-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; }
+    .table-responsive { overflow-x: auto; }
+    .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    
+    .table th {
+        background: var(--bg-darker); color: var(--text-muted); font-weight: 600; text-align: left;
+        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); text-transform: uppercase;
+        font-size: 0.75rem; letter-spacing: 1px;
+    }
+    .table td {
+        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle;
+    }
+    .table tr:last-child td { border-bottom: none; }
+    .table tr:hover { background: rgba(255,255,255,0.01); }
 
-	.section-card {
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		padding: 1.5rem 1.3rem;
-		margin-bottom: 2rem;
-	}
+    /* Article Specifics */
+    .article-thumb {
+        width: 60px; height: 45px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border); background: var(--bg-darker);
+    }
+    .no-thumb {
+        width: 60px; height: 45px; border-radius: 4px; background: var(--bg-darker); border: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--text-muted);
+    }
+    
+    .article-title { font-weight: 600; font-size: 0.95rem; color: var(--text-main); display: block; }
+    .article-cat { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
 
-	.section-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-bottom: 1.2rem;
-		border-bottom: 1px solid var(--border);
-		padding-bottom: 0.8rem;
-	}
+    /* Actions */
+    .actions-cell { display: flex; gap: 15px; justify-content: flex-end; }
+    .action-link { font-size: 0.85rem; font-weight: 500; text-decoration: none; border: none; background: none; cursor: pointer; padding: 0; }
+    .link-edit { color: var(--text-muted); }
+    .link-edit:hover { color: var(--text-main); text-decoration: underline; }
+    .link-delete { color: #ef4444; opacity: 0.8; }
+    .link-delete:hover { opacity: 1; text-decoration: underline; }
 
-	.section-title {
-		font-size: 1rem;
-		font-weight: 600;
-		color: #fff;
-	}
+</style>
+{% endblock %}
 
-	.table {
-		width: 100%;
-		border-collapse: collapse;
-		font-size: 0.9rem;
-		color: #e5e7eb;
-	}
-
-	.table thead {
-		background: var(--bg-darker);
-		color: #fff;
-	}
-
-	.table th,
-	.table td {
-		padding: 0.8rem 1rem;
-		border-bottom: 1px solid var(--border);
-	}
-
-	.table tbody tr:hover {
-		background: rgba(255, 255, 255, 0.03);
-	}
-
-	/* Actions dans le tableau */
-	.actions {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-	}
-
-	.action-edit,
-	.action-delete {
-		display: inline-flex; /* ✅ pour les aligner sur la même ligne */
-		align-items: center;
-		text-decoration: none;
-		font-weight: 600;
-		font-size: 0.9rem;
-	}
-
-	.action-edit {
-		color: #93c5fd;
-	}
-	.action-edit:hover {
-		color: #ffcc80;
-	}
-
-	.action-delete {
-		color: #ef4444;
-	}
-	.action-delete:hover {
-		color: #ff6666;
-	}
-
-
-	.empty-row {
-		text-align: center;
-		padding: 1.2rem;
-		color: var(--text-muted);
-	}
-</style>{% endblock %}{% block body %}
-<div class="main-content">
-	<div class="dashboard-container">
-		<h1>📰
-			{{ title }}</h1>
-
-		<div class="section-card">
-			<div class="section-header">
-				<h3 class="section-title">📋 Liste des articles</h3>
-			</div>
-
-			<table class="table">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>Titre</th>
-						<th>Résumé</th>
-						<th>Image</th>
-						<th>Catégorie</th>
-						<th>Date de publication</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for article in articles %}
-						<tr>
-							<td>{{ article.id }}</td>
-							<td>{{ article.title }}</td>
-<td>
-    {% if article.photo %}
-        <img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}" 
-             style="width:80px; height:60px; object-fit:cover; border-radius:4px;">
-    {% else %}
-        —
-    {% endif %}
-</td>
-							<td>{{ article.categorie ? article.categorie : '—' }}</td>
-							<td>{{ article.description|length > 80 ? article.description|slice(0, 80) ~ '...' : article.description }}</td>
-							<td>{{ article.publishedAt ? article.publishedAt|date('d/m/Y H:i') : '—' }}</td>
-					<td>
-    <div class="actions">
-        <a href="{{ path('admin_articles_edit', {id: article.id}) }}" class="action-edit">Modifier</a>
-        <span>|</span>
-
-        <form method="post" action="{{ path('admin_articles_delete', {id: article.id}) }}" style="display:inline;" onsubmit="return confirm('Supprimer cet article ?');">
-            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
-            <button class="action-delete" type="submit">Supprimer</button>
-        </form>
+{% block body %}
+<div class="dashboard-container">
+    
+    <div class="page-header">
+        <div>
+            <h1>Articles & Actualités</h1>
+            <p>Gestion du blog et des communications.</p>
+        </div>
+        <div class="toolbar">
+            <input type="text" id="searchArticle" class="search-input" placeholder="Rechercher par titre...">
+            <a href="{{ path('admin_articles_new') }}" class="btn-primary">Créer un article</a>
+        </div>
     </div>
-</td>
 
+    <div class="content-card">
+        <div class="table-responsive">
+            <table class="table" id="articlesTable">
+                <thead>
+                    <tr>
+                        <th width="80">Image</th>
+                        <th>Titre / Catégorie</th>
+                        <th>Extrait</th>
+                        <th>Publication</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for article in articles %}
+                        <tr>
+                            <td>
+                                {% if article.photo %}
+                                    <img src="{{ asset('uploads/' ~ article.photo) }}" alt="" class="article-thumb">
+                                {% else %}
+                                    <div class="no-thumb">N/A</div>
+                                {% endif %}
+                            </td>
 
-						</tr>
-					{% else %}
-						<tr>
-							<td colspan="5" class="empty-row">Aucun article trouvé.</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
-</div>{% endblock %}
+                            <td>
+                                <span class="article-title">{{ article.title }}</span>
+                                <span class="article-cat">{{ article.categorie ? article.categorie : 'Non classé' }}</span>
+                            </td>
+
+                            <td style="color: var(--text-muted); font-size: 0.85rem; max-width: 300px;">
+                                {{ article.description|striptags|slice(0, 60) ~ '...' }}
+                            </td>
+
+                            <td style="color: var(--text-muted);">
+                                {{ article.publishedAt ? article.publishedAt|date('d/m/Y') : 'Brouillon' }}
+                            </td>
+
+                            <td>
+                                <div class="actions-cell">
+                                    <a href="{{ path('admin_articles_edit', {id: article.id}) }}" class="action-link link-edit">Modifier</a>
+                                    
+                                    <form method="post" action="{{ path('admin_articles_delete', {id: article.id}) }}" onsubmit="return confirm('Confirmer la suppression de l\'article ?');" style="display:inline;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+                                        <button class="action-link link-delete">Supprimer</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 4rem; color: var(--text-muted);">
+                                Aucun article publié.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('searchArticle').addEventListener('keyup', function() {
+    const val = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#articlesTable tbody tr');
+    rows.forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(val) ? '' : 'none';
+    });
+});
+</script>
+{% endblock %}

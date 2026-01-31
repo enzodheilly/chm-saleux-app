@@ -1,16 +1,18 @@
-/* Tout CSS de section3 encapsulé dans .slider-section */
+/* ========================================================= */
+/* ==================== SECTION SLIDER ===================== */
+/* ========================================================= */
+
 .slider-section .slider-title {
     font-weight: 900;
     font-size: 2.2rem;
-    color: #fff !important;
+    color: #fff;
     margin-bottom: 0.5rem;
     text-align: center;
     text-transform: uppercase;
-    margin-left: 4px !important;
 }
 
 .slider-section .slider-subtitle {
-    font-size: 1.1rem !important;
+    font-size: 1.1rem;
     color: #CBD5E1;
     margin-bottom: 50px;
     font-weight: 500;
@@ -19,35 +21,45 @@
     margin-inline: auto;
 }
 
+/* --- Wrapper & Container --- */
 .slider-section .slider-wrapper {
     position: relative;
     width: 100%;
-    padding: 0 4vw;   /* espace avec les bords de l’écran */
+    padding: 0 4vw;
     margin: 0 auto;
     box-sizing: border-box;
 }
 
 .slider-section .slider-container {
-    overflow: auto;
+    overflow-x: auto; /* Permet le scroll horizontal */
+    overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: x mandatory; /* Effet aimanté au scroll */
+    padding-bottom: 20px; /* Espace pour la scrollbar invisible */
+    
+    /* Cache la scrollbar proprement */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+.slider-section .slider-container::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
 }
 
 .slider-section .slider {
     display: flex;
+    gap: 20px; /* Espace entre les slides */
     transition: transform 0.5s ease;
 }
 
+/* --- Slides --- */
 .slider-section .slide {
-    flex: 0 0 26%;
-    height: 480px;
+    flex: 0 0 28%; /* Desktop : environ 3.5 images visibles */
+    height: 400px;
     position: relative;
-    padding: 0;
     overflow: hidden;
-    margin-right: 1.5%;
-    box-sizing: border-box;
-    border-radius: 0;
-    aspect-ratio: 16/9;
+    border-radius: 8px; /* Un peu de rondeur */
+    scroll-snap-align: start;
 }
 
 .slider-section .slide img {
@@ -55,147 +67,87 @@
     height: 100%;
     object-fit: cover;
     display: block;
-    border-radius: 0;
-    box-shadow: none;
+    transition: transform 0.5s ease;
 }
 
-.slider-section .slide p {
-    position: absolute;
-    bottom: 25px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #fff;
-    font-size: 1.5rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    z-index: 3;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.7);
-    pointer-events: none;
-    text-align: center;
+/* Effet Zoom sur l'image au survol */
+.slider-section .slide:hover img {
+    transform: scale(1.05);
 }
 
+/* Overlay sombre */
 .slider-section .slide::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.30);
+    background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.1));
     z-index: 2;
     transition: background 0.4s ease;
 }
 
 .slider-section .slide:hover::after {
-    background: rgba(0,0,0,0.25);
+    background: rgba(0,0,0,0.4);
 }
 
+/* --- Textes sur Slides --- */
+.slider-section .slide p {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    z-index: 3;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    pointer-events: none;
+    text-align: center;
+}
+
+/* --- Bouton Découvrir (Au survol) --- */
 .slider-section .discover1 {
     position: absolute;
-    margin-top: -300px;
+    top: 50%;
+    display: none;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.9);
+    transform: translate(-50%, -50%) scale(0.9); /* Centrage parfait */
     padding: 12px 32px;
     border: 2px solid #fff;
     color: #fff;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.3);
     text-transform: uppercase;
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     letter-spacing: 1px;
     text-decoration: none;
     opacity: 0;
     z-index: 5;
     transition: all 0.4s ease;
-    border-radius: 6px;
-    display: none;
+    border-radius: 50px;
+    white-space: nowrap;
 }
 
 .slider-section .slide:hover .discover1 {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
-    background: rgba(0,0,0,0.7);
 }
 
 .slider-section .discover1:hover {
     background: #fff;
-    color: #003d66;
+    color: #000;
 }
 
-.slider-section .slider-title,
-.slider-section .slider-subtitle {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-}
+/* ========================================================= */
+/* ================== EQUIPMENT BENEFITS =================== */
+/* ========================================================= */
 
-.slider-section .slider-title.visible,
-.slider-section .slider-subtitle.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Responsive */
-@media(max-width: 1024px) {
-    .slider-section .slide {
-        flex: 0 0 50%;
-    }
-    .slider-section .slide img {
-        max-height: 350px;
-    }
-}
-
-@media(max-width: 768px) {
-    .slider-section .slider-title {
-        font-size: 1.8rem;
-        text-align: center;
-    }
-    .slider-section .slider-subtitle {
-        font-size: 0.95rem;
-        padding: 0 1rem;
-    }
-    .slider-section .slide {
-        flex: 0 0 100%;
-        padding: 0;
-        margin-bottom: 1rem;
-    }
-    .slider-section .nav-button {
-        display: none;
-    }
-}
-
-@media(max-width: 768px) {
-    .slider-section .slider-container {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scroll-snap-type: x mandatory;
-    }
-    .slider-section .slider {
-        display: flex;
-        gap: 10px;
-    }
-    .slider-section .slide {
-        flex: 0 0 80%;
-        scroll-snap-align: start;
-        margin-right: 10px;
-    }
-    .slider-section .nav-button {
-        display: none;
-    }
-}
-
-/* Scrollbar */
-.slider-section .slider-container::-webkit-scrollbar {
-    display: none;
-}
-.slider-section .slider-container {
-    scrollbar-width: none;
-}
-
-/* Equipment benefits */
 .slider-section .equipment-benefits {
     max-width: 1100px;
-    margin: 70px auto 50px;
-    padding: 0 10px;
+    margin: 80px auto 50px;
+    padding: 0 20px;
     text-align: center;
-    background-color: transparent;
 }
 
 .slider-section .equipment-benefits h3 {
@@ -207,29 +159,32 @@
 }
 
 .slider-section .equipment-benefits p {
-    max-width: 1000px;
-    margin: 0 auto 40px;
+    max-width: 800px;
+    margin: 0 auto 50px;
     font-size: 1.1rem;
     line-height: 1.6;
     color: #CBD5E1;
     font-weight: 500;
 }
 
-/* Benefits grid */
+/* --- Grid --- */
 .slider-section .benefits-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes Desktop */
     gap: 30px;
 }
 
 .slider-section .benefit {
-    opacity: 0;
-    padding: 20px 10px;
-    border-radius: 14px;
-    background: #f8f8f8;
-    transform: translateY(40px);
-    transition: transform 0.7s ease, box-shadow 0.7s ease;
-    will-change: transform;
+    background: #fff;
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    /* Animation d'apparition */
+    opacity: 0; 
+    transform: translateY(30px);
 }
 
 .slider-section .benefit.visible {
@@ -237,6 +192,27 @@
     transform: translateY(0);
 }
 
+.slider-section .benefit:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.slider-section .benefit strong {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #2b2b2b;
+    font-weight: 800;
+}
+
+.slider-section .benefit span {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.5;
+    display: block;
+}
+
+/* Délais d'animation en cascade */
 .slider-section .benefit:nth-child(1) { transition-delay: 0.1s; }
 .slider-section .benefit:nth-child(2) { transition-delay: 0.2s; }
 .slider-section .benefit:nth-child(3) { transition-delay: 0.3s; }
@@ -244,25 +220,45 @@
 .slider-section .benefit:nth-child(5) { transition-delay: 0.5s; }
 .slider-section .benefit:nth-child(6) { transition-delay: 0.6s; }
 
-.slider-section .benefit:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-}
+/* ========================================================= */
+/* ===================== RESPONSIVE ======================== */
+/* ========================================================= */
 
-.slider-section .benefit strong {
-    display: block;
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-    color: #2b2b2b;
-}
-
-.slider-section .benefit span {
-    font-size: 1.1rem;
-    color: #666;
-}
-
-@media (max-width: 900px) {
+/* Tablette (max 1024px) */
+@media(max-width: 1024px) {
+    .slider-section .slide {
+        flex: 0 0 45%; /* On montre 2 slides entiers */
+    }
+    
     .slider-section .benefits-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr); /* 2 colonnes pour les avantages */
+    }
+}
+
+/* Mobile (max 768px) */
+@media(max-width: 768px) {
+    .slider-section .slider-title {
+        font-size: 1.8rem;
+    }
+    
+    .slider-section .slider-subtitle {
+        font-size: 1rem;
+        padding: 0 1rem;
+    }
+
+    /* Slider Mobile : Mode Carousel qui dépasse */
+    .slider-section .slide {
+        flex: 0 0 85%; /* 85% de largeur pour voir qu'il y en a un autre après */
+        height: 350px;
+        margin-right: 0; /* Géré par le gap du parent */
+    }
+
+    .slider-section .benefits-grid {
+        grid-template-columns: 1fr; /* 1 colonne */
+        gap: 20px;
+    }
+    
+    .slider-section .equipment-benefits h3 {
+        font-size: 1.6rem;
     }
 }

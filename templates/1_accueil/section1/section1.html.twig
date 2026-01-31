@@ -33,11 +33,11 @@
                 {{ "now"|format_date(locale='fr', pattern='d MMMM Y') }}
             </p>
 
-            <p class="club-subtitle user-subtitle">Ravi de vous revoir. Découvrez vos statistiques et vos prochains objectifs !</p>
+            <p class="club-subtitle user-subtitle" style="max-width:500px">Ravi de vous revoir. Découvrez vos statistiques et vos prochains objectifs !</p>
 
             <div class="hero-buttons">
-                <a href="{{ path('dashboard') }}" class="nous-rejoindre">Mon profil</a>
-                <a href="{{ path('competition') }}" class="btn-en-savoir-plus">Évenement à venir</a>
+                <a href="{{ path('dashboard') }}" class="nous-rejoindre">ACCÉDER AU DASHBOARD</a>
+                <a href="{{ path('actualites') }}" class="btn-en-savoir-plus">ACTUALITES</a>
             </div>
         {% endif %}
 

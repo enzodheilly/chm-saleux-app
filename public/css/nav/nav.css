@@ -1,326 +1,531 @@
-		/* --- Reset horizontal overflow global --- */
-		html,
-		body {
-			margin: 0;
-			padding: 0;
-			overflow-x: hidden;
-		}
-
-		/* Banner info */
-		.info-banner {
-			width: 100%;
-			background: #0F172A;
-			padding: 0.72rem 0; /* tu peux ajuster pour changer la hauteur */
-			position: relative; /* important pour que le contenu reste bien placé */
-		}
-
-		.info-banner-content {
-			display: flex;
-			justify-content: space-between; /* garde les éléments à gauche et à droite */
-			align-items: center; /* ✅ centre verticalement les deux blocs */
-			width: 98%; /* adapte à ton design */
-			margin: 0 auto;
-			box-sizing: border-box;
-		}
-
-		.info-banner-horaire {
-			display: flex;
-			position: relative;
-			align-items: center;
-			font-size: 0.85rem;
-			font-weight: 400;
-		}
-
-		.info-banner-horaire p {
-			display: flex;
-			color:#fff;
-			align-items: center;
-			margin: 0;
-			font-weight: 400;
-			margin-left: 25px;
-			font-size: 0.85rem;
-			gap: 0.6rem; /* espace entre icône et texte */
-		}
-
-		.info-banner-socials {
-	display: flex;
-	align-items: center;
+/* --- Reset --- */
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 
-.info-banner-socials a {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: 28px;
-	height: 28px;
-	text-decoration: none;
-	transition: transform 0.2s ease, color 0.2s ease;
+:root {
+    --horaire-left: 2rem;
+    --links-gap: 2.3rem;
+    --links-right: 4.5rem;
+    --elios-purple: #005b94;
 }
 
-		.info-banner-horaire i {
-			font-size: 1rem;
-			color: #fff;
-		}
+/* ========================================================= */
+/* ANIMATIONS & ELEMENTS GLOBAUX                             */
+/* ========================================================= */
 
-		.info-banner-links {
-			display: flex;
-			align-items: center;
-			gap: 1rem;
-		}
+/* Animation pour le slider mobile et le dropdown */
+@keyframes fadeInSlide {
+    from { opacity: 0; transform: translateY(2px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-		.info-link {
-			color: #fff;
-			text-decoration: none;
-			font-weight: 500;
-			font-size: 0.8rem;
-			transition: 0.3s;
-		}
-		.info-link i {
-			margin-right: 0.4rem;
-			font-size: 1rem;
-			color: #fff;
-		}
-		.info-link:hover i {
-			color: #f97316;
-		}
+/* Par défaut (PC), on cache les flèches du slider mobile */
+.mobile-info-arrow {
+    display: none; 
+}
 
-		.info-link:hover {
-			color: #f97316;
-		}
-		.info-link i.fa-user {
-			font-size: 0.85rem; /* un poil plus petit que la moyenne */
-		}
-		/* Responsive : centrer tout sur mobile */
-		@media(max-width: 768px) {
-			.info-banner-content {
-				flex-direction: column;
-				gap: 0.4rem;
-				text-align: center;
-			}
-
-			.info-banner-links {
-				gap: 0.75rem;
-			}
-		}
-		@media(max-width: 768px) {
-			.info-banner-horaire {
-				flex-direction: column;
-				align-items: flex-start;
-				font-size: 0.75rem;
-			}
-		}
-		/* Nav fixed */
-		.nav-fixed {
-			position: fixed;
-			top: 0;
-			width: 100vw;
-			background: #F5F5F5;
-			backdrop-filter: blur(12px);
-			box-shadow: none;
-			z-index: 9999;			
-			overflow-x: hidden;
-			overflow: visible;
-			box-sizing: border-box;
-			transition: background 0.3s ease, color 0.3s ease;
-		}
-
-		/* Nav content */
-		.nav-content {
-			display: flex;
-			justify-content: center; /* centre horizontalement les liens */
-			align-items: center;
-			height: 4.5rem;
-			padding: 0 1.5rem; /* padding général */
-			max-width: 100vw;
-			position: relative;
-		}
-
-		/* Logo */
-		.nav-logo-container {
-			display: flex;
-			align-items: center;
-			gap: 0.5rem;
-		}
-		.logo-rectangle {
-			display: flex;
-			margin-left: 45px;
-			align-items: center;
-			justify-content: center;
-			border-radius: 0.5rem;
-			width: 3.5rem;
-			height: 3.5rem;
-		}
-		.logo-rectangle img {
-			max-height: 230%;
-			width: auto;
-			object-fit: contain;
-			margin-left:-30px;
-			margin-top: 9px;
-		}
-
-		/* Liens centrés */
-		.nav-links-center {
-			display: flex;
-			align-items: center;
-			font-size: 1rem;
-			font-weight: 600;
-			margin-left: 3.5rem; /* décale l'ensemble des liens vers la droite */
-			position: relative;
-		}
-
-		.nav-links-center a {
-			position: relative;
-			text-decoration: none;
-			color: #454545;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			padding: 0 1rem; /* espace égal gauche/droite autour du texte */
-			transition: 0.3s;
-		}
-
-		.nav-links-center a::after {
-			content: "";
-			position: absolute;
-			bottom: -6px;
-			left: 0;
-			width: 0;
-			height: 2px;
-			background: #005b94;
-			transition: width 0.3s ease;
-		}
-
-		.nav-links-center a:hover {
-			color: #57b0ff;
-		}
-
-		.nav-links-center a:hover::after {
-			width: 100%;
-		}
-
-		/* Bouton inscription */
-		.btn-inscription {
-			padding: 0.4rem 1.3rem;
-			background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
-			color: white;
-			font-size: 1rem;
-			border-radius: 0;
-			font-weight: 800;
-			text-decoration: none;
-			transition: 0.3s;
-			margin-left: 220px;
-		}
-
-		.btn-inscription:hover {
-			background: #1a75c9;
-			box-shadow: 0 6px 18px rgba(0, 91, 148, 0.5);
-		}
-
-.btn-ai-assistant {
+/* ========================================================= */
+/* BANNER INFO (PC)                                          */
+/* ========================================================= */
+.info-banner {
+    width: 100%;
+    background: #0F172A;
+    padding: 0.72rem 0;
     position: relative;
-    left: 180px; /* décale de 50px vers la droite */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background-color: #003d66;
-    color: #fff;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    text-decoration: none;
-    transition: transform 0.2s ease, background-color 0.2s ease;
+    z-index: 10000;
 }
 
-
-.btn-ai-assistant:hover {
-    background-color: #005b94;
-    transform: scale(1.1);
-}
-
-
-		/* Responsive */
-		@media(max-width: 768px) {
-			.info-banner {
-				display: none !important; /* cacher banner sur mobile */
-			}
-
-			.nav-links-center,
-			.btn-inscription {
-				display: none; /* cacher liens desktop */
-			}
-
-			.nav-mobile-toggle {
-				display: block; /* afficher hamburger */
-			}
-
-			.nav-content {
-				justify-content: space-between; /* logo à gauche, burger à droite */
-			}
-
-			.logo-rectangle {
-				width: 3rem;
-				height: 3rem;
-			}
-		}
-
-		/* Très petits écrans */
-		/* Très petits écrans */
-		@media(max-width: 360px) {
-			.nav-mobile-link,
-			.nav-link {
-				font-size: 0.9rem;
-			}
-
-			.btn-connexion {
-				padding: 0.4rem 0.6rem;
-				font-size: 0.85rem;
-			}
-		}
-		@media(max-width: 768px) {
-			.info-banner {
-				display: none;
-			}
-		}
-		
-		/* Réduction de l’espace entre liens pour PC/laptop */
-@media (max-width: 2560px) {
-/* === Info Banner placement ajustable === */
 .info-banner-content {
     display: flex;
-    justify-content: space-between; /* par défaut : gauche / droite */
+    justify-content: space-between;
     align-items: center;
     width: 98%;
     margin: 0 auto;
     box-sizing: border-box;
 }
 
-/* --- Horaire --- */
 .info-banner-horaire {
     display: flex;
+    position: relative;
     align-items: center;
-    gap: 1rem; /* espace entre chaque jour */
-    color: white;
     font-size: 0.85rem;
-    font-weight: 500;
-    /* Placement ajustable */
-    left: var(--horaire-left, 17.8rem);  /* tu peux changer la valeur ici */
+    font-weight: 400;
+    left: var(--horaire-left, 17.8rem);
 }
 
-/* --- Liens --- */
+.info-banner-horaire p {
+    display: flex;
+    color: #fff;
+    align-items: center;
+    margin: 0;
+    font-weight: 400;
+    margin-left: 25px;
+    font-size: 0.85rem;
+    gap: 0.6rem;
+}
+
+.info-banner-socials { display: flex; align-items: center; }
+.info-banner-socials a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    text-decoration: none;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
 .info-banner-links {
     display: flex;
     align-items: center;
-    gap: var(--links-gap, 1rem); /* espace ajustable entre les liens */
-    margin-right: var(--links-right, 18.7rem); /* décalage ajustable */
+    gap: var(--links-gap, 1rem);
+    margin-right: var(--links-right, 18.7rem);
 }
 
-/* --- Exemples d’utilisation des variables CSS --- */
-:root {
-    --horaire-left: 2rem;      /* Décalage horaire horizontal */
-    --links-gap: 2.3rem;        /* Espacement entre les liens */
-    --links-right: 4.5rem;       /* Décalage des liens à droite */
+.info-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.8rem;
+    transition: 0.3s;
 }
+.info-link i { margin-right: 0.4rem; font-size: 1rem; color: #fff; }
+.info-link:hover { color: #f97316; }
+
+/* ========================================================= */
+/* NAV FIXED (PC)                                            */
+/* ========================================================= */
+.nav-fixed {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    background: #F5F5F5;
+    backdrop-filter: blur(12px);
+    z-index: 9999;
+    box-sizing: border-box;
+    transition: background 0.3s ease;
+    border-bottom: 1px solid #0F172A;
 }
 
+/* Nav content : Hauteur et padding d'origine restaurés */
+.nav-content {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    height: 4.5rem;      /* Hauteur stricte PC */
+    padding: 0 1.5rem;   /* Padding strict PC */
+    max-width: 100vw;
+}
 
+/* --- LOGO (PC) --- */
+.logo-rectangle {
+    display: flex;
+    margin-left: 0px; /* Réduit pour laisser de la place au texte long */
+    align-items: center;
+    justify-content: center;
+    width: 8rem;      /* Augmenté pour accueillir "CHM SALEUX" sur une ligne */
+    height: 3.5rem;
+}
+
+.logo-rectangle img {
+    max-height: 100%;  /* On reste dans la hauteur de la nav */
+    width: 100%;       /* On utilise toute la largeur disponible */
+    object-fit: contain;
+    margin-right: 2rem;    /* Supprime le décalage négatif */
+    margin-top: 0;     /* Aligné verticalement */
+}
+.logo-link {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- LINKS CENTER (PC) --- */
+.nav-links-center {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-right: 6rem;
+}
+.nav-links-center a {
+    text-decoration: none;
+    color: #454545;
+    padding: 0 1rem;
+    transition: 0.3s;
+    position: relative;
+}
+.nav-links-center a::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--elios-purple);
+    transition: width 0.3s ease;
+}
+.nav-links-center a:hover::after { width: 100%; }
+
+/* --- BUTTONS (PC) --- */
+.nav-buttons {
+    display: flex;
+    align-items: center; 
+    gap: 15px;           
+    margin-left: 35px;
+}
+
+.btn-ai-assistant {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background-color: #003d66;
+    border-radius: 50%;
+    transition: 0.2s ease;
+    overflow: hidden;
+    padding: 0;
+    border: none;
+    margin-left: 70px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.elios-avatar-icon { width: 100%; height: 100%; object-fit: cover; }
+.btn-ai-assistant:hover { transform: scale(1.1); background-color: var(--elios-purple); }
+
+.btn-inscription {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px; 
+    padding: 0 1.3rem;
+    background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
+    color: white;
+    font-size: 1rem;
+    font-weight: 800;
+    text-decoration: none;
+    transition: 0.3s;
+    margin-left: 40px; 
+    white-space: nowrap;
+}
+.btn-inscription:hover { background: #1a75c9; box-shadow: 0 4px 12px rgba(0, 91, 148, 0.3); }
+
+/* Éléments cachés sur PC */
+.hamburger-menu, .mobile-nav-overlay { display: none; }
+
+/* ========================================================= */
+/* RESPONSIVE (MOBILE - Max 1024px)                          */
+/* ========================================================= */
+@media(max-width: 1024px) {
+
+    /* 1. RESET PC STYLES QUI POSAIENT PROBLÈME */
+    .nav-links-center, .info-banner-links { display: none !important; }
+    
+    .nav-content {
+        padding: 0 1rem;
+        /* IMPORTANT : Sépare le Logo (gauche) des Boutons (droite) */
+        justify-content: space-between; 
+        align-items: center;
+    }
+
+    /* 2. MOBILE INFO BANNER (SLIDER MODE) */
+    .info-banner {
+        padding: 0.5rem 0;
+    }
+    .info-banner-content {
+        justify-content: center; 
+    }
+
+    /* Conteneur principal du slider */
+    .info-banner-horaire {
+        left: 0; 
+        flex-wrap: nowrap; 
+        justify-content: space-between; 
+        width: 100%;
+        gap: 0; 
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    /* Les éléments de texte (slides) */
+    .info-banner-horaire p {
+        display: none; 
+        margin-left: 0;
+        font-size: 0.75rem; 
+        flex: 1; 
+        justify-content: center;
+        text-align: center;
+        white-space: nowrap;
+    }
+    
+    /* L'élément actif (affiché par JS) */
+    .info-banner-horaire p.active {
+        display: flex;
+        animation: fadeInSlide 0.4s ease-out;
+    }
+
+    /* Cas spécifique pour centrer les icones réseaux sociaux */
+    .info-banner-socials {
+        justify-content: center;
+    }
+
+    /* Les Flèches (Visibles sur mobile uniquement) */
+    .mobile-info-arrow {
+        display: flex; 
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.9rem;
+        cursor: pointer;
+        padding: 5px 15px; 
+        z-index: 10;
+    }
+    .mobile-info-arrow:hover { color: #fff; }
+
+
+    /* --- 3. LOGO MOBILE (CORRIGÉ : Bien à GAUCHE) --- */
+    .nav-logo-container {
+        /* On colle le conteneur à gauche */
+        margin-left: 0; 
+        margin-right: auto; /* Pousse les boutons vers la droite */
+        flex-shrink: 0;
+    }
+    
+    .logo-rectangle {
+        width: auto; 
+        max-width: 160px; 
+        height: 35px; 
+        margin-left: 0; 
+        
+        /* Force le contenu (l'image) à s'aligner au début (gauche) */
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; 
+    }
+    
+    .logo-rectangle img {
+        margin: 0; 
+        width: 100%;
+        height: 100%;
+        object-fit: contain; 
+        margin-top: 0;
+        /* S'assure que l'image ne se centre pas toute seule */
+        display: block; 
+    }
+
+    /* 4. NAV BUTTONS MOBILE (Alignés à droite) */
+    .nav-buttons {
+        margin-left: 0; 
+        gap: 15px; /* Espace réduit pour éviter le décalage */
+        display: flex;
+        align-items: center;
+    }
+
+    .mobile-item-1 { order: 1; margin-left: 0; } /* Inscription */
+    .mobile-item-2 { order: 2; margin-left: 0; } /* Avatar */
+    .mobile-item-3 { order: 3; margin-left: 0; } /* Hamburger */
+
+    .btn-inscription {
+        font-size: 0.85rem; 
+        padding: 0 1.1rem;  
+        height: 38px;       
+    }
+    
+    .btn-ai-assistant {
+        width: 34px;
+        height: 34px;
+    }
+
+    /* 5. HAMBURGER MENU & OVERLAY */
+    .hamburger-menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 28px;
+        height: 18px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 10001;
+    }
+    .hamburger-menu span {
+        width: 100%;
+        height: 2px;
+        background: #003d66;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+    .hamburger-menu.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger-menu.active span:nth-child(2) { opacity: 0; }
+    .hamburger-menu.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    .mobile-nav-overlay {
+        display: block;
+        position: fixed;
+        top: 7.04rem; 
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: #fff;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 9998;
+        padding: 2rem;
+        box-sizing: border-box;
+        overflow-y: auto; 
+    }
+    .mobile-nav-overlay.open { transform: translateX(0); }
+    
+    .mobile-nav-links { display: flex; flex-direction: column; gap: 1.5rem; }
+    
+    .mobile-nav-links > a {
+        text-decoration: none;
+        color: #003d66;
+        font-size: 1.1rem;
+        font-weight: 700;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 0.5rem;
+    }
+    body.no-scroll { overflow: hidden; }
+
+    /* 6. MOBILE DROPDOWN (ACCORDÉON CLUB) */
+    .mobile-dropdown-container {
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .mobile-dropdown-trigger {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        padding-bottom: 0.5rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #003d66;
+    }
+
+    .mobile-arrow-icon {
+        transition: transform 0.3s ease;
+        font-size: 0.9rem;
+    }
+
+    .mobile-dropdown-trigger.active .mobile-arrow-icon {
+        transform: rotate(180deg);
+    }
+
+    .mobile-dropdown-content {
+        display: none; 
+        flex-direction: column;
+        background: #f9f9f9;
+        margin: 0 -2rem; 
+        padding: 1rem 2rem;
+        border-top: 1px solid #eee;
+    }
+
+    .mobile-dropdown-content.open {
+        display: flex;
+        animation: fadeInSlide 0.3s ease-out;
+    }
+
+    .mobile-sub-group {
+        margin-bottom: 1.2rem;
+        display: flex;
+        flex-direction: column;
+    }
+    .mobile-sub-title {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        color: #005b94;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.5px;
+    }
+
+    .mobile-dropdown-content a {
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #555;
+        padding: 0.4rem 0;
+        border-bottom: none; 
+        margin-left: 10px; 
+    }
+    .mobile-dropdown-content a:hover {
+        color: #005b94;
+    }
+}
+
+/* ========================================================= */
+/* AJUSTEMENTS SPÉCIFIQUES TABLETTE (iPad / 768px - 1024px)  */
+/* ========================================================= */
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    .nav-content {
+        padding: 0 3.5rem; 
+        height: 5rem;
+        justify-content: space-between; /* Assure aussi l'écartement sur tablette */
+    }
+
+    .logo-rectangle {
+        width: auto;  
+        height: 65px; 
+        justify-content: flex-start; /* Logo à gauche */
+    }
+    .nav-logo-container {
+        margin-left: 0;
+        margin-right: auto;
+    }
+
+    .logo-rectangle img {
+        margin: 0; 
+        object-fit: contain;
+    }
+
+    .nav-buttons {
+        gap: 25px;
+        margin-right: 0; /* Pas de marge inutile à droite */
+    }
+    
+    .btn-inscription {
+        height: 40px;
+        font-size: 0.95rem;
+        padding: 0 1.5rem;
+    }
+    
+    .btn-ai-assistant {
+        width: 40px;
+        height: 40px;
+    }
+
+    .info-banner-horaire p {
+        font-size: 0.95rem;
+    }
+    
+    .mobile-nav-overlay {
+        width: 450px; 
+        left: auto;   
+        right: 0;     
+        transform: translateX(100%); 
+        border-left: 1px solid #eee;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.05);
+    }
+    
+    .mobile-nav-overlay.open {
+        transform: translateX(0);
+    }
+    
+    .mobile-view {
+        padding: 2.5rem;
+    }
+}

@@ -1,248 +1,272 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Gestion des utilisateurs
-{% endblock %}
+{% block title %}Gestion des utilisateurs{% endblock %}
 
 {% block stylesheets %}
-	<style>:root
-	{
-		--bg-dark: #0e0e10;
-		--bg-darker: #141416;
-		--bg-light: #1c1c1f;
-		--text-main: #e5e7eb;
-		--text-muted: #9ca3af;
-		--accent: #ff6600;
-		--border: #2a2a2d;
-	}
+<style>
+    /* =================== PAGE SPECIFIC STYLES =================== */
+    .dashboard-container {
+        width: 100%;
+        max-width: 1600px;
+        margin: 0 auto;
+    }
 
-	body {
-		font-family: "Inter", system-ui, sans-serif;
-		background: var(--bg-dark);
-		color: var(--text-main);
-		margin: 0;
-		min-height: 100vh;
-	}
+    /* Header de page */
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 1.5rem;
+    }
+    .page-header h1 { 
+        margin: 0; 
+        font-size: 1.6rem; 
+        font-weight: 700; 
+        color: var(--text-main); 
+        letter-spacing: -0.5px;
+    }
+    .page-header p {
+        margin: 5px 0 0 0;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+    
+    /* Toolbar (Recherche + Bouton) */
+    .toolbar {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+    
+    /* Input Recherche Sobre */
+    .search-input {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text-main);
+        padding: 0.6rem 1rem;
+        border-radius: 4px; /* Coins moins arrondis */
+        outline: none;
+        min-width: 300px;
+        font-size: 0.9rem;
+        transition: border-color 0.2s;
+    }
+    .search-input:focus { border-color: var(--accent); }
+    .search-input::placeholder { color: var(--text-muted); opacity: 0.6; }
 
-	.main-content {
-		flex: 1;
-		margin-left: 100px; /* sidebar */
-		padding: 2.5rem 3rem;
-		display: flex;
-		flex-direction: column;
-		box-sizing: border-box;
-		background: var(--bg-dark);
-		min-height: 100vh;
-	}
+    /* Bouton Principal Textuel */
+    .btn-primary {
+        background: var(--accent);
+        color: #fff;
+        padding: 0.6rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: 0.2s;
+        border: none;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .btn-primary:hover { background: var(--accent-hover); }
 
-	/* ✅ même conteneur que le dashboard */
-	.dashboard-container {
-		transform: scale(1.00);
-		transform-origin: top left;
-		width: 193.58%;
-		max-width: none;
-		margin-left: 1.5rem;
-	}
+    /* Carte Principale */
+    .content-card {
+        background: var(--bg-light);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+    }
 
-	/* ------------------------- TITRE ------------------------- */
-	.dashboard-container h1 {
-		font-size: 2.3rem;
-		font-weight: 800;
-		color: #fff;
-		margin-bottom: 2.5rem;
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-	}
+    /* Table Styles */
+    .table-responsive { overflow-x: auto; }
+    .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    
+    .table th {
+        background: var(--bg-darker);
+        color: var(--text-muted);
+        font-weight: 600;
+        text-align: left;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+    }
+    
+    .table td {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--text-main);
+        vertical-align: middle;
+    }
+    .table tr:last-child td { border-bottom: none; }
+    
+    /* Hover discret sur les lignes */
+    .table tr:hover { background: rgba(255,255,255,0.01); }
 
-	/* ------------------------- SECTION ------------------------- */
-	.section-card {
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		padding: 1.5rem 1.3rem;
-		margin-bottom: 2rem;
-		width: 100%;
-		box-sizing: border-box;
-	}
+    /* Avatar Initials (Gardé car c'est du texte, très pro) */
+    .user-avatar {
+        width: 32px; height: 32px;
+        border-radius: 4px; /* Carré arrondi plus pro que le rond parfois */
+        background: var(--border);
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.8rem;
+        flex-shrink: 0;
+        text-transform: uppercase;
+    }
+    .user-info { display: flex; align-items: center; gap: 1rem; }
+    .user-name { font-weight: 600; display: block; color: var(--text-main); }
+    .user-email { font-size: 0.8rem; color: var(--text-muted); }
 
-	/* ------------------------- HEADER ------------------------- */
-	.section-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-bottom: 1.2rem;
-		border-bottom: 1px solid var(--border);
-		padding-bottom: 0.8rem;
-	}
+    /* Badges Rôles Textuels */
+    .role-text {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .role-admin { color: #ef4444; } /* Rouge */
+    .role-user { color: var(--accent); } /* Orange */
 
-	.section-title {
-		font-size: 1rem;
-		font-weight: 600;
-		color: #fff;
-		display: flex;
-		align-items: center;
-		gap: 0.4rem;
-	}
+    /* Actions Textuelles (Liens) */
+    .actions-cell {
+        display: flex;
+        gap: 15px;
+        justify-content: flex-end;
+    }
+    
+    .action-link {
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+    }
 
-	/* ------------------------- TOOLBAR ------------------------- */
-	.table-toolbar {
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-	}
+    .link-edit { color: var(--text-muted); }
+    .link-edit:hover { color: var(--text-main); text-decoration: underline; }
 
-	.search-bar {
-		padding: 0.45rem 0.8rem;
-		border: 1px solid var(--border);
-		background: var(--bg-darker);
-		color: var(--text-main);
+    .link-delete { color: #ef4444; opacity: 0.8; }
+    .link-delete:hover { opacity: 1; text-decoration: underline; }
 
-		font-size: 0.9rem;
-		outline: none;
-	}
-	.search-bar:focus {
-		border-color: var(--accent);
-	}
+</style>
+{% endblock %}
 
-	.btn {
-		background: var(--accent);
-		color: #fff;
-		border: none;
-		padding: 0.5rem 1rem;
-		font-weight: 600;
-		cursor: pointer;
-		transition: 0.2s;
-		display: flex;
-		align-items: center;
-		gap: 0.4rem;
-	}
-	.btn:hover {
-		background: #e25500;
-	}
+{% block body %}
+<div class="dashboard-container">
+    
+    {# Header & Toolbar #}
+    <div class="page-header">
+        <div>
+            <h1>Utilisateurs</h1>
+            <p>Gestion des comptes et des permissions</p>
+        </div>
+        <div class="toolbar">
+            <input type="text" id="searchUsers" class="search-input" placeholder="Rechercher par nom ou email...">
+            <button class="btn-primary" onclick="location.href='{{ path('admin_users_new') }}'">
+                Nouveau membre
+            </button>
+        </div>
+    </div>
 
-	/* ------------------------- TABLE ------------------------- */
-	.table {
-		width: 100%;
-		border-collapse: collapse;
-		font-size: 0.9rem;
-		color: #e5e7eb;
-	}
+    {# Tableau #}
+    <div class="content-card">
+        <div class="table-responsive">
+            <table class="table" id="usersTable">
+                <thead>
+                    <tr>
+                        <th width="60">ID</th>
+                        <th>Identité</th>
+                        <th>Rôle</th>
+                        <th>Inscription</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td><span style="color: var(--text-muted); font-family: monospace;">#{{ user.id }}</span></td>
+                            
+                            <td>
+                                <div class="user-info">
+                                    {# Avatar carré avec initiales (Texte uniquement) #}
+                                    <div class="user-avatar">
+                                        {{ user.firstName|first|upper }}{{ user.lastName|first|upper }}
+                                    </div>
+                                    <div>
+                                        <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
+                                        <span class="user-email">{{ user.email }}</span>
+                                    </div>
+                                </div>
+                            </td>
 
-	.table thead {
-		background: var(--bg-darker);
-		color: #fff;
-	}
+                            <td>
+                                {% for role in user.roles %}
+                                    {% if role == 'ROLE_ADMIN' %}
+                                        <span class="role-text role-admin">Admin</span>
+                                    {% elseif role == 'ROLE_USER' %}
+                                        <span class="role-text role-user">Membre</span>
+                                    {% else %}
+                                        <span class="role-text" style="color: var(--text-muted)">{{ role }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
 
-	.table th {
-		text-align: left;
-		padding: 0.8rem 1rem;
-		font-weight: 600;
-	}
+                            <td style="color: var(--text-muted); font-size: 0.85rem;">
+                                {{ user.createdAt ? user.createdAt|date('d/m/Y') : '—' }}
+                            </td>
 
-	.table td {
-		padding: 0.8rem 1rem;
-		border-bottom: 1px solid var(--border);
-	}
-
-	.table tbody tr:hover {
-		background: rgba(255, 255, 255, 0.03);
-	}
-
-	/* ------------------------- ACTIONS ------------------------- */
-	.action-delete {
-		color: #ef4444;
-		font-weight: 600;
-		text-decoration: none;
-		transition: color 0.2s ease;
-		display: flex;
-		align-items: center;
-		gap: 0.4rem;
-	}
-	.action-delete:hover {
-		color: #ff6666;
-	}
-
-	/* ------------------------- ÉTAT VIDE ------------------------- */
-	.empty-row {
-		text-align: center;
-		padding: 1.2rem;
-		color: var(--text-muted);
-	}
-
-	/* ------------------------- RESPONSIVE ------------------------- */
-	@media(max-width: 900px) {
-		.main-content {
-			margin-left: 0;
-			padding: 1.5rem;
-		}
-		.table-toolbar {
-			flex-direction: column;
-			align-items: flex-start;
-		}
-		.search-bar {
-			width: 100%;
-		}
-	}
-</style>{% endblock %}{% block body %}
-<div class="main-content">
-	<div
-		class="dashboard-container">
-		{# ✅ même structure que ton dashboard #}
-		<h1>👥 Gestion des utilisateurs</h1>
-
-		<div class="section-card">
-			<div class="section-header">
-				<h3 class="section-title">📋 Liste des utilisateurs</h3>
-				<div class="table-toolbar">
-					<input type="text" id="searchUsers" class="search-bar" placeholder="Rechercher...">
-					<button class="btn" onclick="location.href='{{ path('admin_users_new') }}'">Ajouter</button>
-				</div>
-			</div>
-
-			<table class="table" id="usersTable">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>Nom</th>
-						<th>Email</th>
-						<th>Rôles</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for user in users %}
-						<tr>
-							<td>{{ user.id }}</td>
-							<td>{{ user.firstName }}
-								{{ user.lastName }}</td>
-							<td>{{ user.email }}</td>
-							<td>{{ user.roles|join(', ') }}</td>
-							<td>
-								<a href="{{ path('admin_users_delete', {'id': user.id}) }}" class="action-delete" onclick="return confirm('Supprimer cet utilisateur ?')">Supprimer</a>
-							</td>
-						</tr>
-					{% else %}
-						<tr>
-							<td colspan="5" class="empty-row">Aucun utilisateur trouvé.</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
+                            <td>
+                                <div class="actions-cell">
+                                    {# Actions textuelles uniquement #}
+<a href="{{ path('admin_users_edit', {'id': user.id}) }}" class="action-link link-edit">
+    Modifier
+</a>                                    
+                                    <a href="{{ path('admin_users_delete', {'id': user.id}) }}" 
+                                       class="action-link link-delete"
+                                       onclick="return confirm('Confirmer la suppression du compte de {{ user.firstName }} ?');">
+                                        Supprimer
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 4rem; color: var(--text-muted);">
+                                Aucun utilisateur trouvé dans la base de données.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
- <script>
-/* --------- Recherche table --------- */
-function attachSearch(inputSel, tableSel) {
-	const input = document.querySelector(inputSel);
-	const rows = document.querySelectorAll(tableSel + ' tbody tr');
-	if (!input) return;
-	input.addEventListener('keyup', () => {
-		const q = input.value.toLowerCase();
-		rows.forEach(r => {
-			r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
-		});
-	});
-}
-attachSearch('#searchUsers', '#usersTable');
-</script>{% endblock %}
+<script>
+    // Script de recherche
+    document.getElementById('searchUsers').addEventListener('keyup', function() {
+        const searchValue = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#usersTable tbody tr');
+
+        rows.forEach(row => {
+            const userName = row.querySelector('.user-name')?.textContent.toLowerCase() || '';
+            const userEmail = row.querySelector('.user-email')?.textContent.toLowerCase() || '';
+            
+            if (userName.includes(searchValue) || userEmail.includes(searchValue)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
+{% endblock %}

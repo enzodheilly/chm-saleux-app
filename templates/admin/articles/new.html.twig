@@ -1,208 +1,96 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}➕ Ajouter un article{% endblock %}
+{% block title %}Nouvel article{% endblock %}
 
 {% block stylesheets %}
-	<style>:root
-	{
-		--bg-dark: #0e0e10;
-		--bg-darker: #141416;
-		--bg-light: #1c1c1f;
-		--text-main: #e5e7eb;
-		--text-muted: #9ca3af;
-		--accent: #ff6600;
-		--border: #2a2a2d;
-		--success: #22c55e;
-	}
+<style>
+    /* =================== PAGE STYLE =================== */
+    .dashboard-container { width: 100%; max-width: 1000px; margin: 0 auto; }
 
-	body {
-		font-family: "Inter", system-ui, sans-serif;
-		background: var(--bg-dark);
-		color: var(--text-main);
-		margin: 0;
-		min-height: 100vh;
-	}
+    /* Header */
+    .page-header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
 
-	.main-content {
-		flex: 1;
-		margin-left: 100px;
-		padding: 2.5rem 3rem;
-		display: flex;
-		flex-direction: column;
-		background: var(--bg-dark);
-		min-height: 100vh;
-	}
+    /* Form Card */
+    .form-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; }
+    .form-card > form > div { margin-bottom: 1.5rem; }
 
-	.dashboard-container {
-		transform: scale(1.00);
-		transform-origin: top left;
-		width: 158%;
-		margin-left: 1.5rem;
-	}
+    /* Inputs */
+    label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    input[type="text"], input[type="date"], input[type="file"], select, textarea {
+        width: 100%; background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-main);
+        padding: 0.7rem 1rem; border-radius: 4px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; box-sizing: border-box;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+    
+    textarea { min-height: 250px; line-height: 1.5; font-family: inherit; }
 
-	h1 {
-		font-size: 2.3rem;
-		font-weight: 800;
-		color: #fff;
-		margin-bottom: 2.5rem;
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-	}
+    /* Layout Grids */
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media(max-width: 700px) { .row-2 { grid-template-columns: 1fr; gap: 0; } }
 
-	.section-card {
-		background: var(--bg-light);
-		border: 1px solid var(--border);
-		padding: 1.8rem;
-		max-width: 800px;
-	}
-
-	label {
-		display: block;
-		font-weight: 600;
-		margin-bottom: 0.5rem;
-		color: var(--text-main);
-	}
-
-	input[type="text"],
-	input[type="email"],
-	textarea,
-	select {
-		width: 95%;
-		background: var(--bg-darker);
-		color: var(--text-main);
-		border: 1px solid var(--border);
-		padding: 0.7rem 1rem;
-		font-size: 0.95rem;
-		outline: none;
-		transition: border-color 0.2s ease;
-	}
-
-	input[type="text"]:focus,
-	input[type="email"]:focus,
-	select:focus,
-	textarea:focus {
-		border-color: var(--accent);
-	}
-
-	textarea {
-		resize: vertical;
-		min-height: 120px;
-	}
-
-	.form-actions {
-		display: flex;
-		gap: 1rem;
-		margin-top: 1.8rem;
-	}
-
-	.btn-success {
-		background: var(--accent);
-		color: #fff;
-		font-weight: 600;
-		padding: 0.75rem 1.5rem;
-		border: none;
-		cursor: pointer;
-		transition: background 0.2s ease, transform 0.2s ease;
-		box-shadow: 0 3px 10px rgba(255, 102, 0, 0.25);
-	}
-
-	.btn-success:hover {
-		background: #e25500;
-		transform: translateY(-2px);
-	}
-
-	.btn-secondary {
-		background: var(--bg-darker);
-		color: var(--text-main);
-		font-weight: 500;
-		padding: 0.75rem 1.5rem;
-		border: 1px solid var(--border);
-		cursor: pointer;
-		transition: background 0.2s ease;
-		text-decoration: none;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.btn-secondary:hover {
-		background: #2a2a2d;
-	}
-
-	.alert-success {
-		background: rgba(34, 197, 94, 0.15);
-		border: 1px solid rgba(34, 197, 94, 0.4);
-		color: var(--success);
-		padding: 0.8rem 1rem;
-		margin-bottom: 1.2rem;
-		font-weight: 500;
-	}
-
-	.alert-error {
-		background: rgba(239, 68, 68, 0.15);
-		border: 1px solid rgba(239, 68, 68, 0.4);
-		color: #ef4444;
-		padding: 0.8rem 1rem;
-		margin-bottom: 1.2rem;
-		font-weight: 500;
-	}
-
-	.avantages-box {
-		margin-top: 1.2rem;
-		padding: 1rem;
-		background: var(--bg-darker);
-		border: 1px solid var(--border);
-		border-radius: 6px;
-	}
-</style>{% endblock %}
+    /* Actions */
+    .form-actions { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 1rem; }
+    .btn-submit { background: var(--accent); color: #fff; padding: 0.7rem 1.5rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+    .btn-submit:hover { background: var(--accent-hover); }
+    .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 500; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; transition: 0.2s; }
+    .btn-cancel:hover { border-color: var(--text-muted); color: var(--text-main); }
+</style>
+{% endblock %}
 
 {% block body %}
-<div class="main-content">
-    <div class="dashboard-container">
-        <h1>➕ Ajouter un article</h1>
+<div class="dashboard-container">
+    
+    <div class="page-header">
+        <h1>Nouvel article</h1>
+        <p>Rédigez une nouvelle actualité pour le site.</p>
+    </div>
 
-        <div class="section-card">
-            {% for message in app.flashes('error') %}
-                <div class="alert-error">{{ message }}</div>
-            {% endfor %}
-            {% for message in app.flashes('success') %}
-                <div class="alert-success">{{ message }}</div>
-            {% endfor %}
+    <div class="form-card">
+        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
 
-            {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+        <div>
+            {{ form_label(form.title, 'Titre') }}
+            {{ form_widget(form.title) }}
+            {{ form_errors(form.title) }}
+        </div>
 
-            <div class="form-group" style="margin-bottom: 1rem;">
-                {{ form_label(form.title, 'Titre de l’article') }}
-                {{ form_widget(form.title) }}
-                {{ form_errors(form.title) }}
-            </div>
-
-            <div class="form-group" style="margin-bottom: 1rem;">
+        <div class="row-2">
+            <div>
                 {{ form_label(form.publishedAt, 'Date de publication') }}
                 {{ form_widget(form.publishedAt) }}
                 {{ form_errors(form.publishedAt) }}
             </div>
-
-            <div class="form-group" style="margin-bottom: 1rem;">
-                {{ form_label(form.description, 'Description') }}
-                {{ form_widget(form.description) }}
-                {{ form_errors(form.description) }}
-            </div>
-
-            <div class="form-group" style="margin-bottom: 1rem;">
-                {{ form_label(form.photo, 'Image de l’article') }}
-                {{ form_widget(form.photo) }}
-                {{ form_errors(form.photo) }}
-            </div>
-
-            <div class="form-actions">
-                <button class="btn-success">💾 Enregistrer</button>
-                <a href="{{ path('admin_articles_index') }}" class="btn-secondary">⬅️ Retour</a>
-            </div>
-
-            {{ form_end(form) }}
+            
+            {# Si tu as un champ catégorie dans ton form, décommente ceci : #}
+            {# 
+            <div>
+                {{ form_label(form.categorie, 'Catégorie') }}
+                {{ form_widget(form.categorie) }}
+            </div> 
+            #}
         </div>
+
+        <div>
+            {{ form_label(form.description, 'Contenu de l\'article') }}
+            {{ form_widget(form.description) }}
+            {{ form_errors(form.description) }}
+        </div>
+
+        <div>
+            {{ form_label(form.photo, 'Image de couverture') }}
+            {{ form_widget(form.photo) }}
+            {{ form_errors(form.photo) }}
+            <small style="color: var(--text-muted); display: block; margin-top: 5px;">Format recommandé : JPG, PNG (Max 2Mo).</small>
+        </div>
+
+        <div class="form-actions">
+            <a href="{{ path('admin_articles_index') }}" class="btn-cancel">Annuler</a>
+            <button type="submit" class="btn-submit">Enregistrer l'article</button>
+        </div>
+
+        {{ form_end(form) }}
     </div>
 </div>
 {% endblock %}

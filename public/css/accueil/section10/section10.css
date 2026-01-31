@@ -1,15 +1,17 @@
-
+/* ========================================================= */
+/* ==================== SECTION COURS ====================== */
+/* ========================================================= */
 
 /* CONTAINER */
 .container {
-  margin-right: 180px;
+  margin-right: 180px; /* Marge desktop */
   margin-bottom: 90px;
   background-color: transparent;
 }
 
 /* TITRE H2 */
 h2 {
-  margin-top:75px;
+  margin-top: 75px;
   color: #fff;
   font-weight: 900;
   margin-bottom: 30px;
@@ -38,13 +40,14 @@ h2 {
   color: #fff;
 }
 
+/* --- IMAGE ET TEXTE D'ARRIÈRE PLAN --- */
 .side-image {
   position: relative;
   display: flex;
   gap: 20px;
 }
 
-/* IMAGE À DROITE (optionnelle) */
+/* IMAGE À DROITE */
 .side-image img {
   position: relative;
   z-index: 2;
@@ -52,22 +55,22 @@ h2 {
   height: 450px;
   object-fit: contain;
   margin-top: -45px;
-  margin-left: 200px;
-  
+  margin-left: 200px; /* Attention : géré en responsive plus bas */
 }
 
+/* Ombre au sol */
 .side-image::after {
   content: '';
   position: absolute;
-  bottom: 0;                  /* place l'ombre au sol */
+  bottom: 0;
   left: 70%;
   top: 86%;
-  transform: translateX(-50%) skewX(-15deg) scaleX(1.3); /* perspective légère */
-  width: 50%;                 /* largeur de l'ombre */
-  height: 20px;               /* hauteur de l'ombre */
+  transform: translateX(-50%) skewX(-15deg) scaleX(1.3);
+  width: 50%;
+  height: 20px;
   background: rgba(0, 0, 0, 0.35);
   filter: blur(12px);
-  border-radius: 50%;         /* forme ovale */
+  border-radius: 50%;
   z-index: 1;
   pointer-events: none;
 }
@@ -78,20 +81,19 @@ h2 {
   top: 50%;
   left: 75%;
   transform: translate(-50%, -50%);
-  display: flex;                 /* ⬅️ OBLIGATOIRE */
-  flex-direction: column;        /* ⬅️ texte en colonne */
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 0px;
   z-index: 1;
   pointer-events: none;
 }
 
-/* texte individuel */
 .bg-texts span {
   font-size: 4rem;
   font-weight: 900;
-  line-height: 0.85;      /* ⬅️ rapproche verticalement */
-  margin-top: 5px;      /* ⬅️ colle encore plus */
+  line-height: 0.85;
+  margin-top: 5px;
   color: #FAFAF9;
   letter-spacing: 6px;
   text-transform: uppercase;
@@ -99,19 +101,20 @@ h2 {
   white-space: nowrap;
 }
 
+/* --- SECTION COURS (TEXTE + CARD) --- */
 .cours-section .text-and-card {
   display: flex;
   align-items: flex-start;
   gap: 40px;
-  flex-wrap: nowrap; /* ⬅️ empêche le passage en dessous */
+  flex-wrap: nowrap; /* Desktop : côte à côte */
 }
 
 .course-card {
-  flex: 1; /* prend tout l'espace restant */
+  flex: 1;
   max-width: 650px;
 }
 
-/* WRAPPER GLOBAL */
+/* --- COLLECTIF --- */
 .collectif-wrapper {
   margin-top: 40px;
   display: flex;
@@ -120,16 +123,14 @@ h2 {
   gap: 50px;
 }
 
-/* IMAGE À GAUCHE */
 .collectif-image img {
   width: 460px;
   height: auto;
   object-fit: cover;
-  border-radius: 10px;
+  margin-right: 20px;
   box-shadow: 0 12px 30px rgba(0,0,0,0.15);
 }
 
-/* TEXTE À DROITE */
 .collectif-text {
   max-width: 600px;
 }
@@ -141,7 +142,7 @@ h2 {
   text-align: left;
 }
 
-/* BOUTON */
+/* BOUTON COLLECTIF */
 .btn-collectif {
   display: inline-block;
   margin-top: 20px;
@@ -160,7 +161,7 @@ h2 {
   transform: translateY(-3px);
 }
 
-/* SECTION AVIS */
+/* --- AVIS --- */
 .avis-section {
   margin-top: 80px;
   margin-bottom: 130px;
@@ -172,7 +173,6 @@ h2 {
   font-size: 1.5rem;
 }
 
-/* WRAPPER */
 .avis-wrapper {
   display: flex;
   gap: 10px;
@@ -180,77 +180,182 @@ h2 {
   flex-wrap: wrap;
 }
 
-/* CARTE AVIS - version plus petite */
 .avis-card {
   background: #ffffff;
   border-radius: 16px;
-  padding: 15px;           /* réduit de 20px à 15px */
-  max-width: 350px;        /* réduit de 350px à 250px */
-  margin-left: 10px;       /* réduit l’espace à gauche */
+  padding: 15px;
+  max-width: 330px;
+  margin-left: 10px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .avis-card:hover {
-  transform: translateY(-5px); /* un peu moins de levée */
+  transform: translateY(-5px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
 }
 
-/* TEXTE */
 .avis-text {
   font-style: italic;
   color: #444;
-  line-height: 1.4;        /* un peu plus compact */
-  margin-bottom: 15px;     /* réduit l’espace sous le texte */
+  line-height: 1.4;
+  margin-bottom: 15px;
+  font-size: 0.8rem;
 }
 
-/* NOM */
 .avis-name {
   font-weight: 600;
   color: #111;
-  font-size: 0.9rem;       /* légèrement plus petit */
+  font-size: 0.9rem;
 }
 
-/* ÉTOILES */
 .avis-stars {
   color: #f5b301;
   margin-bottom: 10px;
-  font-size: 16px;         /* plus petit */
+  font-size: 16px;
 }
 
+/* --- SILHOUETTE --- */
+.trdc-silhouette {
+    position: relative;
+    width: 50%;
+    height: 400px;
+    left: 5%;
+    margin-top: -90px;
+}
 
-/* RESPONSIVE MOBILE */
+.trdc-silhouette img {
+    height: 100%;
+    position: relative;
+    z-index: 3;
+    filter: drop-shadow(0 0 20px rgba(0,0,0,0.5));
+}
+
+.text-wall {
+    position: absolute;
+    top: 62%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    font-size: 43px;
+    font-weight: 900;
+    color: #CBD5E1;
+    line-height: 1.1;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ========================================================= */
+/* ================= RESPONSIVE MOBILE ===================== */
+/* ========================================================= */
+
 @media (max-width: 768px) {
-  .courses {
+  
+  /* 1. Reset des marges énormes du container */
+  .container {
+    margin-right: 0;
+    margin-bottom: 50px;
+    padding: 0 1.5rem; /* Marges de sécurité sur les bords */
+  }
+
+  h2 {
+    text-align: center;
+    font-size: 1.8rem;
+  }
+
+  /* 2. On empile la section Cours (Texte au dessus, carte en dessous) */
+  .cours-section .text-and-card {
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     gap: 30px;
+    width: 100%;
   }
 
   .course-card {
-    width: 95%;
+    width: 100%;
+    max-width: 100%;
   }
 
-  .course-banner img {
-    height: 250px;
+  /* 3. Correction de l'image de côté et du texte de fond */
+  .side-image {
+    justify-content: center;
+    margin-top: 20px;
   }
 
   .side-image img {
-    width: 90%;
+    margin-left: 0; /* Important : annule le décalage de 200px */
+    width: 80%;     /* Image plus petite pour mobile */
     height: auto;
+    margin-top: 0;
   }
 
-    .collectif-wrapper {
-    flex-direction: column;
+  .side-image::after {
+    left: 50%; /* Centre l'ombre */
+    width: 60%;
+  }
+
+  /* On réduit et centre le texte géant derrière */
+  .bg-texts {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
     text-align: center;
   }
 
+  .bg-texts span {
+    font-size: 2.2rem; /* Beaucoup plus petit */
+    -webkit-text-stroke: 1px black;
+  }
+
+  /* 4. Section Collectif en colonne */
+  .collectif-wrapper {
+    flex-direction: column;
+    text-align: center;
+    gap: 30px;
+  }
+
   .collectif-image img {
-    width: 90%;
+    width: 100%; /* Image prend toute la largeur */
+    margin-right: 0;
   }
 
   .collectif-text p {
     text-align: center;
+  }
+  
+  /* 5. Silhouette et Mur de texte */
+  .trdc-silhouette {
+    width: 100%;
+    left: 0;
+    margin-top: 0;
+    height: auto;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .trdc-silhouette img {
+    height: 300px; /* Hauteur fixe pour éviter que ça prenne tout l'écran */
+    width: auto;
+  }
+  
+  .text-wall {
+    font-size: 1.5rem; /* Texte beaucoup plus petit */
+    left: 50%;
+    width: 100%;
+    text-align: center;
+    white-space: normal; /* Permet au texte de passer à la ligne si besoin */
+  }
+  
+  /* 6. Avis */
+  .avis-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .avis-card {
+    margin-left: 0;
+    width: 100%;
+    max-width: 100%;
   }
 }

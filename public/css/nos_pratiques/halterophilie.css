@@ -1,0 +1,236 @@
+.overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 0;
+		}
+
+.hero-header {
+    position: relative;
+    margin-top: 120px;
+    width: 100%;
+    height: 65vh; /* ajustable */
+    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+
+    /* diagonale sur le bas */
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
+}
+
+
+/* Fond flou + filtre bleu foncé */
+.hero-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    filter: blur(40px);
+    transform: scale(4.1);
+    z-index: 0; /* derrière le texte */
+}
+
+/* Filtre bleu foncé */
+.hero-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 41, 82, 0.65); /* ← bleu plus foncé */
+    z-index: 1;
+}
+
+/* Image décorative diagonale sur la droite du hero */
+.hero-diagonal-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;          /* occupe toute la hauteur du hero */
+    width: 55%;            /* moitié droite du hero */
+    overflow: hidden;
+    z-index: 2;            /* au-dessus du fond mais derrière le texte si nécessaire */
+    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%); /* diagonale */
+}
+
+.hero-diagonal-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.3)); /* optionnel : ombre douce */
+    transform: scale(1.1); /* léger zoom pour mieux couvrir le clip-path */
+    transition: transform 0.5s ease;
+}
+
+/* Contenu visible au-dessus */
+.hero-header > .hero-content {
+    position: relative;
+    z-index: 2; /* texte au-dessus du fond */
+}
+
+		.hero-content {
+			position: relative;
+			z-index: 1;
+			margin-top: 100px;
+			animation: fadeInUp 1s ease-out;
+		}
+
+		.hero-content h1 {
+			font-size: 3rem;
+			font-weight: 900;
+			max-width: 700px;
+			text-align: left;
+			margin: 0 0 1rem;
+			text-transform: uppercase;
+			color: white;
+			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+			margin-right:750px;
+			margin-top: -130px;
+			letter-spacing: 2px;
+		}
+		.hero-content p {
+			font-size: 1.1rem;
+			line-height: 1.8;
+			color: #CBD5E1;
+			margin-bottom: 2rem;
+            max-width: 570px;
+            margin-right: 660px;
+            text-align: left;
+		}
+
+		@media(max-width: 768px) {
+			.hero-content h1 {
+				font-size: 3.2rem;
+			}
+			.hero-content p {
+				font-size: 1.1rem;
+			}
+		}
+
+		@keyframes fadeInUp {
+			from {
+				opacity: 0;
+				transform: translateY(20px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+/* ============================
+   PAGE CONTENT
+=============================== */
+
+.practice-detail {
+    padding: 60px 0;
+}
+
+.practice-detail .container {
+    width: 90%;
+    max-width: 1100px;
+    margin: auto;
+}
+
+.practice-detail h1 {
+    font-size: 2.4rem;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 700;
+    color: #fff;
+}
+
+.practice-intro {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    line-height: 1.7;
+    color: #CBD5E1;
+}
+
+
+/* ============================
+   SECTIONS (zones haltero)
+=============================== */
+
+.zone-section {
+    margin-bottom: 70px;
+}
+
+.zone-section h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.zone-section img {
+    width: 100%;
+    max-height: 380px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.zone-section h3 {
+    margin-top: 15px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #CBD5E1;
+}
+
+.zone-section ul {
+    margin: 10px 0 20px 0;
+    padding-left: 20px;
+}
+
+.zone-section ul li {
+    margin-bottom: 6px;
+    font-size: 1.1rem;
+    color: #CBD5E1;
+}
+
+.zone-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #CBD5E1;
+}
+
+
+/* ============================
+   RESPONSIVE
+=============================== */
+
+@media (max-width: 992px) {
+    .hero-content {
+        max-width: 70%;
+    }
+
+    .hero-content h1 {
+        font-size: 2.4rem;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .hero-header {
+        height: 45vh;
+    }
+
+    .hero-diagonal-image {
+        display: none;
+    }
+
+    .hero-content {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+}

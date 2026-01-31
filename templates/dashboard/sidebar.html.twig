@@ -34,6 +34,18 @@
                     <img src="{{ asset('images/boutique.png') }}" width="24" height="24">
                     <span class="label" style="font-size:0.7rem;margin-top:-7px;color:#fff;">Boutique du club</span>
                 </button>
+
+                {# === BOUTON ADMIN (Visible uniquement pour les Admins) === #}
+                {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin_dashboard') }}" class="nav-item" style="text-decoration: none; border: 1px solid var(--accent); margin-bottom: 10px; background: rgba(255, 102, 0, 0.05);">
+                    <span class="icon">
+                        {# Utilise une icône qui claque, comme un bouclier ou un engrenage #}
+                        <img src="{{ asset('images/admin_icon.png') }}" width="24" height="24">
+                    </span>
+                    <span class="label" style="font-size:0.7rem; margin-top:-7px; color:var(--accent); font-weight: bold;">ADMINISTRATION</span>
+                </a>
+                <div class="divider" style="height: 1px; background: #2a2f37; margin: 10px 0;"></div>
+                {% endif %}
             </div>
         </nav>
 

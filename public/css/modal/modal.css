@@ -1468,3 +1468,219 @@ input[type="password"]:focus {
     max-height: none;       /* plus de limite */
     overflow-y: visible;    /* plus de scroll interne */
 }
+
+/* ==========================================================
+   📱 MOBILE RESPONSIVE - MODALES (MAX-WIDTH: 480px)
+   ========================================================== */
+
+@media (max-width: 480px) {
+
+    /* --- 1. CONTENEUR GLOBAL --- */
+    .modal-card, 
+    .modal-card-set-password {
+        width: 95% !important; /* Prend presque toute la largeur */
+        max-width: none;
+        margin-top: 80px !important; /* Remonte la modale pour laisser de la place au clavier */
+        padding: 1.5rem 1.25rem !important;
+        border-radius: 12px;
+        max-height: 90vh; /* Permet le scroll interne si nécessaire */
+    }
+
+    /* --- 2. TITRES ET TEXTES --- */
+    .modal-title {
+        font-size: 1.25rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .modal-subtitle {
+        font-size: 0.85rem !important;
+        margin-bottom: 1.25rem !important;
+    }
+
+    /* --- 3. RÉINITIALISATION DES DÉCALAGES (IMPORTANT) --- */
+    /* On annule tous les margin-left/right codés en dur pour le PC */
+    .oauth-btn, 
+    .btn-register, 
+    .email-register-card,
+    #modal-step-reset-email .btn-register,
+    #modal-step-reset-new .btn-register {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100% !important; /* Boutons pleine largeur */
+    }
+
+    /* --- 4. FORMULAIRES ET CHAMPS --- */
+    .email-register-form {
+        gap: 0.75rem !important;
+    }
+
+    .email-register-form input {
+        padding: 0.75rem 0.8rem !important; /* Plus de place pour taper avec le doigt */
+        font-size: 1rem !important;
+    }
+
+    /* --- 5. VÉRIFICATION DU CODE (6 CASES) --- */
+    .verify-code-inputs {
+        gap: 0.25rem !important;
+        max-width: 100% !important;
+    }
+
+    .verify-code-inputs .code-input {
+        width: 14% !important; /* Les 6 cases s'adaptent à la largeur */
+        height: 45px !important;
+        font-size: 1.1rem !important;
+    }
+
+    /* --- 6. CRITÈRES DU MOT DE PASSE (SOUS-MODALE) --- */
+    .password-criteria-modal {
+        width: 100% !important;
+        margin-left: 0 !important;
+        left: 0 !important;
+        bottom: 105% !important;
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.15) !important;
+    }
+
+    .password-criteria-content {
+        padding: 1rem !important;
+    }
+
+    /* --- 7. BOUTON DE PAIEMENT (GLASS) --- */
+    .button-wrap-payment {
+        width: 100% !important;
+        text-align: center;
+    }
+
+    .button-wrap-payment a.btn-payment {
+        width: 100% !important;
+        box-sizing: border-box;
+        padding-inline: 1rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .button-wrap-payment .button-shadow {
+        display: none; /* On cache l'ombre complexe sur mobile pour éviter les bugs d'affichage */
+    }
+
+    /* --- 8. FOOTER MODALE --- */
+    .modal-footer {
+        font-size: 0.85rem !important;
+        margin-top: 1rem !important;
+    }
+
+    /* --- 9. AJUSTEMENT ICÔNE ŒIL --- */
+    .toggle-password {
+        right: 0.5rem !important;
+        top: 50% !important;
+    }
+}
+
+/* --- Sécurité pour les petits écrans (iPhone SE, etc) --- */
+@media (max-height: 600px) {
+    .modal-card {
+        margin-top: 20px !important;
+    }
+}
+
+/* ==========================================================
+   📱 CONNEXION COMPACTE - MOBILE
+   ========================================================== */
+
+@media (max-width: 480px) {
+
+    /* On réduit la marge haute pour remonter la carte */
+    #modal-step-login .modal-card {
+        margin-top: 60px !important; 
+        padding: 1.2rem 1rem !important;
+    }
+
+    /* Titre et Sous-titre plus petits et serrés */
+    #modal-step-login .modal-title {
+        font-size: 1.2rem !important;
+        margin-bottom: 0.2rem !important;
+    }
+
+    #modal-step-login .modal-subtitle {
+        font-size: 0.8rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    /* Formulaire plus dense */
+    #modal-step-login .form-group {
+        margin-bottom: 0.8rem !important;
+    }
+
+    #modal-step-login label {
+        font-size: 0.9rem !important;
+        margin-bottom: 0.2rem !important;
+    }
+
+    #modal-step-login input {
+        padding: 0.6rem 0.7rem !important; /* Hauteur réduite */
+        font-size: 0.95rem !important;
+    }
+
+    /* "Se souvenir de moi" et "Mot de passe oublié" plus proches */
+    .remember-me {
+        margin-bottom: 0.8rem !important;
+        font-size: 0.75rem !important;
+    }
+
+    #modal-step-login .forgot-password {
+        margin-top: 0.4rem !important;
+        font-size: 0.85rem !important;
+    }
+
+    /* Bouton de connexion plus compact */
+    #modal-step-login .btn-register {
+        padding: 0.6rem !important;
+        margin-bottom: 0.5rem !important;
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    /* Réduction des séparateurs "OU" */
+    .modal-divider {
+        margin: 0.6rem 0 !important;
+        font-size: 0.9rem !important;
+    }
+
+    /* Boutons Facebook/Google plus petits */
+    .oauth-btn {
+        padding: 0.6rem !important;
+        font-size: 0.85rem !important;
+        margin-left: 0 !important;
+    }
+}
+
+@media (max-width: 900px) {
+
+    /* Élargissement du texte dans la modale */
+    .modal-subtitle, 
+    .hero-content p {
+        /* On retire la limite de largeur pour que le texte s'étale */
+        max-width: 100% !important; 
+        width: 100% !important;
+        
+        /* On reset les marges qui compressent le bloc */
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        
+        /* On ajuste l'espace interne pour la respiration */
+        padding-left: 10px;
+        padding-right: 10px;
+        
+        /* Amélioration de la lisibilité */
+        line-height: 1.4;
+        font-size: 1.1rem; 
+        text-align: center; /* Pour garder l'équilibre visuel dans la modale */
+    }
+
+    /* Ajustement spécifique pour le titre de la modale */
+    .modal-card h2, 
+    .modal-title {
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding: 0 5px;
+    }
+}
