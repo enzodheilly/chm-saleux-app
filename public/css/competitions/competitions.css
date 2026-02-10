@@ -448,13 +448,6 @@ body {
    ========================================================================== */
 @media (max-width: 900px) {
     /* Header Mobile */
-    .back-button {
-        top: 20px;
-        left: 20px;
-        background: rgba(0,0,0,0.4);
-        padding: 5px 10px;
-        border-radius: 20px;
-    }
 
     /* Calendrier Mobile */
     .calendar-grid {
@@ -493,4 +486,48 @@ body {
         transform: scale(1);
         background: rgba(255,255,255,0.9);
     }
+}
+
+@media (max-width: 900px) {
+
+  /* =========================
+     BANNIÈRE MOBILE (compacte)
+     ========================= */
+
+  .hero-header {
+    height: 320px;          /* 👈 hauteur de bannière */
+    min-height: unset;
+    padding-top: 120px;     /* espace navbar */
+    padding-bottom: 20px;
+    align-items: center;    /* centre verticalement le contenu */
+  }
+
+  .hero-content {
+    max-width: 100%;
+    padding: 0 22px;
+    margin-top: 40px !important;
+    text-align: center;     /* bannière = centré */
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+
+  .hero-content p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  /* Bouton retour */
+  .back-button {
+    top: 130px !important;   /* sous la navbar */
+    left: 20px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    z-index: 1000;
+  }
 }
