@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/images/logo/logo-chm.png" width="200" alt="Logo CHM Saleux" />
+  <img src="public/images/favicon/icon2.png" width="200" alt="Logo CHM Saleux" />
 </p>
 
 <h1 align="center">CHM Saleux - Application de Gestion</h1>
