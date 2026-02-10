@@ -20,15 +20,19 @@
 .pricing-hero {
   padding: 4rem 2rem 5rem;
   text-align: center;
-  background: transparent;
+  background: transparent; /* Fond blanc géré par le parent section-white */
 }
 
 .pricing-hero .pricing-title {
   font-size: 2.2rem;
   font-weight: 900;
-  margin-bottom: 1.5rem;
-  color: #fff;
+  margin-bottom: 1rem;
+  
+  /* MODIFICATION IMPORTANTE : Couleur sombre pour fond blanc */
+  color: #1e293b; /* C'était #fff */
+  
   margin-top: 10px;
+  text-transform: uppercase;
 }
 
 .pricing-hero .pricing-sub {
@@ -36,8 +40,12 @@
   margin: 0 auto;
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #CBD5E1;
+  
+  /* MODIFICATION IMPORTANTE : Gris moyen lisible sur blanc */
+  color: #475569; /* C'était #CBD5E1 */
+  
   font-weight: 500;
+  margin-bottom: 2rem;
 }
 
 /* ========================================================= */
@@ -65,62 +73,36 @@
   font-weight: 700;
 }
 
-/* Le switch interne (Annuel / Flex) */
 .segmented-toggle input {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-  z-index: 10;
+  position: absolute; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10;
 }
 
-/* Bulle qui glisse */
 .toggle-bg {
-  position: absolute;
-  width: 50%;
-  height: 100%;
-  background: var(--color);
-  border-radius: 60px;
-  top: 0;
-  left: 0;
-  transition: transform 0.3s ease;
-  z-index: 1;
+  position: absolute; width: 50%; height: 100%; background: var(--color); border-radius: 60px; top: 0; left: 0; transition: transform 0.3s ease; z-index: 1;
 }
 
-/* Options */
 .toggle-option {
-  width: 50%;
-  text-align: center;
-  z-index: 2;
-  font-size: 16px;
-  pointer-events: none;
+  width: 50%; text-align: center; z-index: 2; font-size: 16px; pointer-events: none;
 }
 
-.toggle-option small {
-  font-weight: 500;
-  opacity: 0.8;
-}
+.toggle-option small { font-weight: 500; opacity: 0.8; }
 
-/* Texte par défaut */
+/* MODIFICATION : "left" est visible sur fond gris clair, donc on le met en bleu par défaut */
 .left {
-  color: #fff;
+  color: var(--color); /* C'était #fff, illisible sur fond gris clair avant sélection */
+  transition: color 0.3s;
 }
 .right {
   color: var(--color);
+  transition: color 0.3s;
 }
 
 /* Quand on coche (passage Flex) */
-.segmented-toggle input:checked ~ .toggle-bg {
-  transform: translateX(100%);
-}
+.segmented-toggle input:checked ~ .toggle-bg { transform: translateX(100%); }
 
-.segmented-toggle input:checked ~ .left {
-  color: var(--color);
-}
-.segmented-toggle input:checked ~ .right {
-  color: #fff;
-}
+/* Le texte sur le fond bleu (.toggle-bg) doit devenir BLANC */
+.segmented-toggle input:not(:checked) ~ .left { color: #fff; } /* Gauche sélectionné = blanc */
+.segmented-toggle input:checked ~ .right { color: #fff; }      /* Droite sélectionné = blanc */
 
 /* ========================================================= */
 /* ======================= GRILLE ========================== */
@@ -131,21 +113,9 @@
   grid-template-columns: repeat(3, minmax(260px, 1fr));
   gap: 1.8rem;
   max-width: 1140px;
-  margin: 4rem auto 0;
+  margin: 2rem auto 0;
   padding: 0 1.5rem;
   justify-content: center;
-}
-
-.pricing-hero .trial-box {
-  margin: 0 auto 1rem; /* Centré avec auto */
-  padding: 0.5rem 1rem;
-  background: #fff7ed;
-  border: 2px solid #f59e0b;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #2b2b2b;
-  text-align: center; /* Centré */
 }
 
 /* ========================================================= */
@@ -158,175 +128,27 @@
   padding: 2.2rem 2rem;
   border-radius: 8px;
   border: none;
-  
-  /* MODIFICATION : Centrage global dans la carte */
   text-align: center;
-  align-items: center; 
-  
+  align-items: center;
   display: flex;
   flex-direction: column;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
   transition: all 0.35s ease;
 }
 
+.pricing-hero .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
 .pricing-hero .card-featured {
   border: 2px solid #fbbf24;
   z-index: 2;
+  transform: scale(1.05);
 }
+.pricing-hero .card-featured:hover { transform: scale(1.05) translateY(-5px); }
 
-/* ========================================================= */
-/* ======================= TITRE =========================== */
-/* ========================================================= */
-
-.pricing-hero .card-title {
-  font-size: 1.4rem;
-  font-weight: 900;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  color: #2b2b2b;
-}
-
-/* ========================================================= */
-/* ======================= PRIX ============================ */
-/* ========================================================= */
-
-.pricing-hero .price-row {
-  display: flex;
-  align-items: flex-end;
-  
-  /* MODIFICATION : Centrage du prix */
-  justify-content: center;
-  
-  gap: 0.3rem;
-  margin-bottom: 1rem;
-  width: 100%;
-}
-
-.pricing-hero .trial-box {
-  display: flex;
-  align-items: center;
-  justify-content: center; /* Ajout centrage */
-  gap: 10px;
-}
-
-.pricing-hero .trial-icon {
-  color: #e63946;
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-.pricing-hero .price-row div[class^="price"] {
-  font-size: 2.4rem;
-  font-weight: 1000;
-  line-height: 0.5;
-}
-
-.pricing-hero .price-row sup {
-  font-size: 1.1rem;
-  vertical-align: top;
-  top: 4px;
-}
-
-.pricing-hero .period {
-  font-size: 0.95rem;
-  color: #6b7280;
-  padding-bottom: 0px;
-  /* MODIFICATION : Suppression de la marge négative qui décale tout quand c'est centré */
-  margin-left: 0; 
-  line-height: 0.2;
-}
-
-.pricing-hero .subprice1,
-.pricing-hero .subprice2,
-.pricing-hero .subprice3,
-.pricing-hero .subprice4 {
-  font-size: 0.85rem;
-  color: #6b7280;
-  margin-bottom: 1rem;
-}
-
-/* ========================================================= */
-/* ======================= FEATURES ======================== */
-/* ========================================================= */
-
-.pricing-hero .features {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.6rem;
-  text-align: center; /* Centré */
-  width: 100%;
-}
-
-.pricing-hero .features li {
-  display: flex;
-  align-items: center;
-  
-  /* MODIFICATION : Centrage des éléments de la liste */
-  justify-content: center;
-  
-  gap: 0.6rem;
-  padding: 0.45rem 0;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #374151;
-}
-
-.pricing-hero .feature-icon {
-  width: 18px;
-  height: 18px;
-}
-
-/* ========================================================= */
-/* =================== COULEURS PAR CARTE ================== */
-/* ========================================================= */
-
-/* Note: J'ai conservé tes styles de couleurs intacts */
-
-.pricing-hero .card:nth-child(1) { border-color: #2b2b2b; }
-.pricing-hero .card:nth-child(1) .card-title,
-.pricing-hero .card:nth-child(1) .price-row { color: #2b2b2b; }
-.pricing-hero .card:nth-child(1) .btn-classic { background: #2b2b2b; color: #fff; }
-.pricing-hero .card:nth-child(1) .btn-classic:hover { background: transparent; color: #2b2b2b; border-color: #2b2b2b; }
-
-.pricing-hero .card:nth-child(2) { border-color: #2b2b2b; }
-.pricing-hero .card:nth-child(2) .card-title,
-.pricing-hero .card:nth-child(2) .price-row { color: #2b2b2b; }
-.pricing-hero .card:nth-child(2) .btn-classic { background: #2b2b2b; color: #fff; }
-.pricing-hero .card:nth-child(2) .btn-classic:hover { background: transparent; color: #2b2b2b; border-color: #2b2b2b; }
-
-.pricing-hero .card:nth-child(3) { border-color: #2b2b2b; }
-.pricing-hero .card:nth-child(3) .card-title,
-.pricing-hero .card:nth-child(3) .price-row { color: #2b2b2b; }
-.pricing-hero .card:nth-child(3) .btn-classic { background: #2b2b2b; color: #fff; }
-.pricing-hero .card:nth-child(3) .btn-classic:hover { background: transparent; color: #2b2b2b; border-color: #2b2b2b; }
-
-.pricing-hero .card:nth-child(4) { border-color: #2b2b2b; }
-.pricing-hero .card:nth-child(4) .card-title,
-.pricing-hero .card:nth-child(4) .price-row { color: #2b2b2b; }
-.pricing-hero .card:nth-child(4) .btn-classic { background: #2b2b2b; color: #fff; }
-.pricing-hero .card:nth-child(4) .btn-classic:hover { background: transparent; color: #2b2b2b; border-color: #2b2b2b; }
-
-/* ========================================================= */
-/* ======================= FOOTER ========================== */
-/* ========================================================= */
-
-.pricing-hero .pricing-foot {
-  max-width: 900px;
-  margin: 4rem auto 2rem;
-  text-align: center;
-  font-size: 1.1rem;
-  color: #CBD5E1;
-}
-
-.pricing-hero .pricing-foot a {
-  color: #2563eb;
-  text-decoration: underline;
-}
-
-/* ========================================================= */
-/* ======================= RESPONSIVE ====================== */
-/* ========================================================= */
-
+/* Badge "Populaire" */
 .pricing-hero .badge-featured {
   position: absolute;
   top: -14px;
@@ -341,48 +163,163 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* --- TABLETTE (jusqu'à 1100px) --- */
+/* ========================================================= */
+/* ======================= CONTENU CARTE =================== */
+/* ========================================================= */
+
+.pricing-hero .card-title {
+  font-size: 1.4rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  color: #2b2b2b;
+}
+
+.pricing-hero .price-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  color: #2b2b2b;
+}
+
+.pricing-hero .price-row div[class^="price"] {
+  font-size: 2.4rem;
+  font-weight: 1000;
+  line-height: 0.8;
+  display: flex;
+}
+
+.pricing-hero .price-row sup {
+  font-size: 1.1rem;
+  vertical-align: top;
+  margin-top: 5px;
+}
+
+.pricing-hero .period {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-left: 2px;
+  line-height: 1.2;
+  padding-bottom: 5px;
+}
+
+.pricing-hero .subprice3 {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+.pricing-hero .trial-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto 1.5rem;
+  padding: 0.5rem 1rem;
+  background: #fff7ed;
+  border: 2px solid #f59e0b;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #2b2b2b;
+  width: 100%;
+}
+.pricing-hero .trial-box i { color: #e63946; }
+
+/* Features */
+.pricing-hero .features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.6rem;
+  text-align: left;
+  width: 100%;
+}
+
+.pricing-hero .features li {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.8rem;
+  padding: 0.6rem 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 1px dashed #e5e7eb;
+}
+.pricing-hero .features li:last-child { border-bottom: none; }
+
+.pricing-hero .feature-icon {
+  width: 18px;
+  height: 18px;
+  color: #005b94;
+  text-align: center;
+}
+
+/* Bouton */
+.btn-classic {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-align: center;
+  transition: 0.3s;
+  margin-top: auto;
+  border: 2px solid transparent;
+}
+
+/* ========================================================= */
+/* =================== COULEURS PAR CARTE ================== */
+/* ========================================================= */
+
+.pricing-hero .card:nth-child(1) { border-top: 5px solid #334155; }
+.pricing-hero .card:nth-child(1) .btn-classic { background: #334155; color: white; }
+.pricing-hero .card:nth-child(1) .btn-classic:hover { background: transparent; color: #334155; border-color: #334155; }
+
+.pricing-hero .card:nth-child(2) { border-top: 5px solid #005b94; }
+.pricing-hero .card:nth-child(2) .btn-classic { background: #005b94; color: white; }
+.pricing-hero .card:nth-child(2) .btn-classic:hover { background: transparent; color: #005b94; border-color: #005b94; }
+
+.pricing-hero .card:nth-child(3) { border-top: 5px solid #fbbf24; }
+.pricing-hero .card:nth-child(3) .btn-classic { background: #fbbf24; color: #1e293b; }
+.pricing-hero .card:nth-child(3) .btn-classic:hover { background: transparent; color: #fbbf24; border-color: #fbbf24; }
+
+/* ========================================================= */
+/* ======================= FOOTER ========================== */
+/* ========================================================= */
+
+.pricing-hero .pricing-foot {
+  max-width: 900px;
+  margin: 3rem auto 0;
+  text-align: center;
+  font-size: 0.95rem;
+  
+  /* MODIFICATION : Couleur sombre pour fond blanc */
+  color: #64748b; /* C'était #CBD5E1 */
+}
+
+/* ========================================================= */
+/* ======================= RESPONSIVE ====================== */
+/* ========================================================= */
+
 @media (max-width: 1100px) {
   .pricing-hero .pricing-grid {
     grid-template-columns: repeat(2, 1fr);
-    max-width: 700px; /* On limite la largeur pour centrer les 2 colonnes */
+    max-width: 700px;
   }
 }
 
-/* --- MOBILE (jusqu'à 768px) --- */
 @media (max-width: 768px) {
-  /* MODIFICATION : Réduction du padding container principal pour élargir l'espace utile */
-  .pricing-hero {
-    padding: 3rem 1rem 4rem; 
-  }
-
-  .pricing-hero .pricing-title {
-    font-size: 2rem;
-  }
-
-  .pricing-hero .pricing-sub {
-    font-size: 1rem;
-  }
-
-  .pricing-hero .card {
-    padding: 2rem 1.5rem;
-  }
-}
-
-/* --- PETIT MOBILE (jusqu'à 640px) --- */
-@media (max-width: 640px) {
-  .pricing-hero .pricing-grid {
-    grid-template-columns: 1fr;
-    
-    /* MODIFICATION : Suppression du padding latéral de la grille */
-    /* Cela permet aux cartes de prendre toute la largeur disponible définie par .pricing-hero */
-    padding: 0;
-    
-    gap: 1.5rem;
-  }
+  .pricing-hero { padding: 3rem 1rem; }
+  .pricing-hero .pricing-grid { grid-template-columns: 1fr; padding: 0; }
+  .pricing-hero .card-featured { transform: scale(1); }
+  .pricing-hero .card-featured:hover { transform: scale(1); }
   
-  .segmented-toggle {
-    width: 100%;
-    max-width: 240px;
-  }
+  .pricing-hero .pricing-title { font-size: 2rem; }
+  .pricing-hero .pricing-sub { font-size: 1rem; }
 }

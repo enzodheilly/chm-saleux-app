@@ -2,27 +2,40 @@
   position: relative;
   width: 100%;
   min-height: 600px;
-  background: #F5F5F5; /* image nette */
+  /* CHANGEMENT 1 : L'image de fond remplace la couleur unie */
+  background: url("../../../images/club/ok.jpg") center / cover no-repeat;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
-/* Contenu au-dessus */
+/* CHANGEMENT 2 : Le calque de flou bleu */
+.nos-pratiques::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 41, 82, 0.65); /* Bleu foncé transparent */
+  backdrop-filter: blur(40px);       /* Le flou */
+  -webkit-backdrop-filter: blur(40px);
+  z-index: 1; /* Juste au-dessus de l'image de fond */
+}
+
+/* Contenu au-dessus du flou */
 .nos-pratiques > * {
   position: relative;
-  z-index: 2;
+  z-index: 2; /* Tout le contenu passe au-dessus du filtre */
 }
 
 .section-title {
-  color: #0F172A;
+  /* CHANGEMENT 3 : Couleur blanche pour être lisible sur le bleu */
+  color: #ffffff; 
   font-size: 2.2rem;
   font-weight: 900;
-  margin: 40px 40px 40px; /* espace autour du titre */
+  margin: 40px 40px 40px; 
   text-align: left;
   z-index: 10;
   text-transform: uppercase;
-  margin-left:60px
+  margin-left: 60px;
 }
 
 .images-container .image {
@@ -30,7 +43,7 @@
   position: relative;
 }
 
-/* Titre centré */
+/* Titre centré sur les images */
 .image-title {
   position: absolute;
   top: 50%;
@@ -52,10 +65,10 @@
   inset: 0;
   background: rgba(0,0,0,0.60);
   z-index: 2;
-  transition: background 0.4s ease; /* animation fluide */
+  transition: background 0.4s ease; 
 }
 
-/* AU SURVOL : le filtre disparaît */
+/* AU SURVOL : le filtre s'éclaircit */
 .images-container .image:hover::after {
   background: rgba(0,0,0,0.35);
 }
@@ -64,14 +77,9 @@
 .images-container {
   display: flex;
   width: 100%;
-  height: 420px; /* ✅ hauteur réduite mais élégante */
+  height: 420px; 
   position: relative;
   padding: 0 4vw;
-}
-
-.images-container .image {
-  flex: 1;
-  position: relative;
 }
 
 .images-container .image img {
@@ -93,7 +101,7 @@
 /* Bouton Découvrir */
 .discover-btn1 {
   position: absolute;
-  top: calc(50% + 60px); /* sous le titre */
+  top: calc(50% + 60px); 
   left: 50%;
   transform: translate(-50%, 10px);
   padding: 12px 32px;
@@ -128,47 +136,42 @@
 
 @media (max-width: 768px) {
 
-  /* 1. ON GARDE LE FOND D'ORIGINE MAIS ON AJUSTE L'ESPACEMENT */
   .nos-pratiques {
-    padding-bottom: 4rem; /* Un peu d'air en bas */
-    min-height: auto;     /* On laisse la hauteur s'adapter au contenu */
+    padding-bottom: 4rem; 
+    min-height: auto;     
   }
 
-  /* 2. LE TITRE PRINCIPAL */
+  /* LE TITRE PRINCIPAL */
   .section-title {
     text-align: center;      
-    margin: 40px auto;       /* Centré avec des marges équilibrées */
-    margin-left: auto;       /* Annule le décalage gauche du desktop */
+    margin: 40px auto;       
+    margin-left: auto;       
     font-size: 2rem;
   }
 
-  /* 3. LE CONTENEUR DES IMAGES (Empilement vertical) */
+  /* LE CONTENEUR DES IMAGES */
   .images-container {
-    flex-direction: column;  /* Les images passent l'une sous l'autre */
-    height: auto;            /* Plus de hauteur fixe, ça s'adapte */
-    padding: 0 1.5rem;       /* Marges latérales pour ne pas coller aux bords */
-    gap: 30px;               /* Bel espace entre "Haltérophilie" et "Musculation" */
+    flex-direction: column;  
+    height: auto;            
+    padding: 0 1.5rem;       
+    gap: 30px;               
   }
 
-  /* 4. STYLE DES IMAGES (Rectangles propres) */
+  /* STYLE DES IMAGES MOBILE */
   .images-container .left,
   .images-container .right {
-    /* SUPER IMPORTANT : On enlève la découpe diagonale */
     clip-path: none !important; 
-    margin: 0 !important;      /* On enlève le décalage négatif */
+    margin: 0 !important;      
     
-    /* Dimensions */
     flex: none;
     width: 100%;               
-    height: 250px;             /* Hauteur fixe suffisante pour être beau */
+    height: 250px;             
     
-    /* Esthétique */
-    border-radius: 15px;       /* Coins arrondis */
-    border: 2px solid rgba(255,255,255,0.3); /* Bordure blanche semi-transparente */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Ombre forte pour détacher du fond */
+    border-radius: 15px;       
+    border: 2px solid rgba(255,255,255,0.3); 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
   }
 
-  /* 5. LE TITRE INTERNE (Centrage parfait) */
   .image-title {
     font-size: 1.8rem;
     width: 100%;
@@ -178,8 +181,6 @@
     transform: translate(-50%, -50%);
   }
 
-  /* 6. ON CACHE LE BOUTON "DÉCOUVRIR" SUR MOBILE */
-  /* Ça évite de surcharger l'image, on clique direct sur la carte */
   .discover-btn1 {
     display: none !important;
   }

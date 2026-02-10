@@ -104,3 +104,53 @@ document.addEventListener('DOMContentLoaded', () => {
             dropdownContent.classList.toggle('open');
         });
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+    // 1. Sélectionner le lien et les éléments de la modale
+    const loginTriggers = document.querySelectorAll('.js-trigger-login');
+    const modal = document.getElementById('registerModal');
+    const closeBtn = document.getElementById('closeRegisterModal');
+    
+    // Les différentes étapes (views)
+    const stepSocial = document.getElementById('modal-step-social');
+    const stepEmail = document.getElementById('modal-step-email');
+    const stepLogin = document.getElementById('modal-step-login');
+    const stepVerify = document.getElementById('modal-step-verify');
+
+    // 2. Fonction pour ouvrir la modale directement sur le Login
+    if (loginTriggers && modal) {
+        loginTriggers.forEach(trigger => {
+            trigger.addEventListener('click', function(e) {
+                e.preventDefault(); // Empêche d'aller vers /login
+
+                // On reset l'affichage : on cache tout
+                if(stepSocial) stepSocial.style.display = 'none';
+                if(stepEmail) stepEmail.style.display = 'none';
+                if(stepVerify) stepVerify.style.display = 'none';
+                
+                // On affiche uniquement la section Connexion
+                if(stepLogin) stepLogin.style.display = 'block';
+
+                // On ouvre la modale (ajout de la classe CSS qui la rend visible)
+                modal.classList.add('is-open');
+                modal.setAttribute('aria-hidden', 'false');
+            });
+        });
+    }
+
+    // 3. Gestion de la fermeture (si pas déjà gérée ailleurs)
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            modal.classList.remove('is-open');
+            modal.setAttribute('aria-hidden', 'true');
+        });
+    }
+
+    // Fermeture en cliquant en dehors de la modale (sur l'overlay)
+    window.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.classList.remove('is-open');
+            modal.setAttribute('aria-hidden', 'true');
+        }
+    });
+});

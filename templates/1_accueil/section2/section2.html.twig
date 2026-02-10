@@ -5,7 +5,7 @@
         <span>SELECTIONNE L’ABONNEMENT QUI TE CORRESPOND</span>
       </h1>
       <p class="pricing-sub">
-        Avec plus de 800 m² d’espace d’entraînement... (ton texte intro)
+        Avec plus de 800 m² d’espace d’entraînement, retrouve tout ce qu’il te faut pour progresser : Cardio, Musculation, Haltérophilie, et même des cours collectifs chaque semaine pour te dépasser dans une super ambiance ! Découvre nos 4 forfaits annuels, adaptés à tous les niveaux à partir de 5,83 €/semaine 🔥
       </p>
     </div>
   </div>
@@ -35,14 +35,34 @@
         {# On sépare les euros et les centimes pour le style #}
         {% set priceParts = plan.prix|number_format(2, '.', ',')|split('.') %}
         
-        <div class="price3"> {# Tu peux rendre cette classe dynamique si besoin #}
-            {{ priceParts[0] }}€<sup>{{ priceParts[1] }}</sup>
+        {# --- LOGIQUE DE PRIX ETUDIANT --- #}
+        {# 1. Par défaut, prix étudiant = prix normal #}
+        {% set studentPrice = plan.prix %}
+        
+        {# 2. Si le prix est >= 195€ (ex: 200€), on force le prix étudiant à 185€ #}
+        {% if plan.prix >= 195 %}
+            {% set studentPrice = 185 %}
+        {# Optionnel : Sinon, si un prix étudiant existe en BDD, on le prend #}
+        {% elseif plan.prix_etudiant is defined and plan.prix_etudiant %}
+            {% set studentPrice = plan.prix_etudiant %}
+        {% endif %}
+
+        <div class="price3">
+            {# Le span dynamic-price contient les deux valeurs pour le JS #}
+            <span class="dynamic-price" 
+                  data-standard="{{ plan.prix }}" 
+                  data-student="{{ studentPrice }}">
+                {{ priceParts[0] }}
+            </span>
+            €<sup>{{ priceParts[1] }}</sup>
         </div>
+        
         <div class="period">{{ plan.frequence }}</div>
       </div>
 
       {# Mensualité calculée #}
       {% if plan.mensualite %}
+        {# On garde la classe subprice3 pour que le JS puisse mettre à jour le "Soit X €/mois" #}
         <div class="subprice3">Soit {{ plan.mensualite|number_format(2, ',', ' ') }}€/mois</div>
       {% else %}
         <div class="subprice3" style="visibility: hidden;">-</div> {# Garde l'espace #}
@@ -79,7 +99,14 @@
 
   <div class="pricing-foot">
     <div class="disclaimer">
-      ⚠️ <strong>Note :</strong> Avant d’effectuer le paiement... (ton texte disclaimer)
+      ⚠️
+      <strong>Note :</strong>
+      Avant d’effectuer le paiement, veuillez vous assurer d’avoir bien rempli le
+      <strong>formulaire de licence</strong>.<br>
+      Une fois le paiement effectué, merci de remettre le formulaire complété directement
+                                                  au bureau du club.<br>
+      Si vous ne l’avez pas encore, vous pouvez le télécharger
+      <a href="URL_DU_FORMULAIRE" target="_blank">ici</a>.
     </div>
   </div>
 </main>

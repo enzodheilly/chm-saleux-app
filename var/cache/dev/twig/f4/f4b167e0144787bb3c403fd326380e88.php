@@ -1,0 +1,1027 @@
+<?php
+
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Extension\CoreExtension;
+use Twig\Extension\SandboxExtension;
+use Twig\Markup;
+use Twig\Sandbox\SecurityError;
+use Twig\Sandbox\SecurityNotAllowedTagError;
+use Twig\Sandbox\SecurityNotAllowedFilterError;
+use Twig\Sandbox\SecurityNotAllowedFunctionError;
+use Twig\Source;
+use Twig\Template;
+use Twig\TemplateWrapper;
+
+/* ecole/index.html.twig */
+class __TwigTemplate_dc41c5d328a7dbcc3cbcd002430c2226 extends Template
+{
+    private Source $source;
+    /**
+     * @var array<string, Template>
+     */
+    private array $macros = [];
+
+    public function __construct(Environment $env)
+    {
+        parent::__construct($env);
+
+        $this->source = $this->getSourceContext();
+
+        $this->blocks = [
+            'title' => [$this, 'block_title'],
+            'stylesheets' => [$this, 'block_stylesheets'],
+            'body' => [$this, 'block_body'],
+            'javascripts' => [$this, 'block_javascripts'],
+        ];
+    }
+
+    protected function doGetParent(array $context): bool|string|Template|TemplateWrapper
+    {
+        // line 1
+        return "base.html.twig";
+    }
+
+    protected function doDisplay(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "ecole/index.html.twig"));
+
+        $this->parent = $this->load("base.html.twig", 1);
+        yield from $this->parent->unwrap()->yield($context, array_merge($this->blocks, $blocks));
+        
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
+
+    }
+
+    // line 3
+    /**
+     * @return iterable<null|scalar|\Stringable>
+     */
+    public function block_title(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "title"));
+
+        yield "École d'Haltérophilie - CHM Saleux";
+        
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
+
+        yield from [];
+    }
+
+    // line 5
+    /**
+     * @return iterable<null|scalar|\Stringable>
+     */
+    public function block_stylesheets(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "stylesheets"));
+
+        // line 6
+        yield "    ";
+        yield from $this->yieldParentBlock("stylesheets", $context, $blocks);
+        yield "
+    <link href=\"https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Poppins:wght@400;500;700&display=swap\" rel=\"stylesheet\">
+    <style>
+        /* J'ai mis le CSS directement ici pour faciliter l'intégration, 
+           mais tu peux le mettre dans ton fichier index.css */
+        
+        :root {
+            --primary: #005b94;
+            --secondary: #fbbf24;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #334155;
+            background: #fff;
+        }
+
+        /* ================= HERO ANIMÉ ================= */
+        .hero-header {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Fond animé */
+        .hero-backgrounds {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
+        }
+        .hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            opacity: 0;
+            animation: bgSlide 15s infinite;
+        }
+        .hero-bg:nth-child(1) { animation-delay: 0s; }
+        .hero-bg:nth-child(2) { animation-delay: 5s; }
+        .hero-bg:nth-child(3) { animation-delay: 10s; }
+
+        @keyframes bgSlide {
+            0% { opacity: 0; transform: scale(1); }
+            10% { opacity: 1; }
+            33% { opacity: 1; }
+            43% { opacity: 0; transform: scale(1.1); }
+            100% { opacity: 0; }
+        }
+
+        /* Overlay */
+        .hero-overlay {
+            position: absolute; inset: 0; background: rgba(0,0,0,0.5); z-index: 2;
+        }
+
+        /* Contenu */
+        .hero-content {
+            position: relative; z-index: 3; max-width: 900px; padding: 2rem;
+            animation: fadeInUp 1s ease-out;
+        }
+        .hero-content h1 {
+            font-family: 'Oswald', sans-serif; font-size: 4rem; font-weight: 700;
+            text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 2px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .hero-content p {
+            font-size: 1.3rem; margin-bottom: 2.5rem; color: #e2e8f0; font-weight: 500;
+        }
+
+        .cta-button {
+            display: inline-block; padding: 15px 40px;
+            background: var(--secondary); color: var(--dark);
+            font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; text-decoration: none; border-radius: 4px;
+            transition: all 0.3s ease; border: 2px solid var(--secondary);
+        }
+        .cta-button:hover {
+            background: transparent; color: var(--secondary);
+        }
+
+        /* ================= SECTIONS STANDARD ================= */
+        .section {
+            padding: 80px 5%;
+            display: flex; align-items: center; gap: 60px;
+            max-width: 1300px; margin: 0 auto;
+        }
+        .section:nth-child(even) { flex-direction: row-reverse; }
+
+        .section-content { flex: 1; }
+        .section-image { flex: 1; position: relative; }
+
+        .section h2 {
+            font-family: 'Oswald', sans-serif; font-size: 2.5rem; color: var(--primary);
+            text-transform: uppercase; margin-bottom: 20px; position: relative;
+            display: inline-block;
+        }
+        /* Petit trait sous le titre */
+        .section h2::after {
+            content: ''; display: block; width: 60px; height: 4px;
+            background: var(--secondary); margin-top: 5px;
+        }
+
+        .info-box {
+            background: var(--light); padding: 20px; border-left: 4px solid var(--primary);
+            margin-bottom: 20px; border-radius: 0 8px 8px 0;
+        }
+        .info-box p { margin: 5px 0; font-size: 1rem; color: var(--dark); display: flex; align-items: center; gap: 10px; }
+        .info-box i { color: var(--primary); width: 20px; text-align: center; }
+
+        .desc-text { font-size: 1.05rem; line-height: 1.8; color: #64748b; }
+
+        .section-image img {
+            width: 100%; border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .section-image:hover img { transform: translateY(-10px); }
+
+        /* ================= SECTION VALEURS (Sombre) ================= */
+        .section-dark {
+            background: var(--dark); color: white; padding: 100px 5%;
+        }
+        .section-dark h2 { color: white; }
+        .section-dark .desc-text { color: #cbd5e1; }
+        .section-dark .section-image img { border: 4px solid var(--secondary); }
+
+        /* ================= SLIDER COACH ================= */
+        /* Important car ton code précédent n'avait pas de CSS pour ça */
+        .coach-wrapper {
+            position: relative; width: 100%; max-width: 500px; margin: 0 auto;
+            text-align: center;
+        }
+        .coach-slider {
+            position: relative; overflow: hidden; border-radius: 12px;
+            aspect-ratio: 3/4; box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        .slides {
+            display: flex; height: 100%; transition: transform 0.5s ease-in-out;
+        }
+        .slides img {
+            width: 100%; height: 100%; object-fit: cover; flex-shrink: 0;
+        }
+        .prev-btn, .next-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(255,255,255,0.8); border: none; width: 40px; height: 40px;
+            border-radius: 50%; cursor: pointer; font-size: 1.5rem; color: var(--dark);
+            transition: 0.3s; z-index: 10;
+        }
+        .prev-btn:hover, .next-btn:hover { background: white; color: var(--primary); }
+        .prev-btn { left: 15px; } .next-btn { right: 15px; }
+        
+        #coach-name {
+            margin-top: 15px; font-family: 'Oswald', sans-serif; font-size: 1.8rem;
+            color: var(--primary); font-weight: 700; text-transform: uppercase;
+        }
+
+        /* ================= TABLEAU ================= */
+        .table-section { background: var(--light); padding: 80px 20px; text-align: center; }
+        .table-section h2 { 
+            font-family: 'Oswald', sans-serif; font-size: 2.5rem; color: var(--dark); 
+            text-transform: uppercase; margin-bottom: 40px; 
+        }
+
+        .modern-table {
+            max-width: 900px; margin: 0 auto; background: white;
+            border-radius: 10px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .table-header {
+            display: grid; grid-template-columns: 1fr 1fr 1fr;
+            background: var(--primary); color: white; padding: 20px;
+            font-weight: 700; text-transform: uppercase; font-family: 'Oswald', sans-serif; letter-spacing: 1px;
+        }
+        .table-row {
+            display: grid; grid-template-columns: 1fr 1fr 1fr;
+            padding: 15px 20px; border-bottom: 1px solid #f1f5f9;
+            color: #475569; font-weight: 500; transition: background 0.2s;
+        }
+        .table-row:last-child { border-bottom: none; }
+        .table-row:hover { background: #f0f9ff; }
+        .table-row div { display: flex; align-items: center; justify-content: center; }
+
+        /* ================= CTA FOOTER ================= */
+        .prices-link {
+            text-align: center; padding: 60px 20px; background: var(--primary); color: white;
+        }
+        .prices-link p { font-size: 1.2rem; }
+        .prices-link a {
+            color: var(--secondary); font-weight: 700; text-decoration: none;
+            border-bottom: 2px solid transparent; transition: 0.3s;
+        }
+        .prices-link a:hover { border-bottom-color: var(--secondary); }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 900px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .section { flex-direction: column !important; padding: 50px 20px; gap: 30px; }
+            .section h2 { font-size: 2rem; }
+            .table-header, .table-row { font-size: 0.9rem; padding: 15px 5px; }
+        }
+    </style>
+";
+        
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
+
+        yield from [];
+    }
+
+    // line 211
+    /**
+     * @return iterable<null|scalar|\Stringable>
+     */
+    public function block_body(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
+
+        // line 212
+        yield "
+    <header class=\"hero-header\">
+        <div class=\"hero-backgrounds\">
+            <div class=\"hero-bg\" style=\"background-image: url('";
+        // line 215
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("images/club/bg2.jpg"), "html", null, true);
+        yield "');\"></div>
+            <div class=\"hero-bg\" style=\"background-image: url('";
+        // line 216
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("images/club/bg1.jpg"), "html", null, true);
+        yield "');\"></div>
+            <div class=\"hero-bg\" style=\"background-image: url('";
+        // line 217
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("images/club/bg3.jpg"), "html", null, true);
+        yield "');\"></div>
+        </div>
+        <div class=\"hero-overlay\"></div>
+        
+        <div class=\"hero-content\">
+            <h1>L'ÉCOLE D'HALTÉROPHILIE</h1>
+            <p>Technique, Force et Discipline. Rejoignez une structure d'excellence.</p>
+            <a href=\"#entrainements\" class=\"cta-button\">Découvrir le programme</a>
+        </div>
+    </header>
+
+    <main>
+        <section id=\"entrainements\" class=\"section\">
+            <div class=\"section-content\">
+                <h2>Licences Compétition</h2>
+                
+                <div class=\"info-box\">
+                    <p><i class=\"fa-solid fa-users\"></i> <b>Catégories :</b> U15, U17, U20, Séniors</p>
+                    <p><i class=\"fa-regular fa-clock\"></i> <b>Lundi, Mercredi, Vendredi :</b> 17h00 - 19h00</p>
+                </div>
+
+                <p class=\"desc-text\">
+                    Nos athlètes bénéficient d’un suivi personnalisé avec des programmes adaptés à chaque catégorie. 
+                    L'objectif est la performance à travers la maîtrise technique, le développement de la force et la préparation mentale pour les championnats.
+                </p>
+            </div>
+            <div class=\"section-image\">
+                <img src=\"";
+        // line 244
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("images/club/photo2.jpg"), "html", null, true);
+        yield "\" alt=\"Compétition Haltérophilie\">
+            </div>
+        </section>
+
+        <section class=\"section\">
+            <div class=\"section-content\">
+                <h2>U13 / Débutants</h2>
+                
+                <div class=\"info-box\">
+                    <p><i class=\"fa-solid fa-child\"></i> <b>Public :</b> Jeunes et Initiation</p>
+                    <p><i class=\"fa-regular fa-clock\"></i> <b>Lun, Mer, Ven :</b> 17h30 - 19h00</p>
+                </div>
+
+                <p class=\"desc-text\">
+                    Cette section initie les plus jeunes aux bases de l’haltérophilie dans un environnement sécurisé et ludique. 
+                    Nous mettons l’accent sur la qualité de la posture, la coordination et le respect des règles de sécurité.
+                </p>
+            </div>
+            <div class=\"section-image\">
+                <img src=\"";
+        // line 263
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("images/club/photo3.jpg"), "html", null, true);
+        yield "\" alt=\"Débutants Haltérophilie\">
+            </div>
+        </section>
+
+        <section class=\"section\">
+            <div class=\"section-content\">
+                <h2>Licences Loisir</h2>
+                
+                <div class=\"info-box\">
+                    <p><i class=\"fa-solid fa-heart-pulse\"></i> <b>Objectif :</b> Santé & Technique</p>
+                    <p><i class=\"fa-regular fa-clock\"></i> <b>Mercredi :</b> 17h30 - 19h00</p>
+                </div>
+
+                <p class=\"desc-text\">
+                    Idéal pour ceux qui souhaitent pratiquer l’haltérophilie de manière ponctuelle ou complémentaire (CrossTraining), 
+                    en découvrant la discipline sans la pression de la compétition.
+                </p>
+            </div>
+            <div class=\"section-image\">
+                <img src=\"";
+        // line 282
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("images/club/photo4.jpg"), "html", null, true);
+        yield "\" alt=\"Loisir Haltérophilie\">
+            </div>
+        </section>
+
+        <section class=\"section\">
+            <div class=\"section-content\">
+                <h2>Nos Coachs</h2>
+                <p class=\"desc-text\">
+                    Notre équipe est composée de coachs diplômés d'État et fédéraux, passionnés par la pédagogie. 
+                    Chaque élève bénéficie d'une attention particulière pour progresser en toute sécurité. 
+                    Ils supervisent la technique et assurent la motivation du groupe au quotidien.
+                </p>
+            </div>
+            
+            <div class=\"section-image\">
+                <div class=\"coach-wrapper\">
+                    <div class=\"coach-slider\">
+                        <button class=\"prev-btn\"><i class=\"fa-solid fa-chevron-left\"></i></button>
+                        
+                        <div class=\"slides\">
+                            <img src=\"";
+        // line 302
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("images/club/3.jpg"), "html", null, true);
+        yield "\" alt=\"Coach Ema\" data-name=\"Ema\">
+                            <img src=\"";
+        // line 303
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("images/club/florian.jpg"), "html", null, true);
+        yield "\" alt=\"Coach Florian\" data-name=\"Florian\">
+                            <img src=\"";
+        // line 304
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("images/club/jeanne.jpg"), "html", null, true);
+        yield "\" alt=\"Coach Jeanne\" data-name=\"Jeanne\">
+                            <img src=\"";
+        // line 305
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("images/club/robert.jpg"), "html", null, true);
+        yield "\" alt=\"Coach Robert\" data-name=\"Robert\">
+                        </div>
+                        
+                        <button class=\"next-btn\"><i class=\"fa-solid fa-chevron-right\"></i></button>
+                    </div>
+                    <p id=\"coach-name\">Ema</p>
+                </div>
+            </div>
+        </section>
+
+        <section class=\"section section-dark\">
+            <div class=\"section-content\">
+                <h2>Nos Valeurs</h2>
+                <p class=\"desc-text\">
+                    Respect, discipline et persévérance sont les piliers de notre école. 
+                    Nous valorisons le dépassement de soi dans un environnement bienveillant et stimulant.
+                    Nous encourageons l’esprit d’équipe et le fair-play, quel que soit le niveau de pratique.
+                </p>
+            </div>
+            <div class=\"section-image\">
+                <img src=\"";
+        // line 325
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("images/valeur.jpg"), "html", null, true);
+        yield "\" class=\"valeur-img\" alt=\"Valeurs du club\">
+            </div>
+        </section>
+
+        <div class=\"table-section\">
+            <h2>Catégories d’âge</h2>
+
+            <div class=\"modern-table\">
+                <div class=\"table-header\">
+                    <div>Code</div>
+                    <div>Catégorie</div>
+                    <div>Âge</div>
+                </div>
+
+                <div class=\"table-row\">
+                    <div>U10</div>
+                    <div>Benjamin</div>
+                    <div>7 à 10 ans</div>
+                </div>
+
+                <div class=\"table-row\">
+                    <div>U13</div>
+                    <div>Minime</div>
+                    <div>11 à 13 ans</div>
+                </div>
+
+                <div class=\"table-row\">
+                    <div>U15</div>
+                    <div>Cadet 1</div>
+                    <div>14 à 15 ans</div>
+                </div>
+
+                <div class=\"table-row\">
+                    <div>U17</div>
+                    <div>Cadet 2</div>
+                    <div>16 à 17 ans</div>
+                </div>
+
+                <div class=\"table-row\">
+                    <div>U20</div>
+                    <div>Junior</div>
+                    <div>18 à 20 ans</div>
+                </div>
+
+                <div class=\"table-row\">
+                    <div>Sénior</div>
+                    <div>Sénior</div>
+                    <div>21 à 34 ans</div>
+                </div>
+            </div>
+        </div>
+
+        <div class=\"prices-link\">
+            <p>Prêt à commencer ? Consultez nos
+                <a href=\"";
+        // line 379
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("home");
+        yield "#abonnements\">tarifs et abonnements</a>
+                pour vous inscrire.
+            </p>
+        </div>
+    </main>
+";
+        
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
+
+        yield from [];
+    }
+
+    // line 386
+    /**
+     * @return iterable<null|scalar|\Stringable>
+     */
+    public function block_javascripts(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
+
+        // line 387
+        yield "    ";
+        yield from $this->yieldParentBlock("javascripts", $context, $blocks);
+        yield "
+    <script src=\"";
+        // line 388
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("js/halterophilie/ecole/ecole.js"), "html", null, true);
+        yield "\"></script>
+    
+    ";
+        // line 391
+        yield "    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slidesContainer = document.querySelector('.slides');
+            const slides = document.querySelectorAll('.slides img');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            const nameDisplay = document.getElementById('coach-name');
+            
+            if(slidesContainer && slides.length > 0) {
+                let index = 0;
+                
+                function updateSlide() {
+                    slidesContainer.style.transform = `translateX(-\${index * 100}%)`;
+                    if(nameDisplay) nameDisplay.textContent = slides[index].getAttribute('data-name');
+                }
+
+                nextBtn.addEventListener('click', () => {
+                    index = (index + 1) % slides.length;
+                    updateSlide();
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    index = (index - 1 + slides.length) % slides.length;
+                    updateSlide();
+                });
+            }
+        });
+    </script>
+";
+        
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
+
+        yield from [];
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function getTemplateName(): string
+    {
+        return "ecole/index.html.twig";
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function isTraitable(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function getDebugInfo(): array
+    {
+        return array (  546 => 391,  541 => 388,  536 => 387,  526 => 386,  512 => 379,  455 => 325,  432 => 305,  428 => 304,  424 => 303,  420 => 302,  397 => 282,  375 => 263,  353 => 244,  323 => 217,  319 => 216,  315 => 215,  310 => 212,  300 => 211,  87 => 6,  77 => 5,  60 => 3,  43 => 1,);
+    }
+
+    public function getSourceContext(): Source
+    {
+        return new Source("{% extends 'base.html.twig' %}
+
+{% block title %}École d'Haltérophilie - CHM Saleux{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href=\"https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Poppins:wght@400;500;700&display=swap\" rel=\"stylesheet\">
+    <style>
+        /* J'ai mis le CSS directement ici pour faciliter l'intégration, 
+           mais tu peux le mettre dans ton fichier index.css */
+        
+        :root {
+            --primary: #005b94;
+            --secondary: #fbbf24;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #334155;
+            background: #fff;
+        }
+
+        /* ================= HERO ANIMÉ ================= */
+        .hero-header {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Fond animé */
+        .hero-backgrounds {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
+        }
+        .hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            opacity: 0;
+            animation: bgSlide 15s infinite;
+        }
+        .hero-bg:nth-child(1) { animation-delay: 0s; }
+        .hero-bg:nth-child(2) { animation-delay: 5s; }
+        .hero-bg:nth-child(3) { animation-delay: 10s; }
+
+        @keyframes bgSlide {
+            0% { opacity: 0; transform: scale(1); }
+            10% { opacity: 1; }
+            33% { opacity: 1; }
+            43% { opacity: 0; transform: scale(1.1); }
+            100% { opacity: 0; }
+        }
+
+        /* Overlay */
+        .hero-overlay {
+            position: absolute; inset: 0; background: rgba(0,0,0,0.5); z-index: 2;
+        }
+
+        /* Contenu */
+        .hero-content {
+            position: relative; z-index: 3; max-width: 900px; padding: 2rem;
+            animation: fadeInUp 1s ease-out;
+        }
+        .hero-content h1 {
+            font-family: 'Oswald', sans-serif; font-size: 4rem; font-weight: 700;
+            text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 2px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .hero-content p {
+            font-size: 1.3rem; margin-bottom: 2.5rem; color: #e2e8f0; font-weight: 500;
+        }
+
+        .cta-button {
+            display: inline-block; padding: 15px 40px;
+            background: var(--secondary); color: var(--dark);
+            font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; text-decoration: none; border-radius: 4px;
+            transition: all 0.3s ease; border: 2px solid var(--secondary);
+        }
+        .cta-button:hover {
+            background: transparent; color: var(--secondary);
+        }
+
+        /* ================= SECTIONS STANDARD ================= */
+        .section {
+            padding: 80px 5%;
+            display: flex; align-items: center; gap: 60px;
+            max-width: 1300px; margin: 0 auto;
+        }
+        .section:nth-child(even) { flex-direction: row-reverse; }
+
+        .section-content { flex: 1; }
+        .section-image { flex: 1; position: relative; }
+
+        .section h2 {
+            font-family: 'Oswald', sans-serif; font-size: 2.5rem; color: var(--primary);
+            text-transform: uppercase; margin-bottom: 20px; position: relative;
+            display: inline-block;
+        }
+        /* Petit trait sous le titre */
+        .section h2::after {
+            content: ''; display: block; width: 60px; height: 4px;
+            background: var(--secondary); margin-top: 5px;
+        }
+
+        .info-box {
+            background: var(--light); padding: 20px; border-left: 4px solid var(--primary);
+            margin-bottom: 20px; border-radius: 0 8px 8px 0;
+        }
+        .info-box p { margin: 5px 0; font-size: 1rem; color: var(--dark); display: flex; align-items: center; gap: 10px; }
+        .info-box i { color: var(--primary); width: 20px; text-align: center; }
+
+        .desc-text { font-size: 1.05rem; line-height: 1.8; color: #64748b; }
+
+        .section-image img {
+            width: 100%; border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .section-image:hover img { transform: translateY(-10px); }
+
+        /* ================= SECTION VALEURS (Sombre) ================= */
+        .section-dark {
+            background: var(--dark); color: white; padding: 100px 5%;
+        }
+        .section-dark h2 { color: white; }
+        .section-dark .desc-text { color: #cbd5e1; }
+        .section-dark .section-image img { border: 4px solid var(--secondary); }
+
+        /* ================= SLIDER COACH ================= */
+        /* Important car ton code précédent n'avait pas de CSS pour ça */
+        .coach-wrapper {
+            position: relative; width: 100%; max-width: 500px; margin: 0 auto;
+            text-align: center;
+        }
+        .coach-slider {
+            position: relative; overflow: hidden; border-radius: 12px;
+            aspect-ratio: 3/4; box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        .slides {
+            display: flex; height: 100%; transition: transform 0.5s ease-in-out;
+        }
+        .slides img {
+            width: 100%; height: 100%; object-fit: cover; flex-shrink: 0;
+        }
+        .prev-btn, .next-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(255,255,255,0.8); border: none; width: 40px; height: 40px;
+            border-radius: 50%; cursor: pointer; font-size: 1.5rem; color: var(--dark);
+            transition: 0.3s; z-index: 10;
+        }
+        .prev-btn:hover, .next-btn:hover { background: white; color: var(--primary); }
+        .prev-btn { left: 15px; } .next-btn { right: 15px; }
+        
+        #coach-name {
+            margin-top: 15px; font-family: 'Oswald', sans-serif; font-size: 1.8rem;
+            color: var(--primary); font-weight: 700; text-transform: uppercase;
+        }
+
+        /* ================= TABLEAU ================= */
+        .table-section { background: var(--light); padding: 80px 20px; text-align: center; }
+        .table-section h2 { 
+            font-family: 'Oswald', sans-serif; font-size: 2.5rem; color: var(--dark); 
+            text-transform: uppercase; margin-bottom: 40px; 
+        }
+
+        .modern-table {
+            max-width: 900px; margin: 0 auto; background: white;
+            border-radius: 10px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .table-header {
+            display: grid; grid-template-columns: 1fr 1fr 1fr;
+            background: var(--primary); color: white; padding: 20px;
+            font-weight: 700; text-transform: uppercase; font-family: 'Oswald', sans-serif; letter-spacing: 1px;
+        }
+        .table-row {
+            display: grid; grid-template-columns: 1fr 1fr 1fr;
+            padding: 15px 20px; border-bottom: 1px solid #f1f5f9;
+            color: #475569; font-weight: 500; transition: background 0.2s;
+        }
+        .table-row:last-child { border-bottom: none; }
+        .table-row:hover { background: #f0f9ff; }
+        .table-row div { display: flex; align-items: center; justify-content: center; }
+
+        /* ================= CTA FOOTER ================= */
+        .prices-link {
+            text-align: center; padding: 60px 20px; background: var(--primary); color: white;
+        }
+        .prices-link p { font-size: 1.2rem; }
+        .prices-link a {
+            color: var(--secondary); font-weight: 700; text-decoration: none;
+            border-bottom: 2px solid transparent; transition: 0.3s;
+        }
+        .prices-link a:hover { border-bottom-color: var(--secondary); }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 900px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .section { flex-direction: column !important; padding: 50px 20px; gap: 30px; }
+            .section h2 { font-size: 2rem; }
+            .table-header, .table-row { font-size: 0.9rem; padding: 15px 5px; }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <header class=\"hero-header\">
+        <div class=\"hero-backgrounds\">
+            <div class=\"hero-bg\" style=\"background-image: url('{{ asset('images/club/bg2.jpg') }}');\"></div>
+            <div class=\"hero-bg\" style=\"background-image: url('{{ asset('images/club/bg1.jpg') }}');\"></div>
+            <div class=\"hero-bg\" style=\"background-image: url('{{ asset('images/club/bg3.jpg') }}');\"></div>
+        </div>
+        <div class=\"hero-overlay\"></div>
+        
+        <div class=\"hero-content\">
+            <h1>L'ÉCOLE D'HALTÉROPHILIE</h1>
+            <p>Technique, Force et Discipline. Rejoignez une structure d'excellence.</p>
+            <a href=\"#entrainements\" class=\"cta-button\">Découvrir le programme</a>
+        </div>
+    </header>
+
+    <main>
+        <section id=\"entrainements\" class=\"section\">
+            <div class=\"section-content\">
+                <h2>Licences Compétition</h2>
+                
+                <div class=\"info-box\">
+                    <p><i class=\"fa-solid fa-users\"></i> <b>Catégories :</b> U15, U17, U20, Séniors</p>
+                    <p><i class=\"fa-regular fa-clock\"></i> <b>Lundi, Mercredi, Vendredi :</b> 17h00 - 19h00</p>
+                </div>
+
+                <p class=\"desc-text\">
+                    Nos athlètes bénéficient d’un suivi personnalisé avec des programmes adaptés à chaque catégorie. 
+                    L'objectif est la performance à travers la maîtrise technique, le développement de la force et la préparation mentale pour les championnats.
+                </p>
+            </div>
+            <div class=\"section-image\">
+                <img src=\"{{ asset('images/club/photo2.jpg') }}\" alt=\"Compétition Haltérophilie\">
+            </div>
+        </section>
+
+        <section class=\"section\">
+            <div class=\"section-content\">
+                <h2>U13 / Débutants</h2>
+                
+                <div class=\"info-box\">
+                    <p><i class=\"fa-solid fa-child\"></i> <b>Public :</b> Jeunes et Initiation</p>
+                    <p><i class=\"fa-regular fa-clock\"></i> <b>Lun, Mer, Ven :</b> 17h30 - 19h00</p>
+                </div>
+
+                <p class=\"desc-text\">
+                    Cette section initie les plus jeunes aux bases de l’haltérophilie dans un environnement sécurisé et ludique. 
+                    Nous mettons l’accent sur la qualité de la posture, la coordination et le respect des règles de sécurité.
+                </p>
+            </div>
+            <div class=\"section-image\">
+                <img src=\"{{ asset('images/club/photo3.jpg') }}\" alt=\"Débutants Haltérophilie\">
+            </div>
+        </section>
+
+        <section class=\"section\">
+            <div class=\"section-content\">
+                <h2>Licences Loisir</h2>
+                
+                <div class=\"info-box\">
+                    <p><i class=\"fa-solid fa-heart-pulse\"></i> <b>Objectif :</b> Santé & Technique</p>
+                    <p><i class=\"fa-regular fa-clock\"></i> <b>Mercredi :</b> 17h30 - 19h00</p>
+                </div>
+
+                <p class=\"desc-text\">
+                    Idéal pour ceux qui souhaitent pratiquer l’haltérophilie de manière ponctuelle ou complémentaire (CrossTraining), 
+                    en découvrant la discipline sans la pression de la compétition.
+                </p>
+            </div>
+            <div class=\"section-image\">
+                <img src=\"{{ asset('images/club/photo4.jpg') }}\" alt=\"Loisir Haltérophilie\">
+            </div>
+        </section>
+
+        <section class=\"section\">
+            <div class=\"section-content\">
+                <h2>Nos Coachs</h2>
+                <p class=\"desc-text\">
+                    Notre équipe est composée de coachs diplômés d'État et fédéraux, passionnés par la pédagogie. 
+                    Chaque élève bénéficie d'une attention particulière pour progresser en toute sécurité. 
+                    Ils supervisent la technique et assurent la motivation du groupe au quotidien.
+                </p>
+            </div>
+            
+            <div class=\"section-image\">
+                <div class=\"coach-wrapper\">
+                    <div class=\"coach-slider\">
+                        <button class=\"prev-btn\"><i class=\"fa-solid fa-chevron-left\"></i></button>
+                        
+                        <div class=\"slides\">
+                            <img src=\"{{ asset('images/club/3.jpg') }}\" alt=\"Coach Ema\" data-name=\"Ema\">
+                            <img src=\"{{ asset('images/club/florian.jpg') }}\" alt=\"Coach Florian\" data-name=\"Florian\">
+                            <img src=\"{{ asset('images/club/jeanne.jpg') }}\" alt=\"Coach Jeanne\" data-name=\"Jeanne\">
+                            <img src=\"{{ asset('images/club/robert.jpg') }}\" alt=\"Coach Robert\" data-name=\"Robert\">
+                        </div>
+                        
+                        <button class=\"next-btn\"><i class=\"fa-solid fa-chevron-right\"></i></button>
+                    </div>
+                    <p id=\"coach-name\">Ema</p>
+                </div>
+            </div>
+        </section>
+
+        <section class=\"section section-dark\">
+            <div class=\"section-content\">
+                <h2>Nos Valeurs</h2>
+                <p class=\"desc-text\">
+                    Respect, discipline et persévérance sont les piliers de notre école. 
+                    Nous valorisons le dépassement de soi dans un environnement bienveillant et stimulant.
+                    Nous encourageons l’esprit d’équipe et le fair-play, quel que soit le niveau de pratique.
+                </p>
+            </div>
+            <div class=\"section-image\">
+                <img src=\"{{ asset('images/valeur.jpg') }}\" class=\"valeur-img\" alt=\"Valeurs du club\">
+            </div>
+        </section>
+
+        <div class=\"table-section\">
+            <h2>Catégories d’âge</h2>
+
+            <div class=\"modern-table\">
+                <div class=\"table-header\">
+                    <div>Code</div>
+                    <div>Catégorie</div>
+                    <div>Âge</div>
+                </div>
+
+                <div class=\"table-row\">
+                    <div>U10</div>
+                    <div>Benjamin</div>
+                    <div>7 à 10 ans</div>
+                </div>
+
+                <div class=\"table-row\">
+                    <div>U13</div>
+                    <div>Minime</div>
+                    <div>11 à 13 ans</div>
+                </div>
+
+                <div class=\"table-row\">
+                    <div>U15</div>
+                    <div>Cadet 1</div>
+                    <div>14 à 15 ans</div>
+                </div>
+
+                <div class=\"table-row\">
+                    <div>U17</div>
+                    <div>Cadet 2</div>
+                    <div>16 à 17 ans</div>
+                </div>
+
+                <div class=\"table-row\">
+                    <div>U20</div>
+                    <div>Junior</div>
+                    <div>18 à 20 ans</div>
+                </div>
+
+                <div class=\"table-row\">
+                    <div>Sénior</div>
+                    <div>Sénior</div>
+                    <div>21 à 34 ans</div>
+                </div>
+            </div>
+        </div>
+
+        <div class=\"prices-link\">
+            <p>Prêt à commencer ? Consultez nos
+                <a href=\"{{ path('home') }}#abonnements\">tarifs et abonnements</a>
+                pour vous inscrire.
+            </p>
+        </div>
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src=\"{{ asset('js/halterophilie/ecole/ecole.js') }}\"></script>
+    
+    {# Petit script de secours pour le slider si ecole.js ne marche pas #}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slidesContainer = document.querySelector('.slides');
+            const slides = document.querySelectorAll('.slides img');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            const nameDisplay = document.getElementById('coach-name');
+            
+            if(slidesContainer && slides.length > 0) {
+                let index = 0;
+                
+                function updateSlide() {
+                    slidesContainer.style.transform = `translateX(-\${index * 100}%)`;
+                    if(nameDisplay) nameDisplay.textContent = slides[index].getAttribute('data-name');
+                }
+
+                nextBtn.addEventListener('click', () => {
+                    index = (index + 1) % slides.length;
+                    updateSlide();
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    index = (index - 1 + slides.length) % slides.length;
+                    updateSlide();
+                });
+            }
+        });
+    </script>
+{% endblock %}", "ecole/index.html.twig", "/Users/dheillyenzo/projet-chm/templates/ecole/index.html.twig");
+    }
+}

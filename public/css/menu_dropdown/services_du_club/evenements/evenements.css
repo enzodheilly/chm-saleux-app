@@ -142,6 +142,7 @@
 .evenements-title {
     font-size: 2.2rem;
     font-weight: 900;
+    color: #1e293b;
     margin-bottom: 30px;
     text-align: center;
     text-transform: uppercase;
@@ -151,7 +152,6 @@
     font-size: 1.05rem;
     font-weight: 500;
     margin-bottom: 30px;
-    color: #CBD5E1;
     line-height: 1.6;
 }
 
@@ -159,7 +159,7 @@
 .evenements-list li {
     font-size: 1.1rem;
     line-height: 1.7;
-    color: #CBD5E1;
+    color: #475569;
     margin-bottom: 20px;
 }
 
@@ -177,23 +177,22 @@
     justify-content: center;
 }
 
-.btn-primary,
-.btn-secondary {
+.btn-primary {
     padding: 12px 28px;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 800;
     text-decoration: none;
     border-radius: 4px;
-    transition: 0.3s ease;
-}
-
-.btn-primary {
+    text-transform: uppercase;
+    transition: 0.3s;
     background: #005b94;
     color: white;
 }
 
 .btn-primary:hover {
-    background: #003f66;
+   filter: brightness(1.2);
+    /* Une ombre très discrète pour le relief */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); 
 }
 
 /* ==========================================================

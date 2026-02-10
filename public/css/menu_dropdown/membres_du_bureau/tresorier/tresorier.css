@@ -143,6 +143,7 @@
     font-weight: 900;
     margin-bottom: 40px;
     text-align: center;
+    color: #1e293b;
     text-transform: uppercase;
 }
 
@@ -168,7 +169,7 @@
     flex: 1;
     font-size: 1.1rem;
     line-height: 1.7;
-    color: #CBD5E1;
+    color: #475569;
 }
 
 /* ==========================================================

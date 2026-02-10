@@ -1,0 +1,196 @@
+<?php
+
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Extension\CoreExtension;
+use Twig\Extension\SandboxExtension;
+use Twig\Markup;
+use Twig\Sandbox\SecurityError;
+use Twig\Sandbox\SecurityNotAllowedTagError;
+use Twig\Sandbox\SecurityNotAllowedFilterError;
+use Twig\Sandbox\SecurityNotAllowedFunctionError;
+use Twig\Source;
+use Twig\Template;
+use Twig\TemplateWrapper;
+
+/* emails/unsubscribed.html.twig */
+class __TwigTemplate_ff6b5478fc2a2e42fefa849c6dccb2a3 extends Template
+{
+    private Source $source;
+    /**
+     * @var array<string, Template>
+     */
+    private array $macros = [];
+
+    public function __construct(Environment $env)
+    {
+        parent::__construct($env);
+
+        $this->source = $this->getSourceContext();
+
+        $this->parent = false;
+
+        $this->blocks = [
+        ];
+    }
+
+    protected function doDisplay(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "emails/unsubscribed.html.twig"));
+
+        // line 1
+        yield "<!DOCTYPE html>
+<html lang=\"fr\">
+<head>
+    <meta charset=\"UTF-8\">
+    <title>Code de confirmation</title>
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <style>
+        /* Media Query pour mobile */
+        @media only screen and (max-width: 480px) {
+            h2 { font-size: 18px !important; }
+            h1 { font-size: 28px !important; letter-spacing: 3px !important; }
+        }
+    </style>
+</head>
+<body style=\"font-family: Arial, sans-serif; background-color: #f9f9f9; padding:20px; margin:0;\">
+
+<div style=\"background: #ffffff; border-radius: 10px; padding: 25px 20px; max-width: 500px; margin:auto; box-shadow:0 4px 12px rgba(0,0,0,0.1); line-height:1.6; text-align:center;\">
+
+    <!-- Logos -->
+         <div style=\"margin-bottom:25px;\">
+            <img src=\"https://raw.githubusercontent.com/enzodheilly/projet-chm/main/public/images/favicon/icon.png
+\" 
+                 alt=\"CHM Saleux Logo\" 
+                 style=\"max-width: 60px; width: 100%; height: auto;\">
+        </div>
+
+\t\t<div style=\"background-color: #005b94; border-radius: 10px 10px 0 0; padding: 15px 20px; margin-bottom: 20px;\">
+    <h2 style=\"color: #ffffff; margin:0; font-size:22px; line-height:1.4;\">
+         Désinscription effectuée
+    </h2>
+</div>
+
+    <!-- Bande titre bleu -->
+    
+        <p style=\"margin-bottom:15px;\">Bonjour";
+        // line 35
+        yield (((array_key_exists("firstName", $context) && (isset($context["firstName"]) || array_key_exists("firstName", $context) ? $context["firstName"] : (function () { throw new RuntimeError('Variable "firstName" does not exist.', 35, $this->source); })()))) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((" " . (isset($context["firstName"]) || array_key_exists("firstName", $context) ? $context["firstName"] : (function () { throw new RuntimeError('Variable "firstName" does not exist.', 35, $this->source); })())), "html", null, true)) : (""));
+        yield ",
+
+</p>
+
+        <p>Votre adresse <strong>";
+        // line 39
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((isset($context["subscriberEmail"]) || array_key_exists("subscriberEmail", $context) ? $context["subscriberEmail"] : (function () { throw new RuntimeError('Variable "subscriberEmail" does not exist.', 39, $this->source); })()), "html", null, true);
+        yield "</strong> a bien été retirée de notre liste de diffusion.<br>
+        Vous ne recevrez plus de newsletter du CHM Saleux.</p>
+
+    <hr style=\"border:none; border-top:1px solid #ddd; margin:25px 0;\">
+
+    <p style=\"font-size:13px; color:#666; text-align:center; line-height:1.5;\">
+        <strong>CHM SALEUX</strong><br>
+        8 rue Max Dormoy – Complexe multisports de la Grenouillère – 80480 Saleux<br>
+        Siège social : 79 rue Roger Salengro – 80480 Saleux<br>
+        Tél : 03.22.89.72.57 • Email : chm.saleux@orange.fr<br>
+        Agréé Jeunesse et Sports – Association loi 1901<br><br>
+    </p>
+
+</div>
+
+</body>
+</html>
+";
+        
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
+
+        yield from [];
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function getTemplateName(): string
+    {
+        return "emails/unsubscribed.html.twig";
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function isTraitable(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function getDebugInfo(): array
+    {
+        return array (  88 => 39,  81 => 35,  45 => 1,);
+    }
+
+    public function getSourceContext(): Source
+    {
+        return new Source("<!DOCTYPE html>
+<html lang=\"fr\">
+<head>
+    <meta charset=\"UTF-8\">
+    <title>Code de confirmation</title>
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <style>
+        /* Media Query pour mobile */
+        @media only screen and (max-width: 480px) {
+            h2 { font-size: 18px !important; }
+            h1 { font-size: 28px !important; letter-spacing: 3px !important; }
+        }
+    </style>
+</head>
+<body style=\"font-family: Arial, sans-serif; background-color: #f9f9f9; padding:20px; margin:0;\">
+
+<div style=\"background: #ffffff; border-radius: 10px; padding: 25px 20px; max-width: 500px; margin:auto; box-shadow:0 4px 12px rgba(0,0,0,0.1); line-height:1.6; text-align:center;\">
+
+    <!-- Logos -->
+         <div style=\"margin-bottom:25px;\">
+            <img src=\"https://raw.githubusercontent.com/enzodheilly/projet-chm/main/public/images/favicon/icon.png
+\" 
+                 alt=\"CHM Saleux Logo\" 
+                 style=\"max-width: 60px; width: 100%; height: auto;\">
+        </div>
+
+\t\t<div style=\"background-color: #005b94; border-radius: 10px 10px 0 0; padding: 15px 20px; margin-bottom: 20px;\">
+    <h2 style=\"color: #ffffff; margin:0; font-size:22px; line-height:1.4;\">
+         Désinscription effectuée
+    </h2>
+</div>
+
+    <!-- Bande titre bleu -->
+    
+        <p style=\"margin-bottom:15px;\">Bonjour{{ firstName is defined and firstName ? ' ' ~ firstName : '' }},
+
+</p>
+
+        <p>Votre adresse <strong>{{ subscriberEmail }}</strong> a bien été retirée de notre liste de diffusion.<br>
+        Vous ne recevrez plus de newsletter du CHM Saleux.</p>
+
+    <hr style=\"border:none; border-top:1px solid #ddd; margin:25px 0;\">
+
+    <p style=\"font-size:13px; color:#666; text-align:center; line-height:1.5;\">
+        <strong>CHM SALEUX</strong><br>
+        8 rue Max Dormoy – Complexe multisports de la Grenouillère – 80480 Saleux<br>
+        Siège social : 79 rue Roger Salengro – 80480 Saleux<br>
+        Tél : 03.22.89.72.57 • Email : chm.saleux@orange.fr<br>
+        Agréé Jeunesse et Sports – Association loi 1901<br><br>
+    </p>
+
+</div>
+
+</body>
+</html>
+", "emails/unsubscribed.html.twig", "/Users/dheillyenzo/projet-chm/templates/emails/unsubscribed.html.twig");
+    }
+}
