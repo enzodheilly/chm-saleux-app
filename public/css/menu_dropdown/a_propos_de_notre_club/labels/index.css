@@ -1,3 +1,7 @@
+/* ==========================================================
+   1. STYLES GÉNÉRAUX (Desktop first)
+   ========================================================== */
+
 .overlay {
 			position: absolute;
 			top: 0;
@@ -122,7 +126,7 @@
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-/* --- Labels Section --- */
+/* --- LABELS SECTION (Desktop) --- */
 .labels-section {
     margin-top: 30px;
     padding: 60px 20px;
@@ -137,12 +141,11 @@
 
 .labels-title {
     font-size: 2.2rem;
-    font-weight: 700;
+    font-weight: 900;
     margin-bottom: 30px;
     text-align: center;
     text-transform: uppercase;
-    font-weight: 900;
-    color:#1e293b;
+    color: #1e293b;
 }
 
 .labels-intro {
@@ -183,30 +186,26 @@
     margin-bottom: 20px;
 }
 
+
 /* ==========================================================
-   📱 MOBILE RESPONSIVE (MAX-WIDTH: 900px)
+   2. MOBILE RESPONSIVE (MAX-WIDTH: 900px)
    ========================================================== */
 
 @media (max-width: 900px) {
 
-    /* --- 1. HERO HEADER (STYLE BASIC FIT / VERTICAL) --- */
+    /* --- HERO HEADER --- */
     .hero-header {
-        padding-top: 140px; /* Espace pour la navbar */
+        padding-top: 140px; 
         margin-top: 0;
-        
         height: auto;
         min-height: 100vh;
-        
-        /* On garde le fond bleu/image par transparence */
-        background: transparent; 
-        
+        background: transparent;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         clip-path: none;
     }
 
-    /* Réactivation des filtres d'arrière-plan */
     .hero-header::before,
     .hero-header::after {
         display: block !important;
@@ -215,72 +214,80 @@
         height: 100%;
     }
 
-    /* LE TEXTE (EN HAUT) */
+    /* --- BOUTON RETOUR (Aligné Gauche strict) --- */
+    .back-button {
+        top: 130px !important; 
+        left: 25px !important; /* Alignement strict */
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        backdrop-filter: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        color: #ffffff !important;
+        z-index: 1000;
+    }
+
+    /* --- CONTENU TEXTE HERO --- */
     .hero-content {
         order: 1;
         position: relative;
         z-index: 10;
         width: 100%;
-        padding: 0 25px;
+        padding: 0 25px; /* Alignement strict avec le bouton */
         text-align: left;
         margin-bottom: 20px;
-        margin-top: 0; /* Reset */
+        margin-top: 50px !important; /* Espace sous le bouton */
     }
 
     .hero-content h1 {
-        font-size: 2.4rem;
+        font-size: 2.2rem;
         line-height: 1.2;
         margin: 0 0 20px 0;
-        
-        /* IMPORTANT : On annule les marges énormes du PC */
-        margin-right: 0 !important; 
+        /* Reset des marges Desktop */
+        margin-left: 7px !important; 
         margin-top: 0 !important;
         max-width: 100%;
     }
 
     .hero-content p {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 500;
         line-height: 1.6;
-        
-        /* IMPORTANT : On annule les marges du PC */
+        /* Reset des marges Desktop */
         margin-right: 0 !important;
         max-width: 100% !important;
         margin-bottom: 30px;
     }
 
-    /* L'IMAGE (EN BAS) */
+    /* --- IMAGE DU BAS (GESTION PORTRAIT) --- */
     .hero-diagonal-image {
         order: 2;
-        position: relative !important; /* Plus de position absolute */
+        position: relative !important;
         display: block !important;
         width: 100%;
-        height: 280px;
+        height: 280px; /* Hauteur fixe du bloc image */
         margin-top: auto;
-        right: auto;
-        top: auto;
         z-index: 5;
-        
-        /* Découpe diagonale sur le haut de l'image */
+        overflow: hidden;
         clip-path: polygon(0 15%, 100% 0, 100% 100%, 0% 100%);
     }
 
-.hero-diagonal-image img {
-        /* AVANT : transform: none; */
-        /* APRÈS : On applique un zoom fort pour remplir la largeur */
-        transform: scale(1.8); /* <--- Ajuste cette valeur (1.3, 1.5, 1.8...) selon ton image */
-        /* On s'assure que le zoom se fait depuis le centre de l'image */
-        transform-origin: center center; 
+    .hero-diagonal-image img {
+        /* IMPORTANT POUR PORTRAIT : assure que l'image remplit la largeur.
+           Elle sera rognée en haut et en bas automatiquement. */
+        object-fit: cover;
+        width: 100%;
+        height: 90%;
+        
+        /* Centrage et léger zoom pour bien remplir */
+        object-position: center center;
+        transform: scale(1.8); 
         
         filter: none;
-        width: 100%;
-        height: 100%;
-        /* object-fit: cover aide aussi, mais le scale force le résultat */
-        object-fit: cover; 
     }
 
-    /* --- 2. SECTION LABELS (CONTENU) --- */
-    
+    /* --- LABELS SECTION RESPONSIVE --- */
     .labels-section {
         padding: 50px 20px;
         margin-top: 0;
@@ -292,19 +299,18 @@
     }
 
     .labels-title {
-        font-size: 1.8rem; /* Titre plus petit */
+        font-size: 1.8rem;
         margin-bottom: 20px;
-        line-height: 1.3;
     }
 
     .labels-intro {
-        font-size: 1.1rem;
-        text-align: left; /* Plus lisible aligné à gauche sur mobile */
+        text-align: left;
         margin-bottom: 30px;
+        font-size: 1rem;
     }
 
     .labels-list ul {
-        padding-left: 20px; /* Moins de marge à gauche */
+        padding-left: 20px;
     }
 
     .labels-list li {

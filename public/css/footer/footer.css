@@ -292,91 +292,6 @@
     color: #f97316;
 }
 
-/* =========================================================
-   RESPONSIVE (AMÉLIORÉ)
-========================================================= */
-
-/* Tablette et petits écrans PC */
-@media (max-width: 1100px) {
-    .footer-main {
-        /* On passe les colonnes en auto-fit mais on assure que ça ne casse pas */
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 40px;
-    }
-    
-    .footer-brand {
-        /* CRUCIAL : on enlève la marge droite qui pousse tout */
-        margin-right: 0; 
-    }
-}
-
-/* Mobile Large (Tablette portrait / Gros téléphones) */
-@media (max-width: 850px) {
-    .payments-inner {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .social-icons {
-        justify-content: center;
-    }
-    
-    .footer-main {
-        padding: 0 20px; /* Réduit un peu le padding latéral */
-    }
-}
-
-/* Vrai Mobile (Smartphones) */
-@media (max-width: 650px) {
-    .footer-main {
-        /* On passe en 1 seule colonne centrée */
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 40px;
-    }
-
-    .footer-brand {
-        margin-right: 0;
-        align-items: center;
-    }
-
-    .footer-column {
-        align-items: center; /* Centre les liens */
-    }
-
-    /* Newsletter en colonne pour avoir de la place */
-    .newsletter-inputs {
-        flex-direction: column;
-        width: 100%;
-    }
-    
-    .button-wrap {
-        width: 100%; /* Conteneur bouton pleine largeur */
-        display: block;
-    }
-
-    button.btn-newsletter {
-        width: 100%; /* Bouton pleine largeur */
-        box-sizing: border-box; /* Important pour que le padding ne dépasse pas */
-    }
-
-    .footer-bottom {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-        padding-bottom: 30px;
-    }
-
-    .footer-right a {
-        margin-left: 0;
-        margin: 0 8px;
-        display: inline-block;
-    }
-    
-    .newsletter-footer-text {
-        margin-left: 0; /* Centre le petit texte RGPD */
-    }
-}
 
 /* Cacher le Turnstile (Cloudflare) pour la newsletter */
 .cf-turnstile-newsletter {
@@ -595,3 +510,5 @@ button.btn-newsletter:active::after {
 button.btn-newsletter .btn-text::after {
     display: none !important;
 }
+/* =========================================================
+   ✅ FOOTER — RESPONSIVE PRO (override)
