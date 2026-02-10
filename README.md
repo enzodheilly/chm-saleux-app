@@ -78,17 +78,57 @@ Suivez ces étapes pour lancer le projet en local.
 ```bash
 git clone https://github.com/enzodheilly/chm-saleux-app.git
 cd chm-saleux-app
-cp .env.example .env
-docker compose up -d
+```
 
+### 2. Configuration
+
+Dupliquez le fichier d'exemple pour configurer vos variables d'environnement :
+
+```bash
+cp .env.example .env
+```
+
+### 3. Lancer l'environnement
+
+Démarrez les conteneurs Docker (Base de données, PHP, etc.) :
+
+```bash
+docker compose up -d
+```
+
+### 4. Installer les dépendances
+
+Installez les librairies PHP et les assets Frontend :
+
+```bash
 # Backend (PHP)
 composer install
 
 # Frontend (Assets)
 npm install
 npm run build
+```
 
-# Création de la BDD et des tables
+### 5. Base de données
+
+Créez la base de données et les tables :
+
+```bash
 php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate
 ```
+
+L'application est accessible sur : http://localhost:8000
+
+## 📂 Structure du projet
+
+- **bin/** : Exécutables Symfony
+- **config/** : Configuration globale
+- **migrations/** : Versionning de la base de données
+- **public/** : Assets et point d’entrée
+- **src/** : Code source (Controllers, Entity)
+- **templates/** : Vues Twig
+
+<p align="center">
+Made with ❤️ for CHM Saleux
+</p>
