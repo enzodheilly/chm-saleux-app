@@ -151,13 +151,13 @@
     margin: 20px 0 1rem;
     font-weight: 900;
     text-transform: uppercase;
-    color: #F8FAFC;
+    color: #1e293b;
 }
 
 .cours-intro,
 .cours-section p {
     font-size: 1.1rem;
-    color: #CBD5E1;
+    color: #475569;
     margin-bottom: 1.8rem;
 }
 
@@ -184,7 +184,7 @@
     transform: translate(-50%, -50%);
     font-size: 43px;
     font-weight: 900;
-    color: #CBD5E1;
+    color: #475569;
     line-height: 1.1;
     white-space: nowrap;
     pointer-events: none;
@@ -208,7 +208,7 @@
 
 .coach-text {
     width: 55%;
-    color: #E2E8F0;
+    color: #475569;
 }
 
 .coach-text h2 {
@@ -216,7 +216,7 @@
     margin-bottom: 1rem;
     font-weight: 900;
     text-transform: uppercase;
-    color: #F8FAFC;
+    color: #1e293b;
 }
 
 .coach-text p {
@@ -246,7 +246,7 @@
 
 .inscription-section h2 {
     font-size: 2.2rem;
-    color: #fff;
+    color: #1e293b;
     margin-bottom: 20px;
     font-weight: 900;
     text-transform: uppercase;
@@ -254,7 +254,7 @@
 
 .inscription-section p {
     font-size: 1.1rem;
-    color: #CBD5E1;
+    color: #475569;
     margin-bottom: 40px;
     max-width: 700px;
     margin-left: auto;

@@ -1,142 +1,165 @@
 /* ========================================================= */
-/* ==================== SECTION SLIDER ===================== */
+/* ==================== SECTION SLIDER (PRO) =============== */
 /* ========================================================= */
 
+.slider-section {
+    padding: 80px 0;
+    background-color: #EDEDED;
+    position: relative;
+    /* On suppose que le fond global est sombre, sinon ajouter background: #0f172a; */
+}
+
+/* --- TITRES --- */
 .slider-section .slider-title {
     font-weight: 900;
-    font-size: 2.2rem;
-    color: #fff;
-    margin-bottom: 0.5rem;
+    font-size: 2.5rem;
+    color: #1e293b;
+    margin-bottom: 1rem;
     text-align: center;
     text-transform: uppercase;
 }
 
 .slider-section .slider-subtitle {
-    font-size: 1.1rem;
-    color: #CBD5E1;
-    margin-bottom: 50px;
-    font-weight: 500;
-    max-width: 800px;
+    font-size: 1.15rem;
+    color: #475569; /* Gris clair élégant */
+    margin-bottom: 60px;
+    font-weight: 400;
+    max-width: 700px;
     text-align: center;
     margin-inline: auto;
+    line-height: 1.6;
 }
 
-/* --- Wrapper & Container --- */
+/* --- CONTAINER SLIDER --- */
 .slider-section .slider-wrapper {
     position: relative;
     width: 100%;
-    padding: 0 4vw;
+    /* On enlève le padding latéral excessif pour un effet full-width maitrisé */
+    max-width: 1400px;
     margin: 0 auto;
-    box-sizing: border-box;
+    padding: 0 20px;
 }
 
 .slider-section .slider-container {
-    overflow-x: auto; /* Permet le scroll horizontal */
+    overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory; /* Effet aimanté au scroll */
-    padding-bottom: 20px; /* Espace pour la scrollbar invisible */
+    scroll-snap-type: x mandatory;
+    padding-bottom: 30px; /* Espace pour l'ombre des cartes */
     
-    /* Cache la scrollbar proprement */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
+    /* Masquage Scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    cursor: grab; /* Indique qu'on peut scroller */
+}
+
+.slider-section .slider-container:active {
+    cursor: grabbing;
 }
 
 .slider-section .slider-container::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
+    display: none;
 }
 
 .slider-section .slider {
     display: flex;
-    gap: 20px; /* Espace entre les slides */
-    transition: transform 0.5s ease;
+    gap: 24px; /* Espace plus aéré */
 }
 
-/* --- Slides --- */
+/* --- SLIDES (CARTES IMAGES) --- */
 .slider-section .slide {
-    flex: 0 0 28%; /* Desktop : environ 3.5 images visibles */
-    height: 400px;
+    /* Largeur fixe pour contrôle précis : 350px ou flex-basis */
+    flex: 0 0 350px; 
+    height: 450px; /* Un peu plus haut pour le style */
     position: relative;
     overflow: hidden;
-    border-radius: 8px; /* Un peu de rondeur */
-    scroll-snap-align: start;
+    border-radius: 16px; /* Arrondi moderne */
+    scroll-snap-align: center; /* Centré au scroll */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .slider-section .slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Effet Zoom sur l'image au survol */
+/* Interaction Survol */
+.slider-section .slide:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
 .slider-section .slide:hover img {
-    transform: scale(1.05);
+    transform: scale(1.1); /* Zoom fluide */
 }
 
-/* Overlay sombre */
+/* Overlay Gradient Pro */
 .slider-section .slide::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.1));
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%);
     z-index: 2;
-    transition: background 0.4s ease;
+    transition: opacity 0.3s;
 }
 
-.slider-section .slide:hover::after {
-    background: rgba(0,0,0,0.4);
-}
-
-/* --- Textes sur Slides --- */
+/* --- TEXTES SUR SLIDES --- */
 .slider-section .slide p {
     position: absolute;
-    bottom: 25px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
+    bottom: 30px;
+    left: 20px;
+    right: 20px; /* Largeur auto avec padding */
     color: #fff;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 800;
     text-transform: uppercase;
     z-index: 3;
-    text-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    pointer-events: none;
-    text-align: center;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    text-align: left; /* Alignement gauche plus moderne */
+    line-height: 1.1;
+    margin: 0;
+    transform: translateY(0);
+    transition: transform 0.4s ease;
 }
 
-/* --- Bouton Découvrir (Au survol) --- */
+/* Remonte le texte au survol pour laisser place au bouton */
+.slider-section .slide:hover p {
+    transform: translateY(-40px);
+}
+
+/* --- BOUTON DÉCOUVRIR --- */
 .slider-section .discover1 {
     position: absolute;
-    top: 50%;
-    display: none;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.9); /* Centrage parfait */
-    padding: 12px 32px;
-    border: 2px solid #fff;
-    color: #fff;
-    background: rgba(0,0,0,0.3);
-    text-transform: uppercase;
+    bottom: 30px; /* Positionné en bas */
+    left: 20px;
+    
+    padding: 10px 24px;
+    background: #fff;
+    color: #0f172a;
     font-weight: 700;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
     text-decoration: none;
-    opacity: 0;
-    z-index: 5;
-    transition: all 0.4s ease;
     border-radius: 50px;
-    white-space: nowrap;
+    
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 4;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 .slider-section .slide:hover .discover1 {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translateY(0);
 }
 
 .slider-section .discover1:hover {
-    background: #fff;
-    color: #000;
+    background: #38bdf8; /* Bleu clair actif */
+    color: #fff;
 }
 
 /* ========================================================= */
@@ -144,121 +167,117 @@
 /* ========================================================= */
 
 .slider-section .equipment-benefits {
-    max-width: 1100px;
-    margin: 80px auto 50px;
-    padding: 0 20px;
+    max-width: 1200px;
+    margin: 100px auto 60px;
+    padding: 0 24px;
     text-align: center;
 }
 
 .slider-section .equipment-benefits h3 {
-    font-size: 2rem;
-    margin-bottom: 16px;
+    font-size: 2.2rem;
+    margin-bottom: 20px;
     font-weight: 900;
-    color: #fff;
+    color: #1e293b;
     text-transform: uppercase;
 }
 
-.slider-section .equipment-benefits p {
-    max-width: 800px;
-    margin: 0 auto 50px;
+.slider-section .equipment-benefits p.intro-text {
+    max-width: 750px;
+    margin: 0 auto 60px;
     font-size: 1.1rem;
-    line-height: 1.6;
-    color: #CBD5E1;
-    font-weight: 500;
+    line-height: 1.7;
+    color: #cbd5e1;
 }
 
-/* --- Grid --- */
+/* --- GRID --- */
 .slider-section .benefits-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 colonnes Desktop */
+    grid-template-columns: repeat(3, 1fr);
     gap: 30px;
 }
 
+/* --- CARTE AVANTAGE (BENEFIT) --- */
 .slider-section .benefit {
-    background: #fff;
-    padding: 2rem 1.5rem;
-    border-radius: 12px;
+    background: #1e293b; /* Fond sombre carte */
+    border: 1px solid #334155; /* Bordure subtile */
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
     text-align: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, border-color 0.3s ease;
     
-    /* Animation d'apparition */
-    opacity: 0; 
-    transform: translateY(30px);
-}
-
-.slider-section .benefit.visible {
-    opacity: 1;
-    transform: translateY(0);
+    /* Animation apparition (à gérer via JS intersection observer idéalement, sinon garder CSS) */
+    opacity: 1; /* Remis à 1 pour affichage direct sans JS */
 }
 
 .slider-section .benefit:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    transform: translateY(-8px);
+    border-color: #38bdf8; /* Bordure bleue au survol */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+/* Icone (optionnel si tu en ajoutes) */
+.slider-section .benefit i {
+    font-size: 2rem;
+    color: #38bdf8;
+    margin-bottom: 20px;
+    display: block;
 }
 
 .slider-section .benefit strong {
     display: block;
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: #2b2b2b;
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+    color: #fff;
     font-weight: 800;
+    text-transform: uppercase;
 }
 
 .slider-section .benefit span {
     font-size: 1rem;
-    color: #666;
-    line-height: 1.5;
+    color: #94a3b8; /* Gris clair */
+    line-height: 1.6;
     display: block;
 }
-
-/* Délais d'animation en cascade */
-.slider-section .benefit:nth-child(1) { transition-delay: 0.1s; }
-.slider-section .benefit:nth-child(2) { transition-delay: 0.2s; }
-.slider-section .benefit:nth-child(3) { transition-delay: 0.3s; }
-.slider-section .benefit:nth-child(4) { transition-delay: 0.4s; }
-.slider-section .benefit:nth-child(5) { transition-delay: 0.5s; }
-.slider-section .benefit:nth-child(6) { transition-delay: 0.6s; }
 
 /* ========================================================= */
 /* ===================== RESPONSIVE ======================== */
 /* ========================================================= */
 
-/* Tablette (max 1024px) */
-@media(max-width: 1024px) {
+@media(max-width: 1100px) {
     .slider-section .slide {
-        flex: 0 0 45%; /* On montre 2 slides entiers */
+        flex: 0 0 300px;
+        height: 400px;
     }
-    
     .slider-section .benefits-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 colonnes pour les avantages */
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-/* Mobile (max 768px) */
 @media(max-width: 768px) {
-    .slider-section .slider-title {
-        font-size: 1.8rem;
+    .slider-section .slider-title { font-size: 2rem; }
+    
+    /* Slider Mobile : Centré avec aperçu */
+    .slider-section .slide {
+        flex: 0 0 280px;
+        height: 380px;
     }
     
-    .slider-section .slider-subtitle {
-        font-size: 1rem;
-        padding: 0 1rem;
+    .slider-section .slider {
+        padding-left: 20px; /* Espace gauche initial */
+        padding-right: 20px; /* Espace droite final */
     }
 
-    /* Slider Mobile : Mode Carousel qui dépasse */
-    .slider-section .slide {
-        flex: 0 0 85%; /* 85% de largeur pour voir qu'il y en a un autre après */
-        height: 350px;
-        margin-right: 0; /* Géré par le gap du parent */
+    /* Texte mobile toujours visible, pas d'effet hover */
+    .slider-section .slide p {
+        transform: translateY(-30px); /* Déjà remonté */
+    }
+    .slider-section .discover1 {
+        opacity: 1;
+        transform: translateY(0);
     }
 
     .slider-section .benefits-grid {
-        grid-template-columns: 1fr; /* 1 colonne */
+        grid-template-columns: 1fr;
         gap: 20px;
-    }
-    
-    .slider-section .equipment-benefits h3 {
-        font-size: 1.6rem;
     }
 }

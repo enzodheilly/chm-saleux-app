@@ -24,7 +24,7 @@ class LogsAdminController extends AbstractController
         );
 
         return $this->render('admin/security/logs.html.twig', [
-            'systemLogs' => $systemLogs,
+            'logs' => $systemLogs,
             'logLimit' => $limit
         ]);
     }

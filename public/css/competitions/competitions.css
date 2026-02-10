@@ -1,12 +1,9 @@
-
-		body {
-			color: #1a1a1a;
-			scroll-behavior: smooth;
-		}
-
+/* ==========================================================================
+   1. TON CSS ORIGINAL (HEADER - NE PAS TOUCHER)
+   ========================================================================== */
 .hero-header {
     position: relative;
-    height: 60vh; /* hauteur fixe */
+    height: 60vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -15,465 +12,485 @@
     overflow: hidden;
 }
 
-/* Conteneur des 3 images */
-.hero-backgrounds {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 60px;
-    left: 0;
-}
-
-/* Chaque image */
-.hero-bg {
-    flex: 1; /* toutes les images ont la même largeur */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-/* Overlay sombre pour lisibilité du texte */
 .hero-header::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0,0,0,0.5);
     z-index: 1;
     pointer-events: none;
 }
-		.hero-content {
-			max-width: 900px;
-			padding: 2rem;
-			animation: fadeInUp 1.2s ease-out;
-			z-index: 2;
-			margin-top: 140px;
-		}
-		.hero-content h1 {
-			font-size: 3.5rem;
-			font-weight: 900;
-			text-transform: uppercase;
-			margin-bottom: 1.5rem;
-		}
-		.hero-content p {
-			font-size: 1.1rem;
-			margin-bottom: 2rem;
-			color: #CBD5E1;
-			font-weight: 500;
-		}
 
-        .back-button {
-    /* 1. POSITIONNEMENT : On le sort du flux pour le mettre en haut à gauche */
+.hero-content {
+    max-width: 900px;
+    padding: 2rem;
+    animation: fadeInUp 1.2s ease-out;
+    z-index: 2;
+    margin-top: 140px;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #CBD5E1;
+    font-weight: 500;
+}
+
+.back-button {
     position: absolute; 
-    top: 155px;      /* Espace depuis le haut */
-    left: 100px;     /* Espace depuis la gauche */
-    
-    /* 2. COUCHE : On le force à passer au-dessus du filtre bleu (qui est à 1) */
+    top: 155px;      
+    left: 100px;     
     z-index: 10;    
-    
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 15px;
     font-weight: 500;
     text-decoration: none;
-    
-    /* 3. COULEUR : On met blanc car le fond est sombre */
     color: #ffffff; 
-    
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-        .calendar-section h2{
-            color:#fff;
-        }
+/* ==========================================================================
+   2. DESIGN SYSTEM GLOBAL
+   ========================================================================== */
 
-		/* ================= CALENDRIER ================= */
-.calendar-fake {
-    max-width: 800px;
-    margin: 2rem auto;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    padding: 1rem;
+:root {
+    --primary: #1e293b;       /* Dark slate */
+    --accent: #005b94;        /* Ton bleu institutionnel */
+    --highlight: #ff6600;     /* Ton orange (action) */
+    --bg-page: #f8fafc;       /* Fond gris très clair */
+    --surface: #ffffff;       /* Blanc pur */
+    --radius: 16px;
+    --shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    background-color: var(--bg-page);
+    color: var(--primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Conteneur principal */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    position: relative;
+    z-index: 5;
+}
+
+/* Titres de section unifiés */
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.section-header h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+}
+
+.header-line {
+    width: 60px;
+    height: 4px;
+    background: var(--highlight);
+    margin: 0 auto;
+    border-radius: 2px;
+}
+
+.section {
+    margin-bottom: 6rem;
+}
+
+/* ==========================================================================
+   3. CALENDRIER (STYLE DASHBOARD)
+   ========================================================================== */
+.calendar-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.calendar-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255,255,255,0.5);
 }
 
 .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f1f5f9;
 }
 
 .calendar-header h3 {
     font-size: 1.5rem;
-    color: #005b94;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0;
 }
 
-.calendar-header button {
-    background: #005b94;
-    color: #fff;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
+.nav-btn {
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    color: var(--primary);
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
     cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.calendar-days {
+.nav-btn:hover {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
+    gap: 12px;
 }
 
-.day-label {
-    font-weight: bold;
+.day-name {
     text-align: center;
-    color: #444;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #94a3b8;
+    padding-bottom: 10px;
 }
 
-.day {
-    height: 80px;
-    background: #f5f5f5;
-    border-radius: 6px;
-    text-align: center;
-    padding-top: 10px;
+.day-cell {
+    min-height: 100px;
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 10px;
     position: relative;
-}
-
-.day.competition {
-    background: #ffe0b2;
-    font-weight: bold;
-    color: #ff6600;
-}
-
-.day .comp-text {
-    display: block;
-    font-size: 0.7rem;
-    color: #005b94;
-    margin-top: 4px;
-}
-
-/* ================= DERNIÈRES COMPÉTITIONS ================= */
-.last-competitions-section {
-    padding: 4rem 2rem;
-    background: transparent;
-}
-
-.last-competitions-section h2 {
-    font-size: 2.5rem;
-    font-weight: 900;
-    margin-bottom: 2rem;
-    color: #fff;
-    text-align: center;
-}
-
-.teams-container {
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
     display: flex;
-    justify-content: space-between;
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
-.team-competitions {
-    flex: 1;
-    min-width: 300px;
-    background: #fff;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.05);
-    position: relative;
+.day-cell:hover {
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transform: translateY(-2px);
 }
 
-.team-banner {
-    width: 100%;
-    height: 250px; /* hauteur de la bannière */
-    background-size: cover;
-    background-position: center;
-    border-radius: 12px;
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 1rem;
-}
-
-.team-banner-text {
-    position: absolute;
-    bottom: 15px; /* position du texte */
-    left: 15px;
-    color: #fff;
-    text-shadow: 0 3px 10px rgba(0,0,0,0.6);
-}
-
-.team-banner-text h3 {
-    margin: 0;
-    font-size: 1.8rem;
-    font-weight: 900;
-}
-
-.team-competitions ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.team-competitions li {
-    padding: 0.6rem 0;
-    border-bottom: 1px solid #eee;
-}
-
-.team-competitions li a {
-    color: #005b94;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.team-competitions li a:hover {
-    text-decoration: underline;
-}
-
-.btn-history {
-    display: inline-block;
-    margin: 1rem 0;
-    padding: 0.6rem 1.2rem;
-    background: #005b94;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+.day-number {
     font-weight: 600;
-    transition: background 0.3s;
+    font-size: 1rem;
+    color: #64748b;
+    margin-bottom: 5px;
 }
 
-.btn-history:hover {
-    background: #ff6600;
+/* Style Événement */
+.day-cell.has-event {
+    background: #fff7ed; /* Orange très pâle */
+    border: 1px solid #ffedd5;
 }
 
-.history-list {
-    margin-top: 1rem;
-    padding-left: 1rem;
+.day-cell.has-event .day-number {
+    color: var(--highlight);
 }
 
-.history-list ul {
-    list-style: disc;
-    padding-left: 1rem;
+.event-pill {
+    background: var(--highlight);
+    color: white;
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 600;
+    margin-top: auto; /* Pousse en bas */
 }
 
-.history-list li {
-    margin-bottom: 0.5rem;
+/* Petit point pour mobile */
+.event-dot {
+    display: none; 
+    width: 6px; 
+    height: 6px; 
+    background: var(--highlight); 
+    border-radius: 50%;
 }
 
-/* ======== NOUVELLES CARTES D'ÉQUIPE (IMAGE PLEIN CONTAINER) ======== */
+/* ==========================================================================
+   4. EQUIPES (STYLE MAGAZINE / NIKE)
+   ========================================================================== */
+
+.teams-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 2rem;
+    padding: 0 1rem;
+}
 
 .team-card {
     position: relative;
-    width: 100%;
-    max-width: 700px;
-    height: 320px;
+    display: block;
+    height: 500px; /* Cartes hautes et imposantes */
+    border-radius: 20px;
     overflow: hidden;
-    cursor: pointer;
     text-decoration: none;
-    color: white;
     background: #000;
-    flex: 1;
-    transition: transform 0.35s ease, box-shadow 0.35s ease;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
 }
 
+/* Interaction globale au survol */
 .team-card:hover {
-    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
 }
 
-/* Image pleine largeur */
-.team-image {
+/* --- Image de fond & Effets --- */
+.card-image-wrapper {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1;
+}
+
+.card-bg {
     width: 100%;
     height: 100%;
     background-size: cover;
     background-position: center;
-    transition: transform 0.5s ease;
+    transition: transform 0.8s ease;
+    filter: grayscale(20%); /* Légère désaturation pour le style */
 }
 
-/* Overlay dégradé + contenu */
-.team-overlay {
+.team-card:hover .card-bg {
+    transform: scale(1.1); /* Zoom lent */
+    filter: grayscale(0%); /* Retour de la couleur */
+}
+
+/* Le dégradé qui permet de lire le texte */
+.card-gradient {
     position: absolute;
     inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 25px;
     background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.05),
-        rgba(0, 0, 0, 0.7)
+        to bottom, 
+        rgba(0,0,0,0.1) 0%, 
+        rgba(0,0,0,0.2) 40%, 
+        rgba(0,91,148,0.6) 80%, 
+        rgba(0,91,148,0.9) 100%
+    );
+    opacity: 0.9;
+    transition: opacity 0.5s ease;
+}
+
+/* Changement de couleur du gradient au survol */
+.team-card:hover .card-gradient {
+    opacity: 1;
+    background: linear-gradient(
+        to bottom, 
+        rgba(0,0,0,0) 0%, 
+        rgba(0,0,0,0.5) 50%, 
+        rgba(255, 102, 0, 0.85) 100% /* Devient Orange (ton highlight) */
     );
 }
 
-/* Titre */
-.team-overlay h3 {
-    font-size: 2rem;
+/* --- Contenu --- */
+.card-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+}
+
+/* Badge du haut */
+.category-pill {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Icône flèche (Cercle en haut à droite) */
+.card-icon {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0; /* Caché par défaut */
+    transform: scale(0.5) rotate(-45deg);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.team-card:hover .card-icon {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+
+/* Flèche dessinée en CSS */
+.icon-arrow-right {
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid #000;
+    border-right: 2px solid #000;
+    transform: rotate(45deg);
+    margin-left: -2px;
+}
+
+/* Partie basse (Textes) */
+.card-bottom {
+    transform: translateY(0);
+}
+
+.team-title {
+    font-size: 1.8rem;
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 1rem;
+    transform: translateY(20px);
+    transition: transform 0.5s ease;
+}
+
+.team-title span {
+    display: block;
+    font-size: 3rem;
     font-weight: 900;
-    margin-bottom: 15px;
-    text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    text-transform: uppercase;
+    letter-spacing: -1px;
 }
 
-/* Bouton */
-.team-btn {
-    padding: 10px 20px;
-    background: #005b94;
-    color: #fff;
-    width: 50%;
-    border-radius: 8px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s ease;
-}
-
-.team-btn:hover {
-    background: #ff6600;
-}
-
-
-/* Bouton "Voir l'historique" */
-.btn-history {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 25px;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
+.team-desc {
+    color: rgba(255, 255, 255, 0.8);
     font-size: 1rem;
-    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+    max-width: 80%;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease 0.1s; /* Petit délai */
 }
 
-.btn-history:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
+/* Animation au survol des textes */
+.team-card:hover .team-title {
+    transform: translateY(0);
 }
 
-/* ================= RESPONSIVE ================= */
-@media (max-width: 992px) {
-    .teams-container {
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    .table-header, .table-row {
-        grid-template-columns: 1fr 1fr; /* réduit le nombre de colonnes sur petit écran */
-    }
-
-    .table-header div:nth-child(3),
-    .table-row div:nth-child(3) {
-        display: none;
-    }
+.team-card:hover .team-desc {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-@media (max-width: 768px) {
-    .hero-header h1 {
-        font-size: 2rem;
-    }
-
+/* --- Bouton "Call to action" --- */
+.card-cta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    opacity: 0.8;
 }
-/* ==========================================================
-   📱 MOBILE RESPONSIVE - RESTE DE LA PAGE
-   ========================================================== */
 
+.cta-text {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.cta-line {
+    height: 2px;
+    width: 30px;
+    background: white;
+    transition: width 0.3s ease;
+}
+
+.team-card:hover .cta-line {
+    width: 60px; /* La ligne s'agrandit */
+}
+
+/* ==========================================================================
+   5. RESPONSIVE (MOBILE)
+   ========================================================================== */
 @media (max-width: 900px) {
-
-    /* --- 1. CALENDRIER (SÉCURITÉ SCROLL) --- */
-    .calendar-fake {
-        width: 100%;
-        margin: 1.5rem 0;
-        padding: 10px;
-        overflow: hidden;
+    /* Header Mobile */
+    .back-button {
+        top: 20px;
+        left: 20px;
+        background: rgba(0,0,0,0.4);
+        padding: 5px 10px;
+        border-radius: 20px;
     }
 
-    .calendar-container {
-        width: 100%;
-        overflow-x: auto; /* Permet de glisser si le calendrier est trop large */
-        -webkit-overflow-scrolling: touch;
+    /* Calendrier Mobile */
+    .calendar-grid {
+        gap: 6px;
     }
-
-    .calendar-days {
-        min-width: 400px; /* Empêche les cases de devenir trop petites */
-        gap: 3px;
+    .day-cell {
+        min-height: 60px;
+        padding: 5px;
+        align-items: center;
+        justify-content: center;
     }
+    .event-pill { display: none; }
+    .event-dot { display: block; margin-top: 4px; }
 
-    .day {
-        height: 65px; /* Taille réduite pour mobile */
-        font-size: 0.85rem;
-        padding-top: 5px;
+    /* Cartes Équipes Mobile */
+    .teams-grid {
+        grid-template-columns: 1fr; /* Une seule colonne sur mobile */
     }
-
-    .day .comp-text {
-        font-size: 0.6rem;
-        line-height: 1;
-        margin-top: 2px;
-    }
-
-    .day-label {
-        font-size: 0.8rem;
-    }
-
-    /* --- 2. TITRES DES SECTIONS --- */
-    .calendar-section h2,
-    .last-competitions-section h2 {
-        font-size: 1.8rem !important;
-        text-align: left;
-        margin-bottom: 20px;
-        padding-left: 5px;
-    }
-
-    /* --- 3. CARTES D'ÉQUIPE (TEAM CARDS) --- */
-    .teams-container {
-        flex-direction: column; /* Empilement vertical */
-        gap: 20px;
-        padding: 0;
-    }
-
     .team-card {
-        height: 280px; /* Hauteur ajustée pour mobile */
-        max-width: 100%;
-        flex: none;
+        height: 420px;
     }
-
-    .team-overlay {
-        padding: 20px;
+    .team-title span {
+        font-size: 2.5rem;
     }
-
-    .team-overlay h3 {
-        font-size: 1.6rem;
-        margin-bottom: 10px;
+    /* Sur mobile, on affiche tout de suite le texte sans animation complexe */
+    .team-desc {
+        opacity: 1;
+        transform: translateY(0);
+        margin-bottom: 1rem;
     }
-
-    .team-btn {
-        width: 100%; /* Bouton pleine largeur pour le pouce */
-        padding: 12px;
-        font-size: 1rem;
-        text-align: center;
+    .team-title {
+        transform: translateY(0);
     }
-
-    /* --- 4. SECTIONS GÉNÉRALES --- */
-    .last-competitions-section {
-        padding: 2rem 15px;
+    .card-icon {
+        opacity: 1;
+        transform: scale(1);
+        background: rgba(255,255,255,0.9);
     }
 }
-
-/* Ajustements pour les écrans très étroits (< 400px) */
-@media (max-width: 400px) {
-    .calendar-header h3 {
-        font-size: 1.1rem;
-    }
-    
-    .team-overlay h3 {
-        font-size: 1.4rem;
-    }
-}
-

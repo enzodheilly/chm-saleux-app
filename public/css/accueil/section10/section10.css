@@ -12,7 +12,7 @@
 /* TITRE H2 */
 h2 {
   margin-top: 75px;
-  color: #fff;
+  color: #1e293b;
   font-weight: 900;
   margin-bottom: 30px;
   font-size: 2.2rem;
@@ -138,27 +138,26 @@ h2 {
 .collectif-text p {
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #CBD5E1;
+  color: #475569;
   text-align: left;
 }
 
 /* BOUTON COLLECTIF */
 .btn-collectif {
-  display: inline-block;
   margin-top: 20px;
   padding: 12px 25px;
-  background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
+  background: #005b94;
   color: #fff;
   text-transform: uppercase;
   text-decoration: none;
   font-weight: 800;
   transition: 0.3s;
-  border-radius: 4px;
 }
 
 .btn-collectif:hover {
-  background: #333;
-  transform: translateY(-3px);
+    filter: brightness(1.2);
+    /* Une ombre très discrète pour le relief */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); ;
 }
 
 /* --- AVIS --- */

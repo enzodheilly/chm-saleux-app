@@ -205,16 +205,22 @@ html, body {
     justify-content: center;
     height: 42px; 
     padding: 0 1.3rem;
-    background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
+    background: #005b94;
     color: white;
     font-size: 1rem;
     font-weight: 800;
     text-decoration: none;
-    transition: 0.3s;
+    transition: 0.2s ease-in-out;
     margin-left: 40px; 
     white-space: nowrap;
 }
-.btn-inscription:hover { background: #1a75c9; box-shadow: 0 4px 12px rgba(0, 91, 148, 0.3); }
+
+.btn-inscription:hover {
+    /* On éclaircit simplement le bouton, sans changer le dégradé */
+    filter: brightness(1.2);
+    /* Une ombre très discrète pour le relief */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
 
 /* Éléments cachés sur PC */
 .hamburger-menu, .mobile-nav-overlay { display: none; }

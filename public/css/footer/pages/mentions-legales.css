@@ -18,7 +18,6 @@
     justify-content: center;
     text-align: center;
     overflow: hidden;
-
     /* diagonale sur le bas */
     clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
 }
@@ -59,13 +58,12 @@
 .hero-diagonal-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;              /* garde les proportions */
-    object-position: center 120%;    /* descend l’image */
+    object-fit: cover;
+    object-position: center 30%; /* Le 2e chiffre gère la hauteur (0% = tout en haut, 50% = milieu, 100% = bas) */
     display: block;
     filter: drop-shadow(0 0 10px rgba(0,0,0,0.3));
+    transform: scale(1);
 }
-
-
 /* Contenu visible au-dessus */
 .hero-header > .hero-content {
     position: relative;
@@ -76,20 +74,19 @@
 			position: relative;
 			z-index: 1;
 			margin-top: 100px;
-			animation: fadeInUp 1s ease-out;
 		}
 
 		.hero-content h1 {
-			font-size: 3rem;
-			font-weight: 900;
-			max-width: 700px;
+			font-size: 2.5rem;
+			font-weight: 800;
+			max-width: 500px;
 			text-align: left;
+            text-transform: uppercase;
 			margin: 0 0 1rem;
-			text-transform: uppercase;
-			color: #fff;
+			color: white;
 			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-			margin-right:830px;
-			margin-top: -130px;
+			margin-right:860px;
+			margin-top: -180px;
 			letter-spacing: 2px;
 		}
 		.hero-content p {
@@ -97,30 +94,35 @@
 			line-height: 1.8;
 			color: #CBD5E1;
 			margin-bottom: 2rem;
-            max-width: 520px;
+            max-width: 570px;
             margin-right: 660px;
             text-align: left;
-		}
+		}	
 
-		@media(max-width: 768px) {
-			.hero-content h1 {
-				font-size: 3.2rem;
-			}
-			.hero-content p {
-				font-size: 1.1rem;
-			}
-		}
-
-		@keyframes fadeInUp {
-			from {
-				opacity: 0;
-				transform: translateY(20px);
-			}
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}
+        /* Le bouton Retour */
+.back-button {
+    /* 1. POSITIONNEMENT : On le sort du flux pour le mettre en haut à gauche */
+    position: absolute; 
+    top: 35px;      /* Espace depuis le haut */
+    left: 100px;     /* Espace depuis la gauche */
+    
+    /* 2. COUCHE : On le force à passer au-dessus du filtre bleu (qui est à 1) */
+    z-index: 10;    
+    
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    
+    /* 3. COULEUR : On met blanc car le fond est sombre */
+    color: #ffffff; 
+    
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
 
 /* ==================== STYLE GLOBAL NEUTRE ET CENTRÉ ==================== */
 

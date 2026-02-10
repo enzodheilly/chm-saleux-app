@@ -136,6 +136,7 @@
 .horaire-title {
     font-size: 2.2rem;
     font-weight: 900;
+    color:#1e293b;
     margin-bottom: 30px;
     text-transform: uppercase;
 }
@@ -144,7 +145,7 @@
     font-size: 1.1rem;
     font-weight: 500;
     margin-bottom: 40px;
-    color: #CBD5E1;
+    color: #475569;
     line-height: 1.6;
 }
 
@@ -173,7 +174,7 @@
     margin: 0 auto;
     text-align: left;
     font-size: 1.1rem;
-    color: #CBD5E1;
+    color: #475569;
     line-height: 1.6;
 }
 

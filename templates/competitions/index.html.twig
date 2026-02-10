@@ -3,7 +3,7 @@
 {% block title %}Compétitions & Résultats{% endblock %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="{{ asset('css/competitions/competitions.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/competitions/competitions.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -13,8 +13,7 @@
     background-size: cover;
     background-position: center 20%;
 ">
-
-        <a href="{{ path('home') }}" class="back-button">
+    <a href="{{ path('home') }}" class="back-button">
          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
          </svg>
@@ -27,40 +26,110 @@
     </div>
 </header>
 
-<main>
+<main class="main-container">
 
-<!-- ================= CALENDRIER ================= --> <section class="section calendar-section"> <div class="section-content"> <h2>Calendrier des prochaines compétitions</h2> <div class="calendar-container"> <div class="calendar-fake"> <div class="calendar-header"> <button class="prev-month">&lt;</button> <h3>Décembre 2025</h3> <button class="next-month">&gt;</button> </div> <div class="calendar-days"> <div class="day-label">Lun</div> <div class="day-label">Mar</div> <div class="day-label">Mer</div> <div class="day-label">Jeu</div> <div class="day-label">Ven</div> <div class="day-label">Sam</div> <div class="day-label">Dim</div> {% for day in 1..31 %} {% set competition = day in [5,12,20] %} <div class="day{% if competition %} competition{% endif %}"> {{ day }} {% if competition %} <span class="comp-text">Compétition</span> {% endif %} </div> {% endfor %} </div> </div> </div> </div> </section>
-
-    <!-- ================= DERNIÈRES COMPÉTITIONS ================= -->
-    <section class="section last-competitions-section">
-        <div class="section-content">
-            <h2>Dernières compétitions</h2>
-<div class="teams-container">
-
-    <a href="{{ path('competitions_feminine') }}" class="team-card">
-        <div class="team-image" style="background-image: url('{{ asset('images/female-team.jpg') }}');"></div>
-        <div class="team-overlay">
-            <h3>Équipe féminine</h3>
-            <button class="team-btn">Voir les détails</button>
+    <section class="section calendar-section">
+        <div class="section-header">
+            <h2>Agenda Sportif</h2>
+            <div class="header-line"></div>
         </div>
-    </a>
 
-    <a href="{{ path('competitions_masculine') }}" class="team-card">
-        <div class="team-image" style="background-image: url('{{ asset('images/male-team.jpg') }}');"></div>
-        <div class="team-overlay">
-            <h3>Équipe masculine</h3>
-            <button class="team-btn">Voir les détails</button>
-        </div>
-    </a>
+        <div class="calendar-wrapper">
+            <div class="calendar-card">
+                <div class="calendar-header">
+                    <button class="nav-btn prev-month" aria-label="Précédent">&lt;</button>
+                    <h3>Décembre 2025</h3>
+                    <button class="nav-btn next-month" aria-label="Suivant">&gt;</button>
+                </div>
+                
+                <div class="calendar-grid">
+                    <div class="day-name">Lun</div>
+                    <div class="day-name">Mar</div>
+                    <div class="day-name">Mer</div>
+                    <div class="day-name">Jeu</div>
+                    <div class="day-name">Ven</div>
+                    <div class="day-name">Sam</div>
+                    <div class="day-name">Dim</div>
 
-</div>
-
+                    {% for day in 1..31 %}
+                        {# Exemple de logique pour les compétitions #}
+                        {% set is_competition = day in [5,12,20] %}
+                        
+                        <div class="day-cell {% if is_competition %}has-event{% endif %}">
+                            <span class="day-number">{{ day }}</span>
+                            {% if is_competition %}
+                                <div class="event-dot"></div>
+                                <div class="event-pill">Compétition</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </section>
+
+<section class="section teams-section">
+        <div class="section-header">
+            <h2>Nos Équipes</h2>
+            <div class="header-line"></div>
+        </div>
+
+        <div class="teams-grid">
+            <a href="{{ path('competitions_feminine') }}" class="team-card card-feminine">
+                <div class="card-image-wrapper">
+                    <div class="card-bg" style="background-image: url('{{ asset('images/female-team.jpg') }}');"></div>
+                    <div class="card-gradient"></div>
+                </div>
+                
+                <div class="card-content">
+                    <div class="card-top">
+                        <span class="category-pill">Division 1</span>
+                        <div class="card-icon">
+                            <i class="icon-arrow-right"></i> </div>
+                    </div>
+                    
+                    <div class="card-bottom">
+                        <h3 class="team-title">Section<br><span>Féminine</span></h3>
+                        <p class="team-desc">Résultats, classements et agenda des matchs.</p>
+                        <div class="card-cta">
+                            <span class="cta-text">Voir le détail</span>
+                            <span class="cta-line"></span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <a href="{{ path('competitions_masculine') }}" class="team-card card-masculine">
+                <div class="card-image-wrapper">
+                    <div class="card-bg" style="background-image: url('{{ asset('images/male-team.jpg') }}');"></div>
+                    <div class="card-gradient"></div>
+                </div>
+                
+                <div class="card-content">
+                    <div class="card-top">
+                        <span class="category-pill">Division 1</span>
+                        <div class="card-icon">
+                            <i class="icon-arrow-right"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="card-bottom">
+                        <h3 class="team-title">Section<br><span>Masculine</span></h3>
+                        <p class="team-desc">Performances, effectifs et calendriers.</p>
+                        <div class="card-cta">
+                            <span class="cta-text">Voir le détail</span>
+                            <span class="cta-line"></span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
 </main>
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }} {# charge d'abord le JS du base.html.twig #}
+    {{ parent() }}
     <script src="{{ asset('js/competitions/competitions.js') }}"></script>
 {% endblock %}

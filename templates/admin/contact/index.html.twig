@@ -107,12 +107,21 @@
                                     "{{ message.message }}"
                                 </div>
                             </td>
-
-                            <td style="text-align: right;">
-                                <a href="mailto:{{ message.email }}?subject=Réponse à votre message&body=Bonjour {{ message.prenom }}, suite à votre message..." class="action-link">
-                                    Répondre
-                                </a>
-                            </td>
+<td style="text-align: right;">
+    {% if message.resolvedBy %}
+        <span style="color: #34d399; font-size: 0.8rem; font-weight: bold;">
+            <i class="fa-solid fa-check"></i> Résolu par {{ message.resolvedBy }}
+        </span>
+    {% else %}
+        <form action="{{ path('admin_contact_reply', {id: message.id}) }}" method="POST" style="display: inline-flex; gap: 5px;">
+            <input type="text" name="reponse" placeholder="Votre réponse..." required 
+                   style="background: #111; border: 1px solid #333; color: white; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem;">
+            <button type="submit" class="action-link" style="background: var(--accent); color: white; border: none; cursor: pointer;">
+                Valider
+            </button>
+        </form>
+    {% endif %}
+</td>
                         </tr>
                     {% else %}
                         <tr>

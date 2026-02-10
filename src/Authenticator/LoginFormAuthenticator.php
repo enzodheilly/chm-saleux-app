@@ -112,8 +112,11 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $user = $token->getUser();
 
         // Log de connexion réussie
-        $this->logger->add('Connexion', sprintf('Utilisateur %s connecté (IP: %s)', $user->getEmail(), $request->getClientIp()));
-
+        $this->logger->add(
+            'Connexion',
+            sprintf('Utilisateur %s connecté (IP: %s)', $user->getEmail(), $request->getClientIp()),
+            $user->getEmail() // Passe l'email en 3ème argument si ton service le permet
+        );
         // ⚡ DÉTECTION DU RÔLE POUR LA REDIRECTION
         if (in_array('ROLE_ADMIN', $user->getRoles())) {
             // Si c'est un admin -> On l'envoie vers la route secrète
