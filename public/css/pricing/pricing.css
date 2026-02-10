@@ -1,0 +1,229 @@
+/* =========================================
+   PAGE TARIFS - STYLE PREMIUM
+   ========================================= */
+
+/* Wrapper global */
+.pricing-page-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 20px 60px; /* Padding-top pour ne pas être sous la navbar */
+    min-height: 100vh;
+}
+
+/* En-tête */
+.pricing-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+}
+
+.section-subtitle {
+    color: var(--text-muted, #94a3b8);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* Grille des cartes */
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    align-items: center; /* Important pour l'effet de taille */
+    margin-bottom: 80px;
+}
+
+/* Carte de prix */
+.pricing-card {
+    background: var(--bg-card, #0f172a);
+    border: 1px solid var(--border-color, rgba(255,255,255,0.08));
+    border-radius: 20px;
+    padding: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pricing-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary, #3b82f6);
+    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+}
+
+/* Carte Populaire (Mise en avant) */
+.pricing-card.popular {
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid var(--primary, #3b82f6);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
+    transform: scale(1.05); /* Un peu plus grosse */
+    z-index: 2;
+}
+
+.pricing-card.popular:hover {
+    transform: scale(1.05) translateY(-10px);
+}
+
+.popular-badge {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary, #3b82f6);
+    color: white;
+    padding: 6px 15px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+}
+
+/* Contenu Carte */
+.plan-header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 30px;
+}
+
+.plan-name {
+    color: var(--text-muted, #94a3b8);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.plan-price {
+    color: white;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.currency { font-size: 1.5rem; font-weight: 600; margin-right: 5px; }
+.amount { font-size: 3.5rem; font-weight: 900; letter-spacing: -2px; }
+.duration { color: var(--text-muted, #94a3b8); font-size: 1rem; margin-left: 5px; }
+
+.plan-desc {
+    color: var(--text-muted, #94a3b8);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Liste fonctionnalités */
+.plan-features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 30px 0;
+}
+
+.plan-features li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #e2e8f0;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+
+.plan-features li i { color: var(--success, #10b981); }
+.plan-features li.disabled { color: rgba(255,255,255,0.3); }
+.plan-features li.disabled i { color: rgba(255,255,255,0.2); }
+
+/* Bouton */
+.btn-subscribe {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background: rgba(255,255,255,0.05);
+    color: white;
+    text-align: center;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.3s;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.btn-subscribe:hover {
+    background: white;
+    color: black;
+}
+
+.btn-glow {
+    background: var(--primary, #3b82f6);
+    border: none;
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+}
+
+.btn-glow:hover {
+    background: #2563eb;
+    color: white;
+    box-shadow: 0 15px 30px rgba(59, 130, 246, 0.5);
+}
+
+/* Section Extras (Bas de page) */
+.features-extra {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 60px;
+}
+
+.feature-item {
+    text-align: center;
+    padding: 20px;
+}
+
+.feature-item i {
+    font-size: 2rem;
+    color: var(--primary, #3b82f6);
+    margin-bottom: 20px;
+    background: rgba(59, 130, 246, 0.1);
+    width: 70px;
+    height: 70px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.feature-item h4 {
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.feature-item p {
+    color: var(--text-muted, #94a3b8);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .pricing-grid {
+        grid-template-columns: 1fr; /* Une seule colonne */
+    }
+    
+    .pricing-card.popular {
+        transform: scale(1); /* Annule le zoom sur mobile */
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+}

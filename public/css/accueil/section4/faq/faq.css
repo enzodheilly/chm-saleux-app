@@ -93,7 +93,7 @@
 		.hero-content p {
 			font-size: 1.1rem;
 			line-height: 1.8;
-			color: #E2E8F0;
+			color: #475569;
 			margin-bottom: 2rem;
 		}
 
@@ -126,13 +126,13 @@
 			font-size: 2.2rem;
 			font-weight: 900;
 			text-transform: uppercase;
-			color: #fff;
+			color: #1e293b;
 		}
 
 				.contact-header p {
 			font-size: 1.1rem;
 			font-weight: 500;
-			color: #CBD5E1;
+			color: #475569;
 		}
 		
 /* Conteneur principal FAQ */
@@ -423,7 +423,7 @@
 		}
 
 		.test{
-			background: #1E293B;
+			background: #fff;
 			position: relative;
 			padding:140px 0;
 			max-width: 30%;
@@ -438,7 +438,7 @@
 			text-align: left;
 			margin-top: -110px;
 			font-size: 1.2rem;
-			color: #CBD5E1;
+			color: #475569;
 		}
 
 		/* ========================================================= */

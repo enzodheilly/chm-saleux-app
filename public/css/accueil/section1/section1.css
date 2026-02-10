@@ -138,7 +138,10 @@
     font-weight: 800;
     transition: 0.3s;
 }
-.nous-rejoindre:hover { color: #000; }
+.nous-rejoindre:hover { /* On éclaircit simplement le bouton, sans changer le dégradé */
+    filter: brightness(1.2);
+    /* Une ombre très discrète pour le relief */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
 
 .btn-en-savoir-plus {
     border: 1px solid #fff;

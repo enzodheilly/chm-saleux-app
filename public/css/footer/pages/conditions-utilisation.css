@@ -1,94 +1,127 @@
-.overlay,
-.hero-header::before,
-.hero-header::after {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-}
-
 .overlay {
-    width: 100%;
-    height: 100%;
-}
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 0;
+		}
 
 .hero-header {
     position: relative;
     margin-top: 120px;
     width: 100%;
-    height: 63vh;
-    background: url("../../../../images/club/ok.jpg") center/cover no-repeat;
+    height: 65vh; /* ajustable */
+    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    clip-path: polygon(0 0, 100% 0, 100% 72%, 0% 100%);
     text-align: center;
+    overflow: hidden;
+    /* diagonale sur le bas */
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
 }
 
+
+/* Fond flou + filtre bleu foncé */
 .hero-header::before {
     content: "";
-    background: inherit;
+    position: absolute;
+    inset: 0;
+    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
     filter: blur(40px);
     transform: scale(4.1);
+    z-index: 0; /* derrière le texte */
 }
 
+/* Filtre bleu foncé */
 .hero-header::after {
     content: "";
-    background: rgba(0, 41, 82, 0.65);
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 41, 82, 0.65); /* ← bleu plus foncé */
+    z-index: 1;
 }
 
-/* Image diagonale */
+/* Image décorative diagonale sur la droite du hero */
 .hero-diagonal-image {
     position: absolute;
     top: 0;
     right: 0;
-    width: 55%;
-    height: 100%;
+    height: 100%;          /* occupe toute la hauteur du hero */
+    width: 55%;            /* moitié droite du hero */
     overflow: hidden;
-    z-index: 2;
-    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%);
+    z-index: 2;            /* au-dessus du fond mais derrière le texte si nécessaire */
+    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%); /* diagonale */
 }
 
 .hero-diagonal-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 120%;
+    object-position: center 30%; /* Le 2e chiffre gère la hauteur (0% = tout en haut, 50% = milieu, 100% = bas) */
+    display: block;
     filter: drop-shadow(0 0 10px rgba(0,0,0,0.3));
+    transform: scale(1);
 }
-
-/* Texte hero */
-.hero-content {
+/* Contenu visible au-dessus */
+.hero-header > .hero-content {
     position: relative;
-    z-index: 3;
-    margin-top: 100px;
-    animation: fadeInUp 1s ease-out;
-    text-align: left;
+    z-index: 2; /* texte au-dessus du fond */
 }
 
-.hero-content h1 {
-    font-size: 3rem;
-    font-weight: 900;
-    max-width: 700px;
-    text-transform: uppercase;
-    color: #fff;
-    text-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    margin: -130px 640px 1rem 0;
-    letter-spacing: 2px;
-}
+		.hero-content {
+			position: relative;
+			z-index: 1;
+			margin-top: 100px;
+		}
 
-.hero-content p {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: #CBD5E1;
-    max-width: 520px;
-    margin: 0 660px 2rem 0;
-}
+		.hero-content h1 {
+			font-size: 2.5rem;
+			font-weight: 800;
+			max-width: 500px;
+			text-align: left;
+            text-transform: uppercase;
+			margin: 0 0 1rem;
+			color: white;
+			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+			margin-right:790px;
+			margin-top: -180px;
+			letter-spacing: 2px;
+		}
+		.hero-content p {
+			font-size: 1.1rem;
+			line-height: 1.8;
+			color: #CBD5E1;
+			margin-bottom: 2rem;
+            max-width: 570px;
+            margin-right: 660px;
+            text-align: left;
+		}	
 
-/* Animation */
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
+        /* Le bouton Retour */
+.back-button {
+    /* 1. POSITIONNEMENT : On le sort du flux pour le mettre en haut à gauche */
+    position: absolute; 
+    top: 35px;      /* Espace depuis le haut */
+    left: 100px;     /* Espace depuis la gauche */
+    
+    /* 2. COUCHE : On le force à passer au-dessus du filtre bleu (qui est à 1) */
+    z-index: 10;    
+    
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    
+    /* 3. COULEUR : On met blanc car le fond est sombre */
+    color: #ffffff; 
+    
+    transition: transform 0.2s ease, opacity 0.2s ease;
 }
 /* ===================== STYLE GLOBAL PAGES LEGALES ===================== */
 

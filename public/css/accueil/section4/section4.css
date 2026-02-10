@@ -11,19 +11,19 @@
 .news-title {
   font-size: 34px;
   font-weight: 900;
-  color: #fff;
+  color: #1e293b;
   margin-top: 20px;
   text-transform: uppercase;
 }
 
 .news-title span {
-  color: #fff;
+  color: #1e293b;
 }
 
 .news-subtitle {
   font-size: 1.1rem !important;
   font-weight: 500;
-  color: #CBD5E1;
+  color: #475569;
   margin-top: 10px;
   margin-bottom: 50px;
 }
@@ -105,7 +105,7 @@
 
 /* BOUTON VOIR TOUT */
 .btn-news {
-  background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
+  background:#005b94;
   color: #fff;
   padding: 12px 30px;
   border-radius: 0px;
@@ -118,8 +118,9 @@
 }
 
 .btn-news:hover {
-  background: #004472;
-  transform: translateY(-2px);
+      filter: brightness(1.2);
+    /* Une ombre très discrète pour le relief */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);;
 }
 
 /* ========================================================= */
@@ -305,34 +306,29 @@
   background: #004472;
   transform: translateY(-2px);
 }
-
 /* ========================================================= */
 /* ================= RESPONSIVE (NEWS & FAQ) =============== */
 /* ========================================================= */
 
 /* --- MOBILE (Smartphone) --- */
 @media (max-width: 768px) {
-  
-  /* NEWS : Style des cartes */
   .news-card {
-    width: 100%; /* Prend toute la largeur */
+    width: 100%;
     height: 250px; 
   }
 
-  /* NEWS : On cache tout après la 3ème carte */
   .news-card:nth-child(n+4) {
     display: none !important;
   }
 
-  /* FAQ */
   .faq-section {
     padding: 40px 20px;
     margin: 40px auto;
-    width: 95%; /* Prend presque tout l'écran */
+    width: 95%;
   }
 
   .faq-header {
-    margin-top: 0; /* IMPORTANT : On annule la marge négative sur mobile */
+    margin-top: 0;
   }
   
   .faq-header h2 {
@@ -342,27 +338,30 @@
   .faq-contact {
     margin-left: 0;
     margin-top: 30px;
-    text-align: center; /* Centrer le bloc contact sur mobile */
+    text-align: center;
   }
 }
 
-/* --- LAPTOP (PC Portable - Affichage 3 cartes) --- */
+/* --- LAPTOP (PC Portable) --- */
 @media (min-width: 769px) and (max-width: 1536px) {
   .news-card {
-    width: 30%; /* Pour en mettre 3 */
-    min-width: 300px;
+    /* MODIFICATION ICI : On passe de 30% à une taille fixe plus petite */
+    width: 360px;  /* Au lieu de 30% */
     height: 240px;
   }
 
+  /* Si tu veux en afficher 4 alignés maintenant qu'elles sont plus petites, 
+     supprime ce bloc. Sinon, garde-le pour n'en avoir que 3. */
   .news-card:nth-child(n+4) {
-    display: none; /* Cache les cartes après la 3ème */
+    display: none; 
   }
 }
 
-/* --- DESKTOP (Grand écran - Affichage 4 cartes) --- */
+/* --- DESKTOP (Grand écran) --- */
 @media (min-width: 1537px) {
   .news-card {
-    width: 360px;
+    /* MODIFICATION ICI : On réduit la taille max */
+    width: 320px; /* Au lieu de 360px */
     height: 240px;
     display: block;
   }

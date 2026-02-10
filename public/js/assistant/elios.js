@@ -383,4 +383,7 @@ class EliosWidget {
     scrollToBottom() { this.nodes.body.scrollTop = this.nodes.body.scrollHeight; }
 }
 
-document.addEventListener('DOMContentLoaded', () => new EliosWidget());
+document.addEventListener('DOMContentLoaded', () => {
+    // On stocke l'instance dans window pour y accéder de n'importe où
+    window.eliosInstance = new EliosWidget();
+});

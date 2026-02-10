@@ -48,12 +48,16 @@ class SecurityLog
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $browser = null; // Ex: Chrome 130, Firefox 118
 
+    // 👇 LA NOUVELLE OPTION AJOUTÉE ICI 👇
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $method = null; // Ex: GET, POST
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
     }
 
-    // ✅ Getters / Setters
+    // ✅ Getters / Setters d'origine
     public function getId(): ?int
     {
         return $this->id;
@@ -63,7 +67,6 @@ class SecurityLog
     {
         return $this->success;
     }
-
     public function setSuccess(?bool $success): self
     {
         $this->success = $success;
@@ -74,7 +77,6 @@ class SecurityLog
     {
         return $this->createdAt;
     }
-
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
@@ -85,7 +87,6 @@ class SecurityLog
     {
         return $this->ip;
     }
-
     public function setIp(?string $ip): self
     {
         $this->ip = $ip;
@@ -96,7 +97,6 @@ class SecurityLog
     {
         return $this->userAgent;
     }
-
     public function setUserAgent(?string $userAgent): self
     {
         $this->userAgent = $userAgent;
@@ -107,7 +107,6 @@ class SecurityLog
     {
         return $this->emailAttempt;
     }
-
     public function setEmailAttempt(?string $emailAttempt): self
     {
         $this->emailAttempt = $emailAttempt;
@@ -118,7 +117,6 @@ class SecurityLog
     {
         return $this->reason;
     }
-
     public function setReason(?string $reason): self
     {
         $this->reason = $reason;
@@ -129,7 +127,6 @@ class SecurityLog
     {
         return $this->user;
     }
-
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -140,7 +137,6 @@ class SecurityLog
     {
         return $this->type;
     }
-
     public function setType(?string $type): self
     {
         $this->type = $type;
@@ -151,7 +147,6 @@ class SecurityLog
     {
         return $this->message;
     }
-
     public function setMessage(?string $message): self
     {
         $this->message = $message;
@@ -162,7 +157,6 @@ class SecurityLog
     {
         return $this->os;
     }
-
     public function setOs(?string $os): self
     {
         $this->os = $os;
@@ -173,7 +167,6 @@ class SecurityLog
     {
         return $this->browser;
     }
-
     public function setBrowser(?string $browser): self
     {
         $this->browser = $browser;
@@ -183,5 +176,16 @@ class SecurityLog
     public function isSuccess(): ?bool
     {
         return $this->success;
+    }
+
+    // ✅ NOUVEAU GETTER / SETTER POUR METHOD
+    public function getMethod(): ?string
+    {
+        return $this->method;
+    }
+    public function setMethod(?string $method): self
+    {
+        $this->method = $method;
+        return $this;
     }
 }

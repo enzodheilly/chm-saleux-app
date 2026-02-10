@@ -47,7 +47,7 @@ background: linear-gradient(135deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
 		}
 
 		.cta-button {
-  background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
+  background: #005b94;
   color: #fff;
   padding: 12px 24px;
   border-radius: 0px;
@@ -56,7 +56,14 @@ background: linear-gradient(135deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
   font-size: 1.1rem;
   display: inline-block;
   text-transform: uppercase;
+    transition: 0.3s;
 		}
+
+		.cta-button:hover {
+    filter: brightness(1.2);
+    /* Une ombre très discrète pour le relief */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); ;
+}
 
 		        .back-button {
     /* 1. POSITIONNEMENT : On le sort du flux pour le mettre en haut à gauche */
@@ -121,7 +128,7 @@ background: linear-gradient(135deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
 		.section-content p{
 			font-size: 0.95rem; /* plus petit que 1.15rem */
 			line-height: 1.6; /* un peu plus compact */
-			color: #CBD5E1;
+			color: #1e293b;
 			font-weight: 400;
 			margin-bottom: 1.2rem; /* réduit pour aérer moins */
 			letter-spacing: 0.4px;

@@ -1,9 +1,10 @@
 <?php
+
 // src/Controller/ContactController.php
 namespace App\Controller;
 
 use App\Entity\ContactMessage;
-use App\Service\SystemLoggerService; // ✅ Ajout
+use App\Service\SystemLoggerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,7 @@ class ContactController extends AbstractController
     public function submit(
         Request $request,
         EntityManagerInterface $em,
-        SystemLoggerService $logger // ✅ Injection du service
+        SystemLoggerService $logger
     ): Response {
         $nom = $request->request->get('nom');
         $prenom = $request->request->get('prenom');
@@ -37,6 +38,12 @@ class ContactController extends AbstractController
         $contact->setTelephone($telephone);
         $contact->setMessage($message);
 
+        // ✅ LIEN AVEC L'ADHÉRENT CONNECTÉ
+        // Si l'utilisateur est connecté, on attache son compte au message
+        if ($this->getUser()) {
+            $contact->setUser($this->getUser());
+        }
+
         $em->persist($contact);
         $em->flush();
 
@@ -44,11 +51,11 @@ class ContactController extends AbstractController
         $logger->add(
             'Message de contact',
             sprintf(
-                'Nouveau message reçu de %s %s (%s). Téléphone : %s',
+                'Nouveau message reçu de %s %s (%s). Adhérent : %s',
                 $prenom,
                 $nom,
                 $email,
-                $telephone ?: 'non renseigné'
+                $this->getUser() ? 'OUI' : 'NON (Visiteur)'
             )
         );
 

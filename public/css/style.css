@@ -15,7 +15,7 @@ html {
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: #1E293B !important;
+    background: #fff !important;
 }
 
 /* Utility Classes */

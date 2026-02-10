@@ -150,7 +150,7 @@ h1, h2, h3 {
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color:#fff;
+  color:#1e293b;
   font-size: 2.2rem;
 }
 
@@ -181,6 +181,7 @@ h1, h2, h3 {
   justify-content: center;
   padding-left: 0.3rem;
   margin-top: 50px;
+  color:#475569;
 }
 
 .club-president-text h2 {
@@ -211,6 +212,7 @@ h1, h2, h3 {
   margin-bottom: 1rem;
   font-size: 1.1rem;
   font-weight: 500;
+  color: #475569;
 }
 
 .club-section-grid {
@@ -244,6 +246,7 @@ h1, h2, h3 {
 .club-value-card {
   background: #fff;
   border: 1px solid #eee;
+  color: #475569;
   padding: 2rem;
   box-shadow: 0 3px 6px rgba(0,0,0,0.05);
   transition: transform 0.3s ease;
