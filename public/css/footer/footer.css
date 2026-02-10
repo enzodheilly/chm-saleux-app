@@ -10,6 +10,7 @@
     color: #CBD5E1;
     padding-top: 60px;
     font-family: "Inter", sans-serif;
+    overflow-x: hidden; /* Sécurité pour éviter le scroll horizontal */
 }
 
 .footer-chm h3,
@@ -45,7 +46,7 @@
     align-items: center; /* centre horizontalement logo et texte */
     text-align: center; /* centre le texte */
     gap: 0px; /* espace entre logo et texte */
-    margin-right: 100px;
+    margin-right: 100px; /* Sera annulé en responsive */
 }
 
 .footer-brand p {
@@ -122,6 +123,7 @@
 .newsletter-inputs {
     display: flex;
     gap: 12px;
+    width: 100%;
 }
 
 .newsletter-inputs input {
@@ -132,6 +134,7 @@
     border-radius: 6px;
     font-size: 15px;
     transition: 0.2s;
+    min-width: 0; /* Empêche l'input de dépasser en flex */
 }
 
 .newsletter-inputs input:focus {
@@ -215,6 +218,7 @@
     gap: 24px;
     align-items: center;
     flex-wrap: wrap;
+    justify-content: center; /* Sécurité responsive */
 }
 
 .payment-icons img {
@@ -288,6 +292,43 @@
     color: #f97316;
 }
 
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 1100px) {
+    .footer-main {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 40px;
+    }
+}
+
+@media (max-width: 850px) {
+    .payments-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .social-icons {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .newsletter-inputs {
+        flex-direction: column;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .footer-right a {
+        margin-left: 0;
+        margin: 4px;
+    }
+}
 
 /* Cacher le Turnstile (Cloudflare) pour la newsletter */
 .cf-turnstile-newsletter {
@@ -505,156 +546,4 @@ button.btn-newsletter:active::after {
 
 button.btn-newsletter .btn-text::after {
     display: none !important;
-}
-/* =========================================================
-   ✅ FOOTER — RESPONSIVE PRO (override)
-========================================================= */
-
-/* Tablette / mobile large */
-@media (max-width: 900px) {
-
-  .footer-chm {
-    padding-top: 45px;
-  }
-
-  /* 1) Grid principale -> 1 colonne, spacing propre */
-  .footer-main {
-    grid-template-columns: 1fr !important;
-    gap: 28px !important;
-    padding: 0 20px !important;
-  }
-
-  /* 2) Bloc logo/texte : enlève le décalage desktop */
-  .footer-brand {
-    margin-right: 0 !important;
-    align-items: center;
-    text-align: center;
-  }
-
-  .footer-logo {
-    width: 90px;
-    margin-bottom: 10px;
-  }
-
-  .footer-brand p,
-  .texte {
-    max-width: 520px;
-    margin: 0 auto;
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-
-  /* 3) Colonnes : titres + liens plus confort */
-  .footer-column {
-    gap: 10px;
-  }
-
-  .footer-chm h3,
-  .footer-chm h4 {
-    font-size: 0.95rem;
-    margin-bottom: 10px;
-    text-align: center; /* rend le footer plus clean en mobile */
-  }
-
-  .footer-nav ul {
-    text-align: center;
-  }
-
-  .footer-nav li {
-    margin-bottom: 8px;
-  }
-
-  /* 4) Newsletter : inputs en colonne + bouton full width */
-  .newsletter {
-    align-items: stretch;
-  }
-
-  .newsletter p,
-  .newsletter-footer-text {
-    text-align: center;
-  }
-
-  .newsletter-inputs {
-    flex-direction: column !important;
-    gap: 12px;
-    width: 100%;
-  }
-
-  .newsletter-inputs input {
-    width: 100%;
-  }
-
-  .button-wrap {
-    width: 100%;
-  }
-
-  button.btn-newsletter {
-    width: 86.5%;
-  }
-
-  /* 5) Paiements + social : centrage */
-  .payments-inner {
-    flex-direction: column;
-    text-align: center;
-    padding: 0 20px !important;
-    gap: 18px !important;
-  }
-
-  .payment-icons {
-    justify-content: center;
-    gap: 16px;
-  }
-
-  .payment-icons img {
-    height: 40px;
-  }
-
-  .social-icons {
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 14px;
-  }
-
-  .social-icons a {
-    width: 48px;
-    height: 48px;
-    font-size: 18px;
-  }
-
-  /* 6) Footer bottom : empilement clean */
-  .footer-bottom {
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
-    padding: 18px 20px 35px !important;
-  }
-
-  .footer-right {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .footer-right a {
-    margin: 0 !important;
-    font-size: 0.95rem;
-  }
-}
-
-/* Très petit mobile */
-@media (max-width: 420px) {
-
-  .footer-main {
-    padding: 0 16px !important;
-    gap: 24px !important;
-  }
-
-  .payment-icons img {
-    height: 36px;
-  }
-
-  button.btn-newsletter .btn-text {
-    font-size: 1rem;
-  }
 }
