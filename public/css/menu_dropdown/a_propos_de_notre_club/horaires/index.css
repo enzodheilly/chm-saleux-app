@@ -1,29 +1,31 @@
+/* ==========================================================
+   1. STYLES GÉNÉRAUX (Desktop first)
+   ========================================================== */
+
 .overlay {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			z-index: 0;
-		}
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
 
 .hero-header {
     position: relative;
     margin-top: 120px;
     width: 100%;
-    height: 65vh; /* ajustable */
+    height: 65vh;
     background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     overflow: hidden;
-    /* diagonale sur le bas */
     clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
 }
 
-
-/* Fond flou + filtre bleu foncé */
+/* Fond flou + filtre */
 .hero-header::before {
     content: "";
     position: absolute;
@@ -31,7 +33,7 @@
     background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
     filter: blur(40px);
     transform: scale(4.1);
-    z-index: 0; /* derrière le texte */
+    z-index: 0;
 }
 
 /* Filtre bleu foncé */
@@ -39,20 +41,20 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0, 41, 82, 0.65); /* ← bleu plus foncé */
+    background: rgba(0, 41, 82, 0.65);
     z-index: 1;
 }
 
-/* Image décorative diagonale sur la droite du hero */
+/* Image diagonale */
 .hero-diagonal-image {
     position: absolute;
     top: 0;
     right: 0;
-    height: 100%;          /* occupe toute la hauteur du hero */
-    width: 55%;            /* moitié droite du hero */
+    height: 100%;
+    width: 55%;
     overflow: hidden;
-    z-index: 2;            /* au-dessus du fond mais derrière le texte si nécessaire */
-    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%); /* diagonale */
+    z-index: 2;
+    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%);
 }
 
 .hero-diagonal-image img {
@@ -60,70 +62,68 @@
     height: 100%;
     object-fit: cover;
     display: block;
-    filter: drop-shadow(0 0 10px rgba(0,0,0,0.3)); /* optionnel : ombre douce */
-    transform: scale(1.1); /* léger zoom pour mieux couvrir le clip-path */
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.3));
+    transform: scale(1.1);
 }
 
-/* Contenu visible au-dessus */
+/* Contenu */
 .hero-header > .hero-content {
     position: relative;
-    z-index: 2; /* texte au-dessus du fond */
+    z-index: 2;
 }
 
-		.hero-content {
-			position: relative;
-			z-index: 1;
-			margin-top: 100px;
-		}
+.hero-content {
+    position: relative;
+    z-index: 1;
+    margin-top: 100px;
+}
 
-		.hero-content h1 {
-			font-size: 2.5rem;
-			font-weight: 800;
-			max-width: 900px;
-			text-align: left;
-            text-transform: uppercase;
-			margin: 0 0 1rem;
-			color: white;
-			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-			margin-right:725px;
-			margin-top: -179px;
-			letter-spacing: 2px;
-		}
-		.hero-content p {
-			font-size: 1.1rem;
-			line-height: 1.8;
-			color: #CBD5E1;
-			margin-bottom: 2rem;
-            max-width: 570px;
-            margin-right: 660px;
-            text-align: left;
-		}	
+.hero-content h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    max-width: 900px;
+    text-align: left;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+    color: white;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin-right:970px;
+    margin-top: -179px;
+    letter-spacing: 2px;
+}
 
-        /* Le bouton Retour */
+.hero-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #CBD5E1;
+    margin-bottom: 2rem;
+    max-width: 570px;
+    margin-right: 660px;
+    text-align: left;
+}
+
+/* --- BOUTON RETOUR (Desktop) --- */
 .back-button {
-    /* 1. POSITIONNEMENT : On le sort du flux pour le mettre en haut à gauche */
-    position: absolute; 
-    top: 35px;      /* Espace depuis le haut */
-    left: 100px;     /* Espace depuis la gauche */
-    
-    /* 2. COUCHE : On le force à passer au-dessus du filtre bleu (qui est à 1) */
-    z-index: 10;    
-    
+    position: absolute;
+    top: 35px;
+    left: 100px;
+    z-index: 10;
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 15px;
     font-weight: 500;
     text-decoration: none;
-    
-    /* 3. COULEUR : On met blanc car le fond est sombre */
-    color: #ffffff; 
-    
+    color: #ffffff;
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
+.back-button:hover {
+    transform: translateX(-5px);
+}
+
+/* --- SECTION HORAIRES (Desktop) --- */
 .horaire-section {
     margin-top: 30px;
     padding: 60px 20px;
@@ -136,7 +136,7 @@
 .horaire-title {
     font-size: 2.2rem;
     font-weight: 900;
-    color:#1e293b;
+    color: #1e293b;
     margin-bottom: 30px;
     text-transform: uppercase;
 }
@@ -161,6 +161,7 @@
     font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 10px;
+    color: #1e293b;
 }
 
 .horaire-day p {
@@ -194,27 +195,27 @@
     margin-bottom: 10px;
 }
 
+
 /* ==========================================================
-   📱 MOBILE RESPONSIVE (MAX-WIDTH: 900px)
+   2. MOBILE RESPONSIVE (MAX-WIDTH: 900px)
    ========================================================== */
 
 @media (max-width: 900px) {
 
-    /* --- 1. HERO HEADER (Standardisé Mobile) --- */
+    /* --- HERO HEADER --- */
     .hero-header {
-        padding-top: 140px;
+        /* On garde le padding pour compenser la navbar fixe */
+        padding-top: 140px; 
         margin-top: 0;
         height: auto;
         min-height: 100vh;
         background: transparent;
-        
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         clip-path: none;
     }
 
-    /* Réactivation du fond */
     .hero-header::before,
     .hero-header::after {
         display: block !important;
@@ -223,7 +224,24 @@
         height: 100%;
     }
 
-    /* LE TEXTE (Haut) */
+    /* --- BOUTON RETOUR (Ajusté) --- */
+    .back-button {
+        /* On le laisse à 140px pour qu'il soit juste sous la nav */
+        top: 140px !important; 
+        left: 25px !important;  
+        
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        backdrop-filter: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+
+        color: #ffffff !important;
+        z-index: 1000;
+    }
+
+    /* --- CONTENU TEXTE HERO (Modifié pour descendre le texte) --- */
     .hero-content {
         order: 1;
         position: relative;
@@ -232,32 +250,32 @@
         padding: 0 25px;
         text-align: left;
         margin-bottom: 20px;
-        margin-top: 0;
+        
+        /* ICI : On ajoute une marge haute pour descendre le texte */
+        /* Avant c'était 0, maintenant 50px pour respirer sous le bouton retour */
+        margin-top: 50px !important; 
     }
 
     .hero-content h1 {
-        font-size: 2.4rem;
+        font-size: 2.2rem;
         line-height: 1.2;
         margin: 0 0 20px 0;
-        
-        /* Reset des marges PC */
-        margin-right: 0 !important; 
+        margin-left: 8px !important; 
+        /* On retire les marges négatives du PC */
         margin-top: 0 !important;
         max-width: 100%;
     }
 
     .hero-content p {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 500;
         line-height: 1.6;
-        
-        /* Reset des marges PC */
         margin-right: 0 !important;
         max-width: 100% !important;
         margin-bottom: 30px;
     }
 
-    /* L'IMAGE (Bas avec Zoom) */
+    /* --- IMAGE DIAGONALE --- */
     .hero-diagonal-image {
         order: 2;
         position: relative !important;
@@ -266,24 +284,19 @@
         height: 280px;
         margin-top: auto;
         z-index: 5;
-        overflow: hidden; /* Important pour le zoom */
-        
+        overflow: hidden;
         clip-path: polygon(0 15%, 100% 0, 100% 100%, 0% 100%);
     }
 
     .hero-diagonal-image img {
-        /* Zoom pour remplir la largeur (Image Portrait) */
-        transform: scale(1.5); 
-        transform-origin: center center;
-        
+        transform: scale(1.2);
         width: 100%;
         height: 100%;
         object-fit: cover;
         filter: none;
     }
 
-    /* --- 2. SECTION HORAIRES --- */
-    
+    /* --- RESTE DU RESPONSIVE --- */
     .horaire-section {
         padding: 40px 20px;
         margin-top: 0;
@@ -295,29 +308,27 @@
     }
     
     .horaire-intro {
-        text-align: left; /* Plus lisible */
+        text-align: left;
         margin-bottom: 30px;
         font-size: 1rem;
     }
 
-    /* Liste des jours : Passage en vertical */
     .horaire-days {
         display: flex;
-        flex-direction: column; /* Empilement vertical */
-        gap: 15px;             /* Espace réduit entre les jours */
+        flex-direction: column;
+        gap: 15px;
         margin-bottom: 40px;
     }
 
-    /* Style "Carte" pour chaque jour sur mobile */
     .horaire-day {
-        background: rgba(255, 255, 255, 0.05); /* Fond transparent léger */
+        background: rgba(255, 255, 255, 0.05);
         padding: 20px;
         border-radius: 12px;
         border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         
-        /* Centrage du contenu */
         display: flex;
-        flex-direction: row; /* Jour à gauche, Heure à droite */
+        flex-direction: row;
         justify-content: space-between;
         align-items: center;
     }
@@ -325,24 +336,21 @@
     .horaire-day h2 {
         margin: 0;
         font-size: 1.1rem;
-        color: #fff;
     }
 
     .horaire-day p {
         margin: 0;
         font-size: 1.1rem;
         font-weight: 700;
-        color: #005b94; /* Bleu */
+        color: #005b94;
     }
 
-    /* Bloc Info en bas */
     .horaire-info {
         text-align: left;
         width: 100%;
     }
     
     .horaire-info h3 {
-        color: #fff;
         font-size: 1.2rem;
         margin-top: 20px;
     }
