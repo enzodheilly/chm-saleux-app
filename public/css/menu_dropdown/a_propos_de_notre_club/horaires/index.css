@@ -119,10 +119,6 @@
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.back-button:hover {
-    transform: translateX(-5px);
-}
-
 /* --- SECTION HORAIRES (Desktop) --- */
 .horaire-section {
     margin-top: 30px;
