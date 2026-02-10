@@ -64,6 +64,20 @@ L'architecture repose sur **Symfony** (MVC) avec une conteneurisation **Docker**
 
 ---
 
+## 📸 Aperçu de l'application
+
+|                                  Page d'Accueil                                  |                           Espace Adhérent (Dashboard)                            |
+| :------------------------------------------------------------------------------: | :------------------------------------------------------------------------------: |
+| <img src="public/images/screenshots/home.png" alt="Page d'accueil" width="100%"> | <img src="public/images/screenshots/dashboard.png" alt="Dashboard" width="100%"> |
+
+|                               Version Mobile                               |                              Planning / Activités                              |
+| :------------------------------------------------------------------------: | :----------------------------------------------------------------------------: |
+| <img src="public/images/screenshots/mobile.png" alt="Mobile" width="100%"> | <img src="public/images/screenshots/planning.png" alt="Planning" width="100%"> |
+
+_(Les visuels sont issus de la version de production actuelle)_
+
+---
+
 ## 🚀 Installation & Démarrage
 
 Suivez ces étapes pour lancer le projet en local.
