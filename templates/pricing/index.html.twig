@@ -313,23 +313,67 @@
             .pricing-grid { grid-template-columns: repeat(2, 1fr); max-width: 700px; }
             .info-grid { grid-template-columns: 1fr; }
         }
+/* ================= RESPONSIVE MOBILE ================= */
         @media (max-width: 768px) {
             .pricing-grid { grid-template-columns: 1fr; padding: 0; }
             .card-featured { transform: scale(1); }
             .card-featured:hover { transform: scale(1); }
             .hero-content h1 { font-size: 2rem; }
-            .back-button { top: 20px; left: 20px; }
+            
+            /* CORRECTION DU BOUTON RETOUR */
+            .back-button { 
+                /* Avant c'était 20px, c'est trop haut. */
+                /* On met 100px pour descendre sous la barre de nav */
+                top: 130px !important; 
+                left: 20px !important; 
+            }
         }
+
+/* ================= CORRECTION IMAGE PRICING ================= */
+    
+    /* 1. Sur PC (Écran normal) */
+    .pricing-parallax {
+        /* On remet ton réglage original ici */
+        background-position: center -40% !important;
+    }
+
+    /* 2. Sur Mobile (Petit écran) */
+    @media (max-width: 768px) {
+        .pricing-parallax {
+            /* IMPORTANT : Sur mobile, 'fixed' bug souvent et le centrage aussi.
+               On remet en 'scroll' standard et on centre tout.
+            */
+            background-position: center center !important;
+            background-attachment: scroll !important; /* Désactive l'effet 3D qui bug sur mobile */
+        }
+    }
+
+    /* ================= CORRECTION HEADER HERO ================= */
+    
+    .hero-header {
+        background-size: cover;
+        background-repeat: no-repeat;
+        /* 1. RÉGLAGE MOBILE (Par défaut) */
+        /* On descend l'image de 80px (hauteur approx du menu) pour voir les visages */
+        background-position: center 80px !important;
+    }
+
+    /* 2. RÉGLAGE PC (Écrans larges > 1024px) */
+    @media (min-width: 1024px) {
+        .hero-header {
+            /* Sur PC, on remet l'image en haut ou centrée selon ton goût */
+            background-position: center 0% !important;
+            
+            /* Si tu veux que l'image commence SOUS le menu aussi sur PC, utilise : */
+            /* background-position: center 100px !important; */
+        }
+    }
     </style>
 {% endblock %}
 
 {% block body %}
 
-<header class="hero-header" style="
-    background-image: url('{{ asset('images/90.jpg') }}');
-    background-size: cover;
-    background-position: center 20%;
-">
+<header class="hero-header" style="background-image: url('{{ asset('images/club/banner.jpg') }}');">
     <a href="{{ path('home') }}" class="back-button">
          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -430,7 +474,7 @@
     </div>
 </section>
 
-<div class="parallax-divider" style="background-image: url('{{ asset('images/club/ok.jpg') }}');">
+<div class="parallax-divider pricing-parallax" style="background-image: url('{{ asset('images/club/pricing.jpg') }}');">
     <div class="parallax-overlay"></div>
     <div class="parallax-content">
         <h2>L'esprit d'équipe</h2>
