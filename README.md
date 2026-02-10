@@ -1,64 +1,94 @@
 <p align="center">
-  <p align="center">
-  <img src="https://github.com/enzodheilly/projet-chm/blob/3eb81f3756d770bd8bdd5793fbdbf79555ddcf2a/public/images/logo/logo-chm.png" width="250" alt="Logo CHM Saleux" />
+  <img src="public/images/logo/logo-chm.png" width="200" alt="Logo CHM Saleux" />
 </p>
 
+<h1 align="center">CHM Saleux - Application de Gestion</h1>
+
+<p align="center">
+  Platforme numérique officielle du club d'haltérophilie et musculation de Saleux.
+  <br>
+  <em>Gestion des adhérents, suivi des performances et administration du club.</em>
 </p>
 
 <p align="center">
-  <a href="https://github.com/ton-compte/chm-saleux">
-    <img src="https://img.shields.io/badge/Projet-CHM%20Saleux-blue?style=for-the-badge" alt="CHM Saleux badge"/>
+  <a href="https://github.com/enzodheilly/chm-saleux-app">
+    <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge" alt="Version"/>
   </a>
-  <img src="https://img.shields.io/badge/HTML5-orange?style=for-the-badge&logo=html5&logoColor=white"/>
-  <img src="https://img.shields.io/badge/CSS3-blue?style=for-the-badge&logo=css3&logoColor=white"/>
-  <img src="https://img.shields.io/badge/JavaScript-yellow?style=for-the-badge&logo=javascript&logoColor=black"/>
+  <img src="https://img.shields.io/badge/Symfony-000000?style=for-the-badge&logo=symfony&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"/>
   <img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white"/>
   <img src="https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white"/>
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/>
 </p>
 
 ---
 
-## 🛠️ Technologies utilisées
+## 📋 À propos
 
-| Catégorie                    | Technologies                                     |
-| ---------------------------- | ------------------------------------------------ |
-| **Frontend**                 | HTML5, CSS3 / SCSS, JavaScript                   |
-| **Backend**                  | PHP                                              |
-| **Base de données**          | MySQL                                            |
-| **Outils de développement**  | VS Code, Git, GitHub                             |
-| **Hébergement**              | Serveur PHP / GitHub Pages                       |
-| **API / Connexions futures** | Application mobile connectée au dashboard client |
+Ce projet est une application web complète développée pour moderniser la gestion interne du **CHM Saleux**. Elle permet aux administrateurs de gérer les membres et offre aux adhérents un espace personnel pour suivre leur progression.
+
+L'architecture repose sur **Symfony** (MVC) avec une conteneurisation **Docker** pour faciliter le déploiement.
 
 ---
 
-## ⚙️ Fonctionnalités principales
+## 🛠️ Stack Technique
 
-### 👤 Dashboard client
+| Domaine             | Technologies                 |
+| :------------------ | :--------------------------- |
+| **Backend**         | Symfony 6/7, PHP 8.2         |
+| **Frontend**        | Twig, SCSS, JavaScript (ES6) |
+| **Base de données** | MySQL 8.0                    |
+| **DevOps**          | Docker, Docker Compose       |
+| **Outils**          | VS Code, Git, Composer, NPM  |
 
--   Gestion complète du **profil adhérent**
--   **Suivi des licences** (création, renouvellement, statut)
--   Interface intuitive et sécurisée
+---
 
-### 🏋️‍♂️ Section “Séances”
+## ⚙️ Fonctionnalités
 
--   Enregistrement des **séances d’entraînement passées**
--   Visualisation de l’historique sportif
--   Suivi des performances et des progrès
+### 👤 Espace Adhérent
 
-### 📚 Section “Programmes d’entraînement” _(en développement)_
+- **Dashboard :** Vue d'ensemble du profil et des dernières activités.
+- **Licences :** Suivi du statut (active, renouvellement, documents).
+- **Historique :** Visualisation des anciennes séances.
 
--   Gestion des programmes personnalisés selon les objectifs
--   Création, suivi et modification via le dashboard
--   Synchronisation avec l’application mobile à venir
+### 🏋️‍♂️ Performance & Entraînement
 
-### 📱 Application mobile (à venir)
+- **Tracking :** Enregistrement des séances (séries, répétitions, poids).
+- **Programmes :** _(En cours)_ Assignation de programmes personnalisés par les coachs.
+- **Statistiques :** Graphiques de progression.
 
--   Connexion directe au compte adhérent
--   Consultation du planning, des séances et des programmes
--   Notifications et rappels d’entraînement
+### 📱 Mobile & API
 
-### 🌐 Autres pages
+- Architecture prête pour une future application mobile (API Platform).
+- Connexion unifiée Web/Mobile.
 
--   Présentation du club, des encadrants et de l’histoire du CHM Saleux
--   Horaires, tarifs et coordonnées
--   Actualités, événements et galeries photos
+---
+
+## 🚀 Installation & Démarrage
+
+Suivez ces étapes pour lancer le projet en local.
+
+### Prérequis
+
+- Docker & Docker Compose
+- Node.js & NPM
+
+### 1. Cloner le projet
+
+```bash
+git clone https://github.com/enzodheilly/chm-saleux-app.git
+cd chm-saleux-app
+cp .env.example .env
+docker compose up -d
+
+# Backend (PHP)
+composer install
+
+# Frontend (Assets)
+npm install
+npm run build
+
+# Création de la BDD et des tables
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate
+```
