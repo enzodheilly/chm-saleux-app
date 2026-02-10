@@ -531,183 +531,305 @@ h1, h2, h3 {
 .club-section h3{
   color:#111;
 }
+
 /* ==========================================================
-   📱 MOBILE RESPONSIVE (MAX-WIDTH: 900px)
+   📱 MOBILE RESPONSIVE GLOBAL (MAX-WIDTH: 900px)
    ========================================================== */
 
 @media (max-width: 900px) {
 
-    /* --- 1. HEADER HERO (Gardé comme tu voulais) --- */
-    .hero-header {
-        padding-top: 50px; 
-        margin-top: 0;
-        height: auto;     
-        min-height: 100vh;
-        background: transparent;
-        display: flex;
-        flex-direction: column; 
-        justify-content: space-between; 
-        clip-path: none;
-    }
+  /* ==========================================================
+     🟦 1. HEADER HERO
+     ========================================================== */
 
-    .hero-header::before,
-    .hero-header::after {
-        display: block !important;
-        position: absolute;
-        inset: 0;
-        height: 100%;
-    }
+  .hero-header {
+    padding-top: 140px;
+    margin-top: 0;
+    height: auto;
+    min-height: 100vh;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    clip-path: none;
+  }
 
-    .hero-content {
-        order: 1;
-        position: relative;
-        z-index: 10;
-        width: 100%;
-        padding: 0 25px;
-        text-align: left;
-        margin-bottom: 20px;
-    }
+  .hero-header::before,
+  .hero-header::after {
+    display: block !important;
+    position: absolute;
+    inset: 0;
+    height: 100%;
+  }
 
-    .hero-content h1 {
-        color: white; 
-        font-size: 2.4rem;
-        line-height: 1.2;
-        margin: 0 0 20px 0;
-        text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    }
+  .back-button {
+    top: 130px !important;
+    left: 25px !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    border-radius: 0 !important;
+    color: #ffffff !important;
+    z-index: 1000;
+  }
 
-    .hero-content p {
-        color: #cbd5e1 !important;
-        font-size: 1.1rem;
-        font-weight: 500;
-        line-height: 1.6;
-        margin-right: 0 !important;
-        max-width: 100% !important;
-        margin-top: 15px;
-        margin-bottom: 30px;
-        text-align: left;
-    }
+  .hero-content {
+    order: 1;
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    padding: 0 25px;
+    text-align: left;
+    margin-top: 50px !important;
+    margin-bottom: 20px;
+  }
 
-    .hero-diagonal-image {
-        order: 2;
-        position: relative !important;
-        display: block !important;
-        width: 100%;
-        height: 280px;
-        margin-top: auto;
-        z-index: 5;
-        clip-path: polygon(0 15%, 100% 0, 100% 100%, 0% 100%);
-    }
+  .hero-content h1 {
+    font-size: 2.2rem;
+    line-height: 1.2;
+    margin: 0 0 20px 0;
+    margin-left: 7px !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+    max-width: 100%;
+  }
 
-    .hero-diagonal-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transform: none;
-    }
+  .hero-content p {
+    font-size: 1rem;
+    line-height: 1.6;
+    font-weight: 500;
+    margin-right: 0 !important;
+    max-width: 100% !important;
+    margin-bottom: 30px;
+    text-align: left;
+  }
 
-    /* --- 2. LAYOUT GÉNÉRAL --- */
-    .container {
-        width: 90%;
-        padding: 0;
-    }
+  .hero-diagonal-image {
+    order: 2;
+    position: relative !important;
+    display: block !important;
+    width: 100%;
+    height: 280px;
+    margin-top: auto;
+    z-index: 5;
+    overflow: hidden;
+    clip-path: polygon(0 15%, 100% 0, 100% 100%, 0% 100%);
+  }
 
-    .club-section {
-        padding: 50px 0;
-    }
+  .hero-diagonal-image img {
+    width: 100%;
+    height: 90%;
+    object-fit: cover;
+    object-position: center center;
+    transform: scale(1.8);
+    filter: none;
+  }
 
-    /* Reset des grilles en colonne simple */
-    .club-section-grid, 
-    .club-equip-grid, 
-    .club-infos-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 40px;
-    }
+  /* ==========================================================
+     🧱 2. LAYOUT GLOBAL
+     ========================================================== */
 
-    /* --- 3. FIX PRÉSIDENT (CENTRAGE) --- */
-    #club-president .club-section-grid {
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Centre les éléments enfants */
-    }
-    
-    .club-president-photo {
-        width: 100%;
-        display: flex;       /* Active flexbox */
-        justify-content: center; /* Centre horizontalement l'image */
-        padding-left: 45px;
-        margin-bottom: 20px;
-    }
-    
-    .club-president-photo img {
-        transform: none !important; /* Force l'annulation du décalage PC */
-        margin: 0 auto !important;  /* Force les marges auto */
-        display: block;
-        max-width: 280px;
-        border-radius: 10px; /* Petit bonus esthétique */
-    }
-    
-    .club-president-text {
-        padding-left: 0;
-        margin-top: 0;
-        text-align: center;
-        width: 100%;
-    }
+  .container,
+  .club-section .container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 20px;
+    margin: 0 auto;
+  }
 
-    /* --- 4. FIX "NOS VALEURS" (CARTES) --- */
-    .club-values-grid {
-        display: grid;
-        grid-template-columns: 1fr; /* 1 seule colonne */
-        gap: 20px;
-    }
+  .club-page {
+    padding-top: 0;
+  }
 
-    .club-value-card {
-        padding: 30px 20px;
-        text-align: center; /* Texte centré dans la carte */
-        background: #fff;   /* Fond blanc pour lisibilité */
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    }
+  h1, h2, h3 {
+    font-size: 1.8rem;
+    line-height: 1.2;
+  }
 
-    /* CORRECTION DES TITRES DANS LES CARTES */
-    .club-value-card h3 {
-        color: #005b94;    /* Couleur Bleue (visible sur fond blanc) */
-        font-size: 1.5rem; /* Taille réduite (2.2rem était trop gros) */
-        margin-bottom: 10px;
-        text-transform: uppercase;
-    }
+  .club-section {
+    padding: 55px 0;
+  }
 
-    .club-value-card p {
-        color: #333;       /* Gris foncé pour le texte */
-        font-size: 1rem;
-        line-height: 1.5;
-    }
+  .club-text-block p,
+  .club-president-text p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
 
-    /* --- 5. AUTRES SECTIONS --- */
-    .club-image-block img {
-        margin-left: 0;
-        width: 100%;
-        height: auto;
-        border-radius: 10px;
-    }
+  /* ==========================================================
+     👨‍💼 3. PRÉSIDENT
+     ========================================================== */
 
-    .album-marquee {
-        width: 100%;
-        margin-left: 0;
-    }
+  #club-president .club-section-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+  }
 
-    .album-slide img {
-        width: 260px;
-        height: 180px;
-    }
+  #club-president .club-president-photo {
+    width: 100%;
+    justify-content: center;
+    padding: 0;
+  }
 
-    .club-bureau-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 30px;
-    }
+  #club-president .club-president-photo img {
+    max-width: 320px;
+    width: 100%;
+    transform: none !important;
+    margin: 0 auto;
+    display: block;
+  }
 
-    .club-cta-final {
-        padding: 60px 20px;
-    }
+  .club-president-text {
+    padding-left: 0;
+    margin-top: 0;
+    text-align: left;
+  }
+
+  /* ==========================================================
+     💬 4. VALEURS
+     ========================================================== */
+
+  .club-values-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .club-value-card {
+    padding: 22px 18px;
+    border-radius: 16px;
+  }
+
+  .club-value-card h3 {
+    font-size: 1.2rem;
+    color: #005b94;
+  }
+
+  /* ==========================================================
+     🖼️ 5. ALBUM
+     ========================================================== */
+
+  .album-marquee {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  .album-slide img {
+    width: 240px;
+    height: 160px;
+  }
+
+  /* ==========================================================
+     👥 6. BUREAU
+     ========================================================== */
+
+  .club-bureau-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .bureau-card img {
+    width: 110px;
+    height: 110px;
+  }
+
+  /* ==========================================================
+     🚀 7. CTA FINAL
+     ========================================================== */
+
+  .club-cta-final {
+    padding: 70px 20px;
+    text-align: left;
+  }
+
+  .club-cta-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================
+   ✅ FIX MOBILE : "NOTRE HISTOIRE" trop étroit + sections texte
+   ========================================================== */
+@media (max-width: 900px) {
+
+  /* 1) Force la section et ses enfants à être full width */
+  #club-history,
+  #club-history .container,
+  #club-history .club-section-grid,
+  #club-history .club-text-block,
+  #club-history .club-text-block p,
+  #club-history .club-text-block h2,
+  .club-text-block,
+  .club-text-block p,
+  .club-text-block h2 {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  /* 2) Si "Notre Histoire" est dans une grid : casse-la vraiment */
+  #club-history .club-section-grid,
+  .club-section-grid {
+    grid-template-columns: 1fr !important;
+    display: grid !important; /* ou flex, mais grid + 1fr suffit */
+  }
+
+  /* 3) Empêche le centrage qui donne l'impression "colonne étroite" */
+  #club-history,
+  #club-history .club-text-block,
+  #club-history .club-text-block p,
+  #club-history h2,
+  .club-text-block,
+  .club-text-block p {
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* 4) Confort de lecture sur mobile */
+  #club-history .club-text-block p,
+  .club-text-block p {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+}
+
+/* ==========================================================
+   ✅ FIX MOBILE : image sous "Notre Histoire" collée à droite
+   ========================================================== */
+@media (max-width: 900px) {
+
+  /* Centre le bloc image */
+  .club-image-block {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  /* Centre l'image + annule le margin-left desktop */
+  .club-image-block img {
+    display: block !important;
+    margin: 0 auto !important;     /* centre */
+    margin-left: 0 !important;     /* kill le 100px desktop */
+    max-width: 100% !important;
+    width: 100% !important;        /* si tu veux full width */
+    height: auto !important;
+  }
+
+  /* Si tu veux une image pas full width mais centrée (option) */
+  /*
+  .club-image-block img{
+    width: min(360px, 100%) !important;
+  }
+  */
 }
