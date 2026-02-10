@@ -1,17 +1,14 @@
-###> modules node (JavaScript/CSS) ###
-node_modules/
-npm-debug.log
-yarn-error.log
-###< modules node ###
+###> Symfony (INDISPENSABLE) ###
+/var/
+/vendor/
+/public/bundles/
+/public/build/
+###< Symfony ###
 
-###> IDE & Système (Fichiers perso inutiles pour l'équipe) ###
-.idea/
-.vscode/
-.DS_Store
-###< IDE & Système ###
-
-###> Sécurité (Force l'exclusion des fichiers env sensibles) ###
-.env.test
-.env.dev
-# Si ton .env contient tes vrais mots de passe, décommente la ligne ci-dessous :
-# .env
+###> Fichiers lourds (Vidéo & Backups) ###
+*.mp4
+*.mov
+*.zip
+*.sql
+*.log
+###< Fichiers lourds ###
