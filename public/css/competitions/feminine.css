@@ -1,655 +1,352 @@
-.overlay {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			z-index: 0;
-		}
 
-.hero-header {
+/* --- VARIABLES --- */
+:root {
+    --primary-color: #d63384; /* Rose sportif */
+    --dark-bg: #1a1a1a;
+    --card-bg: #ffffff;
+    --text-main: #333;
+    --text-muted: #666;
+    --border-radius: 12px;
+    --shadow-soft: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+body {
+    background-color: #f8f9fa;
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+}
+
+/* --- LAYOUT UTILS --- */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+}
+
+.section-heading {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    border-left: 5px solid var(--primary-color);
+    padding-left: 15px;
+}
+
+/* --- HEADER --- */
+.page-header {
     position: relative;
-    margin-top: 120px;
-    width: 100%;
-    height: 65vh; /* ajustable */
-    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    height: 60vh;
+    min-height: 400px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    overflow: hidden;
-
-    /* diagonale sur le bas */
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
+    align-items: center; /* Centre verticalement sur Desktop */
+    color: white;
+    margin-bottom: 40px;
 }
 
-
-/* Fond flou + filtre bleu foncé */
-.hero-header::before {
-    content: "";
+.header-bg {
     position: absolute;
-    inset: 0;
-    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
-    filter: blur(40px);
-    transform: scale(4.1);
-    z-index: 0; /* derrière le texte */
-}
-
-/* Filtre bleu foncé */
-.hero-header::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 41, 82, 0.65); /* ← bleu plus foncé */
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-size: cover;
+    background-position: center 20%;
     z-index: 1;
 }
 
-/* Image décorative diagonale sur la droite du hero */
-.hero-diagonal-image {
+.header-overlay {
     position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;          /* occupe toute la hauteur du hero */
-    width: 55%;            /* moitié droite du hero */
-    overflow: hidden;
-    z-index: 2;            /* au-dessus du fond mais derrière le texte si nécessaire */
-    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%); /* diagonale */
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(45deg, rgba(0,0,0,0.8), rgba(214, 51, 132, 0.4));
+    z-index: 2;
 }
 
-.hero-diagonal-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    filter: drop-shadow(0 0 10px rgba(0,0,0,0.3)); /* optionnel : ombre douce */
-    transform: scale(1.1); /* léger zoom pour mieux couvrir le clip-path */
-}
-
-/* Contenu visible au-dessus */
-.hero-header > .hero-content {
+.header-content {
     position: relative;
-    z-index: 2; /* texte au-dessus du fond */
+    z-index: 3;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    top: 50px; 
 }
 
-		.hero-content {
-			position: relative;
-			z-index: 1;
-			margin-top: 100px;
-		}
-
-		.hero-content h1 {
-			font-size: 2.5rem;
-			font-weight: 800;
-			max-width: 500px;
-			text-align: left;
-            text-transform: uppercase;
-			margin: 0 0 1rem;
-			color: white;
-			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-			margin-right:790px;
-			margin-top: -130px;
-			letter-spacing: 2px;
-		}
-		.hero-content p {
-			font-size: 1.1rem;
-			line-height: 1.8;
-			color: #CBD5E1;
-			margin-bottom: 2rem;
-            max-width: 570px;
-            margin-right: 660px;
-            text-align: left;
-		}	
-
-        /* Le bouton Retour */
-.back-button {
-    /* 1. POSITIONNEMENT : On le sort du flux pour le mettre en haut à gauche */
-    position: absolute; 
-    top: 35px;      /* Espace depuis le haut */
-    left: 100px;     /* Espace depuis la gauche */
-    
-    /* 2. COUCHE : On le force à passer au-dessus du filtre bleu (qui est à 1) */
-    z-index: 10;    
-    
+.back-link {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    font-weight: 500;
+    color: white;
     text-decoration: none;
-    
-    /* 3. COULEUR : On met blanc car le fond est sombre */
-    color: #ffffff; 
-    }
-
-/* -------------------------------
-   TITRES DE SECTION
----------------------------------*/
-H1{
-    text-align: center;
-    margin: 60px auto 30px;
-    font-size: 2.2rem;
-    font-weight: 900;
-    position: relative;
-    color: #fff;
+    font-weight: 600;
+    margin-bottom: 20px;
+    opacity: 0.8;
+    transition: opacity 0.3s;
 }
+.back-link:hover { opacity: 1; }
+.back-link svg { margin-right: 8px; }
 
-.section-title::after {
-    content: "";
-    width: 70px;
-    height: 4px;
-    background: #ff0055;
-    display: block;
-    margin: 12px auto 0;
+.header-title-box h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin: 10px 0;
+    line-height: 1.1;
+}
+.subtitle {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    background: var(--primary-color);
+    padding: 5px 10px;
     border-radius: 4px;
 }
 
-/* =============================================================
-   4. ATHLETE SLIDER (MODIFIÉ POUR BOUTONS RONDS)
-   ============================================================= */
-.athlete-slider-section {
+/* --- SECTION EFFECTIF (SLIDER) --- */
+.section-team {
+    margin-bottom: 60px;
     position: relative;
-    padding: 60px 20px;
-    background: transparent;
+}
+
+.section-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.slider-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.control-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #eee;
+    background: white;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(214, 51, 132, 0.3);
+}
+
+.athlete-slider-wrapper {
     overflow: hidden;
-}
-
-.athlete-slider {
-    position: relative;
-    overflow: visible; /* Visible pour voir les ombres */
-    margin-top: 40px;
-    max-width: 1200px;
-    margin: 40px auto;
-}
-
-.athlete-track-wrapper {
-    overflow: hidden; /* Cache les slides sur les côtés */
-    padding: 10px 0;
+    padding: 10px 5px;
+    margin: 0 -5px;
 }
 
 .athlete-track {
     display: flex;
-    transition: transform 0.5s ease-in-out;
-    gap: 20px;
+    gap: 25px;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
 }
 
-.athlete-slide {
-    min-width: calc(25% - 15px); /* 4 items desktop */
-    text-align: center;
-    transition: transform 0.4s ease, opacity 0.4s ease;
-}
-
-.athlete-slide img {
-    width: 100%;
+/* Design Carte Athlète */
+.athlete-card {
+    min-width: 260px;
     max-width: 260px;
-    aspect-ratio: 3/4;
-    object-fit: cover;
+    background: white;
     border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: transform 0.4s ease;
-}
-
-/* Effet zoom sur l'image active (optionnel) */
-.athlete-slide:hover img {
-    transform: scale(1.05);
-}
-
-.athlete-info-center {
-    margin-top: 12px;
-    color: #333;
-}
-
-.athlete-info-center h3 {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 5px;
-    color: #005b94;
-}
-
-.athlete-info-center p {
-    font-size: 14px;
-    margin-bottom: 10px;
-    color: #666;
-}
-
-/* --- NAVIGATION SLIDER (NOUVEAU STYLE SVG) --- */
-#prevAthlete, #nextAthlete {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 50;
-    
-    width: 45px;
-    height: 45px;
-    
-    background-color: transparent; /* Bleu */
-    color: white;
-    border: 2px solid white;
-    border-radius: 50%;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    
-    cursor: pointer;
-    padding: 0;
-    
-    display: flex; /* Centre le SVG */
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-/* Taille de l'icône SVG à l'intérieur */
-#prevAthlete svg, #nextAthlete svg {
-    width: 20px;
-    height: 20px;
-}
-
-/* Positionnement */
-#prevAthlete { left: -50px; }
-#nextAthlete { right: -50px; }
-
-/* Hover */
-#prevAthlete:hover, #nextAthlete:hover {
-    background-color: #ff6600; /* Orange */
-    transform: translateY(-50%) scale(1.1);
-}
-
-/* -------------------------------
-   CLASSEMENT TABLE
----------------------------------*/
-.ranking-section {
-    padding: 40px 20px;
-}
-
-.ranking-table {
-    width: 100%;
-    max-width: 900px;
-    margin: auto;
-    border-collapse: collapse;
-    background: #fff;
-    border-radius: 14px;
     overflow: hidden;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
 }
 
-.ranking-table th {
-    background: #ff0055;
-    color: white;
-    padding: 14px 20px;
-    font-weight: 600;
-    text-align: left;
+.athlete-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
 }
 
-.ranking-table td {
-    padding: 12px 20px;
-    border-top: 1px solid #eee;
+.athlete-img-box {
+    height: 320px;
+    width: 100%;
+    position: relative;
+    background-color: #f0f0f0;
 }
 
-.ranking-table tr:nth-child(even) { background: #fafafa; }
-
-/* -------------------------------
-   DERNIÈRE COMPÉTITION
----------------------------------*/
-/* --- CARD PRINCIPALE --- */
-.last-competition-card {
-    max-width: 950px;
-    margin: 40px auto;
-    background: #ffffff;
-    padding: 35px;
-    border-radius: 18px;
-    box-shadow: 0 12px 38px rgba(0, 0, 0, 0.1);
-    border: 1px solid #f1f1f1;
-    transition: transform 0.25s ease, box-shadow 0.3s ease;
-}
-
-.last-competition-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
-}
-
-/* --- HEADER COMPÉTITION --- */
-.competition-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.competition-info-text h3 {
-    font-size: 28px;
-    margin-bottom: 8px;
-    font-weight: 700;
-    color: #2a2a2a;
-}
-
-.competition-info-text p {
-    font-size: 15px;
-    margin-bottom: 5px;
-    color: #666;
-}
-
-/* --- PHOTO COMPÉTITION --- */
-.competition-photo img {
-    max-width: 220px;
-    border-radius: 14px;
+.athlete-img-box img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
+    object-position: top center;
 }
 
-.competition-photo img:hover {
-    transform: scale(1.03);
-}
-
-/* --- TABLEAU DES RÉSULTATS --- */
-.results-table-container {
-    overflow-x: auto;
-    margin-top: 20px;
-}
-
-/* Style plus moderne du tableau */
-.results-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: center;
-    margin-top: 10px;
-    font-size: 14px;
-    background: #fafafa;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-/* En-têtes du tableau */
-.results-table th {
-    padding: 14px 10px;
-    background: #f7f7f7;
+.athlete-badge {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--primary-color);
     font-weight: 700;
-    color: #333;
-    font-size: 14px;
-    border-bottom: 2px solid #e5e5e5;
+    font-size: 0.75rem;
+    padding: 5px 12px;
+    border-radius: 20px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* Contenu du tableau */
-.results-table td {
-    padding: 12px 10px;
-    border-bottom: 1px solid #e0e0e0;
-    color: #444;
+.athlete-details {
+    padding: 15px;
+    text-align: center;
+    background: white;
+    border-top: 1px solid #f5f5f5;
 }
 
-/* Ligne survolée */
-.results-table tbody tr:hover {
-    background: #fff;
-    transition: 0.2s;
-}
-
-/* Dernière ligne sans bordure */
-.results-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-/* -------------------------------
-   HISTORIQUE
----------------------------------*/
-.history-section {
-    padding: 60px 20px;
-}
-
-.history-list {
-    display: flex;
-    flex-wrap: wrap; /* permet aux cards de passer à la ligne si pas assez de place */
-    gap: 20px; /* espace entre les cards */
-    justify-content: center; /* centrer les cards horizontalement */
-}
-
-.history-card {
-    background: #fff;
+.athlete-details h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--dark-bg);
+    font-weight: 700;
+    white-space: nowrap;
     overflow: hidden;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    width: 300px; /* largeur fixe pour chaque card */
+    text-overflow: ellipsis;
 }
 
-.history-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+/* --- DASHBOARD COMPÉTITION (Derniers Résultats) --- */
+.competition-dashboard {
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 60px;
 }
 
-.card-banner {
-    width: 100%;
-    height: 180px;
+.dashboard-header {
+    background-color: var(--dark-bg);
+    color: white;
+    padding: 30px;
     background-size: cover;
     background-position: center;
 }
 
-.card-content {
-    padding: 20px 24px;
-}
+.comp-title { font-size: 2rem; margin: 5px 0; }
+.comp-date { opacity: 0.8; font-size: 0.9rem; text-transform: uppercase; }
+.comp-location { display: flex; align-items: center; gap: 5px; opacity: 0.9; margin-top: 10px; }
 
-.card-content h3 {
-    margin-bottom: 8px;
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.card-content p {
-    margin: 4px 0;
-    font-size: 16px;
-    color: #333;
-}
-
-/* BOUTON VOIR PLUS */
-.more-results {
-    text-align: center;
-    margin-top: 40px;
-}
-
-.more-btn {
+.team-rank-badge {
     display: inline-block;
-    background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
-    color: #fff;
-    padding: 12px 30px;
-    border-radius: 12px;
-    font-size: 16px;
+    margin-top: 15px;
+    background: var(--primary-color);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+/* Tableaux Résultats */
+.modern-results-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+.modern-results-table th {
+    background: #f8f9fa;
+    text-align: left;
+    padding: 15px;
+    color: #666;
     font-weight: 600;
-    transition: all 0.25s ease;
-    text-decoration: none;
+}
+.modern-results-table td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
 }
 
-.more-btn:hover {
-    background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
-    transform: translateY(-3px);
+/* Colonnes spécifiques */
+.athlete-row { display: flex; flex-direction: column; }
+.athlete-row .name { font-weight: bold; color: var(--dark-bg); }
+.athlete-row .sub-info { font-size: 0.8rem; color: #888; }
+.col-total { font-weight: 800; color: var(--dark-bg); }
+.col-points { color: var(--primary-color); font-weight: bold; }
+
+.status-pill {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+.status-pill.success { background: #d1e7dd; color: #0f5132; }
+.status-pill.error { background: #f8d7da; color: #842029; }
+
+/* Responsive Table */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
-/* ==========================================================
-   📱 MOBILE RESPONSIVE (MAX-WIDTH: 900px)
-   ========================================================== */
+/* --- HISTORY GRID (Archives) --- */
+.history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
 
-@media (max-width: 900px) {
-    /* --- 2. ATHLETE SLIDER --- */
-    .athlete-slide {
-        min-width: 100%; /* Un seul athlète à la fois */
-        margin: 0;
-    }
+.history-card {
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.2s;
+}
+.history-card:hover { transform: translateY(-5px); }
 
-    .athlete-slide.active img {
-        transform: scale(1.05); /* Zoom moins fort sur mobile */
-    }
+.card-thumb { height: 150px; position: relative; overflow: hidden; }
+.card-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
-    .nav-arrow {
-        font-size: 1.5rem;
-        padding: 8px 12px;
-    }
+.card-date {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
 
-    /* --- 3. TABLEAUX (RANKING & RÉSULTATS) --- */
-    .ranking-section, .results-table-container {
-        padding: 0 10px;
-        overflow-x: auto; /* Scroll horizontal si nécessaire */
-        -webkit-overflow-scrolling: touch;
-    }
+.card-body { padding: 20px; }
+.card-body h4 { margin: 0 0 10px 0; font-size: 1.1rem; }
+.card-link { color: var(--primary-color); text-decoration: none; font-size: 0.9rem; font-weight: 600; }
 
-    .ranking-table, .results-table {
-        min-width: 500px; /* Empêche l'écrasement des colonnes */
-    }
-
-    /* --- 4. DERNIÈRE COMPÉTITION (CARD) --- */
-    .last-competition-card {
-        padding: 20px;
-        margin: 20px 10px;
-    }
-
-    .competition-header {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .competition-photo {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
-
-    .competition-photo img {
-        max-width: 100%;
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 768px) {
+    /* Ajustement Header */
+    .page-header {
+        align-items: flex-start; /* On ne centre plus verticalement, on part du haut */
+        padding-top: 120px; /* On pousse tout le contenu vers le bas (décolle la flèche) */
         height: auto;
-    }
-
-    /* --- 5. HISTORIQUE (CARDS) --- */
-    .history-card {
-        width: 100% !important; /* Cartes en pleine largeur */
-        margin: 0 0 20px 0;
-    }
-
-    .more-btn {
-        width: 100%;
-        text-align: center;
-    }
-}
-
-/* ==========================================================
-   📱 MOBILE RESPONSIVE (MAX-WIDTH: 900px)
-   ========================================================== */
-
-@media (max-width: 900px) {
-
-    /* --- 1. LE CONTENEUR PRINCIPAL --- */
-    /* On passe en mode colonne pour empiler : Titre > Texte > Image */
-    .hero-header {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start; /* Tout aligné vers le haut */
-        
-        height: auto;         /* La hauteur s'adapte au contenu */
         min-height: auto;
-        padding-top: 80px;    /* Espace pour laisser la place à la flèche retour */
-        padding-bottom: 0;
-        
-        /* On enlève la découpe diagonale globale du header PC */
-        clip-path: none; 
-        
-        /* On garde le background */
-        background-size: cover;
+        padding-bottom: 40px;
     }
 
-    /* Important : s'assurer que les filtres de fond couvrent tout le nouveau bloc */
-    .hero-header::before,
-    .hero-header::after {
-        height: 100%;
+    .header-content {
+        /* Plus besoin de top:50px car on utilise le padding-top du parent */
+        top: 20px;
     }
 
-    /* --- 2. LA FLÈCHE RETOUR (Positionnée en Absolu) --- */
-    /* Elle reste collée en haut à gauche indépendamment du reste */
-    .back-button {
-        position: absolute;
-        top: 30px;
-        left: 20px;
-        z-index: 50; /* Au-dessus de tout */
-        color: #ffffff;
-        display: inline-flex; /* S'assurer qu'elle s'affiche */
+    /* Ajustement Titre */
+    .header-title-box h1 {
+        font-size: 2.2rem; /* Taille réduite */
     }
 
-    /* --- 3. LE TEXTE (Titre + Sous-titre) --- */
-    .hero-content {
-        position: relative;
-        width: 100%;
-        padding: 0 25px; /* Marges sur les côtés */
-        text-align: left;
-        
-        /* IMPORTANT : On annule les marges énormes de la version PC */
-        margin-top: 0 !important;
-        margin-right: 0 !important;
-        
-        order: 1; /* S'affiche en premier dans la colonne */
-        z-index: 10;
+    .subtitle {
+        font-size: 0.8rem;
     }
 
-/* DANS LE MEDIA QUERY (max-width: 900px) */
-
-    .hero-content h1 {
-        /* 1. TAILLE : On passe à 3.2rem (très gros) pour que ça claque */
-        font-size: 1.9rem; 
-        
-        /* 2. ESPACEMENT : Interligne serré pour éviter que le titre ne prenne trop de hauteur inutilement */
-        line-height: 1.1;
-        
-        /* 3. LARGEUR : On force le titre à prendre 100% de la largeur */
-        width: 105%;
-        max-width: none !important; /* On fait sauter la limite du PC */
-        
-        /* 4. MARGES */
-        margin-right: 0 !important;
-        margin-top: 10px !important; /* Un petit espace sous la flèche retour */
-        margin-bottom: 20px;
-        
-        /* 5. STYLE : On s'assure que c'est bien en majuscules (si ce n'est pas déjà le cas dans ton HTML) */
-        text-transform: uppercase;
-        word-wrap: break-word; /* Coupe le mot s'il est vraiment trop long (sécurité) */
-    }
-
-/* DANS LE MEDIA QUERY (max-width: 900px) */
-
-    .hero-content p {
-        /* 1. TAILLE : On augmente significativement (env. 19-20px) */
-        font-size: 1rem !important; 
-        
-        /* 2. LARGEUR : On débloque la largeur pour qu'il prenne tout l'espace */
-        width: 100%;
-        max-width: none !important;
-        margin-right: 0 !important;
-        
-        /* 3. LISIBILITÉ : Hauteur de ligne aérée pour le confort */
-        line-height: 1.5;
-        font-weight: 500; /* Un peu plus gras pour bien ressortir sur le fond */
-        color: #e2e8f0;   /* Gris très clair */
-        
-        /* 4. ESPACEMENT : Marge en bas pour ne pas coller à l'image */
-        margin-bottom: 30px;
-    }
-
-    /* --- 4. L'IMAGE (En bas) --- */
-    .hero-diagonal-image {
-        /* On l'enlève de sa position absolue à droite */
-        position: relative;
-        right: auto;
-        top: auto;
-        
-        /* Elle prend toute la largeur et se place en bas */
-        width: 100%;
-        height: 300px; /* Hauteur fixe pour bien voir l'image */
-        margin-top: 30px;
-        
-        order: 2; /* S'affiche après le texte */
-        
-        /* Style Basic-Fit : Diagonale sur le haut de l'image uniquement */
-        clip-path: polygon(0 15%, 100% 0, 100% 100%, 0% 100%);
-    }
-
-    .hero-diagonal-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center top; /* On cadre sur le haut de l'image */
-        transform: scale(1); /* Pas de zoom excessif sur mobile */
+    /* Flèche retour */
+    .back-link {
+        font-size: 0.9rem;
     }
 }
