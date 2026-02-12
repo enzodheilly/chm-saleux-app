@@ -8,100 +8,102 @@
 
 {% block body %}
 
-<header class="hero-header">
-    <div class="overlay"></div>
-
-        <a href="{{ path('home') }}" class="back-button">
-         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-         </svg>
-         Home
-    </a>
-
-    <!-- Image diagonale sur la droite -->
-    <div class="hero-diagonal-image">
-        <img src="{{ asset('images/menu_dropdown/services_du_club/cours_collectifs/cours-co.jpg') }}" alt="Image Musculation Club">
-    </div>
-
-    <!-- Contenu texte -->
-    <div class="hero-content">
-        <h1>Cours Collectifs</h1>
-        <p>Vivez l'expérience du sport à plusieurs. Retrouvez ici les horaires, la description des séances et l'énergie nécessaire pour progresser <span>à chaque entraînement.</span></p>
-    </div>
-</header>   
-
-<section class="cours-section">
-    <div class="container cours-flex">
-
-        <!-- IMAGE À GAUCHE -->
-        <div class="trdc-silhouette">
-            <div class="text-wall">
-                COURS COLLECTIFS<br>
-                COURS COLLECTIFS<br>
-                COURS COLLECTIFS<br>
-                COURS COLLECTIFS<br>
-                COURS COLLECTIFS
+    {# --- HEADER IMMERSIF --- #}
+    <header class="page-header">
+        <div class="header-bg" style="background-image: url('{{ asset('images/menu_dropdown/services_du_club/cours_collectifs/cours-co.jpg') }}');"></div>
+        <div class="header-overlay"></div>
+        
+        <div class="container header-content">
+            <a href="{{ path('home') }}" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Retour à l'accueil</span>
+            </a>
+            
+            <div class="header-title-box">
+                <span class="subtitle">Fitness & Cardio</span>
+                <h1>L'Énergie Collective</h1>
+                <p>Plus qu'un simple cours, une expérience de groupe. Trouvez la motivation, dépassez vos limites et progressez ensemble.</p>
             </div>
-
-            <img src="{{ asset('images/menu_dropdown/services_du_club/cours_collectifs/12.jpg') }}"
-                 alt="Silhouette cours collectifs">
         </div>
+    </header>
 
-        <!-- TEXTE À DROITE -->
-        <div class="cours-text">
-            <h2 class="cours-title">nos cours collectifs</h2>
+    <main class="main-container">
 
-            <p class="cours-intro">
-                Nos cours collectifs sont conçus pour motiver chacun à se dépasser dans un environnement convivial.
-                Que vous soyez débutant ou sportif confirmé, vous trouverez le cours adapté à votre niveau et à vos objectifs.
-            </p>
+        {# --- SECTION 1 : LE CONCEPT (Design Poster) --- #}
+        <section class="concept-section">
+            <div class="concept-grid">
+                
+                {# Image avec Texte en fond #}
+                <div class="concept-visual">
+                    <div class="text-backdrop">
+                        <span>COLLECTIF</span>
+                        <span>ENERGY</span>
+                        <span>MOTIVATION</span>
+                        <span>COLLECTIF</span>
+                    </div>
+                    <div class="image-wrapper">
+                        <img src="{{ asset('images/menu_dropdown/services_du_club/cours_collectifs/12.jpg') }}" alt="Ambiance Cours Collectifs">
+                    </div>
+                </div>
 
-            <p>
-                Du fitness au renforcement musculaire, en passant par le bien-être et le stretching, 
-                nos instructeurs qualifiés vous accompagnent pour progresser en toute sécurité.
-            </p>
-        </div>
+                {# Texte Explicatif #}
+                <div class="concept-content">
+                    <h2 class="section-heading">Bouger Ensemble</h2>
+                    <p class="lead-text">
+                        Nos cours collectifs sont conçus pour créer une dynamique de groupe où chacun puise sa motivation dans l'énergie des autres.
+                    </p>
+                    <p>
+                        Que vous soyez débutant cherchant à vous remettre en forme ou sportif confirmé en quête de performance, vous trouverez ici un environnement bienveillant et stimulant. Du <strong>Cardio</strong> intense au <strong>Renforcement</strong> profond, en passant par le <strong>Stretching</strong>, chaque séance est une nouvelle étape vers vos objectifs.
+                    </p>
+                    
+                    <div class="benefits-pills">
+                        <span>🔥 Cardio</span>
+                        <span>💪 Renfo</span>
+                        <span>🧘 Bien-être</span>
+                        <span>🤝 Convivialité</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    </div>
-</section>
+        {# --- SECTION 2 : LE COACH (Profil) --- #}
+        <section class="coach-section">
+            <div class="coach-card">
+                <div class="coach-image">
+                    <img src="{{ asset('images/menu_dropdown/services_du_club/cours_collectifs/3.jpg') }}" alt="Coach Ema">
+                </div>
+                <div class="coach-info">
+                    <span class="coach-label">Votre Coach</span>
+                    <h2>Ema</h2>
+                    <p class="coach-bio">
+                        Avec plusieurs années d'expérience dans le fitness et le bien-être, Ema est l'âme de nos cours collectifs. Sa pédagogie ? Adapter chaque mouvement à votre niveau pour que personne ne soit laissé de côté.
+                    </p>
+                    <p class="coach-philosophy">
+                        <span class="quote-mark">“</span>
+                        Ma philosophie : rendre chaque séance dynamique et accessible. Je suis là pour vous faire transpirer avec le sourire !
+                        <span class="quote-mark">”</span>
+                    </p>
+                </div>
+            </div>
+        </section>
 
-<section class="coach-section">
-    <div class="container coach-flex">
+        {# --- SECTION 3 : INSCRIPTION (CTA) --- #}
+        <section class="join-section">
+            <div class="join-content">
+                <h2>Prêt à nous rejoindre ?</h2>
+                <p>Venez tester l'ambiance ! Profitez d'une <strong>séance d'essai gratuite</strong>.</p>
+                
+                <div class="join-actions">
+                    <a href="https://chat.whatsapp.com/TON-LIEN-WHATSAPP" target="_blank" class="btn-whatsapp">
+                        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.897.001-6.113 4.974-11.085 11.092-11.085 2.962.002 5.748 1.155 7.842 3.25 2.094 2.094 3.246 4.88 3.245 7.842-.001 6.113-4.976 11.086-11.094 11.086-1.928-.001-3.824-.492-5.526-1.427l-5.659 1.495z"/></svg>
+                        Rejoindre le groupe WhatsApp
+                    </a>
+                    <p class="sub-text">Inscriptions auprès du bureau ou via le groupe.</p>
+                </div>
+            </div>
+        </section>
 
-        <!-- Texte à gauche -->
-        <div class="coach-text">
-            <h2>notre coach</h2>
-            <p>
-                Ema est notre coach pour les cours collectifs. Avec plusieurs années d'expérience dans le fitness et le bien-être, 
-                elle sait motiver chaque participant et adapter les séances selon votre niveau.
-            </p>
-            <p>
-                Sa philosophie : rendre chaque séance dynamique et accessible, tout en vous aidant à atteindre vos objectifs. 
-                Cardio, renforcement ou stretching, Ema vous accompagne avec énergie et sourire !
-            </p>
-        </div>
-
-        <!-- Photo à droite -->
-        <div class="coach-img">
-            <img src="{{ asset('images/menu_dropdown/services_du_club/cours_collectifs/3.jpg') }}" 
-                 alt="Coach Ema">
-        </div>
-
-    </div>
-</section>
-
-<!-- NOUVELLE SECTION INSCRIPTION -->
-<section class="inscription-section">
-    <div class="container inscription-content">
-        <h2>Vous souhaitez vous inscrire ?</h2>
-        <p>
-            Rejoignez nos cours collectifs dès aujourd'hui et profitez d'une séance gratuite pour découvrir l'ambiance motivante de notre club.
-        </p>
-        <p>
-            Les inscriptions se font auprès des membres du bureau ou via notre <a href="https://chat.whatsapp.com/TON-LIEN-WHATSAPP" target="_blank" rel="noopener noreferrer">groupe WhatsApp</a>.
-        </p>
-    </div>
-</section>
-
+    </main>
 {% endblock %}
-

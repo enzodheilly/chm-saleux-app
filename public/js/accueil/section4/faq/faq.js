@@ -1,64 +1,49 @@
-																				document.addEventListener("DOMContentLoaded", () => {
-																				  // === GESTION DU MENU LATÉRAL ===
-																				  document.querySelectorAll(".faq-sidebar li").forEach(li => {
-																				    li.addEventListener("click", e => {
-																				      e.preventDefault();
-																				
-																				      // Retirer "active" des autres liens
-																				      document.querySelectorAll(".faq-sidebar li").forEach(item => item.classList.remove("active"));
-																				      li.classList.add("active");
-																				
-																				      // Récupérer la section ciblée
-																				      const target = li.getAttribute("data-section");
-																				
-																				      // Masquer toutes les sections
-																				      document.querySelectorAll(".faq-content").forEach(content => {
-																				        content.style.display = "none";
-																				      });
-																				
-																				      // Afficher la section correspondante
-																				      const activeContent = document.querySelector(`.faq-content[data-section="${target}"]`);
-																				      if (activeContent) activeContent.style.display = "block";
-																				    });
-																				  });
-																				
-																				  // === GESTION DES QUESTIONS / RÉPONSES ===
-																				  document.querySelectorAll(".faq-question").forEach(question => {
-																				    question.addEventListener("click", () => {
-																				      const item = question.closest(".faq-item");
-																				      const answer = item.querySelector(".faq-answer");
-																				      const span = question.querySelector("span");
-																				
-																				      // Fermer les autres questions si souhaité (optionnel)
-																				      // document.querySelectorAll(".faq-item").forEach(i => {
-																				      //   if (i !== item) {
-																				      //     i.classList.remove("active");
-																				      //     const a = i.querySelector(".faq-answer");
-																				      //     const s = i.querySelector(".faq-question span");
-																				      //     if (a) a.style.maxHeight = null;
-																				      //     if (s) s.textContent = "+";
-																				      //   }
-																				      // });
-																				
-																				      // Toggle de l’état actif
-																				      item.classList.toggle("active");
-																				
-																				      // Animation ouverture/fermeture
-																				      if (item.classList.contains("active")) {
-																				        answer.style.maxHeight = answer.scrollHeight + "px";
-																				        answer.style.opacity = "1";
-																				        span.textContent = "−";
-																				        span.style.transform = "rotate(180deg)";
-																				        span.style.color = "#005b94";
-																				      } else {
-																				        answer.style.maxHeight = null;
-																				        answer.style.opacity = "0";
-																				        span.textContent = "+";
-																				        span.style.transform = "rotate(0deg)";
-																				        span.style.color = "#005b94";
-																				      }
-																				    });
-																				  });
-																				});
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // --- 1. GESTION DES ONGLETS (FILTRES) ---
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const faqGroups = document.querySelectorAll('.faq-group');
 
-																				
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Retirer la classe active de tous les boutons
+            filterBtns.forEach(b => b.classList.remove('active'));
+            // Ajouter active au bouton cliqué
+            btn.classList.add('active');
+
+            // Masquer tous les groupes
+            faqGroups.forEach(group => group.classList.remove('active'));
+            
+            // Afficher le groupe cible
+            const targetId = btn.getAttribute('data-target');
+            document.getElementById(targetId).classList.add('active');
+        });
+    });
+
+    // --- 2. GESTION DE L'ACCORDÉON ---
+    const accordions = document.querySelectorAll('.accordion-item');
+
+    accordions.forEach(item => {
+        const header = item.querySelector('.accordion-header');
+        
+        header.addEventListener('click', () => {
+            // Optionnel : Fermer les autres quand on en ouvre un (comportement Accordéon strict)
+            accordions.forEach(otherItem => {
+                if (otherItem !== item && otherItem.classList.contains('open')) {
+                    otherItem.classList.remove('open');
+                    otherItem.querySelector('.accordion-body').style.maxHeight = null;
+                }
+            });
+
+            // Basculer l'état ouvert/fermé
+            item.classList.toggle('open');
+            
+            const body = item.querySelector('.accordion-body');
+            if (item.classList.contains('open')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = null;
+            }
+        });
+    });
+});

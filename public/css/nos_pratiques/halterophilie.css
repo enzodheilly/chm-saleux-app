@@ -1,236 +1,295 @@
-.overlay {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			z-index: 0;
-		}
+/* --- VARIABLES --- */
+:root {
+    --primary-color: #0056b3; /* Bleu Club */
+    --accent-color: #e31b23; /* Rouge (touche olympique/IWF) optionnelle */
+    --metal-grey: #64748b;
+    --dark-bg: #0f172a;
+    --text-main: #334155;
+    --text-muted: #64748b;
+    --bg-light: #f8fafc;
+    --border-radius: 12px;
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.05);
+}
 
-.hero-header {
+body {
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+}
+
+/* --- HEADER --- */
+.page-header {
     position: relative;
-    margin-top: 120px;
-    width: 100%;
-    height: 65vh; /* ajustable */
-    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    height: 50vh;
+    min-height: 400px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    overflow: hidden;
-
-    /* diagonale sur le bas */
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
+    color: white;
+    margin-bottom: 80px;
 }
 
-
-/* Fond flou + filtre bleu foncé */
-.hero-header::before {
-    content: "";
+.header-bg {
     position: absolute;
-    inset: 0;
-    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
-    filter: blur(40px);
-    transform: scale(4.1);
-    z-index: 0; /* derrière le texte */
-}
-
-/* Filtre bleu foncé */
-.hero-header::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 41, 82, 0.65); /* ← bleu plus foncé */
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-size: cover;
+    background-position: center;
     z-index: 1;
 }
 
-/* Image décorative diagonale sur la droite du hero */
-.hero-diagonal-image {
+.header-overlay {
     position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;          /* occupe toute la hauteur du hero */
-    width: 55%;            /* moitié droite du hero */
-    overflow: hidden;
-    z-index: 2;            /* au-dessus du fond mais derrière le texte si nécessaire */
-    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%); /* diagonale */
+    top: 0; left: 0; right: 0; bottom: 0;
+    /* Dégradé Bleu sombre */
+    background: linear-gradient(45deg, rgba(15, 23, 42, 0.9), rgba(0, 86, 179, 0.6));
+    z-index: 2;
 }
 
-.hero-diagonal-image img {
+.header-content {
+    position: relative;
+    z-index: 3;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    top:65px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 20px;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+.back-link:hover { opacity: 1; }
+
+.header-title-box h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin: 10px 0;
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.subtitle {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    background: var(--primary-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+/* --- MAIN CONTAINER --- */
+.main-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+}
+
+/* --- INTRO --- */
+.intro-section {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 80px;
+}
+
+.section-heading {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: var(--dark-bg);
+    position: relative;
+    display: inline-block;
+}
+.section-heading.centered::after {
+    content: '';
     display: block;
-    filter: drop-shadow(0 0 10px rgba(0,0,0,0.3)); /* optionnel : ombre douce */
-    transform: scale(1.1); /* léger zoom pour mieux couvrir le clip-path */
+    width: 60px;
+    height: 4px;
+    background: var(--primary-color);
+    margin: 10px auto 0;
+}
+
+.intro-text {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* --- ZIG-ZAG LAYOUT --- */
+.zone-split {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    margin-bottom: 100px;
+}
+
+.zone-split.reversed {
+    flex-direction: row-reverse;
+}
+
+.zone-image {
+    flex: 1;
+}
+
+.image-frame {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    position: relative;
+}
+.image-frame::after { /* Petit bordure colorée décorative */
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 4px solid rgba(255,255,255,0.1);
+    pointer-events: none;
+}
+
+.image-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
     transition: transform 0.5s ease;
 }
-
-/* Contenu visible au-dessus */
-.hero-header > .hero-content {
-    position: relative;
-    z-index: 2; /* texte au-dessus du fond */
+.zone-split:hover .image-frame img {
+    transform: scale(1.03);
 }
 
-		.hero-content {
-			position: relative;
-			z-index: 1;
-			margin-top: 100px;
-			animation: fadeInUp 1s ease-out;
-		}
-
-		.hero-content h1 {
-			font-size: 3rem;
-			font-weight: 900;
-			max-width: 700px;
-			text-align: left;
-			margin: 0 0 1rem;
-			text-transform: uppercase;
-			color: white;
-			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-			margin-right:750px;
-			margin-top: -130px;
-			letter-spacing: 2px;
-		}
-		.hero-content p {
-			font-size: 1.1rem;
-			line-height: 1.8;
-			color: #CBD5E1;
-			margin-bottom: 2rem;
-            max-width: 570px;
-            margin-right: 660px;
-            text-align: left;
-		}
-
-		@media(max-width: 768px) {
-			.hero-content h1 {
-				font-size: 3.2rem;
-			}
-			.hero-content p {
-				font-size: 1.1rem;
-			}
-		}
-
-		@keyframes fadeInUp {
-			from {
-				opacity: 0;
-				transform: translateY(20px);
-			}
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}
-
-/* ============================
-   PAGE CONTENT
-=============================== */
-
-.practice-detail {
-    padding: 60px 0;
+.zone-content {
+    flex: 1;
 }
 
-.practice-detail .container {
-    width: 90%;
-    max-width: 1100px;
-    margin: auto;
-}
-
-.practice-detail h1 {
-    font-size: 2.4rem;
-    margin-bottom: 20px;
-    text-align: center;
+.zone-badge {
+    display: inline-block;
+    font-size: 0.8rem;
     font-weight: 700;
-    color: #fff;
-}
-
-.practice-intro {
-    text-align: center;
-    font-size: 1.2rem;
-    margin-bottom: 40px;
-    line-height: 1.7;
-    color: #CBD5E1;
-}
-
-
-/* ============================
-   SECTIONS (zones haltero)
-=============================== */
-
-.zone-section {
-    margin-bottom: 70px;
-}
-
-.zone-section h2 {
-    font-size: 2rem;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    background: #eef2ff;
+    padding: 5px 12px;
+    border-radius: 20px;
     margin-bottom: 15px;
-    font-weight: 700;
-    color: #fff;
 }
 
-.zone-section img {
-    width: 100%;
-    max-height: 380px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 20px;
+.zone-content h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--dark-bg);
+    margin: 0 0 20px 0;
 }
 
-.zone-section h3 {
-    margin-top: 15px;
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: #CBD5E1;
-}
-
-.zone-section ul {
-    margin: 10px 0 20px 0;
-    padding-left: 20px;
-}
-
-.zone-section ul li {
-    margin-bottom: 6px;
-    font-size: 1.1rem;
-    color: #CBD5E1;
-}
-
-.zone-text {
-    font-size: 1.1rem;
+.zone-content p {
+    color: var(--text-muted);
     line-height: 1.7;
-    color: #CBD5E1;
+    margin-bottom: 30px;
 }
 
-
-/* ============================
-   RESPONSIVE
-=============================== */
-
-@media (max-width: 992px) {
-    .hero-content {
-        max-width: 70%;
-    }
-
-    .hero-content h1 {
-        font-size: 2.4rem;
-    }
+/* --- SPECS GRID (Détails techniques) --- */
+.specs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border: 1px solid #e2e8f0;
 }
 
-@media (max-width: 768px) {
+.spec-column h3 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
-    .hero-header {
-        height: 45vh;
-    }
+.spec-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
-    .hero-diagonal-image {
-        display: none;
-    }
+.spec-column li {
+    font-size: 0.9rem;
+    color: var(--text-main);
+    margin-bottom: 8px;
+    padding-left: 15px;
+    position: relative;
+}
+.spec-column li::before {
+    content: '•';
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
 
-    .hero-content {
-        max-width: 100%;
-        text-align: center;
-    }
+/* Liste simple pour la dernière section */
+.check-list {
+    list-style: none;
+    padding: 0;
+}
+.check-list li {
+    background: white;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 3px solid var(--primary-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
 
-    .hero-content h1 {
-        font-size: 2rem;
-    }
+/* --- CTA BANNER --- */
+.cta-banner {
+    text-align: center;
+    background: var(--dark-bg);
+    color: white;
+    padding: 60px 20px;
+    border-radius: var(--border-radius);
+    background-image: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.cta-banner h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+.cta-banner p {
+    color: #94a3b8;
+    margin-bottom: 30px;
+}
+
+.btn-cta {
+    display: inline-block;
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    padding: 15px 35px;
+    border-radius: 50px;
+    font-weight: 700;
+    transition: transform 0.2s, background 0.2s;
+}
+.btn-cta:hover {
+    background: white;
+    color: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+    .header-title-box h1 { font-size: 2.5rem; }
+    
+    .zone-split { flex-direction: column; gap: 40px; }
+    .zone-split.reversed { flex-direction: column; }
+    .specs-grid { grid-template-columns: 1fr; gap: 20px; }
 }

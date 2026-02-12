@@ -1,353 +1,246 @@
-/* ==========================================================
-   1. STYLES GÉNÉRAUX (Desktop first)
-   ========================================================== */
-
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
+/* --- VARIABLES --- */
+:root {
+    --primary-color: #0056b3; /* Bleu Club */
+    --accent-color: #ffc107; /* Jaune Info */
+    --dark-bg: #111;
+    --text-main: #333;
+    --text-muted: #666;
+    --bg-light: #f4f6f9;
+    --card-bg: #ffffff;
+    --border-radius: 12px;
+    --shadow-card: 0 10px 30px rgba(0,0,0,0.08);
 }
 
-.hero-header {
+body {
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+}
+
+/* --- HEADER (Standardisé) --- */
+.page-header {
     position: relative;
-    margin-top: 120px;
-    width: 100%;
-    height: 65vh;
-    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    height: 50vh;
+    min-height: 350px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    overflow: hidden;
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
-}
-
-/* Fond flou + filtre */
-.hero-header::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
-    filter: blur(40px);
-    transform: scale(4.1);
-    z-index: 0;
-}
-
-/* Filtre bleu foncé */
-.hero-header::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 41, 82, 0.65);
-    z-index: 1;
-}
-
-/* Image diagonale */
-.hero-diagonal-image {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    width: 55%;
-    overflow: hidden;
-    z-index: 2;
-    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%);
-}
-
-.hero-diagonal-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    filter: drop-shadow(0 0 10px rgba(0,0,0,0.3));
-    transform: scale(1.1);
-}
-
-/* Contenu */
-.hero-header > .hero-content {
-    position: relative;
-    z-index: 2;
-}
-
-.hero-content {
-    position: relative;
-    z-index: 1;
-    margin-top: 100px;
-}
-
-.hero-content h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    max-width: 900px;
-    text-align: left;
-    text-transform: uppercase;
-    margin: 0 0 1rem;
     color: white;
-    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    margin-right:970px;
-    margin-top: -179px;
-    letter-spacing: 2px;
+    margin-bottom: 60px;
 }
 
-.hero-content p {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: #CBD5E1;
-    margin-bottom: 2rem;
-    max-width: 570px;
-    margin-right: 660px;
-    text-align: left;
-}
-
-/* --- BOUTON RETOUR (Desktop) --- */
-.back-button {
+.header-bg {
     position: absolute;
-    top: 35px;
-    left: 100px;
-    z-index: 10;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+
+.header-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(45deg, rgba(0,0,0,0.85), rgba(0, 86, 179, 0.6));
+    z-index: 2;
+}
+
+.header-content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    top:65px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.back-link {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    font-weight: 500;
+    color: white;
     text-decoration: none;
-    color: #ffffff;
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    font-weight: 600;
+    margin-bottom: 20px;
+    opacity: 0.8;
+    transition: opacity 0.3s;
 }
+.back-link:hover { opacity: 1; }
+.back-link svg { margin-right: 8px; }
 
-/* --- SECTION HORAIRES (Desktop) --- */
-.horaire-section {
-    margin-top: 30px;
-    padding: 60px 20px;
-    background: transparent;
-    text-align: center;
-    font-family: 'Inter', sans-serif;
-    color: #fff;
-}
-
-.horaire-title {
-    font-size: 2.2rem;
+.header-title-box h1 {
+    font-size: 3.5rem;
     font-weight: 900;
-    color: #1e293b;
-    margin-bottom: 30px;
+    margin: 10px 0;
+    line-height: 1.1;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+.subtitle {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    background: var(--accent-color);
+    color: #000;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+/* --- MAIN CONTAINER --- */
+.main-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+}
+
+/* --- SCHEDULE GRID --- */
+.intro-text {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+}
+
+.schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 80px;
+}
+
+.schedule-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    border-top: 5px solid transparent;
+    transition: transform 0.3s;
+}
+
+.schedule-card:hover { transform: translateY(-5px); }
+
+/* Couleurs des cartes */
+.primary-card { border-top-color: var(--primary-color); }
+.secondary-card { border-top-color: #28a745; /* Vert */ }
+.closed-card { border-top-color: #dc3545; /* Rouge */ background: #fdfdfd; }
+
+.card-header {
+    padding: 25px;
+    text-align: center;
+    background: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+.icon-day { font-size: 2rem; margin-bottom: 10px; }
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--dark-bg);
     text-transform: uppercase;
 }
 
-.horaire-intro {
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin-bottom: 40px;
-    color: #475569;
-    line-height: 1.6;
+.card-body {
+    padding: 30px;
+    flex-grow: 1;
 }
 
-.horaire-days {
+/* Lignes horaires */
+.time-row {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 40px;
-    margin-bottom: 40px;
-}
-
-.horaire-day h2 {
-    font-size: 1.2rem;
-    font-weight: 600;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 10px;
-    color: #1e293b;
+}
+.time-label { color: var(--text-muted); font-weight: 500; font-size: 0.9rem; }
+.time-value { font-size: 1.2rem; font-weight: 800; color: var(--dark-bg); }
+
+.divider { height: 1px; background: #eee; margin: 15px 0; }
+
+.card-footer {
+    padding: 15px 25px;
+    background: #fff3cd;
+    color: #856404;
+    font-size: 0.8rem;
+    text-align: center;
+    font-weight: 600;
 }
 
-.horaire-day p {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #005b94;
+/* Carte Fermée */
+.centered-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
-
-.horaire-info {
-    max-width: 850px;
-    margin: 0 auto;
-    text-align: left;
-    font-size: 1.1rem;
-    color: #475569;
-    line-height: 1.6;
-}
-
-.horaire-info h3 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-top: 30px;
+.closed-badge {
+    background: #dc3545;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 0.9rem;
     margin-bottom: 15px;
 }
 
-.horaire-info ul {
-    list-style-type: disc;
-    padding-left: 20px;
+/* --- INFOS SECTION --- */
+.section-heading {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    color: var(--dark-bg);
+    border-left: 5px solid var(--primary-color);
+    padding-left: 15px;
 }
 
-.horaire-info li {
-    margin-bottom: 10px;
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
 }
 
+.info-box {
+    display: flex;
+    align-items: flex-start;
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    border: 1px solid #eee;
+}
 
-/* ==========================================================
-   2. MOBILE RESPONSIVE (MAX-WIDTH: 900px)
-   ========================================================== */
+.info-icon {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    background: #f0f4ff;
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+}
+.info-competition .info-icon { background: #fff0f0; color: #dc3545; }
+.info-weather .info-icon { background: #f0fff4; color: #28a745; }
 
-@media (max-width: 900px) {
+.info-content h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+.info-content p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
 
-    /* --- HERO HEADER --- */
-    .hero-header {
-        /* On garde le padding pour compenser la navbar fixe */
-        padding-top: 140px; 
-        margin-top: 0;
-        height: auto;
-        min-height: 100vh;
-        background: transparent;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        clip-path: none;
-    }
-
-    .hero-header::before,
-    .hero-header::after {
-        display: block !important;
-        position: absolute;
-        inset: 0;
-        height: 100%;
-    }
-
-    /* --- BOUTON RETOUR (Ajusté) --- */
-    .back-button {
-        /* On le laisse à 140px pour qu'il soit juste sous la nav */
-        top: 140px !important; 
-        left: 25px !important;  
-        
-        background: transparent !important;
-        border: none !important;
-        padding: 0 !important;
-        backdrop-filter: none !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-
-        color: #ffffff !important;
-        z-index: 1000;
-    }
-
-    /* --- CONTENU TEXTE HERO (Modifié pour descendre le texte) --- */
-    .hero-content {
-        order: 1;
-        position: relative;
-        z-index: 10;
-        width: 100%;
-        padding: 0 25px;
-        text-align: left;
-        margin-bottom: 20px;
-        
-        /* ICI : On ajoute une marge haute pour descendre le texte */
-        /* Avant c'était 0, maintenant 50px pour respirer sous le bouton retour */
-        margin-top: 50px !important; 
-    }
-
-    .hero-content h1 {
-        font-size: 2.2rem;
-        line-height: 1.2;
-        margin: 0 0 20px 0;
-        margin-left: 8px !important; 
-        /* On retire les marges négatives du PC */
-        margin-top: 0 !important;
-        max-width: 100%;
-    }
-
-    .hero-content p {
-        font-size: 1rem;
-        font-weight: 500;
-        line-height: 1.6;
-        margin-right: 0 !important;
-        max-width: 100% !important;
-        margin-bottom: 30px;
-    }
-
-    /* --- IMAGE DIAGONALE --- */
-    .hero-diagonal-image {
-        order: 2;
-        position: relative !important;
-        display: block !important;
-        width: 100%;
-        height: 280px;
-        margin-top: auto;
-        z-index: 5;
-        overflow: hidden;
-        clip-path: polygon(0 15%, 100% 0, 100% 100%, 0% 100%);
-    }
-
-    .hero-diagonal-image img {
-        transform: scale(1.2);
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        filter: none;
-    }
-
-    /* --- RESTE DU RESPONSIVE --- */
-    .horaire-section {
-        padding: 40px 20px;
-        margin-top: 0;
-    }
-    
-    .horaire-title {
-        font-size: 1.8rem;
-        margin-bottom: 20px;
-    }
-    
-    .horaire-intro {
-        text-align: left;
-        margin-bottom: 30px;
-        font-size: 1rem;
-    }
-
-    .horaire-days {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        margin-bottom: 40px;
-    }
-
-    .horaire-day {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 20px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .horaire-day h2 {
-        margin: 0;
-        font-size: 1.1rem;
-    }
-
-    .horaire-day p {
-        margin: 0;
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #005b94;
-    }
-
-    .horaire-info {
-        text-align: left;
-        width: 100%;
-    }
-    
-    .horaire-info h3 {
-        font-size: 1.2rem;
-        margin-top: 20px;
-    }
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .page-header { height: auto; padding-top: 120px; padding-bottom: 40px; }
+    .header-title-box h1 { font-size: 2.5rem; }
+    .schedule-grid { grid-template-columns: 1fr; }
+    .time-row { flex-direction: column; align-items: flex-start; gap: 5px; }
+    .header-content {top:25px;}
 }

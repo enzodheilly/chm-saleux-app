@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Journée d’essai - CHM Saleux{% endblock %}
+{% block title %}Séance d'Essai Gratuite - CHM Saleux{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/menu_dropdown/services_du_club/seance_essai/index.css') }}">
@@ -8,55 +8,94 @@
 
 {% block body %}
 
-<header class="hero-header">
-    <div class="overlay"></div>
-
-        <a href="{{ path('home') }}" class="back-button">
-         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-         </svg>
-         Home
-    </a>
-
-    <!-- Image diagonale sur la droite -->
-    <div class="hero-diagonal-image">
-        <img src="{{ asset('images/menu_dropdown/services_du_club/journee_essai/1.jpg') }}" alt="Image Musculation Club">
-    </div>
-
-    <!-- Contenu texte -->
-    <div class="hero-content">
-        <h1>Séance d'essai</h1>
-        <p>Venez découvrir l’ambiance du club sans aucun engagement. Profitez d’une session offerte pour tester nos équipements, rencontrer les coachs et vous faire votre propre avis <span>avant de nous rejoindre.</span></p>
-    </div>
-</header>
-
-
-<section class="essai-section">
-    <div class="container">
-        <h2 class="essai-title">Une séance d’essai gratuite</h2>
-
-        <p class="essai-intro">
-            Le CHM Saleux vous propose une séance d’essai <strong>gratuite et sans engagement</strong>,
-            afin de découvrir notre club, notre ambiance et nos équipements.
-        </p>
-
-    <p>
-    Cette séance d’essai peut se faire aussi bien du côté <strong>musculation</strong> que du côté
-    <strong>haltérophilie</strong>.  
-    Elle permet de découvrir les espaces d’entraînement, les machines,
-    ainsi que l’esprit du club, que vous soyez débutant ou pratiquant confirmé.
-</p>
-
-        <p>
-            Pour plus d’informations ou pour organiser votre journée d’essai,
-            nous vous invitons à nous contacter via notre formulaire de contact
-            ou directement sur nos réseaux sociaux.
-        </p>
-
-        <div class="essai-actions">
-            <a href="{{ path('contact') }}" class="btn-primary">Nous contacter</a>
+    {# --- HEADER IMMERSIF --- #}
+    <header class="page-header">
+        <div class="header-bg" style="background-image: url('{{ asset('images/menu_dropdown/services_du_club/journee_essai/1.jpg') }}');"></div>
+        <div class="header-overlay"></div>
+        
+        <div class="container header-content">
+            <a href="{{ path('home') }}" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Retour à l'accueil</span>
+            </a>
+            
+            <div class="header-title-box">
+                <span class="subtitle">100% Gratuit & Sans Engagement</span>
+                <h1>Votre Séance Découverte</h1>
+                <p>N'ayez pas peur de pousser la porte. Venez tester nos équipements, rencontrer l'équipe et ressentir l'ambiance du club avant de vous décider.</p>
+            </div>
         </div>
-    </div>
-</section>
+    </header>
 
+    <main class="main-container">
+
+        {# --- SECTION 1 : POURQUOI VENIR ? --- #}
+        <section class="benefits-section">
+            <div class="intro-block">
+                <h2>Pourquoi faire un essai ?</h2>
+                <p>Le CHM Saleux vous offre une séance complète pour découvrir notre univers, que vous soyez intéressé par la <strong>Force Athlétique</strong>, l'<strong>Haltérophilie</strong> ou la <strong>Musculation Loisir</strong>.</p>
+            </div>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="icon-box">🏋️</div>
+                    <h3>Tester le Matériel</h3>
+                    <p>Barres olympiques, machines guidées, zone cardio... Vérifiez par vous-même la qualité de nos équipements.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="icon-box">👋</div>
+                    <h3>Rencontrer l'Équipe</h3>
+                    <p>Echangez avec nos bénévoles et nos coachs. Posez vos questions et obtenez des conseils personnalisés.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="icon-box">⚡</div>
+                    <h3>Sentir l'Ambiance</h3>
+                    <p>Le CHM, c'est avant tout un esprit. Convivialité et entraide sont les maîtres-mots de nos entraînements.</p>
+                </div>
+            </div>
+        </section>
+
+        {# --- SECTION 2 : INFOS PRATIQUES (Checklist) --- #}
+        <section class="practical-section">
+            <div class="practical-card">
+                <div class="practical-content">
+                    <h2>Comment ça se passe ?</h2>
+                    <p>C'est très simple. Présentez-vous à l'accueil du club lors des horaires d'ouverture (créneaux encadrés) et précisez que vous venez pour une séance d'essai.</p>
+                    
+                    <div class="checklist-box">
+                        <h3>🎒 Dans votre sac de sport :</h3>
+                        <ul>
+                            <li>
+                                <span class="check-icon">👟</span>
+                                <span>Une paire de baskets propres (dédiées à la salle)</span>
+                            </li>
+                            <li>
+                                <span class="check-icon">👕</span>
+                                <span>Une tenue de sport confortable</span>
+                            </li>
+                            <li>
+                                <span class="check-icon">💧</span>
+                                <span>Une bouteille d'eau & une serviette</span>
+                            </li>
+                            <li>
+                                <span class="check-icon">🔒</span>
+                                <span>Un cadenas pour le casier (conseillé)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="practical-cta">
+                    <h3>Prêt à transpirer ?</h3>
+                    <p>Contactez-nous pour prévenir de votre venue ou posez vos questions.</p>
+                    <a href="{{ path('contact') }}" class="btn-primary">
+                        Prévenir de ma venue
+                        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Sauna - CHM Saleux{% endblock %}
+{% block title %}Espace Sauna & Détente - CHM Saleux{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/menu_dropdown/services_du_club/sauna/sauna.css') }}">
@@ -8,48 +8,81 @@
 
 {% block body %}
 
-<header class="hero-header">
-    <div class="overlay"></div>
-
-        <a href="{{ path('home') }}" class="back-button">
-         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-         </svg>
-         Home
-    </a>
-
-    <!-- Image diagonale sur la droite -->
-    <div class="hero-diagonal-image">
-        <img src="{{ asset('images/menu_dropdown/services_du_club/evenements/1.jpg') }}" alt="Image Musculation Club">
-    </div>
-
-    <!-- Contenu texte -->
-<div class="hero-content">
-        <h1>Sauna</h1>
-        <p>Après l'intensité de l'entraînement, place à la récupération. Profitez des bienfaits de la chaleur pour relâcher vos tensions musculaires, éliminer les toxines et vous offrir un moment de relaxation <span>bien mérité.</span></p>
-    </div>
-</header>
-
-<section class="sauna-section">
-    <div class="container">
-        <h2 class="sauna-title">Un espace détente exclusif</h2>
-
-        <p class="sauna-intro">
-            Notre sauna est à disposition des membres pour se relaxer et récupérer après l’entraînement.  
-            Il offre une atmosphère chaleureuse et apaisante, idéale pour évacuer le stress et favoriser la récupération musculaire.
-        </p>
-
-        <p>
-            <strong>Informations pratiques :</strong><br>
-            - Accessible uniquement le <strong>vendredi</strong> durant les horaires du club.<br>
-            - Respectez les règles d’hygiène et de sécurité.<br>
-            - Maximum 4 personnes en même temps pour assurer le confort de chacun.
-        </p>
-
-        <div class="sauna-actions">
-            <a href="{{ path('contact') }}" class="btn-primary">Nous contacter</a>
+    {# --- HEADER IMMERSIF --- #}
+    <header class="page-header">
+        {# Image de fond (Idéalement une photo de sauna/bois/vapeur) #}
+        <div class="header-bg" style="background-image: url('{{ asset('images/menu_dropdown/services_du_club/evenements/1.jpg') }}');"></div>
+        <div class="header-overlay"></div>
+        
+        <div class="container header-content">
+            <a href="{{ path('home') }}" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Retour à l'accueil</span>
+            </a>
+            
+            <div class="header-title-box">
+                <span class="subtitle">Récupération & Bien-être</span>
+                <h1>Espace Sauna</h1>
+                <p>Après l'effort, le réconfort. Accordez-vous une pause chaleur pour éliminer les toxines et détendre vos muscles en profondeur.</p>
+            </div>
         </div>
-    </div>
-</section>
+    </header>
 
+    <main class="main-container">
+
+        {# --- SECTION INTRO --- #}
+        <section class="intro-section">
+            <h2 class="section-heading centered">Un moment pour soi</h2>
+            <p class="intro-text">
+                Le sauna n'est pas qu'un luxe, c'est un outil de performance. La chaleur sèche favorise la récupération musculaire, stimule la circulation sanguine et offre une relaxation mentale totale après une séance intense.
+            </p>
+        </section>
+
+        {# --- INFOS & RÈGLES (Grid Cards) --- #}
+        <section class="info-grid">
+            
+            {# Carte 1 : Horaire (Focus Vendredi) #}
+            <article class="info-card highlight-card">
+                <div class="card-icon">🕒</div>
+                <h3>Le Rendez-vous du Vendredi</h3>
+                <p>
+                    Pour bien finir la semaine, le sauna est chauffé et accessible exclusivement le <strong>vendredi</strong> durant les horaires d'ouverture du club.
+                </p>
+                <span class="badge">Accès libre membres</span>
+            </article>
+
+            {# Carte 2 : Capacité #}
+            <article class="info-card">
+                <div class="card-icon">👥</div>
+                <h3>Capacité Limitée</h3>
+                <p>
+                    Afin de garantir le confort et la tranquillité de chacun, l'accès est limité à <strong>4 personnes</strong> simultanément.
+                </p>
+            </article>
+
+            {# Carte 3 : Hygiène #}
+            <article class="info-card">
+                <div class="card-icon">🚿</div>
+                <h3>Hygiène & Sécurité</h3>
+                <p>
+                    Douche obligatoire avant l'entrée. L'utilisation d'une serviette pour s'asseoir est impérative pour le respect des installations.
+                </p>
+            </article>
+
+        </section>
+
+        {# --- BANNIÈRE SANTÉ --- #}
+        <section class="health-banner">
+            <div class="health-content">
+                <div class="icon-warning">⚠️</div>
+                <div class="text-warning">
+                    <h3>Contre-indications</h3>
+                    <p>L'utilisation du sauna est déconseillée aux personnes souffrant de troubles cardiaques, d'hypertension ou de problèmes circulatoires. En cas de doute, demandez l'avis de votre médecin. Pensez à bien vous hydrater après votre séance.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
 {% endblock %}

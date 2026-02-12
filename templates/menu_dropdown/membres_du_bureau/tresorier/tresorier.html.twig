@@ -8,49 +8,81 @@
 
 {% block body %}
 
-<header class="hero-header">
-    <div class="overlay"></div>
-
-        <a href="{{ path('home') }}" class="back-button">
-         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-         </svg>
-         Home
-    </a>
-
-    <!-- Image diagonale sur la droite -->
-    <div class="hero-diagonal-image">
-        <img src="{{ asset('images/menu_dropdown/services_du_club/evenements/1.jpg') }}" alt="Image Musculation Club">
-    </div>
-
-    <!-- Contenu texte -->
-<div class="hero-content">
-        <h1>Trésorier</h1>
-        <p>Le garant de notre équilibre financier. Découvrez celui qui gère les budgets, les subventions et veille scrupuleusement à la bonne santé économique <span>de notre association.</span></p>
-    </div>
-</header>
-
-<section class="tresorier-section">
-    <div class="container">
-        <h2 class="tresorier-title">Présentation</h2>
-
-        <div class="tresorier-content">
-            <div class="tresorier-photo">
-                <img src="{{ asset('images/menu_dropdown/membres_du_bureau/tresorier/tresorier.jpg') }}" alt="Aurore Bertrand">
-            </div>
-
-            <div class="tresorier-text">
-                <p>
-                    Aurore Bertrand est trésorière du CHM Saleux depuis 2025.  
-                    Elle est responsable de la gestion financière du club, veillant à la transparence et à la bonne tenue des comptes.
-                </p>
-
-                <p>
-                    Grâce à son sérieux et son organisation, elle assure le suivi des budgets, des dépenses et des recettes, contribuant au bon fonctionnement et à la pérennité du club.
-                </p>
+    {# --- HEADER IMMERSIF --- #}
+    <header class="page-header">
+        {# Image de fond #}
+        <div class="header-bg" style="background-image: url('{{ asset('images/menu_dropdown/services_du_club/evenements/1.jpg') }}');"></div>
+        <div class="header-overlay"></div>
+        
+        <div class="container header-content">
+            <a href="{{ path('home') }}" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Retour à l'accueil</span>
+            </a>
+            
+            <div class="header-title-box">
+                <span class="subtitle">Gestion & Finances</span>
+                <h1>Le Trésorier</h1>
+                <p>Découvrez celle qui veille à l'équilibre financier et à la pérennité économique de notre association.</p>
             </div>
         </div>
-    </div>
-</section>
+    </header>
 
+    <main class="main-container">
+
+        <section class="profile-card">
+            <div class="profile-grid">
+                
+                {# --- COLONNE PHOTO --- #}
+                <div class="profile-image-wrapper">
+                    <div class="image-frame">
+                        <img src="{{ asset('images/menu_dropdown/membres_du_bureau/tresorier/tresorier.jpg') }}" alt="Aurore Bertrand">
+                    </div>
+                    
+                    {# Badge Ancienneté #}
+                    <div class="badge-since">
+                        <span class="label">En poste depuis</span>
+                        <span class="year">2025</span>
+                    </div>
+                </div>
+
+                {# --- COLONNE TEXTE --- #}
+                <div class="profile-content">
+                    <span class="role-tag">Trésorière du Club</span>
+                    <h2>Aurore Bertrand</h2>
+                    
+                    <div class="bio-text">
+                        <p>
+                            Aurore Bertrand a repris les rênes de la trésorerie du CHM Saleux en 2025. Responsable de la gestion financière, elle occupe un rôle clé en assurant la transparence des comptes et le respect des budgets alloués.
+                        </p>
+                        <p>
+                            Grâce à son sérieux et son organisation, elle permet au club d'investir sereinement dans du nouveau matériel et de financer les déplacements en compétition, garantissant ainsi la pérennité de notre structure.
+                        </p>
+                    </div>
+
+                    {# Points Clés (Focus Gestion) #}
+                    <div class="key-points">
+                        <div class="point-item">
+                            <div class="point-icon">📊</div>
+                            <div class="point-text">
+                                <strong>Gestion Rigoureuse</strong>
+                                <span>Suivi précis des recettes et dépenses.</span>
+                            </div>
+                        </div>
+                        <div class="point-item">
+                            <div class="point-icon">🛡️</div>
+                            <div class="point-text">
+                                <strong>Transparence</strong>
+                                <span>Des comptes clairs pour tous les adhérents.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
 {% endblock %}
