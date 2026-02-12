@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Événements organisés - CHM Saleux{% endblock %}
+{% block title %}Vie du Club & Événements - CHM Saleux{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/menu_dropdown/services_du_club/evenements/evenements.css') }}">
@@ -8,52 +8,97 @@
 
 {% block body %}
 
-<header class="hero-header">
-    <div class="overlay"></div>
-
-        <a href="{{ path('home') }}" class="back-button">
-         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-         </svg>
-         Home
-    </a>
-
-    <!-- Image diagonale sur la droite -->
-    <div class="hero-diagonal-image">
-        <img src="{{ asset('images/menu_dropdown/services_du_club/evenements/1.jpg') }}" alt="Image Musculation Club">
-    </div>
-
-    <!-- Contenu texte -->
-<div class="hero-content">
-        <h1>Vie du Club & Événements</h1>
-        <p>Halloween, Noël, Galette des Rois... La vie du club est aussi rythmée par ces instants festifs. Retrouvez les dates à venir et les souvenirs de ces moments partagés <span>hors des plateaux d'entraînement.</span></p>
-    </div>
-</header>
-
-<section class="evenements-section">
-    <div class="container">
-        <h2 class="evenements-title">Événements à venir</h2>
-
-        <p class="evenements-intro">
-            Le CHM Saleux organise des moments conviviaux pour tous les membres, comme :
-        </p>
-
-        <ul class="evenements-list">
-            <li>La Galette des Rois</li>
-            <li>Le Repas de Noël</li>
-            <li>Pâques</li>
-            <li>Et d’autres événements surprises tout au long de l’année</li>
-        </ul>
-
-        <p>
-            Pour connaître les dates et les détails de chaque événement, restez informés sur nos réseaux sociaux.  
-            L’inscription se fait via le groupe <strong>WhatsApp</strong> du club.
-        </p>
-
-        <div class="evenements-actions">
-            <a href="#" class="btn-primary">Rejoindre le groupe WhatsApp</a>
+    {# --- HEADER IMMERSIF --- #}
+    <header class="page-header">
+        <div class="header-bg" style="background-image: url('{{ asset('images/menu_dropdown/services_du_club/evenements/1.jpg') }}');"></div>
+        <div class="header-overlay"></div>
+        
+        <div class="container header-content">
+            <a href="{{ path('home') }}" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Retour à l'accueil</span>
+            </a>
+            
+            <div class="header-title-box">
+                <span class="subtitle">Convivialité & Partage</span>
+                <h1>La Vie du Club</h1>
+                <p>Parce qu'un club de sport, c'est aussi une famille. Découvrez les moments festifs qui nous rassemblent hors des plateaux d'entraînement.</p>
+            </div>
         </div>
-    </div>
-</section>
+    </header>
 
+    <main class="main-container">
+
+        {# --- SECTION 1 : LES TEMPS FORTS (Cartes) --- #}
+        <section class="events-section">
+            <div class="intro-text text-center">
+                <h2>Nos Rendez-vous Annuels</h2>
+                <p>Tout au long de l'année, le CHM Saleux organise des moments de détente pour souder les liens entre adhérents.</p>
+            </div>
+
+            <div class="events-grid">
+                
+                {# Carte Galette #}
+                <article class="event-card">
+                    <div class="card-icon icon-galette">👑</div>
+                    <div class="card-content">
+                        <h3>La Galette des Rois</h3>
+                        <span class="event-period">Janvier</span>
+                        <p>Pour bien commencer l'année, on tire les rois ! Un moment gourmand pour se retrouver après les fêtes.</p>
+                    </div>
+                </article>
+
+                {# Carte Pâques #}
+                <article class="event-card">
+                    <div class="card-icon icon-paques">🥚</div>
+                    <div class="card-content">
+                        <h3>Pâques</h3>
+                        <span class="event-period">Avril</span>
+                        <p>Chasse aux œufs ou distribution de chocolats, c'est le rendez-vous des gourmands (avant de retourner s'entraîner !).</p>
+                    </div>
+                </article>
+
+                {# Carte Noël #}
+                <article class="event-card">
+                    <div class="card-icon icon-noel">🎁</div>
+                    <div class="card-content">
+                        <h3>Repas de Noël</h3>
+                        <span class="event-period">Décembre</span>
+                        <p>Le grand rassemblement de fin d'année. Repas commun, bonne humeur et célébration de la saison écoulée.</p>
+                    </div>
+                </article>
+
+                {# Carte Surprises #}
+                <article class="event-card">
+                    <div class="card-icon icon-surprise">🎉</div>
+                    <div class="card-content">
+                        <h3>Événements Surprises</h3>
+                        <span class="event-period">Toute l'année</span>
+                        <p>Barbecues, sorties, challenges internes... Nous aimons improviser des moments sympas pour casser la routine.</p>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        {# --- SECTION 2 : RESTER INFORMÉ (Communication) --- #}
+        <section class="communication-section">
+            <div class="comm-box">
+                <div class="comm-icon">
+                    <svg width="40" height="40" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.897.001-6.113 4.974-11.085 11.092-11.085 2.962.002 5.748 1.155 7.842 3.25 2.094 2.094 3.246 4.88 3.245 7.842-.001 6.113-4.976 11.086-11.094 11.086-1.928-.001-3.824-.492-5.526-1.427l-5.659 1.495z"/></svg>
+                </div>
+                <div class="comm-content">
+                    <h3>Ne ratez aucune date !</h3>
+                    <p>
+                        L'organisation des événements, les dates précises et les inscriptions se font exclusivement via nos canaux de communication internes.
+                    </p>
+                    <a href="#" class="btn-whatsapp">Rejoindre le groupe WhatsApp</a>
+                    <span class="sub-note">Réservé aux membres du club</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
 {% endblock %}

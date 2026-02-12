@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Labels du Club - CHM Saleux{% endblock %}
+{% block title %}Labels & Certifications - CHM Saleux{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/menu_dropdown/a_propos_de_notre_club/labels/index.css') }}">
@@ -8,55 +8,106 @@
 
 {% block body %}
 
-<header class="hero-header">
-    <div class="overlay"></div>
-
-        <a href="{{ path('home') }}" class="back-button">
-         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-         </svg>
-         Home
-    </a>
-
-    <!-- Image diagonale sur la droite -->
-    <div class="hero-diagonal-image">
-        <img src="{{ asset('images/menu_dropdown/a_propos_de_notre_club/labels/1.jpg') }}" alt="Image Musculation Club">
-    </div>
-
-    <!-- Contenu texte -->
-<div class="hero-content">
-        <h1>Labels & Certifications</h1>
-        <p>La reconnaissance de notre savoir-faire. De l'école d'haltérophilie au label Sport-Santé, découvrez les certifications qui valident notre engagement pédagogique auprès <span>de tous les publics.</span></p>
-    </div>
-</header>
-
-<section class="labels-section">
-    <div class="container">
-        <h1 class="labels-title">Nos labels actuels</h1>
-
-        <p class="labels-intro">
-            Le CHM Saleux est fier de ses labels qui témoignent de la qualité de son encadrement, de ses formations et de son engagement pour la santé et le bien-être des pratiquants.
-        </p>
-
-        <div class="labels-list">
-            <ul>
-                <li><strong>Label Club Formateur</strong> : reconnaissance de notre excellence dans la formation des jeunes haltérophiles.</li>
-                <li><strong>Label École d'Haltérophilie</strong> : attestant de notre école structurée et adaptée aux différents niveaux.</li>
-                <li><strong>Label Santé Musculation Loisir</strong> : pour les activités de remise en forme et de bien-être ouvertes à tous.</li>
-                                <li><strong>Label Santé Musculation Bien-être</strong> : pour la promotion de la pratique sécurisée et adaptée de la musculation.</li>
-            </ul>
+    {# --- HEADER IMMERSIF --- #}
+    <header class="page-header">
+        <div class="header-bg" style="background-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/labels/1.jpg') }}');"></div>
+        <div class="header-overlay"></div>
+        
+        <div class="container header-content">
+            <a href="{{ path('home') }}" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Retour à l'accueil</span>
+            </a>
+            
+            <div class="header-title-box">
+                <span class="subtitle">Reconnaissance Fédérale</span>
+                <h1>Labels Qualité</h1>
+                <p>Performance, Pédagogie et Santé. Découvrez les certifications officielles qui valident notre expertise auprès de tous les publics.</p>
+            </div>
         </div>
+    </header>
 
-        <div class="labels-info">
-            <p>
-                Ces labels sont délivrés par la Fédération Française d’Haltérophilie, Musculation, Force Athlétique et Culturisme (FFHM) et sont régulièrement contrôlés afin de garantir la qualité de nos programmes et de nos encadrants.
+    <main class="main-container">
+
+        {# --- INTRO --- #}
+        <section class="intro-section">
+            <h2 class="section-heading centered">Nos Distinctions Actuelles</h2>
+            <p class="intro-text">
+                Le CHM Saleux est fier d'afficher ces labels, gages de la qualité de notre encadrement, de la sécurité de nos installations et de notre engagement pour le bien-être de chaque adhérent.
             </p>
+        </section>
 
-            <p>
-                Ils reflètent notre engagement à offrir un environnement sûr, formateur et agréable pour tous nos membres, que ce soit pour la performance, le loisir ou le bien-être.
-            </p>
-        </div>
-    </div>
-</section>
+        {# --- GRILLE DES LABELS --- #}
+        <section class="labels-grid">
+            
+            {# Label 1 #}
+            <article class="label-card">
+                <div class="card-icon">
+                    <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+                </div>
+                <div class="card-content">
+                    <h3>Club Formateur</h3>
+                    <div class="divider"></div>
+                    <p>La reconnaissance de notre excellence dans la formation technique et sportive des jeunes haltérophiles de demain.</p>
+                </div>
+            </article>
 
+            {# Label 2 #}
+            <article class="label-card">
+                <div class="card-icon">
+                    <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" /></svg>
+                </div>
+                <div class="card-content">
+                    <h3>École d'Haltérophilie</h3>
+                    <div class="divider"></div>
+                    <p>Atteste d'une structure pédagogique adaptée, offrant un apprentissage progressif et sécurisé dès le plus jeune âge.</p>
+                </div>
+            </article>
+
+            {# Label 3 #}
+            <article class="label-card">
+                <div class="card-icon">
+                    <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <div class="card-content">
+                    <h3>Musculation Loisir</h3>
+                    <div class="divider"></div>
+                    <p>Pour ceux qui cherchent la remise en forme dans une ambiance détendue. Du matériel de qualité accessible à tous.</p>
+                </div>
+            </article>
+
+            {# Label 4 #}
+            <article class="label-card">
+                <div class="card-icon">
+                    <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                </div>
+                <div class="card-content">
+                    <h3>Musculation Bien-être</h3>
+                    <div class="divider"></div>
+                    <p>La promotion d'une pratique "Santé", sécurisée, encadrée et adaptée aux pathologies ou objectifs spécifiques.</p>
+                </div>
+            </article>
+
+        </section>
+
+        {# --- BLOC FFHM (Crédibilité) --- #}
+        <section class="ffhm-guarantee">
+            <div class="ffhm-box">
+                <div class="ffhm-header">
+                    <div class="badge-check">✔</div>
+                    <h3>Certifié par la FFHM</h3>
+                </div>
+                <p>
+                    Ces labels sont délivrés par la <strong>Fédération Française d’Haltérophilie, Musculation, Force Athlétique et Culturisme</strong>. 
+                    Ils font l'objet de contrôles réguliers pour garantir que nos programmes, notre matériel et nos encadrants respectent les plus hauts standards fédéraux.
+                </p>
+                <div class="ffhm-footer">
+                    Envie d'en savoir plus ? <a href="http://www.ffhaltero.fr" target="_blank">Visiter le site de la FFHM &rarr;</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
 {% endblock %}

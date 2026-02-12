@@ -8,49 +8,72 @@
 
 {% block body %}
 
-<header class="hero-header">
-    <div class="overlay"></div>
-
-        <a href="{{ path('home') }}" class="back-button">
-         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-         </svg>
-         Home
-    </a>
-
-    <!-- Image diagonale sur la droite -->
-    <div class="hero-diagonal-image">
-        <img src="{{ asset('images/menu_dropdown/services_du_club/evenements/1.jpg') }}" alt="Image Musculation Club">
-    </div>
-
-    <!-- Contenu texte -->
-<div class="hero-content">
-        <h1>Président</h1>
-        <p>Qui se cache derrière la gestion du club ? Apprenez-en plus sur notre président, son engagement bénévole et ses projets <span>pour le développement du club.</span></p>
-    </div>
-</header>
-
-<section class="president-section">
-    <div class="container">
-        <h2 class="president-title">Présentation</h2>
-
-        <div class="president-content">
-            <div class="president-photo">
-                <img src="{{ asset('images/menu_dropdown/membres_du_bureau/president/president.jpg') }}" alt="Président CHM Saleux">
-            </div>
-
-            <div class="president-text">
-                <p>
-                    Monsieur Florian ROHAUT est le président du CHM Saleux depuis 2015.  
-                    Passionné de sport et engagé dans la vie associative, il veille au bon fonctionnement du club et à la qualité des activités proposées aux membres.
-                </p>
-
-                <p>
-                    Fort de son expérience , il met son énergie et sa vision au service du club afin de favoriser la convivialité, le dépassement de soi et le bien-être de tous les membres.
-                </p>
+    {# --- HEADER IMMERSIF --- #}
+    <header class="page-header">
+        {# Image de fond #}
+        <div class="header-bg" style="background-image: url('{{ asset('images/menu_dropdown/services_du_club/evenements/1.jpg') }}');"></div>
+        <div class="header-overlay"></div>
+        
+        <div class="container header-content">
+            <a href="{{ path('home') }}" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Retour à l'accueil</span>
+            </a>
+            
+            <div class="header-title-box">
+                <span class="subtitle">Direction & Engagement</span>
+                <h1>Le Mot du Président</h1>
+                <p>Découvrez le parcours et la vision de celui qui pilote le CHM Saleux avec passion et bénévolat.</p>
             </div>
         </div>
-    </div>
-</section>
+    </header>
 
+    <main class="main-container">
+
+        <section class="profile-card">
+            <div class="profile-grid">
+                
+                {# --- COLONNE PHOTO --- #}
+                <div class="profile-image-wrapper">
+                    <div class="image-frame">
+                        <img src="{{ asset('images/menu_dropdown/membres_du_bureau/president/president.jpg') }}" alt="Florian ROHAUT">
+                    </div>
+                    
+                    {# Badge Ancienneté #}
+                    <div class="badge-since">
+                        <span class="label">Président depuis</span>
+                        <span class="year">2015</span>
+                    </div>
+                </div>
+
+                {# --- COLONNE TEXTE --- #}
+                <div class="profile-content">
+                    <span class="role-tag">Bénévole & Passionné</span>
+                    <h2>Florian ROHAUT</h2>
+                    
+                    <div class="bio-text">
+                        <p>
+                            Florian ROHAUT est le président du CHM Saleux depuis 2015. Passionné de sport et profondément attaché aux valeurs associatives, il veille au quotidien au bon fonctionnement du club et à la qualité des activités proposées à nos adhérents.
+                        </p>
+                    </div>
+
+                    {# Bloc Citation / Vision #}
+                    <blockquote class="vision-quote">
+                        <svg class="quote-icon" width="40" height="40" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.896 14.321 15.923 14.932 15.084C15.542 14.244 16.275 13.52 17.132 12.912L19.999 11L19.999 7L16.999 9C15.999 9.667 15.333 10.333 14.999 11C14.665 11.667 14.499 12.667 14.499 14L10.999 14L10.999 21L14.017 21ZM5.01697 21L5.01697 18C5.01697 16.896 5.32097 15.923 5.93197 15.084C6.54297 14.244 7.27497 13.52 8.13197 12.912L10.999 11L10.999 7L7.99897 9C6.99897 9.667 6.33297 10.333 5.99897 11C5.66497 11.667 5.49897 12.667 5.49897 14L1.99897 14L1.99897 21L5.01697 21Z"/></svg>
+                        <p>
+                            "Fort de mon expérience, je mets mon énergie au service du collectif. Mon objectif est simple : favoriser la convivialité, encourager le dépassement de soi et garantir le bien-être de chacun au sein du club."
+                        </p>
+                    </blockquote>
+
+                    <div class="signature">
+                        Florian Rohaut
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
 {% endblock %}

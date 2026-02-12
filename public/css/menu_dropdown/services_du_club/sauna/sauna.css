@@ -1,321 +1,222 @@
-.overlay {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			z-index: 0;
-		}
+/* --- VARIABLES --- */
+:root {
+    --heat-color: #e67e22; /* Orange "Sauna" / Chaleur */
+    --wood-dark: #5d4037; /* Marron foncé pour le texte */
+    --dark-bg: #111;
+    --text-main: #333;
+    --text-muted: #666;
+    --bg-light: #fffcf8; /* Fond très légèrement crème/chaud */
+    --border-radius: 12px;
+    --shadow-card: 0 10px 30px rgba(0,0,0,0.06);
+}
 
-.hero-header {
+body {
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+}
+
+/* --- HEADER --- */
+.page-header {
     position: relative;
-    margin-top: 120px;
-    width: 100%;
-    height: 65vh; /* ajustable */
-    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    height: 50vh;
+    min-height: 350px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    overflow: hidden;
-    /* diagonale sur le bas */
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
+    color: white;
+    margin-bottom: 80px;
 }
 
-
-/* Fond flou + filtre bleu foncé */
-.hero-header::before {
-    content: "";
+.header-bg {
     position: absolute;
-    inset: 0;
-    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
-    filter: blur(40px);
-    transform: scale(4.1);
-    z-index: 0; /* derrière le texte */
-}
-
-/* Filtre bleu foncé */
-.hero-header::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 41, 82, 0.65); /* ← bleu plus foncé */
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-size: cover;
+    background-position: center;
     z-index: 1;
 }
 
-/* Image décorative diagonale sur la droite du hero */
-.hero-diagonal-image {
+.header-overlay {
     position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;          /* occupe toute la hauteur du hero */
-    width: 55%;            /* moitié droite du hero */
-    overflow: hidden;
-    z-index: 2;            /* au-dessus du fond mais derrière le texte si nécessaire */
-    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%); /* diagonale */
+    top: 0; left: 0; right: 0; bottom: 0;
+    /* Dégradé Ambre/Noir pour l'ambiance chaleureuse */
+    background: linear-gradient(45deg, rgba(0,0,0,0.9), rgba(230, 126, 34, 0.4));
+    z-index: 2;
 }
 
-.hero-diagonal-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    filter: drop-shadow(0 0 10px rgba(0,0,0,0.3)); /* optionnel : ombre douce */
-    transform: scale(1.1); /* léger zoom pour mieux couvrir le clip-path */
-}
-
-/* Contenu visible au-dessus */
-.hero-header > .hero-content {
+.header-content {
     position: relative;
-    z-index: 2; /* texte au-dessus du fond */
+    z-index: 3;
+    width: 100%;
+    top:65px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-		.hero-content {
-			position: relative;
-			z-index: 1;
-			margin-top: 100px;
-		}
-
-		.hero-content h1 {
-			font-size: 2.5rem;
-			font-weight: 800;
-			max-width: 800px;
-			text-align: left;
-            text-transform: uppercase;
-			margin: 0 0 1rem;
-			color: white;
-			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-			margin-right:1140px;
-			margin-top: -180px;
-			letter-spacing: 2px;
-		}
-		.hero-content p {
-			font-size: 1.1rem;
-			line-height: 1.8;
-			color: #CBD5E1;
-			margin-bottom: 2rem;
-            max-width: 570px;
-            margin-right: 660px;
-            text-align: left;
-		}	
-
-        /* Le bouton Retour */
-.back-button {
-    /* 1. POSITIONNEMENT : On le sort du flux pour le mettre en haut à gauche */
-    position: absolute; 
-    top: 35px;      /* Espace depuis le haut */
-    left: 100px;     /* Espace depuis la gauche */
-    
-    /* 2. COUCHE : On le force à passer au-dessus du filtre bleu (qui est à 1) */
-    z-index: 10;    
-    
+.back-link {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    font-weight: 500;
+    color: white;
     text-decoration: none;
-    
-    /* 3. COULEUR : On met blanc car le fond est sombre */
-    color: #ffffff; 
-    
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    font-weight: 600;
+    margin-bottom: 20px;
+    opacity: 0.8;
+    transition: opacity 0.3s;
 }
+.back-link:hover { opacity: 1; }
+.back-link svg { margin-right: 8px; }
 
-/* ===============================
-   SECTION SAUNA
-================================ */
-
-.sauna-section {
-    padding: 80px 20px;
-    color: #fff;
-}
-
-.sauna-section .container {
-    max-width: 900px;
-    margin: 0 auto;
-    text-align: left;
-}
-
-.sauna-title {
-    font-size: 2.2rem;
+.header-title-box h1 {
+    font-size: 3.5rem;
     font-weight: 900;
-    margin-bottom: 30px;
-    text-align: center;
+    margin: 10px 0;
+    line-height: 1.1;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+.subtitle {
     text-transform: uppercase;
-    color: #1e293b;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    background: var(--heat-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
 }
 
-.sauna-intro {
-    font-size: 1.05rem;
-    font-weight: 500;
-    margin-bottom: 30px;
+/* --- MAIN CONTAINER --- */
+.main-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+}
+
+/* --- INTRO --- */
+.intro-section {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 60px;
+}
+
+.section-heading {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: var(--wood-dark);
+    position: relative;
+    display: inline-block;
+}
+.section-heading::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 4px;
+    background: var(--heat-color);
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+.intro-text {
+    font-size: 1.1rem;
+    color: var(--text-muted);
     line-height: 1.6;
 }
 
-.sauna-section p {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: #475569;
-    margin-bottom: 20px;
+/* --- INFO GRID --- */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
 }
 
-/* Boutons */
-.sauna-actions {
+.info-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 30px;
+    text-align: center;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.3s;
+    border: 1px solid #f0e6dd;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--heat-color);
+}
+
+/* Carte mise en avant (Vendredi) */
+.highlight-card {
+    border-top: 5px solid var(--heat-color);
+    background: #fffdf9;
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.info-card h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--wood-dark);
+}
+
+.info-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0 0 15px 0;
+}
+
+.badge {
+    display: inline-block;
+    background: var(--heat-color);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+}
+
+/* --- HEALTH BANNER --- */
+.health-banner {
+    background: #fdf2f2; /* Fond rouge très pâle */
+    border-left: 5px solid #dc3545; /* Rouge alerte */
+    padding: 30px;
+    border-radius: var(--border-radius);
     margin-top: 40px;
+}
+
+.health-content {
     display: flex;
     gap: 20px;
-    justify-content: center;
+    align-items: flex-start;
 }
 
-.btn-primary {
-    padding: 12px 28px;
-    font-size: 1rem;
-    font-weight: 800;
-    text-decoration: none;
-    text-transform: uppercase;
-    border-radius: 4px;
-    transition: 0.3s;
-    background: #005b94;
-    color: white;
+.icon-warning {
+    font-size: 2rem;
+    flex-shrink: 0;
 }
 
-.btn-primary:hover {
-   filter: brightness(1.2);
-    /* Une ombre très discrète pour le relief */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); 
+.text-warning h3 {
+    margin: 0 0 5px 0;
+    color: #dc3545;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+.text-warning p {
+    margin: 0;
+    color: #8a2be2;
+    color: #555;
+    font-size: 0.9rem;
+    line-height: 1.5;
 }
 
-/* ==========================================================
-   📱 MOBILE RESPONSIVE (MAX-WIDTH: 900px)
-   ========================================================== */
-
+/* --- RESPONSIVE --- */
 @media (max-width: 900px) {
-
-    
-  .hero-header {
-    padding-top: 140px;
-    margin-top: 0;
-    height: auto;
-    min-height: 100vh;
-    background: transparent;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    clip-path: none;
-  }
-
-  .hero-header::before,
-  .hero-header::after {
-    display: block !important;
-    position: absolute;
-    inset: 0;
-    height: 100%;
-  }
-
-  /* --- Bouton retour aligné strict à gauche --- */
-  .back-button {
-    top: 130px !important;
-    left: 25px !important;
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-    backdrop-filter: none !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    color: #ffffff !important;
-    z-index: 1000;
-  }
-
-  /* --- Texte du hero --- */
-  .hero-content {
-    order: 1;
-    position: relative;
-    z-index: 10;
-    width: 100%;
-    padding: 0 25px;
-    text-align: left;
-    margin-bottom: 20px;
-    margin-top: 50px !important; /* espace sous le bouton */
-  }
-
-  .hero-content h1 {
-    font-size: 2.2rem;
-    line-height: 1.2;
-    margin: 0 0 20px 0;
-
-    /* reset desktop */
-    margin-left: 7px !important;
-    margin-right: 0 !important;
-    margin-top: 0 !important;
-    max-width: 100%;
-  }
-
-  .hero-content p {
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1.6;
-
-    /* reset desktop */
-    margin-right: 0 !important;
-    max-width: 100% !important;
-    margin-bottom: 30px;
-    text-align: left;
-  }
-
-  /* --- Image du bas (portrait-friendly) --- */
-  .hero-diagonal-image {
-    order: 2;
-    position: relative !important;
-    display: block !important;
-    width: 100%;
-    height: 280px;
-    margin-top: auto;
-    z-index: 5;
-    overflow: hidden;
-    clip-path: polygon(0 15%, 100% 0, 100% 100%, 0% 100%);
-  }
-
-  .hero-diagonal-image img {
-    object-fit: cover;
-    width: 100%;
-    height: 90%;
-    object-position: center center;
-    transform: scale(1.8);
-    filter: none;
-  }
-    /* --- 2. SECTION SAUNA (CONTENU) --- */
-    
-    .sauna-section {
-        padding: 50px 20px;
-    }
-
-    .sauna-title {
-        font-size: 1.8rem;
-        margin-bottom: 25px;
-        text-align: left; /* Alignement gauche plus naturel sur mobile */
-    }
-
-    .sauna-intro, 
-    .sauna-section p {
-        font-size: 1rem;
-        text-align: left;
-    }
-
-    /* --- 3. ACTIONS (BOUTONS) --- */
-    
-    .sauna-actions {
-        flex-direction: column; /* Boutons empilés */
-        gap: 15px;
-        margin-top: 30px;
-    }
-
-    .btn-primary {
-        width: 100%; /* Pleine largeur pour le confort tactile */
-        text-align: center;
-        padding: 15px 20px;
-        font-size: 1.1rem;
-    }
+    .header-title-box h1 { font-size: 2.5rem; }
+    .health-content { flex-direction: column; text-align: center; align-items: center; }
 }
