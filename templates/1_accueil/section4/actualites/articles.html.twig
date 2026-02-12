@@ -1,137 +1,168 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Actualités{% endblock %}
+{% block title %}Actualités du Club{% endblock %}
 
 {% block stylesheets %}
-	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('css/accueil/section4/actualites/articles.css') }}">
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/accueil/section4/actualites/articles.css') }}">
 {% endblock %}
 
 {% block body %}
-<main>
-	<section class="page-banner">
-		<h1>Actualités</h1>
-	</section>
-	
-	<section class="filter-bar">
-		<form method="get" action="{{ path('actualites', {'page': 1}) }}">
 
-			{# ----- FILTRE CATEGORIES (STRING) ----- #}
-			<select name="categorie">
-				<option value="">Toutes les catégories</option>
-				{% for cat in categories %}
-					<option value="{{ cat }}" {% if filters.categorie is defined and filters.categorie == cat %}selected{% endif %}>
-						{{ cat|capitalize }}
-					</option>
-				{% endfor %}
-			</select>
+    {# --- HEADER IMMERSIF (Style cohérent avec les autres pages) --- #}
+    <header class="page-header">
+        {# Tu peux changer l'image ici par une image générique du club ou de news #}
+        <div class="header-bg" style="background-image: url('{{ asset('images/competitions/1.jpg') }}');"></div>
+        <div class="header-overlay"></div>
+        
+        <div class="container header-content">
+            <div class="header-title-box">
+                <span class="subtitle">Informations & Événements</span>
+                <h1>Actualités</h1>
+                <p>Restez informé des derniers résultats, des événements à venir et de la vie du club.</p>
+            </div>
+        </div>
+    </header>
 
-			{# ----- DATE DE ----- #}
-			<div class="date-input">
-				<label for="date_from">De :</label>
-				<div class="input-wrapper">
-					<input type="date" id="date_from" name="date_from" value="{{ filters.date_from ?? '' }}">
-					<span class="clear-icon" onclick="clearDate('date_from')">×</span>
-				</div>
-			</div>
+    <div class="main-container">
 
-			{# ----- DATE À ----- #}
-			<div class="date-input">
-				<label for="date_to">À :</label>
-				<div class="input-wrapper">
-					<input type="date" id="date_to" name="date_to" value="{{ filters.date_to ?? '' }}">
-					<span class="clear-icon" onclick="clearDate('date_to')">×</span>
-				</div>
-			</div>
+        {# --- BARRE DE FILTRES MODERNE --- #}
+        <section class="filters-container">
+            <form method="get" action="{{ path('actualites', {'page': 1}) }}" class="filter-bar">
+                
+                {# Groupe : Catégorie #}
+                <div class="filter-group">
+                    <label>Filtrer par</label>
+                    <div class="select-wrapper">
+                        <select name="categorie">
+                            <option value="">Toutes les catégories</option>
+                            {% for cat in categories %}
+                                <option value="{{ cat }}" {% if filters.categorie is defined and filters.categorie == cat %}selected{% endif %}>
+                                    {{ cat|capitalize }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                </div>
 
-			<button type="submit">Rechercher</button>
-		</form>
-	</section>
+                {# Groupe : Dates #}
+                <div class="filter-dates">
+                    <div class="date-input-group">
+                        <label for="date_from">Du</label>
+                        <input type="date" id="date_from" name="date_from" value="{{ filters.date_from ?? '' }}">
+                    </div>
+                    
+                    <div class="date-separator">au</div>
 
-	<section class="actualites-section">
-		{% if articles is not empty %}
-			<ul class="news-grid">
-				{% for article in articles %}
-					<li class="news-card">
-						<img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}">
-						<div class="news-info">
+                    <div class="date-input-group">
+                        <label for="date_to">Au</label>
+                        <input type="date" id="date_to" name="date_to" value="{{ filters.date_to ?? '' }}">
+                    </div>
+                </div>
 
-							<span class="news-category">
-								{{ article.categorie ? article.categorie|upper : 'SANS CATÉGORIE' }}
-							</span>
+                {# Boutons #}
+                <div class="filter-actions">
+                    <button type="submit" class="btn-search">
+                        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        Rechercher
+                    </button>
+                    
+                    {# Lien Reset optionnel si des filtres sont actifs #}
+                    {% if filters.categorie or filters.date_from or filters.date_to %}
+                        <a href="{{ path('actualites') }}" class="btn-reset">Réinitialiser</a>
+                    {% endif %}
+                </div>
+            </form>
+        </section>
 
-							<h3>{{ article.title }}</h3>
+        {# --- GRILLE D'ARTICLES --- #}
+        <section class="news-section">
+            {% if articles is not empty %}
+                <div class="news-grid">
+                    {% for article in articles %}
+                        <article class="news-card">
+                            <div class="card-image-wrapper">
+                                <img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}" loading="lazy">
+                                <span class="card-category-badge">
+                                    {{ article.categorie ? article.categorie|capitalize : 'Info' }}
+                                </span>
+                            </div>
+                            
+                            <div class="card-content">
+                                <div class="card-meta">
+                                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                    {{ article.publishedAt|date('d/m/Y') }}
+                                </div>
 
-							<p>
-								{{ article.description|length > 130 
-									? article.description|slice(0,130) ~ '...' 
-									: article.description 
-								}}
-							</p>
+                                <h3>
+                                    <a href="{{ path('article_show', {'id': article.id}) }}">{{ article.title }}</a>
+                                </h3>
 
-							<span class="news-date">{{ article.publishedAt|date('d/m/Y') }}</span>
-							<a href="{{ path('article_show', {'id': article.id}) }}">Lire la suite</a>
-						</div>
-					</li>
-				{% endfor %}
-			</ul>
+                                <p class="card-excerpt">
+                                    {{ article.description|striptags|slice(0, 120) ~ '...' }}
+                                </p>
 
-			{# ----- PAGINATION ----- #}
-			<div class="pagination">
-				{% set query = {
-					'categorie': filters.categorie,
-					'date_from': filters.date_from,
-					'date_to': filters.date_to
-				} %}
+                                <a href="{{ path('article_show', {'id': article.id}) }}" class="read-more-link">
+                                    Lire la suite &rarr;
+                                </a>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
 
-				{# Précédent #}
-				{% if page > 1 %}
-					<a href="{{ path('actualites', query|merge({'page': page - 1})) }}" class="page-arrow">&lsaquo;</a>
-				{% else %}
-					<span class="page-arrow disabled">&lsaquo;</span>
-				{% endif %}
+                {# --- PAGINATION MODERNE --- #}
+                <div class="pagination-wrapper">
+                    <div class="pagination">
+                        {% set query = filters %}
 
-				{# Pages visibles #}
-				{% set start = (page > 3) ? page - 2 : 1 %}
-				{% set end = (page < totalPages - 2) ? page + 2 : totalPages %}
+                        {# Précédent #}
+                        <a href="{{ page > 1 ? path('actualites', query|merge({'page': page - 1})) : '#' }}" class="page-link prev {{ page <= 1 ? 'disabled' : '' }}">
+                            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                        </a>
 
-				{% if start > 1 %}
-					<a href="{{ path('actualites', query|merge({'page': 1})) }}">1</a>
-					{% if start > 2 %}
-						<span class="dots">...</span>
-					{% endif %}
-				{% endif %}
+                        {# Pages (Logique simplifiée pour l'affichage) #}
+                        {% set start = (page > 3) ? page - 2 : 1 %}
+                        {% set end = (page < totalPages - 2) ? page + 2 : totalPages %}
 
-				{% for i in start..end %}
-					{% if i == page %}
-						<span class="current">{{ i }}</span>
-					{% else %}
-						<a href="{{ path('actualites', query|merge({'page': i})) }}">{{ i }}</a>
-					{% endif %}
-				{% endfor %}
+                        {% if start > 1 %}
+                            <a href="{{ path('actualites', query|merge({'page': 1})) }}" class="page-link">1</a>
+                            {% if start > 2 %}<span class="page-dots">...</span>{% endif %}
+                        {% endif %}
 
-				{% if end < totalPages %}
-					{% if end < totalPages - 1 %}
-						<span class="dots">...</span>
-					{% endif %}
-					<a href="{{ path('actualites', query|merge({'page': totalPages})) }}">{{ totalPages }}</a>
-				{% endif %}
+                        {% for i in start..end %}
+                            {% if i == page %}
+                                <span class="page-link active">{{ i }}</span>
+                            {% else %}
+                                <a href="{{ path('actualites', query|merge({'page': i})) }}" class="page-link">{{ i }}</a>
+                            {% endif %}
+                        {% endfor %}
 
-				{# Suivant #}
-				{% if page < totalPages %}
-					<a href="{{ path('actualites', query|merge({'page': page + 1})) }}" class="page-arrow">&rsaquo;</a>
-				{% else %}
-					<span class="page-arrow disabled">&rsaquo;</span>
-				{% endif %}
-			</div>
+                        {% if end < totalPages %}
+                            {% if end < totalPages - 1 %}<span class="page-dots">...</span>{% endif %}
+                            <a href="{{ path('actualites', query|merge({'page': totalPages})) }}" class="page-link">{{ totalPages }}</a>
+                        {% endif %}
 
-		{% else %}
-			<p style="text-align:center; color:#777;">Aucune actualité pour le moment.</p>
-		{% endif %}
-	</section>
-</main>
+                        {# Suivant #}
+                        <a href="{{ page < totalPages ? path('actualites', query|merge({'page': page + 1})) : '#' }}" class="page-link next {{ page >= totalPages ? 'disabled' : '' }}">
+                            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                        </a>
+                    </div>
+                </div>
+
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">📰</div>
+                    <h3>Aucune actualité trouvée</h3>
+                    <p>Essayez de modifier vos filtres de recherche.</p>
+                    <a href="{{ path('actualites') }}" class="btn-reset">Voir toutes les actus</a>
+                </div>
+            {% endif %}
+        </section>
+
+    </div>
 {% endblock %}
 
 {% block javascripts %}
-	<script src="{{ asset('js/accueil/section4/actualites/articles.js') }}"></script>
+    <script src="{{ asset('js/accueil/section4/actualites/articles.js') }}"></script>
 {% endblock %}
