@@ -11,6 +11,7 @@
     padding-top: 60px;
     font-family: "Inter", sans-serif;
     overflow-x: hidden; /* Sécurité pour éviter le scroll horizontal */
+    position: relative;
 }
 
 .footer-chm h3,
@@ -118,6 +119,25 @@
 .newsletter {
     display: flex;
     flex-direction: column;
+    position: relative; /* Important pour le positionnement du turnstile */
+}
+
+/* --- FIX TURNSTILE CLOUDFLARE --- */
+/* Le widget est caché visuellement mais reste actif dans le DOM */
+.cf-turnstile-newsletter,
+.cf-turnstile {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    z-index: -1000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    clip: rect(0, 0, 0, 0) !important;
+    left: 0;
+    bottom: 0;
 }
 
 .newsletter-inputs {
@@ -290,107 +310,6 @@
 
 .footer-right a:hover {
     color: #f97316;
-}
-
-<<<<<<<<< Temporary merge branch 1
-/* =========================================================
-   RESPONSIVE (AMÉLIORÉ)
-========================================================= */
-
-/* Tablette et petits écrans PC */
-@media (max-width: 1100px) {
-    .footer-main {
-        /* On passe les colonnes en auto-fit mais on assure que ça ne casse pas */
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 40px;
-    }
-    
-    .footer-brand {
-        /* CRUCIAL : on enlève la marge droite qui pousse tout */
-        margin-right: 0; 
-    }
-}
-
-/* Mobile Large (Tablette portrait / Gros téléphones) */
-@media (max-width: 850px) {
-    .payments-inner {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .social-icons {
-        justify-content: center;
-    }
-    
-    .footer-main {
-        padding: 0 20px; /* Réduit un peu le padding latéral */
-    }
-}
-
-/* Vrai Mobile (Smartphones) */
-@media (max-width: 650px) {
-    .footer-main {
-        /* On passe en 1 seule colonne centrée */
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 40px;
-    }
-
-    .footer-brand {
-        margin-right: 0;
-        align-items: center;
-    }
-
-    .footer-column {
-        align-items: center; /* Centre les liens */
-    }
-
-    /* Newsletter en colonne pour avoir de la place */
-    .newsletter-inputs {
-        flex-direction: column;
-        width: 100%;
-    }
-    
-    .button-wrap {
-        width: 100%; /* Conteneur bouton pleine largeur */
-        display: block;
-    }
-
-    button.btn-newsletter {
-        width: 100%; /* Bouton pleine largeur */
-        box-sizing: border-box; /* Important pour que le padding ne dépasse pas */
-    }
-
-    .footer-bottom {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-        padding-bottom: 30px;
-    }
-
-    .footer-right a {
-        margin-left: 0;
-        margin: 0 8px;
-        display: inline-block;
-    }
-    
-    .newsletter-footer-text {
-        margin-left: 0; /* Centre le petit texte RGPD */
-    }
-}
-=========
->>>>>>>>> Temporary merge branch 2
-
-/* Cacher le Turnstile (Cloudflare) pour la newsletter */
-.cf-turnstile-newsletter {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    overflow: hidden !important;
-    clip: rect(0 0 0 0) !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
 }
 
 /* ============================
@@ -597,12 +516,10 @@ button.btn-newsletter:active::after {
 
 button.btn-newsletter .btn-text::after {
     display: none !important;
-<<<<<<<<< Temporary merge branch 1
 }
-=========
-}
+
 /* =========================================================
-   ✅ FOOTER — RESPONSIVE PRO (override)
+   ✅ FOOTER — RESPONSIVE PRO (Version cleanée et conservée)
 ========================================================= */
 
 /* Tablette / mobile large */
@@ -753,4 +670,3 @@ button.btn-newsletter .btn-text::after {
     font-size: 1rem;
   }
 }
->>>>>>>>> Temporary merge branch 2
