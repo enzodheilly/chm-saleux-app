@@ -1,116 +1,143 @@
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Haltérophilie - CHM Saleux{% endblock %}
+{% block title %}Plateau Haltérophilie - CHM Saleux{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/nos_pratiques/halterophilie.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}
 
 {% block body %}
 
-<header class="hero-header">
-    <div class="overlay"></div>
-
-    <!-- Image diagonale -->
-    <div class="hero-diagonal-image">
-        <img src="{{ asset('images/nos_pratiques/halterophilie/1.jpg') }}" alt="Haltérophilie CHM Saleux">
-    </div>
-
-    <!-- Texte de présentation -->
-    <div class="hero-content">
-        <h1>HALTÉROPHILIE</h1>
-        <p>Force, explosivité, technique : découvrez la discipline olympique du CHM Saleux.</p>
-    </div>
-</header>
-
-
-<section class="practice-detail">
-    <div class="container">
+    {# --- HEADER IMMERSIF --- #}
+    <header class="page-header">
+        <div class="header-bg" style="background-image: url('{{ asset('images/nos_pratiques/halterophilie/1.jpg') }}');"></div>
+        <div class="header-overlay"></div>
         
-        <h1>Haltérophilie</h1>
-        <p class="practice-intro">
-            Notre espace haltérophilie est conçu pour offrir des conditions d’entraînement dignes des salles spécialisées.
-            Les athlètes, du débutant au compétiteur, y trouvent un matériel adapté et des entraîneurs qualifiés.
-        </p>
+        <div class="container header-content">
+            <a href="{{ path('home') }}" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i> Retour à l'accueil
+            </a>
+            
+            <div class="header-title-box">
+                <span class="subtitle">Discipline Olympique</span>
+                <h1>Espace Haltérophilie</h1>
+                <p>Un plateau technique complet, conçu pour la performance et sécurisé pour l'apprentissage. Entraînez-vous dans des conditions optimales.</p>
+            </div>
+        </div>
+    </header>
 
-        <!-- Zone Podiums -->
-        <section class="zone-section" id="podiums">
-            <h2>Podiums & Plateformes</h2>
-            <img src="{{ asset('images/halterophilie/podiums.jpg') }}" alt="Podiums Haltérophilie">
+    <main class="main-container">
 
-            <h3>Équipements :</h3>
-            <ul>
-                <li>3 à 5 plateformes d’haltérophilie</li>
-                <li>Dalles amortissantes</li>
-                <li>Espace sécurisé pour les barres tombées</li>
-            </ul>
-
-            <h3>Travail possible :</h3>
-            <ul>
-                <li>Arraché (Snatch)</li>
-                <li>Épaulé-jeté (Clean & Jerk)</li>
-                <li>Tirages techniques</li>
-                <li>Travail d’explosivité</li>
-            </ul>
-
-            <p class="zone-text">
-                Un espace conçu pour absorber les chocs et permettre un entraînement technique et sécurisé.
+        {# --- INTRO --- #}
+        <section class="intro-section">
+            <h2 class="section-heading centered">L'Excellence du Matériel</h2>
+            <p class="intro-text">
+                Que vous soyez débutant apprenant le geste ou compétiteur préparant les championnats, notre espace est équipé pour répondre aux standards fédéraux.
             </p>
         </section>
 
-
-        <!-- Zone Barres & Disques -->
-        <section class="zone-section" id="barres">
-            <h2>Barres & Disques</h2>
-            <img src="{{ asset('images/halterophilie/barres.jpg') }}" alt="Barres Haltérophilie">
-
-            <h3>Équipements :</h3>
-            <ul>
-                <li>Barres olympiques hommes (20 kg)</li>
-                <li>Barres olympiques femmes (15 kg)</li>
-                <li>Barres techniques aluminium</li>
-                <li>Disques bumper (5 à 25 kg)</li>
-                <li>Disques compétition IWF</li>
-            </ul>
-
-            <h3>Travail possible :</h3>
-            <ul>
-                <li>Progressions techniques</li>
-                <li>Travail de charge contrôlée</li>
-                <li>Préparation à la compétition</li>
-            </ul>
-
-            <p class="zone-text">
-                Le matériel officiel garantit une progression fluide et une préparation optimale aux compétitions.
-            </p>
+        {# --- ZONE 1 : PODIUMS --- #}
+        <section class="zone-split">
+            <div class="zone-image">
+                <div class="image-frame">
+                    {# Image placeholder si l'image spécifique n'existe pas encore #}
+                    <img src="{{ asset('images/halterophilie/podiums.jpg') }}" alt="Plateaux d'haltérophilie" loading="lazy">
+                </div>
+            </div>
+            <div class="zone-content">
+                <div class="zone-badge">Zone Technique</div>
+                <h2>Podiums & Plateformes</h2>
+                <p>
+                    Le cœur de la pratique. Nos plateformes spécifiques permettent de chuter sous la barre en toute confiance et d'amortir les charges lourdes.
+                </p>
+                
+                <div class="specs-grid">
+                    <div class="spec-column">
+                        <h3><i class="fa-solid fa-layer-group"></i> Équipements</h3>
+                        <ul>
+                            <li>3 à 5 Plateformes officielles</li>
+                            <li>Dalles amortissantes haute densité</li>
+                            <li>Espace sécurisé (Drop Zone)</li>
+                        </ul>
+                    </div>
+                    <div class="spec-column">
+                        <h3><i class="fa-solid fa-dumbbell"></i> Travail</h3>
+                        <ul>
+                            <li>Arraché (Snatch)</li>
+                            <li>Épaulé-Jeté (Clean & Jerk)</li>
+                            <li>Tirages lourds</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </section>
 
-
-        <!-- Zone Accessoires -->
-        <section class="zone-section" id="accessoires">
-            <h2>Accessoires & Renfo</h2>
-            <img src="{{ asset('images/halterophilie/accessoires.jpg') }}" alt="Accessoires Haltérophilie">
-
-            <h3>Équipements :</h3>
-            <ul>
-                <li>Ceintures de maintien</li>
-                <li>Blocks d’arraché</li>
-                <li>Bandes de poignets / genoux</li>
-                <li>Bancs et supports techniques</li>
-            </ul>
-
-            <h3>Travail possible :</h3>
-            <ul>
-                <li>Renforcement spécifique</li>
-                <li>Mobilité & stabilité</li>
-                <li>Préparation physique générale</li>
-            </ul>
-
-            <p class="zone-text">
-                Idéal pour travailler la technique, la mobilité et le renforcement spécifique lié à l’haltérophilie.
-            </p>
+        {# --- ZONE 2 : BARRES (Inversé) --- #}
+        <section class="zone-split reversed">
+            <div class="zone-image">
+                <div class="image-frame">
+                    <img src="{{ asset('images/halterophilie/barres.jpg') }}" alt="Barres olympiques" loading="lazy">
+                </div>
+            </div>
+            <div class="zone-content">
+                <div class="zone-badge">Matériel IWF</div>
+                <h2>Barres & Disques</h2>
+                <p>
+                    La qualité du roulement et la précision du calibrage sont essentielles. Nous mettons à disposition du matériel de compétition et d'entraînement.
+                </p>
+                
+                <div class="specs-grid">
+                    <div class="spec-column">
+                        <h3><i class="fa-solid fa-bars"></i> Gamme</h3>
+                        <ul>
+                            <li>Barres Hommes (20kg)</li>
+                            <li>Barres Femmes (15kg)</li>
+                            <li>Barres Techniques Alu (Initiation)</li>
+                        </ul>
+                    </div>
+                    <div class="spec-column">
+                        <h3><i class="fa-solid fa-circle-notch"></i> Charges</h3>
+                        <ul>
+                            <li>Disques Bumper (Entraînement)</li>
+                            <li>Disques Compétition (Précision)</li>
+                            <li>Micro-charges pour la progression</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </section>
-    </div>
-</section>
 
+        {# --- ZONE 3 : ACCESSOIRES --- #}
+        <section class="zone-split">
+            <div class="zone-image">
+                <div class="image-frame">
+                    <img src="{{ asset('images/halterophilie/accessoires.jpg') }}" alt="Accessoires renforcement" loading="lazy">
+                </div>
+            </div>
+            <div class="zone-content">
+                <div class="zone-badge">Assistance</div>
+                <h2>Accessoires & Renforcement</h2>
+                <p>
+                    Pour travailler les points faibles, la technique partielle ou la mobilité, une gamme complète d'accessoires est disponible.
+                </p>
+                
+                <ul class="check-list">
+                    <li><strong>Blocks d'arraché/épaulé</strong> pour le travail en suspension</li>
+                    <li><strong>Racks à squat</strong> robustes pour la force</li>
+                    <li>Ceintures de maintien et bandes</li>
+                    <li>Matériel de mobilité (élastiques, rouleaux)</li>
+                </ul>
+            </div>
+        </section>
+
+        {# --- CTA --- #}
+        <section class="cta-banner">
+            <h2>Envie de tester ce matériel ?</h2>
+            <p>Venez faire une séance d'essai encadrée par nos coachs diplômés.</p>
+            <a href="{{ path('contact') }}" class="btn-cta">Réserver ma séance</a>
+        </section>
+
+    </main>
 {% endblock %}

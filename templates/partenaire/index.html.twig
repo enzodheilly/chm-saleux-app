@@ -3,182 +3,129 @@
 {% block title %}Devenir Partenaire - CHM Saleux{% endblock %}
 
 {% block stylesheets %}
-    {# On peut mettre le CSS spécifique ici ou dans un fichier à part #}
-    <style>
-        /* --- SECTION ARGUMENTS --- */
-        .partners-section {
-            padding: 80px 20px;
-            background-color: #f8f9fa;
-        }
-        
-        .partners-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 50px auto 0;
-        }
-
-        .partner-card {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .partner-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .partner-icon {
-            font-size: 3rem;
-            color: #005b94; /* Bleu du club */
-            margin-bottom: 20px;
-        }
-
-        .partner-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .partner-card p {
-            color: #666;
-            line-height: 1.6;
-        }
-
-        /* --- SECTION FISCALITÉ (Mécénat) --- */
-        .tax-section {
-            padding: 80px 20px;
-            background: #005b94;
-            color: white;
-            text-align: center;
-        }
-
-        .tax-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .tax-highlight {
-            font-size: 3rem;
-            font-weight: 900;
-            color: #E6822E; /* Orange */
-            display: block;
-            margin: 20px 0;
-        }
-
-        /* --- SECTION CONTACT --- */
-        .contact-partner-section {
-            padding: 80px 20px;
-            text-align: center;
-            color:#fff;
-        }
-
-        .contact-btn {
-            display: inline-block;
-            background-color: #E6822E;
-            color: white;
-            padding: 15px 40px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            text-decoration: none;
-            margin-top: 20px;
-            transition: background 0.3s;
-        }
-
-        .contact-btn:hover {
-            background-color: #cc7025;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/partenaires/index.css') }}">
 {% endblock %}
 
 {% block body %}
 
-{# --- 1. HERO HEADER (Style que tu connais) --- #}
-<header class="hero-header" style="
-    background-image: url('{{ asset('images/partenariat.jpg') }}'); 
-    background-size: cover; 
-    background-position: center;
-">
-    {# Bouton Retour #}
-    <a href="{{ path('home') }}" class="back-button">
-         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-         </svg>
-         Retour à l'accueil
-    </a>
-
-    <div class="hero-content">
-        <h1>Devenir Partenaire <span>du Club</span></h1>
-        <p>
-            Associez votre image aux valeurs de performance, de solidarité et de dépassement de soi. 
-            Soutenez le CHM Saleux et participez activement à la réussite sportive 
-            <span>de nos athlètes.</span>
-        </p>
-    </div>
-</header>
-
-{# --- 2. POURQUOI NOUS SOUTENIR ? --- #}
-<section class="partners-section">
-    <div class="section-title" style="text-align: center;">
-        <h1 style="color: #333; margin-top:0;">Pourquoi nous soutenir ?</h1>
-    </div>
-
-    <div class="partners-grid">
-        {# Argument 1 : Visibilité #}
-        <div class="partner-card">
-            <div class="partner-icon"><i class="fa-solid fa-eye"></i></div>
-            <h3>Visibilité Locale & Régionale</h3>
-            <p>Affichez votre logo sur nos tenues, nos réseaux sociaux et lors de nos compétitions. Touchez un public large et engagé autour des valeurs du sport.</p>
+    {# --- HEADER IMMERSIF --- #}
+    <header class="page-header">
+        {# Image de fond (Une photo de compétition ou de podium serait idéale) #}
+        <div class="header-bg" style="background-image: url('{{ asset('images/partenariat.jpg') }}');"></div>
+        <div class="header-overlay"></div>
+        
+        <div class="container header-content">
+            <a href="{{ path('home') }}" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Retour à l'accueil</span>
+            </a>
+            
+            <div class="header-title-box">
+                <span class="subtitle">Sponsoring & Mécénat</span>
+                <h1>Devenez Partenaire</h1>
+                <p>Associez l'image de votre entreprise aux valeurs de performance, de dépassement de soi et de solidarité du CHM Saleux.</p>
+            </div>
         </div>
+    </header>
 
-        {# Argument 2 : Image de marque #}
-        <div class="partner-card">
-            <div class="partner-icon"><i class="fa-solid fa-users"></i></div>
-            <h3>Engagement Sociétal</h3>
-            <p>Montrez votre soutien à la jeunesse, à la santé et au tissu associatif local. Associez votre entreprise à une image dynamique et positive.</p>
-        </div>
+    <main class="main-container">
 
-        {# Argument 3 : Réseau #}
-        <div class="partner-card">
-            <div class="partner-icon"><i class="fa-solid fa-handshake"></i></div>
-            <h3>Réseau Partenaires</h3>
-            <p>Rejoignez le cercle des partenaires du CHM Saleux. Participez à nos événements conviviaux et développez votre réseau professionnel local.</p>
-        </div>
-    </div>
-</section>
+        {# --- SECTION 1 : POURQUOI NOUS SOUTENIR (Arguments) --- #}
+        <section class="arguments-section">
+            <div class="intro-text text-center">
+                <h2>Pourquoi nous rejoindre ?</h2>
+                <p>Soutenir le CHM Saleux, c'est investir dans le tissu local et accompagner la jeunesse vers l'excellence sportive.</p>
+            </div>
 
-{# --- 3. FISCALITÉ (Argument fort) --- #}
-<section class="tax-section">
-    <div class="tax-content">
-        <h2>Avantage Fiscal (Mécénat)</h2>
-        <p style="font-size: 1.2rem; margin-top: 20px;">
-            Le CHM Saleux est une association d'intérêt général. Votre don (financier ou matériel) ouvre droit à une réduction d'impôt sur les sociétés de :
-        </p>
-        <span class="tax-highlight">60 %</span>
-        <p>du montant du don, dans la limite de 20 000 € ou 5 ‰ du chiffre d'affaires.</p>
-    </div>
-</section>
+            <div class="arguments-grid">
+                
+                {# Carte Visibilité #}
+                <article class="arg-card">
+                    <div class="icon-wrapper">
+                        <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                    </div>
+                    <h3>Visibilité Locale</h3>
+                    <p>Votre logo sur nos tenues, nos affiches de compétition et nos réseaux sociaux. Touchez une audience large et locale.</p>
+                </article>
 
-{# --- 4. CONTACT / CTA --- #}
-<section class="contact-partner-section">
-    <h1>Prêt à nous rejoindre ?</h1>
-    <p style="font-size: 1.2rem; color: #666; max-width: 700px; margin: 0 auto;">
-        Nous sommes à votre écoute pour construire ensemble un partenariat sur mesure, adapté à vos objectifs et à votre budget.
-    </p>
-    
-    <div style="margin-top: 40px;">
-        <p><strong>Contactez directement notre Président ou Trésorier :</strong></p>
-        <p><i class="fa-solid fa-envelope"></i> contact@chmsaleux.fr</p>
-        <p><i class="fa-solid fa-phone"></i> 03.22.89.72.57</p>
-    </div>
+                {# Carte Image #}
+                <article class="arg-card">
+                    <div class="icon-wrapper">
+                        <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <h3>Image Positive</h3>
+                    <p>Associez votre marque au dynamisme, à la santé et à la réussite sportive. Renforcez votre ancrage territorial.</p>
+                </article>
 
-    <a href="{{ path('faq') }}" class="contact-btn">Nous contacter</a>
-</section>
+                {# Carte Réseau #}
+                <article class="arg-card">
+                    <div class="icon-wrapper">
+                        <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                    </div>
+                    <h3>Réseau Partenaires</h3>
+                    <p>Intégrez le cercle des partenaires du club. Participez à nos événements conviviaux et développez vos relations B2B.</p>
+                </article>
 
+            </div>
+        </section>
+
+        {# --- SECTION 2 : FISCALITÉ (L'Argument choc) --- #}
+        <section class="tax-banner">
+            <div class="tax-container">
+                <div class="tax-badge">Loi Mécénat</div>
+                <h2>Avantages Fiscaux</h2>
+                <p>Le CHM Saleux est une association reconnue d'intérêt général. Votre soutien (financier, matériel ou de compétences) ouvre droit à une réduction d'impôt.</p>
+                
+                <div class="tax-highlight">
+                    <span class="big-number">60%</span>
+                    <span class="text-detail">de réduction d'impôt sur le montant du don*</span>
+                </div>
+                <p class="legal-note">*Dans la limite de 20 000 € ou 5 ‰ du chiffre d'affaires HT.</p>
+            </div>
+        </section>
+
+        {# --- SECTION 3 : TYPES DE SOUTIEN --- #}
+        <section class="support-types">
+            <h2 class="section-heading centered">Comment nous aider ?</h2>
+            
+            <div class="types-grid">
+                <div class="type-item">
+                    <h3>Mécénat Financier</h3>
+                    <p>Un don en numéraire pour financer l'achat de matériel ou les déplacements.</p>
+                </div>
+                <div class="type-item">
+                    <h3>Mécénat en Nature</h3>
+                    <p>Don de matériel, de nourriture pour les événements ou de lots.</p>
+                </div>
+                <div class="type-item">
+                    <h3>Mécénat de Compétences</h3>
+                    <p>Mise à disposition de votre savoir-faire (communication, travaux, etc.).</p>
+                </div>
+            </div>
+        </section>
+
+        {# --- SECTION 4 : CONTACT --- #}
+        <section class="contact-cta-section">
+            <div class="contact-box">
+                <h2>Construisons un projet ensemble</h2>
+                <p>Nous sommes à votre disposition pour étudier un plan de partenariat adapté à votre budget et à vos objectifs de communication.</p>
+                
+                <div class="contact-details">
+                    <div class="detail-row">
+                        <span class="icon">📧</span>
+                        <a href="mailto:contact@chmsaleux.fr">contact@chmsaleux.fr</a>
+                    </div>
+                    <div class="detail-row">
+                        <span class="icon">📞</span>
+                        <span>03.22.89.72.57</span>
+                    </div>
+                </div>
+
+                <a href="{{ path('contact') }}" class="btn-partner">Prendre Rendez-vous</a>
+            </div>
+        </section>
+
+    </main>
 {% endblock %}

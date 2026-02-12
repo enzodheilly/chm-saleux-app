@@ -8,13 +8,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class NosPratiquesController extends AbstractController
 {
-    #[Route('/haltérophilie', name: 'pratique_haltérophilie')]
+    #[Route('/zone-haltérophilie', name: 'pratique_haltérophilie')]
     public function halterophilie(): Response
     {
         return $this->render('nos_pratiques/halterophilie.html.twig');
     }
 
-    #[Route('/musculation', name: 'pratique_musculation')]
+    #[Route('/zone-musculation', name: 'pratique_musculation')]
     public function musculation(): Response
     {
         return $this->render('nos_pratiques/musculation.html.twig');

@@ -1,210 +1,189 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Musculation - CHM Saleux{% endblock %}
+{% block title %}Espace Musculation - CHM Saleux{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/nos_pratiques/musculation.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}
 
 {% block body %}
 
-<header class="hero-header">
-    <div class="overlay"></div>
+    {# --- HEADER IMMERSIF --- #}
+    <header class="page-header">
+        <div class="header-bg" style="background-image: url('{{ asset('images/nos_pratiques/musculation/histoire-club.jpg') }}');"></div>
+        <div class="header-overlay"></div>
+        
+        <div class="container header-content">
+            <a href="{{ path('home') }}" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i> Retour à l'accueil
+            </a>
+            
+            <div class="header-title-box">
+                <span class="subtitle">Force & Hypertrophie</span>
+                <h1>Zone Musculation</h1>
+                <p>Un plateau complet de 300m² : charges libres, machines guidées et cardio pour sculpter votre corps selon vos objectifs.</p>
+            </div>
+        </div>
+    </header>
 
-    <!-- Image diagonale sur la droite -->
-    <div class="hero-diagonal-image">
-        <img src="{{ asset('images/nos_pratiques/musculation/histoire-club.jpg') }}" alt="Image Musculation Club">
-    </div>  
+    <main class="main-container">
 
-    <!-- Contenu texte -->
-    <div class="hero-content">
-        <h1>ZONE MUSCULATION</h1>
-        <p>Découvrez notre espace musculation : équipements, zones d’entraînement.</p>
-    </div>
-</header>
-
-<section class="practice-detail">
-    <div class="container">
-        <h1>Musculation</h1>
-        <p class="practice-intro">
-            Notre espace musculation offre un environnement optimal pour développer votre force et votre endurance.
-            Des coachs expérimentés vous accompagnent dans vos séances personnalisées.
-        </p>
-
-        <!-- Coin Pecs -->
-        <section class="zone-section" id="pecs">
-            <h2>Pecs</h2>
-            <img src="{{ asset('images/zones/pecs.jpg') }}" alt="Coin Pecs">
-
-            <h3>Équipements :</h3>
-            <ul>
-                <li>2 Développé couché</li>
-                <li>2 bancs développé incliné</li>
-                <li>1 Développé décliné</li>
-                <li>1 Machine Pec Deck / Butterfly</li>
-                <li>Haltères de 1 à 34 kg</li>
-                <li>1 Poulis vis a vis</li>
-
-
-            </ul>
-
-            <h3>Travail possible :</h3>
-            <ul>
-                <li>Pectoraux (haut, milieu, bas)</li>
-                <li>Triceps</li>
-                <li>Épaules avant</li>
-                <li>Stabilité scapulaire</li>
-            </ul>
-
-            <p class="zone-text">
-                Idéal pour le travail polyarticulaire et l’isolation, adapté aux débutants comme aux confirmés.
+        {# --- INTRO --- #}
+        <section class="intro-section">
+            <h2 class="section-heading centered">Un équipement pour tous</h2>
+            <p class="intro-text">
+                Notre espace musculation offre un environnement optimal pour développer votre force et votre endurance. Des coachs expérimentés vous accompagnent dans vos séances personnalisées.
             </p>
         </section>
 
-        <!-- Coin Bras -->
-        <section class="zone-section" id="bras">
-            <h2>Bras</h2>
-            <img src="{{ asset('images/zones/bras.jpg') }}" alt="Coin Bras">
+        {# === LES GRANDS GROUPES MUSCULAIRES (ZIG-ZAG) === #}
 
-            <h3>Équipements :</h3>
-            <ul>
-                <li>Haltères de 1 à 34 kg</li>
-                <li>1 Barre ez</li>
-                <li>1 Barre droite</li>
-                <li>1 Barre au frond</li>
-                <li>1 Poulis vis a vis</li>
-                <li>1 Station a dips</li>
-            </ul>
-
-            <h3>Travail possible :</h3>
-            <ul>
-                <li>Biceps</li>
-                <li>Triceps</li>
-                <li>Avant-bras</li>
-                <li>Travail d’isolation précis</li>
-            </ul>
-
-            <p class="zone-text">
-                Parfait pour renforcer et sculpter les bras avec un travail ciblé.
-            </p>
+        {# 1. PECS #}
+        <section class="zone-split" id="pecs">
+            <div class="zone-image">
+                <div class="image-frame">
+                    <img src="{{ asset('images/zones/pecs.jpg') }}" alt="Zone Pectoraux" loading="lazy">
+                </div>
+            </div>
+            <div class="zone-content">
+                <div class="zone-badge">Haut du Corps</div>
+                <h2>Pectoraux</h2>
+                <p>Idéal pour le travail polyarticulaire et l’isolation, adapté aux débutants comme aux confirmés.</p>
+                
+                <div class="specs-box">
+                    <h3><i class="fa-solid fa-dumbbell"></i> Équipements</h3>
+                    <ul>
+                        <li>2 Bancs Développé Couché</li>
+                        <li>2 Bancs Développé Incliné</li>
+                        <li>1 Développé Décliné</li>
+                        <li>Machine Pec Deck / Butterfly</li>
+                        <li>Poulie Vis-à-vis</li>
+                        <li>Haltères (1 à 34 kg)</li>
+                    </ul>
+                </div>
+            </div>
         </section>
 
-        <!-- Coin Jambes -->
-        <section class="zone-section" id="jambes">
-            <h2>Jambes</h2>
-            <img src="{{ asset('images/zones/jambes.jpg') }}" alt="Coin Jambes">
-
-            <h3>Équipements :</h3>
-            <ul>
-                <li>1 Presse à cuisses inclinée 45 degrès</li>
-                <li>1 Hip thrust</li>
-                <li>1 Leg extension</li>
-                <li>1 Leg curl allongé</li>
-                <li>Barres + disques (deadlift)</li>
-                <li>1 Hip machine fessiers adducteurs</li>
-                <li>1 Squat rack (barres + disques)</li>
-                <li>1 Trap Bar</li>
-            </ul>
-
-            <h3>Travail possible :</h3>
-            <ul>
-                <li>Quadriceps</li>
-                <li>Ischios-jambiers</li>
-                <li>Fessiers</li>
-            </ul>
-
-            <p class="zone-text">
-                Une zone complète pour travailler la force, la mobilité et la puissance des jambes.
-            </p>
+        {# 2. DOS (Inversé) #}
+        <section class="zone-split reversed" id="dos">
+            <div class="zone-image">
+                <div class="image-frame">
+                    <img src="{{ asset('images/zones/dos.jpg') }}" alt="Zone Dos" loading="lazy">
+                </div>
+            </div>
+            <div class="zone-content">
+                <div class="zone-badge">Chaîne Postérieure</div>
+                <h2>Dos & Lombaires</h2>
+                <p>Une zone polyvalente idéale pour solliciter le dos sous tous les angles grâce à notre machine 4 tirages complète.</p>
+                
+                <div class="specs-box">
+                    <h3><i class="fa-solid fa-layer-group"></i> Équipements</h3>
+                    <ul>
+                        <li>Machine 4 tirages (vertical/horizontal)</li>
+                        <li>2 Barres de tractions</li>
+                        <li>Espace Deadlift & Rowing</li>
+                        <li>2 Bancs à lombaires</li>
+                        <li>Butterfly inversé (Deltoïdes arrière)</li>
+                    </ul>
+                </div>
+            </div>
         </section>
 
-        <!-- Coin Cardio -->
-        <section class="zone-section" id="cardio">
-            <h2>Cardio</h2>
-            <img src="{{ asset('images/zones/cardio.jpg') }}" alt="Coin Cardio">
-
-            <h3>Équipements :</h3>
-            <ul>
-                <li>4 tapis de course</li>
-                <li>2 vélos elliptiques</li>
-                <li>2 rameurs</li>
-                <li>2 vélos semi-allongés</li>
-                <li>3 vélos de course</li>
-                <li>2 vélos d'appartement</li>
-                <li>2 stair climber</li>
-                <li>1 Skierg CONCEPT2</li>
-            </ul>
-
-            <h3>Travail possible :</h3>
-            <ul>
-                <li>Endurance</li>
-                <li>Cardio training</li>
-                <li>Perte calorique</li>
-                <li>Échauffement / récupération</li>
-            </ul>
-
-            <p class="zone-text">
-                Idéal pour améliorer votre condition physique et travailler votre système cardio-respiratoire.
-            </p>
+        {# 3. JAMBES #}
+        <section class="zone-split" id="jambes">
+            <div class="zone-image">
+                <div class="image-frame">
+                    <img src="{{ asset('images/zones/jambes.jpg') }}" alt="Zone Jambes" loading="lazy">
+                </div>
+            </div>
+            <div class="zone-content">
+                <div class="zone-badge">Bas du Corps</div>
+                <h2>Jambes & Fessiers</h2>
+                <p>Une zone complète pour travailler la force, la mobilité et la puissance des membres inférieurs.</p>
+                
+                <div class="specs-box">
+                    <h3><i class="fa-solid fa-person-running"></i> Équipements</h3>
+                    <ul>
+                        <li>Presse à cuisses 45°</li>
+                        <li>Squat Rack complet</li>
+                        <li>Hip Thrust & Hip Machine</li>
+                        <li>Leg Extension & Leg Curl</li>
+                        <li>Trap Bar</li>
+                    </ul>
+                </div>
+            </div>
         </section>
 
-                <!-- Coin Dos -->
-        <section class="zone-section" id="dos">
-            <h2>Dos</h2>
-            <img src="{{ asset('images/zones/dos.jpg') }}" alt="Coin Dos">
 
-            <h3>Équipements :</h3>
-            <ul>
-                <li>1 Machine 4 tirages (vertical et horizontal)</li>
-                <li>2 barres de tractions</li>
-                <li>Barres + disques (deadlift, rowing)</li>
-                <li>Haltères de 1 à 34 kg</li>
-                <li>2 bancs lombaire</li>
-                <li>1 butterfly (deltoïdes arrière)</li>
-            </ul>
+        {# === ISOLATION (GRILLE 2 COLONNES) === #}
+        <section class="grid-section">
+            <h2 class="section-heading centered">Isolation & Finition</h2>
+            
+            <div class="iso-grid">
+                
+                {# BRAS #}
+                <article class="iso-card" id="bras">
+                    <div class="iso-image">
+                        <img src="{{ asset('images/zones/bras.jpg') }}" alt="Zone Bras">
+                        <span class="card-title">Bras</span>
+                    </div>
+                    <div class="iso-content">
+                        <p>Parfait pour renforcer et sculpter biceps et triceps avec précision.</p>
+                        <ul>
+                            <li>Barres (EZ, Droite, Front)</li>
+                            <li>Poulie Vis-à-vis</li>
+                            <li>Station à Dips</li>
+                            <li>Haltères complets</li>
+                        </ul>
+                    </div>
+                </article>
 
-            <h3>Travail possible :</h3>
-            <ul>
-                <li>Grand dorsal</li>
-                <li>Trapèzes</li>
-                <li>Rhomboïdes</li>
-                <li>Lombaires</li>
-                <li>Renforcement de la chaîne postérieure</li>
-            </ul>
+                {# ÉPAULES #}
+                <article class="iso-card" id="epaules">
+                    <div class="iso-image">
+                        <img src="{{ asset('images/zones/epaules.jpg') }}" alt="Zone Épaules">
+                        <span class="card-title">Épaules</span>
+                    </div>
+                    <div class="iso-content">
+                        <p>Développez la force et la stabilité des épaules (deltoïdes & trapèzes).</p>
+                        <ul>
+                            <li>Presse convergente</li>
+                            <li>Développé machine</li>
+                            <li>Butterfly inversé</li>
+                            <li>Haltères</li>
+                        </ul>
+                    </div>
+                </article>
 
-            <p class="zone-text">
-                Une zone polyvalente idéale pour solliciter le dos sous tous les angles grâce à notre machine 4 tirages complète.
-            </p>
+            </div>
         </section>
 
-                <!-- Coin Épaules -->
-        <section class="zone-section" id="epaules">
-            <h2>Épaules</h2>
-            <img src="{{ asset('images/zones/epaules.jpg') }}" alt="Coin Épaules">
 
-            <h3>Équipements :</h3>
-            <ul>
-                <li>1 Presse à épaules convergente</li>
-                <li>1 Développé épaules à la machine</li>
-                <li>Haltères de 1 à 34 kg</li>
-                <li>1 butterfly (arrière épaules)</li>
-            </ul>
-
-            <h3>Travail possible :</h3>
-            <ul>
-                <li>Deltoïdes (avant, médian, arrière)</li>
-                <li>Trapèzes</li>
-                <li>Stabilité de l’épaule</li>
-                <li>Renforcement fonctionnel du haut du corps</li>
-            </ul>
-
-            <p class="zone-text">
-                Une zone idéale pour développer la force et la stabilité des épaules, avec des machines adaptées à tous les niveaux.
-            </p>
+        {# === CARDIO (BANDEAU FINAL) === #}
+        <section class="cardio-banner" id="cardio">
+            <div class="cardio-overlay"></div>
+            <div class="cardio-bg" style="background-image: url('{{ asset('images/zones/cardio.jpg') }}');"></div>
+            
+            <div class="cardio-content">
+                <h2><i class="fa-solid fa-heart-pulse"></i> Espace Cardio-Training</h2>
+                <p>Idéal pour l'échauffement, la récupération ou l'amélioration de la condition physique.</p>
+                
+                <div class="cardio-icons">
+                    <div class="c-item"><span>4</span> Tapis</div>
+                    <div class="c-item"><span>2</span> Elliptiques</div>
+                    <div class="c-item"><span>2</span> Rameurs</div>
+                    <div class="c-item"><span>2</span> Climbers</div>
+                    <div class="c-item"><span>1</span> Skierg</div>
+                    <div class="c-item"><span>5</span> Vélos</div>
+                </div>
+            </div>
         </section>
 
-    </div>
-</section>
+        {# CTA #}
+        <div class="final-cta">
+            <a href="{{ path('contact') }}" class="btn-cta">Réserver une séance d'essai</a>
+        </div>
 
-
+    </main>
 {% endblock %}

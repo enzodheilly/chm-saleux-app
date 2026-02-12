@@ -1,399 +1,234 @@
+/* --- VARIABLES --- */
+:root {
+    --primary-color: #0056b3; 
+    --accent-color: #fd7e14; 
+    --dark-bg: #111;
+    --text-main: #333;
+    --text-muted: #666;
+    --bg-light: #f8f9fa;
+    --border-radius: 12px;
+    --shadow-card: 0 10px 30px rgba(0,0,0,0.05);
+}
 
-.overlay {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			z-index: 0;
-		}
+body {
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+}
 
-.hero-header {
+/* --- HEADER --- */
+.page-header {
     position: relative;
-    width: 100%;
-    height: 65.3vh; /* ajustable */
-    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    height: 50vh;
+    min-height: 300px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    overflow: hidden;
-
-    /* diagonale sur le bas */
-    clip-path: polygon(0 0, 100% 0, 100% 70%, 0% 100%);
+    color: white;
+    margin-bottom: 60px;
 }
 
-
-/* Fond flou + filtre bleu foncé */
-.hero-header::before {
-    content: "";
+.header-bg {
     position: absolute;
-    inset: 0;
-    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
-    filter: blur(40px);
-    transform: scale(4.1);
-    z-index: 0; /* derrière le texte */
-}
-
-/* Filtre bleu foncé */
-.hero-header::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 41, 82, 0.65); /* ← bleu plus foncé */
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-size: cover;
+    background-position: center;
     z-index: 1;
 }
 
-/* Image de transition */
-.hero-transition-image {
+.header-overlay {
     position: absolute;
-	bottom: -80px;
-    bottom: 73px; /* dépasse du header de 80px, ajustable */
-    right: 230px;       /* alignée à droite */
-    z-index: 5;     /* au-dessus du header mais sous le contenu si besoin */
-	top:150px
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(45deg, rgba(0,0,0,0.9), rgba(0, 86, 179, 0.6));
+    z-index: 2;
 }
 
-.hero-transition-image img {
-    width: 450px;   /* ajustable selon le rendu */
-    height: auto;
-    object-fit: cover;
-    display: block;
-}
-.hero-transition-image img {
-    filter: drop-shadow(0 0  5px white);
-}
-
-/* Contenu visible au-dessus */
-.hero-header > .hero-content {
+.header-content {
     position: relative;
-    z-index: 2; /* texte au-dessus du fond */
+    z-index: 3;
+    width: 100%;
+	top:65px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-		.hero-content {
-			position: relative;
-			z-index: 1;
-			margin-top: 100px;
-			animation: fadeInUp 1s ease-out;
-		}
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
 
-		.hero-content h1 {
-			font-size: 3rem;
-			font-weight: 900;
-			max-width: 700px;
-			text-align: left;
-			margin: 0 0 1rem;
-			text-transform: uppercase;
-			color: white;
-			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-			margin-right: 553px;
-			margin-top: -50px;
-			letter-spacing: 2px;
-		}
+.header-title-box h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    margin: 10px 0;
+    line-height: 1.1;
+}
+.subtitle {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    background: var(--accent-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
 
-		.hero-content h1 span{
-			color:#005b94;
-		}
+/* --- MAIN CONTAINER --- */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+}
 
-		.hero-content p {
-			font-size: 1.1rem;
-			line-height: 1.8;
-			color: #E2E8F0;
-			margin-bottom: 2rem;
-		}
+/* --- INFOS RAPIDES --- */
+.info-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 80px;
+    margin-top: -80px;
+    position: relative;
+    z-index: 10;
+}
 
-		@media(max-width: 768px) {
-			.hero-content h1 {
-				font-size: 3.2rem;
-			}
-			.hero-content p {
-				font-size: 1.1rem;
-			}
-		}
+.info-card {
+    background: white;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-card);
+    text-align: center;
+    transition: transform 0.3s;
+    border-bottom: 4px solid transparent;
+}
+.info-card:hover {
+    transform: translateY(-5px);
+    border-bottom-color: var(--primary-color);
+}
 
-		@keyframes fadeInUp {
-			from {
-				opacity: 0;
-				transform: translateY(20px);
-			}
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}		
-		
-		/* ===== GLOBAL ===== */
-		.contact-section {
-			width: min(1100px, 90%);
-			margin: 60px auto 60px;
-background: transparent;		}
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    background: #f0f7ff;
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 20px;
+}
+.info-card h3 { color: var(--primary-color); margin: 0 0 10px 0; }
+.contact-links a { display: block; color: var(--text-main); text-decoration: none; font-weight: 600; }
+.contact-links a:hover { color: var(--accent-color); }
 
-		/* ===== HEADER ===== */
-		.contact-header {
-			text-align: center;
-			margin-bottom: 40px;
-		}
 
-		.contact-header h1 {
-			font-size: 2.2rem;
-			font-weight: 900;
-			text-transform: uppercase;
-			color: #1e293b;
-			margin-bottom: 8px;
-		}
+/* --- FORMULAIRE CENTRÉ --- */
+.form-section {
+    margin-bottom: 80px;
+}
 
-		.contact-header p {
-			font-size: 1.1rem;
-			font-weight: 500;
-			color: #475569;
-		}
+.form-container {
+    background: white;
+    padding: 50px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-card);
+    max-width: 800px;
+    margin: 0 auto;
+}
 
-		/* ===== FLASH ===== */
-		.flash-success {
-			background-color: #e8fff4;
-			color: #0a7c59;
-			padding: 8px;
-			text-align: center;
-			border-radius: 0;
-			margin-bottom: 15px;
-			font-size: 0.9rem;
-		}
+.section-header h2 { font-size: 2rem; color: var(--dark-bg); margin-bottom: 10px; }
+.section-header p { color: var(--text-muted); margin-bottom: 30px; }
+.text-center { text-align: center; }
 
-		/* ===== GRID ===== */
-		.contact-grid {
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			gap: 50px;
-			align-items: start;
-		}
+/* Styles du formulaire (Inputs) */
+.form-row { display: flex; gap: 20px; }
+.form-group { margin-bottom: 20px; flex: 1; }
+.form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--text-main); }
 
-		@media(max-width: 900px) {
-			.contact-grid {
-				grid-template-columns: 1fr;
-				gap: 30px;
-			}
-		}
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0,86,179,0.1);
+}
 
-		/* ===== FORM ===== */
-		.form-area form {
-			display: flex;
-			flex-direction: column;
-			gap: 1rem;
-		}
+.btn-submit {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.3s;
+}
+.btn-submit:hover { background: #004494; transform: translateY(-2px); }
 
-		label {
-			font-weight: 600;
-			color: #1e293b;
-			font-size: 0.9rem;
-		}
+/* --- LOCALISATION (Bandeau Bas) --- */
+.location-banner {
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    height: 350px; /* Hauteur fixe raisonnable */
+}
 
-		input,
-		textarea {
-			width: 100%;
-			border: none;
-			border-bottom: 1.5px solid #ddd;
-			padding: 6px 4px;
-			background: transparent;
-			font-size: 0.9rem;
-			transition: border-color 0.3s ease;
-		}
+.location-text {
+    flex: 0 0 40%;
+    padding: 50px;
+    background: var(--dark-bg);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
-		input:focus,
-		textarea:focus {
-			outline: none;
-			border-color: #005b94;
-		}
+.location-text h3 { font-size: 1.8rem; margin-top: 0; margin-bottom: 15px; }
+.location-text p { opacity: 0.8; margin-bottom: 30px; line-height: 1.6; }
 
-		textarea {
-			resize: vertical;
-		}
+.btn-gps {
+    display: inline-block;
+    background: var(--accent-color);
+    color: white;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-weight: 700;
+    align-self: flex-start;
+    transition: 0.3s;
+}
+.btn-gps:hover { background: white; color: var(--accent-color); }
 
-		.btn-modern {
-			align-self: flex-start;
-			background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
-			color: #fff;
-			border: none;
-			padding: 8px 22px;
-			font-weight: 600;
-			font-size: 0.85rem;
-			text-transform: uppercase;
-			border-radius: 0;
-			transition: background 0.3s ease, transform 0.2s ease;
-		}
+.location-map {
+    flex: 1;
+}
+.location-map iframe { border: 0; filter: grayscale(10%); }
 
-		.btn-modern:hover {
-			background: #005b94;
-			transform: translateY(-2px);
-		}
-
-		/* ===== MAP ===== */
-		.map-area {
-			background: linear-gradient(90deg, #005b94 0%, #003d66 100%);
-			padding: 20px;
-			border-radius: 0;
-			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-		}
-
-		.map-area h2 {
-			font-weight: 600;
-			font-size: 1rem;
-			margin-bottom: 15px;
-			color: #fff;
-		}
-
-		.map-area iframe {
-			width: 100%;
-			height: 250px;
-			border: none;
-			border-radius: 0;
-			margin-bottom: 15px;
-			filter: grayscale(20%) contrast(110%);
-		}
-
-		.contact-info {
-			font-size: 0.9rem;
-			color: #fff;
-			line-height: 1.5;
-		}
-
-		/* ===== ANIMATION ===== */
-		@keyframes fadeInUp {
-			from {
-				opacity: 0;
-				transform: translateY(15px);
-			}
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}
-
-		.contact-section {
-			animation: fadeInUp 0.6s ease;
-		}
-
-		.spinner {
-			border: 2px solid #fff;
-			border-top: 2px solid transparent;
-			border-radius: 50%;
-			width: 16px;
-			height: 16px;
-			display: none;
-			animation: spin 0.7s linear infinite;
-		}
-
-		@keyframes spin {
-			100% {
-				transform: rotate(360deg);
-			}
-		}
-
-		/* Quand le bouton est en mode loading */
-		.btn-modern.loading .btn-text {
-			visibility: hidden; /* le texte disparaît mais garde sa place */
-		}
-
-		.btn-modern.loading .spinner {
-			display: block;
-			position: absolute;
-		}
-
-				.test{
- 			background: #fff;
- 			position: relative;
-			padding:30px 0;
-			max-width: 30%;
-			margin-top: -120px;
-			margin-left: 125px;
-			z-index: 4;
-			text-align: center;
-		}
-
-		.test p{
-			padding: 5px 40px;
-			text-align: left;
-			margin-top: 0px;
-			font-size: 1.2rem;
-			color:#475569;
-		}
-
-		/* ========================================================= */
-/* ============= RESPONSIVE HEADER CONTACT (FINAL) ========= */
-/* ========================================================= */
-
-@media (max-width: 992px) {
-
-    /* 1. HEADER : ESPACEMENT ET DIAGONALE */
-    .hero-header {
-        height: auto;
-        /* padding-top: 140px pour bien descendre le titre */
-        /* padding-bottom: 220px pour laisser de la place à la diagonale et l'image */
-        padding: 140px 20px 220px; 
-        
-        /* LA COUPURE DIAGONALE (Haut-Gauche vers Bas-Droite plus court) */
-        /* Cela crée un effet dynamique en bas du fond bleu */
-        clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
-        
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-    }
-
-    /* 2. TITRE : PLUS PETIT ET CENTRÉ */
-    .hero-content {
-        width: 100%;
-        text-align: center;
-        margin-top: 0; 
-    }
-
-    .hero-content h1 {
-        margin: 0 auto !important; /* Centrage forcé */
-        text-align: center;
-        font-size: 2rem; /* Beaucoup plus petit (était 2rem) */
-        max-width: 100%;
-        line-height: 1.4;
-        padding: 0 10px; /* Sécurité pour ne pas coller aux bords */
-    }
-
-    /* 3. IMAGE : REMONTE SUR LA DIAGONALE */
-    .hero-transition-image {
-        position: relative;
-        top: auto; bottom: auto; right: auto; left: auto;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        
-        /* On fait remonter l'image pour qu'elle soit à cheval sur la coupure */
-        margin-top: -160px; 
-        
-        z-index: 5;
-    }
-
-    .hero-transition-image img {
-        width: 75%;            
-        max-width: 280px; /* Image un peu plus petite pour l'équilibre */
-        height: auto;
-        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
-    }
-
-    /* 4. BLOC TEXTE "TEST" */
-    .test {
-        position: relative;
-        max-width: 90%;
-        margin: 20px auto 40px; /* Un peu d'espace sous l'image */
-        top: auto; left: auto;
-        text-align: center;
-        padding: 20px;
-        background: #1E293B;
-        border-radius: 8px;
-        z-index: 6;
-    }
-
-    .test p {
-        padding: 0;
-        font-size: 1rem;
-        text-align: center;
-        color: #CBD5E1;
-    }
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+    .header-title-box h1 { font-size: 2.5rem; }
+    .form-row { flex-direction: column; gap: 0; }
+    .form-container { padding: 30px; }
+    
+    .location-banner { flex-direction: column; height: auto; }
+    .location-text { padding: 40px 30px; }
+    .location-map { height: 300px; }
 }

@@ -1,328 +1,313 @@
-.overlay {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			z-index: 0;
-		}
-
-.hero-header {
-    position: relative;
-    margin-top: 120px;
-    width: 100%;
-    height: 65vh; /* ajustable */
-    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    overflow: hidden;
-
-    /* diagonale sur le bas */
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
+/* --- VARIABLES --- */
+:root {
+    --primary-color: #c0392b; /* Rouge Sportif */
+    --secondary-color: #2c3e50; /* Gris Bleu Foncé */
+    --dark-bg: #1a1a1a;
+    --text-main: #333;
+    --text-muted: #666;
+    --bg-light: #f8f9fa;
+    --border-radius: 12px;
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.05);
 }
 
-
-/* Fond flou + filtre bleu foncé */
-.hero-header::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
-    filter: blur(40px);
-    transform: scale(4.1);
-    z-index: 0; /* derrière le texte */
-}
-
-/* Filtre bleu foncé */
-.hero-header::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 41, 82, 0.65); /* ← bleu plus foncé */
-    z-index: 1;
-}
-
-/* Image décorative diagonale sur la droite du hero */
-.hero-diagonal-image {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;          /* occupe toute la hauteur du hero */
-    width: 55%;            /* moitié droite du hero */
-    overflow: hidden;
-    z-index: 2;            /* au-dessus du fond mais derrière le texte si nécessaire */
-    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%); /* diagonale */
-}
-
-.hero-diagonal-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    filter: drop-shadow(0 0 10px rgba(0,0,0,0.3)); /* optionnel : ombre douce */
-    transform: scale(1.1); /* léger zoom pour mieux couvrir le clip-path */
-    transition: transform 0.5s ease;
-}
-
-/* Contenu visible au-dessus */
-.hero-header > .hero-content {
-    position: relative;
-    z-index: 2; /* texte au-dessus du fond */
-}
-
-		.hero-content {
-			position: relative;
-			z-index: 1;
-			margin-top: 100px;
-			animation: fadeInUp 1s ease-out;
-		}
-
-		.hero-content h1 {
-			font-size: 3rem;
-			font-weight: 900;
-			max-width: 700px;
-			text-align: left;
-			margin: 0 0 1rem;
-			text-transform: uppercase;
-			color: white;
-			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-			margin-right:750px;
-			margin-top: -130px;
-			letter-spacing: 2px;
-		}
-		.hero-content p {
-			font-size: 1.1rem;
-			line-height: 1.8;
-			color: #CBD5E1;
-			margin-bottom: 2rem;
-            max-width: 570px;
-            margin-right: 660px;
-            text-align: left;
-		}
-
-		@media(max-width: 768px) {
-			.hero-content h1 {
-				font-size: 3.2rem;
-			}
-			.hero-content p {
-				font-size: 1.1rem;
-			}
-		}
-
-		@keyframes fadeInUp {
-			from {
-				opacity: 0;
-				transform: translateY(20px);
-			}
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}
-
-/* ==============================
-   Practice Detail
-   ============================== */
-.practice-detail {
-    padding: 160px 20px 60px;
-    color: #fff;
+body {
+    background-color: var(--bg-light);
+    color: var(--text-main);
     font-family: 'Inter', sans-serif;
 }
 
-.practice-detail .container {
+/* --- HEADER --- */
+.page-header {
+    position: relative;
+    height: 50vh;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    color: white;
+    margin-bottom: 80px;
+}
+
+.header-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+
+.header-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    /* Dégradé Rouge/Noir */
+    background: linear-gradient(45deg, rgba(0,0,0,0.9), rgba(192, 57, 43, 0.5));
+    z-index: 2;
+}
+
+.header-content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    top:65px;
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
-.practice-detail h1 {
-    font-size: 3rem;
-    font-weight: 800;
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.practice-detail .practice-intro {
-    text-align: center;
-    font-size: 1.2rem;
-    margin-bottom: 50px;
-    line-height: 1.6;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* ==============================
-   Zone Sections
-   ============================== */
-.zone-section {
-    margin-bottom: 60px;
-    padding: 40px 20px;
-    background: #1c1f27;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
+.back-link {
+    display: inline-flex;
     align-items: center;
-}
-
-.zone-section h2 {
-    font-size: 2rem;
-    color: #ff5a00;
+    gap: 10px;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
     margin-bottom: 20px;
-    text-align: center;
+    opacity: 0.8;
 }
 
-.zone-section img {
-    width: 100%;
+.header-title-box h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin: 10px 0;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+.subtitle {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    background: var(--primary-color);
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+/* --- MAIN CONTAINER --- */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+}
+
+/* --- INTRO --- */
+.intro-section {
+    text-align: center;
     max-width: 800px;
-    height: auto;
-    margin-bottom: 20px;
-    border-radius: 8px;
+    margin: 0 auto 80px;
 }
-
-.zone-section p {
-    font-size: 1rem;
-    color: #ccc;
-    line-height: 1.5;
-    text-align: center;
-}
-
-/* ============================================
-   ZONE SECTION – STYLE MODERNE
-   ============================================ */
-.zone-section {
-    margin-bottom: 80px;
-    padding: 50px 40px;
-    background: #1b1f26;
-    border-radius: 14px;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.zone-section:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
-}
-
-/* TITRES DES SECTIONS */
-.zone-section h2 {
-    font-size: 2.4rem;
-    color: #ff5a00;
-    text-align: center;
-    margin-bottom: 25px;
+.section-heading {
+    font-size: 2.2rem;
     font-weight: 800;
-    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+    color: var(--secondary-color);
+    position: relative;
+    display: inline-block;
 }
-
-/* Lignes décoratives */
-.zone-section h2::after {
-    content: "";
+.section-heading.centered::after {
+    content: '';
     display: block;
     width: 60px;
     height: 4px;
+    background: var(--primary-color);
     margin: 10px auto 0;
-    background: #ff5a00;
-    border-radius: 3px;
 }
+.intro-text { font-size: 1.15rem; color: var(--text-muted); line-height: 1.6; }
 
-/* IMAGE */
-.zone-section img {
+
+/* --- ZIG-ZAG SECTIONS (Pecs, Dos, Jambes) --- */
+.zone-split {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    margin-bottom: 100px;
+}
+.zone-split.reversed { flex-direction: row-reverse; }
+
+.zone-image { flex: 1; }
+
+.image-frame {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+}
+.image-frame img {
     width: 100%;
-    max-width: 850px;
     height: auto;
-    margin: 0 auto 25px;
-    border-radius: 12px;
     display: block;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    transition: transform 0.5s ease;
 }
+.zone-split:hover .image-frame img { transform: scale(1.03); }
 
-/* SOUS-TITRES (Équipements / Travail possible) */
-.zone-section h3 {
-    font-size: 1.6rem;
-    margin: 25px 0 12px;
-    color: #ffffff;
+.zone-content { flex: 1; }
+
+.zone-badge {
+    display: inline-block;
+    font-size: 0.8rem;
     font-weight: 700;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    background: #fff0f0;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 15px;
 }
 
-/* LISTES */
-.zone-section ul {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 20px;
+.zone-content h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--secondary-color);
+    margin: 0 0 20px 0;
 }
 
-.zone-section ul li {
-    margin-bottom: 8px;
+.zone-content p {
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+.specs-box {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    border-left: 4px solid var(--primary-color);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+}
+.specs-box h3 {
     font-size: 1.1rem;
-    color: #d1d5db;
-    padding-left: 28px;
-    position: relative;
+    margin: 0 0 15px 0;
+    color: var(--secondary-color);
 }
-
-/* Icône custom (petit rond orange) */
-.zone-section ul li::before {
-    content: "";
+.specs-box ul { list-style: none; padding: 0; margin: 0; column-count: 2; /* Deux colonnes auto */ }
+.specs-box li {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 15px;
+}
+.specs-box li::before {
+    content: '•';
+    color: var(--primary-color);
     position: absolute;
     left: 0;
-    top: 9px;
-    width: 10px;
-    height: 10px;
-    background: #ff5a00;
-    border-radius: 50%;
-    box-shadow: 0 0 6px rgba(255, 90, 0, 0.7);
+    font-weight: bold;
 }
 
-/* TEXTE DESCRIPTION */
-.zone-section .zone-text {
+
+/* --- GRID SECTION (Bras, Epaules) --- */
+.grid-section { margin-bottom: 100px; }
+
+.iso-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.iso-card {
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid #eee;
+}
+
+.iso-image {
+    height: 250px;
+    position: relative;
+}
+.iso-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.card-title {
+    position: absolute;
+    bottom: 20px; left: 20px;
+    background: white;
+    padding: 5px 15px;
+    font-weight: 800;
+    color: var(--secondary-color);
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.iso-content { padding: 30px; }
+.iso-content ul { list-style: none; padding: 0; margin-top: 15px; }
+.iso-content li {
+    padding: 8px 0;
+    border-bottom: 1px dashed #eee;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}
+.iso-content li:last-child { border-bottom: none; }
+
+
+/* --- CARDIO BANNER --- */
+.cardio-banner {
+    position: relative;
+    padding: 80px 20px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
     text-align: center;
-    font-size: 1.15rem;
-    color: #e5e7eb;
-    margin-top: 10px;
-    line-height: 1.7;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+    color: white;
+    margin-bottom: 60px;
 }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-@media (max-width: 768px) {
-    .zone-section {
-        padding: 30px 20px;
-    }
-
-    .zone-section h2 {
-        font-size: 1.8rem;
-    }
-
-    .zone-section h3 {
-        font-size: 1.3rem;
-    }
-
-    .zone-section ul li {
-        font-size: 1rem;
-    }
-
-    .zone-section .zone-text {
-        font-size: 1.05rem;
-    }
+.cardio-bg {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-size: cover; background-position: center; z-index: 1;
+}
+.cardio-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7); z-index: 2;
 }
 
-/* ==============================
-   Responsive
-   ============================== */
-@media (max-width: 768px) {
-    .practice-detail h1 {
-        font-size: 2.2rem;
-    }
+.cardio-content { position: relative; z-index: 3; }
+.cardio-content h2 { font-size: 2.5rem; margin-bottom: 10px; }
+.cardio-content p { font-size: 1.2rem; margin-bottom: 40px; color: #ddd; }
 
-    .practice-detail .practice-intro {
-        font-size: 1rem;
-    }
+.cardio-icons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+.c-item {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(5px);
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+.c-item span {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    display: block;
+    margin-bottom: 5px;
+}
 
-    .zone-section h2 {
-        font-size: 1.5rem;
-    }
+/* --- CTA FINAL --- */
+.final-cta { text-align: center; }
+.btn-cta {
+    display: inline-block;
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-weight: 700;
+    transition: transform 0.2s;
+}
+.btn-cta:hover { transform: translateY(-3px); }
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+    .header-title-box h1 { font-size: 2.5rem; }
+    
+    .zone-split { flex-direction: column; gap: 30px; }
+    .zone-split.reversed { flex-direction: column; }
+    .specs-box ul { column-count: 1; }
+    
+    .iso-grid { grid-template-columns: 1fr; }
 }

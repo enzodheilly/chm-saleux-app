@@ -1,41 +1,64 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ page.title }}
-	- CHM Saleux
+    {{ page.title }} - CHM Saleux
 {% endblock %}
 
 {% block stylesheets %}
-	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('css/footer/pages/' ~ page.slug ~ '.css') }}">
+    {{ parent() }}
+    {# On charge un CSS générique pour les pages de contenu, + le spécifique si besoin #}
+    <link rel="stylesheet" href="{{ asset('css/footer/pages/generic_page.css') }}">
+    {% if page.slug %}
+        <link rel="stylesheet" href="{{ asset('css/footer/pages/' ~ page.slug ~ '.css') }}">
+    {% endif %}
 {% endblock %}
 
 {% block body %}
 
-<header class="hero-header">
-    <div class="overlay"></div>
+    {# --- HEADER IMMERSIF (Neutre) --- #}
+    <header class="page-header">
+        {# Image de fond générique (ou une image spécifique si ton entité 'page' en a une) #}
+        <div class="header-bg" 
+             style="background-image: url('{{ page.image is defined and page.image ? asset('uploads/' ~ page.image) : asset('images/club/1.jpg') }}');">
+        </div>
+        <div class="header-overlay"></div>
+        
+        <div class="container header-content">
+            <a href="{{ path('home') }}" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Retour à l'accueil</span>
+            </a>
+            
+            <div class="header-title-box">
+                <span class="subtitle">Information & Documentation</span>
+                <h1>{{ page.title }}</h1>
+                {# Si pas de description courte dans l'entité page, on met une phrase par défaut #}
+                <p>{{ page.description is defined and page.description ? page.description : 'Retrouvez ci-dessous les informations officielles relatives à cette section.' }}</p>
+            </div>
+        </div>
+    </header>
 
-        <a href="{{ path('home') }}" class="back-button">
-         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-         </svg>
-         Home
-    </a>
+    <main class="main-container">
+        
+        {# --- CONTENU RICHE --- #}
+        <section class="content-wrapper">
+            <div class="document-paper">
+                {# Date de mise à jour (Optionnel, fait sérieux pour les pages légales) #}
+                {% if page.updatedAt is defined %}
+                    <div class="last-update">
+                        Dernière mise à jour : {{ page.updatedAt|date('d/m/Y') }}
+                    </div>
+                {% endif %}
 
-    <!-- Image diagonale sur la droite -->
-    <div class="hero-diagonal-image">
-        <img src="{{ asset('images/menu_dropdown/services_du_club/journee_essai/1.jpg') }}" alt="Image Musculation Club">
-    </div>
+                {# Le contenu brut injecté depuis l'éditeur (WYSIWYG) #}
+                <div class="wysiwyg-body">
+                    {{ page.content|raw }}
+                </div>
+            </div>
+        </section>
 
-    <!-- Contenu texte -->
-    <div class="hero-content">
-        <h1>{{ page.title }}</h1>
-        <p>Venez découvrir l’ambiance du club sans aucun engagement. Profitez d’une session offerte pour tester nos équipements, rencontrer les coachs et vous faire votre propre avis <span>avant de nous rejoindre.</span></p>
-    </div>
-</header>
-
-	<section class="page-section">
-		{{ page.content|raw }}
-	</section>
+    </main>
 
 {% endblock %}

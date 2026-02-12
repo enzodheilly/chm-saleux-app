@@ -1,263 +1,261 @@
-
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
-
-		/* Hero Header */
-		.hero-header {
-			position: relative;
-			width: 100%;
-			height: 100vh;
-			background: linear-gradient(135deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), 
-            url('https://cdn-s-www.bienpublic.com/images/13568E8A-2815-411C-AA44-5315EAD67B5D/NW_raw/toute-l-emotion-de-vicky-graillot-apres-avoir-valide-une-barre-a-123-kg-mercredi-a-chisinau-photo-ffhm-1744998886.jpg') 
-            center/cover no-repeat;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			text-align: center;
-			color: white;
-			overflow: hidden;
-		}
-
-		.hero-content {
-			position: relative;
-			z-index: 1;
-			max-width: 900px;
-			padding: 2rem;
-		}
-
-		.hero-content h1 {
-			font-size: 4rem;
-			font-weight: 700;
-			margin-bottom: 1.5rem;
-			text-transform: uppercase;
-			letter-spacing: 3px;
-			text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
-		}
-
-		.hero-content p {
-			font-size: 1.4rem;
-			line-height: 1.9;
-			color: #e0e0e0;
-			font-weight: 300;
-			margin-bottom: 2.5rem;
-			letter-spacing: 0.5px;
-		}
-
-		.cta-button {
-  background: #005b94;
-  color: #fff;
-  padding: 12px 24px;
-  border-radius: 0px;
-  text-decoration: none;
-  font-weight: 800;
-  font-size: 1.1rem;
-  display: inline-block;
-  text-transform: uppercase;
-    transition: 0.3s;
-		}
-
-		.cta-button:hover {
-    filter: brightness(1.2);
-    /* Une ombre très discrète pour le relief */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); ;
+/* --- VARIABLES --- */
+:root {
+    --primary-color: #0056b3; /* Bleu Olympique */
+    --accent-color: #e74c3c; /* Rouge pour l'intensité/Force */
+    --dark-bg: #111;
+    --text-main: #333;
+    --text-muted: #555;
+    --bg-light: #f8f9fa;
+    --border-radius: 12px;
+    --shadow-card: 0 10px 30px rgba(0,0,0,0.08);
 }
-		
-		        .back-button {
-    /* 1. POSITIONNEMENT : On le sort du flux pour le mettre en haut à gauche */
-    position: absolute; 
-    top: -70.5px;      /* Espace depuis le haut */
-    right: 125.8%;     /* Espace depuis la gauche */
-    
-    /* 2. COUCHE : On le force à passer au-dessus du filtre bleu (qui est à 1) */
-    z-index: 10;    
-    
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+}
+
+/* --- HEADER --- */
+.page-header {
+    position: relative;
+    height: 60vh;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    color: white;
+    margin-bottom: 80px;
+}
+
+.header-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+
+.header-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(45deg, rgba(0,0,0,0.9), rgba(0, 86, 179, 0.5));
+    z-index: 2;
+}
+
+.header-content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+	top:65px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.back-link {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    font-weight: 500;
+    color: white;
     text-decoration: none;
-    
-    /* 3. COULEUR : On met blanc car le fond est sombre */
-    color: #ffffff; 
-    
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    font-weight: 600;
+    margin-bottom: 20px;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+.back-link:hover { opacity: 1; }
+.back-link svg { margin-right: 8px; }
+
+.header-title-box h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin: 10px 0;
+    line-height: 1.1;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+.subtitle {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    background: var(--accent-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
 }
 
-		main {
-			background: transparent;
-		}
+/* --- MAIN CONTAINER --- */
+.main-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+}
 
-		.section {
-			padding: 6rem 5%;
-			display: flex;
-			align-items: center;
-			gap: 4rem;
-			max-width: 1400px;
-			margin: 0 auto;
-		}
+/* --- SPLIT SECTIONS (Zig-Zag) --- */
+.split-section {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    margin-bottom: 100px;
+}
 
-		.section:nth-child(even) {
-			background: linear-gradient(135deg, rgba(13, 71, 161, 0.03), rgba(25, 118, 210, 0.03));
-		}
+.split-section.reversed {
+    flex-direction: row-reverse;
+}
 
-		.section-content {
-			flex: 1;
-			animation: fadeIn 0.8s ease-out;
-			text-align: left;
-		}
+.split-content {
+    flex: 1;
+}
 
-		.section-content h2 {
-			font-size: 2.8rem;
-			font-weight: 900;
-			background: linear-gradient(135deg, #0d47a1, #1976d2);
-			-webkit-background-clip: text;
-			-webkit-text-fill-color: transparent;
-			background-clip: text;
-			margin-bottom: 1.5rem;
-			text-transform: uppercase;
-			letter-spacing: 1px;
-		}
+.split-image {
+    flex: 1;
+}
 
-		/* Paragraphes améliorés */
-		.section-content p{
-			font-size: 0.95rem; /* plus petit que 1.15rem */
-			line-height: 1.6; /* un peu plus compact */
-			color: #1e293b;
-			font-weight: 400;
-			margin-bottom: 1.2rem; /* réduit pour aérer moins */
-			letter-spacing: 0.4px;
-			transition: color 0.3s ease;
-		}
+.image-frame {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.3s;
+}
+.image-frame:hover { transform: scale(1.02); }
+.image-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
 
-		.section-content p b,
-		.club-card p b {
-			color: #0d47a1;
-			font-weight: 600;
-		}
+/* Typographie */
+.section-heading {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: var(--dark-bg);
+    position: relative;
+}
+.section-heading::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: var(--primary-color);
+    margin-top: 10px;
+}
+.section-heading.centered { text-align: center; }
+.section-heading.centered::after { margin: 10px auto; }
 
-		.section-content p em,
-		.club-card p em {
-			color: #1976d2;
-			font-style: italic;
-		}
+.lead-text {
+    font-size: 1.15rem;
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-bottom: 20px;
+}
 
-		.section-image {
-			flex: 1;
-			max-width: 550px;
-			padding: 0 1rem;
-		}
+p {
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
 
-		.section-image img {
-			width: 100%;
-			height: auto;
-			margin: 0;
-			display: block;
-			border-radius: 20px;
-			box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
-			transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-			object-fit: cover;
-		}
+/* Listes */
+.benefits-list {
+    list-style: none;
+    padding: 0;
+}
+.benefits-list li {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid var(--accent-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
 
-		.section-image img:hover {
-			transform: scale(1.05) translateY(-10px);
-			box-shadow: 0 25px 60px rgba(13, 71, 161, 0.25);
-		}
+.audience-grid {
+    display: grid;
+    gap: 20px;
+}
+.audience-item h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+}
+.audience-item p { margin: 0; font-size: 0.95rem; }
 
-/* ==========================================================
-   📱 MOBILE RESPONSIVE (MAX-WIDTH: 900px)
-   ========================================================== */
+/* --- TECH SECTION (Mouvements) --- */
+.tech-header {
+    margin-bottom: 50px;
+    text-align: center;
+}
 
+.movements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+}
+
+.movement-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 40px;
+    box-shadow: var(--shadow-card);
+    position: relative;
+    border: 1px solid #eee;
+}
+
+.card-badge {
+    position: absolute;
+    top: 20px; right: 20px;
+    background: #f0f4ff;
+    color: var(--primary-color);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+}
+
+.movement-card h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    color: var(--dark-bg);
+}
+
+.movement-def {
+    font-style: italic;
+    margin-bottom: 30px;
+}
+
+.step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.step-num {
+    background: var(--dark-bg);
+    color: white;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+/* --- RESPONSIVE --- */
 @media (max-width: 900px) {
-
-    /* --- 1. HERO HEADER (Adaptation Background) --- */
-    .hero-header {
-        /* On passe en hauteur auto minimum pour éviter de couper le texte */
-        height: auto;
-        min-height: 100vh;
-        
-        /* Alignement Vertical & Gauche */
-        flex-direction: column;
-        justify-content: center; /* Centre verticalement */
-        align-items: flex-start; /* Aligne le texte à GAUCHE */
-        text-align: left;        /* Aligne le texte à GAUCHE */
-        
-        padding-top: 100px;      /* Espace pour la navbar */
-        padding-bottom: 50px;
-    }
-
-    .hero-content {
-        padding: 0 25px; /* Marges latérales propres */
-        max-width: 100%;
-        margin: 0;
-    }
-
-    .hero-content h1 {
-        font-size: 2.35rem; /* Taille adaptée */
-        line-height: 1.1;
-        margin-bottom: 20px;
-        text-align: left;
-    }
-
-    .hero-content p {
-        font-size: 1.1rem;
-        line-height: 1.6;
-        text-align: left;
-        margin-bottom: 30px;
-    }
-
-    .cta-button {
-        width: 100%; /* Bouton pleine largeur sur mobile */
-        text-align: center;
-        padding: 15px 20px;
-    }
-
-    /* --- 2. SECTIONS (Layout Vertical) --- */
-    .section {
-        flex-direction: column; /* Empilement vertical */
-        padding: 60px 20px;
-        gap: 40px;
-    }
-
-    /* Annule l'effet d'inversion des sections paires */
-    .section:nth-child(even) {
-        flex-direction: column;
-    }
-
-    .section-content {
-        order: 1; /* Le texte en PREMIER */
-        text-align: left; /* Alignement gauche strict */
-        width: 100%;
-    }
-
-    .section-content h2 {
-        font-size: 2rem;
-        line-height: 1.2;
-    }
-
-    .section-content p {
-        font-size: 1rem;
-        text-align: left;
-    }
-
-    /* --- 3. IMAGES DES SECTIONS --- */
-    .section-image {
-        order: 2; /* L'image en DEUXIÈME */
-        padding: 0;
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .section-image img {
-        width: 100%;
-        border-radius: 12px;
-        /* On enlève le hover qui peut gêner sur tactile */
-        transform: none !important; 
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
+    .header-title-box h1 { font-size: 2.5rem; }
+    
+    .split-section { flex-direction: column; gap: 40px; }
+    .split-section.reversed { flex-direction: column; }
+    .split-image { width: 100%; }
 }

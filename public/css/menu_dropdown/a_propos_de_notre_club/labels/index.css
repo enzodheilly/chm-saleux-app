@@ -1,326 +1,262 @@
-/* ==========================================================
-   1. STYLES GÉNÉRAUX (Desktop first)
-   ========================================================== */
+/* --- VARIABLES --- */
+:root {
+    --primary-color: #d4af37; /* Or (Gold) pour l'aspect Label/Récompense */
+    --secondary-color: #0056b3; /* Bleu Club */
+    --dark-bg: #111;
+    --text-main: #333;
+    --text-muted: #666;
+    --bg-light: #f8f9fa;
+    --card-bg: #ffffff;
+    --border-radius: 12px;
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.05);
+    --shadow-hover: 0 15px 35px rgba(0,0,0,0.1);
+}
 
-.overlay {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			z-index: 0;
-		}
+body {
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+}
 
-.hero-header {
+/* --- HEADER --- */
+.page-header {
     position: relative;
-    margin-top: 120px;
-    width: 100%;
-    height: 65vh; /* ajustable */
-    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
+    height: 50vh;
+    min-height: 350px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    overflow: hidden;
-
-    /* diagonale sur le bas */
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
+    color: white;
+    margin-bottom: 60px;
 }
 
-/* Fond flou + filtre bleu foncé */
-.hero-header::before {
-    content: "";
+.header-bg {
     position: absolute;
-    inset: 0;
-    background: url("../../../../images/club/ok.jpg") center / cover no-repeat;
-    filter: blur(40px);
-    transform: scale(4.1);
-    z-index: 0; /* derrière le texte */
-}
-
-/* Filtre bleu foncé */
-.hero-header::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 41, 82, 0.65); /* ← bleu plus foncé */
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-size: cover;
+    background-position: center;
     z-index: 1;
 }
 
-/* Image décorative diagonale sur la droite du hero */
-.hero-diagonal-image {
+.header-overlay {
     position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;          /* occupe toute la hauteur du hero */
-    width: 55%;            /* moitié droite du hero */
-    overflow: hidden;
-    z-index: 2;            /* au-dessus du fond mais derrière le texte si nécessaire */
-    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%); /* diagonale */
+    top: 0; left: 0; right: 0; bottom: 0;
+    /* Dégradé avec une touche dorée subtile */
+    background: linear-gradient(45deg, rgba(0,0,0,0.9), rgba(184, 134, 11, 0.4));
+    z-index: 2;
 }
 
-.hero-diagonal-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    filter: drop-shadow(0 0 10px rgba(0,0,0,0.3)); /* optionnel : ombre douce */
-    transform: scale(1.8); /* léger zoom pour mieux couvrir le clip-path */
-}
-
-/* Contenu visible au-dessus */
-.hero-header > .hero-content {
+.header-content {
     position: relative;
-    z-index: 2; /* texte au-dessus du fond */
+    z-index: 3;
+    width: 100%;
+    top:65px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-		.hero-content {
-			position: relative;
-			z-index: 1;
-			margin-top: 100px;
-		}
-
-		.hero-content h1 {
-			font-size: 2.5rem;
-			font-weight: 800;
-			max-width: 900px;
-			text-align: left;
-            text-transform: uppercase;
-			margin: 0 0 1rem;
-			color: white;
-			text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-			margin-right:725px;
-			margin-top: -179px;
-			letter-spacing: 2px;
-		}
-		.hero-content p {
-			font-size: 1.1rem;
-			line-height: 1.8;
-			color: #CBD5E1;
-			margin-bottom: 2rem;
-            max-width: 570px;
-            margin-right: 660px;
-            text-align: left;
-		}	
-.back-button {
-    /* 1. POSITIONNEMENT : On le sort du flux pour le mettre en haut à gauche */
-    position: absolute; 
-    top: 35px;      /* Espace depuis le haut */
-    left: 100px;     /* Espace depuis la gauche */
-    
-    /* 2. COUCHE : On le force à passer au-dessus du filtre bleu (qui est à 1) */
-    z-index: 10;    
-    
+.back-link {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    font-weight: 500;
+    color: white;
     text-decoration: none;
-    
-    /* 3. COULEUR : On met blanc car le fond est sombre */
-    color: #ffffff; 
-    
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    font-weight: 600;
+    margin-bottom: 20px;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+.back-link:hover { opacity: 1; }
+.back-link svg { margin-right: 8px; }
+
+.header-title-box h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin: 10px 0;
+    line-height: 1.1;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+.subtitle {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    background: var(--primary-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
 }
 
-/* --- LABELS SECTION (Desktop) --- */
-.labels-section {
-    margin-top: 30px;
-    padding: 60px 20px;
-    font-family: 'Inter', sans-serif;
-    color: #fff;
-}
-
-.labels-section .container {
+/* --- MAIN CONTAINER --- */
+.main-container {
     max-width: 1100px;
     margin: 0 auto;
+    padding: 0 20px 80px;
 }
 
-.labels-title {
-    font-size: 2.2rem;
-    font-weight: 900;
-    margin-bottom: 30px;
+/* --- INTRO --- */
+.intro-section {
     text-align: center;
-    text-transform: uppercase;
-    color: #1e293b;
+    max-width: 800px;
+    margin: 0 auto 60px;
 }
 
-.labels-intro {
+.section-heading {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: var(--dark-bg);
+    position: relative;
+    display: inline-block;
+}
+.section-heading::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 4px;
+    background: var(--primary-color);
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+.intro-text {
     font-size: 1.1rem;
-    font-weight: 500;
-    margin-bottom: 40px;
-    color: #475569;
+    color: var(--text-muted);
     line-height: 1.6;
+}
+
+/* --- LABELS GRID --- */
+.labels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 80px;
+}
+
+.label-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 40px 30px;
     text-align: center;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #eee;
+    position: relative;
+    overflow: hidden;
 }
 
-.labels-list ul {
-    list-style-type: disc;
-    padding-left: 30px;
-    margin-bottom: 40px;
+.label-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--primary-color);
 }
 
-.labels-list li {
+/* Petite barre colorée en haut de la carte */
+.label-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--primary-color);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+}
+.label-card:hover::before { transform: scaleX(1); }
+
+.card-icon {
+    width: 70px;
+    height: 70px;
+    background: #fff9e6; /* Fond jaune très pâle */
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+}
+
+.card-content h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--dark-bg);
+}
+
+.divider {
+    height: 2px;
+    width: 30px;
+    background: #eee;
+    margin: 0 auto 15px;
+}
+
+.card-content p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+
+/* --- FFHM GUARANTEE --- */
+.ffhm-guarantee {
+    display: flex;
+    justify-content: center;
+}
+
+.ffhm-box {
+    background: white;
+    border-left: 5px solid var(--secondary-color); /* Bleu Fédéral */
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    max-width: 800px;
+}
+
+.ffhm-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
     margin-bottom: 15px;
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #005b94;
 }
 
-.labels-list li strong {
-    color: #1e293b;
+.badge-check {
+    background: var(--secondary-color);
+    color: white;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
 }
 
-.labels-info {
-    max-width: 900px;
-    margin: 0 auto;
-    font-size: 1.1rem;
+.ffhm-header h3 {
+    margin: 0;
+    color: var(--secondary-color);
+    font-weight: 700;
+}
+
+.ffhm-box p {
+    margin: 0 0 15px 0;
+    color: var(--text-muted);
     line-height: 1.6;
-    color: #475569;
 }
 
-.labels-info p {
-    margin-bottom: 20px;
+.ffhm-footer {
+    font-size: 0.9rem;
+    font-weight: 600;
 }
+.ffhm-footer a {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+.ffhm-footer a:hover { text-decoration: underline; }
 
-
-/* ==========================================================
-   2. MOBILE RESPONSIVE (MAX-WIDTH: 900px)
-   ========================================================== */
-
-@media (max-width: 900px) {
-
-    /* --- HERO HEADER --- */
-    .hero-header {
-        padding-top: 140px; 
-        margin-top: 0;
-        height: auto;
-        min-height: 100vh;
-        background: transparent;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        clip-path: none;
-    }
-
-    .hero-header::before,
-    .hero-header::after {
-        display: block !important;
-        position: absolute;
-        inset: 0;
-        height: 100%;
-    }
-
-    /* --- BOUTON RETOUR (Aligné Gauche strict) --- */
-    .back-button {
-        top: 130px !important; 
-        left: 25px !important; /* Alignement strict */
-        background: transparent !important;
-        border: none !important;
-        padding: 0 !important;
-        backdrop-filter: none !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-        color: #ffffff !important;
-        z-index: 1000;
-    }
-
-    /* --- CONTENU TEXTE HERO --- */
-    .hero-content {
-        order: 1;
-        position: relative;
-        z-index: 10;
-        width: 100%;
-        padding: 0 25px; /* Alignement strict avec le bouton */
-        text-align: left;
-        margin-bottom: 20px;
-        margin-top: 50px !important; /* Espace sous le bouton */
-    }
-
-    .hero-content h1 {
-        font-size: 2.2rem;
-        line-height: 1.2;
-        margin: 0 0 20px 0;
-        /* Reset des marges Desktop */
-        margin-left: 7px !important; 
-        margin-top: 0 !important;
-        max-width: 100%;
-    }
-
-    .hero-content p {
-        font-size: 1rem;
-        font-weight: 500;
-        line-height: 1.6;
-        /* Reset des marges Desktop */
-        margin-right: 0 !important;
-        max-width: 100% !important;
-        margin-bottom: 30px;
-    }
-
-    /* --- IMAGE DU BAS (GESTION PORTRAIT) --- */
-    .hero-diagonal-image {
-        order: 2;
-        position: relative !important;
-        display: block !important;
-        width: 100%;
-        height: 280px; /* Hauteur fixe du bloc image */
-        margin-top: auto;
-        z-index: 5;
-        overflow: hidden;
-        clip-path: polygon(0 15%, 100% 0, 100% 100%, 0% 100%);
-    }
-
-    .hero-diagonal-image img {
-        /* IMPORTANT POUR PORTRAIT : assure que l'image remplit la largeur.
-           Elle sera rognée en haut et en bas automatiquement. */
-        object-fit: cover;
-        width: 100%;
-        height: 90%;
-        
-        /* Centrage et léger zoom pour bien remplir */
-        object-position: center center;
-        transform: scale(1.8); 
-        
-        filter: none;
-    }
-
-    /* --- LABELS SECTION RESPONSIVE --- */
-    .labels-section {
-        padding: 50px 20px;
-        margin-top: 0;
-    }
-    
-    .labels-section .container {
-        width: 100%;
-        padding: 0;
-    }
-
-    .labels-title {
-        font-size: 1.8rem;
-        margin-bottom: 20px;
-    }
-
-    .labels-intro {
-        text-align: left;
-        margin-bottom: 30px;
-        font-size: 1rem;
-    }
-
-    .labels-list ul {
-        padding-left: 20px;
-    }
-
-    .labels-list li {
-        font-size: 1rem;
-        margin-bottom: 20px;
-        line-height: 1.5;
-    }
-    
-    .labels-info {
-        text-align: left;
-        font-size: 1rem;
-    }
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .page-header { height: auto; padding-top: 120px; padding-bottom: 40px; }
+    .header-title-box h1 { font-size: 2.5rem; }
+    .header-content { top:20px;}
 }
