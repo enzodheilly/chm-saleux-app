@@ -12,7 +12,6 @@
 body {
     background-color: var(--bg-light);
     color: var(--text-main);
-    font-family: 'Inter', sans-serif;
 }
 
 /* --- HEADER --- */
