@@ -1,75 +1,49 @@
-<section class="container cours-section">
+<section class="overlap-section">
+  <div class="container">
+    
+    <div class="overlap-wrapper">
+      <div class="overlap-image">
+         <img src="{{ asset('images/menu_dropdown/services_du_club/cours_collectifs/cours-co.jpg') }}" alt="Cours collectifs">
+      </div>
 
-  <h2 style="text-align:center;">Cours Collectifs</h2>
-
-  <!-- WRAPPER : IMAGE + TEXTE -->
-  <div class="collectif-wrapper">
-
-    <!-- PHOTO À GAUCHE -->
-        <div class="trdc-silhouette">
-            <div class="text-wall">
-                COURS COLLECTIFS<br>
-                COURS COLLECTIFS<br>
-                COURS COLLECTIFS<br>
-                COURS COLLECTIFS
-            </div>
-
-            <img src="{{ asset('images/menu_dropdown/services_du_club/cours_collectifs/12.jpg') }}"
-                 alt="Silhouette cours collectifs">
-        </div>
-
-    <!-- TEXTE À DROITE -->
-    <div class="collectif-text">
-      <p>
-        Que vous soyez débutant, sportif régulier ou simplement à la recherche de motivation, 
-        nos cours collectifs vous offrent un environnement idéal pour bouger, progresser et 
-        vous dépasser. Encadrés par des coachs diplômés, ils combinent énergie, dépassement 
-        de soi et bonne humeur.  
-        <br><br>
-        Au programme : séances cardio dynamiques, renforcement musculaire ciblé, fitness moderne 
-        et moments de cohésion. Venez vivre l’entraînement autrement !
-      </p>
-
-      <a href="{{ path('cours_collectifs') }}" class="btn-collectif">En savoir plus</a>
+      <div class="overlap-content">
+        <h2 class="section-heading">Cours Collectifs</h2>
+        <div class="divider"></div>
+        <p>
+          Rejoignez l'énergie du groupe. Que vous soyez débutant ou confirmé, nos coachs diplômés vous guident à travers des séances variées : Cardio, Renforcement, Zen.
+          <br><br>
+          <strong>L'objectif ?</strong> Se dépasser ensemble dans une ambiance motivante.
+        </p>
+        <a href="{{ path('cours_collectifs') }}" class="btn-clean">En savoir plus</a>
+      </div>
     </div>
 
   </div>
-
 </section>
 
-<section class="container avis-section">
+<section class="reviews-section">
+  <div class="container">
+    <h3 class="reviews-title">Vos retours d'expérience</h3>
+    
+    <div class="reviews-grid">
+      <div class="review-item">
+        <div class="stars">★★★★★</div>
+        <p>“Super ambiance et coachs au top ! Les cours collectifs m’ont permis de reprendre le sport avec plaisir.”</p>
+        <span class="author">— Sarah M.</span>
+      </div>
 
+      <div class="review-item">
+        <div class="stars">★★★★★</div>
+        <p>“Des séances dynamiques. On se sent encadré et fier de soi après chaque cours.”</p>
+        <span class="author">— Julien D.</span>
+      </div>
 
-  <div class="avis-wrapper">
-
-    <div class="avis-card">
-    <div class="avis-stars">★★★★★</div>
-      <p class="avis-text">
-        “Super ambiance et coachs au top ! Les cours collectifs m’ont permis de reprendre
-        le sport avec motivation et plaisir. On ne voit pas le temps passer.”
-      </p>
-      <span class="avis-name">Sarah M.</span>
-    </div>
-
-    <div class="avis-card">
-    <div class="avis-stars">★★★★★</div>
-      <p class="avis-text">
-        “Des séances dynamiques et accessibles à tous les niveaux. On se sent encadré,
-        encouragé et surtout fier de soi après chaque cours.”
-      </p>
-      <span class="avis-name">Julien D.</span>
-    </div>
-
-    <div class="avis-card">
-    <div class="avis-stars">★★★★★</div>
-      <p class="avis-text">
-        “Une vraie source de motivation ! Les coachs sont professionnels, bienveillants
-        et l’ambiance de groupe est incroyable.”
-      </p>
-      <span class="avis-name">Nadia K.</span>
+      <div class="review-item">
+        <div class="stars">★★★★★</div>
+        <p>“Une vraie source de motivation ! L’ambiance de groupe est incroyable.”</p>
+        <span class="author">— Nadia K.</span>
+      </div>
     </div>
 
   </div>
-
 </section>
-

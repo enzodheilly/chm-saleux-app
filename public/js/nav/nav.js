@@ -154,3 +154,46 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const trigger = document.getElementById("club-hover-link");
+  const panel = document.getElementById("club-panel");
+  if (!trigger || !panel) return;
+
+  let closeTimer = null;
+
+  const open = () => {
+    clearTimeout(closeTimer);
+    panel.classList.add("is-open");
+    panel.setAttribute("aria-hidden", "false");
+  };
+
+  const close = () => {
+    closeTimer = setTimeout(() => {
+      panel.classList.remove("is-open");
+      panel.setAttribute("aria-hidden", "true");
+    }, 120);
+  };
+
+  // Desktop hover
+  trigger.addEventListener("mouseenter", open);
+  trigger.addEventListener("mouseleave", close);
+  panel.addEventListener("mouseenter", open);
+  panel.addEventListener("mouseleave", close);
+
+  // Bonus: fermer au clic ailleurs
+  document.addEventListener("click", (e) => {
+    if (!panel.contains(e.target) && !trigger.contains(e.target)) {
+      panel.classList.remove("is-open");
+      panel.setAttribute("aria-hidden", "true");
+    }
+  });
+
+  // Bonus: sur petit écran (si tu veux click-to-open sur desktop aussi)
+  trigger.addEventListener("click", (e) => {
+    // si tu veux que "Club & membres..." ne navigue pas
+    e.preventDefault();
+    panel.classList.toggle("is-open");
+    panel.setAttribute("aria-hidden", panel.classList.contains("is-open") ? "false" : "true");
+  });
+});

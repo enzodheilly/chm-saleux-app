@@ -5,7 +5,6 @@
 
     <div class="hero-content">
         {% if not app.user %}
-            <!-- Utilisateur non connecté : version classique -->
             <h1 class="club-title">CLUB HALTÉROPHILIE & MUSCULATION</h1>
             <p class="club-subtitle default-subtitle">Relevez vos limites et dépassez-vous chaque jour !</p>
 
@@ -26,7 +25,6 @@
             </div>
 
         {% else %}
-            <!-- Utilisateur connecté : version personnalisée -->
             <h1 class="club-title user-welcome">Bonjour {{ app.user.firstName }} !</h1>
 
             <p class="club-date">
@@ -41,10 +39,13 @@
             </div>
         {% endif %}
 
-        <div class="ffhm-container">
-            <img src="{{ asset('images/ffhm.png') }}" alt="Logo FFHM" class="ffhm-logo">
-        </div>
-    </div>
+<div class="badge-ffhm">
+    <span class="badge-text">Club affilié</span>
+    <span class="badge-separator"></span>
+    <img src="{{ asset('images/ffhm.png') }}" alt="Logo FFHM">
+</div>
+
+
 </section>
 
 <script src="{{ asset('js/accueil/section1/section1.js') }}"></script>

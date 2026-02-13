@@ -1,57 +1,62 @@
-<!-- ==================== SECTION APP MOBILE ==================== -->
-<section class="app-mobile-section">
-  <div class="app-mobile-container">
-    <!-- Texte et accroche -->
-    <div class="app-mobile-text">
-      <h2>CHM SALEUX BIENTÔT DANS VOTRE POCHE</h2>
+<section class="app-section">
+  <div class="app-container">
+    
+    <div class="app-content">
       
-      <!-- Nouvelle zone explicative -->
-      <div class="app-description">
-        <p>
-          Notre application vous permet de gérer facilement vos activités avec le club. Vous pourrez consulter le planning, réserver vos séances, suivre vos progrès et rester connecté avec notre communauté, le tout depuis votre smartphone.
-        </p>
-      </div>
+      <span class="badge-coming-soon">Bientôt disponible</span>
       
-      <p>
-        Retrouvez toutes nos fonctionnalités directement sur votre smartphone : planning, réservations, suivi de vos entraînements et plus encore !
+      <h2 class="app-title">Le CHM Saleux <br>dans votre <span class="text-highlight">poche</span></h2>
+      
+      <p class="app-intro">
+        Emportez votre club partout avec vous. Planifiez, réservez et suivez votre progression en temps réel, directement depuis votre smartphone.
       </p>
 
-      <!-- Texte au-dessus du logo et boutons -->
-      <h3 class="download-text">Télécharge l'app <span>CHM Saleux</span></h3>
+      <ul class="app-features">
+        <li>
+          <span class="check-icon">✓</span> Planning & Réservations instantanées
+        </li>
+        <li>
+          <span class="check-icon">✓</span> Suivi de vos performances
+        </li>
+        <li>
+          <span class="check-icon">✓</span> Actualités du club en direct
+        </li>
+      </ul>
 
-      <!-- Ligne logo + boutons -->
-      <div class="logo-buttons-line">
-        <!-- Logo de l'application -->
-        <div class="app-logo">
-          <img src="{{ asset('images/app-logo.png') }}" alt="Logo CHM Saleux">
+      <div class="download-area">
+        
+        <div class="app-icon-wrapper">
+           <img src="{{ asset('images/app-logo.png') }}" alt="Icône App">
         </div>
 
-        <!-- Boutons -->
-        <div class="app-buttons">
-          <a href="#" class="app-btn store ios">
-            <img src="{{ asset('images/apple-logo.png') }}" alt="Apple Logo" class="store-logo">
-            <div class="store-text">
-              <span class="top-text">Bientôt disponible sur</span>
-              <span class="bottom-text">Apple Store</span>
+        <div class="store-buttons">
+          <a href="#" class="btn-store">
+            <img src="{{ asset('images/apple-logo.png') }}" alt="Apple" class="store-icon">
+            <div class="store-info">
+              <span class="small">Disponible sur</span>
+              <span class="big">App Store</span>
             </div>
           </a>
 
-          <a href="#" class="app-btn store android">
-            <img src="{{ asset('images/google-play-logo.png') }}" alt="Google Play Logo" class="store-logo">
-            <div class="store-text">
-              <span class="top-text">Bientôt disponible sur</span>
-              <span class="bottom-text">Google Play</span>
+          <a href="#" class="btn-store">
+            <img src="{{ asset('images/google-play-logo.png') }}" alt="Google Play" class="store-icon">
+            <div class="store-info">
+              <span class="small">Disponible sur</span>
+              <span class="big">Google Play</span>
             </div>
           </a>
         </div>
+
       </div>
     </div>
 
-    <!-- Visuel téléphone -->
-    <div class="app-mobile-image">
-      <img rel="preload" src="{{ asset('images/mockup.png') }}" alt="Image du club">
+    <div class="app-visual">
+      <div class="blob-shape"></div>
+      
+      <div class="phone-mockup">
+        <img src="{{ asset('images/mockup.png') }}" alt="Application Mobile CHM Saleux">
+      </div>
     </div>
+
   </div>
 </section>
-
- <script src="{{ asset('js/accueil/section5/section5.js') }}" defer></script>

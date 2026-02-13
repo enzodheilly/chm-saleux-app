@@ -138,10 +138,10 @@
     font-weight: 800;
     transition: 0.3s;
 }
-.nous-rejoindre:hover { /* On éclaircit simplement le bouton, sans changer le dégradé */
+.nous-rejoindre:hover { 
     filter: brightness(1.2);
-    /* Une ombre très discrète pour le relief */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); 
+}
 
 .btn-en-savoir-plus {
     border: 1px solid #fff;
@@ -154,28 +154,55 @@
 }
 .btn-en-savoir-plus:hover { background: #fff; color: #000; }
      
-/* --- Logo FFHM --- */
-.ffhm-container {
-    margin-top: 2rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+/* --------------------------------------------------------- */
+/* --- NOUVEAU STYLE FFHM (CORRIGÉ : SOUS LES BOUTONS) --- */
+/* --------------------------------------------------------- */
+
+.badge-ffhm {
+  position: relative;
+  margin-top: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+
+  backdrop-filter: blur(8px);
+
+  padding: 12px 22px;
+  border-radius: 12px;
+
+  transition: 0.3s ease;
 }
-.ffhm-logo {
-    height: 80px;
-    opacity: 0.9;
-    transition: opacity 0.3s ease;
+
+/* Texte */
+.badge-text {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
-.ffhm-logo:hover { opacity: 1; }
+
+/* Séparateur */
+.badge-separator {
+  width: 1px;
+  height: 30px;
+  background: rgba(255,255,255,0.35);
+}
+
+/* Logo */
+.badge-ffhm img {
+  height: 45px;
+  width: auto;
+  display: block;
+}
 
 
 /* ========================================================= */
 /* 2. RESPONSIVE OPTIMISÉ                                    */
 /* ========================================================= */
 
-/* --- A. TABLETTE (768px - 1024px) : ANIMATION CROISÉE --- */
+/* --- A. TABLETTE (768px - 1024px) --- */
 @media (min-width: 768px) and (max-width: 1180px) {    
-    /* Overlay pour lisibilité (Indispensable) */
     .hero-section::after {
         content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.3), rgba(0,0,0,0.8));
@@ -186,7 +213,6 @@
         padding-top: 100px; 
         align-items: center;
         min-height: 80vh;
-        /* IMPORTANT : Empêche le scroll horizontal pendant l'animation */
         overflow: hidden; 
     }
 
@@ -195,32 +221,35 @@
         max-width: 90%;
         margin: 0 auto;
         text-align: center;
-        /* S'assure que le contenu est au-dessus de l'overlay */
         position: relative;
         z-index: 2;
+        /* Sur tablette, on centre tout le contenu flex */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .club-title { 
         font-size: 2.8rem;
-        /* Ombre pour détacher le texte */
         text-shadow: 0 2px 10px rgba(0,0,0,0.5); 
     }
 
     .hero-buttons { justify-content: center; }
-    .ffhm-container { justify-content: center; margin-top: 3rem; }
+    
+    /* Adaptation Tablette de l'étiquette */
+    .ffhm-container { 
+        margin-top: 3rem; 
+        justify-content: center; 
+        width: 100%;
+    }
 
-    /* ========================================================= */
-    /* ANIMATIONS TABLETTE (Gauche / Droite)                     */
-    /* ========================================================= */
-
-    /* 1. TITRE : Arrive de la GAUCHE (-150px) */
+    /* Animations Tablette */
     .club-title {
         transform: translateX(-150px);
         opacity: 0;
         transition: opacity 1s ease-out, transform 1s ease-out;
     }
 
-    /* 2. INFOS (Sous-titre + Compteurs) : Arrivent de la DROITE (+150px) */
     .hero-line, 
     .club-subtitle {
         transform: translateX(150px);
@@ -228,7 +257,6 @@
         transition: opacity 1s ease-out, transform 1s ease-out;
     }
 
-    /* 3. ÉTAT FINAL : Tout se place au CENTRE (0) */
     .club-title.animate, 
     .hero-line.animate, 
     .club-subtitle.animate {
@@ -237,27 +265,13 @@
     }
 }
 
-/* --- B. MOBILE (max-width: 767px) : VERSION FINALE ANIMÉE --- */
+/* --- B. MOBILE (max-width: 767px) --- */
 @media (max-width: 767px) {
     
-.hero-section {
-        /* L'IMAGE DE FOND */
+    .hero-section {
         background-image: url('/images/club/robert.jpg'); 
-        
-        /* ASTUCE : On met 'auto 110%' au lieu de 'cover'.
-           Cela force l'image à être 10% plus haute que l'écran.
-           Maintenant, tu as de la marge pour la bouger ! */
         background-size: auto 115vh; 
-        
-        /* REGLAGE DE LA HAUTEUR :
-           center top    = On voit le haut de la photo (tête)
-           center center = On voit le milieu
-           center bottom = On voit le bas de la photo (pieds)
-           
-           Tu peux utiliser des % : 50% 20% (X Y)
-        */
         background-position: center -100%; 
-        
         background-repeat: no-repeat;
         padding-top: 100px;
         padding-left: 20px;
@@ -270,7 +284,6 @@
         position: relative;
     }
 
-    /* OVERLAY SOMBRE (Indispensable pour la lisibilité) */
     .hero-section::after {
         content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(0, 0, 0, 0.6); 
@@ -285,10 +298,28 @@
         width: 100%;
     }
 
-    /* On cache les éléments PC */
-    .hero-photos, .ffhm-container { display: none; }
+    .hero-photos { display: none; }
+    
+    /* Sur mobile, on l'affiche juste en dessous des boutons */
+    .ffhm-container {
+        position: relative;
+        margin-top: 25px;
+        width: 100%;
+        justify-content: center; /* Centré */
+        display: flex;
+        /* On enlève les propriétés de position absolue */
+        bottom: auto;
+        right: auto;
+        transform: none;
+    }
+    
+    .ffhm-etiquette {
+        padding: 8px 16px; 
+    }
+    .etiquette-label { font-size: 0.7rem; }
+    .etiquette-logo { height: 28px; }
 
-    /* --- STYLES TEXTES --- */
+    /* --- STYLES TEXTES MOBILE --- */
     .club-title {
         font-size: 1.8rem;
         line-height: 1.2;
@@ -308,7 +339,6 @@
     .hero-line { font-size: 1.6rem; color: #fff; }
     .thin-text { color: #005b94; font-weight: 900; text-transform: uppercase; opacity: 0.9; }
 
-    /* Boutons */
     .hero-buttons { flex-direction: column; width: 100%; gap: 15px; }
     .nous-rejoindre {
         background: #005b94; color: #fff; width: 100%; text-align: center; padding: 14px 0;
@@ -317,26 +347,20 @@
         width: 100%; text-align: center; padding: 14px 0; border-color: #fff; color: #fff; background: rgba(0,0,0,0.2);
     }
 
-    /* ========================================================= */
-    /* NOUVELLES ANIMATIONS MOBILE (Gauche/Droite)               */
-    /* ========================================================= */
-
-    /* 1. TITRE : Arrive de la GAUCHE (-100px) */
+    /* Animations Mobile */
     .club-title {
-        transform: translateX(-100px); /* Départ à gauche */
+        transform: translateX(-100px);
         opacity: 0;
         transition: opacity 0.8s ease-out, transform 0.8s ease-out;
     }
 
-    /* 2. INFOS (Sous-titre + Compteurs) : Arrivent de la DROITE (+100px) */
     .hero-line, 
     .club-subtitle {
-        transform: translateX(100px); /* Départ à droite */
+        transform: translateX(100px);
         opacity: 0;
         transition: opacity 0.8s ease-out, transform 0.8s ease-out;
     }
 
-    /* 3. ÉTAT FINAL : Tout se place au CENTRE (0) */
     .club-title.animate, 
     .hero-line.animate, 
     .club-subtitle.animate {
