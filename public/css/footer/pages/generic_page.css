@@ -13,13 +13,12 @@
 body {
     background-color: var(--bg-light);
     color: var(--text-main);
-    font-family: 'Inter', sans-serif;
 }
 
 /* --- HEADER --- */
 .page-header {
     position: relative;
-    height: 50vh; /* Un peu moins haut que les pages principales */
+    height: 60vh; /* Un peu moins haut que les pages principales */
     min-height: 300px;
     display: flex;
     align-items: center;
@@ -100,13 +99,10 @@ body {
 }
 
 .document-paper {
-    background: white;
     padding: 60px;
     border-radius: var(--border-radius);
-    box-shadow: var(--shadow-soft);
     width: 100%;
     max-width: 900px; /* Largeur de lecture idéale */
-    border-top: 5px solid var(--primary-color);
 }
 
 .last-update {
