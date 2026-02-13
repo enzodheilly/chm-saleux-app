@@ -1,283 +1,264 @@
-/* ========================================================= */
-/* ==================== SECTION SLIDER (PRO) =============== */
-/* ========================================================= */
-
-.slider-section {
-    padding: 80px 0;
-    background-color: #EDEDED;
-    position: relative;
-    /* On suppose que le fond global est sombre, sinon ajouter background: #0f172a; */
+/* --- CONFIGURATION --- */
+.equipment-section {
+  background-color: #0f0f11;
+  color: #fff;
+  padding: 80px 0;
+  overflow: hidden;
 }
 
-/* --- TITRES --- */
-.slider-section .slider-title {
-    font-weight: 900;
-    font-size: 2.5rem;
-    color: #1e293b;
-    margin-bottom: 1rem;
-    text-align: center;
-    text-transform: uppercase;
+.container-fluid {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-.slider-section .slider-subtitle {
-    font-size: 1.15rem;
-    color: #475569; /* Gris clair élégant */
-    margin-bottom: 60px;
-    font-weight: 400;
-    max-width: 700px;
-    text-align: center;
-    margin-inline: auto;
-    line-height: 1.6;
+.equipment-layout {
+  display: flex;
+  gap: 60px;
 }
 
-/* --- CONTAINER SLIDER --- */
-.slider-section .slider-wrapper {
-    position: relative;
-    width: 100%;
-    /* On enlève le padding latéral excessif pour un effet full-width maitrisé */
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
+/* --- COLONNE GAUCHE (INFO) --- */
+.equipment-info {
+  flex: 0 0 350px;
+  position: relative;
+  
+  /* CHANGEMENT ICI : On pousse le texte vers la droite */
+  margin-left: 50px; 
 }
 
-.slider-section .slider-container {
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-    padding-bottom: 30px; /* Espace pour l'ombre des cartes */
-    
-    /* Masquage Scrollbar */
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    cursor: grab; /* Indique qu'on peut scroller */
+/* Le texte reste accroché si la section est haute */
+.sticky-wrapper {
+  position: sticky;
+  top: 100px;
 }
 
-.slider-section .slider-container:active {
-    cursor: grabbing;
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color:#fff;
+  line-height: 1;
+  margin-bottom: 20px;
+  text-transform: uppercase;
 }
 
-.slider-section .slider-container::-webkit-scrollbar {
-    display: none;
+.text-highlight {
+  color: transparent;
+  -webkit-text-stroke: 1px #F57706;
 }
 
-.slider-section .slider {
-    display: flex;
-    gap: 24px; /* Espace plus aéré */
+.section-desc {
+  color: #a1a1aa;
+  line-height: 1.6;
+  margin-bottom: 40px;
 }
 
-/* --- SLIDES (CARTES IMAGES) --- */
-.slider-section .slide {
-    /* Largeur fixe pour contrôle précis : 350px ou flex-basis */
-    flex: 0 0 350px; 
-    height: 450px; /* Un peu plus haut pour le style */
-    position: relative;
-    overflow: hidden;
-    border-radius: 16px; /* Arrondi moderne */
-    scroll-snap-align: center; /* Centré au scroll */
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
+/* Liste des avantages */
+.benefits-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 40px;
 }
 
-.slider-section .slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+.benefits-list li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 25px;
 }
 
-/* Interaction Survol */
-.slider-section .slide:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+.benefits-list .icon {
+  background: rgba(230, 57, 70, 0.1);
+  color: #F57706;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  margin-right: 15px;
+  flex-shrink: 0;
 }
 
-.slider-section .slide:hover img {
-    transform: scale(1.1); /* Zoom fluide */
+.benefits-list strong {
+  display: block;
+  font-size: 1rem;
+  color: #fff;
 }
 
-/* Overlay Gradient Pro */
-.slider-section .slide::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%);
-    z-index: 2;
-    transition: opacity 0.3s;
+.benefits-list small {
+  color: #666;
+  font-size: 0.85rem;
 }
 
-/* --- TEXTES SUR SLIDES --- */
-.slider-section .slide p {
-    position: absolute;
-    bottom: 30px;
-    left: 20px;
-    right: 20px; /* Largeur auto avec padding */
-    color: #fff;
-    font-size: 1.5rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    z-index: 3;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    text-align: left; /* Alignement gauche plus moderne */
-    line-height: 1.1;
-    margin: 0;
-    transform: translateY(0);
-    transition: transform 0.4s ease;
+.scroll-indicator {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #F57706;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.8;
 }
 
-/* Remonte le texte au survol pour laisser place au bouton */
-.slider-section .slide:hover p {
-    transform: translateY(-40px);
+/* --- COLONNE DROITE (GALLERY) --- */
+.equipment-gallery {
+  flex: 1;
+  min-width: 0;
 }
 
-/* --- BOUTON DÉCOUVRIR --- */
-.slider-section .discover1 {
-    position: absolute;
-    bottom: 30px; /* Positionné en bas */
-    left: 20px;
-    
-    padding: 10px 24px;
-    background: #fff;
-    color: #0f172a;
-    font-weight: 700;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    text-decoration: none;
-    border-radius: 50px;
-    
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 4;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+.gallery-track {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 30px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 
-.slider-section .slide:hover .discover1 {
-    opacity: 1;
-    transform: translateY(0);
+/* Masquer la scrollbar */
+.gallery-track::-webkit-scrollbar {
+  height: 6px;
+}
+.gallery-track::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 3px;
+}
+.gallery-track::-webkit-scrollbar-thumb {
+  background: #F57706;
+  border-radius: 3px;
 }
 
-.slider-section .discover1:hover {
-    background: #38bdf8; /* Bleu clair actif */
-    color: #fff;
+/* --- LA CARTE MACHINE --- */
+.machine-card {
+  flex: 0 0 300px;
+  height: 450px;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  scroll-snap-align: start;
+  background: #18181b;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: transform 0.3s ease;
 }
 
-/* ========================================================= */
-/* ================== EQUIPMENT BENEFITS =================== */
-/* ========================================================= */
-
-.slider-section .equipment-benefits {
-    max-width: 1200px;
-    margin: 100px auto 60px;
-    padding: 0 24px;
-    text-align: center;
+.machine-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(230, 57, 70, 0.5);
 }
 
-.slider-section .equipment-benefits h3 {
-    font-size: 2.2rem;
-    margin-bottom: 20px;
-    font-weight: 900;
-    color: #1e293b;
-    text-transform: uppercase;
+.image-box {
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
-.slider-section .equipment-benefits p.intro-text {
-    max-width: 750px;
-    margin: 0 auto 60px;
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: #cbd5e1;
+.image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
 }
 
-/* --- GRID --- */
-.slider-section .benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+.machine-card:hover .image-box img {
+  transform: scale(1.1);
+}
+
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  background: linear-gradient(to top, #000 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.machine-info {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 2;
+}
+
+.machine-info h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.category {
+  display: inline-block;
+  background: #F57706;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-top: 5px;
+  text-transform: uppercase;
+}
+
+/* --- CARTE "FINALE" (CTA) --- */
+.last-card {
+  background: #F57706;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: none;
+}
+
+.last-content h3 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.btn-test {
+  display: inline-block;
+  background: white;
+  color: #F57706;
+  padding: 12px 25px;
+  border-radius: 50px;
+  font-weight: bold;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: transform 0.2s;
+}
+
+.btn-test:hover {
+  transform: scale(1.05);
+}
+
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 900px) {
+  .equipment-layout {
+    flex-direction: column;
     gap: 30px;
-}
+  }
 
-/* --- CARTE AVANTAGE (BENEFIT) --- */
-.slider-section .benefit {
-    background: #1e293b; /* Fond sombre carte */
-    border: 1px solid #334155; /* Bordure subtile */
-    padding: 2.5rem 2rem;
-    border-radius: 16px;
-    text-align: center;
-    transition: transform 0.3s ease, border-color 0.3s ease;
-    
-    /* Animation apparition (à gérer via JS intersection observer idéalement, sinon garder CSS) */
-    opacity: 1; /* Remis à 1 pour affichage direct sans JS */
-}
+  .equipment-info {
+    flex: auto;
+    width: 100%;
+    /* IMPORTANT : On retire la marge sur mobile pour que ça ne décale pas tout */
+    margin-left: 0; 
+  }
+  
+  .sticky-wrapper {
+    position: static;
+  }
 
-.slider-section .benefit:hover {
-    transform: translateY(-8px);
-    border-color: #38bdf8; /* Bordure bleue au survol */
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-}
-
-/* Icone (optionnel si tu en ajoutes) */
-.slider-section .benefit i {
-    font-size: 2rem;
-    color: #38bdf8;
-    margin-bottom: 20px;
-    display: block;
-}
-
-.slider-section .benefit strong {
-    display: block;
-    font-size: 1.25rem;
-    margin-bottom: 12px;
-    color: #fff;
-    font-weight: 800;
-    text-transform: uppercase;
-}
-
-.slider-section .benefit span {
-    font-size: 1rem;
-    color: #94a3b8; /* Gris clair */
-    line-height: 1.6;
-    display: block;
-}
-
-/* ========================================================= */
-/* ===================== RESPONSIVE ======================== */
-/* ========================================================= */
-
-@media(max-width: 1100px) {
-    .slider-section .slide {
-        flex: 0 0 300px;
-        height: 400px;
-    }
-    .slider-section .benefits-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media(max-width: 768px) {
-    .slider-section .slider-title { font-size: 2rem; }
-    
-    /* Slider Mobile : Centré avec aperçu */
-    .slider-section .slide {
-        flex: 0 0 280px;
-        height: 380px;
-    }
-    
-    .slider-section .slider {
-        padding-left: 20px; /* Espace gauche initial */
-        padding-right: 20px; /* Espace droite final */
-    }
-
-    /* Texte mobile toujours visible, pas d'effet hover */
-    .slider-section .slide p {
-        transform: translateY(-30px); /* Déjà remonté */
-    }
-    .slider-section .discover1 {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .slider-section .benefits-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
+  .machine-card {
+    flex: 0 0 260px;
+    height: 380px;
+  }
+  
+  .scroll-indicator {
+    display: none;
+  }
 }

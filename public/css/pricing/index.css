@@ -1,0 +1,376 @@
+/* --- VARIABLES --- */
+:root {
+    --primary-color: #005b94;
+    --accent-color: #f57706;
+    --text-dark: #1f2937;
+    --text-light: #6b7280;
+    --bg-white: #ffffff;
+    --bg-gray: #f9fafb;
+    --border-radius: 16px;
+    --shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+body {
+    background-color: #fff;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+}
+
+/* --- HEADER (Re-stylisé) --- */
+.page-header {
+    position: relative;
+    height: 60vh;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    color: white;
+    background-size: cover;
+    background-position: center;
+}
+
+.header-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(0,0,0,0.8), rgba(0, 91, 148, 0.4));
+}
+
+.header-content {
+    position: relative;
+    z-index: 5;
+    top:65px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+.header-title-box h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    background: var(--accent-color);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.container-narrow {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.text-center { text-align: center; }
+
+/* ========================================================= */
+/* =================  1. CARTES DE TARIFS  ================= */
+/* ========================================================= */
+.sleek-pricing-section {
+    padding: 80px 0;
+    background-color: #ffffff;
+}
+
+.pricing-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 10px;
+}
+
+/* --- Switch Selector --- */
+.pricing-selector-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.pricing-selector {
+    display: flex;
+    background: #f3f4f6;
+    padding: 4px;
+    border-radius: 50px;
+    position: relative;
+    width: 300px;
+    border: 1px solid #e5e7eb;
+}
+
+.pricing-selector input { display: none; }
+
+.selector-item {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    font-weight: 700;
+    z-index: 2;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.selector-glider {
+    position: absolute;
+    height: calc(100% - 8px);
+    width: calc(50% - 4px);
+    background: white;
+    border-radius: 40px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#type-student:checked ~ .selector-glider { transform: translateX(100%); }
+.discount-tag {
+    background: var(--color-accent);
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+/* --- Grille et Cartes --- */
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.sleek-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: var(--radius);
+    padding: 35px 25px;
+    display: flex;
+    flex-direction: column;
+    transition: 0.3s ease;
+    position: relative;
+}
+
+.sleek-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    border-color: #d1d5db;
+}
+
+.popular-card {
+    border: 2px solid var(--color-accent);
+    background: #fffcf9;
+}
+
+.popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 15px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.plan-price {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 4px;
+    margin: 20px 0;
+}
+
+.price-value {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #111;
+    transition: opacity 0.2s;
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 30px;
+    flex-grow: 1;
+}
+
+.features-list li {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    color: #4b5563;
+}
+
+.icon-check { color: #10b981; margin-top: 4px; }
+
+.btn-select {
+    display: block;
+    text-align: center;
+    padding: 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.btn-dark { background: #1f2937; color: white; }
+.btn-red { background: var(--color-accent); color: white; }
+
+.pricing-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 40px;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+}
+
+/* ========================================================= */
+/* =================  2. TRANSITIONS PARALLAX  ============= */
+/* ========================================================= */
+.parallax-divider {
+    position: relative;
+    height: 400px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+.parallax-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.parallax-content {
+    position: relative;
+    z-index: 2;
+}
+
+.parallax-content h2 {
+    font-size: 3rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* ========================================================= */
+/* =================  3. OFFRES SPÉCIFIQUES  =============== */
+/* ========================================================= */
+.section-light {
+    background: var(--bg-light);
+    padding: 80px 0;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.info-card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+}
+
+.info-icon {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.custom-table td {
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* ========================================================= */
+/* =================  4. TABLEAU DÉGRESSIF  ================ */
+/* ========================================================= */
+.section-white {
+    background: #fff;
+    padding: 80px 0;
+}
+
+.table-container {
+    margin-top: 40px;
+    overflow-x: auto;
+    border-radius: 15px;
+    border: 1px solid #e2e8f0;
+}
+
+.custom-table th {
+    background: var(--color-primary);
+    color: white;
+    padding: 20px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.section-white .custom-table td {
+    padding: 15px 20px;
+}
+
+/* ========================================================= */
+/* =================  5. FOOTER PAIEMENT  ================== */
+/* ========================================================= */
+.payment-footer {
+    background: #0f172a;
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.payment-icons {
+    font-size: 2.5rem;
+    margin: 25px 0;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    color: #94a3b8;
+}
+
+.payment-icons i:hover { color: white; }
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .parallax-divider {
+        background-attachment: scroll; /* Meilleure perf sur mobile */
+        height: 300px;
+    }
+    .parallax-content h2 { font-size: 2rem; }
+    .section-title { font-size: 1.8rem; }
+}

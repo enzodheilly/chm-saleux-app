@@ -1,74 +1,114 @@
+:root {
+  --primary-color: #C2410C;       /* Ton orange foncé */
+  --primary-light: #FFF7ED;       /* Orange très très clair pour le fond au survol */
+  --text-main: #111827;
+  --text-muted: #9CA3AF;          /* Gris un peu plus clair pour les flèches repos */
+  --border-color: #F3F4F6;
+  --radius-panel: 16px;
+  --radius-item: 8px;
+}
+
+/* --- Conteneur dropdown --- */
 .nav-hover-panel {
-    position: fixed; /* reste fixé à l'écran */
-    top: calc(4.5rem + 2.2rem); /* hauteur navbar + banner */
-    left: 17%;           /* marge gauche */
-    width: 65%;          /* largeur du panneau */
-    background: #fff;
-    color: #111;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
-    z-index: 2000;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  /* Décalage initial pour l'animation */
+  transform: translateX(-50%) translateY(10px); 
+  
+  width: 100%;
+  max-width: 1100px;
+  
+  /* Effet Glassmorphism */
+  background: #fff;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.05), 
+    0 20px 40px -5px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(229, 231, 235, 0.5);
+
+  opacity: 0;
+  visibility: hidden;
+  /* Transition fluide "pop" */
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 9999;
+  pointer-events: none; 
 }
 
-.nav-hover-panel.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+/* --- État Ouvert --- */
+.nav-hover-panel.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
 }
 
+/* --- Contenu (Grille) --- */
 .nav-hover-panel-content {
-    max-width: 100%; /* prend toute la largeur du panneau */
-    margin: 0 auto;
-    padding: 55px 40px; /* <-- padding horizontal augmenté pour marge égale */
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-    text-align: left; /* <-- aligne tout le texte à gauche */
-	margin-left: 40px;
+  margin: 0 auto;
+  padding: 32px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
 }
 
-/* Colonnes */
+/* --- Colonnes & Titres --- */
 .panel-column h3 {
-    font-size: 1.1rem;
-    margin-bottom: 12px;
-    font-weight: 700;
-	margin-bottom: 20px;
+  margin: 0 0 16px 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted); /* Utilise un gris pour le titre */
+  font-weight: 700;
+  padding-left: 12px;
 }
 
+/* --- Liens (Items) --- */
 .panel-column a {
-    display: block;
-    color: #4A4A4A;    
-    text-decoration: none;
-    margin-bottom: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-	margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; Si tu veux que la flèche soit collée tout à droite */
+  padding: 10px 12px;
+  margin-bottom: 4px;
+  
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  
+  border-radius: var(--radius-item);
+  transition: all 0.2s ease;
 }
 
+/* --- Interaction au survol des liens --- */
 .panel-column a:hover {
-    color: #000;
-    text-decoration: underline;
+  background-color: var(--primary-light);
+  color: var(--primary-color);
+  /* Le petit décalage de tout le bloc au survol */
+  transform: translateX(4px); 
 }
 
-/* Lien avec flèche */
-.nav-link.has-arrow {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
+/* --- La petite flèche/chevron --- */
+.panel-column a::after {
+  /* J'utilise un chevron, plus moderne pour les menus. 
+     Si tu préfères la flèche classique, remplace par content: '→'; */
+  content: '›'; 
+  margin-left: auto; /* Pousse la flèche à droite si le lien n'est pas justify-between */
+  padding-left: 10px; /* Espace minimum entre texte et flèche */
+  font-size: 1.3em;
+  line-height: 1;
+  font-weight: 400;
+  color: var(--text-muted); /* Grise par défaut */
+  transition: all 0.2s ease;
 }
 
-/* Flèche */
-.nav-arrow {
-    font-size: 0.7rem;
-    color: #2B2B2B;
-    transition: transform 0.25s ease, color 0.25s ease;
+/* Animation de la flèche au survol du lien */
+.panel-column a:hover::after {
+  color: var(--primary-color); /* La flèche devient orange */
+  /* Petit mouvement supplémentaire de la flèche vers la droite */
+  transform: translateX(3px); 
 }
 
-/* État ouvert contrôlé par JS */
-.nav-link.active .nav-arrow {
-    transform: rotate(180deg);
-    color: #005b94;
+/* Mobile */
+@media (max-width: 900px){
+  .nav-hover-panel{ display:none; }
 }
