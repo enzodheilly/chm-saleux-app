@@ -13,14 +13,13 @@
 body {
     background-color: var(--bg-light);
     color: var(--text-main);
-    font-family: 'Inter', sans-serif;
     overflow-x: hidden; /* Important pour le texte en arrière-plan */
 }
 
 /* --- HEADER --- */
 .page-header {
     position: relative;
-    height: 50vh;
+    height: 60vh;
     min-height: 350px;
     display: flex;
     align-items: center;
