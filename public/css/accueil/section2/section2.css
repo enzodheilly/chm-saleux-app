@@ -1,325 +1,281 @@
-/* ========================================================= */
-/* ===================== RESET & BASE ====================== */
-/* ========================================================= */
-
-.pricing-hero * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* --- CONFIGURATION --- */
+.sleek-pricing-section {
+  padding: 80px 0;
+  background-color: #ffffff;
+  color: #1f2937; /* Gris très foncé, moins dur que le noir pur */
 }
 
-.pricing-hero html {
-  scroll-padding-top: 170px;
-  scroll-behavior: smooth;
-}
-
-/* ========================================================= */
-/* ======================= HERO ============================ */
-/* ========================================================= */
-
-.pricing-hero {
-  padding: 4rem 2rem 5rem;
-  text-align: center;
-  background: transparent; /* Fond blanc géré par le parent section-white */
-}
-
-.pricing-hero .pricing-title {
-  font-size: 2.2rem;
-  font-weight: 900;
-  margin-bottom: 1rem;
-  
-  /* MODIFICATION IMPORTANTE : Couleur sombre pour fond blanc */
-  color: #1e293b; /* C'était #fff */
-  
-  margin-top: 10px;
-  text-transform: uppercase;
-}
-
-.pricing-hero .pricing-sub {
-  max-width: 1100px;
+.container-narrow {
+  max-width: 1100px; /* Largeur contenue pour éviter l'effet "étiré" */
   margin: 0 auto;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  
-  /* MODIFICATION IMPORTANTE : Gris moyen lisible sur blanc */
-  color: #475569; /* C'était #CBD5E1 */
-  
-  font-weight: 500;
-  margin-bottom: 2rem;
+  padding: 0 20px;
 }
 
-/* ========================================================= */
-/* ======================= BOUTONS ========================= */
-/* ========================================================= */
-
-:root {
-  --color: #005b94;
-}
-
-.segmented-toggle {
-  position: relative;
-  width: 240px;
-  height: 55px;
-  border: 2px solid var(--color);
-  border-radius: 60px;
-  display: flex;
-  margin: 35px auto;
-  background-color: #F5F5F5;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  padding: 0;
-  overflow: hidden;
-  font-weight: 700;
-}
-
-.segmented-toggle input {
-  position: absolute; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10;
-}
-
-.toggle-bg {
-  position: absolute; width: 50%; height: 100%; background: var(--color); border-radius: 60px; top: 0; left: 0; transition: transform 0.3s ease; z-index: 1;
-}
-
-.toggle-option {
-  width: 50%; text-align: center; z-index: 2; font-size: 16px; pointer-events: none;
-}
-
-.toggle-option small { font-weight: 500; opacity: 0.8; }
-
-/* MODIFICATION : "left" est visible sur fond gris clair, donc on le met en bleu par défaut */
-.left {
-  color: var(--color); /* C'était #fff, illisible sur fond gris clair avant sélection */
-  transition: color 0.3s;
-}
-.right {
-  color: var(--color);
-  transition: color 0.3s;
-}
-
-/* Quand on coche (passage Flex) */
-.segmented-toggle input:checked ~ .toggle-bg { transform: translateX(100%); }
-
-/* Le texte sur le fond bleu (.toggle-bg) doit devenir BLANC */
-.segmented-toggle input:not(:checked) ~ .left { color: #fff; } /* Gauche sélectionné = blanc */
-.segmented-toggle input:checked ~ .right { color: #fff; }      /* Droite sélectionné = blanc */
-
-/* ========================================================= */
-/* ======================= GRILLE ========================== */
-/* ========================================================= */
-
-.pricing-hero .pricing-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(260px, 1fr));
-  gap: 1.8rem;
-  max-width: 1140px;
-  margin: 2rem auto 0;
-  padding: 0 1.5rem;
-  justify-content: center;
-}
-
-/* ========================================================= */
-/* ======================= CARDS =========================== */
-/* ========================================================= */
-
-.pricing-hero .card {
-  position: relative;
-  background: #F5F5F5;
-  padding: 2.2rem 2rem;
-  border-radius: 8px;
-  border: none;
+/* --- HEADER --- */
+.pricing-header {
   text-align: center;
-  align-items: center;
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 2.2rem; /* Taille raisonnable */
+  font-weight: 800;
+  margin-bottom: 15px;
+  letter-spacing: -0.5px;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: #6b7280; /* Gris moyen */
+  line-height: 1.5;
+}
+
+/* --- SWITCH SELECTOR (Segmented Control) --- */
+.pricing-selector-wrapper {
   display: flex;
-  flex-direction: column;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-  transition: all 0.35s ease;
-}
-
-.pricing-hero .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-}
-
-.pricing-hero .card-featured {
-  border: 2px solid #fbbf24;
-  z-index: 2;
-  transform: scale(1.05);
-}
-.pricing-hero .card-featured:hover { transform: scale(1.05) translateY(-5px); }
-
-/* Badge "Populaire" */
-.pricing-hero .badge-featured {
-  position: absolute;
-  top: -14px;
-  right: -14px;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  color: #2b2b2b;
-  font-weight: 900;
-  font-size: 0.75rem;
-  padding: 0.45rem 0.5rem;
-  border-radius: 6px;
-  text-transform: uppercase;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* ========================================================= */
-/* ======================= CONTENU CARTE =================== */
-/* ========================================================= */
-
-.pricing-hero .card-title {
-  font-size: 1.4rem;
-  font-weight: 900;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  color: #2b2b2b;
-}
-
-.pricing-hero .price-row {
-  display: flex;
-  align-items: flex-end;
   justify-content: center;
-  gap: 0.3rem;
-  margin-bottom: 1rem;
-  width: 100%;
-  color: #2b2b2b;
+  margin-bottom: 50px;
 }
 
-.pricing-hero .price-row div[class^="price"] {
-  font-size: 2.4rem;
-  font-weight: 1000;
-  line-height: 0.8;
+.pricing-selector {
+  position: relative;
   display: flex;
+  background: #f3f4f6; /* Fond gris clair */
+  padding: 4px;
+  border-radius: 50px;
+  border: 1px solid #e5e7eb;
 }
 
-.pricing-hero .price-row sup {
-  font-size: 1.1rem;
-  vertical-align: top;
-  margin-top: 5px;
-}
+/* Cache les radios */
+.pricing-selector input { display: none; }
 
-.pricing-hero .period {
+.selector-item {
+  position: relative;
+  z-index: 2;
+  padding: 10px 25px;
+  font-weight: 600;
   font-size: 0.95rem;
   color: #6b7280;
-  margin-left: 2px;
-  line-height: 1.2;
-  padding-bottom: 5px;
+  cursor: pointer;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.pricing-hero .subprice3 {
-  font-size: 0.85rem;
+.discount-tag {
+  background: #F57706;
+  color: white;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+/* Le fond blanc qui glisse */
+.selector-glider {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 1;
+  height: calc(100% - 8px);
+  width: calc(50% - 4px); /* Suppose 2 options */
+  background: white;
+  border-radius: 40px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* États actifs */
+#type-standard:checked ~ .selector-glider { transform: translateX(0%); }
+#type-student:checked ~ .selector-glider { transform: translateX(100%); }
+#type-standard:checked + label { color: #111; }
+#type-student:checked + label { color: #111; }
+
+
+/* --- GRILLE --- */
+.pricing-grid {
+  display: grid;
+  /* Colonnes auto-adaptatives mais pas trop larges */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  align-items: stretch; /* Cartes de même hauteur */
+}
+
+/* --- CARTE STANDARD --- */
+.sleek-card {
+  background: white;
+  border: 1px solid #e5e7eb; /* Bordure fine grise */
+  border-radius: 16px;
+  padding: 35px 25px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+
+.sleek-card:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+/* --- CARTE POPULAIRE (Mise en avant subtile) --- */
+.popular-card {
+  border: 2px solid #e63946; /* Bordure rouge plus épaisse */
+  background: #fffafa; /* Fond très légèrement teinté rouge */
+}
+
+.popular-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #F57706;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 15px;
+  border-radius: 20px;
+}
+
+/* HEADER CARTE */
+.card-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.plan-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #1f2937;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+
+.plan-price {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  line-height: 1;
+  color: #111;
+}
+
+.currency {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.price-value {
+  font-size: 3rem; /* Grand mais fin */
+  font-weight: 700; /* Pas trop gras */
+}
+
+.period {
+  align-self: flex-end;
+  font-size: 1rem;
   color: #6b7280;
-  margin-bottom: 1rem;
+  margin-bottom: 6px;
+  margin-left: 4px;
 }
 
-.pricing-hero .trial-box {
+.monthly-detail {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-top: 10px;
+}
+
+.invisible { visibility: hidden; }
+
+/* BODY CARTE */
+.card-body {
+  flex-grow: 1; /* Remplit l'espace */
+}
+
+.trial-info {
+  font-weight: 600;
+  color: #002952;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.features-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.4;
+}
+
+.icon-check {
+  color: #F57706; /* Coche rouge pour tout le monde */
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+/* FOOTER & BOUTONS */
+.card-footer {
+  margin-top: 30px;
+}
+
+.btn-select {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px 0;
+  border-radius: 8px; /* Coins moins ronds = plus moderne */
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-dark {
+  background: #1f2937;
+  color: white;
+}
+.btn-dark:hover { background: #374151; }
+
+.btn-red {
+  background: #F57706;
+  color: white;
+  box-shadow: 0 4px 15px rgba(230, 57, 70, 0.2);
+}
+.btn-red:hover { background: #d62839; transform: translateY(-2px); }
+
+/* FOOTER NOTE */
+.pricing-note {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin: 0 auto 1.5rem;
-  padding: 0.5rem 1rem;
-  background: #fff7ed;
-  border: 2px solid #f59e0b;
-  border-radius: 5px;
+  margin-top: 50px;
+  color: #6b7280;
   font-size: 0.9rem;
-  font-weight: 700;
-  color: #2b2b2b;
-  width: 100%;
-}
-.pricing-hero .trial-box i { color: #e63946; }
-
-/* Features */
-.pricing-hero .features {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.6rem;
-  text-align: left;
-  width: 100%;
-}
-
-.pricing-hero .features li {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.8rem;
-  padding: 0.6rem 0;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #374151;
-  border-bottom: 1px dashed #e5e7eb;
-}
-.pricing-hero .features li:last-child { border-bottom: none; }
-
-.pricing-hero .feature-icon {
-  width: 18px;
-  height: 18px;
-  color: #005b94;
-  text-align: center;
-}
-
-/* Bouton */
-.btn-classic {
-  display: block;
-  width: 100%;
+  background: #f9fafb;
   padding: 15px;
   border-radius: 8px;
-  font-weight: 700;
-  text-decoration: none;
-  text-transform: uppercase;
-  text-align: center;
-  transition: 0.3s;
-  margin-top: auto;
-  border: 2px solid transparent;
+  border: 1px solid #e5e7eb;
 }
 
-/* ========================================================= */
-/* =================== COULEURS PAR CARTE ================== */
-/* ========================================================= */
+.pricing-note i { color: #002952; }
 
-.pricing-hero .card:nth-child(1) { border-top: 5px solid #334155; }
-.pricing-hero .card:nth-child(1) .btn-classic { background: #334155; color: white; }
-.pricing-hero .card:nth-child(1) .btn-classic:hover { background: transparent; color: #334155; border-color: #334155; }
-
-.pricing-hero .card:nth-child(2) { border-top: 5px solid #005b94; }
-.pricing-hero .card:nth-child(2) .btn-classic { background: #005b94; color: white; }
-.pricing-hero .card:nth-child(2) .btn-classic:hover { background: transparent; color: #005b94; border-color: #005b94; }
-
-.pricing-hero .card:nth-child(3) { border-top: 5px solid #fbbf24; }
-.pricing-hero .card:nth-child(3) .btn-classic { background: #fbbf24; color: #1e293b; }
-.pricing-hero .card:nth-child(3) .btn-classic:hover { background: transparent; color: #fbbf24; border-color: #fbbf24; }
-
-/* ========================================================= */
-/* ======================= FOOTER ========================== */
-/* ========================================================= */
-
-.pricing-hero .pricing-foot {
-  max-width: 900px;
-  margin: 3rem auto 0;
-  text-align: center;
-  font-size: 0.95rem;
-  
-  /* MODIFICATION : Couleur sombre pour fond blanc */
-  color: #64748b; /* C'était #CBD5E1 */
-}
-
-/* ========================================================= */
-/* ======================= RESPONSIVE ====================== */
-/* ========================================================= */
-
-@media (max-width: 1100px) {
-  .pricing-hero .pricing-grid {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 700px;
-  }
-}
-
+/* MOBILE */
 @media (max-width: 768px) {
-  .pricing-hero { padding: 3rem 1rem; }
-  .pricing-hero .pricing-grid { grid-template-columns: 1fr; padding: 0; }
-  .pricing-hero .card-featured { transform: scale(1); }
-  .pricing-hero .card-featured:hover { transform: scale(1); }
-  
-  .pricing-hero .pricing-title { font-size: 2rem; }
-  .pricing-hero .pricing-sub { font-size: 1rem; }
+  .pricing-grid {
+    grid-template-columns: 1fr; /* Une seule colonne */
+    max-width: 400px;
+    margin: 0 auto;
+  }
 }

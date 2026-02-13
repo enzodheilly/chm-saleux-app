@@ -1,99 +1,126 @@
-
 <main>
-<section class="news-section">
-	<h2 class="news-title">
-		DÉCOUVREZ LES
-		<span>DERNIÈRES ACTUALITÉS</span>
-	</h2>
-	<p class="news-subtitle">
-		Suivez les performances, événements et moments forts de notre club !
-	</p>
-	<div class="news-grid">
-{% for article in articles|slice(0, 18) %}
-    <a href="{{ path('article_show', { id: article.id }) }}" class="news-card">
-        {% if article.photo %}
-            <img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}">
+
+  <section class="news-section">
+    <div class="container">
+      
+      <div class="section-header">
+        <h2 class="title">Dernières <span class="highlight">Actualités</span></h2>
+        <p class="subtitle">Compétitions, événements, vie du club : ne ratez rien.</p>
+      </div>
+
+      <div class="news-grid">
+        {% for article in articles|slice(0, 3) %}
+            <article class="news-card">
+                <a href="{{ path('article_show', { id: article.id }) }}" class="news-link">
+                    <div class="news-image">
+                        {% if article.photo %}
+                            <img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}" loading="lazy">
+                        {% else %}
+                            <img src="{{ asset('images/default-article.png') }}" alt="CHM Saleux">
+                        {% endif %}
+                        <div class="news-date">Lire l'article</div>
+                    </div>
+                    
+                    <div class="news-content">
+                        <h4 class="news-item-title">
+                            {{ article.title|length > 40 ? article.title|slice(0, 40) ~ '...' : article.title }}
+                        </h4>
+                        <p class="news-excerpt">
+                            {{ article.description|length > 80 ? article.description|slice(0, 80) ~ '...' : article.description }}
+                        </p>
+                        <span class="read-more">En savoir plus &rarr;</span>
+                    </div>
+                </a>
+            </article>
         {% else %}
-            <img src="{{ asset('images/default-article.png') }}" alt="Image par défaut">
-        {% endif %}
-        <div class="news-overlay">
-            <h4>
-                {{ article.title|length > 30 ? article.title|slice(0, 30) ~ '...' : article.title }}
-            </h4>
-            <p>
-                {{ article.description|length > 50 ? article.description|slice(0,50) ~ '...' : article.description }}
-            </p>
+            <div class="no-news">
+                <p>Aucune actualité pour le moment. Revenez vite !</p>
+            </div>
+        {% endfor %}
+      </div>
+
+      <div class="news-footer">
+          <a href="{{ path('actualites') }}" class="btn-primary-outline">Voir toutes les actualités</a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <section class="faq-section">
+    <div class="container">
+        
+        <div class="faq-layout">
+            <div class="faq-sidebar">
+                <h2 class="faq-title">Questions <br>Fréquentes</h2>
+                <p class="faq-desc">Tout ce que vous devez savoir avant de nous rejoindre.</p>
+                
+                <div class="contact-card">
+                    <h3>Une autre question ?</h3>
+                    <p>Notre équipe est là pour vous.</p>
+                    <a href="{{ path('contact') }}" class="btn-contact">Nous contacter</a>
+                </div>
+            </div>
+
+            <div class="faq-list">
+                
+                <div class="faq-item">
+                    <button class="faq-trigger">
+                        <span>Quels types d'abonnements proposez-vous ?</span>
+                        <span class="icon">+</span>
+                    </button>
+                    <div class="faq-content">
+                        <div class="text">
+                            Nous proposons des formules adaptées : 
+                            <strong>Compétition</strong> (Haltérophilie Jeunes & Adultes) et 
+                            <strong>Loisir</strong> (Musculation & Haltérophilie pour tous âges).
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-trigger">
+                        <span>Quelle différence entre les licences ?</span>
+                        <span class="icon">+</span>
+                    </button>
+                    <div class="faq-content">
+                        <div class="text">
+                            La licence <strong>Jeune (14-20 ans)</strong> inclut un encadrement spécifique. 
+                            La licence <strong>Adulte</strong> offre un accès complet à la salle et aux compétitions officielles.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-trigger">
+                        <span>Que comprend l'abonnement Loisir ?</span>
+                        <span class="icon">+</span>
+                    </button>
+                    <div class="faq-content">
+                        <div class="text">
+                            Accès illimité au plateau musculation, espace cardio, cours collectifs et créneaux d'haltérophilie loisir encadrés.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-trigger">
+                        <span>Quels équipements sont disponibles ?</span>
+                        <span class="icon">+</span>
+                    </button>
+                    <div class="faq-content">
+                        <div class="text">
+                            Plateaux d'haltérophilie, Racks, Barres olympiques Eleiko, Haltères, Kettlebells, Machines guidées et espace Cardio complet.
+                        </div>
+                    </div>
+                </div>
+
+                <a href="{{ path('faq') }}" class="faq-link-all">Voir toutes les questions &rarr;</a>
+
+            </div>
         </div>
-    </a>
-{% else %}
-    <p>Aucune actualité pour le moment.</p>
-{% endfor %}
 
+    </div>
+  </section>
 
-	</div>
-
-        <a href="{{ path('actualites') }}" class="btn-news">Voir plus d'actualités</a>
-
-</section>
-<section class="faq-section">
-	<div class="faq-header">
-		<h2>Questions fréquentes</h2>
-		<p>Retrouvez ici les réponses aux questions les plus courantes sur nos abonnements et nos activités.</p>
-	</div>
-
-	<div
-		class="faq-page">
-		<!-- ✅ même classe que dans le CSS -->
-		<div
-			class="faq-items">
-			<!-- ✅ même classe que dans le CSS -->
-			<div class="faq-item">
-				<button class="faq-question">Quels types d'abonnements propose le CHM Saleux ?</button>
-				<div class="faq-answer">
-					Nous proposons des abonnements adaptés à tous les âges et niveaux :
-					<ul>
-						<li>Compétition Haltérophilie (Jeunes, Adultes)</li>
-						<li>Loisir Musculation & Haltérophilie (tout âge)</li>
-					</ul>
-				</div>
-			</div>
-
-			<div class="faq-item">
-				<button class="faq-question">Quelle est la différence entre les licences ?</button>
-				<div class="faq-answer">
-					La licence compétition jeune (14-20 ans) inclut un encadrement adapté et des compétitions juniors, tandis que la licence adulte donne accès complet à la salle et aux compétitions officielles.
-				</div>
-			</div>
-
-			<div class="faq-item">
-				<button class="faq-question">Que comprend l'abonnement Loisir Musculation & Haltérophilie ?</button>
-				<div class="faq-answer">
-					Il comprend l’accès libre à la salle de musculation, l’haltérophilie loisir encadrée, le cardio, les cours collectifs et une ambiance conviviale.
-				</div>
-			</div>
-
-			<div class="faq-item">
-				<button class="faq-question">Quels équipements sont disponibles dans la salle ?</button>
-				<div class="faq-answer">
-					Racks, bancs, barres olympiques, haltères, kettlebells, machines de musculation et un espace cardio complet sont disponibles.
-				</div>
-			</div>
-
-			<a href="{{ path('faq') }}" class="faq-more">VOIR TOUTES LES FAQ ➜</a>
-		</div>
-
-		<div class="faq-contact">
-			<h3>VOUS NE TROUVEZ PAS VOTRE RÉPONSE ?</h3>
-			<p>Contactez-nous pour toute question spécifique, notre équipe se fera un plaisir de vous répondre.</p>
-
-			<div class="button-wrap">
-  <a href="{{ path('contact') }}" class="btn-club">
-    <span style="color:black;">NOUS CONTACTER</span>
-  </a>
-  <div class="button-shadow"></div>
-</div>
-		</div>
-	</div>
-</section>
 </main>
- <script src="{{ asset('js/accueil/section4/faq.js') }}" defer></script>

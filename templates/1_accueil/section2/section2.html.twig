@@ -1,114 +1,95 @@
-<main class="pricing-hero" role="main" aria-labelledby="abonnement-title">
-  <div class="pricing-head">
-    <div class="pricing-left">
-      <h1 id="abonnement-title" class="pricing-title">
-        <span>SELECTIONNE L’ABONNEMENT QUI TE CORRESPOND</span>
-      </h1>
-      <p class="pricing-sub">
-        Avec plus de 800 m² d’espace d’entraînement, retrouve tout ce qu’il te faut pour progresser : Cardio, Musculation, Haltérophilie, et même des cours collectifs chaque semaine pour te dépasser dans une super ambiance ! Découvre nos 4 forfaits annuels, adaptés à tous les niveaux à partir de 5,83 €/semaine 🔥
+<section class="sleek-pricing-section">
+  <div class="container-narrow">
+    
+    <div class="pricing-header">
+      <h2 class="section-title" style="color:#111 !important;">Selection l'abonnement qui vous correspond</h2>
+      <p class="section-subtitle">
+        Accès illimité 800m², cardio, muscu, haltéro et cours collectifs.
+        <br>À partir de <strong>5,83 €/semaine</strong>.
       </p>
     </div>
-  </div>
 
-  <div class="segmented-toggle">
-    <input type="checkbox" id="toggle" />
-    <div class="toggle-bg"></div>
-    <div class="toggle-option left">Standard</div>
-    <div class="toggle-option right">Étudiant</div>
-  </div>
-
-  <section id="abonnements" class="pricing-grid" aria-label="Liste des abonnements">
-    
-    {# --- DÉBUT DE LA BOUCLE SUR LES FORFAITS --- #}
-    {% for plan in plans %}
-    
-    <article class="card {{ plan.isPopular ? 'card-featured' : '' }}">
-      
-      {# Badge Populaire #}
-      {% if plan.isPopular %}
-        <span class="badge-featured">Le plus populaire</span>
-      {% endif %}
-
-      <h3 class="card-title">{{ plan.nom|upper }}</h3>
-      
-      <div class="price-row">
-        {# On sépare les euros et les centimes pour le style #}
-        {% set priceParts = plan.prix|number_format(2, '.', ',')|split('.') %}
+    <div class="pricing-selector-wrapper">
+      <div class="pricing-selector">
+        <input type="radio" id="type-standard" name="pricing-type" value="standard" checked>
+        <label for="type-standard" class="selector-item">Standard</label>
         
-        {# --- LOGIQUE DE PRIX ETUDIANT --- #}
-        {# 1. Par défaut, prix étudiant = prix normal #}
-        {% set studentPrice = plan.prix %}
+        <input type="radio" id="type-student" name="pricing-type" value="student">
+        <label for="type-student" class="selector-item">
+          Étudiant <span class="discount-tag">-10€</span>
+        </label>
         
-        {# 2. Si le prix est >= 195€ (ex: 200€), on force le prix étudiant à 185€ #}
-        {% if plan.prix >= 195 %}
-            {% set studentPrice = 185 %}
-        {# Optionnel : Sinon, si un prix étudiant existe en BDD, on le prend #}
-        {% elseif plan.prix_etudiant is defined and plan.prix_etudiant %}
-            {% set studentPrice = plan.prix_etudiant %}
-        {% endif %}
-
-        <div class="price3">
-            {# Le span dynamic-price contient les deux valeurs pour le JS #}
-            <span class="dynamic-price" 
-                  data-standard="{{ plan.prix }}" 
-                  data-student="{{ studentPrice }}">
-                {{ priceParts[0] }}
-            </span>
-            €<sup>{{ priceParts[1] }}</sup>
-        </div>
-        
-        <div class="period">{{ plan.frequence }}</div>
-      </div>
-
-      {# Mensualité calculée #}
-      {% if plan.mensualite %}
-        {# On garde la classe subprice3 pour que le JS puisse mettre à jour le "Soit X €/mois" #}
-        <div class="subprice3">Soit {{ plan.mensualite|number_format(2, ',', ' ') }}€/mois</div>
-      {% else %}
-        <div class="subprice3" style="visibility: hidden;">-</div> {# Garde l'espace #}
-      {% endif %}
-
-      <div class="trial-box">
-        <i class="fa-solid fa-calendar-check"></i>
-        Séance d’essai possible avant inscription
-      </div>
-
-      <ul class="features">
-        {% for avantage in plan.avantages %}
-            {# --- LOGIQUE D'EXTRACTION DE L'ICÔNE --- #}
-            {% set parts = avantage|split('|') %}
-            
-            <li>
-                {% if parts|length > 1 %}
-                    {# Si on a mis un |, partie 1 = icone, partie 2 = texte #}
-                    <i class="fa-solid {{ parts[0]|trim }} feature-icon"></i> {{ parts[1]|trim }}
-                {% else %}
-                    {# Si pas de |, on met une icône par défaut (ex: check) #}
-                    <i class="fa-solid fa-check feature-icon"></i> {{ avantage }}
-                {% endif %}
-            </li>
-        {% endfor %}
-      </ul>
-
-    </article>
-    
-    {% endfor %}
-    {# --- FIN DE LA BOUCLE --- #}
-
-  </section>
-
-  <div class="pricing-foot">
-    <div class="disclaimer">
-      ⚠️
-      <strong>Note :</strong>
-      Avant d’effectuer le paiement, veuillez vous assurer d’avoir bien rempli le
-      <strong>formulaire de licence</strong>.<br>
-      Une fois le paiement effectué, merci de remettre le formulaire complété directement
-                                                  au bureau du club.<br>
-      Si vous ne l’avez pas encore, vous pouvez le télécharger
-      <a href="URL_DU_FORMULAIRE" target="_blank">ici</a>.
+        <div class="selector-glider"></div> </div>
     </div>
-  </div>
-</main>
 
-<script src="{{ asset('js/accueil/section2/section2.js') }}"></script>
+    <div class="pricing-grid">
+      
+      {% for plan in plans %}
+        
+        {# --- LOGIQUE PRIX --- #}
+        {% set standardPrice = plan.prix %}
+        {% set studentPrice = plan.prix %}
+        {% if plan.prix >= 195 %}{% set studentPrice = 185 %}{% elseif plan.prix_etudiant is defined and plan.prix_etudiant %}{% set studentPrice = plan.prix_etudiant %}{% endif %}
+        {# --- FIN LOGIQUE --- #}
+
+        <article class="sleek-card {{ plan.isPopular ? 'popular-card' : '' }}">
+          
+          {% if plan.isPopular %}
+            <div class="popular-badge">Le plus choisi</div>
+          {% endif %}
+
+          <div class="card-header">
+            <h3 class="plan-title">{{ plan.nom }}</h3>
+            <div class="plan-price">
+              <span class="currency">€</span>
+              <span class="price-value"
+                    data-standard="{{ standardPrice }}" 
+                    data-student="{{ studentPrice }}">
+                {{ standardPrice }}
+              </span>
+              <span class="period">/ {{ plan.frequence|lower }}</span>
+            </div>
+            {% if plan.mensualite %}
+              <div class="monthly-detail">Soit ~{{ plan.mensualite|number_format(0) }}€ / mois</div>
+            {% else %}
+              <div class="monthly-detail invisible">-</div>
+            {% endif %}
+          </div>
+
+          <div class="card-body">
+            <div class="trial-info">
+              <i class="fa-solid fa-check-circle"></i> Séance d'essai incluse
+            </div>
+            
+            <ul class="features-list">
+              {% for avantage in plan.avantages %}
+                {% set parts = avantage|split('|') %}
+                <li>
+                  <i class="fa-solid fa-check icon-check"></i>
+                  <span>
+                    {% if parts|length > 1 %}{{ parts[1]|trim }}{% else %}{{ avantage }}{% endif %}
+                  </span>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          <div class="card-footer">
+            <a href="#" class="btn-select {{ plan.isPopular ? 'btn-red' : 'btn-dark' }}">Sélectionner</a>
+          </div>
+
+        </article>
+
+      {% endfor %}
+
+    </div>
+
+    <div class="pricing-note">
+      <i class="fa-solid fa-circle-info"></i>
+      <p><strong>Note :</strong> Pensez à remplir et remettre votre formulaire de licence au bureau avant le paiement.</p>
+    </div>
+
+  </div>
+</section>
+
+<script src="{{ asset('js/accueil/section2/section2.js') }}" defer></script>

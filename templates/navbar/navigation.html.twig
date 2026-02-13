@@ -84,6 +84,36 @@
         </div>
     </div>
 
+    {# Dropdown desktop (panel hover) #}
+<div id="club-panel" class="nav-hover-panel" aria-hidden="true">
+  <div class="nav-hover-panel-content">
+    <div class="panel-column">
+      <h3>Services du Club</h3>
+      <a href="{{ path('halterophilie') }}">Haltérophilie</a>
+      <a href="{{ path('musculation') }}">Musculation</a>
+      <a href="{{ path('cours_collectifs') }}">Cours collectifs</a>
+      <a href="{{ path('seance_essai') }}">Séance d'essai</a>
+      <a href="{{ path('evenements') }}">Événements organisés</a>
+      <a href="{{ path('sauna') }}">Sauna</a>
+    </div>
+
+    <div class="panel-column">
+      <h3>Membres du bureau</h3>
+      <a href="{{ path('president') }}">Le Président</a>
+      <a href="{{ path('tresorier') }}">Le Trésorier</a>
+      <a href="{{ path('secretaire') }}">La Secrétaire</a>
+      <a href="{{ path('membres_bureau') }}">Les membres du bureau</a>
+    </div>
+
+    <div class="panel-column">
+      <h3>À propos de notre club</h3>
+      <a href="{{ path('app_club') }}">Présentation du club</a>
+      <a href="{{ path('labels_club') }}">Les labels du club</a>
+      <a href="{{ path('horaires') }}">Les horaires</a>
+    </div>
+  </div>
+</div>
+
     <div class="mobile-nav-overlay">
 <div class="mobile-nav-links">
     <a href="{{ path('home') }}">Accueil</a>
