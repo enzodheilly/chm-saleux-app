@@ -1,184 +1,303 @@
-/* --- CONFIGURATION GÉNÉRALE --- */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+/* --- VARIABLES --- */
+:root {
+    --cc-primary: #0056b3;
+    --cc-dark: #0f172a;
+    --cc-text: #475569;
+    --cc-light: #f8fafc;
+    --cc-white: #ffffff;
+    --cc-shadow: 0 10px 30px -5px rgba(0,0,0,0.08);
+    --cc-radius: 16px;
 }
 
-/* =========================================
-   SECTION COURS (OVERLAP)
-   ========================================= */
-.overlap-section {
-  padding: 100px 0;
-  background-color: #f9f9f9; /* Fond très clair pour détacher le bloc */
+/* --- HERO SECTION --- */
+.cc-hero-section {
+    padding: 80px 0;
+    background: var(--cc-white);
+    overflow: hidden;
 }
 
-.overlap-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center; /* Centre verticalement */
-  justify-content: flex-end; /* Pousse le contenu vers la droite (ou gauche) */
+.cc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
 }
 
-/* L'IMAGE */
-.overlap-image {
-  width: 65%; /* Prend 65% de la largeur */
-  height: 500px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 1;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.1); /* Ombre douce */
+/* Colonne Gauche */
+.cc-badge {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--cc-primary);
+    background: #e0f2fe;
+    padding: 6px 12px;
+    border-radius: 20px;
+    margin-bottom: 20px;
 }
 
-.overlap-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
+.cc-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--cc-dark);
+    margin-bottom: 20px;
 }
 
-.overlap-wrapper:hover .overlap-image img {
-  transform: scale(1.03); /* Zoom très léger au survol */
+.cc-desc {
+    font-size: 1.1rem;
+    color: var(--cc-text);
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 500px;
 }
 
-/* LE CONTENU (CARTE BLANCHE) */
-.overlap-content {
-  position: relative;
-  z-index: 2; /* Passe DEVANT l'image */
-  width: 45%; /* Largeur de la carte texte */
-  background: white;
-  padding: 50px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.08); /* Ombre portée */
-  border-radius: 8px; /* Coins légèrement arrondis */
+/* STATS (Le point important) */
+.cc-stats-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 40px;
 }
 
-.section-heading {
-  font-size: 2.2rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: #222;
-  margin: 0 0 20px 0;
+.cc-stat-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: var(--cc-white);
+    border: 1px solid #e2e8f0;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    flex: 1 1 200px; /* S'adapte */
 }
 
-/* Petite ligne rouge décorative */
-.divider {
-  width: 60px;
-  height: 4px;
-  background-color: #F57706; /* Ton rouge */
-  margin-bottom: 25px;
+/* Mise en avant des stats clés */
+.cc-stat-box.highlight {
+    border-left: 4px solid var(--cc-primary);
+    background: #f8fafc;
 }
 
-.overlap-content p {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: #555;
-  margin-bottom: 30px;
+.stat-icon {
+    font-size: 1.5rem;
+    color: var(--cc-primary);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e0f2fe;
+    border-radius: 50%;
 }
 
-/* Bouton Clean */
-.btn-clean {
-  display: inline-block;
-  padding: 12px 30px;
-  background-color: #222;
-  color: #fff;
-  text-transform: uppercase;
-  font-weight: 700;
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-  border: 1px solid #222;
-}
-
-.btn-clean:hover {
-  background-color: transparent;
-  color: #222;
-}
-
-/* =========================================
-   SECTION AVIS (MINIMALISTE)
-   ========================================= */
-.reviews-section {
-  padding: 80px 0;
-  background-color: #fff;
-}
-
-.reviews-title {
-  text-align: center;
-  font-size: 1.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  margin-bottom: 50px;
-  color: #333;
-}
-
-.reviews-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 3 colonnes auto */
-  gap: 40px;
-}
-
-.review-item {
-  text-align: center;
-  padding: 20px;
-  border: 1px solid #eee; /* Cadre très fin */
-  border-radius: 8px;
-  transition: transform 0.3s;
-}
-
-.review-item:hover {
-  border-color: #F57706; /* Le cadre devient rouge au survol */
-  transform: translateY(-5px);
-}
-
-.stars {
-  color: #F57706; /* Étoiles rouges (ou or #f1c40f) */
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-}
-
-.review-item p {
-  font-style: italic;
-  color: #666;
-  margin-bottom: 20px;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-.author {
-  display: block;
-  font-weight: bold;
-  color: #222;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-}
-
-/* =========================================
-   RESPONSIVE (MOBILE)
-   ========================================= */
-@media (max-width: 900px) {
-  /* On empile tout sur mobile */
-  .overlap-wrapper {
+.stat-info {
+    display: flex;
     flex-direction: column;
-    display: block; /* Annule le flex */
-  }
+}
 
-  .overlap-image {
+.stat-value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--cc-dark);
+    line-height: 1;
+}
+
+.stat-unit {
+    font-size: 0.85rem;
+    color: var(--cc-text);
+    font-weight: 500;
+}
+
+/* Boutons */
+.cc-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn-primary-action {
+    background: var(--cc-primary);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.btn-primary-action:hover {
+    background: #003d80;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 86, 179, 0.2);
+}
+
+.btn-text-action {
+    color: var(--cc-text);
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    transition: 0.3s;
+}
+
+.btn-text-action:hover {
+    color: var(--cc-dark);
+    border-bottom-color: var(--cc-dark);
+}
+
+/* Colonne Droite (Visuel) */
+.cc-visual {
+    position: relative;
+    padding-left: 20px;
+}
+
+.image-frame {
+    border-radius: var(--cc-radius);
+    overflow: hidden;
+    box-shadow: var(--cc-shadow);
+    transform: rotate(2deg); /* Légère rotation dynamique */
+    transition: 0.3s;
+}
+.cc-grid:hover .image-frame { transform: rotate(0); }
+
+.image-frame img {
     width: 100%;
-    position: relative; /* Reprend sa place normale */
-    height: 300px;
-    margin-bottom: -50px; /* L'image rentre un peu dans le texte */
-  }
+    height: auto;
+    display: block;
+}
 
-  .overlap-content {
-    width: 90%;
-    margin: 0 auto; /* Centré */
-    padding: 30px;
-  }
-  
-  .section-heading {
-    font-size: 1.8rem;
-  }
+/* Mini Cartes Flottantes */
+.floating-cards {
+    position: absolute;
+    bottom: 20px;
+    left: -20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mini-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    border-left: 3px solid transparent;
+    transform: translateX(0);
+    transition: 0.3s;
+}
+
+.mini-card:hover { transform: translateX(10px); }
+
+.mini-card.cardio { border-color: #ef4444; }
+.mini-card.renfo { border-color: #3b82f6; }
+.mini-card.zen { border-color: #10b981; }
+
+.mini-card i { font-size: 1.2rem; color: var(--cc-dark); }
+.mini-card strong { display: block; color: var(--cc-dark); }
+.mini-card span { font-size: 0.75rem; color: var(--cc-text); }
+
+
+/* --- REVIEWS SECTION --- */
+.cc-reviews-section {
+    padding: 80px 0;
+    background: var(--cc-light);
+}
+
+.reviews-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.reviews-header h3 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--cc-dark);
+    margin-bottom: 10px;
+}
+
+.separator {
+    width: 50px;
+    height: 4px;
+    background: var(--cc-primary);
+    margin: 0 auto;
+    border-radius: 2px;
+}
+
+.reviews-scroller {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+    scroll-snap-type: x mandatory;
+    /* Cache la scrollbar tout en permettant le scroll */
+    scrollbar-width: none; 
+}
+.reviews-scroller::-webkit-scrollbar { display: none; }
+
+.review-card {
+    flex: 0 0 300px;
+    background: var(--cc-white);
+    padding: 25px;
+    border-radius: var(--cc-radius);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    scroll-snap-align: start;
+    border: 1px solid #e2e8f0;
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+/* Couleurs avatars */
+.s-color { background: #f43f5e; }
+.j-color { background: #3b82f6; }
+.n-color { background: #10b981; }
+.a-color { background: #f59e0b; }
+
+.meta .name {
+    font-weight: 700;
+    color: var(--cc-dark);
+    font-size: 0.95rem;
+    display: block;
+}
+.meta .stars {
+    color: #f59e0b;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.quote {
+    font-size: 0.95rem;
+    color: var(--cc-text);
+    line-height: 1.5;
+    font-style: italic;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .cc-grid { grid-template-columns: 1fr; gap: 40px; }
+    .cc-visual { order: -1; padding-left: 0; max-width: 500px; margin: 0 auto; }
+    .floating-cards { left: 0; bottom: -20px; flex-direction: row; flex-wrap: wrap; justify-content: center; width: 100%; }
+    .image-frame { transform: rotate(0); }
+    .mini-card { flex: 1; justify-content: center; }
 }
