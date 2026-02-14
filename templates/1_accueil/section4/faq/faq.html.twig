@@ -174,65 +174,49 @@
 
         </section>
 
-        {# --- SECTION CONTACT (GRID) --- #}
-        <section class="help-center-section">
-            <div class="help-header">
-                <h2>Vous ne trouvez pas votre réponse ?</h2>
-                <p>Choisissez le moyen de contact qui vous convient le mieux.</p>
-            </div>
+{# --- SECTION CONTACT : LIGNE HORIZONTALE --- #}
+<section class="contact-line-section">
+    <div class="container">
+        
+        <div class="contact-header-minimal">
+            <h2>Besoin d'aide ?</h2>
+        </div>
 
-            <div class="help-grid">
-                
-                {# Card Elios (Bot) #}
-                <a href="/elios" class="help-card bot-card">
-                    <div class="icon-box">
-                        <img src="{{ asset('images/accueil/section4/faq/ai-bot.png') }}" alt="Elios Bot">
-                    </div>
-                    <h3>Assistant Elios</h3>
-                    <p>Réponse immédiate 24/7</p>
-                    <span class="status-badge">En ligne</span>
-                </a>
+        <div class="contact-bar">
+            
+            {# ELIOS #}
+            <a href="/elios" class="contact-item" title="Assistant IA">
+                <div class="icon-bubble elios"><i class="fa-solid fa-robot"></i></div>
+                <span>Elios</span>
+            </a>
 
-                {# Card WhatsApp #}
-                <a href="https://chat.whatsapp.com/TON_CODE_DE_GROUPE" target="_blank" class="help-card whatsapp-card">
-                    <div class="icon-box">
-                        <img src="{{ asset('images/accueil/section4/faq/whatsapp1.png') }}" alt="WhatsApp">
-                    </div>
-                    <h3>Groupe WhatsApp</h3>
-                    <p>Pour la vie du club & horaires</p>
-                    <span class="link-arrow">Rejoindre &rarr;</span>
-                </a>
+            {# WHATSAPP #}
+            <a href="https://chat.whatsapp.com/TON_CODE" target="_blank" class="contact-item" title="Groupe WhatsApp">
+                <div class="icon-bubble whatsapp"><i class="fa-brands fa-whatsapp"></i></div>
+                <span>WhatsApp</span>
+            </a>
 
-                {# Card Facebook #}
-                <a href="https://www.facebook.com/chmsaleux1/" target="_blank" class="help-card social-card">
-                    <div class="icon-box">
-                        <img src="{{ asset('images/accueil/section4/faq/facebook1.png') }}" alt="Facebook">
-                    </div>
-                    <h3>Facebook</h3>
-                    <p>Actus & Messenger</p>
-                </a>
+            {# EMAIL #}
+            <a href="{{ path('contact') }}" class="contact-item" title="Nous écrire">
+                <div class="icon-bubble email"><i class="fa-regular fa-envelope"></i></div>
+                <span>Contact</span>
+            </a>
 
-                {# Card Instagram #}
-                <a href="https://www.instagram.com/chmsaleux/" target="_blank" class="help-card social-card">
-                    <div class="icon-box">
-                        <img src="{{ asset('images/accueil/section4/faq/instagram1.png') }}" alt="Instagram">
-                    </div>
-                    <h3>Instagram</h3>
-                    <p>Photos & DM</p>
-                </a>
+            {# FACEBOOK #}
+            <a href="https://www.facebook.com/chmsaleux1/" target="_blank" class="contact-item" title="Page Facebook">
+                <div class="icon-bubble facebook"><i class="fa-brands fa-facebook-f"></i></div>
+                <span>Facebook</span>
+            </a>
 
-                {# Card Email #}
-                <a href="{{ path('contact') }}" class="help-card mail-card">
-                    <div class="icon-box">
-                        <img src="{{ asset('images/accueil/section4/faq/envelope.png') }}" alt="Email">
-                    </div>
-                    <h3>Par Email</h3>
-                    <p>Réponse sous 48h</p>
-                    <span class="link-arrow">Écrire &rarr;</span>
-                </a>
+            {# INSTAGRAM #}
+            <a href="https://www.instagram.com/chmsaleux/" target="_blank" class="contact-item" title="Page Instagram">
+                <div class="icon-bubble instagram"><i class="fa-brands fa-instagram"></i></div>
+                <span>Instagram</span>
+            </a>
 
-            </div>
-        </section>
+        </div>
+    </div>
+</section>
 
     </main>
 {% endblock %}
