@@ -1,14 +1,48 @@
-###> Symfony (INDISPENSABLE) ###
+###> Symfony ###
 /var/
 /vendor/
 /public/bundles/
 /public/build/
 ###< Symfony ###
 
+###> Env (NE JAMAIS PUSH) ###
+.env
+.env.*
+!.env.example
+###< Env ###
+
+###> Logs & cache ###
+*.log
+.phpunit.result.cache
+###< Logs & cache ###
+
+###> Node / Front ###
+/node_modules/
+/npm-debug.log*
+/yarn-debug.log*
+/yarn-error.log*
+###< Node / Front ###
+
+###> IDE / OS ###
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+###< IDE / OS ###
+
+###> Uploads / generated (si tu as) ###
+/public/uploads/
+###< Uploads ###
+
 ###> Fichiers lourds (Vidéo & Backups) ###
 *.mp4
 *.mov
 *.zip
 *.sql
-*.log
+*.tar
+*.gz
 ###< Fichiers lourds ###
+
+###> Docker override local (si c'est ton cas) ###
+compose.override.yaml
+###< Docker override ###
