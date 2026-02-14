@@ -1,23 +1,42 @@
-/* --- VARIABLES --- */
+/* =========================================================
+   VARIABLES & CONFIG
+   ========================================================= */
 :root {
-    --primary-color: #d4af37; /* Or (Gold) pour l'aspect Label/Récompense */
-    --secondary-color: #0056b3; /* Bleu Club */
-    --dark-bg: #111;
-    --text-main: #333;
-    --text-muted: #666;
-    --bg-light: #f8f9fa;
-    --card-bg: #ffffff;
-    --border-radius: 12px;
-    --shadow-soft: 0 10px 30px rgba(0,0,0,0.05);
-    --shadow-hover: 0 15px 35px rgba(0,0,0,0.1);
+    --primary-color: #0056b3;
+    --accent-color: #ffc107;
+
+    --dark: #0f172a;       /* Bleu nuit très sombre */
+    --text: #111827;       /* Texte quasi noir */
+    --muted: #6b7280;      /* Gris texte secondaire */
+
+    --bg: #f4f6f9;         /* Fond de page léger */
+    --card: #ffffff;       /* Fond des cartes */
+
+    --radius: 14px;        /* Arrondis */
+    --border: rgba(15, 23, 42, 0.08);
+    --shadow: 0 12px 30px rgba(15, 23, 42, 0.06); /* Ombre douce */
+    
+    /* Couleurs spécifiques aux labels */
+    --gold: #d97706;
+    --green: #10b981;
+    --purple: #8b5cf6;
 }
 
 body {
-    background-color: var(--bg-light);
-    color: var(--text-main);
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, sans-serif;
 }
 
-/* --- HEADER --- */
+.main-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+}
+
+/* =========================================================
+   HEADER (NE PAS TOUCHER - COPIÉ DE TON CODE)
+   ========================================================= */
 .page-header {
     position: relative;
     height: 60vh;
@@ -27,7 +46,6 @@ body {
     color: white;
     margin-bottom: 60px;
 }
-
 .header-bg {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -35,25 +53,21 @@ body {
     background-position: center;
     z-index: 1;
 }
-
 .header-overlay {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    /* Dégradé avec une touche dorée subtile */
-    background: linear-gradient(45deg, rgba(0,0,0,0.9), rgba(184, 134, 11, 0.4));
+    background: linear-gradient(45deg, rgba(0,0,0,0.85), rgba(0, 86, 179, 0.6));
     z-index: 2;
 }
-
 .header-content {
     position: relative;
     z-index: 3;
     width: 100%;
-    top:65px;
+    top: 65px;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
 }
-
 .back-link {
     display: inline-flex;
     align-items: center;
@@ -61,11 +75,12 @@ body {
     text-decoration: none;
     font-weight: 600;
     margin-bottom: 20px;
-    opacity: 0.8;
-    transition: opacity 0.3s;
+    opacity: 0.85;
+    transition: opacity 0.2s;
 }
 .back-link:hover { opacity: 1; }
-.back-link svg { margin-right: 8px; }
+.back-link svg { margin-right: 8px; } /* Si tu utilises des SVG au lieu de FA */
+.back-link i { margin-right: 8px; }   /* Si tu utilises FontAwesome */
 
 .header-title-box h1 {
     font-size: 3.5rem;
@@ -78,184 +93,326 @@ body {
     text-transform: uppercase;
     letter-spacing: 2px;
     font-size: 0.9rem;
-    font-weight: 700;
-    background: var(--primary-color);
-    color: white;
+    font-weight: 800;
+    background: var(--accent-color);
+    color: #000;
     padding: 5px 10px;
     border-radius: 4px;
 }
 
-/* --- MAIN CONTAINER --- */
-.main-container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 20px 80px;
-}
-
-/* --- INTRO --- */
-.intro-section {
+/* =========================================================
+   SECTION 1 : PROMISE (INTRO)
+   ========================================================= */
+.promise-section {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 50px 30px;
     text-align: center;
-    max-width: 800px;
-    margin: 0 auto 60px;
-}
-
-.section-heading {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: 1.5rem;
-    color: var(--dark-bg);
+    margin-top: -50px; /* Chevauchement Header */
     position: relative;
-    display: inline-block;
-}
-.section-heading::after {
-    content: '';
-    display: block;
-    width: 50px;
-    height: 4px;
-    background: var(--primary-color);
-    margin: 10px auto 0;
-    border-radius: 2px;
+    z-index: 10;
+    margin-bottom: 40px;
 }
 
-.intro-text {
+.promise-badge {
+    display: inline-block;
+    background: rgba(0, 86, 179, 0.08);
+    color: var(--primary-color);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    padding: 6px 14px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+}
+
+.promise-title {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--dark);
+    margin-bottom: 15px;
+}
+
+.promise-text {
     font-size: 1.1rem;
-    color: var(--text-muted);
+    color: var(--muted);
+    max-width: 700px;
+    margin: 0 auto 40px;
     line-height: 1.6;
 }
 
-/* --- LABELS GRID --- */
-.labels-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin-bottom: 80px;
+/* Grille des bénéfices */
+.key-benefits {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--border);
+    padding-top: 30px;
 }
 
-.label-card {
-    background: var(--card-bg);
-    border-radius: var(--border-radius);
-    padding: 40px 30px;
-    text-align: center;
-    box-shadow: var(--shadow-soft);
+.benefit-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.benefit-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--bg);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    transition: transform 0.3s, background 0.3s;
+}
+
+.benefit-item:hover .benefit-icon {
+    transform: scale(1.1);
+    background: var(--primary-color);
+    color: white;
+}
+
+.benefit-item span {
+    font-weight: 800;
+    color: var(--dark);
+    font-size: 0.95rem;
+}
+
+/* =========================================================
+   SECTION 2 : CERTIFICATIONS
+   ========================================================= */
+.certifications-section {
+    padding-bottom: 40px;
+}
+
+/* --- CARTE MISE EN AVANT (Highlight) --- */
+.highlight-card {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr; /* Texte plus large que l'image */
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.certif-content {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.certif-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.certif-header h3 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--dark);
+    margin: 0;
+}
+
+.certif-desc {
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 25px;
+    font-size: 1rem;
+}
+
+.certif-points {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.certif-points li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    color: var(--dark);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+.certif-points li i { color: var(--gold); }
+
+.certif-visual {
+    background-color: var(--bg);
+    background-size: cover;
+    background-position: center;
+    
+    /* --- CORRECTION ICI --- */
+    width: 100%;          /* Occupe toute la largeur de sa colonne */
+    height: 100%;         /* Occupe toute la hauteur (s'aligne sur le texte à gauche) */
+    min-height: 300px;    /* Garde une hauteur mini de sécurité */
+    
+    position: relative;
+}
+
+/* Overlay subtil sur l'image */
+.certif-visual::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.05), transparent);
+}
+
+/* --- GRILLE SECONDAIRE --- */
+.secondary-labels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.simple-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 30px;
     transition: transform 0.3s, box-shadow 0.3s;
-    border: 1px solid #eee;
+}
+
+.simple-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(15, 23, 42, 0.1);
+    border-color: rgba(0, 86, 179, 0.2);
+}
+
+.certif-icon-box {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Couleurs des icônes */
+.certif-icon-box.gold { background: var(--gold); }
+.certif-icon-box.blue { background: var(--primary-color); }
+.certif-icon-box.green { background: var(--green); }
+.certif-icon-box.purple { background: var(--purple); }
+
+.simple-card h3 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 10px;
+}
+
+.simple-card p {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* =========================================================
+   SECTION 3 : TRUST (FFHM)
+   ========================================================= */
+.trust-section {
+    padding-top: 20px;
+}
+
+.trust-box {
+    background: var(--dark); /* Fond sombre pour le contraste "Pro" */
+    border-radius: var(--radius);
+    padding: 40px 50px;
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    color: white;
+    box-shadow: var(--shadow);
     position: relative;
     overflow: hidden;
 }
 
-.label-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-hover);
-    border-color: var(--primary-color);
-}
-
-/* Petite barre colorée en haut de la carte */
-.label-card::before {
+/* Petit effet décoratif en background */
+.trust-box::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-    background: var(--primary-color);
-    transform: scaleX(0);
-    transition: transform 0.3s;
-}
-.label-card:hover::before { transform: scaleX(1); }
-
-.card-icon {
-    width: 70px;
-    height: 70px;
-    background: #fff9e6; /* Fond jaune très pâle */
-    color: var(--primary-color);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 25px;
-    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+    top: -50%; left: -10%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    pointer-events: none;
 }
 
-.card-content h3 {
-    margin: 0 0 15px 0;
-    font-size: 1.3rem;
+.trust-logo {
+    flex-shrink: 0;
+    width: 140px;
+    text-align: center;
+}
+.trust-logo img { width: 100%; height: auto; filter: brightness(0) invert(1); opacity: 0.9; }
+.trust-fallback { 
+    font-size: 0.8rem; color: #94a3b8; font-weight: 700; 
+    text-transform: uppercase; border: 2px solid #94a3b8; padding: 10px; 
+}
+
+.trust-content h4 {
+    font-size: 1.4rem;
     font-weight: 800;
-    color: var(--dark-bg);
-}
-
-.divider {
-    height: 2px;
-    width: 30px;
-    background: #eee;
-    margin: 0 auto 15px;
-}
-
-.card-content p {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin: 0;
-}
-
-
-/* --- FFHM GUARANTEE --- */
-.ffhm-guarantee {
-    display: flex;
-    justify-content: center;
-}
-
-.ffhm-box {
-    background: white;
-    border-left: 5px solid var(--secondary-color); /* Bleu Fédéral */
-    padding: 30px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-soft);
-    max-width: 800px;
-}
-
-.ffhm-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-.badge-check {
-    background: var(--secondary-color);
+    margin-bottom: 12px;
     color: white;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: bold;
 }
 
-.ffhm-header h3 {
-    margin: 0;
-    color: var(--secondary-color);
-    font-weight: 700;
-}
-
-.ffhm-box p {
-    margin: 0 0 15px 0;
-    color: var(--text-muted);
+.trust-content p {
+    color: #cbd5e1; /* Gris clair sur fond foncé */
     line-height: 1.6;
+    margin-bottom: 25px;
 }
 
-.ffhm-footer {
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-.ffhm-footer a {
-    color: var(--secondary-color);
+.trust-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-weight: 700;
     text-decoration: none;
+    background: rgba(255,255,255,0.1);
+    padding: 10px 20px;
+    border-radius: 50px;
+    transition: background 0.3s;
 }
-.ffhm-footer a:hover { text-decoration: underline; }
 
-/* --- RESPONSIVE --- */
-@media (max-width: 768px) {
+.trust-link:hover {
+    background: var(--primary-color);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 900px) {
+    /* Header Responsive */
     .page-header { height: auto; padding-top: 120px; padding-bottom: 40px; }
     .header-title-box h1 { font-size: 2.5rem; }
-    .header-content { top:20px;}
+    .header-content { top: 25px; }
+
+    /* Promise Section */
+    .promise-section { margin-top: -30px; padding: 30px 20px; }
+    .key-benefits { gap: 30px; }
+    
+    /* Certifications */
+    .highlight-card { grid-template-columns: 1fr; }
+    .certif-visual { order: -1; min-height: 200px; } /* Image au dessus */
+    .certif-content { padding: 30px; }
+    
+    /* Trust Section */
+    .trust-box { flex-direction: column; text-align: center; gap: 30px; padding: 30px; }
+    .trust-link { justify-content: center; width: 100%; }
 }
