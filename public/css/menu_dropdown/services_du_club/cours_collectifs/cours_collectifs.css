@@ -22,7 +22,6 @@ body {
     background-color: var(--bg-light);
     color: var(--text-main);
     overflow-x: hidden;
-    font-family: system-ui, -apple-system, sans-serif;
 }
 
 /* =========================================================
