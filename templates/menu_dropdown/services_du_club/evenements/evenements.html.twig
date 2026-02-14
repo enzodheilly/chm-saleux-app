@@ -29,73 +29,102 @@
         </div>
     </header>
 
-    <main class="main-container">
+<main class="main-container">
 
-        {# --- SECTION 1 : LES TEMPS FORTS (Cartes) --- #}
-        <section class="events-section">
-            <div class="intro-text text-center">
-                <h2>Nos Rendez-vous Annuels</h2>
-                <p>Tout au long de l'année, le CHM Saleux organise des moments de détente pour souder les liens entre adhérents.</p>
+        {# --- SECTION 1 : L'ESPRIT CLUB (Intro) --- #}
+        <section class="club-spirit-intro">
+            <div class="container-narrow">
+                <div class="spirit-badge">Esprit d'équipe</div>
+                <h2>Plus qu'une salle, <span class="highlight-text">une famille.</span></h2>
+                <p class="spirit-desc">
+                    La performance c'est bien, mais les souvenirs c'est mieux. 
+                    Au CHM Saleux, nous croyons que la cohésion se forge autant autour d'un bon repas que sous une barre chargée.
+                    Découvrez les traditions qui rythment notre année.
+                </p>
             </div>
+        </section>
 
+        {# --- SECTION 2 : LE CALENDRIER FESTIF (Grid) --- #}
+        <section class="events-timeline">
             <div class="events-grid">
                 
-                {# Carte Galette #}
-                <article class="event-card">
-                    <div class="card-icon icon-galette">👑</div>
-                    <div class="card-content">
-                        <h3>La Galette des Rois</h3>
-                        <span class="event-period">Janvier</span>
-                        <p>Pour bien commencer l'année, on tire les rois ! Un moment gourmand pour se retrouver après les fêtes.</p>
+                {# JANVIER - GALETTE #}
+                <article class="event-card winter">
+                    <div class="card-bg-icon"><i class="fa-solid fa-crown"></i></div>
+                    <div class="event-header">
+                        <span class="month-badge">Janvier</span>
+                        <div class="icon-circle"><i class="fa-solid fa-crown"></i></div>
+                    </div>
+                    <div class="event-body">
+                        <h3>Galette des Rois</h3>
+                        <p>On commence l'année par un classique ! Après l'effort, le réconfort. Qui sera le roi ou la reine de la saison ?</p>
                     </div>
                 </article>
 
-                {# Carte Pâques #}
-                <article class="event-card">
-                    <div class="card-icon icon-paques">🥚</div>
-                    <div class="card-content">
-                        <h3>Pâques</h3>
-                        <span class="event-period">Avril</span>
-                        <p>Chasse aux œufs ou distribution de chocolats, c'est le rendez-vous des gourmands (avant de retourner s'entraîner !).</p>
+                {# AVRIL - PÂQUES #}
+                <article class="event-card spring">
+                    <div class="card-bg-icon"><i class="fa-solid fa-egg"></i></div>
+                    <div class="event-header">
+                        <span class="month-badge">Avril</span>
+                        <div class="icon-circle"><i class="fa-solid fa-egg"></i></div>
+                    </div>
+                    <div class="event-body">
+                        <h3>Fête de Pâques</h3>
+                        <p>Chasse aux œufs et chocolats pour les petits (et les grands). Un moment familial incontournable au club.</p>
                     </div>
                 </article>
 
-                {# Carte Noël #}
-                <article class="event-card">
-                    <div class="card-icon icon-noel">🎁</div>
-                    <div class="card-content">
+                {# DÉCEMBRE - NOËL #}
+                <article class="event-card winter-red">
+                    <div class="card-bg-icon"><i class="fa-solid fa-gift"></i></div>
+                    <div class="event-header">
+                        <span class="month-badge">Décembre</span>
+                        <div class="icon-circle"><i class="fa-solid fa-gift"></i></div>
+                    </div>
+                    <div class="event-body">
                         <h3>Repas de Noël</h3>
-                        <span class="event-period">Décembre</span>
-                        <p>Le grand rassemblement de fin d'année. Repas commun, bonne humeur et célébration de la saison écoulée.</p>
+                        <p>Le grand rassemblement. On troque les tenues de sport pour une soirée festive, un bon repas et beaucoup de rires.</p>
                     </div>
                 </article>
 
-                {# Carte Surprises #}
-                <article class="event-card">
-                    <div class="card-icon icon-surprise">🎉</div>
-                    <div class="card-content">
-                        <h3>Événements Surprises</h3>
-                        <span class="event-period">Toute l'année</span>
-                        <p>Barbecues, sorties, challenges internes... Nous aimons improviser des moments sympas pour casser la routine.</p>
+                {# TOUTE L'ANNÉE - SURPRISES #}
+                <article class="event-card summer">
+                    <div class="card-bg-icon"><i class="fa-solid fa-fire"></i></div>
+                    <div class="event-header">
+                        <span class="month-badge">Toute l'année</span>
+                        <div class="icon-circle"><i class="fa-solid fa-fire"></i></div>
+                    </div>
+                    <div class="event-body">
+                        <h3>Les "Imprévus"</h3>
+                        <p>Barbecues improvisés, challenges internes, sorties... Parce que les meilleurs moments ne sont pas toujours planifiés.</p>
                     </div>
                 </article>
 
             </div>
         </section>
 
-        {# --- SECTION 2 : RESTER INFORMÉ (Communication) --- #}
-        <section class="communication-section">
-            <div class="comm-box">
-                <div class="comm-icon">
-                    <svg width="40" height="40" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.897.001-6.113 4.974-11.085 11.092-11.085 2.962.002 5.748 1.155 7.842 3.25 2.094 2.094 3.246 4.88 3.245 7.842-.001 6.113-4.976 11.086-11.094 11.086-1.928-.001-3.824-.492-5.526-1.427l-5.659 1.495z"/></svg>
+        {# --- SECTION 3 : COMMUNICATION (CTA WhatsApp) --- #}
+        <section class="connect-section">
+            <div class="connect-card">
+                <div class="connect-visual">
+                    <div class="phone-mockup">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <div class="pulse-ring"></div>
                 </div>
-                <div class="comm-content">
-                    <h3>Ne ratez aucune date !</h3>
+                
+                <div class="connect-content">
+                    <h3>Ne ratez aucune info !</h3>
                     <p>
-                        L'organisation des événements, les dates précises et les inscriptions se font exclusivement via nos canaux de communication internes.
+                        L'organisation des événements, les sondages pour les dates et les infos de dernière minute circulent sur notre groupe privé.
                     </p>
-                    <a href="#" class="btn-whatsapp">Rejoindre le groupe WhatsApp</a>
-                    <span class="sub-note">Réservé aux membres du club</span>
+                    
+                    <div class="connect-actions">
+                        <a href="https://chat.whatsapp.com/TON-LIEN" target="_blank" class="btn-whatsapp-large">
+                            <i class="fa-brands fa-whatsapp"></i> Rejoindre le groupe Membres
+                        </a>
+                        <p class="secure-note"><i class="fa-solid fa-lock"></i> Accès réservé aux licenciés</p>
+                    </div>
                 </div>
             </div>
         </section>
