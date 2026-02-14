@@ -29,70 +29,121 @@
         </div>
     </header>
 
-    <main class="main-container">
+<main class="main-container">
 
-        {# --- SECTION 1 : POURQUOI VENIR ? --- #}
-        <section class="benefits-section">
-            <div class="intro-block">
-                <h2>Pourquoi faire un essai ?</h2>
-                <p>Le CHM Saleux vous offre une séance complète pour découvrir notre univers, que vous soyez intéressé par la <strong>Force Athlétique</strong>, l'<strong>Haltérophilie</strong> ou la <strong>Musculation Loisir</strong>.</p>
+        {# --- SECTION 1 : LA PROMESSE (Rassurante) --- #}
+        <section class="reassurance-section">
+            <div class="container-narrow">
+                <div class="intro-badge">Gratuit & Sans Engagement</div>
+                <h2>Poussez la porte, <span class="highlight-text">on s'occupe du reste.</span></h2>
+                <p class="intro-desc">
+                    Nous savons que la première fois dans une salle peut être intimidante. 
+                    Au CHM Saleux, pas de jugement. Juste une équipe passionnée prête à vous accueillir, 
+                    quel que soit votre niveau ou votre âge.
+                </p>
+            </div>
+        </section>
+
+        {# --- SECTION 2 : 3 BONNES RAISONS (Cartes Illustrées) --- #}
+        <section class="reasons-section">
+            <div class="reasons-grid">
+                
+                {# Carte 1 #}
+                <div class="reason-card">
+                    <div class="card-icon blue">
+                        <i class="fa-solid fa-dumbbell"></i>
+                    </div>
+                    <h3>Matériel Pro</h3>
+                    <p>Testez nos barres Eleiko, nos plateaux d'haltéro et nos machines guidées. La qualité fait la différence.</p>
+                </div>
+
+                {# Carte 2 #}
+                <div class="reason-card yellow">
+                    <div class="card-icon yellow">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <h3>Ambiance Club</h3>
+                    <p>Ici, on se dit bonjour. Ressentez l'entraide et la convivialité qui font la réputation du club.</p>
+                </div>
+
+                {# Carte 3 #}
+                <div class="reason-card green">
+                    <div class="card-icon green">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+                    <h3>Conseils Coach</h3>
+                    <p>Profitez de votre essai pour poser vos questions à un coach diplômé et corriger vos mouvements.</p>
+                </div>
+
+            </div>
+        </section>
+
+        {# --- SECTION 3 : LE GUIDE PRATIQUE (Timeline) --- #}
+        <section class="how-it-works-section">
+            <div class="section-header">
+                <h2>Comment ça se passe ?</h2>
+                <p>Votre première visite en 3 étapes simples.</p>
             </div>
 
-            <div class="benefits-grid">
-                <div class="benefit-card">
-                    <div class="icon-box">🏋️</div>
-                    <h3>Tester le Matériel</h3>
-                    <p>Barres olympiques, machines guidées, zone cardio... Vérifiez par vous-même la qualité de nos équipements.</p>
+            <div class="steps-container">
+                {# Etape 1 #}
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Venez aux horaires d'ouverture</h3>
+                        <p>Présentez-vous à l'accueil lors des créneaux encadrés (Soir ou Mercredi après-midi).</p>
+                    </div>
                 </div>
-                <div class="benefit-card">
-                    <div class="icon-box">👋</div>
-                    <h3>Rencontrer l'Équipe</h3>
-                    <p>Echangez avec nos bénévoles et nos coachs. Posez vos questions et obtenez des conseils personnalisés.</p>
+
+                {# Connecteur #}
+                <div class="step-connector"></div>
+
+                {# Etape 2 #}
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Dites "Je viens pour un essai"</h3>
+                        <p>L'équipe vous fera visiter, vous expliquera le fonctionnement et vous montrera les vestiaires.</p>
+                    </div>
                 </div>
-                <div class="benefit-card">
-                    <div class="icon-box">⚡</div>
-                    <h3>Sentir l'Ambiance</h3>
-                    <p>Le CHM, c'est avant tout un esprit. Convivialité et entraide sont les maîtres-mots de nos entraînements.</p>
+
+                {# Connecteur #}
+                <div class="step-connector"></div>
+
+                {# Etape 3 #}
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Entraînez-vous !</h3>
+                        <p>Profitez de votre séance. N'oubliez pas votre bouteille d'eau et votre serviette.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        {# --- SECTION 2 : INFOS PRATIQUES (Checklist) --- #}
-        <section class="practical-section">
-            <div class="practical-card">
-                <div class="practical-content">
-                    <h2>Comment ça se passe ?</h2>
-                    <p>C'est très simple. Présentez-vous à l'accueil du club lors des horaires d'ouverture (créneaux encadrés) et précisez que vous venez pour une séance d'essai.</p>
-                    
-                    <div class="checklist-box">
-                        <h3>🎒 Dans votre sac de sport :</h3>
-                        <ul>
-                            <li>
-                                <span class="check-icon">👟</span>
-                                <span>Une paire de baskets propres (dédiées à la salle)</span>
-                            </li>
-                            <li>
-                                <span class="check-icon">👕</span>
-                                <span>Une tenue de sport confortable</span>
-                            </li>
-                            <li>
-                                <span class="check-icon">💧</span>
-                                <span>Une bouteille d'eau & une serviette</span>
-                            </li>
-                            <li>
-                                <span class="check-icon">🔒</span>
-                                <span>Un cadenas pour le casier (conseillé)</span>
-                            </li>
-                        </ul>
-                    </div>
+        {# --- SECTION 4 : CTA FINAL (Checklist + Action) --- #}
+        <section class="final-cta-section">
+            <div class="cta-card">
+                <div class="cta-left">
+                    <h3>🎒 Dans votre sac</h3>
+                    <ul class="checklist">
+                        <li><i class="fa-solid fa-check"></i> Tenue de sport</li>
+                        <li><i class="fa-solid fa-check"></i> Baskets propres</li>
+                        <li><i class="fa-solid fa-check"></i> Serviette & Eau</li>
+                    </ul>
                 </div>
-                <div class="practical-cta">
-                    <h3>Prêt à transpirer ?</h3>
-                    <p>Contactez-nous pour prévenir de votre venue ou posez vos questions.</p>
-                    <a href="{{ path('contact') }}" class="btn-primary">
-                        Prévenir de ma venue
-                        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                    </a>
+                
+                <div class="cta-right">
+                    <h3>On vous attend !</h3>
+                    <p>Pas besoin de réserver, mais si vous avez une question, n'hésitez pas.</p>
+                    <div class="action-buttons">
+                        <a href="{{ path('contact') }}" class="btn-contact">
+                            <i class="fa-regular fa-envelope"></i> Prévenir de ma venue
+                        </a>
+                        <a href="https://www.google.com/maps/dir//CHM+Saleux" target="_blank" class="btn-map">
+                            <i class="fa-solid fa-location-arrow"></i> Itinéraire
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
