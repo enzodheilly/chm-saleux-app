@@ -8,12 +8,11 @@
 
 {% block body %}
 
-    {# --- HEADER IMMERSIF --- #}
+    {# --- HEADER IMMERSIF (NE PAS TOUCHER) --- #}
     <header class="page-header">
-        {# Image de fond (tu peux changer l'image pour une photo de la salle/horloge) #}
         <div class="header-bg" style="background-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/horaires/1.jpg') }}');"></div>
         <div class="header-overlay"></div>
-        
+
         <div class="container header-content">
             <a href="{{ path('home') }}" class="back-link">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -21,7 +20,7 @@
                 </svg>
                 <span>Retour à l'accueil</span>
             </a>
-            
+
             <div class="header-title-box">
                 <span class="subtitle">Planning Hebdomadaire</span>
                 <h1>Nos Créneaux</h1>
@@ -32,80 +31,123 @@
 
     <main class="main-container">
 
-        {# --- SECTION 1 : GRILLE DES HORAIRES --- #}
+        {# --- QUICK BAR (nouveau bandeau) --- #}
+        <section class="quickbar-section">
+            <div class="quickbar">
+                <div class="quick-item">
+                    <div class="quick-icon">📍</div>
+                    <div class="quick-text">
+                        <h3>Adresse</h3>
+                        <p>Complexe sportif — Saleux</p>
+                    </div>
+                </div>
+
+                <div class="quick-item">
+                    <div class="quick-icon">📞</div>
+                    <div class="quick-text">
+                        <h3>Contact</h3>
+                        <p><a href="tel:0322897257">03.22.89.72.57</a></p>
+                    </div>
+                </div>
+
+                <div class="quick-item">
+                    <div class="quick-icon">💬</div>
+                    <div class="quick-text">
+                        <h3>Infos / Fermetures</h3>
+                        <p>WhatsApp + réseaux sociaux</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {# --- SECTION 1 : PLANNING --- #}
         <section class="schedule-section">
             <div class="intro-text text-center">
-                <p>Le club est ouvert en continu sur les créneaux suivants.</p>
+                <p>Le club est ouvert sur les créneaux suivants (hors jours fériés et imprévus).</p>
             </div>
 
             <div class="schedule-grid">
-                
-                {# Carte Lundi / Mercredi / Vendredi #}
+
+                {# Lundi / Mercredi / Vendredi #}
                 <article class="schedule-card primary-card">
                     <div class="card-header">
-                        <div class="icon-day">📅</div>
+                        <div class="icon-day"></div>
                         <h3>Lundi • Mercredi • Vendredi</h3>
+                        <span class="pill pill-blue">Créneaux principaux</span>
                     </div>
+
                     <div class="card-body">
-                        <div class="time-row">
-                            <span class="time-label">Matin</span>
-                            <span class="time-value">10H00 - 12H00</span>
+                        <div class="time-block">
+                            <div class="time-chip">Matin</div>
+                            <div class="time-range">10h00 — 12h00</div>
                         </div>
+
                         <div class="divider"></div>
-                        <div class="time-row">
-                            <span class="time-label">Après-midi</span>
-                            <span class="time-value">16H00 - 20H00</span>
+
+                        <div class="time-block">
+                            <div class="time-chip">Après-midi</div>
+                            <div class="time-range">16h00 — 20h00</div>
                         </div>
                     </div>
+
                     <div class="card-footer">
                         <span class="note">* Vendredi : fermeture possible à 18h45 (veilles de compétition)</span>
                     </div>
                 </article>
 
-                {# Carte Mardi / Jeudi #}
+                {# Mardi / Jeudi #}
                 <article class="schedule-card secondary-card">
                     <div class="card-header">
-                        <div class="icon-day">📅</div>
+                        <div class="icon-day"></div>
                         <h3>Mardi • Jeudi</h3>
+                        <span class="pill pill-green">Créneaux réguliers</span>
                     </div>
+
                     <div class="card-body">
-                        <div class="time-row">
-                            <span class="time-label">Matin</span>
-                            <span class="time-value">10H00 - 12H00</span>
+                        <div class="time-block">
+                            <div class="time-chip">Matin</div>
+                            <div class="time-range">10h00 — 12h00</div>
                         </div>
+
                         <div class="divider"></div>
-                        <div class="time-row">
-                            <span class="time-label">Après-midi</span>
-                            <span class="time-value">16H00 - 19H30</span>
+
+                        <div class="time-block">
+                            <div class="time-chip">Après-midi</div>
+                            <div class="time-range">16h00 — 19h30</div>
                         </div>
                     </div>
                 </article>
 
-                {# Carte Week-end #}
+                {# Week-end #}
                 <article class="schedule-card closed-card">
                     <div class="card-header">
-                        <div class="icon-day">🔒</div>
+                        <div class="icon-day"></div>
                         <h3>Samedi • Dimanche</h3>
+                        <span class="pill pill-red">Fermé</span>
                     </div>
+
                     <div class="card-body centered-body">
                         <span class="closed-badge">FERMÉ</span>
-                        <p>Repos ou Compétitions extérieures</p>
+                        <p>Repos ou compétitions extérieures</p>
+                        <div class="mini-hint">Les infos sont annoncées sur WhatsApp et nos réseaux.</div>
                     </div>
                 </article>
 
             </div>
         </section>
 
-        {# --- SECTION 2 : INFOS IMPORTANTES (Alertes) --- #}
+        {# --- SECTION 2 : INFOS IMPORTANTES --- #}
         <section class="info-section">
             <h2 class="section-heading">Informations Pratiques</h2>
 
             <div class="info-grid">
-                
-                {# Bloc Bénévoles #}
+
                 <div class="info-box info-volunteer">
                     <div class="info-icon">
-                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
                     </div>
                     <div class="info-content">
                         <h3>Gestion Bénévole</h3>
@@ -113,10 +155,12 @@
                     </div>
                 </div>
 
-                {# Bloc Compétition #}
                 <div class="info-box info-competition">
                     <div class="info-icon">
-                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                        </svg>
                     </div>
                     <div class="info-content">
                         <h3>Jours de Compétition</h3>
@@ -124,10 +168,12 @@
                     </div>
                 </div>
 
-                {# Bloc Météo / WhatsApp #}
                 <div class="info-box info-weather">
                     <div class="info-icon">
-                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
                     </div>
                     <div class="info-content">
                         <h3>Restez Connectés</h3>
@@ -135,6 +181,12 @@
                     </div>
                 </div>
 
+            </div>
+
+            <div class="info-note">
+                <span class="info-note-icon">ℹ️</span>
+                <p>En cas de doute, n’hésitez pas à nous appeler avant de vous déplacer.</p>
+                <a class="info-note-btn" href="tel:0322897257">Appeler le club</a>
             </div>
         </section>
 
