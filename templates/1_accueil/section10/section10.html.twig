@@ -1,49 +1,144 @@
-<section class="overlap-section">
+<section class="cc-hero-section">
   <div class="container">
-    
-    <div class="overlap-wrapper">
-      <div class="overlap-image">
-         <img src="{{ asset('images/menu_dropdown/services_du_club/cours_collectifs/cours-co.jpg') }}" alt="Cours collectifs">
+
+    <div class="cc-grid">
+      
+      <div class="cc-content">
+        <span class="cc-badge">COURS COLLECTIFS</span>
+        <h2 class="cc-title">L’énergie du groupe,<br>la progression en plus.</h2>
+
+        <p class="cc-desc">
+          Marre de s'entraîner seul ? Rejoignez nos séances rythmées et encadrées par des coachs diplômés. 
+          Du cardio au renforcement, on se motive ensemble.
+        </p>
+
+        <div class="cc-stats-wrapper">
+          
+          <div class="cc-stat-box highlight">
+            <div class="stat-icon"><i class="fa-regular fa-clock"></i></div>
+            <div class="stat-info">
+              <span class="stat-value">45</span>
+              <span class="stat-unit">minutes / séance</span>
+            </div>
+          </div>
+
+          <div class="cc-stat-box highlight">
+            <div class="stat-icon"><i class="fa-solid fa-calendar-week"></i></div>
+            <div class="stat-info">
+              <span class="stat-value">2</span>
+              <span class="stat-unit">cours / semaine</span>
+            </div>
+          </div>
+
+          <div class="cc-stat-box">
+             <div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div>
+             <div class="stat-info">
+              <span class="stat-value">100%</span>
+              <span class="stat-unit">adapté à tous</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="cc-actions">
+          <a href="{{ path('cours_collectifs') }}" class="btn-primary-action">
+            En savoir plus
+          </a>
+          <a href="#cc-avis" class="btn-text-action">Lire les avis</a>
+        </div>
       </div>
 
-      <div class="overlap-content">
-        <h2 class="section-heading">Cours Collectifs</h2>
-        <div class="divider"></div>
-        <p>
-          Rejoignez l'énergie du groupe. Que vous soyez débutant ou confirmé, nos coachs diplômés vous guident à travers des séances variées : Cardio, Renforcement, Zen.
-          <br><br>
-          <strong>L'objectif ?</strong> Se dépasser ensemble dans une ambiance motivante.
-        </p>
-        <a href="{{ path('cours_collectifs') }}" class="btn-clean">En savoir plus</a>
+      <div class="cc-visual">
+        <div class="image-frame">
+          <img src="{{ asset('images/menu_dropdown/services_du_club/cours_collectifs/cours-co.jpg') }}" alt="Ambiance cours collectifs">
+        </div>
+
+        <div class="floating-cards">
+          <div class="mini-card cardio">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <div>
+              <strong>Cardio</strong>
+              <span>Brûler & Transpirer</span>
+            </div>
+          </div>
+          
+          <div class="mini-card renfo">
+            <i class="fa-solid fa-dumbbell"></i>
+            <div>
+              <strong>Renfo</strong>
+              <span>Tonifier & Sculpter</span>
+            </div>
+          </div>
+
+          <div class="mini-card zen">
+            <i class="fa-solid fa-leaf"></i>
+            <div>
+              <strong>Zen</strong>
+              <span>Mobilité & Détente</span>
+            </div>
+          </div>
+        </div>
       </div>
+
     </div>
 
   </div>
 </section>
 
-<section class="reviews-section">
+<section class="cc-reviews-section" id="cc-avis">
   <div class="container">
-    <h3 class="reviews-title">Vos retours d'expérience</h3>
-    
-    <div class="reviews-grid">
-      <div class="review-item">
-        <div class="stars">★★★★★</div>
-        <p>“Super ambiance et coachs au top ! Les cours collectifs m’ont permis de reprendre le sport avec plaisir.”</p>
-        <span class="author">— Sarah M.</span>
-      </div>
 
-      <div class="review-item">
-        <div class="stars">★★★★★</div>
-        <p>“Des séances dynamiques. On se sent encadré et fier de soi après chaque cours.”</p>
-        <span class="author">— Julien D.</span>
-      </div>
-
-      <div class="review-item">
-        <div class="stars">★★★★★</div>
-        <p>“Une vraie source de motivation ! L’ambiance de groupe est incroyable.”</p>
-        <span class="author">— Nadia K.</span>
-      </div>
+    <div class="reviews-header">
+      <h3>Ils s'entraînent avec nous</h3>
+      <div class="separator"></div>
     </div>
 
+    <div class="reviews-scroller">
+      
+      <div class="review-card">
+        <div class="review-header">
+          <div class="avatar s-color">S</div>
+          <div class="meta">
+            <span class="name">Sarah M.</span>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+        <p class="quote">“Super ambiance et coachs au top ! J’ai repris le sport avec plaisir grâce à l'énergie du groupe.”</p>
+      </div>
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="avatar j-color">J</div>
+          <div class="meta">
+            <span class="name">Julien D.</span>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+        <p class="quote">“Séances dynamiques de 45min, c'est parfait pour mon emploi du temps. On se sent fier après.”</p>
+      </div>
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="avatar n-color">N</div>
+          <div class="meta">
+            <span class="name">Nadia K.</span>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+        <p class="quote">“Une source de motivation énorme. Je ne rate plus ma séance du mardi !”</p>
+      </div>
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="avatar a-color">A</div>
+          <div class="meta">
+            <span class="name">Alex P.</span>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+        <p class="quote">“On progresse vite, on s’accroche grâce au collectif. Ça change tout par rapport à la muscu solo.”</p>
+      </div>
+
+    </div>
   </div>
 </section>
