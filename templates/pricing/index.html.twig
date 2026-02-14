@@ -5,7 +5,6 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/pricing/index.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}
 
 {% block body %}
@@ -28,161 +27,266 @@
         </div>
     </header>
 
-    {# --- SECTION DES CARTES (DESIGN UPGRADÉ) --- #}
-<section class="sleek-pricing-section">
-  <div class="container-narrow">
-    
-    <div class="pricing-header">
-      <h2 class="section-title">Choisissez votre formule</h2>
-      <p class="section-subtitle">
-        Tarifs fixes pour la saison 2025 / 2026. <br>Accès illimité 800m², cardio, muscu, haltéro.
-      </p>
-    </div>
-
-    <div class="pricing-selector-wrapper">
-      <div class="pricing-selector">
-        <input type="radio" id="type-standard" name="pricing-type" value="standard" class="js-pricing-trigger" checked>
-        <label for="type-standard" class="selector-item">Standard</label>
+    {# --- SECTION DES CARTES (NOUVEAU DESIGN) --- #}
+    <section class="sleek-pricing-section">
+      <div class="container-narrow">
         
-        <input type="radio" id="type-student" name="pricing-type" value="student" class="js-pricing-trigger">
-        <label for="type-student" class="selector-item">
-          Étudiant <span class="discount-tag">-10€</span>
-        </label>
-        <div class="selector-glider"></div> 
-      </div>
-    </div>
+        <div class="pricing-header">
+          <h2 class="section-title" style="color:#111 !important;">Sélectionnez l'abonnement qui vous correspond</h2>
+          <p class="section-subtitle">
+            Accès illimité 800m², cardio, muscu, haltéro et cours collectifs.
+            <br>À partir de <strong>5,83 €/semaine</strong>.
+          </p>
+        </div>
 
-    <div class="pricing-grid">
-      {% for plan in plans %}
-        {% set standardPrice = plan.prix %}
-        {% set studentPrice = plan.prix >= 195 ? 185 : (plan.prix_etudiant ?? plan.prix) %}
+        <div class="pricing-selector-wrapper">
+          <div class="pricing-selector">
+            <input type="radio" id="type-standard" name="pricing-type" value="standard" checked>
+            <label for="type-standard" class="selector-item">Standard</label>
+            
+            <input type="radio" id="type-student" name="pricing-type" value="student">
+            <label for="type-student" class="selector-item">
+              Étudiant <span class="discount-tag">-10€</span>
+            </label>
+            
+            <div class="selector-glider"></div> 
+          </div>
+        </div>
 
-        <article class="sleek-card {{ plan.isPopular ? 'popular-card' : '' }}">
-          {% if plan.isPopular %}
-            <div class="popular-badge">Le plus choisi</div>
-          {% endif %}
-
-          <div class="card-header">
-            <h3 class="plan-title">{{ plan.nom }}</h3>
-            <div class="plan-price">
-              <span class="currency">€</span>
-              <span class="price-value js-price-value" data-standard="{{ standardPrice }}" data-student="{{ studentPrice }}">
-                {{ standardPrice }}
-              </span>
-              <span class="period">/ {{ plan.frequence|lower }}</span>
-            </div>
-            {% if plan.mensualite %}
-              <div class="monthly-detail">Soit ~{{ plan.mensualite|number_format(0) }}€ / mois</div>
+        <div class="pricing-grid">
+          
+          {% for plan in plans %}
+            
+            {# --- LOGIQUE PRIX --- #}
+            {% set standardPrice = plan.prix %}
+            {% set studentPrice = plan.prix %}
+            {# Si prix >= 195, étudiant est à 185, sinon on prend le prix étudiant défini ou le prix standard #}
+            {% if plan.prix >= 195 %}
+                {% set studentPrice = 185 %}
+            {% elseif plan.prix_etudiant is defined and plan.prix_etudiant %}
+                {% set studentPrice = plan.prix_etudiant %}
             {% endif %}
-          </div>
+            {# --- FIN LOGIQUE --- #}
 
-          <div class="card-body">
-            <div class="trial-info">
-              <i class="fa-solid fa-check-circle"></i> Séance d'essai incluse
+            <article class="sleek-card {{ plan.isPopular ? 'popular-card' : '' }}">
+              
+              {% if plan.isPopular %}
+                <div class="popular-badge">Le plus choisi</div>
+              {% endif %}
+
+              <div class="card-header">
+                <h3 class="plan-title">{{ plan.nom }}</h3>
+                <div class="plan-price">
+                  <span class="currency">€</span>
+                  <span class="price-value"
+                        data-standard="{{ standardPrice }}" 
+                        data-student="{{ studentPrice }}">
+                    {{ standardPrice }}
+                  </span>
+                  <span class="period">/ {{ plan.frequence|lower }}</span>
+                </div>
+                {% if plan.mensualite %}
+                  <div class="monthly-detail">Soit ~{{ plan.mensualite|number_format(0) }}€ / mois</div>
+                {% else %}
+                  <div class="monthly-detail invisible">-</div>
+                {% endif %}
+              </div>
+
+              <div class="card-body">
+                <div class="trial-info">
+                  <i class="fa-solid fa-check-circle"></i> Séance d'essai incluse
+                </div>
+                
+                <ul class="features-list">
+                  {% for avantage in plan.avantages %}
+                    {# Gestion de l'affichage si l'avantage contient un pipe | #}
+                    {% set parts = avantage|split('|') %}
+                    <li>
+                      <i class="fa-solid fa-check icon-check"></i>
+                      <span>
+                        {% if parts|length > 1 %}{{ parts[1]|trim }}{% else %}{{ avantage }}{% endif %}
+                      </span>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+
+              <div class="card-footer">
+                {# J'ai remis le path('contact') ici car le '#' ne mènerait nulle part #}
+                <a href="{{ path('contact') }}" class="btn-select {{ plan.isPopular ? 'btn-red' : 'btn-dark' }}">Sélectionner</a>
+              </div>
+
+            </article>
+
+          {% endfor %}
+
+        </div>
+
+        <div class="pricing-note">
+          <i class="fa-solid fa-circle-info"></i>
+          <p><strong>Note :</strong> Pensez à remplir et remettre votre formulaire de licence au bureau avant le paiement.</p>
+        </div>
+
+      </div>
+    </section>
+
+    {# --- IMAGE DE TRANSITION 1 (PARALLAX) --- #}
+    <div class="parallax-divider-pricing-parallax" style="background-image: url('{{ asset('images/club/pricing.jpg') }}');">
+        <div class="parallax-overlay"></div>
+        <div class="parallax-content">
+            <h2>L'esprit d'équipe</h2>
+            <p>Plus qu'une salle, une communauté.</p>
+        </div>
+    </div>
+
+    {# --- OFFRES SPÉCIFIQUES --- #}
+    <section class="section-light">
+        <h2 class="section-title text-center">Offres Spécifiques</h2>
+        <p class="section-subtitle text-center">Familles nombreuses ou compétiteurs, nous avons pensé à vous.</p>
+
+        <div class="info-grid">
+            <div class="info-card family">
+                <div class="info-icon" style="color:#005b94;"><i class="fa-solid fa-users"></i></div>
+                <h3 style="font-weight: 800; margin-bottom: 15px;">OFFRE FAMILLE</h3>
+                <p style="color:#64748b; margin-bottom:20px;">Réduction pour les membres d'un même foyer.</p>
+                <table class="custom-table" style="box-shadow:none; border:1px solid #f1f5f9;">
+                    <tr><td>2ème licence</td><td style="color:#10b981; font-weight:800; text-align: right;">- 10 %</td></tr>
+                    <tr><td>3ème licence</td><td style="color:#10b981; font-weight:800; text-align: right;">- 15 %</td></tr>
+                    <tr><td>4ème licence et +</td><td style="color:#10b981; font-weight:800; text-align: right;">- 20 %</td></tr>
+                </table>
             </div>
-            <ul class="features-list">
-              {% for avantage in plan.avantages %}
-                <li><i class="fa-solid fa-check icon-check"></i> <span>{{ avantage|split('|')|last }}</span></li>
-              {% endfor %}
-            </ul>
-          </div>
 
-          <div class="card-footer">
-            <a href="{{ path('contact') }}" class="btn-select {{ plan.isPopular ? 'btn-red' : 'btn-dark' }}">Sélectionner</a>
-          </div>
-        </article>
-      {% endfor %}
-    </div>
-
-    <div class="pricing-note">
-      <i class="fa-solid fa-circle-info"></i>
-      <p><strong>Note :</strong> Pensez à remplir et remettre votre formulaire de licence au bureau avant le paiement.</p>
-    </div>
-  </div>
-</section>
-
-{# --- IMAGE DE TRANSITION 1 (PARALLAX) --- #}
-<div class="parallax-divider pricing-parallax" style="background-image: url('{{ asset('images/club/pricing.jpg') }}');">
-    <div class="parallax-overlay"></div>
-    <div class="parallax-content">
-        <h2>L'esprit d'équipe</h2>
-        <p>Plus qu'une salle, une communauté.</p>
-    </div>
-</div>
-
-{# --- OFFRES SPÉCIFIQUES --- #}
-<section class="section-light">
-    <h2 class="section-title text-center">Offres Spécifiques</h2>
-    <p class="section-subtitle text-center">Familles nombreuses ou compétiteurs, nous avons pensé à vous.</p>
-
-    <div class="info-grid">
-        <div class="info-card family">
-            <div class="info-icon" style="color:#005b94;"><i class="fa-solid fa-users"></i></div>
-            <h3 style="font-weight: 800; margin-bottom: 15px;">OFFRE FAMILLE</h3>
-            <p style="color:#64748b; margin-bottom:20px;">Réduction pour les membres d'un même foyer.</p>
-            <table class="custom-table" style="box-shadow:none; border:1px solid #f1f5f9;">
-                <tr><td>2ème licence</td><td style="color:#10b981; font-weight:800; text-align: right;">- 10 %</td></tr>
-                <tr><td>3ème licence</td><td style="color:#10b981; font-weight:800; text-align: right;">- 15 %</td></tr>
-                <tr><td>4ème licence et +</td><td style="color:#10b981; font-weight:800; text-align: right;">- 20 %</td></tr>
-            </table>
+            <div class="info-card comp">
+                <div class="info-icon" style="color:#fbbf24;"><i class="fa-solid fa-trophy"></i></div>
+                <h3 style="font-weight: 800; margin-bottom: 15px;">COMPÉTITION FFHM</h3>
+                <p style="color:#64748b; margin-bottom:20px;">Rejoignez l'équipe compétition.</p>
+                <table class="custom-table" style="box-shadow:none; border:1px solid #f1f5f9;">
+                    <tr><td>Benjamins (8-13 ans)</td><td style="font-weight:700; text-align: right;">50,00 €*</td></tr>
+                    <tr><td>Cadets/Juniors</td><td style="font-weight:700; text-align: right;">75,00 €</td></tr>
+                    <tr><td>Séniors (+21 ans)</td><td style="font-weight:700; text-align: right;">95,00 €</td></tr>
+                </table>
+                <div style="font-size:0.8rem; color:#94a3b8; margin-top:10px;">* Gratuit si un parent est inscrit.</div>
+            </div>
         </div>
+    </section>
 
-        <div class="info-card comp">
-            <div class="info-icon" style="color:#fbbf24;"><i class="fa-solid fa-trophy"></i></div>
-            <h3 style="font-weight: 800; margin-bottom: 15px;">COMPÉTITION FFHM</h3>
-            <p style="color:#64748b; margin-bottom:20px;">Rejoignez l'équipe compétition.</p>
-            <table class="custom-table" style="box-shadow:none; border:1px solid #f1f5f9;">
-                <tr><td>Benjamins (8-13 ans)</td><td style="font-weight:700; text-align: right;">50,00 €*</td></tr>
-                <tr><td>Cadets/Juniors</td><td style="font-weight:700; text-align: right;">75,00 €</td></tr>
-                <tr><td>Séniors (+21 ans)</td><td style="font-weight:700; text-align: right;">95,00 €</td></tr>
-            </table>
-            <div style="font-size:0.8rem; color:#94a3b8; margin-top:10px;">* Gratuit si un parent est inscrit.</div>
+    {# --- IMAGE DE TRANSITION 2 (PARALLAX) --- #}
+    <div class="parallax-divider" style="background-image: url('{{ asset('images/ecole.jpg') }}'); height: 300px;">
+        <div class="parallax-overlay"></div>
+        <div class="parallax-content">
+            <h2>Inscription en cours d'année ?</h2>
+            <p>Ne payez que ce que vous consommez.</p>
         </div>
     </div>
+
+    {# --- TABLEAU DÉGRESSIF --- #}
+    <section class="section-white">
+        <h2 class="section-title text-center">Tarifs Dégressifs</h2>
+        <div class="table-container">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Mois d'inscription</th>
+                        <th style="text-align: center;">Tarif Plein</th>
+                        <th style="text-align: center;">Tarif Réduit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Septembre à Décembre</td><td style="text-align: center; font-weight:700;">200,00 €</td><td style="text-align: center;">185,00 €</td></tr>
+                    <tr><td>Janvier</td><td style="text-align: center; font-weight:700;">185,00 €</td><td style="text-align: center;">175,00 €</td></tr>
+                    <tr><td>Février</td><td style="text-align: center; font-weight:700;">170,00 €</td><td style="text-align: center;">160,00 €</td></tr>
+                    <tr><td>Mars</td><td style="text-align: center; font-weight:700;">150,00 €</td><td style="text-align: center;">140,00 €</td></tr>
+                    <tr><td>Avril</td><td style="text-align: center; font-weight:700;">125,00 €</td><td style="text-align: center;">115,00 €</td></tr>
+                    <tr><td>Mai</td><td style="text-align: center; font-weight:700;">100,00 €</td><td style="text-align: center;">90,00 €</td></tr>
+                    <tr><td>Juin</td><td style="text-align: center; font-weight:700;">80,00 €</td><td style="text-align: center;">70,00 €</td></tr>
+                    <tr><td>Juillet</td><td style="text-align: center; font-weight:700;">60,00 €</td><td style="text-align: center;">50,00 €</td></tr>
+                    <tr><td>Août</td><td style="text-align: center; font-weight:700;">30,00 €</td><td style="text-align: center;">30,00 €</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+{# --- SECTION PAIEMENT PRO --- #}
+<section class="payment-pro-section">
+    <div class="container-narrow">
+        
+        <div class="payment-card-wrapper">
+            {# Colonne Gauche : Argumentaire #}
+            <div class="payment-info">
+                <div class="payment-badge">Facilités de paiement</div>
+                <h3 class="payment-title">Payez à votre rythme,<br>sans frais supplémentaires.</h3>
+                <p class="payment-desc">
+                    Nous croyons que le budget ne doit pas être un frein à la pratique sportive. 
+                    Étalez votre cotisation annuelle sur 3 mois, simplement par chèque.
+                </p>
+                
+                <ul class="payment-features">
+                    <li>
+                        <div class="icon-box"><i class="fa-solid fa-check"></i></div>
+                        <span><strong>0% d'intérêts</strong> : Vous payez le même prix au final.</span>
+                    </li>
+                    <li>
+                        <div class="icon-box"><i class="fa-solid fa-file-signature"></i></div>
+                        <span><strong>Simple</strong> : Dépôt des 3 chèques à l'inscription.</span>
+                    </li>
+                    <li>
+                        <div class="icon-box"><i class="fa-solid fa-shield-halved"></i></div>
+                        <span><strong>Sécurisé</strong> : Encaissement différé garanti.</span>
+                    </li>
+                </ul>
+            </div>
+
+            {# Colonne Droite : Visualisation Timeline #}
+            <div class="payment-visual">
+                <div class="visual-header">Exemple pour un abonnement Standard (200€)</div>
+                
+                <div class="timeline-steps">
+                    {# Étape 1 #}
+                    <div class="step active">
+                        <div class="step-marker">1</div>
+                        <div class="step-content">
+                            <span class="step-title">À l'inscription</span>
+                            <span class="step-price">~67 €</span>
+                            <span class="step-sub">1er encaissement</span>
+                        </div>
+                    </div>
+                    
+                    {# Connecteur #}
+                    <div class="step-connector"></div>
+
+                    {# Étape 2 #}
+                    <div class="step">
+                        <div class="step-marker">2</div>
+                        <div class="step-content">
+                            <span class="step-title">Mois +1</span>
+                            <span class="step-price">~67 €</span>
+                            <span class="step-sub">2ème encaissement</span>
+                        </div>
+                    </div>
+
+                    {# Connecteur #}
+                    <div class="step-connector"></div>
+
+                    {# Étape 3 #}
+                    <div class="step">
+                        <div class="step-marker">3</div>
+                        <div class="step-content">
+                            <span class="step-title">Mois +2</span>
+                            <span class="step-price">~66 €</span>
+                            <span class="step-sub">Dernier encaissement</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="visual-note">
+                    <i class="fa-solid fa-circle-info"></i> Valable pour tout abonnement annuel.
+                </div>
+            </div>
+        </div>
+
+    </div>
 </section>
 
-{# --- IMAGE DE TRANSITION 2 (PARALLAX) --- #}
-<div class="parallax-divider" style="background-image: url('{{ asset('images/ecole.jpg') }}'); height: 300px;">
-    <div class="parallax-overlay"></div>
-    <div class="parallax-content">
-        <h2>Inscription en cours d'année ?</h2>
-        <p>Ne payez que ce que vous consommez.</p>
-    </div>
-</div>
-
-{# --- TABLEAU DÉGRESSIF --- #}
-<section class="section-white">
-    <h2 class="section-title text-center">Tarifs Dégressifs</h2>
-    <div class="table-container">
-        <table class="custom-table">
-            <thead>
-                <tr>
-                    <th>Mois d'inscription</th>
-                    <th style="text-align: center;">Tarif Plein</th>
-                    <th style="text-align: center;">Tarif Réduit</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>Septembre à Décembre</td><td style="text-align: center; font-weight:700;">200,00 €</td><td style="text-align: center;">185,00 €</td></tr>
-                <tr><td>Janvier</td><td style="text-align: center; font-weight:700;">185,00 €</td><td style="text-align: center;">175,00 €</td></tr>
-                <tr><td>Mars</td><td style="text-align: center; font-weight:700;">150,00 €</td><td style="text-align: center;">140,00 €</td></tr>
-                <tr><td>Mai</td><td style="text-align: center; font-weight:700;">100,00 €</td><td style="text-align: center;">90,00 €</td></tr>
-                <tr><td>Août</td><td style="text-align: center; font-weight:700;">30,00 €</td><td style="text-align: center;">30,00 €</td></tr>
-            </tbody>
-        </table>
-    </div>
-</section>
-
-{# --- FOOTER PAIEMENT --- #}
-<footer class="payment-footer">
-    <h3>Moyens de paiement acceptés</h3>
-    <div class="payment-icons">
-        <i class="fa-solid fa-money-bill-1-wave"></i>
-        <i class="fa-solid fa-money-check"></i>
-        <i class="fa-regular fa-credit-card"></i>
-    </div>
-    <div style="background: rgba(255,255,255,0.1); display: inline-block; padding: 10px 20px; border-radius: 50px;">
-        <i class="fa-solid fa-info-circle"></i> Paiement en <strong>2 ou 3 fois</strong> possible.
-    </div>
-</footer>
+    {# Script pour gérer le switch Standard / Étudiant #}
+    <script src="{{ asset('js/accueil/section2/section2.js') }}" defer></script>
 {% endblock %}

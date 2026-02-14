@@ -12,7 +12,6 @@
 
 body {
     background-color: #fff;
-    font-family: 'Inter', sans-serif;
     color: var(--text-dark);
 }
 
@@ -57,7 +56,6 @@ body {
 .header-title-box h1 {
     font-size: 3.5rem;
     font-weight: 900;
-    text-transform: uppercase;
 }
 
 .subtitle {
@@ -69,179 +67,294 @@ body {
     letter-spacing: 1px;
 }
 
-.container-narrow {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
 .text-center { text-align: center; }
 
 /* ========================================================= */
 /* =================  1. CARTES DE TARIFS  ================= */
 /* ========================================================= */
+
+/* --- CONFIGURATION --- */
 .sleek-pricing-section {
     padding: 80px 0;
     background-color: #ffffff;
-}
-
-.pricing-header {
+    color: #1f2937; /* Gris très foncé, moins dur que le noir pur */
+  }
+  
+  .container-narrow {
+    max-width: 1100px; /* Largeur contenue pour éviter l'effet "étiré" */
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  /* --- HEADER SECTION --- */
+  .pricing-header {
     text-align: center;
     margin-bottom: 40px;
-}
-
-.section-title {
-    font-size: 2.2rem;
+  }
+  
+  .section-title {
+    font-size: 2.2rem; /* Taille raisonnable */
     font-weight: 800;
+    margin-bottom: 15px;
+    letter-spacing: -0.5px;
     color: #111;
-    margin-bottom: 10px;
-}
-
-/* --- Switch Selector --- */
-.pricing-selector-wrapper {
+  }
+  
+  .section-subtitle {
+    font-size: 1rem;
+    color: #6b7280; /* Gris moyen */
+    line-height: 1.5;
+  }
+  
+  /* --- SWITCH SELECTOR (Segmented Control) --- */
+  .pricing-selector-wrapper {
     display: flex;
     justify-content: center;
     margin-bottom: 50px;
-}
-
-.pricing-selector {
+  }
+  
+  .pricing-selector {
+    position: relative;
     display: flex;
-    background: #f3f4f6;
+    background: #f3f4f6; /* Fond gris clair */
     padding: 4px;
     border-radius: 50px;
-    position: relative;
-    width: 300px;
     border: 1px solid #e5e7eb;
-}
-
-.pricing-selector input { display: none; }
-
-.selector-item {
-    flex: 1;
-    text-align: center;
-    padding: 12px;
-    font-weight: 700;
+  }
+  
+  /* Cache les radios */
+  .pricing-selector input { display: none; }
+  
+  .selector-item {
+    position: relative;
     z-index: 2;
+    padding: 10px 25px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #6b7280;
     cursor: pointer;
     transition: color 0.3s;
-}
-
-.selector-glider {
-    position: absolute;
-    height: calc(100% - 8px);
-    width: calc(50% - 4px);
-    background: white;
-    border-radius: 40px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-#type-student:checked ~ .selector-glider { transform: translateX(100%); }
-.discount-tag {
-    background: var(--color-accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .discount-tag {
+    background: #F57706;
     color: white;
     font-size: 0.7rem;
     padding: 2px 6px;
     border-radius: 10px;
-}
-
-/* --- Grille et Cartes --- */
-.pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-}
-
-.sleek-card {
+  }
+  
+  /* Le fond blanc qui glisse */
+  .selector-glider {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    z-index: 1;
+    height: calc(100% - 8px);
+    width: calc(50% - 4px); /* Suppose 2 options */
     background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: var(--radius);
+    border-radius: 40px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+  
+  /* États actifs */
+  #type-standard:checked ~ .selector-glider { transform: translateX(0%); }
+  #type-student:checked ~ .selector-glider { transform: translateX(100%); }
+  #type-standard:checked + label { color: #111; }
+  #type-student:checked + label { color: #111; }
+  
+  
+  /* --- GRILLE --- */
+  .pricing-grid {
+    display: grid;
+    /* Colonnes auto-adaptatives mais pas trop larges */
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    align-items: stretch; /* Cartes de même hauteur */
+  }
+  
+  /* --- CARTE STANDARD --- */
+  .sleek-card {
+    background: white;
+    border: 1px solid #e5e7eb; /* Bordure fine grise */
+    border-radius: 16px;
     padding: 35px 25px;
     display: flex;
     flex-direction: column;
-    transition: 0.3s ease;
+    transition: border-color 0.3s, box-shadow 0.3s;
     position: relative;
-}
-
-.sleek-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  }
+  
+  .sleek-card:hover {
     border-color: #d1d5db;
-}
-
-.popular-card {
-    border: 2px solid var(--color-accent);
-    background: #fffcf9;
-}
-
-.popular-badge {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  }
+  
+  /* --- CARTE POPULAIRE (Mise en avant subtile) --- */
+  .popular-card {
+    border: 2px solid #e63946; /* Bordure rouge plus épaisse */
+    background: #fffafa; /* Fond très légèrement teinté rouge */
+  }
+  
+  .popular-badge {
     position: absolute;
     top: -12px;
     left: 50%;
     transform: translateX(-50%);
-    background: var(--color-accent);
+    background: #F57706;
     color: white;
     font-size: 0.75rem;
     font-weight: 700;
+    text-transform: uppercase;
     padding: 4px 15px;
     border-radius: 20px;
+  }
+  
+  /* HEADER CARTE */
+  .card-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .plan-title {
+    font-size: 1.1rem;
+    font-weight: 700;
     text-transform: uppercase;
-}
-
-.plan-price {
+    color: #1f2937;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+  }
+  
+  .plan-price {
     display: flex;
     justify-content: center;
-    align-items: baseline;
-    gap: 4px;
-    margin: 20px 0;
-}
-
-.price-value {
-    font-size: 3.5rem;
-    font-weight: 900;
+    align-items: flex-start;
+    line-height: 1;
     color: #111;
-    transition: opacity 0.2s;
-}
-
-.features-list {
+  }
+  
+  .currency {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+  
+  .price-value {
+    font-size: 3rem; /* Grand mais fin */
+    font-weight: 700; /* Pas trop gras */
+  }
+  
+  .period {
+    align-self: flex-end;
+    font-size: 1rem;
+    color: #6b7280;
+    margin-bottom: 6px;
+    margin-left: 4px;
+  }
+  
+  .monthly-detail {
+    font-size: 0.85rem;
+    color: #9ca3af;
+    margin-top: 10px;
+  }
+  
+  .invisible { visibility: hidden; }
+  
+  /* BODY CARTE */
+  .card-body {
+    flex-grow: 1; /* Remplit l'espace */
+  }
+  
+  .trial-info {
+    font-weight: 600;
+    color: #002952;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+  }
+  
+  .features-list {
     list-style: none;
     padding: 0;
-    margin: 20px 0 30px;
-    flex-grow: 1;
-}
-
-.features-list li {
+    margin: 0;
+  }
+  
+  .features-list li {
     display: flex;
+    align-items: flex-start;
     gap: 10px;
     margin-bottom: 12px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: #4b5563;
-}
-
-.icon-check { color: #10b981; margin-top: 4px; }
-
-.btn-select {
+    line-height: 1.4;
+  }
+  
+  .icon-check {
+    color: #F57706; /* Coche rouge pour tout le monde */
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+  
+  /* FOOTER & BOUTONS */
+  .card-footer {
+    margin-top: 30px;
+  }
+  
+  .btn-select {
     display: block;
+    width: 100%;
     text-align: center;
-    padding: 14px;
-    border-radius: 10px;
+    padding: 12px 0;
+    border-radius: 8px; /* Coins moins ronds = plus moderne */
     font-weight: 700;
     text-decoration: none;
-    transition: 0.2s;
-}
-
-.btn-dark { background: #1f2937; color: white; }
-.btn-red { background: var(--color-accent); color: white; }
-
-.pricing-note {
+    transition: all 0.2s;
+  }
+  
+  .btn-dark {
+    background: #1f2937;
+    color: white;
+  }
+  .btn-dark:hover { background: #374151; }
+  
+  .btn-red {
+    background: #F57706;
+    color: white;
+    box-shadow: 0 4px 15px rgba(230, 57, 70, 0.2);
+  }
+  .btn-red:hover { background: #d62839; transform: translateY(-2px); }
+  
+  /* FOOTER NOTE */
+  .pricing-note {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-top: 40px;
-    color: var(--color-muted);
+    margin-top: 50px;
+    color: #6b7280;
     font-size: 0.9rem;
-}
+    background: #f9fafb;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .pricing-note i { color: #002952; }
+  
+  /* MOBILE SPECIFIQUE PRICING */
+  @media (max-width: 768px) {
+    .pricing-grid {
+      grid-template-columns: 1fr; /* Une seule colonne */
+      max-width: 400px;
+      margin: 0 auto;
+    }
+  }
 
 /* ========================================================= */
 /* =================  2. TRANSITIONS PARALLAX  ============= */
@@ -251,6 +364,20 @@ body {
     height: 400px;
     background-attachment: fixed;
     background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+.parallax-divider-pricing-parallax{
+    position: relative;
+    height: 400px;
+    background-attachment: fixed;
+    background-position: center -40%;
     background-repeat: no-repeat;
     background-size: cover;
     display: flex;
@@ -282,15 +409,19 @@ body {
 /* =================  3. OFFRES SPÉCIFIQUES  =============== */
 /* ========================================================= */
 .section-light {
-    background: var(--bg-light);
-    padding: 80px 0;
+    background: var(--bg-gray); /* J'ai remis la variable var(--bg-gray) si définie, sinon #f9fafb */
+    padding: 80px 20px; /* AJOUT : Padding gauche/droite pour que le texte ne touche pas le bord */
 }
 
 .info-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 30px;
-    margin-top: 40px;
+    
+    /* --- CORRECTION LARGEUR --- */
+    max-width: 1100px;    /* Bloque la largeur comme la section 1 */
+    margin: 40px auto 0;  /* Centre le bloc au milieu de l'écran */
+    width: 100%;          /* Assure qu'il prend la place dispo jusqu'au max-width */
 }
 
 .info-card {
@@ -321,18 +452,21 @@ body {
 /* ========================================================= */
 .section-white {
     background: #fff;
-    padding: 80px 0;
+    padding: 80px 20px; /* AJOUT : Padding gauche/droite pour éviter de coller aux bords */
 }
 
 .table-container {
-    margin-top: 40px;
-    overflow-x: auto;
+    /* --- CORRECTION LARGEUR --- */
+    max-width: 1100px;    /* Bloque la largeur */
+    margin: 40px auto 0;  /* Centre le tableau */
+    
+    overflow-x: auto;     /* Garde le scroll horizontal sur mobile si besoin */
     border-radius: 15px;
     border: 1px solid #e2e8f0;
 }
 
 .custom-table th {
-    background: var(--color-primary);
+    background: var(--primary-color);
     color: white;
     padding: 20px;
     text-transform: uppercase;
@@ -343,34 +477,218 @@ body {
 .section-white .custom-table td {
     padding: 15px 20px;
 }
-
 /* ========================================================= */
 /* =================  5. FOOTER PAIEMENT  ================== */
 /* ========================================================= */
-.payment-footer {
-    background: #0f172a;
-    color: white;
-    padding: 60px 20px;
-    text-align: center;
+/* --- SECTION CONTAINER --- */
+.payment-pro-section {
+    padding: 4rem 0;
+    background-color: #f8fafc; /* Gris très léger pour contraster avec le blanc */
 }
 
-.payment-icons {
-    font-size: 2.5rem;
-    margin: 25px 0;
+/* --- LA CARTE PRINCIPALE --- */
+.payment-card-wrapper {
     display: flex;
+    flex-wrap: wrap;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08); /* Ombre douce et moderne */
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+/* --- COLONNE GAUCHE (INFO) --- */
+.payment-info {
+    flex: 1 1 400px; /* Minimum 400px de large */
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    gap: 40px;
+}
+
+.payment-badge {
+    display: inline-block;
+    background: #e0f2fe;
+    color: #0369a1; /* Bleu pro */
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1.5rem;
+    align-self: flex-start;
+}
+
+.payment-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.payment-desc {
+    color: #64748b;
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+/* Liste des avantages */
+.payment-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.payment-features li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: #334155;
+}
+
+.payment-features .icon-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: #10b981; /* Vert validation */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+/* --- COLONNE DROITE (VISUEL) --- */
+.payment-visual {
+    flex: 1 1 350px;
+    background: #f1f5f9; /* Fond légèrement contrasté */
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 1px solid #e2e8f0;
+}
+
+.visual-header {
+    text-align: center;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+}
+
+/* Timeline verticale */
+.timeline-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.step-marker {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #cbd5e1;
+    color: #64748b;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    transition: all 0.3s ease;
+}
+
+/* Style de l'étape active (la première) */
+.step.active .step-marker {
+    background: #0f172a; /* Noir/Bleu foncé */
+    border-color: #0f172a;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.3);
+}
+
+.step-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.step-title {
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 0.95rem;
+}
+
+.step-price {
+    font-weight: 800;
+    color: #0f172a;
+    font-size: 1.1rem;
+}
+
+.step-sub {
+    font-size: 0.75rem;
     color: #94a3b8;
 }
 
-.payment-icons i:hover { color: white; }
+/* Connecteur (Ligne verticale) */
+.step-connector {
+    width: 2px;
+    height: 30px;
+    background: #cbd5e1;
+    margin-left: 19px; /* Centré sous le marker de 40px */
+    margin-top: -5px;
+    margin-bottom: -5px;
+    z-index: 1;
+}
 
-/* --- Responsive --- */
+.visual-note {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #64748b;
+    background: rgba(255,255,255,0.5);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .payment-info {
+        padding: 2rem;
+    }
+    .payment-visual {
+        padding: 2rem;
+        border-left: none;
+        border-top: 1px solid #e2e8f0;
+    }
+    .payment-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* --- Responsive Global --- */
 @media (max-width: 768px) {
     .parallax-divider {
         background-attachment: scroll; /* Meilleure perf sur mobile */
         height: 300px;
     }
+    .parallax-divider-pricing-parallax{
+        background-attachment: scroll;
+        height: 300px;
+    }
     .parallax-content h2 { font-size: 2rem; }
+    /* Note : .section-title gère sa propre taille dans la nouvelle section, 
+       mais ceci reste utile pour les autres sections */
     .section-title { font-size: 1.8rem; }
 }
