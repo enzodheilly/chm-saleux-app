@@ -113,13 +113,16 @@
             <i class="fa-solid fa-check"></i> Résolu par {{ message.resolvedBy }}
         </span>
     {% else %}
-        <form action="{{ path('admin_contact_reply', {id: message.id}) }}" method="POST" style="display: inline-flex; gap: 5px;">
-            <input type="text" name="reponse" placeholder="Votre réponse..." required 
-                   style="background: #111; border: 1px solid #333; color: white; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem;">
-            <button type="submit" class="action-link" style="background: var(--accent); color: white; border: none; cursor: pointer;">
-                Valider
-            </button>
-        </form>
+<form action="{{ path('admin_contact_reply', {id: message.id}) }}" method="POST" style="display: inline-flex; gap: 5px;">
+    <input type="hidden" name="_token" value="{{ csrf_token('reply' ~ message.id) }}">
+<textarea name="reponse" placeholder="Votre réponse..." required
+          style="background:#111;border:1px solid #333;color:white;border-radius:4px;padding:4px 8px;font-size:0.8rem;min-width:240px;min-height:48px;"></textarea>
+
+    <button type="submit" class="action-link" style="background: var(--accent); color: white; border: none; cursor: pointer;">
+        Valider
+    </button>
+</form>
+
     {% endif %}
 </td>
                         </tr>

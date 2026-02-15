@@ -34,12 +34,6 @@ services:
     # ============================================================
     # 🔐 AUTHENTICATOR & LISTENERS
     # ============================================================
-    App\Authenticator\LoginFormAuthenticator:
-        arguments:
-            $router: "@router"
-            $passwordHasher: "@security.user_password_hasher"
-            $userRepository: '@App\Repository\UserRepository'
-            $entityManager: "@doctrine.orm.entity_manager"
 
     App\EventListener\LoginAttemptListener:
         tags:

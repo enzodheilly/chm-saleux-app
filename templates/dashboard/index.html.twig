@@ -6,37 +6,443 @@
     <title>Espace Membre - CHM SALEUX</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+
     <link rel="stylesheet" href="{{ asset('css/assistant/elios.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="css/dashboard/test-v2.css">
 
     <style>
-        html, body { margin: 0 !important; width: 100vw; height: 100vh; overflow: hidden; font-family: 'Inter', sans-serif; }
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #64748b;
 
-        @keyframes elios-pulse {
-            0% { transform: scale(0.95); opacity: 0.4; }
-            50% { transform: scale(1.15); opacity: 0.1; }
-            100% { transform: scale(0.95); opacity: 0.4; }
+            --bg-body: #f3f4f6;
+            --bg-card: #ffffff;
+
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+
+            --border: #e2e8f0;
+
+            --radius: 0px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+            --sidebar-width: 260px;
+
+            /* surfaces / tints */
+            --surface-2: #f8fafc;
+            --surface-3: #f1f5f9;
+            --primary-soft: rgba(37, 99, 235, 0.12);
+            --primary-soft-border: rgba(37, 99, 235, 0.25);
         }
-        .btn-ai-assistant:hover { transform: scale(1.1) translateY(-5px) !important; }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* -------------------------
+           THEME (Light/Dark)
+        ------------------------- */
+        body.theme-dark {
+            --bg-body: #0a0a0a;
+            --bg-card: #111111;
+
+            --text-main: #f5f5f5;
+            --text-muted: #a3a3a3;
+
+            --border: #262626;
+            --shadow: 0 10px 30px rgba(0,0,0,0.65);
+
+            --primary: #e5e5e5;
+            --primary-dark: #cfcfcf;
+
+            --surface-2: #141414;
+            --surface-3: #181818;
+
+            --primary-soft: rgba(255,255,255,0.08);
+            --primary-soft-border: rgba(255,255,255,0.12);
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            text-decoration: none;
+            color: var(--text-main);
+        }
+
+        .brand img { height: 40px; width: auto; }
+        .brand span { font-weight: 800; font-size: 1.1rem; letter-spacing: -0.5px; }
+
+        .nav-links { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover { background: var(--surface-2); color: var(--text-main); }
+        .nav-item.active { background: var(--surface-3); color: var(--text-main); }
+        .nav-item i { width: 20px; text-align: center; }
+
+        .user-mini {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .user-avatar-small {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--text-main); color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.9rem;
+        }
+        .user-avatar-small-img {
+            width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .topbar {
+            height: 80px;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-body);
+        }
+
+        .page-title { font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin: 0; }
+        .topbar-actions { display: flex; align-items: center; gap: 15px; }
+
+        .icon-btn {
+            width: 40px; height: 40px; border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.2s;
+        }
+        .icon-btn:hover { border-color: var(--text-main); }
+
+        .content-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 40px 40px 40px;
+        }
+
+        /* --- DASHBOARD GRID & CARDS --- */
+        .section-view { display: none; animation: fadeIn 0.3s ease; }
+        .section-view.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-padding { padding: 24px; }
+
+        h3 { font-size: 1.1rem; font-weight: 700; margin: 0 0 16px 0; color: var(--text-main); }
+        p { color: var(--text-muted); line-height: 1.6; margin-bottom: 0; }
+
+        /* --- PROFILE HEADER --- */
+        .profile-header {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .profile-pic-big {
+            width: 100px; height: 100px; border-radius: 50%;
+            object-fit: cover; border: 4px solid rgba(255,255,255,0.08);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .badge-status {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 12px; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge-success { background: #dcfce7; color: #166534; }
+        .badge-danger { background: #fee2e2; color: #991b1b; }
+
+        body.theme-dark .badge-success { background: rgba(34,197,94,0.18); color: #86efac; }
+        body.theme-dark .badge-danger  { background: rgba(239,68,68,0.18); color: #fca5a5; }
+
+        /* --- BUTTONS --- */
+        .btn-primary {
+            background: var(--text-main);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            border: none; cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+
+        body.theme-dark .btn-primary{
+            background: #f5f5f5;
+            color: #0a0a0a;
+        }
+        body.theme-dark .btn-primary:hover{
+            background: #e5e5e5;
+        }
+
+        .btn-outline {
+            background: transparent; border: 2px solid var(--border);
+            color: var(--text-main); padding: 10px 20px;
+            border-radius: 10px; font-weight: 600; cursor: pointer;
+        }
+        .btn-outline:hover { border-color: var(--text-main); }
+
+        /* --- FLASH MESSAGES --- */
+        .flash-container {
+            position: fixed; top: 20px; right: 20px;
+            z-index: 9999; display: flex; flex-direction: column; gap: 10px;
+        }
+        .flash-message {
+            padding: 16px; border-radius: 12px; background: var(--bg-card);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--text-main);
+            display: flex; align-items: center; gap: 12px; min-width: 300px;
+            border: 1px solid var(--border);
+        }
+        .flash-success { border-left-color: #10b981; }
+        .flash-error { border-left-color: #ef4444; }
+
+        /* Mobile */
+        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
+        .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 5; }
+
+        @media (max-width: 900px) {
+            .sidebar { position: fixed; left: -100%; height: 100%; transition: 0.3s; box-shadow: 20px 0 20px rgba(0,0,0,0.1); }
+            .sidebar.active { left: 0; }
+            .menu-toggle { display: block; }
+            .mobile-overlay.active { display: block; }
+            .topbar { padding: 0 20px; }
+            .content-scroll { padding: 0 20px 20px 20px; }
+            .profile-header { flex-direction: column; text-align: center; }
+        }
+
+        /* -------------------------
+           SETTINGS DRAWER
+        ------------------------- */
+        .settings-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 9500;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.25s;
+        }
+
+        .settings-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 420px;
+            max-width: 92vw;
+            background: var(--bg-card);
+            border-left: 1px solid var(--border);
+            z-index: 9600;
+            transform: translateX(110%);
+            transition: 0.25s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .settings-drawer.open { transform: translateX(0); }
+        .settings-overlay.open { opacity: 1; pointer-events: auto; }
+
+        .settings-drawer-header {
+            height: 80px;
+            padding: 0 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .settings-drawer-content {
+            padding: 18px;
+            overflow: auto;
+        }
+
+        .settings-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.04);
+        }
+
+        .settings-separator {
+            height: 1px;
+            background: var(--border);
+            margin: 18px 0;
+        }
+
+        /* Switch (toggle) */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 30px;
+            flex-shrink: 0;
+        }
+        .switch input { display: none; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: rgba(255,255,255,0.12);
+            transition: .2s;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--bg-card);
+            transition: .2s;
+            border-radius: 999px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        .switch input:checked + .slider {
+            background: rgba(255,255,255,0.22);
+        }
+        .switch input:checked + .slider:before {
+            transform: translate(22px, -50%);
+        }
+
+        /* =========================
+           HOME UI - KPIs Only
+        ========================= */
+        .kpi-row{
+            display:grid;
+            grid-template-columns: repeat(12,1fr);
+            gap:14px;
+            margin-top: 18px;
+        }
+        .kpi{
+            grid-column: span 3;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            border-radius: 16px;
+            padding: 16px;
+            display:flex;
+            gap:14px;
+            align-items:center;
+        }
+        @media (max-width: 1100px){ .kpi{ grid-column: span 6; } }
+        @media (max-width: 700px){ .kpi{ grid-column: span 12; } }
+
+        .kpi-ic{
+            width:44px;height:44px;border-radius:14px;
+            background: var(--surface-3);
+            border:1px solid var(--border);
+            display:flex;align-items:center;justify-content:center;
+            flex-shrink:0;
+        }
+        .kpi-t{ flex:1; min-width:0; }
+        .kpi-l{ font-size:.72rem; font-weight:900; text-transform:uppercase; color: var(--text-muted); }
+        .kpi-v{ font-size:1.2rem; font-weight:900; color: var(--text-main); margin-top:2px; }
+        .kpi-s{ font-size:.85rem; color: var(--text-muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     </style>
 </head>
+
 <body>
+
 <div id="mobileOverlay" class="mobile-overlay" onclick="toggleMobileMenu()"></div>
+
 <div class="flash-container">
     {% for label, messages in app.flashes %}
         {% for message in messages %}
             <div class="flash-message flash-{{ label }}">
-                <i class="fa-solid 
+                <i class="fa-solid
                     {% if label == 'success' %}fa-circle-check
                     {% elseif label == 'error' or label == 'danger' %}fa-circle-xmark
-                    {% elseif label == 'warning' %}fa-triangle-exclamation
-                    {% else %}fa-circle-info{% endif %}">
+                    {% else %}fa-circle-info{% endif %}"
+                   style="color:var(--text-main);">
                 </i>
-                <span>{{ message }}</span>
-                <div class="flash-close" onclick="this.parentElement.remove()">
+                <span style="font-size:0.9rem; font-weight:500;">{{ message }}</span>
+                <div style="margin-left:auto; cursor:pointer;" onclick="this.parentElement.remove()">
                     <i class="fa-solid fa-xmark"></i>
                 </div>
             </div>
@@ -44,884 +450,438 @@
     {% endfor %}
 </div>
 
-    <div class="dashboard-container" style="display:flex; width:100%; height:100%;">
-        
-        <nav class="sidebar">
-            <div class="brand">
-                <a href="{{ path('home') }}" class="brand-link">
-                    <img src="{{ asset('images/favicon/icon.png') }}" alt="Logo CHM" class="brand-logo-img">
-                    <span>CHM SALEUX</span>
-                </a>
-            </div>
+<nav class="sidebar">
+    <a href="{{ path('home') }}" class="brand">
+        <img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo">
+        <span>CHM SALEUX</span>
+    </a>
 
-            <div class="nav-links">
-                <div class="nav-item active" data-target="home">
-                    <i class="fa-solid fa-layer-group" style="width:20px;"></i> Vue d'ensemble
-                </div>
-                <div class="nav-item" data-target="licence">
-                    <i class="fa-solid fa-id-card" style="width:20px;"></i> Ma Licence
-                </div>
-                <div class="nav-item" data-target="planning">
-                    <i class="fa-solid fa-calendar" style="width:20px;"></i> Planning
-                </div>
-                <div class="nav-item" data-target="events">
-                    <i class="fa-solid fa-trophy" style="width:20px;"></i> Événements
-                </div>
-                <div class="nav-item" data-target="boutique">
-                    <i class="fa-solid fa-bag-shopping" style="width:20px;"></i> Boutique
-                </div>
-                <div class="nav-item" data-target="messages">
-                    <i class="fa-solid fa-envelope" style="width:20px;"></i> Messages
-                </div>
-                <div class="nav-item" data-target="settings">
-                    <i class="fa-solid fa-gear" style="width:20px;"></i> Paramètres
-                </div>
-                
-                <div style="margin-top: auto; padding-top: 20px;">
-                    <a href="{{ path('home') }}" class="nav-link-back">
-                        <i class="fa-solid fa-arrow-left" style="margin-right: 10px;"></i> Retour au site
-                    </a>
-                </div>
-            </div>
-
-            <div class="user-mini">
-                {% if app.user.profileImageDataUrl %}
-                    <img src="{{ app.user.profileImageDataUrl }}" class="user-avatar-small-img">
-                {% else %}
-                    <div class="user-avatar-small">
-                        {{ app.user.firstname|first }}{{ app.user.lastname|first }}
-                    </div>
-                {% endif %}
-                
-                <div style="display:flex; flex-direction:column;">
-                    <span style="font-size:0.85rem; font-weight:600; color:white;">{{ app.user.firstname }}</span>
-                    <span style="font-size:0.75rem; color:var(--text-muted);">Adhérent</span>
-                </div>
-            </div>
-        </nav>
-
-        <main class="main-content">
-            
-            <header class="topbar">
-            <div class="menu-toggle" onclick="toggleMobileMenu()"><i class="fa-solid fa-bars"></i></div>
-                <h2 class="page-title">Tableau de bord adhérent</h2>
-
-                <div class="topbar-right">
-                    <button class="icon-btn" id="theme-toggle-btn" title="Thème">
-                        <i class="fa-regular fa-moon"></i>
-                    </button>
-                    
-                    <button class="icon-btn" style="position:relative;">
-                        <i class="fa-regular fa-bell"></i>
-                        {% if notifications|default([])|length > 0 %}
-                            <span class="badge" style="position:absolute; top:8px; right:8px; width:6px; height:6px; background:red; border-radius:50%;"></span>
-                        {% endif %}
-                    </button>
-
-                    <a href="{{ path('contact') }}" class="btn-contact-top">
-                        Contact
-                    </a>
-                </div>
-            </header>
-
-            <div class="content-scroll">
-                
-                <div class="profile-header">
-                    <div class="banner">
-                        <h1 class="banner-title">CHM SALEUX</h1>
-                        <div class="banner-subtitle">Club Haltérophilie & Musculation</div>
-                    </div>
-                    
-                    <div class="profile-info-container">
-                        <div class="avatar-wrapper">
-                            <img src="{% if app.user.profileImageDataUrl %}{{ app.user.profileImageDataUrl }}{% else %}https://ui-avatars.com/api/?name={{ app.user.firstname }}+{{ app.user.lastname }}&background=0f172a&color=fff&size=256{% endif %}" 
-                                 class="profile-pic-big" 
-                                 id="avatar-preview" 
-                                 alt="Avatar">
-                            
-                            <label for="avatar-upload" class="upload-btn">
-                                <i class="fa-solid fa-camera"></i>
-                            </label>
-                            <input type="file" id="avatar-upload" accept="image/png, image/jpeg" style="display: none;">
-                        </div>
-
-                        <div class="header-text">
-                            <h1>Bonjour {{ app.user.firstname }} !</h1>
-                            <p>
-                                Membre Adhérent
-                                {% if app.user.licenceStatus is defined and app.user.licenceStatus == 'Active' %}
-                                    <span class="licence-tag">Licence Active</span>
-                                {% endif %}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <section id="tab-home" class="section-view active">
-                <h3 style="color:white; margin-bottom:20px;">Vue d'ensemble</h3>
-                    <div class="dashboard-grid">
-                        
-<div class="card" style="padding:0; overflow:hidden; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: none; position: relative; min-height: 240px; display: flex; flex-direction: column;">
-    
-    <div style="position: absolute; top: 10px; right: 10px; pointer-events: none; opacity: 0.1;">
-        <img src="{{ asset('images/favicon/icon.png') }}" alt="Watermark" style="height: 120px;">
-    </div>
-
-    <div style="padding: 25px; position: relative; z-index: 2; flex: 1;">
-        <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:20px;">
-            <div>
-                <h3 style="color:white; margin:0; font-size: 1.1rem;">Ma Licence</h3>
-                <p style="color:var(--primary); font-size:0.7rem; font-weight:800; text-transform:uppercase; letter-spacing: 1px; margin: 4px 0 0 0;">CHM SALEUX</p>
-            </div>
-            <div style="background: rgba(255,255,255,0.1); width: 35px; height: 35px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                <i class="fa-solid fa-id-card" style="color:white; font-size:1rem;"></i>
-            </div>
+    <div class="nav-links">
+        <div class="nav-item active" data-target="home">
+            <i class="fa-solid fa-grid-2"></i> Vue d'ensemble
         </div>
-        
-        <div style="display:flex; flex-direction:column; gap:12px;">
-            <div>
-                <div style="font-size:0.65rem; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing: 1px; margin-bottom: 2px;">Titulaire</div>
-                <div style="color:white; font-weight:700; font-size: 1rem; text-transform: uppercase;">
-                    {{ app.user.firstname }} {{ app.user.lastname }}
-                </div>
-            </div>
+        <div class="nav-item" data-target="licence">
+            <i class="fa-solid fa-id-card"></i> Ma Licence
+        </div>
 
-            {% if app.user.licenceNumber is defined and app.user.licenceNumber %}
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px;">
-                    <div>
-                        <div style="font-size:0.65rem; color:rgba(255,255,255,0.5); text-transform:uppercase;">Numéro</div>
-                        <div style="color:white; font-family:monospace; font-size:0.9rem; font-weight: 600;">
-                            {{ app.user.licenceNumber }}
-                        </div>
-                    </div>
-                    <div>
-                        <div style="font-size:0.65rem; color:rgba(255,255,255,0.5); text-transform:uppercase;">Type</div>
-                        <div style="color:white; font-weight:600; font-size:0.9rem;">
-                            {{ (app.user.licenceType is defined) ? app.user.licenceType : '---' }}
-                        </div>
-                    </div>
-                </div>
-            {% else %}
-                <div style="margin-top: 10px;">
-              <button onclick="openLicenceChoice()" style="width:100%; background:white; color:#0f172a; border:none; padding:10px; border-radius:8px; font-weight:800; font-size:0.75rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition: 0.3s;">
- AJOUTER MA LICENCE
-</button>
-                    <p style="color:rgba(255,255,255,0.4); font-size:0.65rem; margin-top:8px; text-align:center;">
-                        Récupérez vos accès via notre chatbot
-                    </p>
-                </div>
-            {% endif %}
+        <div style="margin-top: auto; padding-top: 10px;">
+            <a href="{{ path('home') }}"
+               style="text-decoration:none; color:var(--text-muted); font-size:0.85rem; display:flex; align-items:center; gap:10px;">
+                <i class="fa-solid fa-arrow-left"></i> Retour au site
+            </a>
         </div>
     </div>
 
-    <div style="background: rgba(0,0,0,0.2); padding: 12px 25px; display: flex; justify-content: space-between; align-items: center;">
-        {% if app.user.licenceStatus is defined and app.user.licenceStatus|upper == 'ACTIVE' %}
-            <span style="color:#34d399; font-size:0.75rem; font-weight:800; display:flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-circle-check"></i> VALIDE
-            </span>
+    <div class="user-mini">
+        {% if app.user.profileImageDataUrl %}
+            <img src="{{ app.user.profileImageDataUrl }}" class="user-avatar-small-img" alt="Avatar mini">
         {% else %}
-            <span style="color:#f87171; font-size:0.75rem; font-weight:800; display:flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-circle-exclamation"></i> INACTIVE
-            </span>
+            <div class="user-avatar-small">
+                {{ app.user.firstname|first }}{{ app.user.lastname|first }}
+            </div>
         {% endif %}
-        <span style="color:rgba(255,255,255,0.4); font-size:0.7rem; font-weight:600;">2025 / 2026</span>
+
+        <div style="display:flex; flex-direction:column;">
+            <span style="font-size:0.9rem; font-weight:700; color:var(--text-main);">{{ app.user.firstname }}</span>
+            <span style="font-size:0.75rem; color:var(--text-muted);">Adhérent</span>
+        </div>
     </div>
-</div>
+</nav>
 
-<div class="card" style="padding:0; overflow:hidden;">
-    {% if events|default([])|length > 0 %}
-        {% set nextEvent = events[0] %}
-        
-        <div style="height:140px; width:100%; position:relative; background:#111;">
-            
-            {# CORRECTION ICI : J'ai remis 'uploads/' comme dans ton ancien dashboard #}
-            <img src="{{ nextEvent.image ? asset('uploads/' ~ nextEvent.image) : asset('images/bg2.jpg') }}" 
-                 style="width:100%; height:100%; object-fit:cover; opacity:0.8;" 
-                 alt="{{ nextEvent.title }}">
-            
-            {% if nextEvent.startTime %}
-                <div style="position:absolute; top:12px; right:12px; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); color:white; padding:4px 8px; border-radius:6px; font-size:0.85rem; font-weight:600; border:1px solid rgba(255,255,255,0.1);">
-                    <i class="fa-regular fa-clock" style="margin-right:4px;"></i> {{ nextEvent.startTime|date('H:i') }}
-                </div>
-            {% endif %}
+<main class="main-content">
+    <header class="topbar">
+        <div style="display:flex; align-items:center; gap:20px;">
+            <div class="menu-toggle" onclick="toggleMobileMenu()"><i class="fa-solid fa-bars"></i></div>
+            <h2 class="page-title">Tableau de bord adhérent</h2>
         </div>
 
-        <div style="padding:20px;">
-            <h3 style="margin-bottom:8px;">Prochain Événement</h3>
-            
-            <div style="font-size:1.1rem; font-weight:700; color:white; margin-bottom:10px; line-height:1.4;">
-                {{ nextEvent.title }}
+        <div class="topbar-actions">
+            <button class="icon-btn" style="position:relative;">
+                <i class="fa-regular fa-bell"></i>
+                {% if notifications|default([])|length > 0 %}
+                    <span style="position:absolute; top:8px; right:10px; width:8px; height:8px; background:#ef4444; border-radius:50%; border:1px solid white;"></span>
+                {% endif %}
+            </button>
+
+            <a href="{{ path('contact') }}" class="btn-primary" style="padding: 8px 20px; font-size:0.9rem;">
+                Contact
+            </a>
+
+            <button class="icon-btn" id="openSettingsDrawer" title="Paramètres">
+                <i class="fa-solid fa-gear"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="content-scroll">
+
+        <div class="profile-header">
+            <div style="position:relative;">
+                <img src="{% if app.user.profileImageDataUrl %}{{ app.user.profileImageDataUrl }}{% else %}https://ui-avatars.com/api/?name={{ app.user.firstname }}+{{ app.user.lastname }}&background=0f172a&color=fff&size=256{% endif %}"
+                     class="profile-pic-big"
+                     id="avatar-preview"
+                     alt="Avatar">
+
+                <label for="avatar-upload"
+                       style="position:absolute; bottom:0; right:0; background:var(--text-main); color:white; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; border:2px solid var(--bg-card);">
+                    <i class="fa-solid fa-camera" style="font-size:0.8rem;"></i>
+                </label>
+                <input type="file" id="avatar-upload" accept="image/png, image/jpeg" style="display:none;">
             </div>
-            
-            <div class="card-sub" style="display:flex; align-items:center;">
-                <i class="fa-regular fa-calendar" style="margin-right:6px; color:var(--primary);"></i> 
-                {{ nextEvent.date|date('d/m/Y') }}
-            </div>
-        </div>
-    {% else %}
-        <div style="padding:25px; display:flex; flex-direction:column; justify-content:center; height:100%;">
-            <h3>Prochain Événement</h3>
-            <p style="color:var(--text-muted); margin-top:10px;">Aucun événement prévu pour le moment.</p>
-        </div>
-    {% endif %}
-</div>
 
-                        <div class="card">
-                            <h3>Activité Récente</h3>
-                            <div style="display:flex; flex-direction:column; gap:15px; margin-top:10px;">
-                                {% for notif in notifications|default([])|slice(0, 3) %}
-                                    <div style="font-size:0.9rem; color:#d4d4d8; display:flex; align-items:start;">
-                                        <div style="min-width:6px; height:6px; background:var(--primary); border-radius:50%; margin-right:12px; margin-top:7px;"></div>
-                                        <div style="line-height:1.4;">
-                                            {{ notif.message|default('Nouvelle notification reçue') }}
-                                            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">Il y a 2h</div>
-                                        </div>
-                                    </div>
-                                {% else %}
-                                    <p style="color:var(--text-muted); font-size:0.85rem;">Rien à signaler pour le moment.</p>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-<section id="tab-licence" class="section-view">
-<h3 style="color:white; margin-bottom:20px;">Détails de la licence</h3>
-    <div style="display: flex; flex-direction: column; gap: 25px;">
-        
-        <div class="card" style="flex-direction: row; flex-wrap: wrap; padding: 0; overflow: hidden; min-height: 220px; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: none;">
-            
-            <div style="flex: 1; min-width: 300px; padding: 30px; position: relative; border-right: 1px solid rgba(255,255,255,0.1);">
-                <div style="position: absolute; top: 20px; right: 50px; pointer-events: none; z-index: 1;">
-                    <img src="{{ asset('images/favicon/icon.png') }}" alt="Watermark" style="height: 150px; opacity: 0.08;">
-                </div>
-                
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 30px; position: relative; z-index: 2;">
-                    <div>
-                        <h3 style="color:white; margin:0; font-size: 1.4rem;">Licence Officielle</h3>
-                        <p style="color:var(--primary); font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing: 1.5px;">CHM SALEUX</p>
-                    </div>
-                </div>
-
-                <div style="position: relative; z-index: 2;">
-                    <div style="font-size:0.7rem; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing: 1px;">Titulaire</div>
-                    <div style="font-size:1.6rem; font-weight:900; color:white; text-transform:uppercase; margin-bottom: 5px;">
-                        {{ app.user.firstname }} {{ app.user.lastname }}
-                    </div>
-                    
-                    {% if app.user.licenceStatus is defined and app.user.licenceStatus|upper == 'ACTIVE' %}
-                        <div style="display:inline-block; background:rgba(16, 185, 129, 0.2); color:#34d399; padding:4px 12px; border-radius:50px; font-size:0.7rem; font-weight:800; border: 1px solid rgba(52, 211, 153, 0.3);">
-                            <i class="fa-solid fa-check-circle" style="margin-right:5px;"></i> ACTIVE
-                        </div>
+            <div style="flex:1;">
+                <h1 style="font-size:1.8rem; font-weight:800; margin:0 0 5px 0; color:var(--text-main);">
+                    Bonjour, {{ app.user.firstname }}
+                </h1>
+                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                    <span style="color:var(--text-muted);">Membre Adhérent</span>
+                    {% if app.user.licenceStatus is defined and app.user.licenceStatus == 'Active' %}
+                        <span class="badge-status badge-success"><i class="fa-solid fa-check"></i> Licence Active</span>
                     {% else %}
-                        <div style="display:inline-block; background:rgba(239, 68, 68, 0.2); color:#f87171; padding:4px 12px; border-radius:50px; font-size:0.7rem; font-weight:800; border: 1px solid rgba(239, 68, 68, 0.3);">
-                            <i class="fa-solid fa-circle-exclamation" style="margin-right:5px;"></i> AUCUNE LICENCE
-                        </div>
+                        <span class="badge-status badge-danger"><i class="fa-solid fa-triangle-exclamation"></i> Inactif</span>
                     {% endif %}
                 </div>
             </div>
-
-            <div style="flex: 1.2; min-width: 300px; padding: 30px; display: flex; align-items: center; justify-content: center; position: relative; z-index: 2;">
-                
-                {% if app.user.licenceNumber is defined and app.user.licenceNumber %}
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%;">
-                        <div>
-                            <div style="font-size:0.7rem; color:rgba(255,255,255,0.5); text-transform:uppercase; margin-bottom: 5px;">Numéro de Licence</div>
-                            <div style="color:white; font-family:'Courier New', monospace; font-weight:700; font-size: 1.2rem; letter-spacing: 1px;">
-                                {{ app.user.licenceNumber }}
-                            </div>
-                        </div>
-                        <div>
-                            <div style="font-size:0.7rem; color:rgba(255,255,255,0.5); text-transform:uppercase; margin-bottom: 5px;">Type de pratique</div>
-                            <div style="color:white; font-weight:700; font-size: 1.2rem;">
-                                {{ (app.user.licenceType is defined) ? app.user.licenceType : 'Compétition' }}
-                            </div>
-                        </div>
-                        <div>
-                            <div style="font-size:0.7rem; color:rgba(255,255,255,0.5); text-transform:uppercase; margin-bottom: 5px;">Saison Actuelle</div>
-                            <div style="color:white; font-weight:600;">2025 / 2026</div>
-                        </div>
-                        <div>
-                            <div style="font-size:0.7rem; color:rgba(255,255,255,0.5); text-transform:uppercase; margin-bottom: 5px;">Cotisation</div>
-                            <div style="color:white; font-weight:600;">
-                                {% if app.user.licencePrice is defined %}
-                                    {{ app.user.licencePrice }} € (Réglé)
-                                {% else %}
-                                    180 € (Réglé)
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                {% else %}
-                    <div style="text-align: center;">
-                        <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 20px;">
-                            Votre numéro de licence n'est pas encore renseigné.
-                        </p>
-                   <button onclick="openLicenceChoice()" style="background: white; color: #0f172a; border: none; padding: 12px 25px; border-radius: 10px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s;">
-AJOUTER MA LICENCE
-</button>
-                    </div>
-                {% endif %}
-            </div>
         </div>
 
-        <div class="card" style="flex-direction: row; flex-wrap: wrap; padding: 0; overflow: hidden;">
-            <div style="flex: 1.5; min-width: 300px; padding: 30px; border-right: var(--border);">
-                <h3 style="margin-bottom: 20px; color: white;">Accès inclus dans votre licence</h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <section id="tab-home" class="section-view active">
+
+            {% set admin = adminInfo|default({}) %}
+
+            <div class="kpi-row">
+                <div class="kpi">
+                    <div class="kpi-ic"><i class="fa-solid fa-id-card"></i></div>
+                    <div class="kpi-t">
+                        <div class="kpi-l">Licence</div>
+                        <div class="kpi-v">{{ app.user.licenceNumber|default('Non renseignée') }}</div>
+                        <div class="kpi-s">Saison 2025 / 2026</div>
+                    </div>
+                </div>
+
+                <div class="kpi">
+                    <div class="kpi-ic"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="kpi-t">
+                        <div class="kpi-l">Statut</div>
+                        <div class="kpi-v">{{ app.user.licenceStatus|default('À vérifier') }}</div>
+                        <div class="kpi-s">Validation club / fédé</div>
+                    </div>
+                </div>
+
+                <div class="kpi">
+                    <div class="kpi-ic"><i class="fa-solid fa-receipt"></i></div>
+                    <div class="kpi-t">
+                        <div class="kpi-l">Cotisation</div>
+                        <div class="kpi-v">{{ admin.feesStatus|default('—') }}</div>
+                        <div class="kpi-s">Échéance : {{ admin.feesDue|default('—') }}</div>
+                    </div>
+                </div>
+
+                <div class="kpi">
+                    <div class="kpi-ic"><i class="fa-solid fa-file-medical"></i></div>
+                    <div class="kpi-t">
+                        <div class="kpi-l">Certificat</div>
+                        <div class="kpi-v">{{ admin.medicalStatus|default('—') }}</div>
+                        <div class="kpi-s">Expire : {{ admin.medicalExpiry|default('—') }}</div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="tab-licence" class="section-view">
+            <div style="margin-bottom:20px;">
+                <h3 style="font-size:1.4rem;">Votre Licence Officielle</h3>
+            </div>
+
+            <div class="card" style="margin-bottom: 30px;">
+                <div style="display:flex; flex-wrap:wrap;">
+                    <div style="flex:1; min-width:300px; padding:30px; border-right:1px solid var(--border);">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:30px;">
+                            <img src="{{ asset('images/favicon/icon2.png') }}" style="height:50px; opacity:0.8;" alt="Logo">
+                            <span style="font-size:1.5rem; font-weight:800; color:rgba(226,232,240,0.7); letter-spacing:-2px;">FFHM</span>
+                        </div>
+
+                        <div style="margin-bottom:20px;">
+                            <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Nom de l'adhérent</div>
+                            <div style="font-size:1.6rem; font-weight:800; text-transform:uppercase;">{{ app.user.firstname }} {{ app.user.lastname }}</div>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                            <div>
+                                <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Club</div>
+                                <div style="font-weight:600;">CHM SALEUX</div>
+                            </div>
+                            <div>
+                                <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Saison</div>
+                                <div style="font-weight:600;">2025 / 2026</div>
+                            </div>
+                            <div>
+                                <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Type</div>
+                                <div style="font-weight:600;">{{ (app.user.licenceType is defined) ? app.user.licenceType : 'Loisir' }}</div>
+                            </div>
+                            <div>
+                                <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">N° Affiliation</div>
+                                <div style="font-weight:600; font-family:monospace;">{{ app.user.licenceNumber|default('---') }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:300px; background:var(--surface-2); padding:30px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; border-left:1px solid var(--border);">
+                        <div style="width:80px; height:80px; background:var(--bg-card); border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow); margin-bottom:15px; border:1px solid var(--border);">
+                            <i class="fa-solid fa-file-pdf" style="color:var(--text-main); font-size:2rem;"></i>
+                        </div>
+                        <h4 style="margin:0 0 10px 0; color:var(--text-main);">Justificatif</h4>
+                        <p style="font-size:0.85rem; margin-bottom:20px;">Besoin d'une facture pour votre CE ou mutuelle ?</p>
+                        <a href="#" class="btn-primary" style="width:100%;"><i class="fa-solid fa-download"></i> Télécharger</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-padding">
+                <h3 style="margin-bottom:20px;">Services Inclus</h3>
+                <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:15px;">
                     {% set benefits = [
-                        {'icon': 'fa-dumbbell', 'text': 'Espace Haltérophilie & Fonte'},
-                        {'icon': 'fa-heart-pulse', 'text': 'Espace Cardio-Training'},
-                        {'icon': 'fa-user-ninja', 'text': 'Coaching & Programmation'},
-                        {'icon': 'fa-shower', 'text': 'Vestiaires & Douches'},
-                        {'icon': 'fa-shield-halved', 'text': 'Assurance FFHM incluse'},
-                        {'icon': 'fa-tags', 'text': 'Tarif préférentiel Boutique'}
+                        {'icon': 'fa-dumbbell', 'text': 'Accès Plateau'},
+                        {'icon': 'fa-heart-pulse', 'text': 'Zone Cardio'},
+                        {'icon': 'fa-user-ninja', 'text': 'Suivi Coach'},
+                        {'icon': 'fa-shower', 'text': 'Vestiaires'},
+                        {'icon': 'fa-shield-halved', 'text': 'Assurance'},
+                        {'icon': 'fa-tags', 'text': 'Réductions'}
                     ] %}
                     {% for benefit in benefits %}
-                    <div style="display:flex; align-items:center; gap:12px; padding:12px; background: rgba(255,255,255,0.03); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
-                        <i class="fa-solid {{ benefit.icon }}" style="color:var(--primary); font-size: 1rem;"></i>
-                        <span style="font-size:0.85rem; color:#e4e4e7; font-weight: 500;">{{ benefit.text }}</span>
-                    </div>
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px; background:var(--surface-2); border-radius:8px; border:1px solid var(--border);">
+                            <i class="fa-solid {{ benefit.icon }}" style="color:var(--text-main);"></i>
+                            <span style="font-weight:600; font-size:0.9rem; color:var(--text-main);">{{ benefit.text }}</span>
+                        </div>
                     {% endfor %}
                 </div>
             </div>
-
-            <div style="flex: 1; min-width: 250px; padding: 30px; background: rgba(255,255,255,0.01); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-                <div style="width: 60px; height: 60px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
-                    <i class="fa-solid fa-file-pdf" style="color: var(--primary); font-size: 1.5rem;"></i>
-                </div>
-                <h4 style="color: white; margin-bottom: 8px;">Justificatif de paiement</h4>
-                <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 20px;">Téléchargez votre facture pour votre employeur ou mutuelle.</p>
-                
-                <a href="#" 
-                   class="btn-event-action"
-                   style="width: 100%; background: white; color: black; border: none; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; padding: 10px; border-radius: 8px;">
-                    <i class="fa-solid fa-download" style="margin-right: 8px;"></i>
-                    Facture .PDF
-                </a>
-            </div>
-        </div>
+        </section>
 
     </div>
-</section>
+</main>
 
-                <section id="tab-events" class="section-view">
-    
-    <div style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
-        <h3 style="color:white; font-size:1.2rem;">Événements à venir</h3>
-        <span style="background:var(--bg-card); padding:5px 12px; border-radius:20px; font-size:0.8rem; border:var(--border); color:var(--text-muted);">
-            {{ events|default([])|length }} événement(s)
-        </span>
+<div id="settingsOverlay" class="settings-overlay"></div>
+
+<aside id="settingsDrawer" class="settings-drawer" aria-hidden="true">
+    <div class="settings-drawer-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <i class="fa-solid fa-gear"></i>
+            <strong style="font-size:1rem;">Paramètres</strong>
+        </div>
+        <button class="icon-btn" id="closeSettingsDrawer" title="Fermer">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
     </div>
 
-    <div class="dashboard-grid">
-        {% for event in events|default([]) %}
-            
-            {# --- LOGIQUE D'ÉTAT --- #}
-            {% set status = 'none' %}
-            {% if event.isUserConfirmed(app.user) %}
-                {% set status = 'confirmed' %}
-            {% elseif event.isUserPending(app.user) %}
-                {% set status = 'pending' %}
-            {% endif %}
+    <div class="settings-drawer-content">
 
-            <div class="card" style="padding:0; overflow:hidden; display:flex; flex-direction:column;">
-                
-                {# --- IMAGE & BADGES --- #}
-                <div style="height:180px; width:100%; position:relative; background:#000;">
-                    <img src="{{ event.image ? asset('uploads/' ~ event.image) : asset('images/bg2.jpg') }}" 
-                         alt="{{ event.title }}"
-                         style="width:100%; height:100%; object-fit:cover; opacity:0.85; transition:0.3s;">
-                    
-                    <div style="position:absolute; top:12px; left:12px; background:rgba(0,0,0,0.6); backdrop-filter:blur(5px); border:1px solid rgba(255,255,255,0.1); padding:6px 10px; border-radius:8px; text-align:center; color:white; min-width:50px;">
-                        <span style="display:block; font-weight:800; font-size:1.3rem; line-height:1;">{{ event.date|date('d') }}</span>
-                        <span style="display:block; font-size:0.75rem; text-transform:uppercase; color:#a1a1aa;">{{ event.date|date('M') }}</span>
-                    </div>
-
-                    {% if status == 'confirmed' %}
-                        <div style="position:absolute; top:12px; right:12px; background:rgba(16, 185, 129, 0.9); color:white; padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:700; box-shadow:0 4px 10px rgba(0,0,0,0.3);">
-                            <i class="fa-solid fa-check"></i> INSCRIT
-                        </div>
-                    {% elseif status == 'pending' %}
-                        <div style="position:absolute; top:12px; right:12px; background:rgba(245, 158, 11, 0.9); color:black; padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:700; box-shadow:0 4px 10px rgba(0,0,0,0.3);">
-                            <i class="fa-regular fa-clock"></i> EN ATTENTE
-                        </div>
-                    {% endif %}
-                </div>
-
-                {# --- CORPS DE LA CARTE --- #}
-                <div style="padding:20px; flex:1; display:flex; flex-direction:column;">
-                    
-                    <h3 style="margin-bottom:8px; font-size:1.1rem; color:white; line-height:1.4;">{{ event.title }}</h3>
-                    
-                    <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:15px;">
-                        <div style="color:var(--text-muted); font-size:0.9rem; display:flex; align-items:center;">
-                            <i class="fa-regular fa-clock" style="width:20px; color:var(--primary);"></i>
-                            {% if event.startTime %}
-                                {{ event.startTime|date('H:i') }}
-                                {% if event.endTime %} - {{ event.endTime|date('H:i') }}{% endif %}
-                            {% else %}
-                                Heure à confirmer
-                            {% endif %}
-                        </div>
-                        
-                        {% if event.location %}
-                        <div style="color:var(--text-muted); font-size:0.9rem; display:flex; align-items:center;">
-                            <i class="fa-solid fa-location-dot" style="width:20px; color:var(--text-muted);"></i>
-                            {{ event.location|slice(0, 25) }}{{ event.location|length > 25 ? '...' : '' }}
-                        </div>
-                        {% endif %}
-                    </div>
-                    
-                    {% if event.description %}
-                        <p style="font-size:0.85rem; color:#71717a; margin-bottom:20px; line-height:1.5;">
-                            {{ event.description|slice(0, 80) }}...
-                        </p>
-                    {% endif %}
-
-                    <div style="margin-top:auto;">
-                        <a href="{{ status == 'none' ? path('event_register', {'id': event.id}) : path('event_unregister', {'id': event.id}) }}" 
-                           class="btn-event-action"
-                           style="
-                               display:flex; 
-                               align-items:center; 
-                               justify-content:center; 
-                               width:100%; 
-                               padding:12px; 
-                               border-radius:8px; 
-                               text-decoration:none; 
-                               font-weight:600; 
-                               font-size:0.9rem;
-                               transition:0.2s;
-                               /* Couleurs dynamiques selon statut */
-                               background: {{ status == 'confirmed' ? 'rgba(239,68,68,0.1)' : (status == 'pending' ? 'rgba(245,158,11,0.1)' : 'var(--primary)') }};
-                               color: {{ status == 'confirmed' ? '#ef4444' : (status == 'pending' ? '#fbbf24' : 'white') }};
-                               border: 1px solid {{ status == 'confirmed' ? 'rgba(239,68,68,0.3)' : (status == 'pending' ? 'rgba(245,158,11,0.3)' : 'transparent') }};
-                           ">
-                            
-                            {% if status == 'confirmed' %}
-                                <i class="fa-solid fa-xmark" style="margin-right:8px;"></i> Se désinscrire
-                            {% elseif status == 'pending' %}
-                                <i class="fa-solid fa-ban" style="margin-right:8px;"></i> Annuler
-                            {% else %}
-                                <span>Je participe</span> <i class="fa-solid fa-arrow-right" style="margin-left:8px;"></i>
-                            {% endif %}
-                        </a>
-                    </div>
-
-                </div>
+        <div class="settings-row" style="margin-bottom:14px;">
+            <div>
+                <div style="font-weight:900;">Mode sombre</div>
+                <div style="font-size:0.85rem; color:var(--text-muted);">Noir / clair</div>
             </div>
 
-        {% else %}
-            <div class="card" style="grid-column: 1 / -1; padding:60px 20px; text-align:center; display:flex; flex-direction:column; align-items:center;">
-                <div style="width:80px; height:80px; background:rgba(255,255,255,0.05); border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:20px;">
-                    <i class="fa-regular fa-calendar-xmark" style="font-size:2.5rem; color:var(--text-muted);"></i>
-                </div>
-                <h3 style="color:white; margin-bottom:10px;">Aucun événement prévu</h3>
-                <p style="color:var(--text-muted); max-width:400px;">
-                    Le calendrier est vide pour le moment. Revenez plus tard pour découvrir les prochaines compétitions et entraînements.
-                </p>
+            <label class="switch" title="Dark / Light">
+                <input type="checkbox" id="themeToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="settings-separator"></div>
+
+        <div class="card" style="margin-bottom:14px;">
+            <div class="card-padding" style="border-bottom:1px solid var(--border);">
+                <h4 style="margin:0; color:var(--text-main);">Informations de connexion</h4>
             </div>
-        {% endfor %}
-    </div>
-</section>
-
-<section id="tab-boutique" class="section-view">
-<h3 style="color:white; font-size:1.2rem; margin:0;">Boutique du Club</h3>
-    <div style="margin-bottom: 25px; display:flex; justify-content:space-between; align-items:center;">
-        <div>
-            <p style="color:var(--text-muted); font-size:0.9rem;">Commandez en ligne, retirez au club</p>
-        </div>
-        <div style="background:var(--bg-card); padding:8px 15px; border-radius:10px; border:var(--border); display:flex; align-items:center; gap:10px;">
-            <i class="fa-solid fa-bag-shopping" style="color:var(--primary);"></i>
-            <span style="color:white; font-weight:600;">{{ produits|length }} Articles</span>
-        </div>
-    </div>
-
-    <div class="dashboard-grid">
-        {% for produit in produits|default([]) %}
-            <div class="card" style="padding:0; overflow:hidden; display:flex; flex-direction:column; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                
-                <div style="height:220px; background:#111; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;">
-                    <img src="{{ produit.image ? asset('uploads/' ~ produit.image) : asset('images/default-product.png') }}" 
-                         alt="{{ produit.titre }}" 
-                         style="width:100%; height:100%; object-fit:cover;">
-                    
-                    <div style="position:absolute; top:12px; right:12px; background:rgba(15, 23, 42, 0.8); backdrop-filter:blur(4px); padding:6px 12px; border-radius:8px; color:var(--primary); font-weight:800; border: 1px solid rgba(255,255,255,0.1);">
-                        {{ produit.prix|number_format(2, ',', ' ') }} €
+            <div class="card-padding">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; gap:12px;">
+                    <div>
+                        <label style="font-size:0.8rem; color:var(--text-muted); font-weight:800;">E-mail</label>
+                        <div style="font-weight:800; color:var(--text-main);">{{ app.user.email }}</div>
                     </div>
+                    <button class="btn-outline" onclick="toggleEdit('email')">Modifier</button>
                 </div>
 
-                <div style="padding:20px; flex-grow:1; display:flex; flex-direction:column;">
-                    <h4 style="color:white; margin:0 0 10px 0; font-size:1.15rem; font-weight:700; text-transform:uppercase;">
-                        {{ produit.titre }}
-                    </h4>
-                    
-                    <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.5; margin-bottom:20px; flex-grow:1;">
-                        {{ produit.description|slice(0, 100) }}{{ produit.description|length > 100 ? '...' : '' }}
-                    </p>
-
-                    <div style="margin-top:auto;">
-                        <a href="https://www.helloasso.com/associations/ton-association/formulaires/ton-formulaire?produit_id={{ produit.id }}" 
-                           target="_blank"
-                           style="width:100%; 
-                                  padding:12px; 
-                                  background:var(--primary); 
-                                  border:none; 
-                                  border-radius:8px; 
-                                  color:white; 
-                                  font-weight:700; 
-                                  text-decoration:none;
-                                  display:flex; 
-                                  align-items:center; 
-                                  justify-content:center; 
-                                  gap:10px; 
-                                  transition:0.2s;">
-                            <i class="fa-solid fa-cart-shopping"></i> 
-                            Acheter via HelloAsso
-                        </a>
-                    </div>
-                </div>
-            </div>
-        {% else %}
-            <div class="card" style="grid-column: 1 / -1; padding:50px; text-align:center;">
-                <i class="fa-solid fa-store-slash" style="font-size:3rem; color:var(--text-muted); margin-bottom:15px;"></i>
-                <h3 style="color:white;">Aucun produit disponible</h3>
-            </div>
-        {% endfor %}
-    </div>
-
-    <div style="margin-top:30px; padding:20px; background:rgba(255,255,255,0.02); border-radius:12px; border: 1px dashed rgba(255,255,255,0.1); display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px;">
-        <div style="display:flex; align-items:center; gap:12px;">
-            <i class="fa-solid fa-box-archive" style="color:var(--primary);"></i>
-            <span style="color:var(--text-muted); font-size:0.85rem;">Retrait rapide au bureau</span>
-        </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-            <i class="fa-solid fa-shield-check" style="color:var(--primary);"></i>
-            <span style="color:var(--text-muted); font-size:0.85rem;">Paiement sécurisé HelloAsso</span>
-        </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-            <i class="fa-solid fa-circle-question" style="color:var(--primary);"></i>
-            <span style="color:var(--text-muted); font-size:0.85rem;">Besoin d'aide ? Contactez le club</span>
-        </div>
-    </div>
-</section>
-
-<section id="tab-messages" class="section-view">
-    
-    <div style="margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 20px;">
-        <h3 style="color:white; margin:0 0 5px 0; font-size:1.2rem;">Centre de Support</h3>
-        <p style="color:var(--text-muted); font-size:0.95rem; margin:0;">
-            Historique de vos échanges avec l'administration du CHM Saleux.
-        </p>
-    </div>
-
-    <div style="width: 100%; padding-bottom: 50px;">
-        
-        <div style="margin-bottom: 30px; display:flex; justify-content:flex-end; align-items:center; gap:15px;">
-            <div style="background:rgba(255,255,255,0.03); padding:8px 15px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); text-align:right; display:flex; align-items:center; gap:10px;">
-                <span style="color:var(--text-muted); font-size:0.75rem; text-transform:uppercase; font-weight:700;">Tickets</span>
-                <span style="color:white; font-weight:700; font-size:1rem;">{{ messages|length }}</span>
-            </div>
-            
-            <a href="{{ path('contact') }}" class="btn-event-action" style="background:var(--primary); color:white; text-decoration:none;">
-                <i class="fa-solid fa-plus"></i> Nouvelle demande
-            </a>
-        </div>
-
-        <div style="display:flex; flex-direction:column; gap:25px;">
-            {% for msg in messages|default([]) %}
-                <div class="card" style="padding: 0; overflow: hidden; border: 1px solid {{ msg.reponse ? 'rgba(52, 211, 153, 0.1)' : 'rgba(255,255,255,0.05)' }}; background: rgba(255,255,255,0.01);">
-                    
-                    <div style="padding: 15px 20px; background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center;">
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:1px;">Ticket #{{ loop.index }}</span>
-                            {% if msg.reponse %}
-                                <span style="background: rgba(52, 211, 153, 0.15); color: #34d399; font-size: 0.65rem; padding: 2px 8px; border-radius: 4px; font-weight: 700; border: 1px solid rgba(52, 211, 153, 0.2);">RÉSOLU</span>
-                            {% else %}
-                                <span style="background: rgba(59, 130, 246, 0.15); color: var(--primary); font-size: 0.65rem; padding: 2px 8px; border-radius: 4px; font-weight: 700; border: 1px solid rgba(59, 130, 246, 0.2);">EN COURS</span>
-                            {% endif %}
-                        </div>
-                        <span style="color:var(--text-muted); font-size:0.75rem;">{{ msg.createdAt|date('d/m/Y à H:i') }}</span>
-                    </div>
-
-                    <div style="padding: 25px;">
-                        
-                        <div style="display:flex; gap:15px; margin-bottom: 25px;">
-                            <div style="width:40px; height:40px; border-radius:8px; background: linear-gradient(135deg, #334155 0%, #1e293b 100%); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; flex-shrink:0; border:1px solid rgba(255,255,255,0.1); font-size:0.9rem;">
-                                {{ app.user.firstname|first|upper }}
-                            </div>
-                            <div style="flex:1;">
-                                <div style="color:white; font-weight:600; font-size:0.9rem; margin-bottom:6px;">Ma question</div>
-                                <div style="color:#d1d5db; font-size:0.95rem; line-height:1.6; background: rgba(255,255,255,0.03); padding:15px; border-radius:0 12px 12px 12px; border: 1px solid rgba(255,255,255,0.05);">
-                                    {{ msg.message|nl2br }}
-                                </div>
-                            </div>
-                        </div>
-
-                        {% if msg.reponse %}
-                            <div style="display:flex; gap:15px; padding-left: 40px; animation: modalSlideUp 0.4s ease;">
-                                <div style="width:40px; height:40px; border-radius:8px; background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%); display:flex; align-items:center; justify-content:center; color:white; flex-shrink:0; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);">
-                                    <i class="fa-solid fa-user-shield"></i>
-                                </div>
-                                <div style="flex:1;">
-                                    <div style="color:#34d399; font-weight:600; font-size:0.9rem; margin-bottom:6px;">Réponse du secrétariat</div>
-                                    <div style="color:white; font-size:0.95rem; line-height:1.6; background: rgba(52, 211, 153, 0.05); padding:15px; border-radius:0 12px 12px 12px; border: 1px solid rgba(52, 211, 153, 0.1); border-left: 3px solid #34d399;">
-                                        {{ msg.reponse|nl2br }}
-                                    </div>
-                                </div>
-                            </div>
-                        {% else %}
-                            <div style="margin-left: 55px; padding: 10px 15px; background: rgba(255,255,255,0.02); border-radius: 8px; display:inline-flex; align-items:center; gap:8px;">
-                                <div class="typing-bubble" style="display:flex; gap:3px;">
-                                    <span class="dot" style="width:4px; height:4px; background:#64748b; border-radius:50%;"></span>
-                                    <span class="dot" style="width:4px; height:4px; background:#64748b; border-radius:50%;"></span>
-                                    <span class="dot" style="width:4px; height:4px; background:#64748b; border-radius:50%;"></span>
-                                </div>
-                                <span style="color:var(--text-muted); font-size:0.8rem; font-weight:500;">En attente d'une réponse...</span>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-            {% else %}
-                <div class="card" style="padding:60px 20px; text-align:center; border: 1px dashed rgba(255,255,255,0.1); background:none;">
-                    <div style="width:80px; height:80px; background:rgba(255,255,255,0.02); border-radius:50%; display:flex; align-items:center; justify-content:center; margin: 0 auto 20px; border: 1px solid rgba(255,255,255,0.05);">
-                        <i class="fa-regular fa-comments" style="font-size:2rem; color:var(--text-muted);"></i>
-                    </div>
-                    <h4 style="color:white; font-size:1.2rem; font-weight:700; margin-bottom:10px;">Aucun ticket</h4>
-                    <p style="color:var(--text-muted); max-width:400px; margin: 0 auto 25px; font-size:0.9rem;">
-                        Vous n'avez pas encore de demandes en cours. Une question sur votre licence ou un événement ?
-                    </p>
-                    <a href="{{ path('contact') }}" class="btn-event-action" style="background:white; color:black; font-weight:700;">
-                        Contacter le secrétariat
-                    </a>
-                </div>
-            {% endfor %}
-        </div>
-
-        <div style="margin-top:40px; padding:20px; border-radius:12px; background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.1); display: flex; align-items: center; gap: 15px;">
-            <div style="width:40px; height:40px; background:rgba(59, 130, 246, 0.1); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                <i class="fa-solid fa-bolt" style="color:var(--primary); font-size:1rem;"></i>
-            </div>
-            <p style="color:var(--text-muted); font-size:0.9rem; margin:0; line-height:1.5;">
-                Une urgence ? Notre chatbot <strong style="color:white;">Elios</strong> est disponible 24h/24 en bas à droite pour répondre à vos questions fréquentes instantanément.
-            </p>
-        </div>
-    </div>
-</section>
-
-<section id="tab-settings" class="section-view">
-
-    <div style="width: 100%; padding-bottom: 50px;">
-        
-<div style="margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 20px;">
-            <h3 style="color:white; margin:0 0 5px 0; font-size:1.2rem;">Paramètres du compte</h3>
-            <p style="color:var(--text-muted); font-size:0.95rem; margin:0;">
-                Gérez vos informations, votre sécurité et vos préférences d'accès.
-            </p>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px; align-items: start;">
-            
-            <div class="card" style="padding: 0; overflow: hidden; height: 100%;">
-                <div style="padding: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01);">
-                    <h4 style="color:white; margin:0; font-size:1.1rem; display:flex; align-items:center; gap:12px;">
-                        <div style="width:35px; height:35px; background:rgba(59, 130, 246, 0.1); border-radius:10px; display:flex; align-items:center; justify-content:center;">
-                            <i class="fa-solid fa-address-card" style="color:var(--primary); font-size:0.9rem;"></i>
-                        </div>
-                        Informations personnelles
-                    </h4>
+                <div id="form-email" style="display:none; margin-bottom:18px; background:var(--surface-2); padding:15px; border-radius:12px; border:1px solid var(--border);">
+                    <input type="email" id="input-email" placeholder="Nouvel e-mail"
+                           style="width:100%; padding:10px; border:1px solid var(--border); border-radius:10px; margin-bottom:10px; background:var(--bg-card); color:var(--text-main);">
+                    <button class="btn-primary" onclick="updateProfile('email')">Enregistrer</button>
                 </div>
 
-                <div style="padding: 30px; display: flex; flex-direction: column; gap: 30px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <label style="display:block; color:var(--text-muted); font-size:0.7rem; text-transform:uppercase; font-weight:800; letter-spacing:1px; margin-bottom:8px;">Adresse e-mail de connexion</label>
-                            <div style="color:white; font-weight:600; font-size:1.1rem;">{{ app.user.email }}</div>
-                        </div>
-                        <button class="btn-contact-top" style="margin:0; background:rgba(255,255,255,0.05);" onclick="toggleEdit('email')">Modifier</button>
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+                    <div>
+                        <label style="font-size:0.8rem; color:var(--text-muted); font-weight:800;">Téléphone</label>
+                        <div style="font-weight:800; color:var(--text-main);">{{ app.user.phone|default('Non renseigné') }}</div>
                     </div>
-
-                    <div id="form-email" style="display:none; padding:20px; background:rgba(0,0,0,0.2); border-radius:15px; border:1px solid rgba(255,255,255,0.05); animation: modalSlideUp 0.3s ease;">
-                        <input type="email" id="input-email" class="search-input" style="width:100%; margin-bottom:15px;" placeholder="Nouvel e-mail">
-                        <div style="display:flex; gap:10px; justify-content:flex-end;">
-                            <button class="btn-close-flat" style="margin:0;" onclick="toggleEdit('email')">Annuler</button>
-                            <button class="btn-event-action" style="background:var(--primary); color:white; width:auto; padding:8px 20px;" onclick="updateProfile('email')">Enregistrer</button>
-                        </div>
-                    </div>
-
-                    <div style="height:1px; background:linear-gradient(90deg, rgba(255,255,255,0.08) 0%, transparent 100%);"></div>
-
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <label style="display:block; color:var(--text-muted); font-size:0.7rem; text-transform:uppercase; font-weight:800; letter-spacing:1px; margin-bottom:8px;">Numéro de téléphone</label>
-                            <div style="color:white; font-weight:600; font-size:1.1rem;">{{ app.user.phone|default('Non renseigné') }}</div>
-                        </div>
-                        <button class="btn-contact-top" style="margin:0; background:rgba(255,255,255,0.05);" onclick="toggleEdit('phone')">Modifier</button>
-                    </div>
-
-                    <div id="form-phone" style="display:none; padding:20px; background:rgba(0,0,0,0.2); border-radius:15px; border:1px solid rgba(255,255,255,0.05); animation: modalSlideUp 0.3s ease;">
-                        <input type="text" id="input-phone" class="search-input" style="width:100%; margin-bottom:15px;" placeholder="06 XX XX XX XX">
-                        <div style="display:flex; gap:10px; justify-content:flex-end;">
-                            <button class="btn-close-flat" style="margin:0;" onclick="toggleEdit('phone')">Annuler</button>
-                            <button class="btn-event-action" style="background:var(--primary); color:white; width:auto; padding:8px 20px;" onclick="updateProfile('phone')">Enregistrer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" style="padding: 0; overflow: hidden; height: 100%;">
-                <div style="padding: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01);">
-                    <h4 style="color:white; margin:0; font-size:1.1rem; display:flex; align-items:center; gap:12px;">
-                        <div style="width:35px; height:35px; background:rgba(16, 185, 129, 0.1); border-radius:10px; display:flex; align-items:center; justify-content:center;">
-                            <i class="fa-solid fa-shield-halved" style="color:#10b981; font-size:0.9rem;"></i>
-                        </div>
-                        Sécurité & Accès
-                    </h4>
+                    <button class="btn-outline" onclick="toggleEdit('phone')">Modifier</button>
                 </div>
 
-                <div style="padding: 30px; display: flex; flex-direction: column; gap: 20px;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div style="background: rgba(255,255,255,0.02); padding: 25px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.03); text-align: center;">
-                            <i class="fa-solid fa-key" style="color:var(--primary); font-size:1.5rem; margin-bottom:15px;"></i>
-                            <h5 style="color:white; margin:0 0 10px 0;">Mot de passe</h5>
-                            <button class="btn-event-action" style="background:var(--primary); color:white; width:100%; border:none;" onclick="toggleEdit('password')">Changer</button>
-                        </div>
-                        <div style="background: rgba(255,255,255,0.02); padding: 25px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.03); text-align: center;">
-                            <i class="fa-solid fa-fingerprint" style="color:#10b981; font-size:1.5rem; margin-bottom:15px;"></i>
-                            <h5 style="color:white; margin:0 0 10px 0;">2FA (A2F)</h5>
-                            <button class="btn-event-action" style="background:rgba(255,255,255,0.05); color:white; width:100%; border:1px solid rgba(255,255,255,0.1);" onclick="toggleA2F()">Activer</button>
-                        </div>
-                    </div>
-
-                    <div id="form-password" style="display:none; padding:25px; background:rgba(0,0,0,0.3); border-radius:18px; border:1px solid var(--primary); animation: modalSlideUp 0.3s ease;">
-                        <h5 style="color:white; margin-bottom:15px;">Modification du mot de passe</h5>
-                        <div style="display:flex; flex-direction:column; gap:12px;">
-                            <input type="password" id="old-pass" class="search-input" placeholder="Ancien mot de passe">
-                            <input type="password" id="new-pass" class="search-input" placeholder="Nouveau mot de passe">
-                            <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:10px;">
-                                <button class="btn-close-flat" onclick="toggleEdit('password')">Annuler</button>
-                                <button class="btn-event-action" style="background:var(--primary); color:white; width:auto; padding:10px 25px;" onclick="updateProfile('password')">Confirmer</button>
-                            </div>
-                        </div>
-                    </div>
+                <div id="form-phone" style="display:none; margin-top:18px; background:var(--surface-2); padding:15px; border-radius:12px; border:1px solid var(--border);">
+                    <input type="text" id="input-phone" placeholder="06..."
+                           style="width:100%; padding:10px; border:1px solid var(--border); border-radius:10px; margin-bottom:10px; background:var(--bg-card); color:var(--text-main);">
+                    <button class="btn-primary" onclick="updateProfile('phone')">Enregistrer</button>
                 </div>
             </div>
         </div>
 
-        <div style="margin-top: 40px; padding: 30px; border-radius: 24px; background: linear-gradient(90deg, rgba(239, 68, 68, 0.05) 0%, rgba(239, 68, 68, 0.01) 100%); border: 1px solid rgba(239, 68, 68, 0.15); display: flex; justify-content: space-between; align-items: center; gap: 30px;">
-            <div style="display:flex; align-items:center; gap:20px;">
-                <div style="width:50px; height:50px; background:rgba(239, 68, 68, 0.1); border-radius:50%; display:flex; align-items:center; justify-content:center;">
-                    <i class="fa-solid fa-triangle-exclamation" style="color:#ef4444; font-size:1.2rem;"></i>
+        <div class="card" style="margin-bottom:14px;">
+            <div class="card-padding" style="border-bottom:1px solid var(--border);">
+                <h4 style="margin:0; color:var(--text-main);">Sécurité</h4>
+            </div>
+            <div class="card-padding">
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                    <button class="btn-outline" style="flex:1; min-width:190px;" onclick="toggleEdit('password')">Changer mot de passe</button>
+                    <button class="btn-outline" style="flex:1; min-width:190px;" onclick="toggleA2F()">Activer 2FA</button>
                 </div>
-                <div>
-                    <h4 style="color:#f87171; margin:0 0 5px 0; font-weight:800;">Suppression définitive du compte</h4>
-                    <p style="color:var(--text-muted); font-size:0.9rem; margin:0;">Toutes vos données, inscriptions aux événements et factures seront supprimées à jamais.</p>
+
+                <div id="form-password" style="display:none; margin-top:18px; background:var(--surface-2); padding:15px; border-radius:12px; border:1px solid var(--border);">
+                    <input type="password" id="old-pass" placeholder="Ancien mot de passe"
+                           style="display:block; width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:10px; background:var(--bg-card); color:var(--text-main);">
+                    <input type="password" id="new-pass" placeholder="Nouveau mot de passe"
+                           style="display:block; width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:10px; background:var(--bg-card); color:var(--text-main);">
+                    <button class="btn-primary" onclick="updateProfile('password')">Valider</button>
                 </div>
-            </div>
-            <button onclick="confirmDeleteAccount()" style="background: #ef4444; color: white; border: none; padding: 14px 28px; border-radius: 12px; font-weight: 800; cursor: pointer; white-space: nowrap; transition: 0.3s; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2);">
-                Supprimer mon compte
-            </button>
-        </div>
-    </div>
-</section>
-
-            </div>
-        </main>
-    </div>
-
-    <div id="cropperModal" class="cropper-modal-overlay">
-        <div class="cropper-container-box">
-            <h3 style="color:#fff; margin-bottom:15px;">Recadrer la photo</h3>
-            <div class="cropper-image-wrapper">
-                <img id="cropperImage" src="">
-            </div>
-            <div class="cropper-actions">
-                <button id="cancelCropBtn" class="icon-btn" style="width:auto; padding:0 15px; border-radius:6px;">Annuler</button>
-                <button id="cropAndSaveBtn" class="icon-btn" style="width:auto; padding:0 15px; border-radius:6px; background:white; color:black; border:none;">Enregistrer</button>
             </div>
         </div>
-    </div>
 
-   <div id="licenceModal" class="cropper-modal-overlay">
-    <div class="modal-content-horizontal">
-        
-        <div class="modal-side manual-side">
-            <h3>Saisie manuelle</h3>
-            <p>J'ai mon numéro de licence</p>
-            
-            <input type="text" id="licenceInputManual" class="licence-field" placeholder="00000000" maxlength="12">
-            
-            <button class="btn-event-action primary-btn" onclick="saveLicenceManual()">
-                Enregistrer
+        <div style="padding:16px; border:1px solid rgba(239,68,68,0.35); background:rgba(239,68,68,0.08); border-radius:14px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
+            <div>
+                <h4 style="color:#ef4444; margin:0 0 5px 0;">Zone Danger</h4>
+                <p style="color:var(--text-muted); font-size:0.85rem;">La suppression du compte est irréversible.</p>
+            </div>
+            <button onclick="confirmDeleteAccount()"
+                    style="background:#ef4444; color:white; border:none; padding:10px 14px; border-radius:10px; font-weight:900; cursor:pointer;">
+                Supprimer
             </button>
         </div>
 
-        <div class="modal-divider">
-            <span class="divider-text">OU</span>
+    </div>
+</aside>
+
+<div id="cropperModal" class="cropper-modal-overlay"
+     style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.8); align-items:center; justify-content:center;">
+    <div style="background:var(--bg-card); padding:20px; border-radius:12px; width:90%; max-width:500px; border:1px solid var(--border);">
+        <h3 style="margin-bottom:15px;">Ajuster la photo</h3>
+        <div style="height:300px; background:#333; margin-bottom:15px;">
+            <img id="cropperImage" src="" style="max-width:100%;">
         </div>
-
-        <div class="modal-side elios-side">
-            <div class="elios-badge">Assistant IA</div>
-            <h3>Récupération</h3>
-            <p>Elios retrouve votre numéro en 30s</p>
-            
-            <div class="elios-visual">
-                <img src="{{ asset('images/ia.png') }}" alt="IA">
-            </div>
-
-            <button onclick="openChatbot('licence')" class="btn-elios-trigger">
-                Lancer l'assistant
-            </button>
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+            <button id="cancelCropBtn" class="btn-outline">Annuler</button>
+            <button id="cropAndSaveBtn" class="btn-primary">Enregistrer</button>
         </div>
-
-        <button onclick="closeLicenceModal()" class="btn-close-absolute">&times;</button>
     </div>
 </div>
 
-    {% include '_shared/_elios_widget.html.twig' %}
+<div id="licenceModal"
+     style="display:none; position:fixed; inset:0; z-index:9000; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+    <div style="background:var(--bg-card); width:600px; border-radius:20px; overflow:hidden; display:flex; box-shadow:0 20px 25px -5px rgba(0,0,0,0.1); position:relative; border:1px solid var(--border);">
+        <div style="flex:1; padding:30px;">
+            <h3>Saisie manuelle</h3>
+            <input type="text" id="licenceInputManual" placeholder="00000000"
+                   style="width:100%; padding:12px; border:1px solid var(--border); border-radius:8px; margin:15px 0; background:var(--bg-card); color:var(--text-main);">
+            <button class="btn-primary" onclick="saveLicenceManual()">Valider</button>
+        </div>
+        <div style="width:1px; background:var(--border);"></div>
+        <div style="flex:1; padding:30px; background:var(--surface-2); text-align:center;">
+            <h3>Assistant</h3>
+            <p>Laisser l'IA trouver mon numéro</p>
+            <button onclick="openChatbot('licence')" class="btn-outline" style="background:var(--bg-card);">Lancer Elios</button>
+        </div>
+        <button onclick="closeLicenceModal()"
+                style="position:absolute; top:20px; right:20px; background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-main);">
+            &times;
+        </button>
+    </div>
+</div>
 
-<a id="assistantWidgetOpen" class="btn-ai-assistant" title="Assistant IA" 
-   style="
-    position: fixed !important; 
-    bottom: 30px !important; 
-    right: 30px !important; 
-    width: 65px !important; 
-    height: 65px !important; 
-    z-index: 20000 !important; /* On passe au dessus de tout */
-    cursor: pointer !important; 
-    display: flex !important; 
-    align-items: center !important; 
-    justify-content: center !important; 
-    background: #0f172a !important;
-    border-radius: 50% !important;
-    border: 2px solid var(--primary) !important;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important;
-    pointer-events: auto !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-   ">
-    
-    <div style="
-        position: absolute; 
-        width: 100%; 
-        height: 100%; 
-        border-radius: 50%; 
-        background: var(--primary); 
-        animation: elios-pulse 2s infinite; 
-        z-index: -1;
-        opacity: 0.4;
-    "></div>
+{% include '_shared/_elios_widget.html.twig' %}
 
-    <img src="{{ asset('images/ia.png') }}" alt="Elios" 
-         style="width: 45px; height: 45px; object-fit: contain; position: relative; z-index: 2;">
+<a id="assistantWidgetOpen" title="Assistant IA"
+   style="position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--text-main); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); cursor: pointer; z-index: 5000;">
+    <img src="{{ asset('images/ia.png') }}" alt="Elios" style="width: 35px; height: 35px; object-fit: contain;">
 </a>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-
-<script src="js/dashboard/test-v2.js"></script>
-
+<script src="{{ asset('js/dashboard/test-v2.js') }}"></script>
 <script src="{{ asset('js/assistant/elios.js') }}"></script>
+
+<script>
+    // Tabs (dashboard content uniquement)
+    function openTab(target) {
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        const nav = document.querySelector(`.nav-item[data-target="${target}"]`);
+        if (nav) nav.classList.add('active');
+
+        document.querySelectorAll('.section-view').forEach(s => s.classList.remove('active'));
+        const tab = document.getElementById('tab-' + target);
+        if (tab) tab.classList.add('active');
+
+        if (window.innerWidth <= 900) {
+            const sb = document.querySelector('.sidebar');
+            if (sb.classList.contains('active')) toggleMobileMenu();
+        }
+    }
+
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', function() {
+            openTab(this.getAttribute('data-target'));
+        });
+    });
+
+    function toggleMobileMenu() {
+        document.querySelector('.sidebar').classList.toggle('active');
+        document.getElementById('mobileOverlay').classList.toggle('active');
+    }
+
+    // Drawer Paramètres
+    const settingsDrawer = document.getElementById('settingsDrawer');
+    const settingsOverlay = document.getElementById('settingsOverlay');
+    const openSettingsBtn = document.getElementById('openSettingsDrawer');
+    const closeSettingsBtn = document.getElementById('closeSettingsDrawer');
+
+    function openSettingsDrawer() {
+        settingsDrawer.classList.add('open');
+        settingsOverlay.classList.add('open');
+        settingsDrawer.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeSettingsDrawer() {
+        settingsDrawer.classList.remove('open');
+        settingsOverlay.classList.remove('open');
+        settingsDrawer.setAttribute('aria-hidden', 'true');
+    }
+
+    openSettingsBtn?.addEventListener('click', openSettingsDrawer);
+    closeSettingsBtn?.addEventListener('click', closeSettingsDrawer);
+    settingsOverlay?.addEventListener('click', closeSettingsDrawer);
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeSettingsDrawer();
+    });
+
+    // Toggle Edit (forms dans le drawer)
+    function toggleEdit(field) {
+        const form = document.getElementById('form-' + field);
+        if (!form) return;
+        form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+    }
+
+    // Dark/Light avec sauvegarde
+    const themeToggle = document.getElementById('themeToggle');
+
+    function applyTheme(isDark) {
+        document.body.classList.toggle('theme-dark', isDark);
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        if (themeToggle) themeToggle.checked = isDark;
+    }
+
+    const savedTheme = localStorage.getItem('theme');
+    applyTheme(savedTheme === 'dark');
+
+    themeToggle?.addEventListener('change', (e) => {
+        applyTheme(e.target.checked);
+    });
+</script>
 
 </body>
 </html>

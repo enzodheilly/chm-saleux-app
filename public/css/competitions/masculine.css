@@ -12,7 +12,6 @@
 body {
     background-color: #f8f9fa;
     color: var(--text-main);
-    font-family: 'Inter', sans-serif;
 }
 
 /* --- LAYOUT UTILS --- */
