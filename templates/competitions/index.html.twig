@@ -30,42 +30,16 @@
 
 <main class="main-container">
 
-    {# --- SECTION AGENDA --- #}
+    {# --- SECTION AGENDA DYNAMIQUE --- #}
     <section class="calendar-section">
         <div class="section-title-wrapper">
             <h2 class="section-heading">Agenda Sportif</h2>
-            <p>Retrouvez les dates clés des prochaines échéances.</p>
+            <p>Retrouvez les dates clés des prochaines échéances gérées par le club.</p>
         </div>
 
-        <div class="calendar-card">
-            <div class="calendar-nav">
-                <button class="nav-btn" aria-label="Précédent"><i class="fa-solid fa-chevron-left"></i></button>
-                <h3 class="current-month">Décembre 2025</h3>
-                <button class="nav-btn" aria-label="Suivant"><i class="fa-solid fa-chevron-right"></i></button>
-            </div>
-            
-            <div class="calendar-grid">
-                <div class="day-name">Lun</div>
-                <div class="day-name">Mar</div>
-                <div class="day-name">Mer</div>
-                <div class="day-name">Jeu</div>
-                <div class="day-name">Ven</div>
-                <div class="day-name">Sam</div>
-                <div class="day-name">Dim</div>
-
-                {% for day in 1..31 %}
-                    {% set is_competition = day in [5, 12, 20] %}
-                    <div class="day-cell {% if is_competition %}has-event{% endif %}">
-                        <span class="day-number">{{ day }}</span>
-                        {% if is_competition %}
-                            <div class="event-indicator">
-                                <span class="dot"></span>
-                                <span class="event-label">Compétition</span>
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
+        <div id="calendar-container" class="calendar-card">
+            {# On inclut le fichier partiel créé à l'étape 2 #}
+            {% include 'competitions/_calendar_grid.html.twig' %}
         </div>
     </section>
 
@@ -73,7 +47,7 @@
     <section class="teams-section">
         <div class="section-title-wrapper">
             <h2 class="section-heading">Nos Équipes</h2>
-            <p>Sélectionnez une équipe pour voir les résultats détaillés.</p>
+            <p>Sélectionnez une équipe pour voir les résultats détaillés et les classements.</p>
         </div>
 
         <div class="teams-grid">
@@ -84,11 +58,11 @@
                     <div class="card-overlay"></div>
                 </div>
                 <div class="card-info">
-                    <span class="pille">Division 1</span>
+                    <span class="pille">Haltérophilie</span>
                     <h3>Équipe<br><strong>Féminine</strong></h3>
-                    <p>Résultats, classements et agenda des matchs.</p>
+                    <p>Calendriers de matchs, résultats individuels et performances collectives.</p>
                     <div class="card-footer-link">
-                        Explorer <i class="fa-solid fa-arrow-right"></i>
+                        Explorer les résultats <i class="fa-solid fa-arrow-right"></i>
                     </div>
                 </div>
             </a>
@@ -100,11 +74,11 @@
                     <div class="card-overlay"></div>
                 </div>
                 <div class="card-info">
-                    <span class="pille">Division 1</span>
+                    <span class="pille">Haltérophilie</span>
                     <h3>Équipe<br><strong>Masculine</strong></h3>
-                    <p>Performances, effectifs et calendriers officiels.</p>
+                    <p>Suivi des records, calendrier des plateaux et effectifs de la saison.</p>
                     <div class="card-footer-link">
-                        Explorer <i class="fa-solid fa-arrow-right"></i>
+                        Explorer les résultats <i class="fa-solid fa-arrow-right"></i>
                     </div>
                 </div>
             </a>
@@ -116,5 +90,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/competitions/competitions.js') }}"></script>
+    <script src="{{ asset('js/competitions/competitions.js') }}" defer></script>
 {% endblock %}
