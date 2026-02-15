@@ -8,6 +8,8 @@ use Doctrine\ORM\EntityManagerInterface; // ✅ Ajouté
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/admin/contact', name: 'admin_contact_')]
@@ -24,11 +26,20 @@ class ContactAdminController extends AbstractController
     }
 
     #[Route('/{id}/reply', name: 'reply', methods: ['POST'])]
-    public function reply(Request $request, ContactMessage $message, EntityManagerInterface $em): Response
-    {
+    public function reply(
+        Request $request,
+        ContactMessage $message,
+        EntityManagerInterface $em,
+        MailerInterface $mailer
+    ): Response {
+        $token = $request->request->get('_token');
+
+        if (!$this->isCsrfTokenValid('reply' . $message->getId(), $token)) {
+            throw $this->createAccessDeniedException('Token CSRF invalide.');
+        }
+
         $reponseText = $request->request->get('reponse');
 
-        // Sécurité : on récupère le prénom de l'admin connecté
         $user = $this->getUser();
         $adminName = $user ? $user->getFirstName() : 'Admin';
 
@@ -38,10 +49,27 @@ class ContactAdminController extends AbstractController
             $message->setIsFromAdmin(true);
 
             $em->flush();
-            $this->addFlash('success', 'Réponse enregistrée et ticket résolu.');
+
+            $clientEmail = $message->getEmail();
+
+            if ($clientEmail) {
+                $email = (new Email())
+                    ->from('support@tonsite.com')
+                    ->to($clientEmail)
+                    ->subject('Réponse à votre demande de contact')
+                    ->html("
+                    <p>Bonjour,</p>
+                    <p>Voici notre réponse :</p>
+                    <p><strong>" . nl2br(htmlspecialchars($reponseText)) . "</strong></p>
+                    <p>Cordialement,<br>$adminName</p>
+                ");
+
+                $mailer->send($email);
+            }
+
+            $this->addFlash('success', 'Réponse enregistrée et mail envoyé au client.');
         }
 
-        // Attention : la route de redirection doit correspondre au name défini en haut (admin_contact_index)
         return $this->redirectToRoute('admin_contact_index');
     }
 }

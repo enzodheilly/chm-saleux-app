@@ -1,47 +1,101 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const track = document.querySelector('.slider-track');
-  const nextBtn = document.querySelector('.slider-btn.next');
-  const prevBtn = document.querySelector('.slider-btn.prev');
+  const section = document.querySelector('.club-slider-section');
+  if (!section) return;
+
+  const track = section.querySelector('.slider-track');
+  const nextBtn = section.querySelector('.slider-btn.next');
+  const prevBtn = section.querySelector('.slider-btn.prev');
 
   if (!track || !nextBtn || !prevBtn) return;
 
-  const images = track.querySelectorAll('img');
   const gap = 30;
-  const imageWidth = images[0].offsetWidth + gap;
-
   let currentIndex = 0;
 
-  /* Met à jour la visibilité des boutons */
-  const updateButtons = () => {
-    prevBtn.style.display = currentIndex === 0 ? 'none' : 'flex';
-    nextBtn.style.display =
-      currentIndex >= images.length - visibleImages() ? 'none' : 'flex';
+  const getImages = () => track.querySelectorAll('img');
+
+  const getImageWidth = () => {
+    const imgs = getImages();
+    if (!imgs.length) return 0;
+    // largeur réelle (responsive)
+    return imgs[0].getBoundingClientRect().width + gap;
   };
 
-  /* Nombre d'images visibles à l'écran */
   const visibleImages = () => {
-    return Math.floor(track.offsetWidth / imageWidth);
+    const w = getImageWidth();
+    if (!w) return 1;
+    return Math.max(1, Math.floor(track.getBoundingClientRect().width / w));
+  };
+
+  const maxIndex = () => {
+    const imgs = getImages();
+    const visible = visibleImages();
+    return Math.max(0, imgs.length - visible);
+  };
+
+  const clampIndex = () => {
+    const max = maxIndex();
+    if (currentIndex < 0) currentIndex = 0;
+    if (currentIndex > max) currentIndex = max;
+  };
+
+  const scrollToIndex = (smooth = true) => {
+    const w = getImageWidth();
+    clampIndex();
+
+    track.scrollTo({
+      left: currentIndex * w,
+      behavior: smooth ? 'smooth' : 'auto'
+    });
+  };
+
+  const updateButtons = () => {
+    clampIndex();
+    const max = maxIndex();
+
+    // Option 1: désactiver (meilleur a11y)
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = currentIndex >= max;
+
+    // Option 2 (si tu préfères cacher): décommente
+    // prevBtn.style.display = currentIndex === 0 ? 'none' : 'flex';
+    // nextBtn.style.display = currentIndex >= max ? 'none' : 'flex';
   };
 
   nextBtn.addEventListener('click', () => {
     currentIndex++;
-    track.scrollTo({
-      left: currentIndex * imageWidth,
-      behavior: 'smooth'
-    });
+    scrollToIndex(true);
     updateButtons();
   });
 
   prevBtn.addEventListener('click', () => {
     currentIndex--;
-    track.scrollTo({
-      left: currentIndex * imageWidth,
-      behavior: 'smooth'
-    });
+    scrollToIndex(true);
     updateButtons();
   });
 
-  window.addEventListener('resize', updateButtons);
+  // Clavier (flèches)
+  section.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      nextBtn.click();
+    }
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      prevBtn.click();
+    }
+  });
 
-  updateButtons(); // état initial
+  // Rendre la section focusable pour le clavier
+  if (!section.hasAttribute('tabindex')) {
+    section.setAttribute('tabindex', '0');
+  }
+
+  // Resize: recalcul + re-scroll sans animation
+  window.addEventListener('resize', () => {
+    updateButtons();
+    scrollToIndex(false);
+  });
+
+  updateButtons();
+  scrollToIndex(false);
 });
