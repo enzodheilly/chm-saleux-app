@@ -1,76 +1,90 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Statistiques{% endblock %}
+{% block title %}Tableau de Bord Analytique{% endblock %}
 
 {% block stylesheets %}
 <style>
-    /* =================== PAGE STYLE =================== */
+    /* =================== ANALYTICS CONTAINER =================== */
     .dashboard-container { width: 100%; max-width: 1600px; margin: 0 auto; }
 
-    /* Header */
+    /* Header Section */
     .page-header {
-        margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;
+        margin-bottom: 2.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;
+        display: flex; justify-content: space-between; align-items: flex-end;
     }
-    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
     .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
 
-    /* KPI Cards (Grid) */
+    /* KPI Grid */
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 1.5rem;
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
     }
 
     .stat-card {
-        background: var(--bg-light);
-        border: 1px solid var(--border);
-        padding: 1.5rem;
-        border-radius: 4px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        transition: transform 0.2s, border-color 0.2s;
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        padding: 1.8rem;
+        border-radius: 6px;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s;
     }
-    .stat-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .stat-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+    
+    /* Décoration subtile en arrière-plan */
+    .stat-card::after {
+        content: ""; position: absolute; top: -20px; right: -20px; width: 80px; height: 80px;
+        background: var(--accent); opacity: 0.03; border-radius: 50%;
+    }
 
     .stat-label {
         color: var(--text-muted);
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         text-transform: uppercase;
         font-weight: 700;
-        letter-spacing: 0.5px;
-        margin-bottom: 0.5rem;
+        letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+        display: block;
     }
 
     .stat-value {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
         font-weight: 800;
         color: var(--text-main);
         line-height: 1;
+        font-family: monospace; /* Aspect numérique pro */
     }
 
     /* Charts Layout */
     .charts-row {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
     }
-    @media(max-width: 1000px) { .charts-row { grid-template-columns: 1fr; } }
+    @media(max-width: 1100px) { .charts-row { grid-template-columns: 1fr; } }
 
     .chart-card {
-        background: var(--bg-light);
-        border: 1px solid var(--border);
-        padding: 1.5rem;
-        border-radius: 4px;
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        padding: 2rem;
+        border-radius: 6px;
     }
 
     .chart-title {
-        margin: 0 0 1.5rem 0;
-        font-size: 1rem;
-        font-weight: 600;
+        margin: 0 0 2rem 0;
+        font-size: 0.95rem;
+        font-weight: 700;
         color: var(--text-main);
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
+    .chart-title::before { content: ""; width: 4px; height: 16px; background: var(--accent); border-radius: 2px; }
 
 </style>
 {% endblock %}
@@ -79,35 +93,46 @@
 <div class="dashboard-container">
     
     <div class="page-header">
-        <h1>Statistiques</h1>
-        <p>Vue d'ensemble de l'activité du site et des inscriptions.</p>
+        <div>
+            <h1>Statistiques d'activité</h1>
+            <p>Indicateurs clés de performance et croissance du club.</p>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">
+            Dernière mise à jour : {{ "now"|date("d/m/Y H:i") }}
+        </div>
     </div>
 
+    {# CARTES KPI #}
     <div class="stats-grid">
         <div class="stat-card">
-            <span class="stat-label">Utilisateurs Inscrits</span>
-            <span class="stat-value">{{ totalUsers }}</span>
+            <span class="stat-label">Utilisateurs inscrits</span>
+            <span class="stat-value">{{ totalUsers|number_format(0, '.', ' ') }}</span>
         </div>
         <div class="stat-card">
-            <span class="stat-label">Articles Publiés</span>
+            <span class="stat-label">Articles publiés</span>
             <span class="stat-value">{{ totalArticles }}</span>
         </div>
         <div class="stat-card">
-            <span class="stat-label">Abonnés Newsletter</span>
+            <span class="stat-label">Abonnés newsletter</span>
             <span class="stat-value">{{ newsletterSubscribers }}</span>
         </div>
-        </div>
+    </div>
 
+    {# GRAPHIQUES #}
     <div class="charts-row">
         
         <div class="chart-card">
             <h3 class="chart-title">Inscriptions (7 derniers jours)</h3>
-            <canvas id="usersChart"></canvas>
+            <div style="height: 300px;">
+                <canvas id="usersChart"></canvas>
+            </div>
         </div>
 
         <div class="chart-card">
             <h3 class="chart-title">Activité éditoriale</h3>
-            <canvas id="articlesChart"></canvas>
+            <div style="height: 300px;">
+                <canvas id="articlesChart"></canvas>
+            </div>
         </div>
 
     </div>
@@ -115,63 +140,72 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Configuration globale des couleurs pour le thème sombre
-    Chart.defaults.color = '#9ca3af';
-    Chart.defaults.borderColor = '#2a2a2d';
+    // Configuration globale Chart.js
+    Chart.defaults.color = '#94a3b8';
+    Chart.defaults.font.family = "'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+    Chart.defaults.scale.grid.color = 'rgba(255, 255, 255, 0.05)';
 
     const labels = {{ labels|json_encode|raw }};
     const userRegistrations = {{ userRegistrations|json_encode|raw }};
     const articlesPublished = {{ articlesPublished|json_encode|raw }};
 
-    // 1. Graphique Inscriptions (Ligne courbée)
+    // 1. Graphique Inscriptions (Ligne avec zone remplie)
     new Chart(document.getElementById('usersChart'), {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Nouveaux utilisateurs',
+                label: 'Inscriptions',
                 data: userRegistrations,
                 borderColor: '#ff6600',
-                backgroundColor: 'rgba(255, 102, 0, 0.1)',
-                borderWidth: 2,
-                tension: 0.4, // Courbe lisse
+                backgroundColor: 'rgba(255, 102, 0, 0.05)',
+                borderWidth: 3,
+                tension: 0.4,
                 fill: true,
-                pointRadius: 4,
-                pointBackgroundColor: '#ff6600'
+                pointRadius: 5,
+                pointHoverRadius: 8,
+                pointBackgroundColor: '#ff6600',
+                pointBorderColor: '#1a1c23',
+                pointBorderWidth: 2
             }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
-                legend: { display: false }
+                legend: { display: false },
+                tooltip: { padding: 12, backgroundColor: '#1e293b' }
             },
             scales: {
-                y: { beginAtZero: true, grid: { borderDash: [4, 4] } },
+                y: { beginAtZero: true, ticks: { precision: 0 } },
                 x: { grid: { display: false } }
             }
         }
     });
 
-    // 2. Graphique Articles (Barres)
+    // 2. Graphique Articles (Barres stylisées)
     new Chart(document.getElementById('articlesChart'), {
         type: 'bar',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Articles publiés',
+                label: 'Articles',
                 data: articlesPublished,
-                backgroundColor: '#3b82f6', // Bleu pour différencier
+                backgroundColor: '#3b82f6',
+                hoverBackgroundColor: '#60a5fa',
                 borderRadius: 4,
-                barThickness: 20
+                barThickness: 16
             }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
-                legend: { display: false }
+                legend: { display: false },
+                tooltip: { padding: 12, backgroundColor: '#1e293b' }
             },
             scales: {
-                y: { beginAtZero: true, ticks: { stepSize: 1 } },
+                y: { beginAtZero: true, ticks: { precision: 0, stepSize: 1 } },
                 x: { grid: { display: false } }
             }
         }
