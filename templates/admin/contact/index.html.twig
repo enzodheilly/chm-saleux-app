@@ -9,53 +9,57 @@
 
     /* Header */
     .page-header {
-        display: flex; justify-content: space-between; align-items: center;
-        margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;
+        display: flex; justify-content: space-between; align-items: flex-end;
+        margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;
     }
-    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header h1 { margin: 0; font-size: 1.5rem; font-weight: 700; color: var(--text-main); }
     .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
 
-    /* Toolbar */
-    .toolbar { display: flex; gap: 1rem; align-items: center; }
     .search-input {
-        background: transparent; border: 1px solid var(--border); color: var(--text-main);
-        padding: 0.6rem 1rem; border-radius: 4px; outline: none; min-width: 300px; font-size: 0.9rem;
+        background: var(--bg-sidebar); border: 1px solid var(--border-color); color: var(--text-main);
+        padding: 0.6rem 1rem; border-radius: 4px; min-width: 300px; font-size: 0.9rem; transition: 0.2s;
     }
-    .search-input:focus { border-color: var(--accent); }
+    .search-input:focus { border-color: var(--accent); outline: none; }
 
-    /* Table */
-    .content-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; }
-    .table-responsive { overflow-x: auto; }
-    .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    /* Table & Cards */
+    .table-wrapper { background: var(--bg-sidebar); border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; }
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
     
-    .table th {
-        background: var(--bg-darker); color: var(--text-muted); font-weight: 600; text-align: left;
-        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); text-transform: uppercase;
-        font-size: 0.75rem; letter-spacing: 1px;
+    .admin-table th {
+        background: rgba(255,255,255,0.02); color: var(--text-muted); font-weight: 600; text-transform: uppercase; 
+        letter-spacing: 0.05em; font-size: 0.75rem; text-align: left; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color);
     }
-    .table td {
-        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle;
-    }
-    .table tr:last-child td { border-bottom: none; }
-    .table tr:hover { background: rgba(255,255,255,0.01); }
+    
+    .admin-table td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); color: var(--text-main); vertical-align: middle; }
+    .admin-table tr:hover td { background: rgba(255,255,255,0.01); }
 
-    /* Specific Data Styles */
-    .date-cell { font-family: monospace; color: var(--text-muted); font-size: 0.85rem; }
-    .sender-name { font-weight: 600; font-size: 0.95rem; display: block; color: var(--text-main); }
-    .sender-contact { font-size: 0.8rem; color: var(--text-muted); }
-    .message-excerpt { 
-        color: var(--text-muted); max-width: 450px; 
-        white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
-        font-style: italic;
+    /* Sender & Message Details */
+    .date-text { font-family: monospace; color: var(--text-muted); font-size: 0.85rem; line-height: 1.2; }
+    .sender-info { display: flex; flex-direction: column; }
+    .sender-name { font-weight: 700; color: var(--text-main); font-size: 0.95rem; }
+    .sender-email { font-size: 0.8rem; color: var(--accent); opacity: 0.8; }
+    
+    .message-bubble { 
+        color: var(--text-muted); max-width: 400px; font-style: italic; font-size: 0.85rem;
+        background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 4px; border-left: 2px solid var(--border-color);
     }
 
-    /* Actions */
-    .action-link { 
-        font-size: 0.85rem; font-weight: 600; text-decoration: none; 
-        color: var(--accent); border: 1px solid var(--border); padding: 4px 10px; 
-        border-radius: 4px; transition: 0.2s; background: var(--bg-darker);
+    /* Status & Quick Reply */
+    .status-resolved { color: #22c55e; font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 6px; text-transform: uppercase; }
+    
+    .reply-form { display: flex; gap: 8px; align-items: flex-start; }
+    .reply-textarea { 
+        background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main);
+        border-radius: 4px; padding: 8px; font-size: 0.85rem; min-width: 250px; min-height: 50px; resize: vertical;
+        transition: 0.2s;
     }
-    .action-link:hover { border-color: var(--accent); background: rgba(255, 102, 0, 0.1); }
+    .reply-textarea:focus { border-color: var(--accent); outline: none; background: #1a1c23; }
+
+    .btn-validate { 
+        background: var(--accent); color: #fff; border: none; padding: 8px 12px; border-radius: 4px; 
+        font-weight: 700; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; transition: 0.2s;
+    }
+    .btn-validate:hover { opacity: 0.9; transform: translateY(-1px); }
 
 </style>
 {% endblock %}
@@ -66,70 +70,68 @@
     <div class="page-header">
         <div>
             <h1>Messages de contact</h1>
-            <p>Demandes et messages envoyés via le formulaire du site.</p>
+            <p>Interagissez avec les visiteurs et membres du club.</p>
         </div>
         <div class="toolbar">
-            <input type="text" id="searchMessages" class="search-input" placeholder="Rechercher par nom, email...">
+            <input type="text" id="searchMessages" class="search-input" placeholder="Rechercher un expéditeur...">
         </div>
     </div>
 
-    <div class="content-card">
-        <div class="table-responsive">
-            <table class="table" id="messagesTable">
+    <div class="table-wrapper">
+        <div style="overflow-x: auto;">
+            <table class="admin-table" id="messagesTable">
                 <thead>
                     <tr>
                         <th width="120">Date</th>
-                        <th width="250">Expéditeur</th>
-                        <th width="150">Téléphone</th>
-                        <th>Aperçu du message</th>
-                        <th style="text-align: right;">Action</th>
+                        <th width="220">Expéditeur</th>
+                        <th width="140">Contact</th>
+                        <th>Message reçu</th>
+                        <th style="text-align: right;">Traitement / Réponse</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for message in messages %}
                         <tr>
-                            <td class="date-cell">
+                            <td class="date-text">
                                 {{ message.createdAt|date('d/m/Y') }}<br>
-                                <span style="font-size: 0.75rem; opacity: 0.7;">{{ message.createdAt|date('H:i') }}</span>
+                                <span style="opacity: 0.5;">{{ message.createdAt|date('H:i') }}</span>
                             </td>
                             
                             <td>
-                                <span class="sender-name">{{ message.prenom }} {{ message.nom|upper }}</span>
-                                <span class="sender-contact">{{ message.email }}</span>
+                                <div class="sender-info">
+                                    <span class="sender-name">{{ message.prenom }} {{ message.nom|upper }}</span>
+                                    <span class="sender-email">{{ message.email }}</span>
+                                </div>
                             </td>
 
-                            <td style="color: var(--text-muted);">
+                            <td style="color: var(--text-muted); font-family: monospace; font-size: 0.85rem;">
                                 {{ message.telephone ?: '—' }}
                             </td>
 
                             <td>
-                                <div class="message-excerpt" title="{{ message.message }}">
-                                    "{{ message.message }}"
+                                <div class="message-bubble" title="{{ message.message }}">
+                                    "{{ message.message|length > 100 ? message.message|slice(0, 100) ~ '...' : message.message }}"
                                 </div>
                             </td>
-<td style="text-align: right;">
-    {% if message.resolvedBy %}
-        <span style="color: #34d399; font-size: 0.8rem; font-weight: bold;">
-            <i class="fa-solid fa-check"></i> Résolu par {{ message.resolvedBy }}
-        </span>
-    {% else %}
-<form action="{{ path('admin_contact_reply', {id: message.id}) }}" method="POST" style="display: inline-flex; gap: 5px;">
-    <input type="hidden" name="_token" value="{{ csrf_token('reply' ~ message.id) }}">
-<textarea name="reponse" placeholder="Votre réponse..." required
-          style="background:#111;border:1px solid #333;color:white;border-radius:4px;padding:4px 8px;font-size:0.8rem;min-width:240px;min-height:48px;"></textarea>
 
-    <button type="submit" class="action-link" style="background: var(--accent); color: white; border: none; cursor: pointer;">
-        Valider
-    </button>
-</form>
-
-    {% endif %}
-</td>
+                            <td style="text-align: right;">
+                                {% if message.resolvedBy %}
+                                    <div class="status-resolved">
+                                        <span style="font-size: 1.2rem;">✓</span> Résolu par {{ message.resolvedBy }}
+                                    </div>
+                                {% else %}
+                                    <form action="{{ path('admin_contact_reply', {id: message.id}) }}" method="POST" class="reply-form">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('reply' ~ message.id) }}">
+                                        <textarea name="reponse" class="reply-textarea" placeholder="Rédiger une réponse rapide..." required></textarea>
+                                        <button type="submit" class="btn-validate">Répondre</button>
+                                    </form>
+                                {% endif %}
+                            </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="5" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-                                Aucun message reçu pour le moment.
+                            <td colspan="5" style="text-align: center; padding: 5rem; color: var(--text-muted);">
+                                Aucun message n'a été reçu via le formulaire.
                             </td>
                         </tr>
                     {% endfor %}
@@ -140,12 +142,14 @@
 </div>
 
 <script>
-document.getElementById('searchMessages').addEventListener('keyup', function() {
-    const val = this.value.toLowerCase();
-    const rows = document.querySelectorAll('#messagesTable tbody tr');
-    rows.forEach(row => {
-        row.style.display = row.innerText.toLowerCase().includes(val) ? '' : 'none';
+    // Filtre de recherche dynamique
+    document.getElementById('searchMessages').addEventListener('keyup', function() {
+        const val = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#messagesTable tbody tr');
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(val) ? '' : 'none';
+        });
     });
-});
 </script>
 {% endblock %}

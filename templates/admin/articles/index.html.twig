@@ -4,94 +4,129 @@
 
 {% block stylesheets %}
 <style>
-    /* =================== PAGE STYLE =================== */
-    .dashboard-container { width: 100%; max-width: 1600px; margin: 0 auto; }
-
-    /* Header */
+    /* =================== HEADER & TOOLS =================== */
     .page-header {
-        display: flex; justify-content: space-between; align-items: center;
-        margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;
+        display: flex; justify-content: space-between; align-items: flex-end;
+        margin-bottom: 2rem; padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
     }
-    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
     .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
 
-    /* Toolbar */
-    .toolbar { display: flex; gap: 1rem; align-items: center; }
+    .toolbar { display: flex; gap: 1rem; }
+
     .search-input {
-        background: transparent; border: 1px solid var(--border); color: var(--text-main);
-        padding: 0.6rem 1rem; border-radius: 4px; outline: none; min-width: 300px; font-size: 0.9rem;
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 0.6rem 1rem;
+        border-radius: 4px;
+        min-width: 280px;
+        font-size: 0.9rem;
+        font-family: inherit;
+        transition: 0.2s;
     }
     .search-input:focus { border-color: var(--accent); }
 
-    .btn-primary {
-        background: var(--accent); color: #fff; padding: 0.6rem 1.5rem; border-radius: 4px;
-        font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.2s; border: none;
-        text-transform: uppercase; letter-spacing: 0.5px; text-decoration: none; display: inline-block;
+    .btn-create {
+        background: var(--text-main);
+        color: var(--bg-body);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700; font-size: 0.85rem;
+        cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
+        transition: 0.2s; border: none; text-decoration: none; display: inline-block;
     }
-    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-create:hover { opacity: 0.9; }
 
-    /* Table */
-    .content-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; }
-    .table-responsive { overflow-x: auto; }
-    .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    /* =================== TABLEAU =================== */
+    .table-wrapper {
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        overflow: hidden;
+    }
     
-    .table th {
-        background: var(--bg-darker); color: var(--text-muted); font-weight: 600; text-align: left;
-        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); text-transform: uppercase;
-        font-size: 0.75rem; letter-spacing: 1px;
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    
+    .admin-table th {
+        background: rgba(255,255,255,0.02);
+        color: var(--text-muted);
+        font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.75rem;
+        text-align: left; padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border-color);
     }
-    .table td {
-        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle;
+    
+    .admin-table td {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-main); vertical-align: middle;
     }
-    .table tr:last-child td { border-bottom: none; }
-    .table tr:hover { background: rgba(255,255,255,0.01); }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover td { background: rgba(255,255,255,0.01); }
 
-    /* Article Specifics */
-    .article-thumb {
-        width: 60px; height: 45px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border); background: var(--bg-darker);
+    /* Visuels Articles */
+    .article-preview {
+        display: flex; align-items: center; gap: 15px;
+    }
+    .thumb {
+        width: 60px; height: 45px; object-fit: cover; border-radius: 4px; 
+        border: 1px solid var(--border-color); background: var(--bg-body);
     }
     .no-thumb {
-        width: 60px; height: 45px; border-radius: 4px; background: var(--bg-darker); border: 1px solid var(--border);
-        display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--text-muted);
+        width: 60px; height: 45px; border-radius: 4px; background: var(--bg-body);
+        border: 1px dashed var(--border-color); display: flex; align-items: center; 
+        justify-content: center; font-size: 0.7rem; color: var(--text-muted);
     }
     
-    .article-title { font-weight: 600; font-size: 0.95rem; color: var(--text-main); display: block; }
-    .article-cat { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
+    .title-group { display: flex; flex-direction: column; }
+    .title-group strong { font-size: 0.95rem; color: var(--text-main); }
+    .cat-tag { font-size: 0.75rem; color: var(--accent); text-transform: uppercase; font-weight: 600; margin-top: 2px; }
+
+    /* Date de publication */
+    .date-badge {
+        font-family: monospace; font-size: 0.85rem; color: var(--text-muted);
+    }
 
     /* Actions */
-    .actions-cell { display: flex; gap: 15px; justify-content: flex-end; }
-    .action-link { font-size: 0.85rem; font-weight: 500; text-decoration: none; border: none; background: none; cursor: pointer; padding: 0; }
-    .link-edit { color: var(--text-muted); }
-    .link-edit:hover { color: var(--text-main); text-decoration: underline; }
-    .link-delete { color: #ef4444; opacity: 0.8; }
-    .link-delete:hover { opacity: 1; text-decoration: underline; }
+    .actions { display: flex; gap: 15px; justify-content: flex-end; }
+    .act-link { 
+        font-size: 0.75rem; font-weight: 600; text-transform: uppercase; 
+        letter-spacing: 0.05em; cursor: pointer; transition: 0.2s; opacity: 0.7; 
+        background: none; border: none; padding: 0;
+    }
+    .act-link:hover { opacity: 1; text-decoration: underline; }
+    .act-edit { color: var(--text-main); }
+    .act-del { color: var(--danger); }
 
 </style>
 {% endblock %}
 
+{% block page_title %}Articles & Blog{% endblock %}
+
 {% block body %}
-<div class="dashboard-container">
-    
+
     <div class="page-header">
         <div>
-            <h1>Articles & Actualités</h1>
-            <p>Gestion du blog et des communications.</p>
+            <h1>Actualités</h1>
+            <p>Gérez les articles du blog et les annonces du club.</p>
         </div>
         <div class="toolbar">
-            <input type="text" id="searchArticle" class="search-input" placeholder="Rechercher par titre...">
-            <a href="{{ path('admin_articles_new') }}" class="btn-primary">Créer un article</a>
+            <input type="text" id="searchInput" class="search-input" placeholder="Filtrer par titre...">
+            <a href="{{ path('admin_articles_new') }}" class="btn-create">
+                + Nouvel Article
+            </a>
         </div>
     </div>
 
-    <div class="content-card">
-        <div class="table-responsive">
-            <table class="table" id="articlesTable">
+    <div class="table-wrapper">
+        <div style="overflow-x: auto;">
+            <table class="admin-table" id="articlesTable">
                 <thead>
                     <tr>
-                        <th width="80">Image</th>
-                        <th>Titre / Catégorie</th>
-                        <th>Extrait</th>
-                        <th>Publication</th>
+                        <th width="35%">Article</th>
+                        <th width="35%">Aperçu du contenu</th>
+                        <th width="15%">Publication</th>
                         <th style="text-align: right;">Actions</th>
                     </tr>
                 </thead>
@@ -99,41 +134,52 @@
                     {% for article in articles %}
                         <tr>
                             <td>
-                                {% if article.photo %}
-                                    <img src="{{ asset('uploads/' ~ article.photo) }}" alt="" class="article-thumb">
-                                {% else %}
-                                    <div class="no-thumb">N/A</div>
-                                {% endif %}
+                                <div class="article-preview">
+                                    {% if article.photo %}
+                                        <img src="{{ asset('uploads/' ~ article.photo) }}" alt="" class="thumb">
+                                    {% else %}
+                                        <div class="no-thumb">N/A</div>
+                                    {% endif %}
+                                    <div class="title-group">
+                                        <strong>{{ article.title }}</strong>
+                                        <span class="cat-tag">{{ article.categorie|default('Général') }}</span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">
+                                {{ article.description|striptags|slice(0, 80) ~ '...' }}
                             </td>
 
                             <td>
-                                <span class="article-title">{{ article.title }}</span>
-                                <span class="article-cat">{{ article.categorie ? article.categorie : 'Non classé' }}</span>
-                            </td>
-
-                            <td style="color: var(--text-muted); font-size: 0.85rem; max-width: 300px;">
-                                {{ article.description|striptags|slice(0, 60) ~ '...' }}
-                            </td>
-
-                            <td style="color: var(--text-muted);">
-                                {{ article.publishedAt ? article.publishedAt|date('d/m/Y') : 'Brouillon' }}
+                                <span class="date-badge">
+                                    {% if article.publishedAt %}
+                                        {{ article.publishedAt|date('d/m/Y') }}
+                                    {% else %}
+                                        <span style="color: var(--accent);">Brouillon</span>
+                                    {% endif %}
+                                </span>
                             </td>
 
                             <td>
-                                <div class="actions-cell">
-                                    <a href="{{ path('admin_articles_edit', {id: article.id}) }}" class="action-link link-edit">Modifier</a>
+                                <div class="actions">
+                                    <a href="{{ path('admin_articles_edit', {id: article.id}) }}" class="act-link act-edit">
+                                        Modifier
+                                    </a>
                                     
-                                    <form method="post" action="{{ path('admin_articles_delete', {id: article.id}) }}" onsubmit="return confirm('Confirmer la suppression de l\'article ?');" style="display:inline;">
+                                    <form method="post" action="{{ path('admin_articles_delete', {id: article.id}) }}" 
+                                          style="display:inline;"
+                                          onsubmit="return confirm('Supprimer définitivement cet article ?');">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
-                                        <button class="action-link link-delete">Supprimer</button>
+                                        <button class="act-link act-del">Supprimer</button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="5" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-                                Aucun article publié.
+                            <td colspan="4" style="text-align: center; padding: 4rem; color: var(--text-muted);">
+                                Aucun article n'a été rédigé pour le moment.
                             </td>
                         </tr>
                     {% endfor %}
@@ -141,15 +187,20 @@
             </table>
         </div>
     </div>
-</div>
 
+{% endblock %}
+
+{% block javascripts %}
 <script>
-document.getElementById('searchArticle').addEventListener('keyup', function() {
-    const val = this.value.toLowerCase();
-    const rows = document.querySelectorAll('#articlesTable tbody tr');
-    rows.forEach(row => {
-        row.style.display = row.textContent.toLowerCase().includes(val) ? '' : 'none';
+    // Recherche rapide par titre
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#articlesTable tbody tr');
+
+        rows.forEach(row => {
+            const title = row.querySelector('.title-group strong').textContent.toLowerCase();
+            row.style.display = title.includes(filter) ? '' : 'none';
+        });
     });
-});
 </script>
 {% endblock %}

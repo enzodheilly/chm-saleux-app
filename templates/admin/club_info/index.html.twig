@@ -4,80 +4,107 @@
 
 {% block stylesheets %}
 <style>
-    /* =================== PAGE STYLE =================== */
-    .dashboard-container { width: 100%; max-width: 1600px; margin: 0 auto; }
-
-    /* Header */
+    /* =================== HEADER & TOOLS =================== */
     .page-header {
-        display: flex; justify-content: space-between; align-items: center;
-        margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;
+        display: flex; justify-content: space-between; align-items: flex-end;
+        margin-bottom: 2rem; padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
     }
-    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
     .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
 
-    /* Toolbar */
-    .btn-primary {
-        background: var(--accent); color: #fff; padding: 0.6rem 1.5rem; border-radius: 4px;
-        font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.2s; border: none;
-        text-transform: uppercase; letter-spacing: 0.5px; text-decoration: none; display: inline-block;
+    .btn-create {
+        background: var(--text-main);
+        color: var(--bg-body);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700; font-size: 0.85rem;
+        cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
+        transition: 0.2s; border: none; text-decoration: none; display: inline-block;
     }
-    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-create:hover { opacity: 0.9; }
 
-    /* Table */
-    .content-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; }
-    .table-responsive { overflow-x: auto; }
-    .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    /* =================== TABLEAU PRO =================== */
+    .table-wrapper {
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        overflow: hidden;
+    }
     
-    .table th {
-        background: var(--bg-darker); color: var(--text-muted); font-weight: 600; text-align: left;
-        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); text-transform: uppercase;
-        font-size: 0.75rem; letter-spacing: 1px;
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    
+    .admin-table th {
+        background: rgba(255,255,255,0.02);
+        color: var(--text-muted);
+        font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.75rem;
+        text-align: left; padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border-color);
     }
-    .table td {
-        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle;
+    
+    .admin-table td {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-main); vertical-align: middle;
     }
-    .table tr:last-child td { border-bottom: none; }
-    .table tr:hover { background: rgba(255,255,255,0.01); }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover td { background: rgba(255,255,255,0.01); }
 
-    /* Specific Styles */
-    .category-badge {
-        display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; 
-        text-transform: uppercase; letter-spacing: 0.5px; background: rgba(255, 102, 0, 0.1); 
-        color: var(--accent); border: 1px solid rgba(255, 102, 0, 0.2);
+    /* Badges de Catégorie */
+    .info-badge {
+        display: inline-block; padding: 4px 10px; border-radius: 4px; 
+        font-size: 0.7rem; font-weight: 700; text-transform: uppercase; 
+        letter-spacing: 0.05em; background: var(--bg-body); 
+        color: var(--accent); border: 1px solid var(--border-color);
     }
-    .content-excerpt { color: var(--text-muted); font-size: 0.9rem; max-width: 600px; line-height: 1.5; }
+
+    .content-preview { 
+        color: var(--text-muted); 
+        font-size: 0.85rem; 
+        max-width: 700px; 
+        line-height: 1.5;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
     /* Actions */
-    .actions-cell { display: flex; gap: 15px; justify-content: flex-end; }
-    .action-link { font-size: 0.85rem; font-weight: 500; text-decoration: none; border: none; background: none; cursor: pointer; padding: 0; }
-    .link-edit { color: var(--text-muted); }
-    .link-edit:hover { color: var(--text-main); text-decoration: underline; }
-    .link-delete { color: #ef4444; opacity: 0.8; }
-    .link-delete:hover { opacity: 1; text-decoration: underline; }
+    .actions { display: flex; gap: 15px; justify-content: flex-end; }
+    .act-link { 
+        font-size: 0.75rem; font-weight: 600; text-transform: uppercase; 
+        letter-spacing: 0.05em; cursor: pointer; transition: 0.2s; opacity: 0.7; 
+        background: none; border: none; padding: 0;
+    }
+    .act-link:hover { opacity: 1; text-decoration: underline; }
+    .act-edit { color: var(--text-main); }
+    .act-del { color: var(--danger); }
 
 </style>
 {% endblock %}
 
+{% block page_title %}Informations Club{% endblock %}
+
 {% block body %}
-<div class="dashboard-container">
-    
+
     <div class="page-header">
         <div>
-            <h1>Informations du club</h1>
-            <p>Gestion des textes de présentation (Horaires, Tarifs, Histoire...).</p>
+            <h1>Textes de Présentation</h1>
+            <p>Gérez les informations fixes du site (Horaires, Histoire, Équipements...).</p>
         </div>
-        <div>
-            <a href="{{ path('admin_clubinfo_new') }}" class="btn-primary">Ajouter une info</a>
+        <div class="toolbar">
+            <a href="{{ path('admin_clubinfo_new') }}" class="btn-create">
+                + Ajouter une section
+            </a>
         </div>
     </div>
 
-    <div class="content-card">
-        <div class="table-responsive">
-            <table class="table">
+    <div class="table-wrapper">
+        <div style="overflow-x: auto;">
+            <table class="admin-table">
                 <thead>
                     <tr>
-                        <th width="20%">Catégorie</th>
-                        <th>Aperçu du contenu</th>
+                        <th width="200">Emplacement / Type</th>
+                        <th>Aperçu du texte</th>
                         <th style="text-align: right;">Actions</th>
                     </tr>
                 </thead>
@@ -85,22 +112,24 @@
                     {% for info in infos %}
                         <tr>
                             <td>
-                                <span class="category-badge">{{ info.category|capitalize }}</span>
+                                <span class="info-badge">{{ info.category|capitalize }}</span>
                             </td>
 
                             <td>
-                                <div class="content-excerpt">
-                                    {{ info.content|striptags|slice(0, 100) ~ (info.content|length > 100 ? '...' : '') }}
+                                <div class="content-preview">
+                                    {{ info.content|striptags|slice(0, 120) ~ (info.content|length > 120 ? '...' : '') }}
                                 </div>
                             </td>
 
                             <td>
-                                <div class="actions-cell">
-                                    <a href="{{ path('admin_clubinfo_edit', {id: info.id}) }}" class="action-link link-edit">Modifier</a>
+                                <div class="actions">
+                                    <a href="{{ path('admin_clubinfo_edit', {id: info.id}) }}" class="act-link act-edit">Modifier</a>
                                     
-                                    <form method="post" action="{{ path('admin_clubinfo_delete', {id: info.id}) }}" onsubmit="return confirm('Confirmer la suppression de cette information ?');" style="display:inline;">
+                                    <form method="post" action="{{ path('admin_clubinfo_delete', {id: info.id}) }}" 
+                                          onsubmit="return confirm('Confirmer la suppression ?');" 
+                                          style="display:inline;">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ info.id) }}">
-                                        <button class="action-link link-delete">Supprimer</button>
+                                        <button class="act-link act-del">Supprimer</button>
                                     </form>
                                 </div>
                             </td>
@@ -108,7 +137,7 @@
                     {% else %}
                         <tr>
                             <td colspan="3" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-                                Aucune information enregistrée.
+                                Aucun texte d'information n'a été rédigé.
                             </td>
                         </tr>
                     {% endfor %}
@@ -116,5 +145,5 @@
             </table>
         </div>
     </div>
-</div>
+
 {% endblock %}

@@ -5,60 +5,70 @@
 {% block stylesheets %}
 <style>
     /* =================== PAGE STYLE =================== */
-    .dashboard-container { width: 100%; max-width: 1200px; margin: 0 auto; }
+    .dashboard-container { width: 100%; max-width: 1400px; margin: 0 auto; }
 
     /* Header */
-    .page-header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
-    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header { margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end; }
+    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); }
     .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
 
-    /* Form Card */
-    .form-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; }
-    .form-section-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin: 2rem 0 1rem 0; padding-bottom: 0.5rem; border-bottom: 1px dashed var(--border); }
+    /* Card */
+    .form-card { background: var(--bg-sidebar); border: 1px solid var(--border-color); border-radius: 6px; padding: 2rem; }
+    .form-section-title { font-size: 1rem; font-weight: 700; color: var(--text-main); margin: 2rem 0 1rem 0; padding-bottom: 0.5rem; border-bottom: 1px dashed var(--border-color); text-transform: uppercase; letter-spacing: 0.05em; }
 
-    /* Inputs */
-    label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
-    input[type="text"], input[type="date"], input[type="number"], input[type="file"], select {
-        width: 100%; background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-main);
-        padding: 0.7rem 1rem; border-radius: 4px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; box-sizing: border-box;
-    }
-    input:focus, select:focus { border-color: var(--accent); }
+    /* Inputs Généraux */
+    .form-label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .form-control { width: 100%; background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.6rem 0.8rem; border-radius: 4px; font-size: 0.9rem; transition: 0.2s; box-sizing: border-box; }
+    .form-control:focus { border-color: var(--accent); outline: none; }
 
     /* Grids */
     .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
     .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; }
-    @media(max-width: 800px) { .row-2, .row-3 { grid-template-columns: 1fr; gap: 1rem; } }
+    @media(max-width: 900px) { .row-2, .row-3 { grid-template-columns: 1fr; gap: 1rem; } }
 
-    /* Results Table inside Form */
-    .results-wrapper { overflow-x: auto; margin-bottom: 1rem; border: 1px solid var(--border); border-radius: 4px; }
-    .result-table { width: 100%; border-collapse: collapse; min-width: 1000px; }
-    .result-table th { background: var(--bg-darker); padding: 0.8rem; text-align: left; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
-    .result-table td { padding: 0.5rem; border-top: 1px solid var(--border); background: var(--bg-light); }
-    .result-table input { padding: 0.5rem; font-size: 0.9rem; }
-
-    /* Actions */
-    .form-actions { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 1rem; }
-    .btn-submit { background: var(--accent); color: #fff; padding: 0.7rem 1.5rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; }
-    .btn-submit:hover { background: var(--accent-hover); }
-    .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.7rem 1.5rem; border-radius: 4px; text-decoration: none; display: inline-flex; align-items: center; }
-    .btn-cancel:hover { border-color: var(--text-muted); color: var(--text-main); }
+    /* Results Table */
+    .results-wrapper { overflow-x: auto; margin-bottom: 1rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-body); }
+    .result-table { width: 100%; border-collapse: collapse; min-width: 1100px; font-size: 0.85rem; }
+    .result-table th { background: var(--bg-sidebar); padding: 0.8rem; text-align: left; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
+    .result-table td { padding: 0.4rem; border-bottom: 1px solid var(--border-color); }
     
-    .btn-add-row { background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-main); padding: 0.5rem 1rem; cursor: pointer; font-size: 0.85rem; border-radius: 4px; }
-    .btn-add-row:hover { border-color: var(--accent); color: var(--accent); }
-    
-    .btn-remove { background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 0.75rem; }
+    /* --- CORRECTION CONTRASTE INPUTS --- */
+    /* On force un fond gris foncé et du texte clair pour les inputs du tableau */
+    .result-table input, .result-table select { 
+        width: 100%; 
+        background: #2a2d35; /* Gris foncé distinct du fond noir */
+        border: 1px solid #3f424a; 
+        color: #ffffff; /* Texte Blanc */
+        padding: 0.5rem; 
+        font-size: 0.85rem; 
+        border-radius: 4px; 
+    }
+    .result-table input:hover, .result-table select:hover { border-color: var(--text-muted); }
+    .result-table input:focus, .result-table select:focus { border-color: var(--accent); background: #32353e; outline: none; }
+    /* Fin correction contraste */
 
+    /* Buttons */
+    .btn-add-row { background: var(--bg-sidebar); border: 1px dashed var(--border-color); color: var(--text-muted); padding: 0.8rem; width: 100%; cursor: pointer; border-radius: 4px; margin-top: 10px; transition: 0.2s; }
+    .btn-add-row:hover { border-color: var(--accent); color: var(--accent); background: rgba(255,102,0,0.05); }
+    
+    .btn-remove { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; width: 24px; height: 24px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    .btn-remove:hover { background: var(--danger); color: white; }
+
+    .form-actions { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 1rem; }
+    .btn-cancel { padding: 0.7rem 1.2rem; color: var(--text-muted); font-weight: 600; text-decoration: none; border-radius: 4px; }
+    .btn-save { background: var(--text-main); color: var(--bg-body); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 700; border: none; cursor: pointer; }
+    .btn-save:hover { opacity: 0.9; }
 </style>
 {% endblock %}
 
 {% block body %}
 <div class="dashboard-container">
     
-    <div id="athletes-data" data-athletes="{{ athletesJson|default('[]') }}" style="display:none;"></div>
+    <div id="athletes-data" data-athletes="{{ athletesJson|default('[]')|e('html_attr') }}" style="display:none;"></div>
 
     <div class="page-header">
         <h1>Nouvelle compétition</h1>
-        <p>Enregistrez un événement et saisissez les résultats.</p>
+        <p>Création d'événement et saisie des résultats.</p>
     </div>
 
     <div class="form-card">
@@ -66,62 +76,62 @@
             
             <div class="row-2">
                 <div>
-                    <label for="titre">Titre de la compétition</label>
-                    <input type="text" id="titre" name="titre" required placeholder="Ex: Championnat régional">
+                    <label class="form-label">Titre</label>
+                    <input type="text" name="titre" class="form-control" required placeholder="Ex: Open de France">
                 </div>
                 <div>
-                    <label for="type">Type</label>
-                    <input type="text" id="type" name="type" placeholder="Ex: Qualificatif, Finale...">
+                    <label class="form-label">Type</label>
+                    <input type="text" name="type" class="form-control" placeholder="Ex: Qualificatif">
                 </div>
             </div>
 
             <div class="row-3" style="margin-top: 1.5rem;">
                 <div>
-                    <label for="date">Date</label>
-                    <input type="date" id="date" name="date" required>
+                    <label class="form-label">Date</label>
+                    <input type="date" name="date" class="form-control" required>
                 </div>
                 <div>
-                    <label for="lieu">Lieu</label>
-                    <input type="text" id="lieu" name="lieu" required placeholder="Ex: Paris">
+                    <label class="form-label">Lieu</label>
+                    <input type="text" name="lieu" class="form-control" required>
                 </div>
                 <div>
-                    <label for="equipe">Catégorie Équipe</label>
-                    {# J'ai ajouté l'ID 'equipeSelect' pour l'écouter en JS #}
-                    <select id="equipeSelect" name="equipe" required>
-                        <option value="" disabled selected>Choisir...</option>
-                        <option value="male">Masculine</option>
-                        <option value="female">Féminine</option>
+                    <label class="form-label" style="color: var(--accent);">Genre Équipe (Filtre)</label>
+                    <select id="equipeSelect" name="equipe" class="form-control" required>
+                        <option value="" disabled selected>-- Choisir --</option>
+                        <option value="male">Masculine (Hommes)</option>
+                        <option value="female">Féminine (Femmes)</option>
+                        <option value="mixed">Mixte (Tous)</option>
                     </select>
                 </div>
             </div>
 
             <div class="row-2" style="margin-top: 1.5rem;">
                 <div>
-                    <label for="classementEquipe">Classement Équipe</label>
-                    <input type="text" id="classementEquipe" name="classementEquipe" placeholder="Ex: 1/12">
+                    <label class="form-label">Classement Équipe</label>
+                    <input type="text" name="classementEquipe" class="form-control" placeholder="Ex: 1er">
                 </div>
                 <div>
-                    <label for="image">Affiche / Photo</label>
-                    <input type="file" id="image" name="image" accept="image/*">
+                    <label class="form-label">Affiche</label>
+                    <input type="file" name="image" class="form-control">
                 </div>
             </div>
 
-            <h3 class="form-section-title">Saisie des résultats</h3>
+            <h3 class="form-section-title">Résultats</h3>
             
             <div class="results-wrapper">
                 <table class="result-table" id="resultsTable">
                     <thead>
                         <tr>
-                            <th width="15%" style="color:var(--accent);">★ Sélection Rapide</th>
+                            <th width="20%" style="color:var(--accent);">★ Sélection Rapide</th>
                             <th width="12%">Nom</th>
                             <th width="12%">Prénom</th>
-                            <th width="8%">Catégorie</th>
-                            <th width="8%">Poids</th>
-                            <th width="8%">Ép-Jeté</th>
+                            <th width="10%">Catégorie</th>
+                            <th width="10%">Poids</th>
                             <th width="8%">Arraché</th>
+                            <th width="8%">Ép-Jeté</th>
                             <th width="8%">Total</th>
                             <th width="8%">Points</th>
-                            <th width="5%">Action</th>
+                            <th width="4%"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -133,30 +143,32 @@
 
             <div class="form-actions">
                 <a href="{{ path('admin_competition_index') }}" class="btn-cancel">Annuler</a>
-                <button type="submit" class="btn-submit">Enregistrer la compétition</button>
+                <button type="submit" class="btn-save">Enregistrer</button>
             </div>
 
         </form>
     </div>
 </div>
+{% endblock %}
 
+{% block javascripts %}
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Récupération des données JSON
+    // 1. CHARGEMENT DONNÉES
     const rawData = document.getElementById('athletes-data').dataset.athletes;
     let allAthletes = [];
     try {
         allAthletes = JSON.parse(rawData);
-    } catch(e) { console.error("Erreur JSON", e); }
+    } catch(e) { console.error("JSON Error", e); }
 
     const equipeSelect = document.getElementById('equipeSelect');
     const tableBody = document.querySelector('#resultsTable tbody');
     const addBtn = document.getElementById('addResultBtn');
     let counter = 0;
 
-    // --- NOUVELLE FONCTION : Récupérer les ID déjà utilisés ---
+    // --- FONCTION : Récupérer les ID déjà utilisés dans le tableau ---
     function getUsedIds() {
-        const selects = document.querySelectorAll('.js-athlete-filler');
+        const selects = document.querySelectorAll('.js-athlete-select');
         const used = [];
         selects.forEach(select => {
             if (select.value !== "") {
@@ -166,126 +178,134 @@ document.addEventListener('DOMContentLoaded', () => {
         return used;
     }
 
-    // --- FONCTION MISE À JOUR : Générer les options en filtrant les exclus ---
-    function generateOptionsHTML(selectedTeam, currentValue, usedIds) {
-        let options = '<option value="">-- Saisie manuelle --</option>';
+    // --- LOGIQUE DE FILTRAGE + EXCLUSION ---
+    function generateOptionsHTML(currentValue = null, usedIds = []) {
+        const teamType = equipeSelect.value;
+        let html = '<option value="">-- Sélectionner --</option>';
         
-        // On garde les athlètes de l'équipe SI :
-        // 1. Ils ne sont pas déjà utilisés ailleurs ( !usedIds.includes(a.id) )
-        // 2. OU SI c'est l'athlète actuellement sélectionné dans CE menu ( a.id === currentValue )
-        const filtered = allAthletes.filter(a => {
-            const isInTeam = a.equipe === selectedTeam;
-            const isAvailable = !usedIds.includes(a.id);
-            const isCurrent = a.id === currentValue;
-            
-            return isInTeam && (isAvailable || isCurrent);
-        });
-        
+        // 1. Filtre par équipe (Genre)
+        let filtered = allAthletes;
+        if (teamType && teamType !== 'mixed') {
+            filtered = allAthletes.filter(athlete => {
+                const genre = (athlete.sexe || athlete.genre || athlete.equipe || '').toLowerCase();
+                if (teamType === 'male') return ['m','h','homme','masculin','male'].some(s => genre.includes(s));
+                if (teamType === 'female') return ['f','femme','feminin','female'].some(s => genre.includes(s));
+                return true;
+            });
+        }
+
+        // 2. Filtre anti-doublon (Exclusion)
+        // On affiche l'athlète SI :
+        // - Il n'est PAS dans la liste des ID utilisés
+        // - OU C'est l'athlète actuellement sélectionné sur CETTE ligne (sinon il disparaîtrait)
         filtered.forEach(a => {
-            const poids = a.categoriePoids || '';
-            // On remet l'attribut selected si c'est la valeur actuelle
-            const selectedAttr = (a.id === currentValue) ? 'selected' : '';
-            
-            options += `<option value="${a.id}" 
-                data-nom="${a.nom}" 
-                data-prenom="${a.prenom}"
-                data-poids="${poids}"
-                ${selectedAttr}>
-                ${a.nom} ${a.prenom}
-            </option>`;
+            const isUsedElsewhere = usedIds.includes(a.id);
+            const isCurrentSelection = (currentValue && parseInt(currentValue) === a.id);
+
+            if (!isUsedElsewhere || isCurrentSelection) {
+                const selected = isCurrentSelection ? 'selected' : '';
+                html += `<option value="${a.id}" ${selected}
+                    data-nom="${a.nom}" 
+                    data-prenom="${a.prenom}" 
+                    data-cat="${a.categorie || ''}" 
+                    data-poids="${a.categoriePoids || ''}">
+                    ${a.nom} ${a.prenom}
+                </option>`;
+            }
         });
-        return options;
+        return html;
     }
 
-    // --- NOUVELLE FONCTION : Mettre à jour TOUS les menus déroulants ---
+    // --- MISE À JOUR MASSIVE ---
+    // Cette fonction recharge TOUTES les listes déroulantes pour mettre à jour les exclusions
     function updateAllDropdowns() {
-        const selectedTeam = equipeSelect.value;
-        const allSelects = document.querySelectorAll('.js-athlete-filler');
-        const usedIds = getUsedIds();
+        const selects = document.querySelectorAll('.js-athlete-select');
+        const usedIds = getUsedIds(); // On récupère la liste complète des ID pris
 
-        allSelects.forEach(select => {
-            // On sauvegarde la valeur actuelle (l'ID de l'athlète choisi)
-            // On le convertit en Int car les IDs JSON sont souvent des Int
-            const currentVal = select.value ? parseInt(select.value) : null;
-            
-            // On régénère le HTML
-            select.innerHTML = generateOptionsHTML(selectedTeam, currentVal, usedIds);
+        selects.forEach(select => {
+            const currentVal = select.value;
+            // On regénère le HTML en passant la valeur actuelle (pour la garder) et la liste des exclus
+            select.innerHTML = generateOptionsHTML(currentVal, usedIds);
         });
     }
 
-    // Fonction pour ajouter une ligne
+    // --- AJOUT DE LIGNE ---
     function addRow() {
-        // On crée la ligne avec un select vide au début, il sera rempli par updateAllDropdowns juste après
-        const row = document.createElement('tr');
-        row.innerHTML = `
+        const tr = document.createElement('tr');
+        // Au moment de créer, on génère la liste en tenant compte des exclus actuels
+        const options = generateOptionsHTML(null, getUsedIds());
+
+        tr.innerHTML = `
             <td>
-                <select class="athlete-select js-athlete-filler">
-                    </select>
+                <select class="js-athlete-select" style="font-weight:600;">
+                    ${options}
+                </select>
             </td>
-            <td><input type="text" name="results[${counter}][nom]" class="input-nom" placeholder="Nom"></td>
-            <td><input type="text" name="results[${counter}][prenom]" class="input-prenom" placeholder="Prénom"></td>
-            <td><input type="text" name="results[${counter}][categorie]"></td>
+            <td><input type="text" name="results[${counter}][nom]" class="input-nom" required></td>
+            <td><input type="text" name="results[${counter}][prenom]" class="input-prenom" required></td>
+            <td><input type="text" name="results[${counter}][categorie]" class="input-cat"></td>
             <td><input type="text" name="results[${counter}][categoriePoids]" class="input-poids"></td>
-            <td><input type="number" step="1" name="results[${counter}][epauleJete]"></td>
-            <td><input type="number" step="1" name="results[${counter}][arracher]"></td>
-            <td><input type="number" step="1" name="results[${counter}][total]"></td>
+            <td><input type="number" step="1" name="results[${counter}][arracher]" class="calc-input"></td>
+            <td><input type="number" step="1" name="results[${counter}][epauleJete]" class="calc-input"></td>
+            <td><input type="number" step="1" name="results[${counter}][total]" class="total-output" readonly tabindex="-1" style="opacity:0.7;"></td>
             <td><input type="number" step="0.01" name="results[${counter}][point]"></td>
-            <td style="text-align:center;"><button type="button" class="btn-remove">X</button></td>
+            <td style="text-align:center;"><button type="button" class="btn-remove">×</button></td>
         `;
-        tableBody.appendChild(row);
+        tableBody.appendChild(tr);
         counter++;
         
-        // Une fois la ligne ajoutée, on met à jour tous les dropdowns pour inclure cette nouvelle ligne
-        updateAllDropdowns();
+        // Pas besoin d'update all ici car la nouvelle ligne prend déjà en compte les autres
     }
 
-    // --- INITIALISATION ---
-    addRow(); // Ajoute la première ligne
-    addBtn.addEventListener('click', addRow);
+    // --- LISTENERS ---
 
-    // Quand on change d'équipe, on reset tout
-    equipeSelect.addEventListener('change', function() {
-        // On vide les sélections actuelles car l'équipe a changé
-        document.querySelectorAll('.js-athlete-filler').forEach(s => s.value = "");
+    // 1. Changement du genre de l'équipe -> Reset et mise à jour
+    equipeSelect.addEventListener('change', () => {
+        // Optionnel : vider les sélections pour éviter les incohérences Homme/Femme
+        document.querySelectorAll('.js-athlete-select').forEach(s => s.value = "");
         updateAllDropdowns();
     });
 
-    // --- ÉVÉNEMENTS DÉLÉGUÉS ---
+    // 2. Event Delegation
     tableBody.addEventListener('change', (e) => {
-        // Cas 1 : On sélectionne un athlète
-        if(e.target.classList.contains('js-athlete-filler')) {
-            const select = e.target;
-            const selectedOption = select.options[select.selectedIndex];
-            const row = select.closest('tr');
+        const target = e.target;
+        const row = target.closest('tr');
 
-            const inputNom = row.querySelector('.input-nom');
-            const inputPrenom = row.querySelector('.input-prenom');
-            const inputPoids = row.querySelector('.input-poids');
-
-            if (select.value !== "") {
-                inputNom.value = selectedOption.dataset.nom;
-                inputPrenom.value = selectedOption.dataset.prenom;
-                inputPoids.value = selectedOption.dataset.poids;
+        // Remplissage Auto + Mise à jour des exclusions
+        if (target.classList.contains('js-athlete-select')) {
+            const opt = target.selectedOptions[0];
+            if (target.value) {
+                row.querySelector('.input-nom').value = opt.dataset.nom;
+                row.querySelector('.input-prenom').value = opt.dataset.prenom;
+                row.querySelector('.input-cat').value = opt.dataset.cat;
+                row.querySelector('.input-poids').value = opt.dataset.poids;
             }
-            
-            // IMPORTANT : On lance la mise à jour des autres dropdowns
-            // pour retirer cet athlète des choix possibles
+            // IMPORTANT : On a choisi quelqu'un, il faut le retirer des autres listes !
+            updateAllDropdowns();
+        }
+
+        // Calcul Total
+        if (target.classList.contains('calc-input')) {
+            const inputs = row.querySelectorAll('.calc-input');
+            const arr = parseFloat(inputs[0].value) || 0;
+            const epj = parseFloat(inputs[1].value) || 0;
+            row.querySelector('.total-output').value = (arr + epj) > 0 ? (arr + epj) : '';
+        }
+    });
+
+    // 3. Suppression ligne
+    tableBody.addEventListener('click', (e) => {
+        if (e.target.classList.contains('btn-remove')) {
+            // Pas de confirm pour aller plus vite, ou alors un simple
+            e.target.closest('tr').remove();
+            // IMPORTANT : On libère l'athlète supprimé, donc on met à jour les listes
             updateAllDropdowns();
         }
     });
 
-    // Cas 2 : Suppression de ligne
-    tableBody.addEventListener('click', (e) => {
-        if(e.target.classList.contains('btn-remove')) {
-            if(tableBody.rows.length > 1) {
-                e.target.closest('tr').remove();
-                // IMPORTANT : On met à jour pour libérer l'athlète supprimé
-                updateAllDropdowns();
-            } else {
-                alert("Il faut au moins une ligne de résultat.");
-            }
-        }
-    });
+    // 4. Init
+    addBtn.addEventListener('click', addRow);
+    addRow(); 
 });
 </script>
 {% endblock %}
