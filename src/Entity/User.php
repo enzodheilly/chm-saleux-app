@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-// ✅ Import pour la 2FA
 use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -118,13 +117,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     #[ORM\Column(type: "datetime", nullable: true)]
     private ?\DateTimeInterface $profileImageUpdatedAt = null;
 
-    #[ORM\ManyToMany(targetEntity: Event::class, inversedBy: "attendees")]
-    #[ORM\JoinTable(name: "event_attendees")]
-    private Collection $events;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserEvent::class, cascade: ['persist', 'remove'])]
-    private Collection $userEvents;
-
     #[ORM\Column(type: "boolean")]
     private bool $acceptedTerms = false;
 
@@ -145,8 +137,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         $this->licences = new ArrayCollection();
         $this->passwordHistories = new ArrayCollection();
         $this->securityLogs = new ArrayCollection();
-        $this->events = new ArrayCollection();
-        $this->userEvents = new ArrayCollection();
     }
 
     #[ORM\PreUpdate]
@@ -600,43 +590,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     public function isAcceptedTerms(): ?bool
     {
         return $this->acceptedTerms;
-    }
-
-    public function getEvents(): Collection
-    {
-        return $this->events;
-    }
-
-    public function addEvent(Event $event): self
-    {
-        if (!$this->events->contains($event)) {
-            $this->events->add($event);
-            $event->addAttendee($this);
-        }
-        return $this;
-    }
-
-    public function removeEvent(Event $event): self
-    {
-        if ($this->events->removeElement($event)) {
-            $event->removeAttendee($this);
-        }
-        return $this;
-    }
-
-    public function getUserEvents(): Collection
-    {
-        return $this->userEvents;
-    }
-
-    public function getEventStatus(Event $event): ?string
-    {
-        foreach ($this->userEvents as $ue) {
-            if ($ue->getEvent() === $event) {
-                return $ue->getStatus();
-            }
-        }
-        return null;
     }
 
     public function getPhone(): ?string

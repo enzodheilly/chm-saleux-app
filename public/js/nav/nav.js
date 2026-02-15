@@ -1,199 +1,177 @@
+// public/js/nav/nav.js
 document.addEventListener("DOMContentLoaded", () => {
-    const link = document.getElementById("club-hover-link");
-    const panel = document.getElementById("club-panel");
+  const nav = document.querySelector(".nav-fixed");
+  if (!nav) return;
 
-    if (!link || !panel) return;
+  // =========================================================
+  // 1) DROPDOWN DESKTOP (hover) : #club-hover-link -> #club-panel
+  // =========================================================
+  const trigger = nav.querySelector("#club-hover-link");
+  const panel = document.querySelector("#club-panel");
 
-    let closeTimeout;
+  if (trigger && panel) {
+    let closeTimer = null;
 
-    const openPanel = () => {
-        clearTimeout(closeTimeout);
-        panel.classList.add("show");
-        link.classList.add("active"); // ⚡ flèche rotate
+    const open = () => {
+      clearTimeout(closeTimer);
+      panel.classList.add("is-open");
+      panel.setAttribute("aria-hidden", "false");
+      trigger.classList.add("active");
     };
 
-    const closePanel = () => {
-        closeTimeout = setTimeout(() => {
-            panel.classList.remove("show");
-            link.classList.remove("active"); // ⚡ flèche revient à l'état normal
-        }, 0); // délai court pour UX fluide
+    const close = () => {
+      closeTimer = setTimeout(() => {
+        panel.classList.remove("is-open");
+        panel.setAttribute("aria-hidden", "true");
+        trigger.classList.remove("active");
+      }, 120);
     };
 
-    // Survol lien → ouvrir
-    link.addEventListener("mouseenter", openPanel);
-    // Sortie lien → initie la fermeture si on n'est pas dans le panneau
-    link.addEventListener("mouseleave", closePanel);
+    // Hover desktop
+    trigger.addEventListener("mouseenter", open);
+    trigger.addEventListener("mouseleave", close);
+    panel.addEventListener("mouseenter", open);
+    panel.addEventListener("mouseleave", close);
 
-    // Survol panneau → garder ouvert
-    panel.addEventListener("mouseenter", openPanel);
-    // Sortie panneau → initie la fermeture
-    panel.addEventListener("mouseleave", closePanel);
-});
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // =========================================
-    // 1. HAMBURGER MENU
-    // =========================================
-    const hamburger = document.querySelector('.hamburger-menu');
-    const overlay = document.querySelector('.mobile-nav-overlay');
-    
-    if (hamburger && overlay) {
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            overlay.classList.toggle('open');
-            document.body.classList.toggle('no-scroll');
-        });
-    }
-
-    // =========================================
-    // 2. INFO BANNER SLIDER (Mobile)
-    // =========================================
-    // On sélectionne les éléments avec les classes définies dans le HTML
-    const slides = document.querySelectorAll('.info-slide');
-    const prevBtn = document.querySelector('.mobile-info-prev');
-    const nextBtn = document.querySelector('.mobile-info-next');
-    
-    // On vérifie que les éléments existent pour éviter les erreurs JS sur PC
-    if (slides.length > 0 && prevBtn && nextBtn) {
-        let currentIndex = 0;
-
-        // Fonction pour changer de slide
-        function showSlide(index) {
-            // On retire la classe 'active' de tout le monde
-            slides.forEach(slide => {
-                slide.classList.remove('active');
-            });
-            
-            // On ajoute la classe 'active' uniquement à l'élément courant
-            // Le CSS se charge de l'animation (fadeInSlide)
-            slides[index].classList.add('active');
-        }
-
-        // Clic sur "Suivant"
-        nextBtn.addEventListener('click', (e) => {
-            e.preventDefault(); // Empêche le scroll ou comportement par défaut
-            // Calcul mathématique pour boucler (0 -> 1 -> 2 -> 0)
-            currentIndex = (currentIndex + 1) % slides.length;
-            showSlide(currentIndex);
-        });
-
-        // Clic sur "Précédent"
-        prevBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            // Calcul pour boucler en arrière (0 -> 2 -> 1 -> 0)
-            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-            showSlide(currentIndex);
-        });
-    }
-});
-
-// =========================================
-    // 3. MOBILE DROPDOWN (ACCORDION)
-    // =========================================
-    const dropdownTrigger = document.querySelector('.mobile-dropdown-trigger');
-    const dropdownContent = document.querySelector('.mobile-dropdown-content');
-
-    if (dropdownTrigger && dropdownContent) {
-        dropdownTrigger.addEventListener('click', () => {
-            // 1. On fait tourner la flèche
-            dropdownTrigger.classList.toggle('active');
-            
-            // 2. On affiche/cache le contenu
-            dropdownContent.classList.toggle('open');
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-    // 1. Sélectionner le lien et les éléments de la modale
-    const loginTriggers = document.querySelectorAll('.js-trigger-login');
-    const modal = document.getElementById('registerModal');
-    const closeBtn = document.getElementById('closeRegisterModal');
-    
-    // Les différentes étapes (views)
-    const stepSocial = document.getElementById('modal-step-social');
-    const stepEmail = document.getElementById('modal-step-email');
-    const stepLogin = document.getElementById('modal-step-login');
-    const stepVerify = document.getElementById('modal-step-verify');
-
-    // 2. Fonction pour ouvrir la modale directement sur le Login
-    if (loginTriggers && modal) {
-        loginTriggers.forEach(trigger => {
-            trigger.addEventListener('click', function(e) {
-                e.preventDefault(); // Empêche d'aller vers /login
-
-                // On reset l'affichage : on cache tout
-                if(stepSocial) stepSocial.style.display = 'none';
-                if(stepEmail) stepEmail.style.display = 'none';
-                if(stepVerify) stepVerify.style.display = 'none';
-                
-                // On affiche uniquement la section Connexion
-                if(stepLogin) stepLogin.style.display = 'block';
-
-                // On ouvre la modale (ajout de la classe CSS qui la rend visible)
-                modal.classList.add('is-open');
-                modal.setAttribute('aria-hidden', 'false');
-            });
-        });
-    }
-
-    // 3. Gestion de la fermeture (si pas déjà gérée ailleurs)
-    if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
-            modal.classList.remove('is-open');
-            modal.setAttribute('aria-hidden', 'true');
-        });
-    }
-
-    // Fermeture en cliquant en dehors de la modale (sur l'overlay)
-    window.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            modal.classList.remove('is-open');
-            modal.setAttribute('aria-hidden', 'true');
-        }
+    // Clic dehors -> ferme
+    document.addEventListener("click", (e) => {
+      if (!panel.contains(e.target) && !trigger.contains(e.target)) close();
     });
-});
 
-document.addEventListener("DOMContentLoaded", () => {
-  const trigger = document.getElementById("club-hover-link");
-  const panel = document.getElementById("club-panel");
-  if (!trigger || !panel) return;
+    // ESC -> ferme
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") close();
+    });
 
-  let closeTimer = null;
+    // Si tu ne veux PAS de click-to-open, tu peux supprimer ce bloc.
+    trigger.addEventListener("click", (e) => {
+      e.preventDefault();
+      const opened = panel.classList.toggle("is-open");
+      panel.setAttribute("aria-hidden", opened ? "false" : "true");
+      trigger.classList.toggle("active", opened);
+    });
+  }
 
-  const open = () => {
-    clearTimeout(closeTimer);
-    panel.classList.add("is-open");
-    panel.setAttribute("aria-hidden", "false");
+  // =========================================================
+  // 2) HAMBURGER + OVERLAY MOBILE
+  // =========================================================
+  const hamburger = nav.querySelector(".hamburger-menu");
+  const overlay = nav.querySelector(".mobile-nav-overlay");
+
+  const setMobileMenu = (open) => {
+    if (!hamburger || !overlay) return;
+    hamburger.classList.toggle("active", open);
+    overlay.classList.toggle("open", open);
+    document.body.classList.toggle("no-scroll", open);
   };
 
-  const close = () => {
-    closeTimer = setTimeout(() => {
-      panel.classList.remove("is-open");
-      panel.setAttribute("aria-hidden", "true");
-    }, 120);
+  if (hamburger && overlay) {
+    hamburger.addEventListener("click", () => {
+      const open = !overlay.classList.contains("open");
+      setMobileMenu(open);
+    });
+
+    // (optionnel) clic sur un lien -> ferme le menu
+    overlay.addEventListener("click", (e) => {
+      const link = e.target.closest("a");
+      if (link) setMobileMenu(false);
+    });
+
+    // ESC -> ferme
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") setMobileMenu(false);
+    });
+  }
+
+  // =========================================================
+  // 3) SLIDER INFO-BANNER MOBILE (flèches gauche/droite)
+  // =========================================================
+  const slides = nav.querySelectorAll(".info-slide");
+  const prevBtn = nav.querySelector(".mobile-info-prev");
+  const nextBtn = nav.querySelector(".mobile-info-next");
+
+  if (slides.length && prevBtn && nextBtn) {
+    let idx = 0;
+
+    const show = (i) => {
+      slides.forEach((s) => s.classList.remove("active"));
+      slides[i].classList.add("active");
+    };
+
+    nextBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      idx = (idx + 1) % slides.length;
+      show(idx);
+    });
+
+    prevBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      idx = (idx - 1 + slides.length) % slides.length;
+      show(idx);
+    });
+
+    // état initial
+    show(idx);
+  }
+
+  // =========================================================
+  // 4) ACCORDÉON MOBILE (Club & membres du bureau)
+  // =========================================================
+  const ddTrigger = nav.querySelector(".mobile-dropdown-trigger");
+  const ddContent = nav.querySelector(".mobile-dropdown-content");
+
+  if (ddTrigger && ddContent) {
+    ddTrigger.addEventListener("click", () => {
+      ddTrigger.classList.toggle("active");
+      ddContent.classList.toggle("open");
+    });
+  }
+
+  // =========================================================
+  // 5) OUVRIR LA MODALE DIRECT SUR LOGIN (Mon espace adhérent)
+  // =========================================================
+  const loginTriggers = nav.querySelectorAll(".js-trigger-login");
+  const modal = document.getElementById("registerModal");
+  const closeBtn = document.getElementById("closeRegisterModal");
+
+  const stepSocial = document.getElementById("modal-step-social");
+  const stepEmail = document.getElementById("modal-step-email");
+  const stepLogin = document.getElementById("modal-step-login");
+  const stepVerify = document.getElementById("modal-step-verify");
+
+  const openLoginModal = () => {
+    if (!modal) return;
+
+    // cache tout
+    if (stepSocial) stepSocial.style.display = "none";
+    if (stepEmail) stepEmail.style.display = "none";
+    if (stepVerify) stepVerify.style.display = "none";
+
+    // affiche login
+    if (stepLogin) stepLogin.style.display = "block";
+
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
   };
 
-  // Desktop hover
-  trigger.addEventListener("mouseenter", open);
-  trigger.addEventListener("mouseleave", close);
-  panel.addEventListener("mouseenter", open);
-  panel.addEventListener("mouseleave", close);
+  const closeModal = () => {
+    if (!modal) return;
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+  };
 
-  // Bonus: fermer au clic ailleurs
-  document.addEventListener("click", (e) => {
-    if (!panel.contains(e.target) && !trigger.contains(e.target)) {
-      panel.classList.remove("is-open");
-      panel.setAttribute("aria-hidden", "true");
-    }
-  });
+  if (loginTriggers.length && modal) {
+    loginTriggers.forEach((t) => {
+      t.addEventListener("click", (e) => {
+        e.preventDefault();
+        openLoginModal();
+      });
+    });
+  }
 
-  // Bonus: sur petit écran (si tu veux click-to-open sur desktop aussi)
-  trigger.addEventListener("click", (e) => {
-    // si tu veux que "Club & membres..." ne navigue pas
-    e.preventDefault();
-    panel.classList.toggle("is-open");
-    panel.setAttribute("aria-hidden", panel.classList.contains("is-open") ? "false" : "true");
+  if (closeBtn) closeBtn.addEventListener("click", closeModal);
+
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
   });
 });

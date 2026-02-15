@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Controller\Front;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+class PartenaireController extends AbstractController
+{
+    #[Route('/devenir-partenaire', name: 'app_partenaire')]
+    public function index(): Response
+    {
+        return $this->render('partenaire/index.html.twig', [
+            // Tu pourras passer des variables ici plus tard si besoin
+        ]);
+    }
+}
