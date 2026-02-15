@@ -4,196 +4,179 @@
 
 {% block stylesheets %}
 <style>
-    /* =================== PAGE STYLE =================== */
-    .dashboard-container {
-        width: 100%;
-        max-width: 1000px; /* On limite la largeur pour la lisibilité du formulaire */
+    /* =================== CONTAINER =================== */
+    .form-container {
+        max-width: 800px; /* Plus étroit pour la lisibilité */
         margin: 0 auto;
     }
 
-    /* Header */
+    /* =================== HEADER =================== */
     .page-header {
         margin-bottom: 2rem;
-        border-bottom: 1px solid var(--border);
-        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 1.5rem;
+        display: flex; justify-content: space-between; align-items: flex-end;
     }
-    .page-header h1 {
-        margin: 0;
-        font-size: 1.6rem;
-        font-weight: 700;
-        color: var(--text-main);
-        letter-spacing: -0.5px;
+    .page-header h1 { 
+        font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); 
     }
-    .page-header p {
-        margin: 5px 0 0 0;
-        color: var(--text-muted);
-        font-size: 0.9rem;
+    .page-header p { 
+        margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; 
     }
+    .back-link {
+        font-size: 0.85rem; color: var(--text-muted); font-weight: 500;
+        text-decoration: underline; cursor: pointer;
+    }
+    .back-link:hover { color: var(--text-main); }
 
-    /* Carte du formulaire */
+    /* =================== FORM CARD =================== */
     .form-card {
-        background: var(--bg-light);
-        border: 1px solid var(--border);
-        border-radius: 4px;
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
         padding: 2rem;
     }
 
-    /* Styles des Champs Symfony */
-    /* Note : Symfony entoure souvent les form_row d'une div. On cible ces divs ici. */
-    .form-card > form > div {
-        margin-bottom: 1.5rem;
-    }
+    /* Groupes de champs */
+    .form-group { margin-bottom: 1.5rem; }
 
     /* Labels */
-    label {
+    .form-label {
         display: block;
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: var(--text-main);
-        margin-bottom: 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--text-muted);
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.5rem;
     }
 
-    /* Inputs & Selects */
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    select {
+    /* Inputs (Text, Email, Password, Select) */
+    .form-control {
         width: 100%;
-        background: var(--bg-darker); /* Fond légèrement plus foncé que la carte */
-        border: 1px solid var(--border);
+        background: var(--bg-body); /* Fond sombre pour contraste avec la carte */
+        border: 1px solid var(--border-color);
         color: var(--text-main);
-        padding: 0.7rem 1rem;
+        padding: 0.75rem 1rem;
         border-radius: 4px;
         font-size: 0.95rem;
-        outline: none;
-        transition: border-color 0.2s;
-        box-sizing: border-box; /* Important pour ne pas déborder */
+        font-family: inherit;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        box-sizing: border-box;
     }
 
-    input:focus,
-    select:focus {
+    .form-control:focus {
         border-color: var(--accent);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.1); /* Lueur orange subtile */
     }
 
-    /* Gestion des erreurs (Symfony helper) */
-    .invalid-feedback, ul li {
-        color: #ef4444;
-        font-size: 0.85rem;
-        margin-top: 5px;
-        list-style: none;
-    }
+    .form-control::placeholder { color: var(--text-muted); opacity: 0.5; }
 
-    /* Zone des Actions (Boutons) */
+    /* Grid Layout pour Prénom/Nom */
+    .form-row-2 {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+    }
+    @media(max-width: 600px) { .form-row-2 { grid-template-columns: 1fr; gap: 0; } }
+
+    /* Help Text & Errors */
+    .form-help {
+        display: block; margin-top: 0.4rem;
+        font-size: 0.8rem; color: var(--text-muted); opacity: 0.8;
+    }
+    .form-error {
+        color: var(--danger); font-size: 0.85rem; margin-top: 0.4rem; display: block;
+    }
+    .form-error ul { padding: 0; margin: 0; list-style: none; }
+
+    /* Actions Footer */
     .form-actions {
-        margin-top: 2rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid var(--border);
-        display: flex;
-        justify-content: flex-end; /* Alignement à droite standard pro */
-        gap: 1rem;
+        margin-top: 2rem; padding-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+        display: flex; justify-content: flex-end; gap: 1rem;
     }
 
-    /* Bouton Principal */
-    .btn-submit {
-        background: var(--accent);
-        color: #fff;
-        padding: 0.7rem 1.5rem;
-        border: none;
-        border-radius: 4px;
-        font-weight: 600;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: background 0.2s;
-    }
-    .btn-submit:hover {
-        background: var(--accent-hover);
-    }
-
-    /* Bouton Secondaire (Annuler) */
     .btn-cancel {
-        background: transparent;
-        border: 1px solid var(--border);
+        padding: 0.7rem 1.2rem;
         color: var(--text-muted);
+        font-weight: 600; font-size: 0.9rem;
+        border-radius: 4px;
+        transition: color 0.2s;
+    }
+    .btn-cancel:hover { color: var(--text-main); }
+
+    .btn-save {
+        background: var(--text-main); /* Style Noir/Blanc "Pro" */
+        color: var(--bg-body);
         padding: 0.7rem 1.5rem;
         border-radius: 4px;
-        font-weight: 500;
-        text-decoration: none;
-        font-size: 0.9rem;
-        transition: all 0.2s;
-        display: inline-flex;
-        align-items: center;
+        font-weight: 700; font-size: 0.9rem;
+        border: none; cursor: pointer;
+        transition: opacity 0.2s;
     }
-    .btn-cancel:hover {
-        border-color: var(--text-muted);
-        color: var(--text-main);
-    }
-
-    /* Layout en grille pour Nom/Prénom (Optionnel, rend le form plus compact) */
-    .row-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-    }
-    @media(max-width: 700px) { .row-2 { grid-template-columns: 1fr; gap: 0; } }
+    .btn-save:hover { opacity: 0.9; }
 
 </style>
 {% endblock %}
 
 {% block body %}
-<div class="dashboard-container">
+<div class="form-container">
     
-    {# En-tête sobre #}
     <div class="page-header">
-        <h1>Nouvel utilisateur</h1>
-        <p>Remplissez les informations ci-dessous pour créer un nouveau compte.</p>
+        <div>
+            <h1>Créer un compte</h1>
+            <p>Ajouter un nouvel utilisateur à la base de données.</p>
+        </div>
+        <a href="{{ path('admin_users_index') }}" class="back-link">Retour à la liste</a>
     </div>
 
     <div class="form-card">
         {{ form_start(form) }}
         
-        <div class="row-2">
-            <div>
-                {{ form_label(form.firstName, 'Prénom') }}
-                {{ form_widget(form.firstName, {'attr': {'placeholder': 'Ex: Jean'}}) }}
-                {{ form_errors(form.firstName) }}
+        {# Ligne Prénom / Nom #}
+        <div class="form-row-2">
+            <div class="form-group">
+                {{ form_label(form.firstName, 'Prénom', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.firstName, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Thomas'}}) }}
+                <div class="form-error">{{ form_errors(form.firstName) }}</div>
             </div>
-            <div>
-                {{ form_label(form.lastName, 'Nom') }}
-                {{ form_widget(form.lastName, {'attr': {'placeholder': 'Ex: Dupont'}}) }}
-                {{ form_errors(form.lastName) }}
+            <div class="form-group">
+                {{ form_label(form.lastName, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Anderson'}}) }}
+                <div class="form-error">{{ form_errors(form.lastName) }}</div>
             </div>
         </div>
 
-        <div>
-            {{ form_label(form.email, 'Adresse Email') }}
-            {{ form_widget(form.email, {'attr': {'placeholder': 'jean.dupont@exemple.com'}}) }}
-            {{ form_errors(form.email) }}
+        {# Email #}
+        <div class="form-group">
+            {{ form_label(form.email, 'Email Professionnel / Personnel', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'utilisateur@domaine.com'}}) }}
+            <div class="form-error">{{ form_errors(form.email) }}</div>
         </div>
 
-        <div>
-            {{ form_label(form.password, 'Mot de passe') }}
-            {{ form_widget(form.password) }}
-            {{ form_errors(form.password) }}
-            <small style="color: var(--text-muted); font-size: 0.8rem; margin-top:5px; display:block;">
-                Le mot de passe doit contenir au moins 6 caractères.
-            </small>
+        {# Password #}
+        <div class="form-group">
+            {{ form_label(form.password, 'Mot de passe initial', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
+            <span class="form-help">Minimum 6 caractères. L'utilisateur pourra le changer plus tard.</span>
+            <div class="form-error">{{ form_errors(form.password) }}</div>
         </div>
 
-        <div>
-            {{ form_label(form.roles, 'Rôle et Permissions') }}
-            {{ form_widget(form.roles) }}
-            {{ form_errors(form.roles) }}
+        {# Rôles #}
+        <div class="form-group">
+            {{ form_label(form.roles, 'Niveau d\'accréditation', {'label_attr': {'class': 'form-label'}}) }}
+            {# 
+               Note : Si 'roles' est un ChoiceType(multiple=true), Symfony peut générer un select ou des checkboxes.
+               La classe .form-control s'adapte bien aux <select>.
+            #}
+            {{ form_widget(form.roles, {'attr': {'class': 'form-control', 'style': 'height: auto;'}}) }}
+            <span class="form-help">Maintenez CTRL (ou CMD) pour sélectionner plusieurs rôles si nécessaire.</span>
+            <div class="form-error">{{ form_errors(form.roles) }}</div>
         </div>
 
         <div class="form-actions">
-            <a href="{{ path('admin_users_index') }}" class="btn-cancel">
-                Annuler
-            </a>
-            <button type="submit" class="btn-submit">
-                Créer l'utilisateur
-            </button>
+            <a href="{{ path('admin_users_index') }}" class="btn-cancel">Annuler</a>
+            <button type="submit" class="btn-save">Enregistrer l'utilisateur</button>
         </div>
 
         {{ form_end(form) }}

@@ -4,112 +4,153 @@
 
 {% block stylesheets %}
 <style>
-    /* =================== PAGE STYLE =================== */
-    .dashboard-container { width: 100%; max-width: 1600px; margin: 0 auto; }
-
-    /* Header */
+    /* =================== HEADER & TOOLS =================== */
     .page-header {
-        display: flex; justify-content: space-between; align-items: center;
-        margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;
+        display: flex; justify-content: space-between; align-items: flex-end;
+        margin-bottom: 2rem; padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
     }
-    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
     .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
 
-    /* Toolbar */
-    .toolbar { display: flex; gap: 1rem; align-items: center; }
+    .toolbar { display: flex; gap: 1rem; }
+
     .search-input {
-        background: transparent; border: 1px solid var(--border); color: var(--text-main);
-        padding: 0.6rem 1rem; border-radius: 4px; outline: none; min-width: 300px; font-size: 0.9rem;
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 0.6rem 1rem;
+        border-radius: 4px;
+        min-width: 280px;
+        font-size: 0.9rem;
+        font-family: inherit;
+        transition: 0.2s;
     }
     .search-input:focus { border-color: var(--accent); }
 
-    .btn-primary {
-        background: var(--accent); color: #fff; padding: 0.6rem 1.5rem; border-radius: 4px;
-        font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.2s; border: none;
-        text-transform: uppercase; letter-spacing: 0.5px; text-decoration: none; display: inline-block;
+    .btn-create {
+        background: var(--text-main);
+        color: var(--bg-body);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700; font-size: 0.85rem;
+        cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
+        transition: 0.2s; border: none;
     }
-    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-create:hover { opacity: 0.9; }
 
-    /* Table */
-    .content-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; }
-    .table-responsive { overflow-x: auto; }
-    .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    /* =================== TABLEAU =================== */
+    .table-wrapper {
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        overflow: hidden;
+    }
     
-    .table th {
-        background: var(--bg-darker); color: var(--text-muted); font-weight: 600; text-align: left;
-        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); text-transform: uppercase;
-        font-size: 0.75rem; letter-spacing: 1px;
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    
+    .admin-table th {
+        background: rgba(255,255,255,0.02);
+        color: var(--text-muted);
+        font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.75rem;
+        text-align: left; padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border-color);
     }
-    .table td {
-        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle;
+    
+    .admin-table td {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-main); vertical-align: middle;
     }
-    .table tr:last-child td { border-bottom: none; }
-    .table tr:hover { background: rgba(255,255,255,0.01); }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover td { background: rgba(255,255,255,0.01); }
 
-    /* Athlete Profile Style */
-    .athlete-profile { display: flex; align-items: center; gap: 1rem; }
+    /* Athlete Specifics */
+    .athlete-cell { display: flex; align-items: center; gap: 12px; }
+    
     .athlete-avatar {
-        width: 40px; height: 40px; border-radius: 4px; object-fit: cover; background: var(--bg-darker); border: 1px solid var(--border);
+        width: 36px; height: 36px;
+        border-radius: 50%; /* Rond pour les personnes, c'est mieux */
+        object-fit: cover;
+        background: var(--bg-body);
+        border: 1px solid var(--border-color);
     }
+    
     .athlete-initials {
-        width: 40px; height: 40px; border-radius: 4px; background: var(--border); color: var(--text-muted);
-        display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem;
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        background: var(--bg-body);
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 700; font-size: 0.8rem;
+        text-transform: uppercase;
     }
-    .athlete-info { display: flex; flex-direction: column; }
-    .athlete-name { font-weight: 600; color: var(--text-main); }
-    .athlete-team { font-size: 0.8rem; color: var(--text-muted); }
 
-    /* Badges */
-    .badge-cat {
-        font-size: 0.75rem; font-weight: 700; text-transform: uppercase; padding: 4px 8px; border-radius: 4px;
-        color: var(--accent); border: 1px solid var(--border); background: rgba(255, 102, 0, 0.05);
+    .athlete-info { display: flex; flex-direction: column; }
+    .athlete-name { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
+    .athlete-meta { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Badges Catégorie */
+    .cat-badge {
+        font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+        padding: 3px 8px; border-radius: 4px; letter-spacing: 0.05em;
+        background: rgba(255,255,255,0.05); color: var(--text-muted);
+        border: 1px solid var(--border-color);
     }
 
     /* Actions */
-    .actions-cell { display: flex; gap: 15px; justify-content: flex-end; }
-    .action-link { font-size: 0.85rem; font-weight: 500; text-decoration: none; border: none; background: none; cursor: pointer; padding: 0; }
-    .link-edit { color: var(--text-muted); }
-    .link-edit:hover { color: var(--text-main); text-decoration: underline; }
-    .link-delete { color: #ef4444; opacity: 0.8; }
-    .link-delete:hover { opacity: 1; text-decoration: underline; }
+    .actions { display: flex; gap: 15px; justify-content: flex-end; }
+    .act-link { 
+        font-size: 0.75rem; font-weight: 600; text-transform: uppercase; 
+        letter-spacing: 0.05em; cursor: pointer; transition: 0.2s; opacity: 0.7; 
+        background: none; border: none; padding: 0;
+    }
+    .act-link:hover { opacity: 1; text-decoration: underline; }
+    
+    .act-edit { color: var(--text-main); }
+    .act-del { color: var(--danger); }
 
 </style>
 {% endblock %}
 
+{% block page_title %}Athlètes{% endblock %}
+
 {% block body %}
-<div class="dashboard-container">
-    
+
     <div class="page-header">
         <div>
-            <h1>Athlètes</h1>
-            <p>Gestion des profils sportifs et des catégories.</p>
+            <h1>Gestion Athlètes</h1>
+            <p>Liste des profils sportifs et catégories.</p>
         </div>
         <div class="toolbar">
-            <input type="text" id="searchAthlete" class="search-input" placeholder="Rechercher un athlète...">
-            <a href="{{ path('admin_athlete_new') }}" class="btn-primary">Ajouter</a>
+            <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un athlète...">
+            <button class="btn-create" onclick="location.href='{{ path('admin_athlete_new') }}'">
+                + Ajouter
+            </button>
         </div>
     </div>
 
-    <div class="content-card">
-        <div class="table-responsive">
-            <table class="table" id="athleteTable">
+    <div class="table-wrapper">
+        <div style="overflow-x: auto;">
+            <table class="admin-table" id="athleteTable">
                 <thead>
                     <tr>
-                        <th width="50">ID</th>
-                        <th>Profil</th>
-                        <th>Catégorie</th>
-                        <th>Poids</th>
-                        <th>Date de naissance</th>
+                        <th width="80">ID</th>
+                        <th width="35%">Athlète</th>
+                        <th width="15%">Catégorie</th>
+                        <th width="15%">Poids</th>
+                        <th width="15%">Naissance</th>
                         <th style="text-align: right;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for athlete in athletes %}
                         <tr>
-                            <td><span style="color: var(--text-muted); font-family: monospace;">#{{ athlete.id }}</span></td>
+                            <td><span style="font-family: monospace; color: var(--text-muted);">#{{ athlete.id }}</span></td>
                             
                             <td>
-                                <div class="athlete-profile">
+                                <div class="athlete-cell">
                                     {% if athlete.image %}
                                         <img src="{{ asset('uploads/athletes/' ~ athlete.image) }}" alt="{{ athlete.prenom }}" class="athlete-avatar">
                                     {% else %}
@@ -119,36 +160,51 @@
                                     {% endif %}
                                     <div class="athlete-info">
                                         <span class="athlete-name">{{ athlete.prenom }} {{ athlete.nom|upper }}</span>
-                                        <span class="athlete-team">{{ athlete.equipe ?? 'Aucune équipe' }}</span>
+                                        {# On affiche l'équipe ou le sexe en petit dessous #}
+                                        <span class="athlete-meta">{{ athlete.equipe ?? 'Aucune équipe' }}</span>
                                     </div>
                                 </div>
                             </td>
 
                             <td>
-                                <span class="badge-cat">{{ athlete.categorie ?: '—' }}</span>
+                                {% if athlete.categorie %}
+                                    <span class="cat-badge">{{ athlete.categorie }}</span>
+                                {% else %}
+                                    <span style="color: var(--text-muted); font-size: 0.8rem;">—</span>
+                                {% endif %}
                             </td>
 
-                            <td>{{ athlete.categoriePoids ?: '—' }}</td>
+                            <td>
+                                {% if athlete.categoriePoids %}
+                                    <span style="font-family: monospace; font-weight: 600;">{{ athlete.categoriePoids }}</span>
+                                {% else %}
+                                    <span style="color: var(--text-muted); font-size: 0.8rem;">—</span>
+                                {% endif %}
+                            </td>
 
-                            <td style="color: var(--text-muted);">
+                            <td style="color: var(--text-muted); font-size: 0.85rem;">
                                 {{ athlete.dateNaissance ? athlete.dateNaissance|date('d/m/Y') : '—' }}
                             </td>
 
                             <td>
-                                <div class="actions-cell">
-                                    <a href="{{ path('admin_athlete_edit', {'id': athlete.id}) }}" class="action-link link-edit">Modifier</a>
+                                <div class="actions">
+                                    <a href="{{ path('admin_athlete_edit', {'id': athlete.id}) }}" class="act-link act-edit">
+                                        Modifier
+                                    </a>
                                     
-                                    <form method="post" action="{{ path('admin_athlete_delete', {'id': athlete.id}) }}" onsubmit="return confirm('Confirmer la suppression de cet athlète ?');" style="display:inline;">
+                                    <form method="post" action="{{ path('admin_athlete_delete', {'id': athlete.id}) }}" 
+                                          style="display:inline;"
+                                          onsubmit="return confirm('Confirmer la suppression de {{ athlete.prenom }} {{ athlete.nom }} ?');">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ athlete.id) }}">
-                                        <button class="action-link link-delete">Supprimer</button>
+                                        <button class="act-link act-del">Supprimer</button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="6" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-                                Aucun athlète enregistré.
+                            <td colspan="6" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                                Aucun athlète trouvé.
                             </td>
                         </tr>
                     {% endfor %}
@@ -156,15 +212,20 @@
             </table>
         </div>
     </div>
-</div>
 
+{% endblock %}
+
+{% block javascripts %}
 <script>
-document.getElementById('searchAthlete').addEventListener('keyup', function() {
-    const val = this.value.toLowerCase();
-    const rows = document.querySelectorAll('#athleteTable tbody tr');
-    rows.forEach(row => {
-        row.style.display = row.textContent.toLowerCase().includes(val) ? '' : 'none';
+    // Filtre de recherche
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#athleteTable tbody tr');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(filter) ? '' : 'none';
+        });
     });
-});
 </script>
 {% endblock %}

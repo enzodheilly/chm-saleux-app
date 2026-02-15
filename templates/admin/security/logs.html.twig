@@ -3,7 +3,6 @@
 {% block title %}Journal des connexions{% endblock %}
 
 {% block stylesheets %}
-
 <style>
     /* =================== PAGE STYLE =================== */
     .dashboard-container { width: 100%; max-width: 1600px; margin: 0 auto; }
@@ -11,142 +10,119 @@
     /* Header */
     .page-header {
         display: flex; justify-content: space-between; align-items: center;
-        margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;
+        margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;
     }
     .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
     .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
 
-    /* Toolbar & Search */
+    /* Toolbar & Filters */
     .toolbar-container {
         display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center;
-        margin-bottom: 1.5rem; background: var(--bg-light); padding: 1rem; border: 1px solid var(--border); border-radius: 4px;
+        margin-bottom: 1.5rem; background: var(--bg-sidebar); padding: 1rem; border: 1px solid var(--border-color); border-radius: 6px;
     }
 
     .search-bar {
-        background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-main);
+        background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main);
         padding: 0.6rem 1rem; border-radius: 4px; outline: none; min-width: 250px; font-size: 0.9rem;
     }
     .search-bar:focus { border-color: var(--accent); }
 
-    /* Filter Buttons */
     .filter-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
     .filter-btn {
-        background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-muted);
-        padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: 0.2s;
-        text-transform: capitalize;
+        background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-muted);
+        padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: 0.2s;
+        text-transform: uppercase; letter-spacing: 0.05em;
     }
     .filter-btn:hover { color: var(--text-main); border-color: var(--text-muted); }
     .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-    /* Purge Button */
-    .btn-danger {
-        background: transparent; color: #ef4444; padding: 0.6rem 1.5rem; border: 1px solid #ef4444; border-radius: 4px;
-        font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.2s;
-        text-transform: uppercase; letter-spacing: 0.5px; text-decoration: none; display: inline-block;
+    /* Buttons Actions */
+    .btn-danger-outline {
+        background: transparent; color: var(--danger); padding: 0.6rem 1.2rem; border: 1px solid var(--danger); border-radius: 4px;
+        font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: 0.2s; text-transform: uppercase; text-decoration: none;
     }
-    .btn-danger:hover { background: #ef4444; color: #fff; }
+    .btn-danger-outline:hover { background: var(--danger); color: #fff; }
+
+    .btn-export {
+        background: var(--bg-body); color: var(--text-main); border: 1px solid var(--border-color);
+        padding: 0.6rem 1.2rem; border-radius: 4px; font-size: 0.8rem; font-weight: 700;
+        text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s;
+    }
+    .btn-export:hover { border-color: var(--accent); color: var(--accent); }
 
     /* Table */
-    .content-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; }
-    .table-responsive { overflow-x: auto; }
-    .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    
+    .content-card { background: var(--bg-sidebar); border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; }
+    .table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
     .table th {
-        background: var(--bg-darker); color: var(--text-muted); font-weight: 600; text-align: left;
-        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); text-transform: uppercase;
-        font-size: 0.75rem; letter-spacing: 1px;
+        background: rgba(255,255,255,0.02); color: var(--text-muted); font-weight: 600; text-align: left;
+        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); text-transform: uppercase; font-size: 0.7rem;
     }
-    .table td {
-        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle;
-    }
-    .table tr:last-child td { border-bottom: none; }
-    .table tr:hover { background: rgba(255,255,255,0.01); }
+    .table td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); color: var(--text-main); vertical-align: middle; }
+    .table tr:hover td { background: rgba(255,255,255,0.01); }
 
-    /* Log Specifics */
-    .log-success { color: #22c55e; font-weight: 600; display:inline-flex; align-items:center; gap:5px; }
-    .log-failed { color: #ef4444; font-weight: 600; display:inline-flex; align-items:center; gap:5px; }
+    /* Badges & Indicators */
+    .log-success { color: #22c55e; font-weight: 700; }
+    .log-failed { color: var(--danger); font-weight: 700; }
+    .log-warning-row { background: rgba(245, 158, 11, 0.03) !important; }
     
-    .log-warning-row { background: rgba(245, 158, 11, 0.05) !important; }
-    .warning-icon { color: #f59e0b; margin-right: 5px; }
+    .badge-nocturne { background: rgba(99, 102, 241, 0.1); color: #6366f1; border: 1px solid rgba(99, 102, 241, 0.2); padding: 2px 8px; border-radius: 12px; font-size: 0.65rem; font-weight: 700; }
+    .badge-weekend { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); padding: 2px 8px; border-radius: 12px; font-size: 0.65rem; font-weight: 700; }
 
-    .ip-address { font-family: monospace; color: var(--text-muted); background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; }
-    .browser-info { font-size: 0.8rem; color: var(--text-muted); }
+    .ip-address { font-family: monospace; color: var(--accent); background: rgba(255,102,0,0.05); padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+    .geo-info { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; margin-top: 4px; display: block; }
 
-    /* Flash */
-    .flash-success {
-        background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2);
-        padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-weight: 500;
-    }
+    /* Stats Target */
+    .target-card { background: var(--bg-body); padding: 1rem; border-radius: 6px; border-left: 4px solid var(--danger); flex: 1; min-width: 220px; border: 1px solid var(--border-color); border-left: 4px solid var(--danger); }
+    
+    .btn-ban { color: var(--danger); font-size: 1.1rem; padding: 5px; opacity: 0.7; transition: 0.2s; }
+    .btn-ban:hover { opacity: 1; transform: scale(1.2); }
 
-.badge-nocturne {
-    background: rgba(99, 102, 241, 0.1);
-    color: #6366f1;
-    border: 1px solid rgba(99, 102, 241, 0.2);
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: 600;
-}
-
-    .btn-ban {
-    background: rgba(239, 68, 68, 0.1);
-    color: #ef4444;
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    padding: 5px 10px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 1.1rem;
-    transition: 0.2s;
-    display: inline-block;
-}
-.btn-ban:hover {
-    background: #ef4444;
-    color: #fff;
-}
-
-.btn-export {
-    background: var(--bg-darker);
-    color: var(--text-main);
-    border: 1px solid var(--border);
-    padding: 0.6rem 1rem;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    white-space: nowrap;
-}
-
-.btn-export:hover {
-    background: var(--accent);
-    color: #fff;
-    border-color: var(--accent);
-}
 </style>
 {% endblock %}
 
 {% block body %}
 <div class="dashboard-container">
     
+    {# --- NOTIFICATIONS --- #}
     {% for message in app.flashes('success') %}
-        <div class="flash-success">{{ message }}</div>
+        <div class="alert alert-success">{{ message|raw }}</div>
     {% endfor %}
 
     <div class="page-header">
         <div>
             <h1>Journal des connexions</h1>
-            <p>Historique des tentatives d'authentification et alertes de sécurité.</p>
+            <p>Authentifications, activités système et alertes de sécurité en temps réel.</p>
         </div>
         <div>
-    <a href="{{ path('admin_security_purge_logs') }}" class="btn-danger" onclick="return confirm('Attention : Vous allez effacer TOUT l\'historique.\n\nConfirmer ?');">
-    Purger l'historique
-</a>
+            <a href="{{ path('admin_security_purge_logs') }}" class="btn-danger-outline" onclick="return confirm('⚠️ Action irréversible : Purger l\'historique ?');">
+                Purger les journaux
+            </a>
         </div>
     </div>
 
+    {# --- ANALYSE DES TENTATIVES CRITIQUES --- #}
+    <div class="content-card" style="margin-bottom: 2rem; padding: 1.5rem;">
+        <h3 style="margin: 0 0 1.2rem 0; font-size: 0.9rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;">
+            🚨 Comptes les plus visés (Échecs)
+        </h3>
+        <div style="display: flex; gap: 1.2rem; flex-wrap: wrap;">
+            {% for target in topTargets|default([]) %}
+                <div class="target-card">
+                    <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; font-weight: 700;">Utilisateur cible</div>
+                    <div style="font-weight: 700; color: var(--text-main); font-size: 0.9rem; word-break: break-all;">{{ target.user }}</div>
+                    <div style="margin-top: 10px; font-size: 1.3rem; font-weight: 800; color: var(--danger);">
+                        {{ target.attempts }} <span style="font-size: 0.75rem; font-weight: 500; opacity: 0.8;">échecs</span>
+                    </div>
+                </div>
+            {% else %}
+                <div style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; padding: 1rem;">
+                    Aucune activité suspecte détectée sur les comptes utilisateurs.
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {# --- FILTRES & RECHERCHE --- #}
     <div class="toolbar-container">
         <div class="filter-group">
             <button class="filter-btn active" data-filter="all">Tous</button>
@@ -155,171 +131,109 @@
             <button class="filter-btn" data-filter="session">Alertes</button>
         </div>
 
-        <div style="display: flex; gap: 10px; align-items: center;">        
-        {# Bouton d'export CSV #}
-        <a href="{{ path('admin_security_export_csv') }}" class="btn-export" title="Télécharger l'historique">
-            📥 Export CSV
-        </a>
-    </div>
-        <div>
-            <input type="text" id="searchLogs" class="search-bar" placeholder="Rechercher (Utilisateur, Message)...">
+        <div style="display: flex; gap: 12px; align-items: center;">        
+            <a href="{{ path('admin_security_export_csv') }}" class="btn-export">
+                📥 Exporter CSV
+            </a>
+            <input type="text" id="searchLogs" class="search-bar" placeholder="Chercher un utilisateur, une IP...">
         </div>
     </div>
 
-    {# --- SECTION TOP CIBLES --- #}
-<div class="content-card" style="margin-bottom: 1.5rem; padding: 1.5rem;">
-    <h3 style="margin-top:0; font-size: 1rem; margin-bottom: 1rem; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
-        🎯 Comptes les plus visés (Échecs)
-    </h3>
-    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-        {% for target in topTargets|default([]) %}
-            <div style="background: var(--bg-darker); padding: 12px; border-radius: 6px; border-left: 4px solid #ef4444; flex: 1; min-width: 200px;">
-                <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
-                    Utilisateur
-                </div>
-                <div style="font-weight: bold; color: var(--text-main); font-size: 0.9rem; word-break: break-all;">
-                    {{ target.user }}
-                </div>
-                <div style="margin-top: 8px; font-size: 1.1rem; font-weight: 800; color: #ef4444;">
-                    {{ target.attempts }} <span style="font-size: 0.7rem; font-weight: 400;">tentatives</span>
-                </div>
-            </div>
-        {% else %}
-            <div style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;">
-                Aucune tentative suspecte détectée récemment.
-            </div>
-        {% endfor %}
-    </div>
-</div>
-
+    {# --- TABLEAU DES LOGS --- #}
     <div class="content-card">
         <div class="table-responsive">
             <table class="table" id="logsTable">
                 <thead>
                     <tr>
-                        <th width="50">ID</th>
-                        <th>Utilisateur / Email</th>
-                        <th>IP & Localisation</th>
-                        <th>Appareil</th>
-                        <th>Type d'événement</th>
-                        <th>Détail</th>
-                        <th>Résultat</th>
-                        <th>Date</th>
-                        <th width="100">Actions</th>
+                        <th width="80">Date</th>
+                        <th width="180">Utilisateur</th>
+                        <th width="200">Localisation (IP)</th>
+                        <th width="120">Appareil</th>
+                        <th>Message / Événement</th>
+                        <th width="100">Statut</th>
+                        <th width="60" style="text-align: right;">Action</th>
                     </tr>
                 </thead>
-<tbody>
-    {# Utilisation du filtre default([]) pour éviter le crash si logs est manquant #}
-    {% for log in logs|default([]) %}
-        {# Détermination du statut pour le filtrage JS #}
-        {% set rowStatus = 'success' %}
-        {% if log.type == 'erreur' %}
-            {% set rowStatus = 'failed' %}
-        {% elseif log.type == 'Session' %}
-            {% set rowStatus = 'session' %}
-        {% endif %}
+                <tbody>
+                    {% for log in logs|default([]) %}
+                        {% set rowStatus = (log.type == 'erreur') ? 'failed' : (log.type == 'Session' ? 'session' : 'success') %}
 
-        <tr class="log-row {% if log.type == 'Session' %}log-warning-row{% endif %}" data-status="{{ rowStatus }}">
-            <td style="color: var(--text-muted); font-size: 0.8rem;">#{{ log.id }}</td>
-            
-            <td>
-                <strong>{{ log.user ?? 'Système' }}</strong>
-            </td>
+                        <tr class="log-row {% if log.type == 'Session' %}log-warning-row{% endif %}" data-status="{{ rowStatus }}">
+                            <td class="date-cell" style="color: var(--text-muted); font-family: monospace; font-size: 0.8rem;">
+                                {{ log.createdAt|date('d/m/Y') }}<br>
+                                <span style="opacity: 0.6;">{{ log.createdAt|date('H:i:s') }}</span>
+                            </td>
+                            
+                            <td>
+                                <strong style="color: var(--text-main);">{{ log.user ?? 'Système' }}</strong>
+                            </td>
 
-            <td>
-                <div class="ip-container" style="display: flex; flex-direction: column;">
-                    <span class="ip-address ip-lookup" data-ip="{{ log.ip }}">{{ log.ip|default('—') }}</span>
-                    <span class="geo-info" id="geo-{{ loop.index }}" style="font-size: 0.7rem; color: var(--accent); font-weight: 500;"></span>
-                </div>
-                <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">
-                    Méthode: <strong>{{ log.method|default('GET') }}</strong>
-                </div>
-            </td>
+                            <td>
+                                <span class="ip-address ip-lookup" data-ip="{{ log.ip }}">{{ log.ip|default('—') }}</span>
+                                <span class="geo-info" id="geo-{{ loop.index }}">Recherche...</span>
+                            </td>
 
-            <td>
-                {# Détection visuelle de l'appareil #}
-                <div class="browser-info">
-                    {% if log.userAgent %}
-                        {% if 'Mobi' in log.userAgent %}📱 Mobile
-                        {% elseif 'Windows' in log.userAgent %}💻 Windows
-                        {% elseif 'Macintosh' in log.userAgent %}🖥️ macOS
-                        {% elseif 'Linux' in log.userAgent %}🐧 Linux
-                        {% else %}🌐 Navigateur{% endif %}
-                        <br>
-                        <small title="{{ log.userAgent }}" style="opacity: 0.6; cursor: help;">
-                            {{ log.userAgent|slice(0, 25) }}...
-                        </small>
+                            <td style="font-size: 0.8rem; color: var(--text-muted);">
+                                {% if log.userAgent %}
+                                    {% if 'Mobi' in log.userAgent %}📱 Mobile
+                                    {% elseif 'Windows' in log.userAgent %}💻 PC
+                                    {% elseif 'Macintosh' in log.userAgent %}🖥️ Mac
+                                    {% else %}🌐 Web{% endif %}
+                                    <div style="font-size: 0.7rem; opacity: 0.5; margin-top: 3px;" title="{{ log.userAgent }}">
+                                        {{ log.userAgent|slice(0, 20) }}...
+                                    </div>
+                                {% else %}—{% endif %}
+                            </td>
+
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    {% if log.type == 'Session' %}<span style="color:#f59e0b">⚠️</span>{% endif %}
+                                    <span>{{ log.message ?? '—' }}</span>
+                                </div>
+                                
+                                {# SUPERVISION COMPORTEMENTALE #}
+                                <div style="margin-top: 6px; display: flex; gap: 6px;">
+                                    {% set hour = log.createdAt|date('H') %}
+                                    {% if hour < 7 or hour > 21 %}
+                                        <span class="badge-nocturne">🌙 Nocturne ({{ hour }}h)</span>
+                                    {% endif %}
+                                    {% if log.createdAt|date('N') >= 6 %}
+                                        <span class="badge-weekend">🗓️ Week-end</span>
+                                    {% endif %}
+                                </div>
+                            </td>
+
+                            <td>
+                                {% if log.type == 'erreur' %}
+                                    <span class="log-failed">BLOQUÉ</span>
+                                {% else %}
+                                    <span class="log-success">AUTORISÉ</span>
+                                {% endif %}
+                            </td>
+
+                            <td style="text-align: right;">
+                                {% if log.ip and log.ip not in ['127.0.0.1', '::1', '—'] %}
+                                    <a href="{{ path('admin_security_ban_ip', {'ip': log.ip}) }}" 
+                                       class="btn-ban" 
+                                       onclick="return confirm('🚫 Bannir l\'IP {{ log.ip }} ?');"
+                                       title="Bannir l'IP">
+                                        🚫
+                                    </a>
+                                {% else %}<span style="opacity: 0.2;">—</span>{% endif %}
+                            </td>
+                        </tr>
                     {% else %}
-                        <span style="color: var(--text-muted);">—</span>
-                    {% endif %}
-                </div>
-            </td>
-
-            <td>
-                <span style="text-transform: capitalize;">{{ log.type ?? 'Action' }}</span>
-            </td>
-
-            <td>
-                {% if log.type == 'Session' %}
-                    <span class="warning-icon">⚠️</span>
-                {% endif %}
-                
-                <span style="font-size: 0.85rem;">{{ log.message ?? '—' }}</span>
-
-                {# --- SUPERVISION COMPORTEMENTALE --- #}
-                <div style="margin-top: 5px; display: flex; gap: 5px; flex-wrap: wrap;">
-                    {# Alerte Nocturne (entre 21h et 7h) #}
-                    {% set hour = log.createdAt|date('H') %}
-                    {% if hour < 7 or hour > 21 %}
-                        <span class="badge-nocturne" title="Connexion en dehors des heures de bureau">🌙 Nocturne</span>
-                    {% endif %}
-
-                    {# Alerte Week-end #}
-                    {% set day = log.createdAt|date('N') %}
-                    {% if day >= 6 %}
-                        <span class="badge-weekend" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600;">🗓️ Week-end</span>
-                    {% endif %}
-                </div>
-            </td>
-
-            <td>
-                {% if log.type == 'erreur' %}
-                    <span class="log-failed">❌ Échec</span>
-                {% else %}
-                    <span class="log-success">✅ Succès</span>
-                {% endif %}
-            </td>
-
-            <td style="color: var(--text-muted); font-size: 0.85rem;">
-                {{ log.createdAt|date('d/m/Y H:i:s') }}
-            </td>
-
-            <td>
-                {% if log.ip and log.ip != '127.0.0.1' and log.ip != '::1' %}
-                    <a href="{{ path('admin_security_ban_ip', {'ip': log.ip}) }}" 
-                       class="btn-ban" 
-                       onclick="return confirm('Voulez-vous vraiment bannir l\'IP {{ log.ip }} ?');"
-                       title="Bannir cette IP">
-                        🚫
-                    </a>
-                {% else %}
-                    <span style="opacity: 0.3;">—</span>
-                {% endif %}
-            </td>
-        </tr>
-    {% else %}
-        <tr>
-            <td colspan="9" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-                Aucun journal d'activité enregistré.
-            </td>
-        </tr>
-    {% endfor %}
-</tbody>
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 5rem; color: var(--text-muted);">
+                                Aucun log de sécurité enregistré.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
-            
-            <div id="noResults" style="display:none; text-align:center; padding:2rem; color:var(--text-muted);">
-                Aucune entrée ne correspond à vos filtres.
-            </div>
+        </div>
+        <div id="noResults" style="display:none; text-align:center; padding:3rem; color:var(--text-muted); font-style: italic;">
+            Aucune correspondance trouvée pour ces critères.
         </div>
     </div>
 </div>
@@ -331,21 +245,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const tableRows = document.querySelectorAll('.log-row');
     const noResultsMsg = document.getElementById('noResults');
 
-    let currentFilter = 'all';
-    let currentSearch = '';
-
     function applyFilters() {
+        const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+        const searchText = searchInput.value.toLowerCase();
         let visibleCount = 0;
 
         tableRows.forEach(row => {
-            const rowStatus = row.getAttribute('data-status'); // success, failed, session
-            const rowText = row.textContent.toLowerCase(); 
-
-            // Filtre par catégorie
-            const matchesFilter = (currentFilter === 'all') || (rowStatus === currentFilter);
-            
-            // Filtre par recherche texte
-            const matchesSearch = rowText.includes(currentSearch);
+            const status = row.dataset.status;
+            const text = row.innerText.toLowerCase();
+            const matchesFilter = (activeFilter === 'all') || (status === activeFilter);
+            const matchesSearch = text.includes(searchText);
 
             if (matchesFilter && matchesSearch) {
                 row.style.display = '';
@@ -354,48 +263,45 @@ document.addEventListener('DOMContentLoaded', function() {
                 row.style.display = 'none';
             }
         });
-
         noResultsMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
     }
 
-    // Clic sur les boutons
     filterButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             filterButtons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            currentFilter = btn.getAttribute('data-filter');
             applyFilters();
         });
     });
 
-    // Recherche clavier
-    searchInput.addEventListener('keyup', (e) => {
-        currentSearch = e.target.value.toLowerCase();
-        applyFilters();
-    });
-});
-</script>
+    searchInput.addEventListener('input', applyFilters);
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // On récupère toutes les IP uniques pour éviter de saturer l'API
+    // Géo-IP via ipapi (Uniquement IP publiques)
     const ipElements = document.querySelectorAll('.ip-lookup');
-    const uniqueIps = [...new Set(Array.from(ipElements).map(el => el.dataset.ip))].filter(ip => ip && ip !== '127.0.0.1' && ip !== '::1' && ip !== '—');
+    const uniqueIps = [...new Set(Array.from(ipElements).map(el => el.dataset.ip))]
+                       .filter(ip => ip && !['127.0.0.1', '::1', '—'].includes(ip));
 
     uniqueIps.forEach(ip => {
         fetch(`https://ipapi.co/${ip}/json/`)
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
                 if (data.city) {
-                    // On met à jour tous les éléments qui ont cette IP
+                    const info = `${data.city}, ${data.country_name}`;
+                    const flag = `https://flagcdn.com/16x12/${data.country_code.toLowerCase()}.png`;
                     document.querySelectorAll(`.ip-lookup[data-ip="${ip}"]`).forEach(el => {
-                        const geoSpan = el.nextElementSibling;
-                        const flag = data.country_code ? ` <img src="https://flagcdn.com/16x12/${data.country_code.toLowerCase()}.png" style="vertical-align: middle;">` : '';
-                        geoSpan.innerHTML = `${flag} ${data.city}, ${data.country_name}`;
+                        el.nextElementSibling.innerHTML = `<img src="${flag}" style="vertical-align:middle; margin-right:4px;"> ${info}`;
+                    });
+                } else {
+                    document.querySelectorAll(`.ip-lookup[data-ip="${ip}"]`).forEach(el => {
+                        el.nextElementSibling.innerText = "Origine inconnue";
                     });
                 }
             })
-            .catch(err => console.error("Erreur géo-IP:", err));
+            .catch(() => {
+                document.querySelectorAll(`.ip-lookup[data-ip="${ip}"]`).forEach(el => {
+                    el.nextElementSibling.innerText = "Non localisable";
+                });
+            });
     });
 });
 </script>

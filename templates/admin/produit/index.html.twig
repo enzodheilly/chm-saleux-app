@@ -4,69 +4,60 @@
 
 {% block stylesheets %}
 <style>
-    /* =================== PAGE STYLE =================== */
-    .dashboard-container { width: 100%; max-width: 1600px; margin: 0 auto; }
-
-    /* Header */
+    /* =================== HEADER & TOOLS =================== */
     .page-header {
-        display: flex; justify-content: space-between; align-items: center;
-        margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;
+        display: flex; justify-content: space-between; align-items: flex-end;
+        margin-bottom: 2rem; padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
     }
-    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
     .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
 
-    /* Toolbar */
-    .toolbar { display: flex; gap: 1rem; align-items: center; }
+    .toolbar { display: flex; gap: 1rem; }
+
     .search-input {
-        background: transparent; border: 1px solid var(--border); color: var(--text-main);
-        padding: 0.6rem 1rem; border-radius: 4px; outline: none; min-width: 300px; font-size: 0.9rem;
+        background: var(--bg-sidebar); border: 1px solid var(--border-color); color: var(--text-main);
+        padding: 0.6rem 1rem; border-radius: 4px; min-width: 280px; font-size: 0.9rem; transition: 0.2s;
     }
-    .search-input:focus { border-color: var(--accent); }
+    .search-input:focus { border-color: var(--accent); outline: none; }
 
-    .btn-primary {
-        background: var(--accent); color: #fff; padding: 0.6rem 1.5rem; border-radius: 4px;
-        font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.2s; border: none;
-        text-transform: uppercase; letter-spacing: 0.5px; text-decoration: none; display: inline-block;
+    .btn-create {
+        background: var(--text-main); color: var(--bg-body); padding: 0.6rem 1.2rem; border-radius: 4px;
+        font-weight: 700; font-size: 0.85rem; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
+        transition: 0.2s; border: none; text-decoration: none;
     }
-    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-create:hover { opacity: 0.9; }
 
-    /* Table */
-    .content-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; }
-    .table-responsive { overflow-x: auto; }
-    .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    /* =================== TABLEAU =================== */
+    .table-wrapper { background: var(--bg-sidebar); border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; }
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
     
-    .table th {
-        background: var(--bg-darker); color: var(--text-muted); font-weight: 600; text-align: left;
-        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); text-transform: uppercase;
-        font-size: 0.75rem; letter-spacing: 1px;
-    }
-    .table td {
-        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle;
-    }
-    .table tr:last-child td { border-bottom: none; }
-    .table tr:hover { background: rgba(255,255,255,0.01); }
-
-    /* Product Specifics */
-    .product-thumb {
-        width: 60px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border); background: var(--bg-darker);
-    }
-    .no-thumb {
-        width: 60px; height: 60px; border-radius: 4px; background: var(--bg-darker); border: 1px solid var(--border);
-        display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--text-muted);
+    .admin-table th {
+        background: rgba(255,255,255,0.02); color: var(--text-muted); font-weight: 600; text-transform: uppercase; 
+        letter-spacing: 0.05em; font-size: 0.75rem; text-align: left; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color);
     }
     
-    .product-title { font-weight: 600; font-size: 0.95rem; color: var(--text-main); display: block; }
-    .product-desc { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
-    
-    .price-tag { font-weight: 700; color: #22c55e; font-size: 1rem; }
+    .admin-table td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); color: var(--text-main); vertical-align: middle; }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover td { background: rgba(255,255,255,0.01); }
+
+    /* Product UI */
+    .product-info { display: flex; align-items: center; gap: 15px; }
+    .product-img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border-color); background: var(--bg-body); }
+    .no-img { width: 50px; height: 50px; border-radius: 4px; background: var(--bg-body); border: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 0.6rem; color: var(--text-muted); }
+
+    .title-stack { display: flex; flex-direction: column; }
+    .title-stack strong { font-size: 0.95rem; color: var(--text-main); }
+    .ref-code { font-family: monospace; font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+
+    .price-badge { font-family: monospace; font-weight: 700; color: #22c55e; font-size: 1rem; }
 
     /* Actions */
-    .actions-cell { display: flex; gap: 15px; justify-content: flex-end; }
-    .action-link { font-size: 0.85rem; font-weight: 500; text-decoration: none; border: none; background: none; cursor: pointer; padding: 0; }
-    .link-edit { color: var(--text-muted); }
-    .link-edit:hover { color: var(--text-main); text-decoration: underline; }
-    .link-delete { color: #ef4444; opacity: 0.8; }
-    .link-delete:hover { opacity: 1; text-decoration: underline; }
+    .actions { display: flex; gap: 15px; justify-content: flex-end; }
+    .act-link { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: 0.2s; opacity: 0.7; background: none; border: none; padding: 0; }
+    .act-link:hover { opacity: 1; text-decoration: underline; }
+    .act-edit { color: var(--text-main); }
+    .act-del { color: var(--danger); }
 
 </style>
 {% endblock %}
@@ -76,24 +67,23 @@
     
     <div class="page-header">
         <div>
-            <h1>Produits</h1>
-            <p>Gestion du catalogue boutique et des stocks.</p>
+            <h1>Catalogue Boutique</h1>
+            <p>Gérez les produits, les prix et les visuels de la boutique du club.</p>
         </div>
         <div class="toolbar">
             <input type="text" id="searchProduct" class="search-input" placeholder="Rechercher un produit...">
-            <a href="{{ path('admin_product_new') }}" class="btn-primary">Ajouter un produit</a>
+            <a href="{{ path('admin_product_new') }}" class="btn-create">+ Nouveau produit</a>
         </div>
     </div>
 
-    <div class="content-card">
-        <div class="table-responsive">
-            <table class="table" id="productTable">
+    <div class="table-wrapper">
+        <div style="overflow-x: auto;">
+            <table class="admin-table" id="productTable">
                 <thead>
                     <tr>
-                        <th width="80">Image</th>
-                        <th width="30%">Produit</th>
-                        <th>Description</th>
-                        <th>Prix Unitaire</th>
+                        <th width="35%">Désignation</th>
+                        <th width="35%">Description</th>
+                        <th width="15%">Prix</th>
                         <th style="text-align: right;">Actions</th>
                     </tr>
                 </thead>
@@ -101,43 +91,44 @@
                     {% for produit in produits %}
                         <tr>
                             <td>
-                                {% if produit.image %}
-                                    <img src="{{ asset('uploads/' ~ produit.image) }}" alt="{{ produit.titre }}" class="product-thumb">
-                                {% else %}
-                                    <div class="no-thumb">N/A</div>
-                                {% endif %}
-                            </td>
-
-                            <td>
-                                <span class="product-title">{{ produit.titre }}</span>
-                                <span style="font-size: 0.75rem; color: var(--text-muted);">REF-{{ produit.id }}</span>
-                            </td>
-
-                            <td>
-                                <div class="product-desc">
-                                    {{ produit.description|length > 60 ? produit.description|slice(0, 60) ~ '...' : produit.description }}
+                                <div class="product-info">
+                                    {% if produit.image %}
+                                        <img src="{{ asset('uploads/' ~ produit.image) }}" alt="{{ produit.titre }}" class="product-img">
+                                    {% else %}
+                                        <div class="no-img">N/A</div>
+                                    {% endif %}
+                                    <div class="title-stack">
+                                        <strong>{{ produit.titre }}</strong>
+                                        <span class="ref-code">REF-{{ produit.id|format("%05d") }}</span>
+                                    </div>
                                 </div>
                             </td>
 
-                            <td>
-                                <span class="price-tag">{{ produit.prix|number_format(2, ',', ' ') }} €</span>
+                            <td style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">
+                                {{ produit.description|length > 80 ? produit.description|slice(0, 80) ~ '...' : produit.description }}
                             </td>
 
                             <td>
-                                <div class="actions-cell">
-                                    <a href="{{ path('admin_product_edit', {id: produit.id}) }}" class="action-link link-edit">Modifier</a>
+                                <span class="price-badge">{{ produit.prix|number_format(2, ',', ' ') }} €</span>
+                            </td>
+
+                            <td>
+                                <div class="actions">
+                                    <a href="{{ path('admin_product_edit', {id: produit.id}) }}" class="act-link act-edit">Modifier</a>
                                     
-                                    <form method="post" action="{{ path('admin_product_delete', {id: produit.id}) }}" onsubmit="return confirm('Confirmer la suppression du produit ?');" style="display:inline;">
+                                    <form method="post" action="{{ path('admin_product_delete', {id: produit.id}) }}" 
+                                          style="display:inline;"
+                                          onsubmit="return confirm('Supprimer ce produit du catalogue ?');">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ produit.id) }}">
-                                        <button class="action-link link-delete">Supprimer</button>
+                                        <button class="act-link act-del">Supprimer</button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="5" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-                                Aucun produit dans le catalogue.
+                            <td colspan="4" style="text-align: center; padding: 4rem; color: var(--text-muted);">
+                                Aucun produit n'est actuellement disponible dans la boutique.
                             </td>
                         </tr>
                     {% endfor %}

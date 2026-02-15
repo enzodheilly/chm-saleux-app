@@ -299,6 +299,18 @@
                     </div>
                 </div>
 
+                <div class="nav-group-label">Audit & Sécurité</div>
+                <div class="nav-item" id="menu-security">
+                    <div class="nav-link" onclick="toggleSubmenu('menu-security')">
+                        <span>Sécurité Système</span>
+                        <span class="caret"></span>
+                    </div>
+                    <div class="submenu">
+                        <a href="{{ path('admin_security_logs') }}">Journal des Logs</a>
+                        <a href="{{ path('admin_security_blocklist') }}">Blocage IP (Blacklist)</a>
+                    </div>
+                </div>
+
                 <div class="nav-group-label">Configuration</div>
                 <div class="nav-item" id="menu-config">
                     <div class="nav-link" onclick="toggleSubmenu('menu-config')">

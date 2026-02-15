@@ -1,76 +1,102 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Nouvelle information{% endblock %}
+{% block title %}Nouvelle Information{% endblock %}
 
 {% block stylesheets %}
 <style>
-    /* =================== PAGE STYLE =================== */
-    .dashboard-container { width: 100%; max-width: 800px; margin: 0 auto; }
+    /* =================== CONTAINER =================== */
+    .form-container { max-width: 800px; margin: 0 auto; }
 
-    /* Header */
-    .page-header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
-    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    /* =================== HEADER =================== */
+    .page-header {
+        margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;
+        display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
     .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
+    .back-link { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; text-decoration: underline; }
+    .back-link:hover { color: var(--text-main); }
 
-    /* Form Card */
-    .form-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; }
-    .form-card > form > div { margin-bottom: 1.5rem; }
+    /* =================== FORM CARD =================== */
+    .form-card { background: var(--bg-sidebar); border: 1px solid var(--border-color); border-radius: 6px; padding: 2rem; }
+    .form-group { margin-bottom: 1.5rem; }
+
+    /* Labels */
+    .form-label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
 
     /* Inputs */
-    label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
-    input[type="text"], textarea {
-        width: 100%; background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-main);
-        padding: 0.7rem 1rem; border-radius: 4px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; box-sizing: border-box;
+    .form-control {
+        width: 100%; background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main);
+        padding: 0.75rem 1rem; border-radius: 4px; font-size: 0.95rem; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box;
     }
-    input:focus, textarea:focus { border-color: var(--accent); }
+    .form-control:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.1); }
     
-    textarea { min-height: 200px; line-height: 1.5; font-family: inherit; resize: vertical; }
+    textarea.form-control { min-height: 250px; line-height: 1.6; resize: vertical; }
 
-    /* Helper Text */
-    .helper-text { font-size: 0.8rem; color: var(--text-muted); margin-top: 5px; }
-    .helper-text span { color: var(--accent); font-weight: 600; }
+    /* Tags Categories Existantes */
+    .existing-tags { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag-hint { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 5px; display: block; }
+    .tag-item { 
+        font-size: 0.7rem; font-family: monospace; background: var(--bg-body); 
+        color: var(--text-muted); padding: 2px 6px; border-radius: 3px; 
+        border: 1px solid var(--border-color);
+    }
 
     /* Actions */
-    .form-actions { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 1rem; }
-    .btn-submit { background: var(--accent); color: #fff; padding: 0.7rem 1.5rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
-    .btn-submit:hover { background: var(--accent-hover); }
-    .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 500; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; transition: 0.2s; }
-    .btn-cancel:hover { border-color: var(--text-muted); color: var(--text-main); }
+    .form-actions {
+        margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);
+        display: flex; justify-content: flex-end; gap: 1rem;
+    }
+
+    .btn-cancel { padding: 0.7rem 1.2rem; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; border-radius: 4px; }
+    .btn-save { background: var(--text-main); color: var(--bg-body); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 700; border: none; cursor: pointer; }
+    .btn-save:hover { opacity: 0.9; }
+
 </style>
 {% endblock %}
 
+{% block page_title %}Nouvelle Information{% endblock %}
+
 {% block body %}
-<div class="dashboard-container">
+<div class="form-container">
     
     <div class="page-header">
-        <h1>Nouvelle information</h1>
-        <p>Ajoutez une section d'information générale sur le club.</p>
+        <div>
+            <h1>Créer une section</h1>
+            <p>Définissez un nouveau bloc de texte pour les informations fixes du club.</p>
+        </div>
+        <a href="{{ path('admin_clubinfo_index') }}" class="back-link">Annuler</a>
     </div>
 
     <div class="form-card">
         {{ form_start(form) }}
 
-        <div>
-            {{ form_label(form.category, 'Catégorie / Titre de section') }}
-            {{ form_widget(form.category, {'attr': {'placeholder': 'Ex: Horaires d\'ouverture'}}) }}
-            {{ form_errors(form.category) }}
+        <div class="form-group">
+            {{ form_label(form.category, 'Nom de la catégorie (Placement)', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.category, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Horaires, Histoire...'}}) }}
+            <div style="color: var(--danger); font-size: 0.8rem;">{{ form_errors(form.category) }}</div>
             
             {% if existingCategories is defined and existingCategories|length > 0 %}
-                <div class="helper-text">
-                    Déjà utilisés : <span>{{ existingCategories|join(', ') }}</span>
+                <div style="margin-top: 12px;">
+                    <span class="tag-hint">Catégories déjà utilisées :</span>
+                    <div class="existing-tags">
+                        {% for cat in existingCategories %}
+                            <span class="tag-item">{{ cat }}</span>
+                        {% endfor %}
+                    </div>
                 </div>
             {% endif %}
         </div>
 
-        <div>
-            {{ form_label(form.content, 'Contenu du texte') }}
-            {{ form_widget(form.content, {'attr': {'placeholder': 'Saisissez les informations ici...'}}) }}
-            {{ form_errors(form.content) }}
+        <div class="form-group">
+            {{ form_label(form.content, 'Contenu rédactionnel', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.content, {'attr': {'class': 'form-control', 'placeholder': 'Rédigez ici...'}}) }}
+            <div style="color: var(--danger); font-size: 0.8rem;">{{ form_errors(form.content) }}</div>
         </div>
 
         <div class="form-actions">
-            <a href="{{ path('admin_clubinfo_index') }}" class="btn-cancel">Annuler</a>
-            <button type="submit" class="btn-submit">Enregistrer</button>
+            <a href="{{ path('admin_clubinfo_index') }}" class="btn-cancel">Quitter</a>
+            <button type="submit" class="btn-save">Enregistrer la section</button>
         </div>
 
         {{ form_end(form) }}
