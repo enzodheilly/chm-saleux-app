@@ -1,29 +1,47 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const triggers = document.querySelectorAll('.faq-trigger');
+  const triggers = document.querySelectorAll('.faq-trigger');
+  if (!triggers.length) return;
 
-    triggers.forEach(trigger => {
-        trigger.addEventListener('click', () => {
-            // 1. Toggle la classe active sur le bouton (pour tourner la croix)
-            trigger.classList.toggle('active');
+  const closeItem = (btn) => {
+    btn.classList.remove('active');
+    btn.setAttribute('aria-expanded', 'false');
 
-            // 2. Gérer le panneau de contenu
-            const content = trigger.nextElementSibling;
-            
-            if (trigger.classList.contains('active')) {
-                // Si on ouvre, on définit la hauteur exacte du contenu
-                content.style.maxHeight = content.scrollHeight + "px";
-            } else {
-                // Si on ferme, on remet à 0
-                content.style.maxHeight = 0;
-            }
+    const panel = btn.nextElementSibling;
+    if (panel) panel.style.maxHeight = '0px';
+  };
 
-            // 3. (Optionnel) Fermer les autres panneaux si on veut un effet "accordéon strict"
-            // triggers.forEach(otherTrigger => {
-            //     if (otherTrigger !== trigger && otherTrigger.classList.contains('active')) {
-            //         otherTrigger.classList.remove('active');
-            //         otherTrigger.nextElementSibling.style.maxHeight = 0;
-            //     }
-            // });
-        });
+  const openItem = (btn) => {
+    btn.classList.add('active');
+    btn.setAttribute('aria-expanded', 'true');
+
+    const panel = btn.nextElementSibling;
+    if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+  };
+
+  triggers.forEach((trigger) => {
+    // sécurité a11y par défaut
+    if (!trigger.hasAttribute('aria-expanded')) {
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+
+    trigger.addEventListener('click', () => {
+      const isOpen = trigger.classList.contains('active');
+
+      // ✅ OPTION : accordéon strict (ferme les autres)
+      // décommente si tu veux ce comportement
+      // triggers.forEach((t) => { if (t !== trigger) closeItem(t); });
+
+      if (isOpen) closeItem(trigger);
+      else openItem(trigger);
     });
+  });
+
+  // Bonus: si on resize, on recalcule la hauteur des items ouverts
+  window.addEventListener('resize', () => {
+    triggers.forEach((trigger) => {
+      if (!trigger.classList.contains('active')) return;
+      const panel = trigger.nextElementSibling;
+      if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+    });
+  });
 });

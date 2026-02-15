@@ -1,283 +1,91 @@
-/* CSS Variables - Design System */
+:root{
+  --brand-blue:#005b94;
+  --brand-orange:#F57706;
+  --brand-navy:#002952;
+  --bg-light-1:#ffffff;
+  --bg-light-2:#f4f6f8;
+    --bg-dark:#0f0f11;
 
-/* Reset and Base Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  --text-dark:#111;
+  --text-body:#1f2937;
+  --text-muted:#6b7280;
+    --text-gray:#666;
+  --text-dark-2:#333;
+   --text-muted-2:#a1a1aa;
+
+  --border:#e5e7eb;
+
+  --surface:#ffffff;
+  --surface-soft:#f9fafb;
+  --surface-muted:#f3f4f6;
+  --surface-dark:#18181b;
+
+
+  --cc-shadow: 0 10px 30px -5px rgba(0,0,0,0.08);
+  --cc-radius: 16px;
+  --cc-dark: #0f172a;
+  --cc-light: #f8fafc;
+  --cc-white: #ffffff;
+  
 }
 
-html {
-    scroll-behavior: smooth;
-    overflow-y: scroll;
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
-body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background: #fff !important;
+body{
+  padding-top: calc(var(--info-h) + var(--nav-h));
 }
 
-/* Utility Classes */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
+.site-container{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-.hidden {
-    display: none;
+:root{
+  --anim--hover-time: 260ms;
+  --anim--hover-ease: cubic-bezier(.2,.9,.2,1);
+  --angle-1: 0deg;
+  --angle-2: 0deg;
 }
 
-.text-gradient {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.bg-background {
-    background-color: var(--background);
-}
-
-.bg-gradient-dark {
-    background: var(--gradient-dark);
-}
-
-.bg-gradient-card {
-    background: var(--gradient-card);
-}
-
-/* Button Styles */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    white-space: nowrap;
-    border-radius: var(--radius);
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: var(--transition-smooth);
-    cursor: pointer;
-    border: 1px solid transparent;
-    text-decoration: none;
-    outline: none;
-}
-
-.btn:focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
-}
-
-.btn:disabled {
-    pointer-events: none;
-    opacity: 0.5;
-}
-
-/* Button Variants */
-.btn-hero {
-    background: var(--gradient-primary);
-    color: var(--primary-foreground);
-    font-weight: 600;
-}
-
-.btn-hero:hover {
-    transform: scale(1.05);
-    box-shadow: var(--shadow-glow);
-}
-
-.btn-athletic {
-    background: var(--gradient-card);
-    border: 1px solid hsl(14 100% 57% / 0.2);
-    color: var(--foreground);
-}
-
-.btn-athletic:hover {
-    background: var(--gradient-primary);
-    color: var(--primary-foreground);
-    border-color: var(--primary);
-    box-shadow: var(--shadow-glow);
-}
-
-.btn-outline {
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--foreground);
-}
-
-.btn-outline:hover {
-    background: hsl(14 100% 57% / 0.1);
-    border-color: var(--primary);
-}
-
-.btn-icon {
-    background: transparent;
-    border: none;
-    color: var(--foreground);
-    width: 2.5rem;
-    height: 2.5rem;
-    cursor: pointer;
-    border-radius: var(--radius);
-    transition: var(--transition-smooth);
-}
-
-.btn-icon:hover {
-    background: var(--accent);
-    color: var(--accent-foreground);
-}
-
-/* Button Sizes */
-.btn-sm {
-    height: 2.25rem;
-    padding: 0 0.75rem;
-    font-size: 0.75rem;
-}
-
-.btn-lg {
-    height: 2.75rem;
-    padding: 0 2rem;
-    font-size: 1rem;
-}
-
-.btn-xl {
-    height: 3.5rem;
-    padding: 0 2.5rem;
-    font-size: 1rem;
-    border-radius: 0.5rem;
-}
-
-.btn-full {
-    width: 100%;
-}
-
-.btn-icon-right {
-    margin-left: 0.5rem;
-    width: 1rem;
-    height: 1rem;
-}
-
-/* Icons */
-.icon {
-    width: 1.5rem;
-    height: 1.5rem;
-}
-
-.menu-icon,
-.close-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-}
-
-/* Section Layout */
-.section {
-    padding: 5rem 0;
-}
-
-.section-content {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 4rem;
-}
-
-.section-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-}
-
-@media (min-width: 768px) {
-    .section-title {
-        font-size: 3rem;
-    }
-}
-
-.section-description {
-    font-size: 1.25rem;
-    color: var(--muted-foreground);
-    max-width: 48rem;
-    margin: 0 auto;
-}
-
-/* Responsive Design */
-@media (max-width: 767px) {
-    .hero-title {
-        font-size: 2.5rem;
-    }
-
-    .section-title {
-        font-size: 2rem;
-    }
-
-    .section {
-        padding: 3rem 0;
-    }
-
-    .hero-actions {
-        gap: 0.75rem;
-    }
-
-    .btn-xl {
-        height: 3rem;
-        padding: 0 2rem;
-    }
-}
-
-
-/* Defs */
-@property --angle-1 {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: -75deg;
-}
-
-@property --angle-2 {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: -45deg;
-}
-
-:root {
-  --global--size: clamp(2rem, 4vw, 5rem);
-  --anim--hover-time: 400ms;
-  --anim--hover-ease: cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-/* ========== BUTTON WRAP ========== */
-.button-wrap {
+/* === BUTTON GLASS COMPLET === */
+.button-wrap-payment {
   position: relative;
   z-index: 2;
   border-radius: 999vw;
   background: transparent;
-  pointer-events: none;
+  pointer-events: none; /* wrapper inerte, le lien reçoit les interactions */
   transition: all var(--anim--hover-time) var(--anim--hover-ease);
+  display: inline-block; /* pour s'adapter à la taille du bouton */
 }
 
-/* Shadow behind button */
-.button-shadow {
-  --shadow-cuttoff-fix: 2em;
+/* Shadow derrière le bouton */
+.button-wrap-payment .button-shadow {
+  --shadow-cuttoff-fix: 1.8em;
   position: absolute;
+  z-index: 0;
   width: calc(100% + var(--shadow-cuttoff-fix));
   height: calc(100% + var(--shadow-cuttoff-fix));
   top: calc(0% - var(--shadow-cuttoff-fix)/2);
   left: calc(0% - var(--shadow-cuttoff-fix)/2);
   filter: blur(clamp(2px, 0.125em, 12px));
-  overflow: visible;
   pointer-events: none;
+   width: 88%;
+   margin-left: 38px;
 }
 
-/* Shadow overlay */
-.button-shadow::after {
+/* Shadow overlay (pour simuler profondeur sous le bouton) */
+.button-wrap-payment .button-shadow::after {
   content: "";
   position: absolute;
   z-index: 0;
   inset: 0;
   border-radius: 999vw;
-  background: linear-gradient(180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.1));
+  background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.09));
   width: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
   height: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
   top: calc(var(--shadow-cuttoff-fix) - 0.5em);
@@ -285,99 +93,76 @@ body {
   padding: 0.125em;
   box-sizing: border-box;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
   mask-composite: exclude;
   transition: all var(--anim--hover-time) var(--anim--hover-ease);
   opacity: 1;
 }
 
-/* ========== BUTTON LINK STYLES ========== */
-.button-wrap a.btn-club {
+/* Bouton principal (link) */
+.button-wrap-payment a.btn-payment {
   --border-width: clamp(1px, 0.0625em, 4px);
-  all: unset;
+  all: unset; /* reset complet */
   cursor: pointer;
   position: relative;
-  pointer-events: auto;
+  pointer-events: auto; /* active le clic */
   z-index: 3;
-  display: inline-block;
-  background: linear-gradient(
-    -75deg,
-    rgba(255,255,255,0.05),
-    rgba(255,255,255,0.2),
-    rgba(255,255,255,0.05)
-  );
+  gap: 0.5em;
+  align-items: center;
+ display: inline-flex;
+  justify-content: center;
   border-radius: 999vw;
-  box-shadow: inset 0 0.125em 0.125em rgba(0,0,0,0.05),
-              inset 0 -0.125em 0.125em rgba(255,255,255,0.5),
-              0 0.25em 0.125em -0.125em rgba(0,0,0,0.2),
-              0 0 0.1em 0.25em inset rgba(255,255,255,0.2),
-              0 0 0 0 rgba(255,255,255,1);
-  backdrop-filter: blur(clamp(1px,0.125em,4px));
-  transition: all var(--anim--hover-time) var(--anim--hover-ease);
-}
-
-/* Hover state */
-.button-wrap a.btn-club:hover {
-  transform: scale(0.975);
-  backdrop-filter: blur(0.01em);
-  box-shadow: inset 0 0.125em 0.125em rgba(0,0,0,0.05),
-              inset 0 -0.125em 0.125em rgba(255,255,255,0.5),
-              0 0.15em 0.05em -0.1em rgba(0,0,0,0.25),
-              0 0 0.05em 0.1em inset rgba(255,255,255,0.5);
-}
-
-/* Text inside the link */
-.button-wrap a.btn-club span {
-  position: relative;
-  display: block;
-  font-family: "Inter", sans-serif;
-  font-weight: 800;
-  font-size: 1.1em;
-  color: white;
-  text-shadow: 0em 0.25em 0.05em rgba(0,0,0,0.1);
   padding-inline: 1.5em;
   padding-block: 0.875em;
-  transition: all var(--anim--hover-time) var(--anim--hover-ease);
+  width: 280px;
+  font-size: 0.9rem;
+  color: white;
+  text-align: center;
+  box-shadow:
+    inset 0 0.125em 0.125em rgba(0,0,0,0.05),
+    inset 0 -0.125em 0.125em rgba(255,255,255,0.5),
+    0 0.25em 0.125em -0.125em rgba(0,0,0,0.2),
+    0 0 0.1em 0.25em inset rgba(255,255,255,0.12);
+  background: linear-gradient(-75deg, rgba(255,255,255,0.04), rgba(255,255,255,0.12), rgba(255,255,255,0.03));
+  backdrop-filter: blur(clamp(1px,0.125em,4px));
+  transition: transform var(--anim--hover-time) var(--anim--hover-ease),
+              box-shadow var(--anim--hover-time) var(--anim--hover-ease),
+              background-position calc(var(--anim--hover-time)*1.25) var(--anim--hover-ease);
+  -webkit-tap-highlight-color: transparent;
+  border: 0.5px solid rgba(255,255,255,0.06);
 }
 
-/* Overlay gradient on text */
-.button-wrap a.btn-club span::after {
+/* Texte interne */
+.button-wrap-payment a.btn-payment span {
+  position: relative;
+  display: block;
+  z-index: 3;
+  font-weight: 900;
+}
+
+/* Overlay gradient mobile/shine sur le texte */
+.button-wrap-payment a.btn-payment span::after {
   content: "";
   display: block;
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   width: calc(100% - var(--border-width));
   height: calc(100% - var(--border-width));
   top: calc(0% + var(--border-width)/2);
   left: calc(0% + var(--border-width)/2);
   border-radius: 999vw;
   overflow: clip;
-  background: linear-gradient(
-    var(--angle-2),
-    rgba(255,255,255,0) 0%,
-    rgba(255,255,255,0.5) 40% 50%,
-    rgba(255,255,255,0) 55%
-  );
-  z-index: 3;
+  background: linear-gradient(var(--angle-2), rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 40% 50%, rgba(255,255,255,0) 55%);
   mix-blend-mode: screen;
   pointer-events: none;
   background-size: 200% 200%;
   background-position: 0% 50%;
   background-repeat: no-repeat;
-  transition: background-position calc(var(--anim--hover-time)*1.25) var(--anim--hover-ease),
-              --angle-2 calc(var(--anim--hover-time)*1.25) var(--anim--hover-ease);
+  transition: background-position calc(var(--anim--hover-time)*1.25) var(--anim--hover-ease), --angle-2 calc(var(--anim--hover-time)*1.25) var(--anim--hover-ease);
 }
 
-.button-wrap a.btn-club:hover span::after {
-  background-position: 25% 50%;
-}
-
-.button-wrap a.btn-club:active span::after {
-  background-position: 50% 15%;
-  --angle-2: -15deg;
-}
-
-/* Outline */
-.button-wrap a.btn-club::after {
+/* Outline / contour animé (conic + linear pour cet effet "halo") */
+.button-wrap-payment a.btn-payment::after {
   content: "";
   position: absolute;
   z-index: 1;
@@ -391,38 +176,76 @@ body {
   box-sizing: border-box;
   background: conic-gradient(
     from var(--angle-1) at 50% 50%,
-    rgba(0,0,0,0.5),
+    rgba(0,0,0,0.45),
     rgba(0,0,0,0) 5% 40%,
-    rgba(0,0,0,0.5) 50%,
+    rgba(0,0,0,0.45) 50%,
     rgba(0,0,0,0) 60% 95%,
-    rgba(0,0,0,0.5)
-  ),
-  linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0.5));
+    rgba(0,0,0,0.45)
+  ), linear-gradient(180deg, rgba(255,255,255,0.45), rgba(255,255,255,0.45));
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
   mask-composite: exclude;
-  transition: all var(--anim--hover-time) var(--anim--hover-ease),
-              --angle-1 500ms ease;
-  box-shadow: inset 0 0 0 calc(var(--border-width)/2) rgba(255,255,255,0.5);
+  transition: all var(--anim--hover-time) var(--anim--hover-ease), --angle-1 500ms ease;
+  box-shadow: inset 0 0 0 calc(var(--border-width)/2) rgba(255,255,255,0.25);
 }
 
-.button-wrap a.btn-club:hover::after {
+/* Hover states (propulsent l'effet glass) */
+.button-wrap-payment a.btn-payment:hover {
+  transform: scale(0.975);
+  backdrop-filter: blur(0.01em);
+  box-shadow:
+    inset 0 0.125em 0.125em rgba(0,0,0,0.05),
+    inset 0 -0.125em 0.125em rgba(255,255,255,0.6),
+    0 0.15em 0.05em -0.1em rgba(0,0,0,0.25),
+    0 0 0.05em 0.1em inset rgba(255,255,255,0.5);
+}
+
+/* Déplacement du "shine" */
+.button-wrap-payment a.btn-payment:hover span::after {
+  background-position: 25% 50%;
+}
+
+/* Active (press) states */
+.button-wrap-payment a.btn-payment:active {
+  transform: translateY(1px) scale(0.98);
+}
+.button-wrap-payment a.btn-payment:active span::after {
+  background-position: 50% 15%;
+  --angle-2: -15deg;
+}
+
+/* Animation de l'outline sur hover */
+.button-wrap-payment a.btn-payment:hover::after {
   --angle-1: -125deg;
 }
-
-.button-wrap a.btn-club:active::after {
+.button-wrap-payment a.btn-payment:active::after {
   --angle-1: -75deg;
 }
 
-/* Shadow hover effect */
-.button-wrap:has(a.btn-club:hover) .button-shadow {
+/* Interaction wrapper effects */
+.button-wrap-payment:has(a.btn-payment:hover) .button-shadow {
   filter: blur(clamp(2px,0.0625em,6px));
 }
-
-.button-wrap:has(a.btn-club:active) {
+.button-wrap-payment:has(a.btn-payment:active) {
   transform: rotate3d(1,0,0,25deg);
 }
-
-.button-wrap:has(a.btn-club:active) .button-shadow {
+.button-wrap-payment:has(a.btn-payment:active) .button-shadow {
   filter: blur(clamp(2px,0.125em,12px));
+}
+
+/* Focus accessibility (visible focus ring) */
+.button-wrap-payment a.btn-payment:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(30,144,255,0.18), 0 6px 18px rgba(0,0,0,0.12);
+  --angle-1: -90deg;
+}
+
+/* Petite optimisation responsive */
+@media (max-width: 420px) {
+  .button-wrap-payment a.btn-payment {
+    padding-inline: 1rem;
+    padding-block: 0.6rem;
+    font-size: 0.85rem;
+  }
 }
 
