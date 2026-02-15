@@ -4,53 +4,50 @@
 
 {% block stylesheets %}
 <style>
-    /* =================== PAGE STYLE =================== */
-    .dashboard-container { width: 100%; max-width: 1600px; margin: 0 auto; }
-
-    /* Header */
+    /* =================== HEADER & TOOLS =================== */
     .page-header {
-        display: flex; justify-content: space-between; align-items: center;
-        margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;
+        display: flex; justify-content: space-between; align-items: flex-end;
+        margin-bottom: 2rem; padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
     }
-    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
     .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
 
-    /* Toolbar */
-    .toolbar { display: flex; gap: 1rem; align-items: center; }
     .search-input {
-        background: transparent; border: 1px solid var(--border); color: var(--text-main);
-        padding: 0.6rem 1rem; border-radius: 4px; outline: none; min-width: 300px; font-size: 0.9rem;
+        background: var(--bg-sidebar); border: 1px solid var(--border-color); color: var(--text-main);
+        padding: 0.6rem 1rem; border-radius: 4px; min-width: 300px; font-size: 0.9rem; transition: 0.2s;
     }
-    .search-input:focus { border-color: var(--accent); }
+    .search-input:focus { border-color: var(--accent); outline: none; }
 
-    /* Table */
-    .content-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; }
-    .table-responsive { overflow-x: auto; }
-    .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    /* =================== TABLEAU PRO =================== */
+    .table-wrapper { background: var(--bg-sidebar); border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; }
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
     
-    .table th {
-        background: var(--bg-darker); color: var(--text-muted); font-weight: 600; text-align: left;
-        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); text-transform: uppercase;
-        font-size: 0.75rem; letter-spacing: 1px;
+    .admin-table th {
+        background: rgba(255,255,255,0.02); color: var(--text-muted); font-weight: 600; text-transform: uppercase; 
+        letter-spacing: 0.05em; font-size: 0.75rem; text-align: left; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color);
     }
-    .table td {
-        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle;
-    }
-    .table tr:last-child td { border-bottom: none; }
-    .table tr:hover { background: rgba(255,255,255,0.01); }
+    
+    .admin-table td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); color: var(--text-main); vertical-align: middle; }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover td { background: rgba(255,255,255,0.01); }
 
     /* Status Badges */
     .badge {
-        font-size: 0.75rem; font-weight: 700; text-transform: uppercase; padding: 4px 8px; border-radius: 4px;
-        letter-spacing: 0.5px;
+        font-size: 0.7rem; font-weight: 700; text-transform: uppercase; padding: 4px 10px; border-radius: 4px;
+        letter-spacing: 0.05em; border: 1px solid transparent; display: inline-block;
     }
-    .badge-confirmed { color: #22c55e; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); }
-    .badge-pending { color: #f59e0b; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); }
+    .badge-confirmed { color: #22c55e; background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.2); }
+    .badge-pending { color: #f59e0b; background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.2); }
+
+    /* Email Style */
+    .email-link { color: var(--text-main); font-weight: 600; text-decoration: none; }
+    .email-link:hover { color: var(--accent); text-decoration: underline; }
 
     /* Flash Messages */
     .flash-success {
         background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2);
-        padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-weight: 500;
+        padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-weight: 600; font-size: 0.9rem;
     }
 </style>
 {% endblock %}
@@ -59,48 +56,50 @@
 <div class="dashboard-container">
     
     {% for message in app.flashes('success') %}
-        <div class="flash-success">{{ message }}</div>
+        <div class="flash-success">✅ {{ message }}</div>
     {% endfor %}
 
     <div class="page-header">
         <div>
             <h1>Abonnés Newsletter</h1>
-            <p>Liste des adresses email inscrites à la liste de diffusion.</p>
+            <p>Audience actuelle et liste de diffusion.</p>
         </div>
         <div class="toolbar">
-            <input type="text" id="searchSubs" class="search-input" placeholder="Rechercher un email...">
+            <input type="text" id="searchSubs" class="search-input" placeholder="Rechercher par email...">
         </div>
     </div>
 
-    <div class="content-card">
-        <div class="table-responsive">
-            <table class="table" id="subsTable">
+    <div class="table-wrapper">
+        <div style="overflow-x: auto;">
+            <table class="admin-table" id="subsTable">
                 <thead>
                     <tr>
-                        <th width="60">#</th>
-                        <th>Email</th>
-                        <th>Date d'inscription</th>
-                        <th>Statut</th>
+                        <th width="80">#</th>
+                        <th width="40%">Adresse Email</th>
+                        <th width="30%">Date d'inscription</th>
+                        <th style="text-align: right;">Statut</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for s in subscribers %}
                         <tr>
-                            <td><span style="color: var(--text-muted); font-family: monospace;">{{ loop.index }}</span></td>
-                            <td><strong>{{ s.email }}</strong></td>
-                            <td style="color: var(--text-muted);">{{ s.subscribedAt|date('d/m/Y à H:i') }}</td>
-                            <td>
+                            <td><span style="color: var(--text-muted); font-family: monospace;">{{ loop.index|format("%02d") }}</span></td>
+                            <td><a href="mailto:{{ s.email }}" class="email-link">{{ s.email }}</a></td>
+                            <td style="color: var(--text-muted); font-size: 0.85rem;">
+                                {{ s.subscribedAt|date('d/m/Y') }} <span style="opacity: 0.5; margin-left: 5px;">{{ s.subscribedAt|date('H:i') }}</span>
+                            </td>
+                            <td style="text-align: right;">
                                 {% if s.isConfirmed %}
-                                    <span class="badge badge-confirmed">Confirmé</span>
+                                    <span class="badge badge-confirmed">Actif / Confirmé</span>
                                 {% else %}
-                                    <span class="badge badge-pending">En attente</span>
+                                    <span class="badge badge-pending">Validation en attente</span>
                                 {% endif %}
                             </td>
                         </tr>
                     {% else %}
                         <tr>
                             <td colspan="4" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-                                Aucun abonné dans la base de données.
+                                Aucun abonné n'est enregistré pour le moment.
                             </td>
                         </tr>
                     {% endfor %}
@@ -111,12 +110,16 @@
 </div>
 
 <script>
-document.getElementById('searchSubs').addEventListener('keyup', function() {
-    const val = this.value.toLowerCase();
-    const rows = document.querySelectorAll('#subsTable tbody tr');
-    rows.forEach(row => {
-        row.style.display = row.textContent.toLowerCase().includes(val) ? '' : 'none';
+    // Filtre dynamique
+    document.getElementById('searchSubs').addEventListener('keyup', function() {
+        const val = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#subsTable tbody tr');
+        rows.forEach(row => {
+            const email = row.querySelector('.email-link');
+            if(email) {
+                row.style.display = email.textContent.toLowerCase().includes(val) ? '' : 'none';
+            }
+        });
     });
-});
 </script>
 {% endblock %}

@@ -1,103 +1,132 @@
-
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Nouvel athlète{% endblock %}
+{% block title %}Nouvel Athlète{% endblock %}
 
 {% block stylesheets %}
 <style>
-    /* =================== PAGE STYLE =================== */
-    .dashboard-container { width: 100%; max-width: 1000px; margin: 0 auto; }
+    /* =================== CONTAINER =================== */
+    .form-container { max-width: 800px; margin: 0 auto; }
 
-    /* Header */
-    .page-header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
-    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    /* =================== HEADER =================== */
+    .page-header {
+        margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;
+        display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
     .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
+    
+    .back-link { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; text-decoration: underline; cursor: pointer; }
+    .back-link:hover { color: var(--text-main); }
 
-    /* Form Card */
-    .form-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; }
-    .form-card > form > div { margin-bottom: 1.5rem; }
+    /* =================== FORM CARD =================== */
+    .form-card { background: var(--bg-sidebar); border: 1px solid var(--border-color); border-radius: 6px; padding: 2rem; }
+    .form-group { margin-bottom: 1.5rem; }
+
+    /* Labels */
+    .form-label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
 
     /* Inputs */
-    label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
-    input[type="text"], input[type="date"], input[type="file"], select {
-        width: 100%; background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-main);
-        padding: 0.7rem 1rem; border-radius: 4px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; box-sizing: border-box;
+    .form-control {
+        width: 100%; background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main);
+        padding: 0.75rem 1rem; border-radius: 4px; font-size: 0.95rem; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box;
     }
-    input:focus, select:focus { border-color: var(--accent); }
+    .form-control:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.1); }
 
-    /* Layout Grids */
-    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    @media(max-width: 700px) { .row-2 { grid-template-columns: 1fr; gap: 0; } }
+    /* File Input Styling */
+    input[type="file"].form-control {
+        padding: 0.5rem;
+        cursor: pointer;
+    }
+    input[type="file"]::file-selector-button {
+        background: var(--bg-darker); border: 1px solid var(--border-color); color: var(--text-main);
+        padding: 0.3rem 0.8rem; margin-right: 1rem; border-radius: 4px; cursor: pointer; transition: 0.2s;
+    }
+    input[type="file"]::file-selector-button:hover { background: var(--border-color); }
+
+    /* Grilles */
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media(max-width: 600px) { .form-row-2 { grid-template-columns: 1fr; gap: 0; } }
+
+    /* Errors */
+    .form-error { color: var(--danger); font-size: 0.85rem; margin-top: 0.4rem; }
 
     /* Actions */
-    .form-actions { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 1rem; }
-    .btn-submit { background: var(--accent); color: #fff; padding: 0.7rem 1.5rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
-    .btn-submit:hover { background: var(--accent-hover); }
-    .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 500; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; transition: 0.2s; }
-    .btn-cancel:hover { border-color: var(--text-muted); color: var(--text-main); }
+    .form-actions { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 1rem; }
+    
+    .btn-cancel { padding: 0.7rem 1.2rem; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; border-radius: 4px; transition: color 0.2s; }
+    .btn-cancel:hover { color: var(--text-main); }
+    
+    .btn-save { background: var(--text-main); color: var(--bg-body); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 700; font-size: 0.9rem; border: none; cursor: pointer; transition: opacity 0.2s; }
+    .btn-save:hover { opacity: 0.9; }
+
 </style>
 {% endblock %}
 
 {% block body %}
-<div class="dashboard-container">
+<div class="form-container">
     
     <div class="page-header">
-        <h1>Nouvel athlète</h1>
-        <p>Création d'un profil athlète pour le club.</p>
+        <div>
+            <h1>Ajouter un Athlète</h1>
+            <p>Création d'une fiche profil pour les compétitions.</p>
+        </div>
+        <a href="{{ path('admin_athlete_index') }}" class="back-link">Retour à la liste</a>
     </div>
 
     <div class="form-card">
         {{ form_start(form) }}
 
-        <div class="row-2">
-            <div>
-                {{ form_label(form.prenom, 'Prénom') }}
-                {{ form_widget(form.prenom) }}
-                {{ form_errors(form.prenom) }}
+        <div class="form-row-2">
+            <div class="form-group">
+                {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Sarah'}}) }}
+                <div class="form-error">{{ form_errors(form.prenom) }}</div>
             </div>
-            <div>
-                {{ form_label(form.nom, 'Nom') }}
-                {{ form_widget(form.nom) }}
-                {{ form_errors(form.nom) }}
-            </div>
-        </div>
-
-        <div class="row-2">
-            <div>
-                {{ form_label(form.dateNaissance, 'Date de Naissance') }}
-                {{ form_widget(form.dateNaissance) }}
-                {{ form_errors(form.dateNaissance) }}
-            </div>
-            <div>
-                {{ form_label(form.equipe, 'Équipe') }}
-                {{ form_widget(form.equipe) }}
-                {{ form_errors(form.equipe) }}
+            <div class="form-group">
+                {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Connor'}}) }}
+                <div class="form-error">{{ form_errors(form.nom) }}</div>
             </div>
         </div>
 
-        <div class="row-2">
-            <div>
-                {{ form_label(form.categorie, 'Catégorie Sportive') }}
-                {{ form_widget(form.categorie) }}
-                {{ form_errors(form.categorie) }}
+        <div class="form-row-2">
+            <div class="form-group">
+                {{ form_label(form.dateNaissance, 'Date de Naissance', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.dateNaissance, {'attr': {'class': 'form-control'}}) }}
+                <div class="form-error">{{ form_errors(form.dateNaissance) }}</div>
             </div>
-            <div>
-                {{ form_label(form.categoriePoids, 'Catégorie de Poids') }}
-                {{ form_widget(form.categoriePoids) }}
-                {{ form_errors(form.categoriePoids) }}
+            <div class="form-group">
+                {{ form_label(form.equipe, 'Club / Équipe', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.equipe, {'attr': {'class': 'form-control', 'placeholder': 'Ex: CHM Saleux'}}) }}
+                <div class="form-error">{{ form_errors(form.equipe) }}</div>
             </div>
         </div>
 
-        <div>
-            {{ form_label(form.image, 'Photo de Profil') }}
-            {{ form_widget(form.image) }}
-            {{ form_errors(form.image) }}
-            <small style="color: var(--text-muted); display: block; margin-top: 5px;">Formats acceptés : JPG, PNG, WEBP.</small>
+        <div class="form-row-2">
+            <div class="form-group">
+                {{ form_label(form.categorie, 'Catégorie d\'âge', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.categorie, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Senior'}}) }}
+                <div class="form-error">{{ form_errors(form.categorie) }}</div>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.categoriePoids, 'Catégorie de Poids', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.categoriePoids, {'attr': {'class': 'form-control', 'placeholder': 'Ex: -71kg'}}) }}
+                <div class="form-error">{{ form_errors(form.categoriePoids) }}</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.image, 'Photo de Profil (Optionnel)', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error">{{ form_errors(form.image) }}</div>
+            <small style="color: var(--text-muted); display: block; margin-top: 6px; font-size: 0.8rem;">
+                Formats recommandés : JPG ou PNG, format carré (ex: 500x500px).
+            </small>
         </div>
 
         <div class="form-actions">
             <a href="{{ path('admin_athlete_index') }}" class="btn-cancel">Annuler</a>
-            <button type="submit" class="btn-submit">Créer le profil</button>
+            <button type="submit" class="btn-save">Enregistrer la fiche</button>
         </div>
 
         {{ form_end(form) }}
