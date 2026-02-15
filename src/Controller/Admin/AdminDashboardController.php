@@ -62,7 +62,7 @@ class AdminDashboardController extends AbstractController
         ];
 
         return $this->render('admin/dashboard.html.twig', [
-            // Plus besoin de passer qrCodeContent ici !
+            'qrCodeContent' => null,
             'totalUsers' => $totalUsers,
             'verifiedUsers' => $verifiedUsers,
             'successfulAttempts' => $successfulAttempts,
