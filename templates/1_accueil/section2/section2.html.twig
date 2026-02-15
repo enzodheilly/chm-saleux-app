@@ -1,8 +1,8 @@
 <section class="sleek-pricing-section">
   <div class="container-narrow">
-    
+
     <div class="pricing-header">
-      <h2 class="section-title" style="color:#111 !important;">Selection l'abonnement qui vous correspond</h2>
+      <h2 class="section-title">Sélectionnez l'abonnement qui vous correspond</h2>
       <p class="section-subtitle">
         Accès illimité 800m², cardio, muscu, haltéro et cours collectifs.
         <br>À partir de <strong>5,83 €/semaine</strong>.
@@ -10,45 +10,53 @@
     </div>
 
     <div class="pricing-selector-wrapper">
-      <div class="pricing-selector">
+      <fieldset class="pricing-selector" aria-label="Type de tarif">
+        <legend class="visually-hidden">Choisir un type de tarif</legend>
+
         <input type="radio" id="type-standard" name="pricing-type" value="standard" checked>
         <label for="type-standard" class="selector-item">Standard</label>
-        
+
         <input type="radio" id="type-student" name="pricing-type" value="student">
         <label for="type-student" class="selector-item">
           Étudiant <span class="discount-tag">-10€</span>
         </label>
-        
-        <div class="selector-glider"></div> </div>
+
+        <div class="selector-glider" aria-hidden="true"></div>
+      </fieldset>
     </div>
 
     <div class="pricing-grid">
-      
       {% for plan in plans %}
-        
+
         {# --- LOGIQUE PRIX --- #}
         {% set standardPrice = plan.prix %}
         {% set studentPrice = plan.prix %}
-        {% if plan.prix >= 195 %}{% set studentPrice = 185 %}{% elseif plan.prix_etudiant is defined and plan.prix_etudiant %}{% set studentPrice = plan.prix_etudiant %}{% endif %}
+        {% if plan.prix >= 195 %}
+          {% set studentPrice = 185 %}
+        {% elseif plan.prix_etudiant is defined and plan.prix_etudiant %}
+          {% set studentPrice = plan.prix_etudiant %}
+        {% endif %}
         {# --- FIN LOGIQUE --- #}
 
         <article class="sleek-card {{ plan.isPopular ? 'popular-card' : '' }}">
-          
+
           {% if plan.isPopular %}
             <div class="popular-badge">Le plus choisi</div>
           {% endif %}
 
           <div class="card-header">
             <h3 class="plan-title">{{ plan.nom }}</h3>
+
             <div class="plan-price">
               <span class="currency">€</span>
               <span class="price-value"
-                    data-standard="{{ standardPrice }}" 
+                    data-standard="{{ standardPrice }}"
                     data-student="{{ studentPrice }}">
                 {{ standardPrice }}
               </span>
               <span class="period">/ {{ plan.frequence|lower }}</span>
             </div>
+
             {% if plan.mensualite %}
               <div class="monthly-detail">Soit ~{{ plan.mensualite|number_format(0) }}€ / mois</div>
             {% else %}
@@ -58,14 +66,15 @@
 
           <div class="card-body">
             <div class="trial-info">
-              <i class="fa-solid fa-check-circle"></i> Séance d'essai incluse
+              <i class="fa-solid fa-check-circle" aria-hidden="true"></i>
+              <span>Séance d'essai incluse</span>
             </div>
-            
+
             <ul class="features-list">
               {% for avantage in plan.avantages %}
                 {% set parts = avantage|split('|') %}
                 <li>
-                  <i class="fa-solid fa-check icon-check"></i>
+                  <i class="fa-solid fa-check icon-check" aria-hidden="true"></i>
                   <span>
                     {% if parts|length > 1 %}{{ parts[1]|trim }}{% else %}{{ avantage }}{% endif %}
                   </span>
@@ -75,21 +84,23 @@
           </div>
 
           <div class="card-footer">
-            <a href="#" class="btn-select {{ plan.isPopular ? 'btn-red' : 'btn-dark' }}">Sélectionner</a>
+            {# Si "Sélectionner" déclenche une action JS / modale, button est mieux que href="#" #}
+            <button type="button"
+                    class="btn-select {{ plan.isPopular ? 'btn-red' : 'btn-dark' }}"
+                    data-plan="{{ plan.id }}">
+              Sélectionner
+            </button>
           </div>
 
         </article>
 
       {% endfor %}
-
     </div>
 
     <div class="pricing-note">
-      <i class="fa-solid fa-circle-info"></i>
+      <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
       <p><strong>Note :</strong> Pensez à remplir et remettre votre formulaire de licence au bureau avant le paiement.</p>
     </div>
 
   </div>
 </section>
-
-<script src="{{ asset('js/accueil/section2/section2.js') }}" defer></script>

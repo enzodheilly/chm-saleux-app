@@ -1,581 +1,116 @@
-/* ==========================================================================
-   1. TON CSS ORIGINAL (HEADER - NE PAS TOUCHER)
-   ========================================================================== */
-.hero-header {
+/* --- VARIABLES --- */
+:root {
+    --primary-color: #0056b3;
+    --accent-color: #e31b23;
+    --dark-bg: #111;
+    --text-main: #333;
+    --text-muted: #666;
+    --bg-light: #f8f9fa;
+    --border-radius: 12px;
+}
+
+/* --- HEADER (Héritage des autres pages) --- */
+.page-header {
     position: relative;
     height: 60vh;
+    min-height: 400px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
     color: white;
-    overflow: hidden;
+    background-size: cover;
+    background-position: center 20%;
+    margin-bottom: 60px;
 }
-
-.hero-header::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5);
+.header-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.4));
     z-index: 1;
-    pointer-events: none;
 }
+.header-content { position: relative; z-index: 2; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px;top:65px; }
+.back-link { display: inline-flex; align-items: center; gap: 10px; color: white; text-decoration: none; margin-bottom: 20px; opacity: 0.8; transition: 0.3s; }
+.back-link:hover { opacity: 1; }
+.header-title-box h1 { font-size: 3.5rem; font-weight: 900; margin: 10px 0; }
+.subtitle { background: var(--primary-color); padding: 4px 10px; border-radius: 4px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; }
 
-.hero-content {
-    max-width: 900px;
-    padding: 2rem;
-    animation: fadeInUp 1.2s ease-out;
-    z-index: 2;
-    margin-top: 140px;
-}
+/* --- MAIN CONTAINER --- */
+.main-container { max-width: 1200px; margin: 0 auto; padding: 0 20px 80px; }
 
-.hero-content h1 {
-    font-size: 3.5rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-}
+.section-title-wrapper { text-align: center; margin-bottom: 40px; }
+.section-heading { font-size: 2.2rem; font-weight: 800; color: #111; position: relative; display: inline-block; margin-bottom: 10px; }
+.section-heading::after { content: ''; display: block; width: 60px; height: 4px; background: var(--primary-color); margin: 10px auto 0; }
 
-.hero-content p {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    color: #CBD5E1;
-    font-weight: 500;
-}
-
-.back-button {
-    position: absolute; 
-    top: 155px;      
-    left: 100px;     
-    z-index: 10;    
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 15px;
-    font-weight: 500;
-    text-decoration: none;
-    color: #ffffff; 
-    transition: transform 0.2s ease, opacity 0.2s ease;
-}
-.hero-subtitle {
-    display: inline-block;
-    padding: 6px 12px;
-    background: var(--highlight);
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-    letter-spacing: 1px;
-}
-
-/* ==========================================================================
-   2. DESIGN SYSTEM GLOBAL
-   ========================================================================== */
-
-:root {
-    --primary: #1e293b;       /* Dark slate */
-    --accent: #005b94;        /* Ton bleu institutionnel */
-    --highlight: #ff6600;     /* Ton orange (action) */
-    --bg-page: #f8fafc;       /* Fond gris très clair */
-    --surface: #ffffff;       /* Blanc pur */
-    --radius: 16px;
-    --shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
-}
-
-body {
-    background-color: var(--bg-page);
-    color: var(--primary);
-    margin: 0;
-    -webkit-font-smoothing: antialiased;
-}
-
-/* Conteneur principal */
-.main-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 4rem 2rem;
-    position: relative;
-    z-index: 5;
-}
-
-/* Titres de section unifiés */
-.section-header {
-    text-align: center;
-    margin-bottom: 3rem;
-    position: relative;
-}
-
-.section-header h2 {
-    font-size: 2.2rem;
-    font-weight: 900;
-    color: var(--primary);
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-}
-
-.header-line {
-    width: 60px;
-    height: 4px;
-    background: var(--highlight);
-    margin: 0 auto;
-    border-radius: 2px;
-}
-
-.section {
-    margin-bottom: 6rem;
-}
-
-/* ==========================================================================
-   3. CALENDRIER (STYLE DASHBOARD)
-   ========================================================================== */
-.calendar-wrapper {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
+/* --- CALENDAR --- */
 .calendar-card {
-    background: var(--surface);
-    border-radius: var(--radius);
-    padding: 2.5rem;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(255,255,255,0.5);
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+    padding: 40px;
+    margin-bottom: 80px;
 }
+.calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.nav-btn { background: #f0f2f5; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.3s; }
+.nav-btn:hover { background: var(--primary-color); color: white; }
+.current-month { font-size: 1.5rem; font-weight: 800; }
 
-.calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid #f1f5f9;
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+.day-name { text-align: center; font-weight: 700; color: var(--text-muted); text-transform: uppercase; font-size: 0.8rem; padding-bottom: 15px; }
+.day-cell { 
+    background: #fdfdfd; 
+    border: 1px solid #f0f0f0; 
+    min-height: 100px; 
+    padding: 10px; 
+    border-radius: 8px; 
+    position: relative; 
+    transition: 0.3s;
 }
+.day-cell:hover { border-color: var(--primary-color); background: #fff; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+.day-number { font-weight: 700; color: #888; }
+.day-cell.has-event { background: #f0f7ff; border-color: #cfe2ff; }
+.day-cell.has-event .day-number { color: var(--primary-color); }
 
-.calendar-header h3 {
-    font-size: 2.2rem;
-    font-weight: 900;
-    color: var(--accent);
-    margin: 0;
-}
+.event-indicator { margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
+.event-indicator .dot { width: 8px; height: 8px; background: var(--primary-color); border-radius: 50%; }
+.event-label { font-size: 0.7rem; font-weight: 700; color: var(--primary-color); text-transform: uppercase; }
 
-.nav-btn {
-    background: transparent;
-    border: 1px solid #e2e8f0;
-    color: var(--primary);
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.nav-btn:hover {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
-}
-
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 12px;
-}
-
-.day-name {
-    text-align: center;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: #94a3b8;
-    padding-bottom: 10px;
-}
-
-.day-cell {
-    min-height: 100px;
-    background: #f8fafc;
-    border-radius: 8px;
-    padding: 10px;
-    position: relative;
-    border: 1px solid transparent;
-    transition: all 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-}
-
-.day-cell:hover {
-    background: #ffffff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    transform: translateY(-2px);
-}
-
-.day-number {
-    font-weight: 600;
-    font-size: 1rem;
-    color: #64748b;
-    margin-bottom: 5px;
-}
-
-/* Style Événement */
-.day-cell.has-event {
-    background: #fff7ed; /* Orange très pâle */
-    border: 1px solid #ffedd5;
-}
-
-.day-cell.has-event .day-number {
-    color: var(--highlight);
-}
-
-.event-pill {
-    background: var(--highlight);
-    color: white;
-    font-size: 0.7rem;
-    padding: 4px 8px;
-    border-radius: 4px;
-    text-align: center;
-    font-weight: 600;
-    margin-top: auto; /* Pousse en bas */
-}
-
-/* Petit point pour mobile */
-.event-dot {
-    display: none; 
-    width: 6px; 
-    height: 6px; 
-    background: var(--highlight); 
-    border-radius: 50%;
-}
-
-/* ==========================================================================
-   4. EQUIPES (STYLE MAGAZINE / NIKE)
-   ========================================================================== */
-
-.teams-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-    gap: 2rem;
-    padding: 0 1rem;
-}
+/* --- TEAMS GRID --- */
+.teams-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px; }
 
 .team-card {
     position: relative;
-    display: block;
-    height: 500px; /* Cartes hautes et imposantes */
-    border-radius: 20px;
+    border-radius: var(--border-radius);
     overflow: hidden;
+    height: 400px;
     text-decoration: none;
-    background: #000;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+    display: block;
 }
+.card-img-box { position: absolute; inset: 0; }
+.card-img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s ease; }
+.card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 20%, transparent); }
 
-/* Interaction globale au survol */
-.team-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-}
-
-/* --- Image de fond & Effets --- */
-.card-image-wrapper {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 1;
-}
-
-.card-bg {
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    transition: transform 0.8s ease;
-    filter: grayscale(20%); /* Légère désaturation pour le style */
-}
-
-.team-card:hover .card-bg {
-    transform: scale(1.1); /* Zoom lent */
-    filter: grayscale(0%); /* Retour de la couleur */
-}
-
-/* Le dégradé qui permet de lire le texte */
-.card-gradient {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to bottom, 
-        rgba(0,0,0,0.1) 0%, 
-        rgba(0,0,0,0.2) 40%, 
-        rgba(0,91,148,0.6) 80%, 
-        rgba(0,91,148,0.9) 100%
-    );
-    opacity: 0.9;
-    transition: opacity 0.5s ease;
-}
-
-/* Changement de couleur du gradient au survol */
-.team-card:hover .card-gradient {
-    opacity: 1;
-    background: linear-gradient(
-        to bottom, 
-        rgba(0,0,0,0) 0%, 
-        rgba(0,0,0,0.5) 50%, 
-        rgba(255, 102, 0, 0.85) 100% /* Devient Orange (ton highlight) */
-    );
-}
-
-/* --- Contenu --- */
-.card-content {
-    position: relative;
-    z-index: 2;
-    height: 100%;
-    padding: 2.5rem;
+.card-info {
+    position: absolute; inset: 0;
+    padding: 40px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-end;
+    z-index: 2;
     color: white;
 }
+.pille { align-self: flex-start; background: var(--accent-color); padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin-bottom: 15px; }
+.card-info h3 { font-size: 2rem; line-height: 1.1; margin-bottom: 10px; font-weight: 400; }
+.card-info h3 strong { font-weight: 900; text-transform: uppercase; }
+.card-info p { opacity: 0.8; font-size: 0.95rem; margin-bottom: 20px; }
+.card-footer-link { font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; }
 
-/* Badge du haut */
-.category-pill {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    padding: 8px 16px;
-    border-radius: 50px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
+.team-card:hover .card-img-box img { transform: scale(1.1); }
+.team-card:hover .card-info .card-footer-link { color: var(--accent-color); }
 
-/* Icône flèche (Cercle en haut à droite) */
-.card-icon {
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
-    width: 40px;
-    height: 40px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0; /* Caché par défaut */
-    transform: scale(0.5) rotate(-45deg);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.team-card:hover .card-icon {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-}
-
-/* Flèche dessinée en CSS */
-.icon-arrow-right {
-    width: 12px;
-    height: 12px;
-    border-top: 2px solid #000;
-    border-right: 2px solid #000;
-    transform: rotate(45deg);
-    margin-left: -2px;
-}
-
-/* Partie basse (Textes) */
-.card-bottom {
-    transform: translateY(0);
-}
-
-.team-title {
-    font-size: 1.8rem;
-    font-weight: 300;
-    line-height: 1;
-    margin-bottom: 1rem;
-    transform: translateY(20px);
-    transition: transform 0.5s ease;
-}
-
-.team-title span {
-    display: block;
-    font-size: 3rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: -1px;
-}
-
-.team-desc {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1rem;
-    margin-bottom: 2rem;
-    max-width: 80%;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.5s ease 0.1s; /* Petit délai */
-}
-
-/* Animation au survol des textes */
-.team-card:hover .team-title {
-    transform: translateY(0);
-}
-
-.team-card:hover .team-desc {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* --- Bouton "Call to action" --- */
-.card-cta {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    opacity: 0.8;
-}
-
-.cta-text {
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-}
-
-.cta-line {
-    height: 2px;
-    width: 30px;
-    background: white;
-    transition: width 0.3s ease;
-}
-
-.team-card:hover .cta-line {
-    width: 60px; /* La ligne s'agrandit */
-}
-
-/* ==========================================================================
-   5. RESPONSIVE & MOBILE (OPTIMISÉ)
-   Remplace les anciennes sections responsive
-   ========================================================================== */
-
-/* --- Étape 1 : Tablettes et Petits Laptops (max 900px) --- */
+/* --- RESPONSIVE --- */
 @media (max-width: 900px) {
-
-    /* 1. GESTION DU HEADER & NAVBAR FIXE */
-    .hero-header {
-        height: auto;
-        min-height: 70vh;
-        /* Espace vital pour ne pas être caché par la navbar fixe */
-        padding-top: 140px; 
-        padding-bottom: 4rem;
-        align-items: flex-start; /* Permet au padding de fonctionner correctement */
-    }
-
-    .hero-content {
-        margin-top: 90px; /* On réduit car le padding-top du header fait le job */
-        padding: 0 1.5rem;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    /* Ajustement du bouton retour pour qu'il ne soit pas sous la navbar */
-    .back-button {
-        top: 130px; /* Ajuste selon la hauteur réelle de ta navbar */
-        left: 20px;
-        padding: 8px 15px;
-    }
-
-    /* 2. EQUIPES (Mode vertical) */
-    .teams-grid {
-        grid-template-columns: 1fr; /* Une seule colonne */
-        padding: 0 1rem;
-    }
-
-    .team-card {
-        height: 400px; /* Un peu moins haut sur mobile */
-    }
-
-    /* Sur tactile, on affiche les infos tout le temps (pas besoin de hover) */
-    .team-desc {
-        opacity: 1;
-        transform: translateY(0);
-        margin-bottom: 1rem;
-    }
-    .team-title {
-        transform: translateY(0);
-    }
-    .team-title span {
-        font-size: 2.5rem;
-    }
-    .card-icon {
-        opacity: 1;
-        transform: scale(1);
-        background: rgba(255,255,255,0.9);
-    }
-}
-
-/* --- Étape 2 : Mobiles (max 768px) --- */
-@media (max-width: 768px) {
-
-    /* 1. TYPOGRAPHIE PLUS COMPACTE */
-    .hero-content h1 {
-        font-size: 2rem;
-        line-height: 1.2;
-    }
-
-    /* 2. CALENDRIER COMPACT (Style Dashboard Mobile) */
-    .calendar-card {
-        padding: 1.5rem 0.5rem; /* Optimisation espace latéral */
-    }
-
-    .calendar-header {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-    }
-
-    .calendar-header h3 {
-        font-size: 1.3rem;
-        margin-bottom: 0.5rem;
-    }
-
-    /* Boutons de navigation centrés */
-    .nav-btn {
-        width: 35px;
-        height: 35px;
-    }
-    
-    /* Grille serrée */
-    .calendar-grid {
-        gap: 4px;
-    }
-
-    .day-name {
-        font-size: 0.65rem;
-        padding-bottom: 5px;
-    }
-
-    .day-cell {
-        min-height: 55px;
-        padding: 2px;
-        align-items: center;
-        justify-content: center;
-        border-radius: 6px;
-    }
-
-    .day-number {
-        font-size: 0.9rem;
-        margin-bottom: 2px;
-    }
-
-    /* Transformation des événements en points */
-    .event-pill { 
-        display: none; 
-    }
-    .event-dot { 
-        display: block; 
-        width: 5px; 
-        height: 5px; 
-        background: var(--highlight); 
-        border-radius: 50%;
-        margin-top: 2px;
-    }
+    .calendar-grid { grid-template-columns: repeat(7, 1fr); gap: 5px; }
+    .day-cell { min-height: 60px; padding: 5px; }
+    .event-label { display: none; }
+    .teams-grid { grid-template-columns: 1fr; }
+    .team-card { height: 350px; }
+    .header-title-box h1 { font-size: 2.5rem; }
 }

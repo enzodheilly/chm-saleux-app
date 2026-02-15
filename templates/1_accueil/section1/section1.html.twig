@@ -1,51 +1,63 @@
 <section id="accueil" class="hero-section {% if app.user %}hero-logged{% endif %}">
-    <div class="hero-photos">
-        <img rel="preload" src="{{ asset('images/club/club.png') }}" alt="Image du club">
+  <div class="hero-photos">
+    <img
+      src="{{ asset('images/club/club.png') }}"
+      alt="Image du club"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    >
+  </div>
+
+  <div class="hero-content">
+    {% if not app.user %}
+      <h1 class="club-title">CLUB HALTÉROPHILIE & MUSCULATION</h1>
+      <p class="club-subtitle default-subtitle">Relevez vos limites et dépassez-vous chaque jour !</p>
+
+      <div class="hero-inner">
+        <div class="hero-line" id="adherents-counter">
+          + 0
+          <span class="thin-text">ADHÉRENTS</span>
+        </div>
+        <div class="hero-line">
+          + 30
+          <span class="thin-text">COMPÉTITIONS</span>
+        </div>
+      </div>
+
+      <div class="hero-buttons">
+        <a
+          href="#"
+          class="nous-rejoindre js-open-register-modal"
+          role="button"
+          aria-haspopup="dialog"
+        >NOUS REJOINDRE</a>
+
+        <a href="{{ path('app_club') }}" class="btn-en-savoir-plus">DÉCOUVRIR LE CLUB</a>
+      </div>
+
+    {% else %}
+      <h1 class="club-title user-welcome">Bonjour {{ app.user.firstName }} !</h1>
+
+      <p class="club-date">
+        {{ "now"|format_date(locale='fr', pattern='d MMMM Y') }}
+      </p>
+
+      <p class="club-subtitle user-subtitle">
+        Ravi de vous revoir. Découvrez vos statistiques et vos prochains objectifs !
+      </p>
+
+      <div class="hero-buttons">
+        <a href="{{ path('dashboard') }}" class="nous-rejoindre">ACCÉDER AU DASHBOARD</a>
+        <a href="{{ path('actualites') }}" class="btn-en-savoir-plus">ACTUALITÉS</a>
+      </div>
+    {% endif %}
+
+    <div class="badge-ffhm">
+      <span class="badge-text">Club affilié</span>
+      <span class="badge-separator"></span>
+      <img src="{{ asset('images/ffhm.png') }}" alt="Logo FFHM" loading="lazy" decoding="async">
     </div>
-
-    <div class="hero-content">
-        {% if not app.user %}
-            <h1 class="club-title">CLUB HALTÉROPHILIE & MUSCULATION</h1>
-            <p class="club-subtitle default-subtitle">Relevez vos limites et dépassez-vous chaque jour !</p>
-
-            <div class="hero-inner">
-                <div class="hero-line" id="adherents-counter">
-                    + 0
-                    <span class="thin-text">ADHÉRENTS</span>
-                </div>
-                <div class="hero-line">
-                    + 30
-                    <span class="thin-text">COMPÉTITIONS</span>
-                </div>
-            </div>
-
-            <div class="hero-buttons">
-                <a href="#plus" class="nous-rejoindre js-open-register-modal">NOUS REJOINDRE</a>
-                <a href="{{ path('app_club') }}" class="btn-en-savoir-plus">DÉCOUVRIR LE CLUB</a>
-            </div>
-
-        {% else %}
-            <h1 class="club-title user-welcome">Bonjour {{ app.user.firstName }} !</h1>
-
-            <p class="club-date">
-                {{ "now"|format_date(locale='fr', pattern='d MMMM Y') }}
-            </p>
-
-            <p class="club-subtitle user-subtitle" style="max-width:500px">Ravi de vous revoir. Découvrez vos statistiques et vos prochains objectifs !</p>
-
-            <div class="hero-buttons">
-                <a href="{{ path('dashboard') }}" class="nous-rejoindre">ACCÉDER AU DASHBOARD</a>
-                <a href="{{ path('actualites') }}" class="btn-en-savoir-plus">ACTUALITES</a>
-            </div>
-        {% endif %}
-
-<div class="badge-ffhm">
-    <span class="badge-text">Club affilié</span>
-    <span class="badge-separator"></span>
-    <img src="{{ asset('images/ffhm.png') }}" alt="Logo FFHM">
-</div>
-
-
+  </div>
 </section>
 
-<script src="{{ asset('js/accueil/section1/section1.js') }}"></script>
