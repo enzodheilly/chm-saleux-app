@@ -36,6 +36,7 @@ class AthleteType extends AbstractType
                 'label' => 'Catégorie',
                 'choices' => [
                     'Cadette' => 'Cadette',
+                    'Cadet'  => 'Cadet',
                     'Junior'  => 'Junior',
                     'Senior'  => 'Senior',
                 ],
