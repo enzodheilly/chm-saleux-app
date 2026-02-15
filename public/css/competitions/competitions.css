@@ -72,6 +72,20 @@
 .event-indicator .dot { width: 8px; height: 8px; background: var(--primary-color); border-radius: 50%; }
 .event-label { font-size: 0.7rem; font-weight: 700; color: var(--primary-color); text-transform: uppercase; }
 
+/* Couleur par défaut (Bleu) */
+.day-cell.has-event .dot { background: #005b94; }
+.day-cell.has-event .event-label { color: #005b94; }
+
+/* Si le type est 'National' (Rouge) */
+.day-cell.event-national .dot { background: #e31b23; }
+.day-cell.event-national .event-label { color: #e31b23; }
+
+/* Si le type est 'Interne' (Orange) */
+.day-cell.event-interne .dot { background: #f57706; }
+.day-cell.event-interne .event-label { color: #f57706; }
+
+.day-cell.empty { background: #f9f9f9; border: none; }
+
 /* --- TEAMS GRID --- */
 .teams-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px; }
 
