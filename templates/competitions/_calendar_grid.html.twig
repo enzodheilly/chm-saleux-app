@@ -1,0 +1,44 @@
+{# templates/competitions/_calendar_grid.html.twig #}
+
+<div class="calendar-nav">
+    {# NOTE : J'ai ajouté la classe 'js-calendar-nav' pour que le JS la détecte #}
+    <a href="{{ path('competition', prevParams) }}" class="nav-btn js-calendar-nav" aria-label="Précédent">
+        <i class="fa-solid fa-chevron-left"></i>
+    </a>
+    
+    <h3 class="current-month">
+        {{ currentMonthName|format_date(locale='fr', pattern='MMMM yyyy')|capitalize }}
+    </h3>
+    
+    <a href="{{ path('competition', nextParams) }}" class="nav-btn js-calendar-nav" aria-label="Suivant">
+        <i class="fa-solid fa-chevron-right"></i>
+    </a>
+</div>
+
+<div class="calendar-grid">
+    <div class="day-name">Lun</div><div class="day-name">Mar</div><div class="day-name">Mer</div>
+    <div class="day-name">Jeu</div><div class="day-name">Ven</div><div class="day-name">Sam</div><div class="day-name">Dim</div>
+
+    {# Cellules vides début de mois #}
+    {% for i in 1..(startDay - 1) %}
+        <div class="day-cell empty"></div>
+    {% endfor %}
+
+    {# Jours du mois #}
+    {% for day in 1..daysInMonth %}
+        {% set dayPadded = day < 10 ? '0' ~ day : day %}
+        {% set monthPadded = currentMonth < 10 ? '0' ~ currentMonth : currentMonth %}
+        {% set dateKey = currentYear ~ "-" ~ monthPadded ~ "-" ~ dayPadded %}
+        {% set event = eventsByDate[dateKey] ?? null %}
+        
+        <div class="day-cell {% if event %}has-event{% endif %}">
+            <span class="day-number">{{ day }}</span>
+            {% if event %}
+                <div class="event-indicator">
+                    <span class="dot"></span>
+                    <span class="event-label" title="{{ event.titre }}">{{ event.titre }}</span>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
