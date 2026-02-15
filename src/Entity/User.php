@@ -34,6 +34,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     #[ORM\Column(type: "json")]
     private array $roles = [];
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    private array $backupCodes = [];
+
     #[ORM\Column(type: "string", nullable: true)]
     private ?string $password = null;
 
@@ -623,6 +626,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     {
         $this->needsPassword = $needsPassword;
         return $this;
+    }
+
+    public function getBackupCodes(): array
+    {
+        return $this->backupCodes;
+    }
+
+    public function setBackupCodes(array $codes): self
+    {
+        $this->backupCodes = $codes;
+        return $this;
+    }
+
+    // Pour vérifier un code et le supprimer une fois utilisé
+    public function invalidateBackupCode(string $code): bool
+    {
+        if (($key = array_search($code, $this->backupCodes)) !== false) {
+            unset($this->backupCodes[$key]);
+            $this->backupCodes = array_values($this->backupCodes);
+            return true;
+        }
+        return false;
     }
 
     // ==============================================================

@@ -18,10 +18,7 @@ class MachineType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Nom de la machine'
             ])
-            ->add('description', TextareaType::class, [
-                'label' => 'Description',
-                'required' => false
-            ])
+
             ->add('image', FileType::class, [
                 'label' => 'Image de la machine',
                 'mapped' => false,

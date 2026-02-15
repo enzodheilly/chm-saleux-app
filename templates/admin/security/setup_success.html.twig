@@ -1,0 +1,80 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Codes de Secours - Sécurité{% endblock %}
+
+{% block stylesheets %}
+<style>
+    /* Réutilisation de ta structure "Security Wall" */
+    .sidebar, .top-bar, .mobile-toggle { display: none !important; }
+    .wrapper { display: block !important; margin-left: 0 !important; width: 100% !important; min-height: 100vh !important; background: #0e0e10 !important; }
+    .content { padding: 0 !important; min-height: 100vh !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+
+    .success-container { width: 100%; max-width: 600px; padding: 20px; box-sizing: border-box; }
+    .success-card { 
+        background: #131315; border-radius: 12px; border: 1px solid #262629; 
+        padding: 40px; text-align: center; box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+    }
+
+    .icon-lock { font-size: 3rem; color: #10b981; margin-bottom: 20px; }
+    h1 { color: #fff; font-size: 1.5rem; margin-bottom: 15px; }
+    .warning-box { 
+        background: rgba(255, 102, 0, 0.1); border: 1px solid rgba(255, 102, 0, 0.3);
+        padding: 15px; border-radius: 8px; margin-bottom: 30px;
+    }
+    .warning-box p { color: #ff6600; font-size: 0.9rem; margin: 0; font-weight: 600; }
+
+    .codes-grid {
+        background: #0e0e10; border: 2px dashed #262629; padding: 25px;
+        border-radius: 10px; margin-bottom: 30px; display: grid; gap: 15px;
+    }
+    .code-item {
+        font-family: 'Courier New', monospace; font-size: 1.4rem;
+        color: #fff; letter-spacing: 2px; font-weight: 700;
+    }
+
+    .btn-print { 
+        background: #ededed; color: #0e0e10; border: none; padding: 15px 30px;
+        border-radius: 6px; font-weight: 800; cursor: pointer; width: 100%;
+        text-transform: uppercase; margin-bottom: 15px; transition: 0.2s;
+    }
+    .btn-print:hover { background: #fff; transform: translateY(-2px); }
+
+    .finish-link { color: #888; text-decoration: none; font-size: 0.85rem; transition: 0.2s; }
+    .finish-link:hover { color: #fff; text-decoration: underline; }
+
+    /* Print optimization */
+    @media print {
+        body * { visibility: hidden; }
+        .success-card, .success-card * { visibility: visible; }
+        .success-card { position: absolute; left: 0; top: 0; width: 100%; border: none; box-shadow: none; }
+        .btn-print, .finish-link { display: none; }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="success-container">
+    <div class="success-card">
+        <div class="icon-lock">✔</div>
+        <h1>Sécurité activée !</h1>
+        
+        <div class="warning-box">
+            <p>⚠️ DERNIÈRE ÉTAPE : Notez ces codes de secours. Ils sont l'unique moyen de récupérer votre accès si vous perdez votre téléphone.</p>
+        </div>
+
+        <div class="codes-grid">
+            {% for code in app.session.get('show_backup_codes') %}
+                <div class="code-item">{{ code }}</div>
+            {% else %}
+                <div class="code-item" style="color: #ff4444; font-size: 1rem;">Codes déjà récupérés ou expirés.</div>
+            {% endfor %}
+        </div>
+
+        <button onclick="window.print()" class="btn-print">🖨️ Imprimer les codes</button>
+        
+        <div style="margin-top: 25px;">
+            <a href="{{ path('admin_dashboard') }}" class="finish-link">J'ai bien enregistré mes codes, accéder au Dashboard →</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

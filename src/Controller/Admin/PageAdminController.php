@@ -56,9 +56,10 @@ class PageAdminController extends AbstractController
             return $this->redirectToRoute('admin_pages_index');
         }
 
-        return $this->render('admin/pages/form.html.twig', [
+        return $this->render('admin/pages/edit.html.twig', [
             'title' => 'Modifier la page : ' . $page->getTitle(),
             'form' => $form->createView(),
+            'page' => $page, // AJOUTE CETTE LIGNE
         ]);
     }
 
