@@ -62,7 +62,9 @@ nelmio_security:
                 - "'self'"
                 - "data:"
                 - "blob:"
-                - https://ui-avatars.com # <--- Ajouté ici
+                - https://chart.googleapis.com
+                - https://api.qrserver.com
+                - https://ui-avatars.com
                 - https://challenges.cloudflare.com
                 - https://*.cloudflare.com
                 - https://cdn.jsdelivr.net

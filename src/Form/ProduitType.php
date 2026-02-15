@@ -17,11 +17,15 @@ class ProduitType extends AbstractType
             ->add('titre')
             ->add('description')
             ->add('prix', MoneyType::class, [
-                'currency' => 'EUR',
+                // On passe 'currency' à false pour supprimer le symbole automatique
+                'currency' => false,
+                // On s'assure que le label auto de Symfony ne vienne pas perturber ton design
+                'label' => false,
             ])
             ->add('image', FileType::class, [
                 'mapped' => false,
                 'required' => false,
+                'label' => false,
             ]);
     }
 
