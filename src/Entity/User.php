@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -15,7 +16,7 @@ use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['email'], message: 'Cette adresse email est déjà utilisée.')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface, BackupCodeInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -628,6 +629,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         return $this;
     }
 
+    public function isBackupCode(string $code): bool
+    {
+        return in_array($code, $this->backupCodes);
+    }
+
+    public function invalidateBackupCode(string $code): void
+    {
+        if (($key = array_search($code, $this->backupCodes)) !== false) {
+            unset($this->backupCodes[$key]);
+            // On réindexe le tableau pour garder un JSON propre en BDD
+            $this->backupCodes = array_values($this->backupCodes);
+        }
+    }
+
     public function getBackupCodes(): array
     {
         return $this->backupCodes;
@@ -637,17 +652,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     {
         $this->backupCodes = $codes;
         return $this;
-    }
-
-    // Pour vérifier un code et le supprimer une fois utilisé
-    public function invalidateBackupCode(string $code): bool
-    {
-        if (($key = array_search($code, $this->backupCodes)) !== false) {
-            unset($this->backupCodes[$key]);
-            $this->backupCodes = array_values($this->backupCodes);
-            return true;
-        }
-        return false;
     }
 
     // ==============================================================
