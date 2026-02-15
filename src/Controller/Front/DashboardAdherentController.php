@@ -4,47 +4,38 @@ namespace App\Controller\Front;
 
 use App\Entity\User;
 use App\Entity\Licence;
+use App\Entity\ContactMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class DashboardAdherentController extends AbstractController
 {
     private EntityManagerInterface $em;
-    private CsrfTokenManagerInterface $csrf;
 
-    public function __construct(
-        EntityManagerInterface $em,
-        CsrfTokenManagerInterface $csrf
-    ) {
+    public function __construct(EntityManagerInterface $em)
+    {
         $this->em = $em;
-        $this->csrf = $csrf;
     }
 
-    /* ============================================================
-       🔷 1) Dashboard Principal
-       ============================================================ */
     #[Route('/dashboard', name: 'dashboard')]
     #[Route('/espace-adherent', name: 'adherent_dashboard', methods: ['GET'])]
     public function index(): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
 
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
 
-        // 1. Produits de la boutique
-        $produits = $this->em->getRepository(Produit::class)->findAll();
-
-        // 2. Planning (Données statiques)
+        // 1. Planning (Données statiques du club)
         $planning = [
             ['day' => 'Lundi', 'hours' => '17h00 - 20h00', 'type' => 'Haltérophilie'],
             ['day' => 'Mercredi', 'hours' => '14h00 - 16h00', 'type' => 'École d\'haltéro'],
@@ -52,22 +43,14 @@ class DashboardAdherentController extends AbstractController
             ['day' => 'Vendredi', 'hours' => '18h00 - 21h00', 'type' => 'Force Athlétique'],
         ];
 
-        // 3. Historique des messages
-        $messages = [];
-        try {
-            if (class_exists(ContactMessage::class)) {
-                $messages = $this->em->getRepository(ContactMessage::class)->findBy(
-                    ['user' => $user],
-                    ['createdAt' => 'DESC']
-                );
-            }
-        } catch (\Exception $e) {
-            $messages = []; // Évite le crash si la table n'existe pas
-        }
+        // 2. Historique des messages de l'adhérent
+        $messages = $this->em->getRepository(ContactMessage::class)->findBy(
+            ['user' => $user],
+            ['createdAt' => 'DESC']
+        );
 
         return $this->render('dashboard/index.html.twig', [
             'user' => $user,
-            'produits' => $produits,
             'planning' => $planning,
             'messages' => $messages,
         ]);

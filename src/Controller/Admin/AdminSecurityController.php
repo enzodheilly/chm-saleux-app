@@ -199,15 +199,22 @@ class AdminSecurityController extends AbstractController
         ]);
     }
 
-    #[Route('/setup-2fa/success', name: '2fa_setup_success')]
-    public function setup_success(Request $request): Response
+    #[Route('/setup-2fa/success', name: 'setup_success')]
+    public function setupSuccess(Request $request): Response
     {
-        // On vérifie s'il y a bien des codes en session
-        if (!$request->getSession()->has('show_backup_codes')) {
+        // On récupère les codes stockés en session lors de l'activation
+        $backupCodes = $request->getSession()->get('show_backup_codes');
+
+        // Sécurité : si on accède à cette page sans avoir de codes en session
+        // (par exemple en rafraîchissant après avoir quitté), on redirige vers le dashboard
+        if (!$backupCodes) {
+            $this->addFlash('warning', 'Les codes de secours ne sont affichés qu\'une seule fois pour votre sécurité.');
             return $this->redirectToRoute('admin_dashboard');
         }
 
-        return $this->render('admin/security/setup_success.html.twig');
+        return $this->render('admin/security/setup_success.html.twig', [
+            'backupCodes' => $backupCodes
+        ]);
     }
 
     /**

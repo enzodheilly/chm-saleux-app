@@ -6,6 +6,6 @@ scheb_two_factor:
 
     google:
         enabled: true
-        server_name: null # 👈 Mettez null ici pour laisser l'Entité gérer le nom complet
+        server_name: null
         digits: 6
         leeway: 1
