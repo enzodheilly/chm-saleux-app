@@ -1,47 +1,47 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const triggers = document.querySelectorAll('.faq-trigger');
-  if (!triggers.length) return;
+document.querySelectorAll('.faq-elite-trigger').forEach((trigger) => {
+  trigger.addEventListener('click', () => {
+    const item = trigger.closest('.faq-elite-item');
+    const content = item.querySelector('.faq-elite-content');
+    const isOpen = trigger.getAttribute('aria-expanded') === 'true';
 
-  const closeItem = (btn) => {
-    btn.classList.remove('active');
-    btn.setAttribute('aria-expanded', 'false');
+    // Fermer les autres
+    document.querySelectorAll('.faq-elite-item').forEach((i) => {
+      const btn = i.querySelector('.faq-elite-trigger');
+      const c = i.querySelector('.faq-elite-content');
+      const icon = i.querySelector('.q-icon i');
 
-    const panel = btn.nextElementSibling;
-    if (panel) panel.style.maxHeight = '0px';
-  };
+      i.classList.remove('active');
+      btn?.setAttribute('aria-expanded', 'false');
+      if (c) c.style.maxHeight = null;
 
-  const openItem = (btn) => {
-    btn.classList.add('active');
-    btn.setAttribute('aria-expanded', 'true');
+      if (icon) {
+        icon.classList.remove('fa-minus');
+        icon.classList.add('fa-plus');
+      }
+    });
 
-    const panel = btn.nextElementSibling;
-    if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
-  };
+    // Ouvrir / fermer celui cliqué
+    if (!isOpen) {
+      item.classList.add('active');
+      trigger.setAttribute('aria-expanded', 'true');
+      content.style.maxHeight = content.scrollHeight + "px";
 
-  triggers.forEach((trigger) => {
-    // sécurité a11y par défaut
-    if (!trigger.hasAttribute('aria-expanded')) {
+      const icon = trigger.querySelector('.q-icon i');
+      if (icon) {
+        icon.classList.remove('fa-plus');
+        icon.classList.add('fa-minus');
+      }
+    } else {
+      // si tu veux pouvoir refermer en re-cliquant
+      item.classList.remove('active');
       trigger.setAttribute('aria-expanded', 'false');
+      content.style.maxHeight = null;
+
+      const icon = trigger.querySelector('.q-icon i');
+      if (icon) {
+        icon.classList.remove('fa-minus');
+        icon.classList.add('fa-plus');
+      }
     }
-
-    trigger.addEventListener('click', () => {
-      const isOpen = trigger.classList.contains('active');
-
-      // ✅ OPTION : accordéon strict (ferme les autres)
-      // décommente si tu veux ce comportement
-      // triggers.forEach((t) => { if (t !== trigger) closeItem(t); });
-
-      if (isOpen) closeItem(trigger);
-      else openItem(trigger);
-    });
-  });
-
-  // Bonus: si on resize, on recalcule la hauteur des items ouverts
-  window.addEventListener('resize', () => {
-    triggers.forEach((trigger) => {
-      if (!trigger.classList.contains('active')) return;
-      const panel = trigger.nextElementSibling;
-      if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
-    });
   });
 });

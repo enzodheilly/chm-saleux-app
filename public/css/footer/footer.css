@@ -1,672 +1,259 @@
-/* =========================================================
-   FOOTER — CHM SALEUX (Version PRO 2025) — 3 COLONNES
-========================================================= */
+:root {
+    /* Couleurs */
+    --text-light: #F57706;
 
-/* =========================================================
-   GLOBAL
-========================================================= */
+}
+
+
 .footer-chm {
-    background: #0F172A;
-    color: #CBD5E1;
-    padding-top: 60px;
-    font-family: "Inter", sans-serif;
-    overflow-x: hidden; /* Sécurité pour éviter le scroll horizontal */
-    position: relative;
+    background-color: #0a0a0a;
+    color: var(--text-light);
+    border-top: 1px solid var(--glass-border);
+    font-family: 'Inter', sans-serif;
 }
 
-.footer-chm h3,
-.footer-chm h4 {
-    color: #005b94;
-    font-weight: 700;
-    margin-bottom: 12px;
-    text-transform: uppercase;
-    font-size: 1rem;
+.footer-top-container {
+    padding: 5rem 2rem;
 }
 
-.texte {
-    margin-top: 22px;
-    font-size: 0.95rem;
-}
-
-/* =========================================================
-   SECTION 1 : GRID PRINCIPALE (3 COLONNES)
-========================================================= */
-.footer-main {
-    max-width: 1300px;
+.footer-main-grid {
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 30px;
     display: grid;
-    grid-template-columns: 1.5fr 1fr 2fr; /* Logo+texte | Plan du site | Newsletter */
-    gap: 50px;
-    align-items: start;
+    grid-template-columns: 1.2fr 0.8fr 1.2fr;
+    gap: 4rem;
 }
 
-.footer-brand {
+.footer-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+    color: var(--accent-color);
+}
+
+/* Brand Column */
+.logo-wrapper {
     display: flex;
-    flex-direction: column;
-    align-items: center; /* centre horizontalement logo et texte */
-    text-align: center; /* centre le texte */
-    gap: 0px; /* espace entre logo et texte */
-    margin-right: 100px; /* Sera annulé en responsive */
-}
-
-.footer-brand p {
-    max-width: 300px; /* limite la largeur du texte */
-    margin: 0 auto; /* centre le texte sous le logo */
-    font-size: 0.95rem;
-}
-
-.footer-column {
-    display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: 12px;
+    margin-bottom: 1.5rem;
 }
 
-/* Logo */
 .footer-logo {
-    width: 100px;
-    margin-bottom: 12px;
-    margin-right: 0px;
+    height: 50px;
+    filter: drop-shadow(0 0 10px rgba(230, 57, 70, 0.3));
 }
 
-/* Plan du site */
-.footer-nav ul {
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+.logo-text span { color: var(--accent-color); }
+
+.brand-tagline {
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.social-links-minimal {
+    display: flex;
+    gap: 15px;
+}
+
+.social-item {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--glass-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: var(--transition);
+    border: 1px solid var(--glass-border);
+}
+
+.social-item:hover {
+    background: var(--accent-color);
+    transform: translateY(-3px);
+    border-color: var(--accent-color);
+}
+
+/* Nav Column */
+.nav-list {
     list-style: none;
-    margin: 0;
     padding: 0;
 }
 
-.footer-nav li {
-    margin-bottom: 6px;
+.nav-list li {
+    margin-bottom: 0.8rem;
 }
 
-.footer-nav a {
-    color: #CBD5E1;
+.nav-list a {
+    color: var(--text-muted);
     text-decoration: none;
-    transition: 0.3s ease;
     font-size: 0.95rem;
-}
-
-.footer-nav a:hover {
-    color: #f97316;
-}
-
-/* =========================================================
-   NEWSLETTER
-========================================================= */
-.newsletter p {
-    color: #CBD5E1;
-}
-
-/* Texte sous la newsletter */
-.newsletter-footer-text {
-    font-size: 0.85rem;
-    color: #CBD5E1;
-    margin-top: 12px;
-    margin-left: 3px;
-}
-
-.newsletter-footer-text a {
-    color: #005b94;
-    text-decoration: underline;
-    transition: 0.25s ease;
-}
-
-.newsletter-footer-text a:hover {
-    color: #f97316;
-}
-
-.newsletter {
+    transition: var(--transition);
     display: flex;
-    flex-direction: column;
-    position: relative; /* Important pour le positionnement du turnstile */
+    align-items: center;
+    gap: 8px;
 }
 
-/* --- FIX TURNSTILE CLOUDFLARE --- */
-/* Le widget est caché visuellement mais reste actif dans le DOM */
-.cf-turnstile-newsletter,
-.cf-turnstile {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    overflow: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    z-index: -1000 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    clip: rect(0, 0, 0, 0) !important;
-    left: 0;
-    bottom: 0;
-}
-
-.newsletter-inputs {
-    display: flex;
-    gap: 12px;
-    width: 100%;
-}
-
-.newsletter-inputs input {
-    flex: 1;
-    padding: 12px 14px;
-    border: 1px solid #bdbdbd;
-    background: #fff;
-    border-radius: 6px;
-    font-size: 15px;
-    transition: 0.2s;
-    min-width: 0; /* Empêche l'input de dépasser en flex */
-}
-
-.newsletter-inputs input:focus {
-    border-color: #005b94;
-    box-shadow: 0 0 0 2px rgba(0, 91, 148, 0.25);
-}
-
-/* Spinner + checkmark */
-.spinner {
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    border-top: 2px solid #fff;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    animation: spin 0.8s linear infinite;
-    display: none;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.checkmark {
-    display: none;
-    font-size: 18px;
-}
-
-#newsletter-submit.loading .btn-text {
+.nav-list a i {
+    font-size: 0.7rem;
     opacity: 0;
-}
-#newsletter-submit.loading .spinner {
-    display: inline-block;
-}
-#newsletter-submit.success .btn-text {
-    opacity: 0;
-}
-#newsletter-submit.success .checkmark {
-    display: inline-block;
+    transition: var(--transition);
 }
 
-.newsletter-success {
-    margin-top: 8px;
-    font-size: 0.95rem;
-    color: #2ecc71;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: 0.6s ease;
-    display: none;
+.nav-list a:hover {
+    color: white;
+    padding-left: 5px;
 }
 
-.newsletter-success.show {
+.nav-list a:hover i {
     opacity: 1;
-    transform: translateY(0);
-    display: block;
+    color: var(--accent-color);
 }
 
-/* =========================================================
-   BLOC : MOYENS DE PAIEMENT
-========================================================= */
-.footer-payments-wrapper {
-    background: #F5F5F5;
-    width: 100%;
-    margin-top: 60px;
-    padding: 40px 0;
+/* Newsletter Column */
+.newsletter-desc {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
 }
 
-.payments-inner {
-    max-width: 1300px;
+.input-group {
+    display: flex;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 5px;
+    transition: var(--transition);
+}
+
+.input-group:focus-within {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(230, 57, 70, 0.2);
+}
+
+.input-group input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 0.8rem 1rem;
+    outline: none;
+}
+
+.btn-submit-icon {
+    background: var(--accent-color);
+    border: none;
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-submit-icon:hover {
+    background: #F57706;
+    transform: scale(1.05);
+}
+
+.privacy-note {
+    font-size: 0.75rem;
+    color: #555;
+    margin-top: 1rem;
+}
+
+.privacy-note a { color: var(--text-muted); }
+
+/* Divider & Payments */
+.footer-divider {
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 1.5rem 2rem;
+    background: rgba(255,255,255,0.01);
+}
+
+.container-inner {
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 30px;
+}
+
+.payment-methods {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.payment-methods .label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.payment-methods .icons {
+    display: flex;
+    gap: 15px;
+    filter: grayscale(1) opacity(0.5);
+    transition: 0.5s;
+}
+
+.payment-methods:hover .icons {
+    filter: grayscale(0) opacity(1);
+}
+
+.payment-methods img {
+    height: 25px;
+}
+
+/* Bottom Bar */
+.footer-bottom {
+    padding: 1.5rem 2rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.flex-between {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 40px;
 }
 
-.payment-icons {
-    display: flex;
-    gap: 24px;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: center; /* Sécurité responsive */
-}
-
-.payment-icons img {
-    height: 48px;
-    transition: 0.2s ease;
-}
-
-.payment-icons img:hover {
-    transform: scale(1.08);
-}
-
-/* =========================================================
-   SOCIAL (NEUMORPHISM)
-========================================================= */
-.social-icons {
+.footer-legal {
     display: flex;
     gap: 20px;
 }
 
-.social-icons a {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    background: #e0e0e0;
-    box-shadow: 5px 5px 10px #cecece, -5px -5px 10px #f2f2f2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    color: #555;
-    transition: 0.25s ease;
+.footer-legal a {
+    color: var(--text-muted);
     text-decoration: none;
+    transition: var(--transition);
 }
 
-.social-icons a:hover {
-    box-shadow: inset 5px 5px 9px #cecece, inset -5px -5px 9px #f2f2f2;
+.footer-legal a:hover {
+    color: var(--accent-color);
 }
 
-/* =========================================================
-   BAS DU FOOTER
-========================================================= */
-.footer-bottom {
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 22px 30px 45px;
-
-    border-top: 1px solid #cfcfcf;
-    margin-top: 40px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    font-size: 15px;
-    color: #CBD5E1;
+/* Responsive */
+@media (max-width: 992px) {
+    .footer-main-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .footer-newsletter { grid-column: span 2; }
 }
 
-.footer-left {
-    font-size: 0.9rem;
-}
-
-.footer-right a {
-    margin-left: 20px;
-    color: #CBD5E1;
-    text-decoration: none;
-    transition: 0.25s ease;
-    font-size: 0.95rem;
-}
-
-.footer-right a:hover {
-    color: #f97316;
-}
-
-/* ============================
-   BUTTON GLASS NEWSLETTER
-============================ */
-
-@property --angle-1 {
-    syntax: "<angle>";
-    inherits: false;
-    initial-value: -75deg;
-}
-
-@property --angle-2 {
-    syntax: "<angle>";
-    inherits: false;
-    initial-value: -45deg;
-}
-
-:root {
-    --anim--hover-time: 400ms;
-    --anim--hover-ease: cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-/* Container autour du bouton pour l’effet shadow */
-.button-wrap {
-    position: relative;
-    display: inline-block;
-    z-index: 2;
-}
-
-/* Shadow derrière le bouton */
-.button-shadow {
-    --shadow-cuttoff-fix: 2em;
-    position: absolute;
-    width: calc(100% + var(--shadow-cuttoff-fix));
-    height: calc(100% + var(--shadow-cuttoff-fix));
-    top: calc(0% - var(--shadow-cuttoff-fix) / 2);
-    left: calc(0% - var(--shadow-cuttoff-fix) / 2);
-    filter: blur(clamp(2px, 0.125em, 12px));
-    pointer-events: none;
-}
-
-.button-shadow::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 999vw;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1));
-    width: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
-    height: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
-    top: calc(var(--shadow-cuttoff-fix) - 0.5em);
-    left: calc(var(--shadow-cuttoff-fix) - 0.875em);
-    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    transition: all var(--anim--hover-time) var(--anim--hover-ease);
-}
-
-/* ============================
-   BUTTON NEWSLETTER (same as .btn-club but <button>)
-============================ */
-
-/* Le bouton reprend 100% du style du bouton glass */
-button.btn-newsletter {
-    --border-width: clamp(1px, 0.0625em, 4px);
-    all: unset;
-    cursor: pointer;
-    position: relative;
-    pointer-events: auto;
-    z-index: 3;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0em;
-    background: linear-gradient(
-        -75deg,
-        rgba(255, 255, 255, 0.05),
-        rgba(255, 255, 255, 0.2),
-        rgba(255, 255, 255, 0.05)
-    );
-    border-radius: 999vw;
-    box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
-        inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
-        0 0.25em 0.125em -0.125em rgba(0, 0, 0, 0.2),
-        0 0 0.1em 0.25em inset rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(clamp(1px, 0.125em, 4px));
-    transition: all var(--anim--hover-time) var(--anim--hover-ease);
-    padding-inline: 1.5em;
-    padding-block: 0.875em;
-}
-
-/* Hover */
-button.btn-newsletter:hover {
-    transform: scale(0.975);
-    backdrop-filter: blur(0.01em);
-    box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
-        inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
-        0 0.15em 0.05em -0.1em rgba(0, 0, 0, 0.25),
-        0 0 0.05em 0.1em inset rgba(255, 255, 255, 0.5);
-}
-
-/* Texte du bouton */
-button.btn-newsletter .btn-text {
-    position: relative;
-    display: block;
-    font-family: "Inter", sans-serif;
-    font-weight: 800;
-    font-size: 1.1em;
-    color: black;
-    text-shadow: 0em 0.25em 0.05em rgba(0, 0, 0, 0.1);
-    transition: all var(--anim--hover-time) var(--anim--hover-ease);
-}
-
-/* Overlay lumineux */
-button.btn-newsletter .btn-text::after {
-    content: "";
-    display: block;
-    position: absolute;
-    z-index: 1;
-    width: calc(100% - var(--border-width));
-    height: calc(100% - var(--border-width));
-    top: calc(0% + var(--border-width) / 2);
-    left: calc(0% + var(--border-width) / 2);
-    border-radius: 999vw;
-    overflow: clip;
-    background: linear-gradient(
-        var(--angle-2),
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.5) 40% 50%,
-        rgba(255, 255, 255, 0) 55%
-    );
-    mix-blend-mode: screen;
-    pointer-events: none;
-    background-size: 200% 200%;
-    background-position: 0% 50%;
-    background-repeat: no-repeat;
-    transition: background-position calc(var(--anim--hover-time) * 1.25)
-            var(--anim--hover-ease),
-        --angle-2 calc(var(--anim--hover-time) * 1.25) var(--anim--hover-ease);
-}
-
-button.btn-newsletter:hover .btn-text::after {
-    background-position: 25% 50%;
-}
-
-button.btn-newsletter:active .btn-text::after {
-    background-position: 50% 15%;
-    --angle-2: -15deg;
-}
-
-/* Outline conique animé */
-button.btn-newsletter::after {
-    content: "";
-    position: absolute;
-    z-index: 1;
-    inset: 0;
-    border-radius: 999vw;
-    width: calc(100% + var(--border-width));
-    height: calc(100% + var(--border-width));
-    top: calc(0% - var(--border-width) / 2);
-    left: calc(0% - var(--border-width) / 2);
-    padding: var(--border-width);
-    box-sizing: border-box;
-    background: conic-gradient(
-            from var(--angle-1) at 50% 50%,
-            rgba(0, 0, 0, 0.5),
-            rgba(0, 0, 0, 0) 5% 40%,
-            rgba(0, 0, 0, 0.5) 50%,
-            rgba(0, 0, 0, 0) 60% 95%,
-            rgba(0, 0, 0, 0.5)
-        ),
-        linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0.5),
-            rgba(255, 255, 255, 0.5)
-        );
-    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    transition: all var(--anim--hover-time) var(--anim--hover-ease),
-        --angle-1 500ms ease;
-    box-shadow: inset 0 0 0 calc(var(--border-width) / 2)
-        rgba(255, 255, 255, 0.5);
-}
-
-button.btn-newsletter:hover::after {
-    --angle-1: -125deg;
-}
-
-button.btn-newsletter:active::after {
-    --angle-1: -75deg;
-}
-
-/* Shadow hover */
-.button-wrap:has(button.btn-newsletter:hover) .button-shadow {
-    filter: blur(clamp(2px, 0.0625em, 6px));
-}
-
-.button-wrap:has(button.btn-newsletter:active) {
-    transform: rotate3d(1, 0, 0, 25deg);
-}
-
-.button-wrap:has(button.btn-newsletter:active) .button-shadow {
-    filter: blur(clamp(2px, 0.125em, 12px));
-}
-
-button.btn-newsletter .btn-text::after {
-    display: none !important;
-}
-
-/* =========================================================
-   ✅ FOOTER — RESPONSIVE PRO (Version cleanée et conservée)
-========================================================= */
-
-/* Tablette / mobile large */
-@media (max-width: 900px) {
-
-  .footer-chm {
-    padding-top: 45px;
-  }
-
-  /* 1) Grid principale -> 1 colonne, spacing propre */
-  .footer-main {
-    grid-template-columns: 1fr !important;
-    gap: 28px !important;
-    padding: 0 20px !important;
-  }
-
-  /* 2) Bloc logo/texte : enlève le décalage desktop */
-  .footer-brand {
-    margin-right: 0 !important;
-    align-items: center;
-    text-align: center;
-  }
-
-  .footer-logo {
-    width: 90px;
-    margin-bottom: 10px;
-  }
-
-  .footer-brand p,
-  .texte {
-    max-width: 520px;
-    margin: 0 auto;
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-
-  /* 3) Colonnes : titres + liens plus confort */
-  .footer-column {
-    gap: 10px;
-  }
-
-  .footer-chm h3,
-  .footer-chm h4 {
-    font-size: 0.95rem;
-    margin-bottom: 10px;
-    text-align: center; /* rend le footer plus clean en mobile */
-  }
-
-  .footer-nav ul {
-    text-align: center;
-  }
-
-  .footer-nav li {
-    margin-bottom: 8px;
-  }
-
-  /* 4) Newsletter : inputs en colonne + bouton full width */
-  .newsletter {
-    align-items: stretch;
-  }
-
-  .newsletter p,
-  .newsletter-footer-text {
-    text-align: center;
-  }
-
-  .newsletter-inputs {
-    flex-direction: column !important;
-    gap: 12px;
-    width: 100%;
-  }
-
-  .newsletter-inputs input {
-    width: 100%;
-  }
-
-  .button-wrap {
-    width: 100%;
-  }
-
-  button.btn-newsletter {
-    width: 86.5%;
-  }
-
-  /* 5) Paiements + social : centrage */
-  .payments-inner {
-    flex-direction: column;
-    text-align: center;
-    padding: 0 20px !important;
-    gap: 18px !important;
-  }
-
-  .payment-icons {
-    justify-content: center;
-    gap: 16px;
-  }
-
-  .payment-icons img {
-    height: 40px;
-  }
-
-  .social-icons {
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 14px;
-  }
-
-  .social-icons a {
-    width: 48px;
-    height: 48px;
-    font-size: 18px;
-  }
-
-  /* 6) Footer bottom : empilement clean */
-  .footer-bottom {
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
-    padding: 18px 20px 35px !important;
-  }
-
-  .footer-right {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .footer-right a {
-    margin: 0 !important;
-    font-size: 0.95rem;
-  }
-}
-
-/* Très petit mobile */
-@media (max-width: 420px) {
-
-  .footer-main {
-    padding: 0 16px !important;
-    gap: 24px !important;
-  }
-
-  .payment-icons img {
-    height: 36px;
-  }
-
-  button.btn-newsletter .btn-text {
-    font-size: 1rem;
-  }
+@media (max-width: 768px) {
+    .footer-main-grid { grid-template-columns: 1fr; }
+    .footer-newsletter { grid-column: span 1; }
+    .flex-between { flex-direction: column; gap: 1rem; text-align: center; }
 }

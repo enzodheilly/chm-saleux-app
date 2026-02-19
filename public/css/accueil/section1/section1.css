@@ -1,370 +1,245 @@
-/* ========================================================= */
-/* 1. STYLES PC (ORIGINAUX - NON MODIFIÉS)                   */
-/* ========================================================= */
+/* =========================================
+   HERO SECTION (ACCUEIL)
+   ========================================= */
 .hero-section {
     position: relative;
+    height: 100vh; /* Prend toute la hauteur de l'écran */
+    min-height: 600px;
+    width: 100%;
+    overflow: hidden;
+    
+    /* Flexbox pour centrer le contenu verticalement */
     display: flex;
     align-items: center;
-    min-height: 100vh;
-    padding: 0 5%;
-    color: #fff;
-    overflow: hidden;
-    background: #000;
+    
+    /* Important : Couleur de fond de secours si l'image charge mal */
+    background-color: #050505; 
 }
 
-/* Image principale */
-.hero-section .hero-photos {
+/* IMAGE DE FOND */
+.hero-photos {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0; width: 100%; height: 100%;
     z-index: 0;
-    overflow: hidden;
 }
 
-.hero-section .hero-photos img {
+.hero-photos img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center;
-    opacity: 1; 
+    object-fit: cover; /* L'image couvre tout sans être déformée */
+    object-position: center top;
 }
 
-/* Contenu texte */
-.hero-section > .hero-content {
+/* OVERLAY (DÉGRADÉ SOMBRE) */
+/* Indispensable pour que le texte blanc soit lisible sur la photo */
+.hero-photos::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* Dégradé du Noir (gauche) vers Transparent (droite) */
+    background: linear-gradient(to right, 
+        #050505 0%, 
+        rgba(5, 5, 5, 0.9) 30%, 
+        rgba(5, 5, 5, 0.4) 60%, 
+        transparent 100%);
+}
+
+/* CONTENU TEXTE */
+.hero-content {
     position: relative;
-    z-index: 2;
-    padding-top: 15.5vh;
-    max-width: 700px;
+    z-index: 2; /* Au-dessus de l'image */
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    
+    /* Petit décalage pour compenser la navbar fixe */
+    padding-top: 60px; 
 }
 
+/* TITRE PRINCIPAL */
 .club-title {
-    font-size: 2.4rem;
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem); /* Taille adaptative */
     font-weight: 900;
     text-transform: uppercase;
-    color: #fff;
-    margin-bottom: 0.75rem;
+    line-height: 0.95;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    max-width: 800px;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
+.user-welcome {
+    color: var(--brand-red); /* Rouge si connecté */
+}
+
+/* SOUS-TITRE */
 .club-subtitle {
-    font-size: 1.3rem;
-    font-weight: 300;
-    margin-bottom: 1.8rem;
-    color: #e6e6e6;
+    font-size: 1.2rem;
+    color: #cccccc;
+    font-weight: 400;
+    max-width: 600px;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
 }
 
-.club-date {
-    color: #fff;
-    font-weight: 600;
-    font-size: 1.2rem;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
+/* STATISTIQUES (+85 ADHÉRENTS...) */
+.hero-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 3rem;
 }
-.club-date.show { opacity: 1; }
 
 .hero-line {
-    font-size: 1.8rem;
-    font-weight: 600;
-    margin-bottom: 0.25rem;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #ffffff; /* Chiffres en blanc */
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
+
+/* Si tu veux les chiffres en bleu comme sur ta capture, utilise ça : */
+/* .hero-line { color: #0077b6; } */
 
 .thin-text {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #333333; /* Texte sombre pour effet "Gros titre derrière" ou Gris */
+    -webkit-text-stroke: 1px rgba(255,255,255,0.3); /* Effet contour */
+    color: transparent; /* Texte transparent avec contour */
+    text-transform: uppercase;
+}
+
+/* Si tu préfères le style bleu plein de ta capture : */
+.hero-line { color: #ffffff; }
+.thin-text { 
+    color: #007bff; /* Bleu */
+    -webkit-text-stroke: 0;
     font-weight: 900;
-    color: #005b94; /* Bleu sur PC */
 }
 
-/* --- Animations PC --- */
-.hero-line,
-.club-subtitle {
-  display: block; 
-  transform: translateX(950px);
-  opacity: 0;
-  transition: transform 1s ease-out, opacity 1s ease-out;
-}
 
-.hero-line.animate,
-.club-subtitle.animate {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-.club-title {
-  display: block;
-  transform: translateX(-750px);
-  opacity: 0;
-  transition: transform 1s ease-out, opacity 1s ease-out;
-}
-
-.club-title.animate {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-/* Animations User Connecté */
-.default-subtitle {
-    opacity: 0;
-    transform: translateX(100px);
-    animation: slideInLeft 1s forwards;
-}
-.user-welcome {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s ease-out forwards;
-}
-.user-subtitle {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s ease-out forwards;
-    animation-delay: 0.5s;
-}
-
-@keyframes slideInLeft { to { opacity: 1; transform: translateX(0); } }
-@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-
-/* --- Boutons --- */
+/* BOUTONS D'ACTION */
 .hero-buttons {
     display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
+    gap: 20px;
     flex-wrap: wrap;
+    margin-bottom: 4rem;
 }
 
+/* Bouton Principal (S'INSCRIRE / NOUS REJOINDRE) */
 .nous-rejoindre {
-    background: #005b94;
-    color: #fff;
-    padding: 0.6rem 1.6rem;
+    background: var(--brand-red);
+    color: white;
+    font-weight: 900;
+    text-transform: uppercase;
+    padding: 15px 35px;
     text-decoration: none;
-    font-weight: 800;
-    transition: 0.3s;
-}
-.nous-rejoindre:hover { 
-    filter: brightness(1.2);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); 
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    
+    /* Forme inclinée (Skew) pour matcher la nav */
+    transform: skewX(-15deg);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* On redresse le texte */
+.nous-rejoindre::before { content: attr(data-text); transform: skewX(15deg); } 
+
+.nous-rejoindre:hover {
+    background: white;
+    color: var(--brand-red);
+    box-shadow: 0 0 20px rgba(230, 57, 70, 0.4);
+}
+
+/* Bouton Secondaire (DÉCOUVRIR LE CLUB) */
 .btn-en-savoir-plus {
-    border: 1px solid #fff;
-    color: #fff;
     background: transparent;
-    padding: 0.6rem 1.6rem;
-    text-decoration: none;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
     font-weight: 800;
-    transition: 0.3s;
+    text-transform: uppercase;
+    padding: 15px 35px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    transform: skewX(-15deg); /* Même inclinaison */
+    transition: all 0.3s ease;
 }
-.btn-en-savoir-plus:hover { background: #fff; color: #000; }
-     
-/* --------------------------------------------------------- */
-/* --- NOUVEAU STYLE FFHM (CORRIGÉ : SOUS LES BOUTONS) --- */
-/* --------------------------------------------------------- */
 
+.btn-en-savoir-plus:hover {
+    border-color: white;
+    background: rgba(255,255,255,0.1);
+}
+
+/* BADGE FFHM EN BAS */
 .badge-ffhm {
-  position: relative;
-  margin-top: 30px;
-  display: inline-flex;
-  align-items: center;
-  gap: 15px;
-
-  backdrop-filter: blur(8px);
-
-  padding: 12px 22px;
-  border-radius: 12px;
-
-  transition: 0.3s ease;
+    position: absolute;
+    bottom: 40px;
+    left: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    opacity: 0.8;
 }
 
-/* Texte */
 .badge-text {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  color: #ffffff;
-  font-weight: 700;
-  letter-spacing: 1px;
+    color: #a0a0a0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
-/* Séparateur */
 .badge-separator {
-  width: 1px;
-  height: 30px;
-  background: rgba(255,255,255,0.35);
+    width: 1px;
+    height: 20px;
+    background: rgba(255,255,255,0.2);
 }
 
-/* Logo */
 .badge-ffhm img {
-  height: 45px;
-  width: auto;
-  display: block;
+    height: 25px;
+    width: auto;
+    filter: grayscale(1) brightness(200%);
 }
 
-
-/* ========================================================= */
-/* 2. RESPONSIVE OPTIMISÉ                                    */
-/* ========================================================= */
-
-/* --- A. TABLETTE (768px - 1024px) --- */
-@media (min-width: 768px) and (max-width: 1180px) {    
-    .hero-section::after {
-        content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.3), rgba(0,0,0,0.8));
-        z-index: 1;
-    }
-
+/* RESPONSIVE MOBILE */
+@media (max-width: 768px) {
     .hero-section {
-        padding-top: 100px; 
-        align-items: center;
-        min-height: 80vh;
-        overflow: hidden; 
-    }
-
-    .hero-content {
-        padding-top: 0;
-        max-width: 90%;
-        margin: 0 auto;
-        text-align: center;
-        position: relative;
-        z-index: 2;
-        /* Sur tablette, on centre tout le contenu flex */
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .club-title { 
-        font-size: 2.8rem;
-        text-shadow: 0 2px 10px rgba(0,0,0,0.5); 
-    }
-
-    .hero-buttons { justify-content: center; }
-    
-    /* Adaptation Tablette de l'étiquette */
-    .ffhm-container { 
-        margin-top: 3rem; 
-        justify-content: center; 
-        width: 100%;
-    }
-
-    /* Animations Tablette */
-    .club-title {
-        transform: translateX(-150px);
-        opacity: 0;
-        transition: opacity 1s ease-out, transform 1s ease-out;
-    }
-
-    .hero-line, 
-    .club-subtitle {
-        transform: translateX(150px);
-        opacity: 0;
-        transition: opacity 1s ease-out, transform 1s ease-out;
-    }
-
-    .club-title.animate, 
-    .hero-line.animate, 
-    .club-subtitle.animate {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-/* --- B. MOBILE (max-width: 767px) --- */
-@media (max-width: 767px) {
-    
-    .hero-section {
-        background-image: url('/images/club/robert.jpg'); 
-        background-size: auto 115vh; 
-        background-position: center -100%; 
-        background-repeat: no-repeat;
-        padding-top: 100px;
-        padding-left: 20px;
-        padding-right: 20px;
+        /* Hauteur automatique sur mobile pour éviter les bugs de scroll */
+        height: auto;
         min-height: 100vh;
-        display: flex;
+        padding-top: 120px; /* Plus d'espace car la nav mobile prend de la place */
+        padding-bottom: 40px;
+        align-items: flex-start; /* Aligne en haut */
+    }
+
+    .hero-photos::after {
+        /* Sur mobile, on assombrit tout pour la lisibilité */
+        background: rgba(0,0,0,0.7);
+    }
+    
+    .club-title { font-size: 2.8rem; }
+    
+    .hero-buttons {
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        position: relative;
+        width: 100%;
     }
-
-    .hero-section::after {
-        content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.6); 
-        z-index: 1;
-    }
-
-    .hero-content {
-        position: relative; z-index: 2;
-        padding-top: 0;
-        max-width: 100%;
+    
+    .nous-rejoindre, .btn-en-savoir-plus {
+        width: 100%;
         text-align: center;
-        width: 100%;
     }
-
-    .hero-photos { display: none; }
     
-    /* Sur mobile, on l'affiche juste en dessous des boutons */
-    .ffhm-container {
+    .badge-ffhm {
         position: relative;
-        margin-top: 25px;
-        width: 100%;
-        justify-content: center; /* Centré */
-        display: flex;
-        /* On enlève les propriétés de position absolue */
-        bottom: auto;
-        right: auto;
-        transform: none;
-    }
-    
-    .ffhm-etiquette {
-        padding: 8px 16px; 
-    }
-    .etiquette-label { font-size: 0.7rem; }
-    .etiquette-logo { height: 28px; }
-
-    /* --- STYLES TEXTES MOBILE --- */
-    .club-title {
-        font-size: 1.8rem;
-        line-height: 1.2;
-        margin-bottom: 1rem;
-        text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    }
-
-    .club-subtitle {
-        font-size: 1rem;
-        margin-bottom: 2rem;
-        color: #f0f0f0;
-    }
-
-    .hero-inner {
-        display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 2.5rem;
-    }
-    .hero-line { font-size: 1.6rem; color: #fff; }
-    .thin-text { color: #005b94; font-weight: 900; text-transform: uppercase; opacity: 0.9; }
-
-    .hero-buttons { flex-direction: column; width: 100%; gap: 15px; }
-    .nous-rejoindre {
-        background: #005b94; color: #fff; width: 100%; text-align: center; padding: 14px 0;
-    }
-    .btn-en-savoir-plus {
-        width: 100%; text-align: center; padding: 14px 0; border-color: #fff; color: #fff; background: rgba(0,0,0,0.2);
-    }
-
-    /* Animations Mobile */
-    .club-title {
-        transform: translateX(-100px);
-        opacity: 0;
-        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-    }
-
-    .hero-line, 
-    .club-subtitle {
-        transform: translateX(100px);
-        opacity: 0;
-        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-    }
-
-    .club-title.animate, 
-    .hero-line.animate, 
-    .club-subtitle.animate {
-        transform: translateX(0);
-        opacity: 1;
+        bottom: auto; left: auto;
+        margin-top: 2rem;
     }
 }

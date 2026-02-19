@@ -10,10 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
     import("/js/accueil/section2/section2.js");
   }
 
-  // FAQ (section news/faq)
-  if (document.querySelector(".faq-section")) {
-    import("/js/accueil/section4/faq.js");
-  }
+// FAQ (section home)
+if (document.querySelector(".home-faq-section")) {
+  import("/js/accueil/section4/faq.js");
+}
 
   // Slider club
   if (document.querySelector(".club-slider-section")) {

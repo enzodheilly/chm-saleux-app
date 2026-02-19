@@ -70,7 +70,11 @@
     <div class="page-header">
         <div>
             <h1>Modifier l'article</h1>
-            <p>Modification de : <span style="font-weight: 700; color: var(--text-main);">{{ article.title }}</span></p>
+            <p>Modification de :
+                <span style="font-weight:700; color:var(--text-main);">
+                    {{ article.title }}
+                </span>
+            </p>
         </div>
         <a href="{{ path('admin_articles_index') }}" class="back-link">Retour aux articles</a>
     </div>
@@ -79,32 +83,37 @@
         {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
 
         <div class="form-group">
-            {{ form_label(form.title, 'Titre de l\'article', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_label(form.title, "Titre de l'article", {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error">{{ form_errors(form.title) }}</div>
         </div>
 
         <div class="form-row-2">
             <div class="form-group">
                 {{ form_label(form.publishedAt, 'Date de publication', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.publishedAt, {'attr': {'class': 'form-control'}}) }}
+                <div class="form-error">{{ form_errors(form.publishedAt) }}</div>
             </div>
             
-            {% if form.categorie is defined %}
-            <div class="form-group">
-                {{ form_label(form.categorie, 'Catégorie', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
-            </div>
+            {# ✅ Category field (ArticleCategory) #}
+            {% if form.category is defined %}
+                <div class="form-group">
+                    {{ form_label(form.category, 'Catégorie', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+                    <div class="form-error">{{ form_errors(form.category) }}</div>
+                </div>
             {% endif %}
         </div>
 
         <div class="form-group">
             {{ form_label(form.description, 'Contenu rédactionnel', {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error">{{ form_errors(form.description) }}</div>
         </div>
 
         <div class="form-group">
             {{ form_label(form.photo, 'Image de couverture', {'label_attr': {'class': 'form-label'}}) }}
-            
+
             {% if article.photo %}
                 <div class="image-management">
                     <img src="{{ asset('uploads/' ~ article.photo) }}" alt="Aperçu" class="current-image-preview">
@@ -117,10 +126,12 @@
             {% endif %}
 
             {{ form_widget(form.photo, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error">{{ form_errors(form.photo) }}</div>
         </div>
 
         <div class="form-actions">
-            <button type="button" class="btn-delete" onclick="if(confirm('⚠️ Supprimer définitivement cet article ? Cette action est irréversible.')) document.getElementById('delete-form').submit();">
+            <button type="button" class="btn-delete"
+                onclick="if(confirm('⚠️ Supprimer définitivement cet article ? Cette action est irréversible.')) document.getElementById('delete-form').submit();">
                 Supprimer l'article
             </button>
 
@@ -133,7 +144,9 @@
         {{ form_end(form) }}
     </div>
 
-    <form id="delete-form" method="post" action="{{ path('admin_articles_delete', {id: article.id}) }}" style="display: none;">
+    <form id="delete-form" method="post"
+          action="{{ path('admin_articles_delete', {id: article.id}) }}"
+          style="display:none;">
         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
     </form>
 </div>

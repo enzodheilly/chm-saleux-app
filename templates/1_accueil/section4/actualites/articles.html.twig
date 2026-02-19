@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Actualités du Club{% endblock %}
+{% block title %}Actualités du Club — CHM Saleux{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -9,158 +9,108 @@
 
 {% block body %}
 
-    {# --- HEADER IMMERSIF (Style cohérent avec les autres pages) --- #}
-    <header class="page-header">
-        {# Tu peux changer l'image ici par une image générique du club ou de news #}
-        <div class="header-bg" style="background-image: url('{{ asset('images/competitions/1.jpg') }}');"></div>
-        <div class="header-overlay"></div>
-        
+    {# --- HEADER ELITE --- #}
+    <header class="page-header-sport" style="--bg-image: url('{{ asset('images/competitions/1.jpg') }}');">
+        <div class="header-overlay-gradient"></div>
         <div class="container header-content">
-            <div class="header-title-box">
-                <span class="subtitle">Informations & Événements</span>
-                <h1>Actualités</h1>
-                <p>Restez informé des derniers résultats, des événements à venir et de la vie du club.</p>
+            <nav class="breadcrumb-nav">
+                <a href="{{ path('home') }}" class="back-link-minimal">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                </a>
+            </nav>
+
+            <div class="header-main-box">
+                <div class="badge-accent">Le Journal du Club</div>
+                <h1>Actualités <span class="text-outline">& News</span></h1>
+                <p class="lead">Résultats, événements et vie de l'association : ne manquez rien de l'actu du CHM.</p>
             </div>
         </div>
     </header>
 
-    <div class="main-container">
-
-        {# --- BARRE DE FILTRES MODERNE --- #}
-        <section class="filters-container">
-            <form method="get" action="{{ path('actualites', {'page': 1}) }}" class="filter-bar">
-                
-                {# Groupe : Catégorie #}
-                <div class="filter-group">
-                    <label>Filtrer par</label>
-                    <div class="select-wrapper">
-                        <select name="categorie">
-                            <option value="">Toutes les catégories</option>
-                            {% for cat in categories %}
-                                <option value="{{ cat }}" {% if filters.categorie is defined and filters.categorie == cat %}selected{% endif %}>
-                                    {{ cat|capitalize }}
-                                </option>
-                            {% endfor %}
-                        </select>
-                        <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    <main class="news-root">
+        
+        {# --- FILTRES --- #}
+        <section class="container">
+            <div class="filter-card-wrapper">
+                <form method="get" action="{{ path('actualites', {'page': 1}) }}" class="elite-filter-bar">
+                    <div class="filter-inputs">
+                        <div class="filter-field">
+                            <label><i class="fa-solid fa-tag"></i> Catégorie</label>
+                            <select name="category">
+                                <option value="">Toutes</option>
+                                {% for cat in categories %}
+                                    <option value="{{ cat }}" {% if filters.category is defined and filters.category == cat %}selected{% endif %}>
+                                        {{ cat|capitalize }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="filter-field">
+                            <label><i class="fa-solid fa-calendar-days"></i> Période</label>
+                            <div class="date-range">
+                                <input type="date" name="date_from" value="{{ filters.date_from ?? '' }}" placeholder="Du">
+                                <span>au</span>
+                                <input type="date" name="date_to" value="{{ filters.date_to ?? '' }}" placeholder="Au">
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                {# Groupe : Dates #}
-                <div class="filter-dates">
-                    <div class="date-input-group">
-                        <label for="date_from">Du</label>
-                        <input type="date" id="date_from" name="date_from" value="{{ filters.date_from ?? '' }}">
+                    <div class="filter-buttons">
+                        <button type="submit" class="btn-elite-search"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        {% if (filters.category is defined and filters.category) or filters.date_from or filters.date_to %}
+                            <a href="{{ path('actualites') }}" class="btn-elite-reset"><i class="fa-solid fa-rotate-left"></i></a>
+                        {% endif %}
                     </div>
-                    
-                    <div class="date-separator">au</div>
-
-                    <div class="date-input-group">
-                        <label for="date_to">Au</label>
-                        <input type="date" id="date_to" name="date_to" value="{{ filters.date_to ?? '' }}">
-                    </div>
-                </div>
-
-                {# Boutons #}
-                <div class="filter-actions">
-                    <button type="submit" class="btn-search">
-                        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                        Rechercher
-                    </button>
-                    
-                    {# Lien Reset optionnel si des filtres sont actifs #}
-                    {% if filters.categorie or filters.date_from or filters.date_to %}
-                        <a href="{{ path('actualites') }}" class="btn-reset">Réinitialiser</a>
-                    {% endif %}
-                </div>
-            </form>
+                </form>
+            </div>
         </section>
 
         {# --- GRILLE D'ARTICLES --- #}
-        <section class="news-section">
+        <section class="container section-spacer">
             {% if articles is not empty %}
-                <div class="news-grid">
+                <div class="news-grid-layout">
                     {% for article in articles %}
-                        <article class="news-card">
-                            <div class="card-image-wrapper">
+                        <article class="news-card-elite">
+                            <div class="card-thumb">
                                 <img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}" loading="lazy">
-                                <span class="card-category-badge">
-                                    {{ article.categorie ? article.categorie|capitalize : 'Info' }}
-                                </span>
+                                <div class="card-badge">{{ article.category ? article.category|capitalize : 'Info' }}</div>
                             </div>
                             
-                            <div class="card-content">
-                                <div class="card-meta">
-                                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                                    {{ article.publishedAt|date('d/m/Y') }}
-                                </div>
-
-                                <h3>
-                                    <a href="{{ path('article_show', {'id': article.id}) }}">{{ article.title }}</a>
-                                </h3>
-
-                                <p class="card-excerpt">
-                                    {{ article.description|striptags|slice(0, 120) ~ '...' }}
-                                </p>
-
-                                <a href="{{ path('article_show', {'id': article.id}) }}" class="read-more-link">
-                                    Lire la suite &rarr;
-                                </a>
+                            <div class="card-body">
+                                <span class="card-date"><i class="fa-regular fa-calendar"></i> {{ article.publishedAt|date('d/m/Y') }}</span>
+                                <h3><a href="{{ path('article_show', {'id': article.id}) }}">{{ article.title }}</a></h3>
+                                <p>{{ article.description|striptags|slice(0, 100) ~ '...' }}</p>
+                                <a href="{{ path('article_show', {'id': article.id}) }}" class="link-arrow">Lire l'article <i class="fa-solid fa-arrow-right"></i></a>
                             </div>
                         </article>
                     {% endfor %}
                 </div>
 
-                {# --- PAGINATION MODERNE --- #}
-                <div class="pagination-wrapper">
-                    <div class="pagination">
+                {# --- PAGINATION --- #}
+                {% if totalPages > 1 %}
+                    <div class="pagination-elite mt-5">
                         {% set query = filters %}
-
-                        {# Précédent #}
-                        <a href="{{ page > 1 ? path('actualites', query|merge({'page': page - 1})) : '#' }}" class="page-link prev {{ page <= 1 ? 'disabled' : '' }}">
-                            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
-                        </a>
-
-                        {# Pages (Logique simplifiée pour l'affichage) #}
-                        {% set start = (page > 3) ? page - 2 : 1 %}
-                        {% set end = (page < totalPages - 2) ? page + 2 : totalPages %}
-
-                        {% if start > 1 %}
-                            <a href="{{ path('actualites', query|merge({'page': 1})) }}" class="page-link">1</a>
-                            {% if start > 2 %}<span class="page-dots">...</span>{% endif %}
-                        {% endif %}
-
-                        {% for i in start..end %}
-                            {% if i == page %}
-                                <span class="page-link active">{{ i }}</span>
-                            {% else %}
-                                <a href="{{ path('actualites', query|merge({'page': i})) }}" class="page-link">{{ i }}</a>
-                            {% endif %}
+                        <a href="{{ page > 1 ? path('actualites', query|merge({'page': page - 1})) : '#' }}" class="page-btn {{ page <= 1 ? 'disabled' : '' }}"><i class="fa-solid fa-chevron-left"></i></a>
+                        
+                        {% for i in 1..totalPages %}
+                            <a href="{{ path('actualites', query|merge({'page': i})) }}" class="page-btn {{ i == page ? 'active' : '' }}">{{ i }}</a>
                         {% endfor %}
 
-                        {% if end < totalPages %}
-                            {% if end < totalPages - 1 %}<span class="page-dots">...</span>{% endif %}
-                            <a href="{{ path('actualites', query|merge({'page': totalPages})) }}" class="page-link">{{ totalPages }}</a>
-                        {% endif %}
-
-                        {# Suivant #}
-                        <a href="{{ page < totalPages ? path('actualites', query|merge({'page': page + 1})) : '#' }}" class="page-link next {{ page >= totalPages ? 'disabled' : '' }}">
-                            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-                        </a>
+                        <a href="{{ page < totalPages ? path('actualites', query|merge({'page': page + 1})) : '#' }}" class="page-btn {{ page >= totalPages ? 'disabled' : '' }}"><i class="fa-solid fa-chevron-right"></i></a>
                     </div>
-                </div>
+                {% endif %}
 
             {% else %}
-                <div class="empty-state">
-                    <div class="empty-icon">📰</div>
-                    <h3>Aucune actualité trouvée</h3>
-                    <p>Essayez de modifier vos filtres de recherche.</p>
-                    <a href="{{ path('actualites') }}" class="btn-reset">Voir toutes les actus</a>
+                <div class="empty-news">
+                    <i class="fa-solid fa-newspaper"></i>
+                    <h3>Aucun article trouvé</h3>
+                    <p>Modifiez vos filtres pour voir d'autres résultats.</p>
                 </div>
             {% endif %}
         </section>
 
-    </div>
+    </main>
 {% endblock %}
 
 {% block javascripts %}

@@ -108,13 +108,13 @@
 
     <div class="page-header">
         <div>
-            <h1>Actualités</h1>
-            <p>Gérez les articles du blog et les annonces du club.</p>
+            <h1>News</h1>
+            <p>Manage blog posts and club announcements.</p>
         </div>
         <div class="toolbar">
-            <input type="text" id="searchInput" class="search-input" placeholder="Filtrer par titre...">
+            <input type="text" id="searchInput" class="search-input" placeholder="Filter by title...">
             <a href="{{ path('admin_articles_new') }}" class="btn-create">
-                + Nouvel Article
+                + New Article
             </a>
         </div>
     </div>
@@ -125,8 +125,8 @@
                 <thead>
                     <tr>
                         <th width="35%">Article</th>
-                        <th width="35%">Aperçu du contenu</th>
-                        <th width="15%">Publication</th>
+                        <th width="35%">Content preview</th>
+                        <th width="15%">Published</th>
                         <th style="text-align: right;">Actions</th>
                     </tr>
                 </thead>
@@ -140,15 +140,19 @@
                                     {% else %}
                                         <div class="no-thumb">N/A</div>
                                     {% endif %}
+
                                     <div class="title-group">
                                         <strong>{{ article.title }}</strong>
-                                        <span class="cat-tag">{{ article.categorie|default('Général') }}</span>
+
+                                        <span class="cat-tag">
+                                            {{ article.category ? article.category.name : 'General' }}
+                                        </span>
                                     </div>
                                 </div>
                             </td>
 
                             <td style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">
-                                {{ article.description|striptags|slice(0, 80) ~ '...' }}
+                                {{ article.description ? (article.description|striptags|slice(0, 80) ~ '...') : '—' }}
                             </td>
 
                             <td>
@@ -156,7 +160,7 @@
                                     {% if article.publishedAt %}
                                         {{ article.publishedAt|date('d/m/Y') }}
                                     {% else %}
-                                        <span style="color: var(--accent);">Brouillon</span>
+                                        <span style="color: var(--accent);">Draft</span>
                                     {% endif %}
                                 </span>
                             </td>
@@ -164,14 +168,15 @@
                             <td>
                                 <div class="actions">
                                     <a href="{{ path('admin_articles_edit', {id: article.id}) }}" class="act-link act-edit">
-                                        Modifier
+                                        Edit
                                     </a>
-                                    
-                                    <form method="post" action="{{ path('admin_articles_delete', {id: article.id}) }}" 
+
+                                    <form method="post"
+                                          action="{{ path('admin_articles_delete', {id: article.id}) }}"
                                           style="display:inline;"
-                                          onsubmit="return confirm('Supprimer définitivement cet article ?');">
+                                          onsubmit="return confirm('Delete this article permanently?');">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
-                                        <button class="act-link act-del">Supprimer</button>
+                                        <button class="act-link act-del">Delete</button>
                                     </form>
                                 </div>
                             </td>
@@ -179,7 +184,7 @@
                     {% else %}
                         <tr>
                             <td colspan="4" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-                                Aucun article n'a été rédigé pour le moment.
+                                No articles yet.
                             </td>
                         </tr>
                     {% endfor %}
@@ -192,13 +197,12 @@
 
 {% block javascripts %}
 <script>
-    // Recherche rapide par titre
     document.getElementById('searchInput').addEventListener('keyup', function() {
         const filter = this.value.toLowerCase();
         const rows = document.querySelectorAll('#articlesTable tbody tr');
 
         rows.forEach(row => {
-            const title = row.querySelector('.title-group strong').textContent.toLowerCase();
+            const title = row.querySelector('.title-group strong')?.textContent?.toLowerCase() || '';
             row.style.display = title.includes(filter) ? '' : 'none';
         });
     });

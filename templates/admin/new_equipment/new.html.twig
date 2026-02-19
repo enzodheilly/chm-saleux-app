@@ -1,0 +1,123 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Ajouter un équipement{% endblock %}
+
+{% block stylesheets %}
+<style>
+    /* =================== CONTAINER =================== */
+    .form-container { max-width: 800px; margin: 0 auto; }
+
+    /* =================== HEADER =================== */
+    .page-header {
+        margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;
+        display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
+    .back-link { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; text-decoration: underline; cursor: pointer; }
+    .back-link:hover { color: var(--text-main); }
+
+    /* =================== FORM CARD =================== */
+    .form-card { background: var(--bg-sidebar); border: 1px solid var(--border-color); border-radius: 6px; padding: 2rem; }
+    .form-group { margin-bottom: 1.5rem; }
+
+    /* Labels */
+    .form-label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+
+    /* Inputs */
+    .form-control {
+        width: 100%; background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main);
+        padding: 0.75rem 1rem; border-radius: 4px; font-size: 0.95rem; font-family: inherit; transition: 0.2s; box-sizing: border-box;
+    }
+    .form-control:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.1); }
+    
+    /* Image Preview Style */
+    .preview-box { 
+        margin-top: 1rem; 
+        width: 100%; max-width: 300px; 
+        height: 200px; 
+        border: 1px dashed var(--border-color); 
+        border-radius: 4px; 
+        display: none; 
+        overflow: hidden;
+        background: var(--bg-body);
+    }
+    #image-preview { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Actions */
+    .form-actions {
+        margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);
+        display: flex; justify-content: flex-end; gap: 1rem;
+    }
+
+    .btn-cancel { padding: 0.7rem 1.2rem; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; border-radius: 4px; transition: color 0.2s; }
+    .btn-cancel:hover { color: var(--text-main); }
+    .btn-save { background: var(--text-main); color: var(--bg-body); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 700; border: none; cursor: pointer; transition: opacity 0.2s; }
+    .btn-save:hover { opacity: 0.9; }
+
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="form-container">
+    
+    <div class="page-header">
+        <div>
+            <h1>Nouvel équipement</h1>
+            <p>Ajoutez une machine à l'inventaire du club.</p>
+        </div>
+        <a href="{{ path('admin_new_equipment_index') }}" class="back-link">Retour à la liste</a>
+    </div>
+
+    <div class="form-card">
+        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+        <div class="form-group">
+            {{ form_label(form.name, 'Nom de la machine', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Presse à cuisses'}}) }}
+            <div style="color: var(--danger); font-size: 0.8rem;">{{ form_errors(form.name) }}</div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.image, 'Photo du matériel', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+            <div style="color: var(--danger); font-size: 0.8rem;">{{ form_errors(form.image) }}</div>
+            
+            <div class="preview-box" id="preview-container">
+                <img id="image-preview" src="" alt="Aperçu">
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a href="{{ path('admin_new_equipment_index') }}" class="btn-cancel">Annuler</a>
+            <button type="submit" class="btn-save">Enregistrer l'équipement</button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const fileInput = document.querySelector("input[type='file']");
+    const previewContainer = document.getElementById("preview-container");
+    const previewImg = document.getElementById("image-preview");
+
+    if (fileInput) {
+        fileInput.addEventListener("change", function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewContainer.style.display = "block";
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,12 +1,10 @@
-# config/routes.yaml
-
 controllers:
     resource:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
 
-# Tu peux garder ceux-là s'ils ne sont pas définis dans le PHP
+# Tes pages statiques actuelles
 app_legal:
     path: /mentions-legales
     controller: App\Controller\PageController::legal
@@ -15,5 +13,9 @@ app_privacy:
     path: /confidentialite
     controller: App\Controller\PageController::privacy
 
-# ❌ SUPPRIME TOUT LE RESTE EN DESSOUS (admin_dashboard, admin_users, etc.)
-# C'est ton code PHP (les #[Route]) qui va maintenant gérer ces adresses.
+# ✅ LA ROUTE SPÉCIALE MOBILE
+# C'est ici que l'appli va envoyer email + mot de passe.
+# Pas besoin de créer de Controller PHP, le bundle de sécurité l'intercepte automatiquement !
+api_login_check:
+    path: /api/login_check
+    methods: ["POST"]

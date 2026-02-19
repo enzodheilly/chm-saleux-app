@@ -1,95 +1,85 @@
-/* --- VARIABLES --- */
+/* --- VARIABLES (Thème Foncé Harmonisé) --- */
 :root {
-    --primary-color: #0056b3; /* Bleu Olympique */
-    --accent-color: #e74c3c; /* Rouge pour l'intensité/Force */
-    --dark-bg: #111;
-    --text-main: #333;
-    --text-muted: #555;
-    --bg-light: #f8f9fa;
+    --primary-color: #F57706; /* Bleu ajusté pour le Dark Mode */
+    --accent-color: #F57706;  /* Orange/Rouge Intensité */
+    --dark-bg: #111;       /* Fond principal */
+    --bg-card: #121212;       /* Fond des cartes */
+    --bg-alt: #0d0d0d;        /* Fond alterné */
+    --text-main: #ffffff;
+    --text-muted: #a0a0a0;
+    --border-soft: rgba(255, 255, 255, 0.08);
+    --nav-height: 80px; 
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --border-radius: 12px;
-    --shadow-card: 0 10px 30px rgba(0,0,0,0.08);
+    --shadow-card: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 body {
-    background-color: var(--bg-light);
+    background-color: var(--dark-bg);
     color: var(--text-main);
+    margin: 0;
 }
 
-/* --- HEADER --- */
-.page-header {
-    position: relative;
-    height: 60vh;
-    min-height: 400px;
-    display: flex;
-    align-items: center;
-    color: white;
-    margin-bottom: 80px;
-}
-
-.header-bg {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-size: cover;
-    background-position: center;
-    z-index: 1;
-}
-
-.header-overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(45deg, rgba(0,0,0,0.9), rgba(0, 86, 179, 0.5));
-    z-index: 2;
-}
-
-.header-content {
-    position: relative;
-    z-index: 3;
-    width: 100%;
-	top:65px;
+.container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 0.25rem;
 }
 
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    margin-bottom: 20px;
-    opacity: 0.8;
-    transition: opacity 0.3s;
+/* =========================================
+   2. HEADER SPORTIF
+   ========================================= */
+.page-header-sport {
+    position: relative;
+    padding-top: var(--nav-height);
+    height: 60vh;
+    min-height: 450px;
+    display: flex; align-items: center;
+    background-color: var(--dark-bg);
+    margin-bottom: 0;
 }
-.back-link:hover { opacity: 1; }
-.back-link svg { margin-right: 8px; }
+.page-header-sport::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: var(--bg-image);
+    background-size: cover; background-position: center 35%;
+    z-index: 1; filter: grayscale(30%) brightness(0.6);
+}
+.header-overlay-gradient {
+    position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(to right, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.6) 100%);
+}
+.header-content { position: relative; z-index: 3; width: 100%; top:27px; }
 
-.header-title-box h1 {
-    font-size: 3.5rem;
-    font-weight: 900;
-    margin: 10px 0;
-    line-height: 1.1;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+.badge-accent {
+    background: var(--accent-color); color: white;
+    padding: 6px 14px; font-weight: 800; font-size: 0.75rem;
+    text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
 }
-.subtitle {
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    background: var(--accent-color);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
+.header-main-box h1 {
+    font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 900;
+    text-transform: uppercase; line-height: 1; margin: 0 0 1.5rem 0; color: #fff;
 }
+.text-outline { -webkit-text-stroke: 1px white; color: transparent; }
+.header-main-box .lead {
+    font-size: 1.2rem; color: #ccc; max-width: 650px; line-height: 1.6;
+}
+
+.back-link-minimal {
+    color: var(--accent-color); text-decoration: none;
+    font-weight: 700; text-transform: uppercase; font-size: 0.8rem;
+    letter-spacing: 2px; display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 3rem; transition: var(--transition);
+}
+.back-link-minimal:hover { color: white; }
 
 /* --- MAIN CONTAINER --- */
 .main-container {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 0 20px 80px;
+    padding: 50px 20px 80px;
 }
 
-/* --- SPLIT SECTIONS (Zig-Zag) --- */
+/* --- SPLIT SECTIONS --- */
 .split-section {
     display: flex;
     align-items: center;
@@ -101,19 +91,15 @@ body {
     flex-direction: row-reverse;
 }
 
-.split-content {
-    flex: 1;
-}
-
-.split-image {
-    flex: 1;
-}
+.split-content { flex: 1; }
+.split-image { flex: 1; }
 
 .image-frame {
     border-radius: 20px;
     overflow: hidden;
     box-shadow: var(--shadow-card);
     transition: transform 0.3s;
+    border: 1px solid var(--border-soft);
 }
 .image-frame:hover { transform: scale(1.02); }
 .image-frame img {
@@ -127,7 +113,7 @@ body {
     font-size: 2rem;
     font-weight: 800;
     margin-bottom: 1.5rem;
-    color: var(--dark-bg);
+    color: var(--text-main);
     position: relative;
 }
 .section-heading::after {
@@ -160,12 +146,14 @@ p {
     padding: 0;
 }
 .benefits-list li {
-    background: white;
+    background: var(--bg-card);
     padding: 15px 20px;
     border-radius: 8px;
     margin-bottom: 10px;
     border-left: 4px solid var(--accent-color);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    color: #ccc;
+    border: 1px solid var(--border-soft);
 }
 
 .audience-grid {
@@ -177,9 +165,9 @@ p {
     font-size: 1.1rem;
     color: var(--primary-color);
 }
-.audience-item p { margin: 0; font-size: 0.95rem; }
+.audience-item p { margin: 0; font-size: 0.95rem; color: var(--text-muted); }
 
-/* --- TECH SECTION (Mouvements) --- */
+/* --- TECH SECTION --- */
 .tech-header {
     margin-bottom: 50px;
     text-align: center;
@@ -192,18 +180,18 @@ p {
 }
 
 .movement-card {
-    background: white;
+    background: var(--bg-card);
     border-radius: var(--border-radius);
     padding: 40px;
     box-shadow: var(--shadow-card);
     position: relative;
-    border: 1px solid #eee;
+    border: 1px solid var(--border-soft);
 }
 
 .card-badge {
     position: absolute;
     top: 20px; right: 20px;
-    background: #f0f4ff;
+    background: rgba(30, 144, 255, 0.1);
     color: var(--primary-color);
     font-size: 0.75rem;
     font-weight: 700;
@@ -215,12 +203,13 @@ p {
     font-size: 1.5rem;
     font-weight: 800;
     margin-bottom: 15px;
-    color: var(--dark-bg);
+    color: var(--text-main);
 }
 
 .movement-def {
     font-style: italic;
     margin-bottom: 30px;
+    color: var(--text-muted);
 }
 
 .step-list {
@@ -233,10 +222,11 @@ p {
     display: flex;
     align-items: flex-start;
     gap: 15px;
+    color: #ccc;
 }
 
 .step-num {
-    background: var(--dark-bg);
+    background: var(--primary-color);
     color: white;
     width: 25px;
     height: 25px;
@@ -252,8 +242,13 @@ p {
 
 /* --- RESPONSIVE --- */
 @media (max-width: 900px) {
-    .header-title-box h1 { font-size: 2.5rem; }
-    
+    .page-header-sport {
+        height: auto !important;
+        min-height: 400px !important;
+    }
+    .header-content { top: 0 !important; }
+    .page-header-sport .container { padding-left: 18px !important; padding-right: 18px !important; }
+    .header-main-box h1 { font-size: 2.48rem !important; line-height: 1.1; }
     .split-section { flex-direction: column; gap: 40px; }
     .split-section.reversed { flex-direction: column; }
     .split-image { width: 100%; }
