@@ -4,6 +4,8 @@
   --brand-navy:#002952;
   --bg-light-1:#ffffff;
   --bg-light-2:#f4f6f8;
+  --dark-bg: #080808;
+  --bg-card: #121212;
     --bg-dark:#0f0f11;
 
   --text-dark:#111;
@@ -12,8 +14,11 @@
     --text-gray:#666;
   --text-dark-2:#333;
    --text-muted-2:#a1a1aa;
+   --text-muted: #a0a0a0;
 
   --border:#e5e7eb;
+   --border-soft: rgba(255, 255, 255, 0.08);
+    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
   --surface:#ffffff;
   --surface-soft:#f9fafb;

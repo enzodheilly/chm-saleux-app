@@ -1,464 +1,195 @@
-/* --- VARIABLES --- */
+/* --- VARIABLES (Thème Elite Dark) --- */
 :root {
-    --primary-color: #0056b3;  /* Bleu Club */
-    --action-color: #28a745;   /* Vert pour l'aspect "Essai/Gratuit/Go" */
-    
-    --dark-bg: #111;
-    --dark-text: #0f172a;      /* Texte sombre presque noir */
-    --text-muted: #555;
-    
-    --bg-light: #f4f6f9;
-    --card-bg: #ffffff;
-    
-    --border-radius: 12px;
-    --shadow-card: 0 10px 30px rgba(0,0,0,0.08);
-    --shadow-hover: 0 15px 40px rgba(0,0,0,0.12);
-    
-    /* Couleurs spécifiques aux cartes "Raisons" */
-    --blue-gradient: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    --yellow-gradient: linear-gradient(135deg, #f59e0b, #d97706);
-    --green-gradient: linear-gradient(135deg, #10b981, #059669);
+    --primary-color: #F57706; 
+    --dark-bg: #080808;
+    --bg-card: #121212;
+    --bg-alt: #0d0d0d;
+    --text-main: #ffffff;
+    --text-muted: #a0a0a0;
+    --border-soft: rgba(255, 255, 255, 0.08);
+    --nav-height: 80px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
-    background-color: var(--bg-light);
-    color: var(--dark-text);
+    background-color: var(--dark-bg);
+    color: var(--text-main);
+    margin: 0;
+    font-family: 'Inter', sans-serif;
 }
 
-/* =========================================================
-   HEADER (Conservé tel quel)
-   ========================================================= */
-.page-header {
-    position: relative;
-    height: 60vh;
-    min-height: 350px;
-    display: flex;
-    align-items: center;
-    color: white;
-    margin-bottom: 0; /* Collé à la section suivante */
-}
-
-.header-bg {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-size: cover;
-    background-position: center;
-    z-index: 1;
-}
-
-.header-overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(45deg, rgba(0,0,0,0.85), rgba(40, 167, 69, 0.4));
-    z-index: 2;
-}
-
-.header-content {
-    position: relative;
-    z-index: 3;
-    width: 100%;
-    top: 65px;
+.container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 0.25rem;
 }
 
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    margin-bottom: 20px;
-    opacity: 0.8;
-    transition: opacity 0.3s;
-}
-.back-link:hover { opacity: 1; }
-.back-link svg { margin-right: 8px; }
-
-.header-title-box h1 {
-    font-size: 3.5rem;
-    font-weight: 900;
-    margin: 10px 0;
-    line-height: 1.1;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
-
-.subtitle {
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    background: var(--action-color);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-}
-
-/* =========================================================
-   MAIN CONTAINER
-   ========================================================= */
-.main-container {
-    padding-bottom: 80px;
-}
-
-/* =========================================================
-   SECTION 1 : REASSURANCE (Intro)
-   ========================================================= */
-.reassurance-section {
-    text-align: center;
-    padding: 80px 20px 60px;
-    background: #fff;
-}
-
-.intro-badge {
-    display: inline-block;
-    background: #dcfce7; /* Vert pâle */
-    color: #166534;      /* Vert foncé */
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    padding: 6px 16px;
-    border-radius: 50px;
-    margin-bottom: 20px;
-}
-
-.reassurance-section h2 {
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: var(--dark-text);
-    margin-bottom: 20px;
-}
-
-.highlight-text {
+/* =========================================
+   2. HEADER SPORTIF
+   ========================================= */
+.page-header-sport {
     position: relative;
-    color: var(--primary-color);
-    white-space: nowrap;
-    z-index: 1;
+    padding-top: var(--nav-height);
+    height: 60vh;
+    min-height: 450px;
+    display: flex; align-items: center;
+    background-color: var(--dark-bg);
+    margin-bottom: 0;
 }
-/* Soulignement vert stylé */
-.highlight-text::after {
-    content: '';
-    position: absolute;
-    bottom: 5px; left: 0; right: 0;
-    height: 10px;
-    background: rgba(40, 167, 69, 0.3); /* Vert transparent */
-    z-index: -1;
-    transform: rotate(-2deg);
+.page-header-sport::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: var(--bg-image);
+    background-size: cover; background-position: center 35%;
+    z-index: 1; filter: grayscale(30%) brightness(0.6);
+}
+.header-overlay-gradient {
+    position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(to right, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.6) 100%);
+}
+.header-content { position: relative; z-index: 3; width: 100%; top:7px; }
+
+.badge-accent {
+    background: var(--primary-color); color: white;
+    padding: 6px 14px; font-weight: 800; font-size: 0.75rem;
+    text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
+}
+.header-main-box h1 {
+    font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 900;
+    text-transform: uppercase; line-height: 1; margin: 0 0 1.5rem 0; color: #fff;
+}
+.text-outline { -webkit-text-stroke: 1px white; color: transparent; }
+.header-main-box .lead {
+    font-size: 1.2rem; color: #ccc; max-width: 650px; line-height: 1.6;
 }
 
-.intro-desc {
-    max-width: 650px;
-    margin: 0 auto;
-    font-size: 1.15rem;
-    color: var(--text-muted);
-    line-height: 1.6;
+.back-link-minimal {
+    color: var(--primary-color); text-decoration: none;
+    font-weight: 700; text-transform: uppercase; font-size: 0.8rem;
+    letter-spacing: 2px; display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 3rem; transition: var(--transition);
 }
+.back-link-minimal:hover { color: white; }
 
-/* =========================================================
-   SECTION 2 : 3 RAISONS (Cartes)
-   ========================================================= */
-.reasons-section {
-    padding: 0 20px 80px;
-    background: #fff; /* Continue le fond blanc de la section précédente */
-}
 
-.reasons-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    max-width: 1100px;
-    margin: 0 auto;
-}
+/* --- MAIN CONTAINER --- */
+.main-container { padding: 80px 0; }
+.container-narrow { max-width: 800px; margin: 0 auto; text-align: center; padding: 0 20px; }
+
+/* --- REASSURANCE --- */
+.intro-badge { color: var(--primary-color); font-weight: 800; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 1rem; }
+.highlight-text { -webkit-text-stroke: 1px white; color: transparent; }
+h2 { font-size: 2.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 1.5rem; }
+.intro-desc { color: var(--text-muted); font-size: 1.1rem; line-height: 1.7; }
+
+/* --- REASONS GRID --- */
+.reasons-section { max-width: 1200px; margin: 80px auto; padding: 0 20px; }
+.reasons-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
 
 .reason-card {
-    background: var(--card-bg);
-    border: 1px solid #e2e8f0; /* Bordure grise légère */
-    border-radius: var(--border-radius);
-    padding: 40px 30px;
-    text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
+    background: var(--bg-card);
+    padding: 40px;
+    border-radius: 15px;
+    border: 1px solid var(--border-soft);
+    transition: var(--transition);
 }
+.reason-card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.2); }
 
-.reason-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-hover);
-}
+.card-icon { font-size: 2.5rem; margin-bottom: 1.5rem; }
+.card-icon.blue { color: #3498db; }
+.card-icon.yellow { color: #f1c40f; }
+.card-icon.green { color: #2ecc71; }
 
-.card-icon {
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    margin: 0 auto 20px;
-    color: #fff;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
+.reason-card h3 { font-size: 1.4rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1rem; }
+.reason-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin: 0; }
 
-/* Couleurs spécifiques */
-.card-icon.blue { background: var(--blue-gradient); }
-.card-icon.yellow { background: var(--yellow-gradient); }
-.card-icon.green { background: var(--green-gradient); }
-
-.reason-card h3 {
-    font-size: 1.3rem;
-    font-weight: 800;
-    color: var(--dark-text);
-    margin-bottom: 12px;
-}
-
-.reason-card p {
-    font-size: 0.95rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-    margin: 0;
-}
-
-/* =========================================================
-   SECTION 3 : HOW IT WORKS (Timeline 1-2-3)
-   ========================================================= */
-.how-it-works-section {
-    padding: 80px 20px;
-    background: var(--bg-light); /* Gris clair pour contraster */
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 60px;
-}
-.section-header h2 { 
-    font-size: 2.2rem; 
-    font-weight: 800; 
-    color: var(--dark-text); 
-    margin-bottom: 10px; 
-}
-.section-header p { 
-    color: var(--text-muted); 
-    font-size: 1.1rem; 
-}
+/* --- TIMELINE --- */
+.how-it-works-section { background: var(--bg-alt); padding: 100px 20px; border-top: 1px solid var(--border-soft); }
+.section-header { text-align: center; margin-bottom: 60px; }
 
 .steps-container {
     max-width: 900px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    position: relative;
+    flex-direction: column;
+    gap: 0;
 }
 
 .step-item {
-    flex: 1;
-    text-align: center;
-    position: relative;
-    z-index: 2;
-    padding: 0 15px;
-}
-
-.step-number {
-    width: 55px;
-    height: 55px;
-    background: var(--dark-bg);
-    color: #fff;
-    border-radius: 50%;
-    font-size: 1.4rem;
-    font-weight: 800;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 25px;
-    border: 5px solid #fff; /* Bordure blanche pour détacher de la ligne */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.step-connector {
-    flex-grow: 1;
-    height: 3px;
-    background: #cbd5e1; /* Ligne grise */
-    margin-top: 28px; /* Aligné avec le milieu des cercles */
-    position: relative;
-    z-index: 1;
-    opacity: 0.6;
-}
-
-.step-content h3 {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--dark-text);
-    margin-bottom: 12px;
-}
-
-.step-content p {
-    font-size: 0.95rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-}
-
-/* =========================================================
-   SECTION 4 : CTA FINAL (Checklist + Action)
-   ========================================================= */
-.final-cta-section {
-    padding: 40px 20px;
-    margin-bottom: 40px;
-}
-
-.cta-card {
-    background: #fff;
-    max-width: 950px;
-    margin: 0 auto;
-    border-radius: 20px;
-    box-shadow: var(--shadow-card);
-    display: flex;
-    overflow: hidden;
-}
-
-/* Colonne Gauche (Checklist Sac) */
-.cta-left {
-    flex: 1;
-    background: #f1f5f9; /* Gris très léger */
-    padding: 50px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-right: 1px solid #e2e8f0;
-}
-
-.cta-left h3 { 
-    font-size: 1.4rem; 
-    font-weight: 800; 
-    color: var(--dark-text); 
-    margin-bottom: 25px; 
-}
-
-.checklist {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.checklist li {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-    font-size: 1.05rem;
-    color: var(--text-main);
-    font-weight: 600;
-}
-.checklist li i {
-    color: var(--action-color); /* Vert */
-    font-size: 1.2rem;
-}
-
-/* Colonne Droite (Action) */
-.cta-right {
-    flex: 1.4;
-    padding: 50px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    gap: 30px;
     align-items: flex-start;
 }
 
-.cta-right h3 { 
-    font-size: 2.2rem; 
-    font-weight: 900; 
-    color: var(--dark-text); 
-    margin-bottom: 15px; 
-}
-
-.cta-right p { 
-    color: var(--text-muted); 
-    margin-bottom: 35px; 
-    font-size: 1.1rem; 
-    line-height: 1.5;
-}
-
-.action-buttons {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    width: 100%;
-}
-
-/* Bouton Principal */
-.btn-contact {
+.step-number {
+    width: 50px; height: 50px;
     background: var(--primary-color);
-    color: #fff;
-    padding: 16px 32px;
-    border-radius: 50px;
-    font-weight: 700;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.3s;
-    font-size: 1rem;
-    box-shadow: 0 4px 15px rgba(0, 86, 179, 0.2);
-}
-.btn-contact:hover {
-    background: #004494;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0, 86, 179, 0.3);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 1.2rem; flex-shrink: 0;
 }
 
-/* Bouton Secondaire */
+.step-content h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 0.5rem; }
+.step-content p { color: var(--text-muted); margin: 0; }
+
+.step-connector {
+    width: 2px; height: 50px;
+    background: var(--border-soft);
+    margin-left: 25px;
+}
+
+/* --- FINAL CTA --- */
+.final-cta-section { padding: 100px 20px; }
+.cta-card {
+    max-width: 1000px; margin: 0 auto;
+    background: linear-gradient(145deg, #1a1a1a, #080808);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+}
+
+.cta-left { background: rgba(255,255,255,0.02); padding: 50px; }
+.cta-right { padding: 50px; border-left: 1px solid var(--border-soft); }
+
+.checklist { list-style: none; padding: 0; margin-top: 20px; }
+.checklist li { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; color: #ccc; }
+.checklist i { color: #2ecc71; }
+
+.action-buttons { display: flex; gap: 15px; margin-top: 25px; }
+.btn-contact {
+    background: var(--primary-color); color: white;
+    padding: 12px 25px; border-radius: 8px; text-decoration: none;
+    font-weight: 800; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s;
+}
 .btn-map {
-    background: #fff;
-    color: var(--text-main);
-    border: 2px solid #e2e8f0;
-    padding: 16px 32px;
-    border-radius: 50px;
-    font-weight: 700;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.3s;
-    font-size: 1rem;
+    border: 1px solid white; color: white;
+    padding: 12px 25px; border-radius: 8px; text-decoration: none;
+    font-weight: 800; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s;
 }
-.btn-map:hover {
-    background: #f8fafc;
-    border-color: #cbd5e1;
-    transform: translateY(-3px);
-    color: var(--dark-text);
-}
+.btn-contact:hover { transform: scale(1.05); }
+.btn-map:hover { background: white; color: black; }
 
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
+/* --- RESPONSIVE --- */
 @media (max-width: 900px) {
-    .header-title-box h1 { font-size: 2.5rem; }
+       .page-header-sport {
+        height: auto !important;
+        min-height: 400px !important;
+    }
+    .header-content { top: 0 !important; }
+    .page-header-sport .container { padding-left: 18px !important; padding-right: 18px !important; }
+  .header-main-box h1 {
+    font-size: 2.48rem !important;
+    line-height: 1.1;
+    white-space: nowrap;   /* "VOTRE SÉANCE" reste sur 1 ligne */
+  }
 
-    /* Timeline verticale sur mobile */
-    .steps-container {
-        flex-direction: column;
-        align-items: flex-start;
-        padding-left: 10px;
-    }
-    .step-connector {
-        width: 3px;
-        height: 40px; /* Connecteur vertical */
-        flex-grow: 0;
-        margin: 0;
-        margin-left: 26px; /* Centré sous le cercle */
-    }
-    .step-item {
-        display: flex;
-        text-align: left;
-        padding: 0;
-        align-items: flex-start;
-        gap: 20px;
-        width: 100%;
-    }
-    .step-number { margin: 0; flex-shrink: 0; }
-    .step-content { padding-top: 10px; padding-bottom: 30px; }
-
-    /* CTA Card */
-    .cta-card { flex-direction: column; }
-    .cta-left { padding: 30px; border-right: none; border-bottom: 1px solid #e2e8f0; }
-    .cta-right { padding: 40px 30px; }
-    .action-buttons { flex-direction: column; width: 100%; }
-    .btn-contact, .btn-map { width: 100%; justify-content: center; }
+  .header-main-box h1 .text-outline {
+    display: block;        /* force "Découverte" à passer en dessous */
+    white-space: nowrap;   /* optionnel : évite toute coupure de "Découverte" */
+    margin-top: 0.12em;    /* petit espace visuel entre les 2 lignes */
+  }    .cta-card { grid-template-columns: 1fr; }
+    .cta-right { border-left: none; border-top: 1px solid var(--border-soft); }
+    .action-buttons { flex-direction: column; }
+    h2 { font-size: 2rem; }
 }

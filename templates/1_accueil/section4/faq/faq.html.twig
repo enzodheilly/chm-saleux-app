@@ -1,38 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Foire Aux Questions - CHM Saleux{% endblock %}
+{% block title %}Foire Aux Questions — CHM Saleux{% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/accueil/section4/faq/faq.css') }}">
-    {# FontAwesome #}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}
 
 {% block body %}
 
-    {# --- HEADER IMMERSIF --- #}
-    <header class="page-header">
-<div class="header-bg header-gradient"></div>
-        <div class="header-overlay"></div>
-        
+    {# --- HEADER ELITE --- #}
+    <header class="page-header-sport" style="--bg-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/horaires/1.jpg') }}');">
+        <div class="header-overlay-gradient"></div>
         <div class="container header-content">
-            <a href="{{ path('home') }}" class="back-link">
-                <i class="fa-solid fa-arrow-left"></i> Retour à l'accueil
-            </a>
-            
-            <div class="header-title-box">
-                <span class="subtitle">Centre d'aide</span>
-                <h1>Comment pouvons-nous vous aider ?</h1>
-                <p>Abonnements, entraînements, équipements... Trouvez toutes les réponses pour profiter pleinement de votre expérience au club.</p>
+            <nav class="breadcrumb-nav">
+                <a href="{{ path('home') }}" class="back-link-minimal">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                </a>
+            </nav>
+
+            <div class="header-main-box">
+                <div class="badge-accent">Centre d'aide</div>
+                <h1>Questions <span class="text-outline">Fréquentes</span></h1>
+                <p class="lead">Abonnements, entraînements, équipements... Trouvez toutes les réponses pour bien débuter au club.</p>
             </div>
         </div>
     </header>
 
-    <main class="main-container">
+    <main class="faq-root">
 
-        {# --- BARRE DE NAVIGATION (FILTRES) --- #}
-        <section class="faq-nav-section">
-            <div class="faq-filters">
+        {# --- FILTRES DE NAVIGATION --- #}
+        <section class="container faq-nav-wrapper">
+            <div class="faq-filters-scroll">
                 <button class="filter-btn active" data-target="questions">Général</button>
                 <button class="filter-btn" data-target="abonnement">Abonnement</button>
                 <button class="filter-btn" data-target="entrainement">Entraînement</button>
@@ -43,184 +42,72 @@
         </section>
 
         {# --- CONTENU FAQ --- #}
-        <section class="faq-list-section">
-            
-            {# GROUPE : GÉNÉRAL #}
-            <div class="faq-group active" id="questions">
-                <div class="group-header">
-                    <h2>Questions Fréquentes</h2>
-                    <p>Les interrogations les plus courantes pour débuter.</p>
-                </div>
-                <div class="accordion">
-                    <div class="accordion-item">
-                        <button class="accordion-header">
-                            Faut-il une expérience avant de s’inscrire ?
-                            <span class="icon">+</span>
-                        </button>
-                        <div class="accordion-body">
-                            <p>Pas du tout ! Le CHM Saleux accueille les débutants comme les confirmés. Nos coachs sont là pour vous apprendre les bases et vous accompagner selon votre niveau.</p>
+        <section class="container section-spacer">
+            <div class="faq-container">
+                
+                {# GROUPE : GÉNÉRAL #}
+                <div class="faq-group active" id="questions">
+                    <h2 class="group-title">Questions <span>Fréquentes</span></h2>
+                    <div class="accordion-elite">
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <span>Faut-il une expérience avant de s’inscrire ?</span>
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                            <div class="accordion-body">
+                                <p>Pas du tout ! Le CHM Saleux accueille les débutants comme les confirmés. Nos coachs sont là pour vous apprendre les bases et vous accompagner selon votre niveau.</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="accordion-header">
-                            Puis-je faire une séance d’essai ?
-                            <span class="icon">+</span>
-                        </button>
-                        <div class="accordion-body">
-                            <p>Oui, une séance d’essai gratuite est disponible. C’est idéal pour découvrir le club, tester le matériel et sentir l’ambiance avant de vous engager.</p>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="accordion-header">
-                            Y a-t-il des coachs disponibles tout le temps ?
-                            <span class="icon">+</span>
-                        </button>
-                        <div class="accordion-body">
-                            <p>Un coach diplômé est présent sur les créneaux principaux (soirées et mercredis après-midi) pour encadrer, conseiller et garantir la sécurité des pratiquants.</p>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="accordion-header">
-                            Proposez-vous des tarifs étudiants ?
-                            <span class="icon">+</span>
-                        </button>
-                        <div class="accordion-body">
-                            <p>Oui, des réductions sont disponibles pour les étudiants et les jeunes de moins de 21 ans. Pensez à apporter un justificatif lors de l'inscription.</p>
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <span>Puis-je faire une séance d’essai ?</span>
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                            <div class="accordion-body">
+                                <p>Oui, une séance d’essai gratuite est disponible. C’est idéal pour découvrir le club, tester le matériel et sentir l’ambiance avant de vous engager.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {# GROUPE : ABONNEMENT #}
-            <div class="faq-group" id="abonnement">
-                <div class="group-header">
-                    <h2>Mon Abonnement</h2>
-                </div>
-                <div class="accordion">
-                    <div class="accordion-item">
-                        <button class="accordion-header">Quels abonnements proposez-vous ? <span class="icon">+</span></button>
-                        <div class="accordion-body"><p>Nous proposons deux formules principales : Loisir (Musculation & Haltérophilie santé) et Compétition (pour les athlètes licenciés).</p></div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="accordion-header">Puis-je mettre mon abonnement en pause ? <span class="icon">+</span></button>
-                        <div class="accordion-body"><p>Oui, en cas de force majeure (blessure, déplacement professionnel long), il est possible de suspendre votre abonnement sur présentation d'un justificatif.</p></div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="accordion-header">Quels moyens de paiement acceptez-vous ? <span class="icon">+</span></button>
-                        <div class="accordion-body"><p>Carte bancaire, espèces, chèques vacances et prélèvements automatiques sont acceptés.</p></div>
+                {# GROUPE : ABONNEMENT (masqué par défaut) #}
+                <div class="faq-group" id="abonnement" style="display:none;">
+                    <h2 class="group-title">Mon <span>Abonnement</span></h2>
+                    <div class="accordion-elite">
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <span>Quels abonnements proposez-vous ?</span>
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                            <div class="accordion-body">
+                                <p>Nous proposons deux formules principales : Loisir (Musculation & Haltérophilie santé) et Compétition (pour les athlètes licenciés).</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+                
+                {# Répéter pour les autres groupes... #}
 
-            {# GROUPE : ENTRAINEMENT #}
-            <div class="faq-group" id="entrainement">
-                <div class="group-header">
-                    <h2>Entraînement & Coaching</h2>
-                </div>
-                <div class="accordion">
-                    <div class="accordion-item">
-                        <button class="accordion-header">Les coachs sont-ils diplômés ? <span class="icon">+</span></button>
-                        <div class="accordion-body"><p>Absolument. Tous nos encadrants possèdent des diplômes d’État ou fédéraux reconnus.</p></div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="accordion-header">Proposez-vous des programmes personnalisés ? <span class="icon">+</span></button>
-                        <div class="accordion-body"><p>Oui, un programme sur mesure peut être établi lors de votre arrivée pour vous aider à atteindre vos objectifs (perte de poids, force, masse, etc.).</p></div>
-                    </div>
-                </div>
             </div>
-
-            {# GROUPE : INSTALLATIONS #}
-            <div class="faq-group" id="installations">
-                <div class="group-header">
-                    <h2>Installations & Matériel</h2>
-                </div>
-                <div class="accordion">
-                    <div class="accordion-item">
-                        <button class="accordion-header">Quels équipements sont disponibles ? <span class="icon">+</span></button>
-                        <div class="accordion-body"><p>Racks à squat, barres olympiques (Eleiko, Rogue), haltères, machines guidées, espace cardio (rameurs, vélos) et zone de poids libre.</p></div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="accordion-header">Disposez-vous de douches ? <span class="icon">+</span></button>
-                        <div class="accordion-body"><p>Oui, des vestiaires séparés hommes/femmes avec douches individuelles et casiers sont à votre disposition.</p></div>
-                    </div>
-                </div>
-            </div>
-
-            {# GROUPE : COMPETITION #}
-            <div class="faq-group" id="competition">
-                <div class="group-header">
-                    <h2>Compétition</h2>
-                </div>
-                <div class="accordion">
-                    <div class="accordion-item">
-                        <button class="accordion-header">Y a-t-il un suivi spécifique pour les athlètes ? <span class="icon">+</span></button>
-                        <div class="accordion-body"><p>Oui, nos coachs assurent une planification annuelle et un coaching en compétition pour tous les athlètes du club.</p></div>
-                    </div>
-                </div>
-            </div>
-
-            {# GROUPE : AUTRES #}
-            <div class="faq-group" id="autres">
-                <div class="group-header">
-                    <h2>Divers</h2>
-                </div>
-                <div class="accordion">
-                    <div class="accordion-item">
-                        <button class="accordion-header">Où se garer ? <span class="icon">+</span></button>
-                        <div class="accordion-body"><p>Un parking gratuit est situé juste en face du club (Parking de la Mairie).</p></div>
-                    </div>
-                </div>
-            </div>
-
         </section>
 
-{# --- SECTION CONTACT : LIGNE HORIZONTALE --- #}
-<section class="contact-line-section">
-    <div class="container">
-        
-        <div class="contact-header-minimal">
-            <h2>Besoin d'aide ?</h2>
-        </div>
-
-        <div class="contact-bar">
-            
-            {# ELIOS #}
-            <a href="/elios" class="contact-item" title="Assistant IA">
-                <div class="icon-bubble elios"><i class="fa-solid fa-robot"></i></div>
-                <span>Elios</span>
-            </a>
-
-            {# WHATSAPP #}
-            <a href="https://chat.whatsapp.com/TON_CODE" target="_blank" class="contact-item" title="Groupe WhatsApp">
-                <div class="icon-bubble whatsapp"><i class="fa-brands fa-whatsapp"></i></div>
-                <span>WhatsApp</span>
-            </a>
-
-            {# EMAIL #}
-            <a href="{{ path('contact') }}" class="contact-item" title="Nous écrire">
-                <div class="icon-bubble email"><i class="fa-regular fa-envelope"></i></div>
-                <span>Contact</span>
-            </a>
-
-            {# FACEBOOK #}
-            <a href="https://www.facebook.com/chmsaleux1/" target="_blank" class="contact-item" title="Page Facebook">
-                <div class="icon-bubble facebook"><i class="fa-brands fa-facebook-f"></i></div>
-                <span>Facebook</span>
-            </a>
-
-            {# INSTAGRAM #}
-            <a href="https://www.instagram.com/chmsaleux/" target="_blank" class="contact-item" title="Page Instagram">
-                <div class="icon-bubble instagram"><i class="fa-brands fa-instagram"></i></div>
-                <span>Instagram</span>
-            </a>
-
-        </div>
-    </div>
-</section>
+        {# --- BARRE DE CONTACT MINIMALE --- #}
+        <section class="bg-dark-alternate section-spacer">
+            <div class="container text-center">
+                <h2 class="section-heading centered"style="margin-top: 50px;">Toujours <span>une question ?</span></h2>
+                <div class="contact-bar-elite mt-5">
+                    <a href="{{ path('contact') }}" class="contact-circle" title="Email"><i class="fa-solid fa-envelope"></i></a>
+                    <a href="https://chat.whatsapp.com/..." class="contact-circle whatsapp" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/chmsaleux" class="contact-circle instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://facebook.com/chmsaleux1" class="contact-circle facebook" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </section>
 
     </main>
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script src="{{ asset('js/accueil/section4/faq/faq.js') }}"></script>
 {% endblock %}

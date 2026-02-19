@@ -1,249 +1,167 @@
-/* --- VARIABLES --- */
+/* --- VARIABLES ELITE --- */
 :root {
-    --primary-color: #0056b3; /* Bleu institutionnel */
-    --accent-color: #ffc107; /* Touche dorée */
+    --primary-color: #F57706; 
     --dark-bg: #111;
-    --text-main: #333;
-    --text-muted: #555;
-    --bg-light: #f4f6f9;
-    --border-radius: 12px;
-    --shadow-card: 0 15px 40px rgba(0,0,0,0.1);
+    --bg-card: #121212;
+    --text-muted: #a0a0a0;
+    --border-soft: rgba(255, 255, 255, 0.08);
 }
 
-body {
-    background-color: var(--bg-light);
-    color: var(--text-main);
-}
+.president-root { background: var(--dark-bg); color: white; padding: 80px; }
 
-/* --- HEADER --- */
-.page-header {
-    position: relative;
-    height: 60vh;
-    min-height: 350px;
-    display: flex;
-    align-items: center;
-    color: white;
-    margin-bottom: 80px; /* Espace pour le chevauchement */
-}
-
-.header-bg {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-size: cover;
-    background-position: center;
-    z-index: 1;
-}
-
-.header-overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(45deg, rgba(0,0,0,0.85), rgba(0, 86, 179, 0.5));
-    z-index: 2;
-}
-
-.header-content {
-    position: relative;
-    z-index: 3;
-    width: 100%;
-    top:65px;
+.container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 0.25rem;
 }
 
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    margin-bottom: 20px;
-    opacity: 0.8;
-    transition: opacity 0.3s;
+/* =========================================
+   2. HEADER SPORTIF
+   ========================================= */
+.page-header-sport {
+    position: relative;
+    padding-top: var(--nav-height);
+    height: 60vh;
+    min-height: 450px;
+    display: flex; align-items: center;
+    background-color: var(--dark-bg);
+    margin-bottom: 0;
 }
-.back-link:hover { opacity: 1; }
-.back-link svg { margin-right: 8px; }
+.page-header-sport::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: var(--bg-image);
+    background-size: cover; background-position: center 35%;
+    z-index: 1; filter: grayscale(30%) brightness(0.6);
+}
+.header-overlay-gradient {
+    position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(to right, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.6) 100%);
+}
+.header-content { position: relative; z-index: 3; width: 100%; top:25px; }
 
-.header-title-box h1 {
-    font-size: 3.5rem;
-    font-weight: 900;
-    margin: 10px 0;
-    line-height: 1.1;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+.badge-accent {
+    background: var(--primary-color); color: white;
+    padding: 6px 14px; font-weight: 800; font-size: 0.75rem;
+    text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
 }
-.subtitle {
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    background: var(--primary-color);
-    padding: 5px 10px;
-    border-radius: 4px;
+.header-main-box h1 {
+    font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 900;
+    text-transform: uppercase; line-height: 1; margin: 0 0 1.5rem 0; color: #fff;
+}
+.text-outline { -webkit-text-stroke: 1px white; color: transparent; }
+.header-main-box .lead {
+    font-size: 1.2rem; color: #ccc; max-width: 650px; line-height: 1.6;
 }
 
-/* --- MAIN CONTAINER --- */
-.main-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 20px 80px;
+.back-link-minimal {
+    color: var(--primary-color); text-decoration: none;
+    font-weight: 700; text-transform: uppercase; font-size: 0.8rem;
+    letter-spacing: 2px; display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 3rem; transition: var(--transition);
 }
+.back-link-minimal:hover { color: white; }
+
 
 /* --- PROFILE CARD --- */
-.profile-card {
-    background: white;
-    border-radius: var(--border-radius);
-    padding: 0; /* Padding géré par la grille */
-    box-shadow: var(--shadow-card);
-    margin-top: -60px; /* Chevauchement sur le header */
-    position: relative;
-    z-index: 10;
+.profile-card-elite {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: 24px;
     overflow: hidden;
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
-.profile-grid {
-    display: flex;
-    flex-wrap: wrap;
-}
+.profile-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; }
 
-/* Colonne Photo */
-.profile-image-wrapper {
-    flex: 1;
-    min-width: 300px;
+/* Côté Image */
+.profile-image-side { position: relative; padding: 40px; background: #0f0f0f; }
+.image-container { position: relative; border-radius: 15px; overflow: hidden; height: 100%; }
+.image-container img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(10%); transition: 0.5s; }
+.profile-image-side:hover img { filter: grayscale(0%); transform: scale(1.05); }
+
+.experience-badge {
+    position: absolute; bottom: 20px; left: 20px; right: 20px;
+    background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+    border: 1px solid var(--primary-color);
+    padding: 15px; border-radius: 10px; text-align: center;
+}
+.exp-label { display: block; font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted); }
+.exp-year { font-size: 1.5rem; font-weight: 900; color: var(--primary-color); }
+
+/* Côté Texte */
+.profile-text-side { padding: 60px; }
+.role-tag { color: var(--primary-color); font-weight: 800; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
+
+.profile-text-side h2 { font-size: 3rem; font-weight: 900; text-transform: uppercase; margin: 10px 0 30px; line-height: 1; }
+.profile-text-side h2 span { color: var(--primary-color); }
+
+.bio-content p { color: var(--text-muted); line-height: 1.8; font-size: 1.1rem; margin-bottom: 20px; }
+
+.elite-quote {
+    margin: 40px 0; padding: 30px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 15px; border-left: 4px solid var(--primary-color);
     position: relative;
-    background-color: #f0f0f0;
 }
+.quote-icon { position: absolute; top: -15px; right: 20px; font-size: 2rem; color: var(--primary-color); opacity: 0.3; }
+.elite-quote p { font-style: italic; font-size: 1.15rem; color: white; margin: 0; }
 
-.image-frame {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-}
-
-.image-frame img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top center;
-    min-height: 400px; /* Hauteur min sur mobile */
-    transition: transform 0.5s ease;
-}
-.profile-card:hover .image-frame img {
-    transform: scale(1.05);
-}
-
-/* Badge "Depuis 2015" */
-.badge-since {
-    position: absolute;
-    bottom: 30px;
-    left: 30px;
-    background: white;
-    padding: 15px 25px;
-    border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 1;
-}
-.badge-since .label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 5px;
-    font-weight: 700;
-}
-.badge-since .year {
-    font-size: 1.8rem;
-    font-weight: 900;
-    color: var(--primary-color);
-}
-
-/* Colonne Contenu */
-.profile-content {
-    flex: 1.5;
-    min-width: 300px;
-    padding: 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.role-tag {
-    display: inline-block;
-    color: var(--primary-color);
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-}
-
-.profile-content h2 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin: 0 0 20px 0;
-    color: var(--dark-bg);
-    line-height: 1.1;
-}
-
-.bio-text {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: var(--text-muted);
-    margin-bottom: 30px;
-}
-
-/* Citation */
-.vision-quote {
-    position: relative;
-    background: #f8faff; /* Fond bleuté très léger */
-    border-left: 4px solid var(--primary-color);
-    padding: 25px 30px;
-    border-radius: 0 12px 12px 0;
-    margin: 0 0 20px 0;
-}
-
-.quote-icon {
-    position: absolute;
-    top: -15px;
-    left: 20px;
-    color: var(--primary-color);
-    background: white;
-    border-radius: 50%;
-    padding: 5px;
-}
-
-.vision-quote p {
-    font-style: italic;
-    color: #333;
-    font-weight: 500;
-    margin: 0;
-    font-size: 1.05rem;
-    line-height: 1.6;
-}
-
-.signature {
-    font-family: 'Brush Script MT', cursive; /* Ou une font manuscrite Google Fonts */
-    font-size: 1.5rem;
-    color: var(--text-muted);
-    text-align: right;
-    margin-top: 10px;
-}
+.signature-box { margin-top: 40px; }
+.sig-line { width: 50px; height: 3px; background: var(--primary-color); margin-bottom: 10px; }
+.sig-name { font-family: 'Dancing Script', cursive, serif; font-size: 1.5rem; color: white; }
 
 /* --- RESPONSIVE --- */
-@media (max-width: 900px) {
-    .header-title-box h1 { font-size: 2.5rem; }
-    
-    .profile-card { margin-top: 0; border-radius: 0; box-shadow: none; background: transparent; }
-    .profile-grid { flex-direction: column; gap: 20px; }
-    
-    .profile-image-wrapper { border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-card); }
-    .image-frame img { min-height: 300px; }
-    
-    .profile-content { 
-        background: white; 
-        border-radius: 12px; 
-        padding: 30px; 
-        box-shadow: var(--shadow-card); 
+/* --- RESPONSIVE OPTIMISÉ --- */
+@media (max-width: 992px) {
+    /* 1. On libère de l'espace sur le fond principal */
+    .president-root { 
+        padding: 40px 10px !important; /* 10px sur les côtés suffisent */
+    }
+
+    /* 2. On empile les éléments */
+    .profile-grid { 
+        grid-template-columns: 1fr !important; 
+    }
+
+    /* 3. On ajuste la zone image */
+    .profile-image-side { 
+        padding: 15px !important; 
+        height: 350px !important; 
+    }
+
+    /* 4. ON RÉDUIT LE PADDING DU TEXTE (C'est ça qui "serre" ton contenu) */
+    .profile-text-side { 
+        padding: 30px 20px !important; /* On passe de 60px à 20px */
+    }
+
+    /* 5. Ajustement typo */
+    .profile-text-side h2 { 
+        font-size: 2rem !important; 
+    }
+
+.page-header-sport {
+    height: auto !important;
+    min-height: 400px !important;
+  }
+
+  .header-content {
+    top: 0 !important;
+  }
+
+  .page-header-sport .container{
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  .header-main-box h1 {
+    font-size: 2.7rem !important;
+    line-height: 1.1;
+  }
+
+    /* 7. On s'assure que la carte ne dépasse pas */
+    .profile-card-elite {
+        width: 100%;
+        margin: 0;
     }
 }

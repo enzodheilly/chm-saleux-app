@@ -280,6 +280,35 @@
                     </div>
                 </div>
 
+                {# ===================== APPLI MOBILE ===================== #}
+<div class="nav-group-label">Appli Mobile</div>
+
+<div class="nav-item" id="menu-mobile">
+    <div class="nav-link" onclick="toggleSubmenu('menu-mobile')">
+        <span>Appli Mobile</span>
+        <span class="caret"></span>
+    </div>
+
+    <div class="submenu">
+        <a href="{{ path('admin_equipment_index') }}"
+           class="{% if app.request.get('_route') starts with 'admin_equipment' %}active-sub{% endif %}">
+            Équipements
+        </a>
+
+        <a href="{{ path('admin_exercise_index') }}"
+           class="{% if app.request.get('_route') starts with 'admin_exercise' %}active-sub{% endif %}">
+            Exercices
+        </a>
+
+        <a href="{{ path('admin_routine_template_index') }}"
+           class="{% if app.request.get('_route') starts with 'admin_routine_template' %}active-sub{% endif %}">
+            Routines
+        </a>
+    </div>
+</div>
+
+
+
                 <div class="nav-group-label">Boutique</div>
                 <div class="nav-item">
                     <a href="{{ path('admin_product_index') }}" class="nav-link">

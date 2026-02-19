@@ -46,3 +46,7 @@ Thumbs.db
 ###> Docker override local (si c'est ton cas) ###
 compose.override.yaml
 ###< Docker override ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###

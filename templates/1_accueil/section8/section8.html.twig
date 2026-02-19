@@ -1,40 +1,43 @@
-<section class="cinematic-section">
-  <div class="container-header">
-    <h2 class="cinematic-title">
-      NOS ESPACES <span class="text-highlight">D'ENTRAÎNEMENT</span>
-    </h2>
-    <p class="cinematic-subtitle">Deux zones, deux ambiances, une seule performance.</p>
-  </div>
+{# --- SECTION : ESPACES D'ENTRAÎNEMENT --- #}
+<section class="home-cinematic-section">
+    <div class="container-header">
+        <h2 class="cinematic-title">
+            NOS ESPACES <span class="text-outline">D'ENTRAÎNEMENT</span>
+        </h2>
+        <p class="cinematic-subtitle">Deux zones, deux ambiances, une seule performance.</p>
+    </div>
 
-  <div class="cinematic-container">
+    <div class="cinematic-container">
 
-    <a href="{{ path('pratique_haltérophilie') }}"
-       class="cinematic-panel"
-       aria-label="Découvrir l'espace Haltérophilie">
-      <div class="panel-bg" style="--bg:url('{{ asset('images/nos_pratiques/halterophilie/1.jpg') }}')"></div>
-      <div class="panel-overlay" aria-hidden="true"></div>
+        <a href="{{ path('pratique_haltérophilie') }}" class="cinematic-panel" aria-label="Espace Haltérophilie">
+            <div class="panel-bg" style="background-image: url('{{ asset('images/nos_pratiques/halterophilie/1.jpg') }}')"></div>
+            <div class="panel-overlay"></div>
 
-      <div class="panel-content">
-        <span class="panel-number">01</span>
-        <h3>Haltérophilie</h3>
-        <p class="panel-desc">Plateaux olympiques &amp; Technique pure</p>
-        <span class="btn-arrow">Découvrir <span class="arrow" aria-hidden="true">→</span></span>
-      </div>
-    </a>
+            <div class="panel-content">
+                <div class="panel-header">
+                    <span class="panel-number">01</span>
+                    <span class="panel-badge">Compétition & Technique</span>
+                </div>
+                <h3>HALTÉROPHILIE</h3>
+                <p class="panel-desc">Dominez les plateaux olympiques avec un matériel haut de gamme et un coaching expert.</p>
+                <span class="btn-discover">Explorer l'espace <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+        </a>
 
-    <a href="{{ path('pratique_musculation') }}"
-       class="cinematic-panel"
-       aria-label="Découvrir l'espace Musculation">
-      <div class="panel-bg" style="--bg:url('{{ asset('images/nos_pratiques/musculation/histoire-club.jpg') }}')"></div>
-      <div class="panel-overlay" aria-hidden="true"></div>
+        <a href="{{ path('pratique_musculation') }}" class="cinematic-panel" aria-label="Espace Musculation">
+            <div class="panel-bg" style="background-image: url('{{ asset('images/nos_pratiques/musculation/histoire-club.jpg') }}')"></div>
+            <div class="panel-overlay"></div>
 
-      <div class="panel-content">
-        <span class="panel-number">02</span>
-        <h3>Musculation</h3>
-        <p class="panel-desc">Volume, Force &amp; Machines guidées</p>
-        <span class="btn-arrow">Découvrir <span class="arrow" aria-hidden="true">→</span></span>
-      </div>
-    </a>
+            <div class="panel-content">
+                <div class="panel-header">
+                    <span class="panel-number">02</span>
+                    <span class="panel-badge">Force & Volume</span>
+                </div>
+                <h3>MUSCULATION</h3>
+                <p class="panel-desc">Progressez sur des machines guidées et des poids libres dans un espace dédié à la performance.</p>
+                <span class="btn-discover">Explorer l'espace <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+        </a>
 
-  </div>
+    </div>
 </section>

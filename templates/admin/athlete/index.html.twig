@@ -120,13 +120,13 @@
 
     <div class="page-header">
         <div>
-            <h1>Gestion Athlètes</h1>
-            <p>Liste des profils sportifs et catégories.</p>
+            <h1>Athletes Management</h1>
+            <p>List of athlete profiles and categories.</p>
         </div>
         <div class="toolbar">
-            <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un athlète...">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search an athlete...">
             <button class="btn-create" onclick="location.href='{{ path('admin_athlete_new') }}'">
-                + Ajouter
+                + Add
             </button>
         </div>
     </div>
@@ -137,10 +137,10 @@
                 <thead>
                     <tr>
                         <th width="80">ID</th>
-                        <th width="35%">Athlète</th>
-                        <th width="15%">Catégorie</th>
-                        <th width="15%">Poids</th>
-                        <th width="15%">Naissance</th>
+                        <th width="35%">Athlete</th>
+                        <th width="15%">Category</th>
+                        <th width="15%">Weight class</th>
+                        <th width="15%">Birth date</th>
                         <th style="text-align: right;">Actions</th>
                     </tr>
                 </thead>
@@ -148,55 +148,71 @@
                     {% for athlete in athletes %}
                         <tr>
                             <td><span style="font-family: monospace; color: var(--text-muted);">#{{ athlete.id }}</span></td>
-                            
+
                             <td>
                                 <div class="athlete-cell">
                                     {% if athlete.image %}
-                                        <img src="{{ asset('uploads/athletes/' ~ athlete.image) }}" alt="{{ athlete.prenom }}" class="athlete-avatar">
+                                        <img src="{{ asset('uploads/athletes/' ~ athlete.image) }}"
+                                             alt="{{ athlete.firstName }}"
+                                             class="athlete-avatar">
                                     {% else %}
                                         <div class="athlete-initials">
-                                            {{ athlete.prenom|first|upper }}{{ athlete.nom|first|upper }}
+                                            {{ athlete.firstName|first|upper }}{{ athlete.lastName|first|upper }}
                                         </div>
                                     {% endif %}
+
                                     <div class="athlete-info">
-                                        <span class="athlete-name">{{ athlete.prenom }} {{ athlete.nom|upper }}</span>
-                                        {# On affiche l'équipe ou le sexe en petit dessous #}
-                                        <span class="athlete-meta">{{ athlete.equipe ?? 'Aucune équipe' }}</span>
+                                        <span class="athlete-name">
+                                            {{ athlete.firstName }} {{ athlete.lastName|upper }}
+                                        </span>
+
+                                        <span class="athlete-meta">
+                                            {% if athlete.gender == 'male' %}
+                                                Male
+                                            {% elseif athlete.gender == 'female' %}
+                                                Female
+                                            {% else %}
+                                                —
+                                            {% endif %}
+                                        </span>
                                     </div>
                                 </div>
                             </td>
 
                             <td>
-                                {% if athlete.categorie %}
-                                    <span class="cat-badge">{{ athlete.categorie }}</span>
+                                {% if athlete.category %}
+                                    <span class="cat-badge">{{ athlete.category }}</span>
                                 {% else %}
                                     <span style="color: var(--text-muted); font-size: 0.8rem;">—</span>
                                 {% endif %}
                             </td>
 
                             <td>
-                                {% if athlete.categoriePoids %}
-                                    <span style="font-family: monospace; font-weight: 600;">{{ athlete.categoriePoids }}</span>
+                                {% if athlete.weightClass %}
+                                    <span style="font-family: monospace; font-weight: 600;">
+                                        {{ athlete.weightClass }}
+                                    </span>
                                 {% else %}
                                     <span style="color: var(--text-muted); font-size: 0.8rem;">—</span>
                                 {% endif %}
                             </td>
 
                             <td style="color: var(--text-muted); font-size: 0.85rem;">
-                                {{ athlete.dateNaissance ? athlete.dateNaissance|date('d/m/Y') : '—' }}
+                                {{ athlete.birthDate ? athlete.birthDate|date('d/m/Y') : '—' }}
                             </td>
 
                             <td>
                                 <div class="actions">
                                     <a href="{{ path('admin_athlete_edit', {'id': athlete.id}) }}" class="act-link act-edit">
-                                        Modifier
+                                        Edit
                                     </a>
-                                    
-                                    <form method="post" action="{{ path('admin_athlete_delete', {'id': athlete.id}) }}" 
+
+                                    <form method="post"
+                                          action="{{ path('admin_athlete_delete', {'id': athlete.id}) }}"
                                           style="display:inline;"
-                                          onsubmit="return confirm('Confirmer la suppression de {{ athlete.prenom }} {{ athlete.nom }} ?');">
+                                          onsubmit="return confirm('Confirm deletion of {{ athlete.firstName }} {{ athlete.lastName }} ?');">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ athlete.id) }}">
-                                        <button class="act-link act-del">Supprimer</button>
+                                        <button class="act-link act-del">Delete</button>
                                     </form>
                                 </div>
                             </td>
@@ -204,7 +220,7 @@
                     {% else %}
                         <tr>
                             <td colspan="6" style="text-align: center; padding: 3rem; color: var(--text-muted);">
-                                Aucun athlète trouvé.
+                                No athletes found.
                             </td>
                         </tr>
                     {% endfor %}
@@ -217,7 +233,6 @@
 
 {% block javascripts %}
 <script>
-    // Filtre de recherche
     document.getElementById('searchInput').addEventListener('keyup', function() {
         const filter = this.value.toLowerCase();
         const rows = document.querySelectorAll('#athleteTable tbody tr');

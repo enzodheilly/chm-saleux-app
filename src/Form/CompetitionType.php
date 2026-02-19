@@ -3,70 +3,73 @@
 namespace App\Form;
 
 use App\Entity\Competition;
-use App\Form\ResultType;
+use App\Form\CompetitionResultType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
-
 
 class CompetitionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('titre', TextType::class, [
-                'label' => 'Titre de la compétition',
+            ->add('title', TextType::class, [
+                'label' => 'Competition title',
+                'trim' => true,
             ])
-            ->add('date', DateType::class, [
-                'label' => 'Date',
+            ->add('eventDate', DateTimeType::class, [
+                'label' => 'Event date',
                 'widget' => 'single_text',
             ])
-            ->add('lieu', TextType::class, [
-                'label' => 'Lieu',
+            ->add('location', TextType::class, [
+                'label' => 'Location',
+                'required' => false,
+                'trim' => true,
             ])
-            ->add('equipe', ChoiceType::class, [
-                'label' => 'Sexe / Équipe',
+            ->add('gender', ChoiceType::class, [
+                'label' => 'Gender',
                 'choices' => [
-                    'Masculine' => 'male',
-                    'Féminine' => 'female',
+                    'Male' => 'male',
+                    'Female' => 'female',
                 ],
-                'required' => false,
-
-            ])
-            ->add('type', TextType::class, [
-                'label' => 'Type de compétition',
-                'required' => false
-            ])
-            ->add('classementEquipe', TextType::class, [
-                'label' => 'Classement de l’équipe',
+                'placeholder' => 'Select a gender',
                 'required' => false,
             ])
-
+            ->add('competitionType', TextType::class, [
+                'label' => 'Competition type',
+                'required' => false,
+                'trim' => true,
+            ])
+            ->add('teamRanking', TextType::class, [
+                'label' => 'Team ranking',
+                'required' => false,
+                'trim' => true,
+            ])
             ->add('image', FileType::class, [
-                'label' => 'Image de la compétition (JPG ou PNG)',
+                'label' => 'Competition image (JPG, PNG, WebP)',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '5M',
-                        'mimeTypes' => ['image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPG ou PNG)',
+                        'maxSizeMessage' => 'The image is too large (max 5MB).',
+                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp'],
+                        'mimeTypesMessage' => 'Please upload a valid image (JPG, PNG, WebP).',
                     ])
                 ],
             ])
-
             ->add('results', CollectionType::class, [
-                'entry_type' => ResultType::class,
+                'entry_type' => CompetitionResultType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'by_reference' => false,
-                'label' => 'Résultats',
+                'by_reference' => false, // important pour OneToMany
+                'label' => 'Results',
                 'required' => false,
                 'prototype' => true,
             ]);

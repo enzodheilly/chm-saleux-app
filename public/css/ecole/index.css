@@ -1,353 +1,389 @@
-/* --- VARIABLES --- */
+/* =========================================
+   1. VARIABLES & BASE
+   ========================================= */
 :root {
-    --primary-color: #0056b3; /* Bleu Club */
-    --accent-color: #f59f00; /* Or/Jaune pour l'Ecole/Excellence */
-    --dark-bg: #111;
-    --text-main: #333;
-    --text-muted: #555;
-    --bg-light: #f8f9fa;
-    --border-radius: 12px;
-    --shadow-card: 0 10px 30px rgba(0,0,0,0.08);
+    --bg-darker: #111;
+    --bg-card: #121212;
+    --bg-alt: #0d0d0d;
+    --accent-red: #F57706;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --border-soft: rgba(255, 255, 255, 0.08);
+    --nav-height: 80px; 
+    --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-body {
-    background-color: var(--bg-light);
-    color: var(--text-main);
+.dashboard-root {
+    background-color: var(--bg-darker);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    padding-bottom: 5rem;
 }
 
-/* --- HEADER --- */
-.page-header {
-    position: relative;
-    height: 60vh;
-    min-height: 350px;
-    display: flex;
-    align-items: center;
-    color: white;
-    margin-bottom: 80px;
-}
-
-.header-bg {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-size: cover;
-    background-position: center;
-    z-index: 1;
-}
-
-.header-overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    /* Dégradé Bleu/Or */
-    background: linear-gradient(45deg, rgba(0,0,0,0.9), rgba(0, 86, 179, 0.6));
-    z-index: 2;
-}
-
-.header-content {
-    position: relative;
-    z-index: 3;
-    width: 100%;
-	top:65px;
+.container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 0.25rem;
 }
 
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    margin-bottom: 20px;
-    opacity: 0.8;
-    transition: opacity 0.3s;
-}
-.back-link:hover { opacity: 1; }
-.back-link svg { margin-right: 8px; }
-
-.header-title-box h1 {
-    font-size: 3.5rem;
-    font-weight: 900;
-    margin: 10px 0;
-    line-height: 1.1;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
-.subtitle {
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    background: var(--accent-color);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
+/* --- LE SECRET DE L'AÉRATION : SPACERS --- */
+.section-spacer {
+    padding: 8rem 0; /* Beaucoup d'espace vertical */
 }
 
-/* --- MAIN CONTAINER --- */
-.main-container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 20px 80px;
+.bg-dark-alternate {
+    background-color: var(--bg-darker);
+    border-top: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
 }
 
-/* --- SECTION 1: INTRO SPLIT --- */
-.intro-split {
-    display: flex;
-    align-items: center;
-    gap: 60px;
-    margin-bottom: 100px;
-}
-
-.intro-content { flex: 1; }
-.intro-image { flex: 1; }
-
-.image-frame {
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: var(--shadow-card);
-    transition: transform 0.3s;
-}
-.image-frame:hover { transform: scale(1.02); }
-.image-frame img { width: 100%; height: auto; display: block; }
-
-.section-heading {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: 1.5rem;
-    color: var(--dark-bg);
+/* =========================================
+   2. HEADER (Même style que Équipes)
+   ========================================= */
+.page-header-sport {
     position: relative;
+    padding-top: var(--nav-height);
+    height: 60vh;
+    min-height: 450px;
+    display: flex; align-items: center;
+    background-color: var(--bg-darker);
+    margin-bottom: 0; /* On gère l'espace avec section-spacer ensuite */
 }
-.section-heading::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 4px;
-    background: var(--primary-color);
-    margin-top: 10px;
+.page-header-sport::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: var(--bg-image);
+    background-size: cover; background-position: center 35%;
+    z-index: 1; filter: grayscale(30%);
 }
-.section-heading.centered { text-align: center; }
-.section-heading.centered::after { margin: 10px auto; }
-
-.lead-text {
-    font-size: 1.15rem;
-    color: var(--primary-color);
-    font-weight: 700;
-    margin-bottom: 20px;
+.header-overlay-gradient {
+    position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(to right, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.6) 100%);
 }
-p { line-height: 1.7; color: var(--text-muted); margin-bottom: 20px; }
+.header-content { position: relative; z-index: 3; width: 100%;top:25px; }
 
+.badge-accent {
+    background: var(--accent-red); color: white;
+    padding: 6px 14px; font-weight: 800; font-size: 0.75rem;
+    text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
+}
+.header-main-box h1 {
+    font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 900;
+    text-transform: uppercase; line-height: 1; margin: 0 0 1.5rem 0;color: #fff;
+}
+.text-outline { -webkit-text-stroke: 1px white; color: transparent; }
+.header-main-box .lead {
+    font-size: 1.2rem; color: #ccc; max-width: 650px; line-height: 1.6;
+}
 
-/* --- SECTION 2: PROGRAMS GRID --- */
-.programs-section { margin-bottom: 100px; }
+.back-link-minimal {
+    color: var(--accent-red); text-decoration: none;
+    font-weight: 700; text-transform: uppercase; font-size: 0.8rem;
+    letter-spacing: 2px; display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 3rem; transition: var(--transition);
+}
+.back-link-minimal:hover { color: white; }
 
+/* =========================================
+   3. TYPOGRAPHIE & LAYOUT
+   ========================================= */
+.title-with-bar {
+    font-size: 2rem; font-weight: 900; text-transform: uppercase;
+    display: flex; align-items: center; gap: 15px; margin-bottom: 2rem;
+}
+.title-with-bar::before {
+    content: ''; width: 4px; height: 40px; background: var(--accent-red);
+}
+.title-with-bar span { color: var(--accent-red); }
+
+.center-bar { justify-content: center; margin-bottom: 3rem; }
+.center-bar::before { display: none; } /* Pas de barre latérale si centré */
+.center-bar::after { /* Barre en dessous si centré */
+    content: ''; display: block; width: 60px; height: 4px; 
+    background: var(--accent-red); margin: 15px auto 0;
+}
+.section-header-center { text-align: center; margin-bottom: 4rem; }
+.section-header-center h2 { font-size: 2.5rem; font-weight: 900; text-transform: uppercase; color: #fff;}    
+.section-header-center p { color: var(--text-secondary); font-size: 1.1rem; }
+
+.split-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+}
+.big-text { font-size: 1.5rem; color: white; font-weight: 600; margin-bottom: 1.5rem; }
+.desc-text { font-size: 1.1rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: 2rem; }
+
+.framed-image {
+    position: relative; border: 1px solid var(--border-soft);
+}
+.framed-image img { width: 100%; display: block; filter: grayscale(0%); }
+
+/* =========================================
+   4. CARTES PROGRAMMES (GRID)
+   ========================================= */
 .programs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    align-items: flex-start;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 3rem; /* Espacement large entre les cartes */
 }
 
 .program-card {
-    background: white;
-    border-radius: var(--border-radius);
-    padding: 30px;
-    box-shadow: var(--shadow-card);
-    transition: transform 0.3s;
-    border: 1px solid #eee;
-    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    padding: 3rem 2rem;
+    position: relative; transition: var(--transition);
+    display: flex; flex-direction: column;
 }
 
-.program-card:hover { transform: translateY(-10px); }
+.program-card:hover { transform: translateY(-10px); border-color: var(--accent-red); }
 
-/* Carte Compétition mise en avant */
 .program-card.highlight {
-    border-top: 5px solid var(--accent-color);
-    background: #fffdf8;
+    background: linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 100%);
+    border-color: rgba(230, 57, 70, 0.3);
 }
 
 .card-badge {
-    position: absolute;
-    top: 20px; right: 20px;
-    background: var(--accent-color);
-    color: white;
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 5px 10px;
-    border-radius: 20px;
-    text-transform: uppercase;
+    position: absolute; top: 0; right: 0;
+    background: var(--accent-red); color: white;
+    padding: 5px 15px; font-weight: 800; text-transform: uppercase; font-size: 0.7rem;
 }
 
 .card-icon {
-    font-size: 2rem;
-    color: var(--primary-color);
-    margin-bottom: 15px;
+    font-size: 2.5rem; color: var(--accent-red); margin-bottom: 1.5rem;
 }
 
 .program-card h3 {
-    margin: 0 0 15px 0;
-    font-size: 1.3rem;
-    font-weight: 800;
-    color: var(--dark-bg);
+    font-size: 1.5rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1.5rem;
 }
 
-.program-details {
-    background: #f1f3f5;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 15px;
+.card-meta {
+    margin-bottom: 1.5rem; padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-soft);
+    display: flex; flex-direction: column; gap: 10px;
 }
-.program-details p {
-    margin: 5px 0;
-    font-size: 0.9rem;
-    color: #333;
+.card-meta span {
+    color: var(--text-secondary); font-size: 0.9rem;
+    display: flex; align-items: center; gap: 10px;
 }
+.card-meta i { color: var(--accent-red); }
 
-.program-desc {
-    font-size: 0.95rem;
-    margin: 0;
+.program-card p {
+    color: #ccc; line-height: 1.6; font-size: 0.95rem;
 }
 
-
-/* --- SECTION 3: COACH SLIDER --- */
-.coach-slider-section {
-    display: flex;
-    align-items: center;
-    gap: 50px;
-    margin-bottom: 100px;
-    background: white;
-    padding: 40px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-card);
+/* =========================================
+   5. SLIDER COACH & LISTE
+   ========================================= */
+.feature-list { list-style: none; padding: 0; }
+.feature-list li {
+    display: flex; align-items: center; gap: 15px;
+    font-size: 1.1rem; color: white; margin-bottom: 1rem;
 }
+.feature-list i { color: var(--accent-red); }
 
-.coach-content { flex: 1; }
-
-.coach-visual {
-    flex: 1;
-    max-width: 400px;
+.coach-slider {
+    position: relative; overflow: hidden; height: 500px;
+    border-radius: 4px; border: 1px solid var(--border-soft);
 }
-
-.slider-container {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
+.slides-track img {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    object-fit: cover; opacity: 0; transition: opacity 0.5s ease;
 }
+.slides-track img.active { opacity: 1; }
 
-.slider-wrapper {
-    position: relative;
-    height: 400px;
-    background: #eee;
+.slider-info {
+    position: absolute; bottom: 30px; left: 30px; z-index: 2;
 }
-
-.slide {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 0.5s ease;
+.slider-info h4 {
+    font-size: 2rem; font-weight: 900; text-transform: uppercase; margin: 0;
+    text-shadow: 0 2px 10px black;
+}
+.slider-info span {
+    color: var(--accent-red); font-weight: 700; text-transform: uppercase;
+    text-shadow: 0 2px 5px black;
 }
 
 .slider-controls {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    background: rgba(0,0,0,0.6);
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
+    position: absolute; bottom: 30px; right: 30px; z-index: 2;
+    display: flex; gap: 10px;
+}
+.slider-controls button {
+    width: 50px; height: 50px; background: var(--accent-red); border: none;
+    color: white; font-size: 1.2rem; cursor: pointer; transition: 0.3s;
+}
+.slider-controls button:hover { background: white; color: var(--accent-red); }
+
+.slides-track img[alt="Florian"]{
+  object-position: center 15%;
 }
 
-.nav-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-.nav-btn:hover { color: var(--accent-color); }
-
-.coach-name {
-    font-weight: 700;
-    font-size: 1rem;
-    text-transform: uppercase;
+.slides-track img[alt="Ema"]{
+  object-position: center 15%;
 }
 
-
-/* --- SECTION 4: TABLE --- */
-.categories-section {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto;
+.slides-track img[alt="Robert"]{
+  object-position: center 10%;
 }
 
-.table-responsive {
+/* =========================================
+   6. TABLEAU & CTA
+   ========================================= */
+.table-container-modern {
     overflow-x: auto;
-    margin-bottom: 30px;
-    box-shadow: var(--shadow-card);
-    border-radius: 10px;
+    background: var(--bg-card); border: 1px solid var(--border-soft);
+    padding: 2rem; border-radius: 8px; margin-bottom: 4rem;
 }
-
-.age-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    text-align: left;
-}
-
+.age-table { width: 100%; border-collapse: collapse; min-width: 600px; }
 .age-table th {
-    background: var(--primary-color);
-    color: white;
-    padding: 15px 20px;
-    font-weight: 700;
+    text-align: left; text-transform: uppercase; font-size: 0.8rem;
+    color: var(--text-secondary); padding: 1.5rem; border-bottom: 1px solid var(--border-soft);
 }
-
 .age-table td {
-    padding: 15px 20px;
-    border-bottom: 1px solid #eee;
-    color: #555;
+    padding: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 1rem;
+}
+.age-table tr:last-child td { border-bottom: none; }
+.age-table strong { color: white; text-transform: uppercase; }
+
+.tag { padding: 5px 10px; font-weight: 800; font-size: 0.75rem; border-radius: 4px; }
+.u-tag { background: rgba(255,255,255,0.1); color: white; }
+.s-tag { background: rgba(230, 57, 70, 0.2); color: var(--accent-red); }
+
+.cta-box { text-align: center; }
+.cta-box p { font-size: 1.5rem; font-weight: 800; margin-bottom: 2rem; color:#fff; }
+.btn-cta-red {
+    background: var(--accent-red); color: white;
+    padding: 15px 40px; font-weight: 900; text-transform: uppercase;
+    text-decoration: none; display: inline-block; transition: 0.3s;
+}
+.btn-cta-red:hover { background: white; color: var(--bg-darker); }
+
+/* =========================================
+   7. RESPONSIVE
+   ========================================= */
+@media (max-width: 992px) {
+    .split-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .reverse-mobile { display: flex; flex-direction: column-reverse; }
+    .page-header-sport { height: auto; min-height: 400px; }
+    .header-main-box h1 { font-size: 2.4rem; }
 }
 
-.tag {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    font-weight: 700;
+/* -----------------------------
+   FIX RESPONSIVE MOBILE (<= 768)
+   ----------------------------- */
+@media (max-width: 768px) {
+
+  /* Sécurité globale anti "texte coupé" */
+  .dashboard-root,
+  .section-spacer,
+  .container,
+  .text-content,
+  .split-layout,
+  .bg-dark-alternate {
+    overflow-x: hidden;
+  }
+  .header-content {top: 0px;}
+
+  /* Container un peu plus respirant sur 375px */
+  .container {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  /* Layout 2 colonnes -> 1 colonne */
+  .split-layout {
+    display: grid;              /* même si tu es en flex, grid écrase proprement */
+    grid-template-columns: 1fr;
+    gap: 22px;
+    align-items: start;
+  }
+
+  /* Si tu as un reverse mobile */
+  .split-layout.reverse-mobile .slider-wrapper-box {
+    order: 1;
+  }
+  .split-layout.reverse-mobile .text-content {
+    order: 2;
+  }
+
+  /* TITRES : empêcher le "span à droite qui déborde" */
+  .title-with-bar,
+  .title-with-bar.center-bar {
+    /* si ton CSS desktop utilise flex + space-between, ça corrige sur mobile */
+    display: flex;
+    flex-wrap: wrap;            /* CRUCIAL */
+    justify-content: flex-start;
+    align-items: baseline;
+    gap: 10px;
+
+    /* tailles fluides */
+    font-size: clamp(28px, 7.2vw, 44px);
+    line-height: 1.05;
+
+    /* autoriser coupure propre */
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    hyphens: auto;
+  }
+
+  /* Le span (orange) passe sur une nouvelle ligne et ne déborde plus */
+  .title-with-bar > span,
+  .title-with-bar.center-bar > span {
+    flex-basis: 100%;           /* force à descendre */
+    max-width: 100%;
+  }
+
+  /* Sous-titre “Respect, Discipline …” : éviter la coupe */
+  .big-text {
+    font-size: clamp(18px, 4.8vw, 26px);
+    line-height: 1.25;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+  }
+
+  /* Paragraphes : améliorer lisibilité */
+  .desc-text {
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  /* Grille des programmes : 1 colonne sur mobile */
+  .programs-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* Cartes : éviter des hauteurs fixes qui cassent */
+  .program-card {
+    min-height: auto;
+  }
+
+  /* Slider : prendre toute la largeur */
+  .slider-wrapper-box,
+  .coach-slider {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .coach-slider img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Table : scroll horizontal si nécessaire */
+  .table-container-modern {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .age-table {
+    min-width: 520px; /* ajuste si besoin */
+  }
 }
-.u-tag { background: #e7f5ff; color: var(--primary-color); }
-.s-tag { background: #fff3bf; color: #f08c00; }
 
-.senior-row { background: #fffdf8; }
-
-.cta-prices {
-    background: var(--primary-color);
-    padding: 30px;
-    border-radius: var(--border-radius);
-    color: white;
-    margin-top: 40px;
-}
-.cta-prices p { color: white; margin-bottom: 15px; font-size: 1.2rem; }
-
-.btn-primary {
-    background: white;
-    color: var(--primary-color);
-    text-decoration: none;
-    padding: 12px 25px;
-    border-radius: 50px;
-    font-weight: 700;
-    transition: transform 0.2s;
-    display: inline-block;
-}
-.btn-primary:hover { transform: scale(1.05); }
-
-
-/* --- RESPONSIVE --- */
-@media (max-width: 900px) {
-    .header-title-box h1 { font-size: 2.5rem; }
-    
-    .intro-split, .coach-slider-section { flex-direction: column; gap: 40px; }
-    .coach-visual { width: 100%; }
+/* Petit bonus : sur très petits écrans (<= 380px) on baisse un poil le titre */
+@media (max-width: 380px) {
+  .title-with-bar,
+  .title-with-bar.center-bar {
+    font-size: clamp(26px, 7vw, 40px);
+  }
 }
