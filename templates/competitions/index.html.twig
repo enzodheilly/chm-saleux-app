@@ -1,85 +1,96 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Compétitions & Résultats - CHM Saleux{% endblock %}
+{% block title %}Compétitions & Résultats — CHM Saleux{% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/competitions/competitions.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    {# Utilisation de FontAwesome 6 via kit ou version spécifique pour la performance #}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 {% endblock %}
 
 {% block body %}
 
-<header class="page-header" style="background-image: url('{{ asset('images/90.jpg') }}');">
-    <div class="header-overlay"></div>
-    
-    <div class="container header-content">
-        <a href="{{ path('home') }}" class="back-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            <span>Retour à l'accueil</span>
-        </a>
-        
-        <div class="header-title-box">
-            <span class="subtitle">Saison 2025-2026</span>
-            <h1>Compétitions & résultats</h1>
-            <p>Le calendrier officiel et les performances de nos athlètes sur les plateaux nationaux et régionaux.</p>
-        </div>
+{# Header avec effet Parallax (via CSS) #}
+<header class="page-header-sport" style="--bg-image: url('{{ asset('images/90.jpg') }}');">
+  <div class="header-overlay-gradient"></div>
+
+  <div class="container header-content">
+    <nav class="breadcrumb-nav">
+      <a href="{{ path('home') }}" class="back-link-minimal">
+        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+      </a>
+    </nav>
+
+    <div class="header-main-box">
+      <div class="badge-accent">Saison 2025 / 2026</div>
+      <h1>Compétitions & <span class="text-outline">Résultats</span></h1>
+      <p class="lead">Retrouvez les événements du club et découvrez nos équipes.</p>
     </div>
+  </div>
 </header>
+
 
 <main class="main-container">
 
-    {# --- SECTION AGENDA DYNAMIQUE --- #}
-    <section class="calendar-section">
-        <div class="section-title-wrapper">
-            <h2 class="section-heading">Agenda Sportif</h2>
-            <p>Retrouvez les dates clés des prochaines échéances gérées par le club.</p>
+    {# --- SECTION AGENDA --- #}
+    <section class="calendar-section" data-aos="fade-up">
+        <div class="section-header">
+            <div class="title-with-icon">
+                <i class="fa-solid fa-calendar-days"></i>
+                <h2 class="section-heading">Agenda Sportif</h2>
+            </div>
+            <p class="section-subtext">Retrouvez les dates clés des prochaines échéances gérées par le club.</p>
         </div>
 
-        <div id="calendar-container" class="calendar-card">
-            {# On inclut le fichier partiel créé à l'étape 2 #}
-            {% include 'competitions/_calendar_grid.html.twig' %}
+        <div id="calendar-container" class="calendar-wrapper">
+            {# Inclusion dynamique du calendrier #}
+            <div class="glass-card">
+                {% include 'competitions/_calendar_grid.html.twig' %}
+            </div>
         </div>
     </section>
 
     {# --- SECTION ÉQUIPES --- #}
     <section class="teams-section">
-        <div class="section-title-wrapper">
-            <h2 class="section-heading">Nos Équipes</h2>
-            <p>Sélectionnez une équipe pour voir les résultats détaillés et les classements.</p>
+        <div class="section-header">
+            <div class="title-with-icon">
+                <i class="fa-solid fa-users-rays"></i>
+                <h2 class="section-heading">Nos Équipes</h2>
+            </div>
+            <p class="section-subtext">Sélectionnez une catégorie pour accéder aux records et classements.</p>
         </div>
 
         <div class="teams-grid">
             {# Carte Féminine #}
-            <a href="{{ path('competitions_feminine') }}" class="team-card">
+            <a href="{{ path('competitions_feminine') }}" class="team-card group" aria-label="Voir l'équipe féminine">
                 <div class="card-img-box">
-                    <img src="{{ asset('images/female-team.jpg') }}" alt="Équipe Féminine">
-                    <div class="card-overlay"></div>
+                    <img src="{{ asset('images/female-team.jpg') }}" alt="Équipe Féminine CHM Saleux" loading="lazy">
+                    <div class="card-gradient-overlay"></div>
+                    <div class="card-tag">Féminin</div>
                 </div>
                 <div class="card-info">
-                    <span class="pille">Haltérophilie</span>
-                    <h3>Équipe<br><strong>Féminine</strong></h3>
+                    <h3>Équipe<br><span class="bold-title">Féminine</span></h3>
                     <p>Calendriers de matchs, résultats individuels et performances collectives.</p>
-                    <div class="card-footer-link">
-                        Explorer les résultats <i class="fa-solid fa-arrow-right"></i>
-                    </div>
+                    <span class="btn-minimal">
+                        Explorer <i class="fa-solid fa-arrow-right-long"></i>
+                    </span>
                 </div>
             </a>
 
             {# Carte Masculine #}
-            <a href="{{ path('competitions_masculine') }}" class="team-card">
+            <a href="{{ path('competitions_masculine') }}" class="team-card group" aria-label="Voir l'équipe masculine">
                 <div class="card-img-box">
-                    <img src="{{ asset('images/male-team.jpg') }}" alt="Équipe Masculine">
-                    <div class="card-overlay"></div>
+                    <img src="{{ asset('images/male-team.jpg') }}" alt="Équipe Masculine CHM Saleux" loading="lazy">
+                    <div class="card-gradient-overlay"></div>
+                    <div class="card-tag">Masculin</div>
                 </div>
                 <div class="card-info">
-                    <span class="pille">Haltérophilie</span>
-                    <h3>Équipe<br><strong>Masculine</strong></h3>
+                    <h3>Équipe<br><span class="bold-title">Masculine</span></h3>
                     <p>Suivi des records, calendrier des plateaux et effectifs de la saison.</p>
-                    <div class="card-footer-link">
-                        Explorer les résultats <i class="fa-solid fa-arrow-right"></i>
-                    </div>
+                    <span class="btn-minimal">
+                        Explorer <i class="fa-solid fa-arrow-right-long"></i>
+                    </span>
                 </div>
             </a>
         </div>

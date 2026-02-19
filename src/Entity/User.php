@@ -12,37 +12,54 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
+// ✅ AJOUTS POUR L'API MOBILE
+use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['email'], message: 'Cette adresse email est déjà utilisée.')]
+// ✅ ACTIVATION DE L'API
+#[ApiResource(
+    normalizationContext: ['groups' => ['user:read']],
+    denormalizationContext: ['groups' => ['user:write']],
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface, BackupCodeInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: "integer")]
+    #[Groups(['user:read'])] // L'appli doit connaître l'ID
     private ?int $id = null;
 
     #[ORM\Column(type: "string", length: 180, unique: true)]
+    #[Groups(['user:read', 'user:write'])] // Visible et modifiable par l'appli
     private string $email;
 
     #[ORM\Column(type: "string", length: 50, nullable: true)]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $firstName = null;
 
     #[ORM\Column(type: "string", length: 50, nullable: true)]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $lastName = null;
 
     #[ORM\Column(type: "json")]
+    #[Groups(['user:read'])] // L'appli peut lire les rôles mais pas les forcer
     private array $roles = [];
 
     #[ORM\Column(type: 'json', nullable: true)]
+    // Pas de groupe : Donnée sensible
     private array $backupCodes = [];
 
     #[ORM\Column(type: "string", nullable: true)]
+    // Pas de groupe : JAMAIS exposer le mot de passe hashé
     private ?string $password = null;
 
     // ✅ La clé secrète pour Google Authenticator
     #[ORM\Column(type: "string", nullable: true)]
+    // Pas de groupe : Secret !
     private ?string $googleAuthenticatorSecret = null;
 
     // ✅ Le champ qui confirme si l'admin a bien scanné le code
@@ -50,12 +67,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     private bool $isTotpConfirmed = false;
 
     #[ORM\Column(type: "boolean")]
+    #[Groups(['user:read'])]
     private bool $isVerified = false;
 
     #[ORM\Column(type: "datetime_immutable")]
+    #[Groups(['user:read'])]
     private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: "datetime_immutable")]
+    #[Groups(['user:read'])]
     private \DateTimeImmutable $updatedAt;
 
     #[ORM\Column(type: "integer")]
@@ -77,6 +97,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     private ?\DateTimeInterface $verificationCodeExpiresAt = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Groups(['user:read'])]
     private ?\DateTimeInterface $lastLoginAt = null;
 
     #[ORM\Column(type: 'string', length: 45, nullable: true)]
@@ -89,30 +110,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     private ?NewsletterSubscriber $newsletterSubscription = null;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[Groups(['user:read'])]
     private ?string $licenceNumber = null;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[Groups(['user:read'])]
     private ?string $licenceType = null;
 
     #[ORM\Column(type: 'string', length: 20, nullable: true, options: ["default" => "Inactive"])]
+    #[Groups(['user:read'])]
     private ?string $licenceStatus = 'Inactive';
 
     #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Groups(['user:read'])]
     private ?\DateTimeInterface $licenceEndDate = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Payment::class, orphanRemoval: true)]
-    private Collection $payments;
 
     #[ORM\Column(type: 'boolean')]
     private bool $needsPassword = false;
 
+    // 🚨 PAS de Groupe ici car le BLOB binaire ferait planter l'API JSON
     #[ORM\Column(type: "blob", nullable: true)]
     private $profileImage;
 
     #[ORM\Column(type: "string", length: 20, nullable: true)]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $phone = null;
 
     #[ORM\Column(type: "boolean")]
+    #[Groups(['user:read'])]
     private bool $phoneVerified = false;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
@@ -137,7 +163,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
-        $this->payments = new ArrayCollection();
         $this->licences = new ArrayCollection();
         $this->passwordHistories = new ArrayCollection();
         $this->securityLogs = new ArrayCollection();
@@ -419,32 +444,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         return $this;
     }
 
-    public function getPayments(): Collection
-    {
-        return $this->payments;
-    }
-
-    public function addPayment(Payment $payment): self
-    {
-        if (!$this->payments->contains($payment)) {
-            $this->payments[] = $payment;
-            $payment->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removePayment(Payment $payment): self
-    {
-        if ($this->payments->removeElement($payment)) {
-            if ($payment->getUser() === $this) {
-                $payment->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getProfileImage(): ?string
     {
         if ($this->profileImage === null) {
@@ -486,6 +485,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         return $this;
     }
 
+    // ✅ CETTE FONCTION SERT MAINTENANT A L'API
+    #[Groups(['user:read'])]
+    #[SerializedName("profileImageUrl")]
     public function getProfileImageDataUrl(): ?string
     {
         if (!$this->profileImage || !$this->profileImageMime) {

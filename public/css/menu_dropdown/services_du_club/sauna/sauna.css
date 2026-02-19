@@ -1,221 +1,259 @@
-/* --- VARIABLES --- */
+/* --- VARIABLES ELITE --- */
 :root {
-    --heat-color: #e67e22; /* Orange "Sauna" / Chaleur */
-    --wood-dark: #5d4037; /* Marron foncé pour le texte */
-    --dark-bg: #111;
-    --text-main: #333;
-    --text-muted: #666;
-    --bg-light: #fffcf8; /* Fond très légèrement crème/chaud */
-    --border-radius: 12px;
-    --shadow-card: 0 10px 30px rgba(0,0,0,0.06);
+  --primary-color: #F57706;
+  --dark-bg: #111;
+  --bg-card: #121212;
+  --text-main: #ffffff;
+  --text-muted: #a0a0a0;
+  --border-soft: rgba(255, 255, 255, 0.08);
+
+  --nav-height: 60px; /* ajouté */
+  --transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1); /* ajouté */
 }
 
-body {
-    background-color: var(--bg-light);
-    color: var(--text-main);
+.sauna-root {
+  background: var(--dark-bg);
+  color: white;
+
+  /* meilleur placement global */
+  padding: 4rem 0; /* au lieu de 50px partout */
+  font-family: 'Inter', sans-serif;
 }
 
-/* --- HEADER --- */
-.page-header {
-    position: relative;
-    height: 60vh;
-    min-height: 350px;
-    display: flex;
-    align-items: center;
-    color: white;
-    margin-bottom: 80px;
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 18px;
 }
 
-.header-bg {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-size: cover;
-    background-position: center;
-    z-index: 1;
+/* =========================================
+   HEADER SPORTIF (inchangé visuellement)
+   ========================================= */
+.page-header-sport {
+  position: relative;
+  padding-top: var(--nav-height);
+  height: 60vh;
+  min-height: 450px;
+  display: flex;
+  align-items: center;
+
+  background-color: var(--dark-bg); /* correction */
+  margin-bottom: 0;
 }
 
-.header-overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    /* Dégradé Ambre/Noir pour l'ambiance chaleureuse */
-    background: linear-gradient(45deg, rgba(0,0,0,0.9), rgba(230, 126, 34, 0.4));
-    z-index: 2;
+.page-header-sport::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center 5%;
+  z-index: 1;
+  filter: grayscale(30%) brightness(0.6);
+}
+
+.header-overlay-gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(to right, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.6) 100%);
 }
 
 .header-content {
-    position: relative;
-    z-index: 3;
-    width: 100%;
-    top:65px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  top: 27px;
 }
 
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    margin-bottom: 20px;
-    opacity: 0.8;
-    transition: opacity 0.3s;
-}
-.back-link:hover { opacity: 1; }
-.back-link svg { margin-right: 8px; }
-
-.header-title-box h1 {
-    font-size: 3.5rem;
-    font-weight: 900;
-    margin: 10px 0;
-    line-height: 1.1;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
-.subtitle {
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    background: var(--heat-color);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
+.badge-accent {
+  background: var(--primary-color);
+  color: white;
+  padding: 6px 14px;
+  font-weight: 800;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  display: inline-block;
 }
 
-/* --- MAIN CONTAINER --- */
-.main-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 20px 80px;
+.header-main-box h1 {
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0 0 1.5rem 0;
+  color: #fff;
 }
 
-/* --- INTRO --- */
-.intro-section {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto 60px;
+.text-outline { -webkit-text-stroke: 1px white; color: transparent; }
+
+.header-main-box .lead {
+  font-size: 1.2rem;
+  color: #ccc;
+  max-width: 650px;
+  line-height: 1.6;
 }
 
+.back-link-minimal {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 3rem;
+  transition: var(--transition);
+}
+.back-link-minimal:hover { color: white; }
+
+/* --- TITRES --- */
 .section-heading {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: 1.5rem;
-    color: var(--wood-dark);
-    position: relative;
-    display: inline-block;
+  font-size: 2.35rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  line-height: 1.05;
 }
-.section-heading::after {
-    content: '';
-    display: block;
-    width: 50px;
-    height: 4px;
-    background: var(--heat-color);
-    margin: 10px auto 0;
-    border-radius: 2px;
+.section-heading span { color: var(--primary-color); }
+
+.centered { text-align: center; }
+.centered::after {
+  content: '';
+  display: block;
+  width: 56px;
+  height: 4px;
+  background: var(--primary-color);
+  margin: 14px auto 0;
 }
 
-.intro-text {
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    line-height: 1.6;
+.desc-text-large {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-/* --- INFO GRID --- */
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin-bottom: 60px;
+/* --- GRID CARDS --- */
+.sauna-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.6rem;
+
+  /* respiration */
+  margin-top: 2.5rem;
 }
 
-.info-card {
-    background: white;
-    border-radius: var(--border-radius);
-    padding: 30px;
-    text-align: center;
-    box-shadow: var(--shadow-card);
-    transition: transform 0.3s;
-    border: 1px solid #f0e6dd;
+.sauna-card {
+  background: var(--bg-card);
+  padding: 32px;              /* moins “bloc” */
+  border-radius: 14px;
+  border: 1px solid var(--border-soft);
+  transition: var(--transition);
 }
 
-.info-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--heat-color);
-}
-
-/* Carte mise en avant (Vendredi) */
-.highlight-card {
-    border-top: 5px solid var(--heat-color);
-    background: #fffdf9;
+.sauna-card:hover {
+  border-color: rgba(245, 119, 6, 0.45);
+  transform: translateY(-6px);
 }
 
 .card-icon {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    display: inline-block;
+  font-size: 2.3rem;
+  color: var(--primary-color);
+  margin-bottom: 1.2rem;
 }
 
-.info-card h3 {
-    margin: 0 0 15px 0;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--wood-dark);
+.sauna-card h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
 }
 
-.info-card p {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin: 0 0 15px 0;
+.sauna-card p {
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
 }
 
-.badge {
-    display: inline-block;
-    background: var(--heat-color);
-    color: white;
-    font-size: 0.8rem;
-    font-weight: 700;
-    padding: 5px 12px;
-    border-radius: 20px;
+.elite-badge {
+  display: inline-block;
+  margin-top: 1.25rem;
+  padding: 6px 12px;
+  background: rgba(245, 119, 6, 0.12);
+  color: var(--primary-color);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  border-radius: 6px;
 }
 
-/* --- HEALTH BANNER --- */
-.health-banner {
-    background: #fdf2f2; /* Fond rouge très pâle */
-    border-left: 5px solid #dc3545; /* Rouge alerte */
-    padding: 30px;
-    border-radius: var(--border-radius);
-    margin-top: 40px;
+/* --- INFO BOX --- */
+.info-box-elite {
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 4px solid var(--primary-color);
+  padding: 26px;
+  border-radius: 0 12px 12px 0;
+
+  margin-top: 2.5rem;
 }
 
-.health-content {
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
+.info-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  color: var(--primary-color);
 }
 
-.icon-warning {
-    font-size: 2rem;
-    flex-shrink: 0;
+.info-header h3 {
+  text-transform: uppercase;
+  font-weight: 900;
+  margin: 0;
+  font-size: 1.05rem;
 }
 
-.text-warning h3 {
-    margin: 0 0 5px 0;
-    color: #dc3545;
-    font-size: 1.1rem;
-    font-weight: 700;
-}
-.text-warning p {
-    margin: 0;
-    color: #8a2be2;
-    color: #555;
-    font-size: 0.9rem;
-    line-height: 1.5;
+.info-box-elite p {
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.6;
 }
 
-/* --- RESPONSIVE --- */
-@media (max-width: 900px) {
-    .header-title-box h1 { font-size: 2.5rem; }
-    .health-content { flex-direction: column; text-align: center; align-items: center; }
+/* =========================================
+   RESPONSIVE (BODY + micro-ajustements)
+   ========================================= */
+@media (max-width: 992px) {
+  .sauna-root { padding: 3.2rem 0; }
+
+  .section-heading { font-size: 2rem; }
+
+  .sauna-card { padding: 26px; }
+  .card-icon { font-size: 2.15rem; }
 }
+
+@media (max-width: 768px) {
+  .container { padding: 0 14px; }
+  .sauna-root { padding: 2.6rem 0; }
+
+  .section-heading { font-size: 1.7rem; }
+  .desc-text-large { font-size: 1rem; }
+
+  .sauna-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+  .sauna-card { padding: 22px; border-radius: 12px; }
+
+  .info-box-elite { padding: 20px; border-radius: 12px; }
+}
+
+/* ⚠️ Ton header responsive existant : je le laisse, mais garde-le à la fin si tu veux qu’il override */
+@media (max-width: 768px) {
+      .page-header-sport {
+        height: auto !important;
+        min-height: 400px !important;
+    }
+    .header-content { top: 0 !important; }
+    .page-header-sport .container { padding-left: 18px !important; padding-right: 18px !important; }
+    .header-main-box h1 { font-size: 2.48rem !important; line-height: 1.1; }}

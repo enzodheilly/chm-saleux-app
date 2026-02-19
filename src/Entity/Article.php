@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\ArticleCategory;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: "App\Repository\ArticleRepository")]
@@ -18,8 +19,9 @@ class Article
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $publishedAt = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $categorie = null;
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?ArticleCategory $category = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
@@ -42,7 +44,6 @@ class Article
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
         return $this;
     }
 
@@ -54,7 +55,17 @@ class Article
     public function setPublishedAt(\DateTimeInterface $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
+        return $this;
+    }
 
+    public function getCategory(): ?ArticleCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?ArticleCategory $category): self
+    {
+        $this->category = $category;
         return $this;
     }
 
@@ -66,7 +77,6 @@ class Article
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -78,19 +88,6 @@ class Article
     public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
-
-        return $this;
-    }
-
-    public function getCategorie(): ?string
-    {
-        return $this->categorie;
-    }
-
-    // Setter
-    public function setCategorie(?string $categorie): self
-    {
-        $this->categorie = $categorie;
         return $this;
     }
 }

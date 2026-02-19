@@ -1,110 +1,13 @@
-{% extends 'admin/base_admin.html.twig' %}
-
-{% block title %}Compétitions{% endblock %}
-
-{% block stylesheets %}
-<style>
-    /* =================== HEADER & TOOLS =================== */
-    .page-header {
-        display: flex; justify-content: space-between; align-items: flex-end;
-        margin-bottom: 2rem; padding-bottom: 1rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
-    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
-
-    .btn-create {
-        background: var(--text-main);
-        color: var(--bg-body);
-        padding: 0.6rem 1.2rem;
-        border-radius: 4px;
-        font-weight: 700; font-size: 0.85rem;
-        cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
-        transition: 0.2s; border: none; text-decoration: none; display: inline-block;
-    }
-    .btn-create:hover { opacity: 0.9; }
-
-    /* =================== TABLEAU =================== */
-    .table-wrapper {
-        background: var(--bg-sidebar);
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        overflow: hidden;
-    }
-    
-    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    
-    .admin-table th {
-        background: rgba(255,255,255,0.02);
-        color: var(--text-muted);
-        font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.75rem;
-        text-align: left; padding: 1rem 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    
-    .admin-table td {
-        padding: 1rem 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-        color: var(--text-main); vertical-align: top; /* Alignement haut pour les listes */
-    }
-    .admin-table tr:last-child td { border-bottom: none; }
-    .admin-table tr:hover td { background: rgba(255,255,255,0.01); }
-
-    /* Competition Visuals */
-    .comp-visual {
-        width: 100px; height: 60px; 
-        border-radius: 4px; object-fit: cover; 
-        background: var(--bg-body); border: 1px solid var(--border-color);
-        display: flex; align-items: center; justify-content: center;
-        color: var(--text-muted); font-size: 0.7rem; font-weight: 600;
-        text-transform: uppercase; letter-spacing: 0.05em;
-    }
-    
-    .comp-info h3 { margin: 0 0 4px 0; font-size: 1rem; font-weight: 600; color: var(--text-main); }
-    .comp-meta { font-size: 0.8rem; color: var(--text-muted); display: flex; gap: 10px; align-items: center; }
-    .comp-date { 
-        background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 3px; 
-        font-family: monospace; font-size: 0.75rem; color: var(--text-main);
-    }
-
-    /* Details List */
-    .details-list { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
-    .details-list strong { color: var(--text-main); font-weight: 600; }
-    
-    /* Results Mini List */
-    .results-mini { list-style: none; padding: 0; margin: 0; font-size: 0.85rem; }
-    .results-mini li { 
-        padding-left: 10px; border-left: 2px solid var(--accent); 
-        margin-bottom: 4px; color: var(--text-main);
-    }
-    .results-mini span { color: var(--text-muted); font-size: 0.75rem; margin-left: 5px; }
-
-    /* Actions */
-    .actions { display: flex; gap: 15px; justify-content: flex-end; }
-    .act-link { 
-        font-size: 0.75rem; font-weight: 600; text-transform: uppercase; 
-        letter-spacing: 0.05em; cursor: pointer; transition: 0.2s; opacity: 0.7; 
-        background: none; border: none; padding: 0;
-    }
-    .act-link:hover { opacity: 1; text-decoration: underline; }
-    .act-edit { color: var(--text-main); }
-    .act-del { color: var(--danger); }
-
-</style>
-{% endblock %}
-
-{% block page_title %}Compétitions{% endblock %}
-
 {% block body %}
 
     <div class="page-header">
         <div>
-            <h1>Événements</h1>
-            <p>Gestion des compétitions et résultats du club.</p>
+            <h1>Events</h1>
+            <p>Manage competitions and club results.</p>
         </div>
         <div class="toolbar">
             <a href="{{ path('admin_competition_new') }}" class="btn-create">
-                + Nouvelle Compétition
+                + New competition
             </a>
         </div>
     </div>
@@ -114,10 +17,10 @@
             <table class="admin-table">
                 <thead>
                     <tr>
-                        <th width="120">Visuel</th>
-                        <th width="30%">Compétition</th>
-                        <th width="20%">Détails</th>
-                        <th width="25%">Résultats (Top 3)</th>
+                        <th width="120">Visual</th>
+                        <th width="30%">Competition</th>
+                        <th width="20%">Details</th>
+                        <th width="25%">Results (Top 3)</th>
                         <th style="text-align: right;">Actions</th>
                     </tr>
                 </thead>
@@ -126,7 +29,7 @@
                         <tr>
                             <td>
                                 {% if comp.image %}
-                                    <img src="{{ asset('uploads/competitions/' ~ comp.image) }}" alt="Visuel" class="comp-visual">
+                                    <img src="{{ asset('uploads/competitions/' ~ comp.image) }}" alt="Visual" class="comp-visual">
                                 {% else %}
                                     <div class="comp-visual">No Image</div>
                                 {% endif %}
@@ -134,21 +37,34 @@
 
                             <td>
                                 <div class="comp-info">
-                                    <h3>{{ comp.titre }}</h3>
+                                    <h3>{{ comp.title }}</h3>
                                     <div class="comp-meta">
-                                        <span class="comp-date">{{ comp.date|date("d.m.Y") }}</span>
-                                        <span>{{ comp.type|default('Standard') }}</span>
+                                        <span class="comp-date">
+                                            {{ comp.eventDate ? comp.eventDate|date("d.m.Y") : '—' }}
+                                        </span>
+                                        <span>{{ comp.competitionType|default('Standard') }}</span>
                                     </div>
                                 </div>
                             </td>
 
                             <td>
                                 <div class="details-list">
-                                    <div><strong>Lieu :</strong> {{ comp.lieu|default('—') }}</div>
-                                    <div><strong>Équipe :</strong> {{ comp.equipe == 'male' ? 'Hommes' : 'Femmes' }}</div>
-                                    {% if comp.classementEquipe %}
+                                    <div><strong>Location:</strong> {{ comp.location|default('—') }}</div>
+
+                                    <div>
+                                        <strong>Team:</strong>
+                                        {% if comp.gender == 'male' %}
+                                            Men
+                                        {% elseif comp.gender == 'female' %}
+                                            Women
+                                        {% else %}
+                                            —
+                                        {% endif %}
+                                    </div>
+
+                                    {% if comp.teamRanking %}
                                         <div style="color: var(--accent); margin-top: 2px;">
-                                            <strong>Classement :</strong> {{ comp.classementEquipe }}
+                                            <strong>Ranking:</strong> {{ comp.teamRanking }}
                                         </div>
                                     {% endif %}
                                 </div>
@@ -157,23 +73,23 @@
                             <td>
                                 {% if comp.results is not empty %}
                                     <ul class="results-mini">
-                                        {# On affiche les 3 premiers résultats #}
+                                        {# Show top 3 results #}
                                         {% for result in comp.results|slice(0, 3) %}
                                             <li>
-                                                {{ result.prenom }} {{ result.nom|slice(0,1) }}.
+                                                {{ result.firstName }} {{ result.lastName|slice(0,1) }}.
                                                 <span>(Total: {{ result.total }})</span>
                                             </li>
                                         {% endfor %}
-                                        
+
                                         {% if comp.results|length > 3 %}
                                             <li style="border:none; padding-left:0; color:var(--text-muted); font-style:italic; font-size: 0.8rem;">
-                                                + {{ comp.results|length - 3 }} autres...
+                                                + {{ comp.results|length - 3 }} more...
                                             </li>
                                         {% endif %}
                                     </ul>
                                 {% else %}
                                     <span style="color: var(--text-muted); font-size: 0.8rem; font-style: italic;">
-                                        Aucun résultat associé
+                                        No results linked
                                     </span>
                                 {% endif %}
                             </td>
@@ -181,14 +97,15 @@
                             <td>
                                 <div class="actions">
                                     <a href="{{ path('admin_competition_edit', {id: comp.id}) }}" class="act-link act-edit">
-                                        Modifier
+                                        Edit
                                     </a>
-                                    
-                                    <form method="post" action="{{ path('admin_competition_delete', {id: comp.id}) }}" 
+
+                                    <form method="post"
+                                          action="{{ path('admin_competition_delete', {id: comp.id}) }}"
                                           style="display:inline;"
-                                          onsubmit="return confirm('Confirmer la suppression de {{ comp.titre }} ?');">
+                                          onsubmit="return confirm('Confirm deletion of {{ comp.title|e('js') }}?');">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comp.id) }}">
-                                        <button class="act-link act-del">Supprimer</button>
+                                        <button class="act-link act-del">Delete</button>
                                     </form>
                                 </div>
                             </td>
@@ -196,7 +113,7 @@
                     {% else %}
                         <tr>
                             <td colspan="5" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-                                Aucune compétition trouvée.
+                                No competitions found.
                             </td>
                         </tr>
                     {% endfor %}

@@ -1,81 +1,61 @@
-<section class="app-section">
-  <div class="app-container">
+{# --- SECTION : APPLICATION MOBILE --- #}
+<section class="home-app-section">
+    <div class="container">
+        <div class="app-grid-layout">
+            
+            {# Contenu Texte #}
+            <div class="app-info-side">
+                <div class="badge-status">
+                    <span class="dot"></span> Bientôt disponible
+                </div>
+                
+                <h2 class="app-main-title">
+                    Le club dans <br>
+                    <span class="text-outline">votre poche</span>
+                </h2>
+                
+                <p class="app-description">
+                    Emportez le CHM Saleux partout. Gérez votre abonnement, suivez vos records personnels et restez connecté à la communauté en un clin d'œil.
+                </p>
 
-    <div class="app-content">
-      <span class="badge-coming-soon">Bientôt disponible</span>
+            <ul class="app-benefits">
+  <li><i class="fa-solid fa-circle-check" style="color: var(--brand-orange);"></i> Configurer vos séances personnalisées</li>
+  <li><i class="fa-solid fa-circle-check" style="color: var(--brand-orange);"></i> Suivre des programmes d’entraînement déjà préparés</li>
+  <li><i class="fa-solid fa-circle-check" style="color: var(--brand-orange);"></i> Enregistrer & analyser vos performances</li>
+  <li><i class="fa-solid fa-circle-check" style="color: var(--brand-orange);"></i> Gérer vos licences (statut, renouvellement, infos)</li>
+</ul>
 
-      <h2 class="app-title">
-        Le CHM Saleux <br>dans votre <span class="text-highlight">poche</span>
-      </h2>
+                <div class="app-download-zone">
+                    <div class="store-group">
+                        <div class="btn-fake-store">
+                            <i class="fa-brands fa-apple"></i>
+                            <div class="btn-text">
+                                <span class="top">Prochainement</span>
+                                <span class="bottom">App Store</span>
+                            </div>
+                        </div>
+                        <div class="btn-fake-store">
+                            <i class="fa-brands fa-google-play"></i>
+                            <div class="btn-text">
+                                <span class="top">Prochainement</span>
+                                <span class="bottom">Google Play</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-      <p class="app-intro">
-        Emportez votre club partout avec vous. Planifiez, réservez et suivez votre progression en temps réel, directement depuis votre smartphone.
-      </p>
+            {# Visuel Smartphone #}
+            <div class="app-visual-side">
+                <div class="visual-container">
+                    <div class="glow-bg"></div>
+                    {# On garde ton image de mockup ici #}
+                    <div class="phone-wrapper">
+                        <img src="{{ asset('images/mockup.png') }}" alt="CHM App Mockup" class="floating-phone">
+                    </div>
+                </div>
+            </div>
 
-      <ul class="app-features">
-        <li><span class="check-icon" aria-hidden="true">✓</span> Planning &amp; Réservations instantanées</li>
-        <li><span class="check-icon" aria-hidden="true">✓</span> Suivi de vos performances</li>
-        <li><span class="check-icon" aria-hidden="true">✓</span> Actualités du club en direct</li>
-      </ul>
-
-      <div class="download-area">
-
-        <div class="app-icon-wrapper">
-          <img
-            src="{{ asset('images/app-logo.png') }}"
-            alt="Icône de l'application CHM Saleux"
-            loading="lazy"
-            decoding="async"
-          >
         </div>
-
-        <div class="store-buttons" aria-label="Boutons de téléchargement">
-          <button type="button" class="btn-store" disabled aria-disabled="true">
-            <img
-              src="{{ asset('images/apple-logo.png') }}"
-              alt=""
-              class="store-icon"
-              aria-hidden="true"
-              loading="lazy"
-              decoding="async"
-            >
-            <span class="store-info">
-              <span class="small">Bientôt sur</span>
-              <span class="big">App Store</span>
-            </span>
-          </button>
-
-          <button type="button" class="btn-store" disabled aria-disabled="true">
-            <img
-              src="{{ asset('images/google-play-logo.png') }}"
-              alt=""
-              class="store-icon"
-              aria-hidden="true"
-              loading="lazy"
-              decoding="async"
-            >
-            <span class="store-info">
-              <span class="small">Bientôt sur</span>
-              <span class="big">Google Play</span>
-            </span>
-          </button>
-        </div>
-
-      </div>
     </div>
-
-    <div class="app-visual">
-      <div class="blob-shape" aria-hidden="true"></div>
-
-      <div class="phone-mockup">
-        <img
-          src="{{ asset('images/mockup.png') }}"
-          alt="Aperçu de l'application mobile CHM Saleux"
-          loading="lazy"
-          decoding="async"
-        >
-      </div>
-    </div>
-
-  </div>
 </section>

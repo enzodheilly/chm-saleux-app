@@ -1,413 +1,310 @@
-/* --- VARIABLES --- */
+/* =========================================
+   1. BASE & VARIABLES
+   ========================================= */
 :root {
-    --primary-color: #0056b3;
-    
-    --dark-bg: #111;
-    --dark-text: #0f172a;
-    --text-muted: #555;
-    
-    --bg-light: #f4f6f9;
-    --card-bg: #ffffff;
-    
-    --radius: 16px;
-    --shadow-card: 0 10px 30px rgba(0,0,0,0.08);
-    --shadow-hover: 0 20px 40px rgba(0,0,0,0.12);
+  --bg-dark: #111;
+  --bg-card: #121212;
+  --accent-red: #F57706;
+  --border-soft: rgba(255, 255, 255, 0.08);
 
-    /* Gradients Events */
-    --grad-gold: linear-gradient(135deg, #f59e0b, #d97706);
-    --grad-green: linear-gradient(135deg, #10b981, #059669);
-    --grad-red: linear-gradient(135deg, #ef4444, #b91c1c);
-    --grad-orange: linear-gradient(135deg, #f97316, #ea580c);
+  --nav-height: 60px; /* ajouté */
+  --transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1); /* ajouté */
 }
 
-body {
-    background-color: var(--bg-light);
-    color: var(--dark-text);
+.events-root {
+  background: var(--bg-dark);
+  color: white;
+  font-family: 'Inter', sans-serif;
+
+  /* meilleur placement général */
+  padding: 4rem 0;              /* au lieu de 50px partout */
 }
 
-/* =========================================================
-   HEADER (Conservé tel quel)
-   ========================================================= */
-.page-header {
-    position: relative;
-    height: 60vh;
-    min-height: 350px;
-    display: flex;
-    align-items: center;
-    color: white;
-    margin-bottom: 0; /* Collé à la section suivante */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 18px;              /* plus réaliste que 0.25rem */
 }
 
-.header-bg {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-size: cover;
-    background-position: center;
-    z-index: 1;
+/* =========================================
+   2. HEADER SPORTIF (inchangé visuellement)
+   ========================================= */
+.page-header-sport {
+  position: relative;
+  padding-top: var(--nav-height);
+  height: 60vh;
+  min-height: 450px;
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-dark); /* correction */
+  margin-bottom: 0;
 }
 
-.header-overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    /* Dégradé Chaud pour le côté "Vie du club" */
-    background: linear-gradient(45deg, rgba(0,0,0,0.85), rgba(253, 126, 20, 0.4));
-    z-index: 2;
+.page-header-sport::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center 5%;
+  z-index: 1;
+  filter: grayscale(30%) brightness(0.6);
+}
+
+.header-overlay-gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    to right,
+    rgba(8,8,8,0.95) 0%,
+    rgba(8,8,8,0.6) 100%
+  );
 }
 
 .header-content {
-    position: relative;
-    z-index: 3;
-    width: 100%;
-    top: 65px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  top: 27px;
 }
 
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    margin-bottom: 20px;
-    opacity: 0.8;
-    transition: opacity 0.3s;
-}
-.back-link:hover { opacity: 1; }
-.back-link svg { margin-right: 8px; }
-
-.header-title-box h1 {
-    font-size: 3.5rem;
-    font-weight: 900;
-    margin: 10px 0;
-    line-height: 1.1;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+.badge-accent {
+  background: var(--accent-red);
+  color: white;
+  padding: 6px 14px;
+  font-weight: 800;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  display: inline-block;
 }
 
-.subtitle {
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    background: #fd7e14; /* Orange */
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
+.header-main-box h1 {
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0 0 1.5rem 0;
+  color: #fff;
 }
 
-/* =========================================================
-   MAIN CONTAINER
-   ========================================================= */
-.main-container {
-    padding-bottom: 80px;
+.text-outline {
+  -webkit-text-stroke: 1px white;
+  color: transparent;
 }
 
-/* =========================================================
-   SECTION 1 : CLUB SPIRIT (Intro)
-   ========================================================= */
-.club-spirit-intro {
-    text-align: center;
-    padding: 80px 20px 60px;
-    background: #fff;
+.header-main-box .lead {
+  font-size: 1.2rem;
+  color: #ccc;
+  max-width: 650px;
+  line-height: 1.6;
 }
 
-.spirit-badge {
-    display: inline-block;
-    background: #e0f2fe; /* Bleu très pâle */
-    color: var(--primary-color);
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    padding: 6px 16px;
-    border-radius: 50px;
-    margin-bottom: 20px;
+.back-link-minimal {
+  color: var(--accent-red);
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 3rem;
+  transition: var(--transition);
 }
+.back-link-minimal:hover { color: white; }
 
-.club-spirit-intro h2 {
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: var(--dark-text);
-    margin-bottom: 20px;
-}
-
-.highlight-text {
-    color: var(--primary-color);
-    position: relative;
-    white-space: nowrap;
-    z-index: 1;
-}
-.highlight-text::after {
-    content: '';
-    position: absolute;
-    bottom: 5px; left: 0; right: 0;
-    height: 10px;
-    background: rgba(255, 193, 7, 0.3); /* Jaune transparent */
-    z-index: -1;
-    transform: rotate(-2deg);
-}
-
-.spirit-desc {
-    max-width: 700px;
-    margin: 0 auto;
-    font-size: 1.15rem;
-    color: var(--text-muted);
-    line-height: 1.7;
-}
-
-/* =========================================================
-   SECTION 2 : CALENDRIER (Grid)
-   ========================================================= */
-.events-timeline {
-    padding: 0 20px 80px;
-}
-
+/* =========================================
+   3. EVENTS GRID (meilleur placement)
+   ========================================= */
 .events-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    max-width: 1100px;
-    margin: 0 auto;
+  display: grid;
+
+  /* meilleure répartition et évite les cards trop serrées */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.6rem;
+
+  /* espace vertical */
+  margin-top: 2.5rem;
 }
 
 .event-card {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    padding: 30px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: var(--shadow-card);
-    transition: transform 0.3s, box-shadow 0.3s;
-    border: 1px solid rgba(0,0,0,0.05);
-    display: flex;
-    flex-direction: column;
+  background: var(--bg-card);
+  border-radius: 18px;
+  padding: 32px;                 /* un peu moins massif */
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  transition: transform 0.25s ease, border-color 0.25s ease;
 }
 
 .event-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-hover);
+  transform: translateY(-8px);
+  border-color: rgba(245, 119, 6, 0.35);
 }
 
-/* Icone géante en background (Décoration) */
-.card-bg-icon {
-    position: absolute;
-    top: -20px;
-    right: -20px;
-    font-size: 8rem;
-    opacity: 0.05;
-    transform: rotate(15deg);
-    pointer-events: none;
-    transition: transform 0.4s;
-}
-.event-card:hover .card-bg-icon {
-    transform: rotate(0deg) scale(1.1);
-    opacity: 0.1;
+.event-glow {
+  position: absolute;
+  inset: -60%;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.035) 0%, transparent 70%);
+  pointer-events: none;
 }
 
-/* Header de la carte */
-.event-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
+.event-date {
+  display: block;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: var(--accent-red);
+  letter-spacing: 2px;
+  margin-bottom: 1.2rem;
 }
 
-.month-badge {
-    font-size: 0.85rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    padding: 6px 12px;
-    border-radius: 8px;
-    letter-spacing: 0.5px;
+.event-icon {
+  font-size: 2.3rem;
+  margin-bottom: 1.2rem;
+  color: white;
 }
 
-.icon-circle {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    color: #fff;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+.event-card h3 {
+  font-size: 1.35rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
 }
 
-/* Body de la carte */
-.event-body h3 {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--dark-text);
-    margin: 0 0 10px 0;
+.event-card p {
+  color: #9a9a9a;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  margin: 0;
 }
 
-.event-body p {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin: 0;
+/* Bords colorés thématiques */
+.border-gold { border-top: 4px solid #d4af37; }
+.border-blue { border-top: 4px solid #3498db; }
+.border-red { border-top: 4px solid #e63946; }
+.border-green { border-top: 4px solid #2ecc71; }
+
+/* =========================================
+   4. WHATSAPP SECTION (placement + align)
+   ========================================= */
+.whatsapp-connect-card {
+  background: linear-gradient(145deg, #0f0f0f, #050505);
+  border: 1px solid var(--border-soft);
+  border-radius: 22px;
+
+  padding: 56px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 3rem;
+  align-items: center;
+
+  margin-top: 4rem; /* respire par rapport à la grid */
 }
 
-/* --- THEMES COULEURS PAR CARTE --- */
-
-/* Galette (Or) */
-.event-card.winter .month-badge { background: #fffbeb; color: #d97706; }
-.event-card.winter .icon-circle { background: var(--grad-gold); }
-.event-card.winter .card-bg-icon { color: #d97706; }
-
-/* Pâques (Vert) */
-.event-card.spring .month-badge { background: #ecfdf5; color: #059669; }
-.event-card.spring .icon-circle { background: var(--grad-green); }
-.event-card.spring .card-bg-icon { color: #059669; }
-
-/* Noël (Rouge) */
-.event-card.winter-red .month-badge { background: #fef2f2; color: #b91c1c; }
-.event-card.winter-red .icon-circle { background: var(--grad-red); }
-.event-card.winter-red .card-bg-icon { color: #b91c1c; }
-
-/* Eté/Surprises (Orange) */
-.event-card.summer .month-badge { background: #fff7ed; color: #ea580c; }
-.event-card.summer .icon-circle { background: var(--grad-orange); }
-.event-card.summer .card-bg-icon { color: #ea580c; }
-
-
-/* =========================================================
-   SECTION 3 : CONNECT (WhatsApp)
-   ========================================================= */
-.connect-section {
-    padding: 40px 20px;
+.wa-info h2 {
+  font-size: 2.3rem;
+  font-weight: 900;
+  margin-bottom: 0.9rem;
+  line-height: 1.1;
 }
 
-.connect-card {
-    background: linear-gradient(135deg, #111 0%, #202020 100%);
-    max-width: 900px;
-    margin: 0 auto;
-    border-radius: 24px;
-    padding: 60px;
-    display: flex;
-    align-items: center;
-    gap: 60px;
-    box-shadow: var(--shadow-card);
-    color: white;
-    position: relative;
-    overflow: hidden;
+.wa-info p {
+  color: #aaa;
+  margin-bottom: 2.2rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
 }
 
-/* Background Effect */
-.connect-card::before {
-    content: '';
-    position: absolute;
-    top: -50px; right: -50px;
-    width: 300px; height: 300px;
-    background: #25D366;
-    opacity: 0.1;
-    border-radius: 50%;
-    filter: blur(60px);
+.btn-wa {
+  background: #25d366;
+  color: white;
+  padding: 16px 30px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  transition: var(--transition);
+}
+.btn-wa:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.25);
 }
 
-.connect-visual {
-    position: relative;
-    flex-shrink: 0;
+.wa-visual { position: relative; height: 200px; }
+
+.wa-bubble {
+  background: #202c33;
+  padding: 14px 20px;
+  border-radius: 15px 15px 15px 0;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
-.phone-mockup {
-    width: 80px;
-    height: 80px;
-    background: #25D366;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    color: #fff;
-    position: relative;
-    z-index: 2;
-    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+.wa-bubble.alt {
+  background: #005c4b;
+  border-radius: 15px 15px 0 15px;
+  top: 90px;
+  right: 0;
+  left: auto;
 }
 
-/* Animation Pulse */
-.pulse-ring {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80px; height: 80px;
-    border-radius: 20px;
-    border: 2px solid #25D366;
-    animation: pulse 2s infinite;
-    z-index: 1;
+/* =========================================
+   5. RESPONSIVE (body)
+   ========================================= */
+@media (max-width: 992px) {
+  .events-root { padding: 3.2rem 0; }
+
+  .event-card { padding: 26px; border-radius: 16px; }
+  .event-card h3 { font-size: 1.25rem; }
+
+  .whatsapp-connect-card {
+    grid-template-columns: 1fr;
+    padding: 40px;
+    text-align: center;
+  }
+
+  .wa-info { display: flex; flex-direction: column; align-items: center; }
+  .wa-visual { display: none; }
+
+  .btn-wa { justify-content: center; }
 }
 
-@keyframes pulse {
-    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-    100% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
-}
+@media (max-width: 768px) {
+  .container { padding: 0 14px; }
 
-.connect-content {
-    flex: 1;
-    position: relative;
-    z-index: 2;
-}
+  .events-root { padding: 2.6rem 0; }
 
-.connect-content h3 {
-    font-size: 2rem;
-    font-weight: 900;
-    margin-bottom: 15px;
-}
+  .events-grid { gap: 1.2rem; }
 
-.connect-content p {
-    color: #d1d5db; /* Gris clair */
-    font-size: 1.1rem;
-    margin-bottom: 30px;
-    line-height: 1.6;
-}
+  .event-card { padding: 22px; }
+  .event-icon { font-size: 2.1rem; }
 
-.btn-whatsapp-large {
-    background: #25D366;
-    color: #fff;
-    text-decoration: none;
-    padding: 16px 32px;
-    border-radius: 50px;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 1.1rem;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
+  .wa-info h2 { font-size: 1.8rem; }
+  .wa-info p { font-size: 1rem; margin-bottom: 1.6rem; }
 
-.btn-whatsapp-large:hover {
-    background: #20bd5a;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
-}
+  .btn-wa { width: 100%; }
 
-.secure-note {
-    display: block;
-    margin-top: 15px;
-    font-size: 0.85rem;
-    color: #6b7280;
-    font-weight: 600;
-}
-.secure-note i { margin-right: 5px; }
-
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-@media (max-width: 900px) {
-    .header-title-box h1 { font-size: 2.5rem; }
-    
-    .connect-card {
-        flex-direction: column;
-        text-align: center;
-        padding: 40px 20px;
-        gap: 30px;
+      .page-header-sport {
+        height: auto !important;
+        min-height: 400px !important;
     }
-    
-    .connect-visual { margin-bottom: 10px; }
-    
-    .btn-whatsapp-large {
-        width: 100%;
-        justify-content: center;
-    }
+    .header-content { top: 0 !important; }
+    .page-header-sport .container { padding-left: 18px !important; padding-right: 18px !important; }
+    .header-main-box h1 { font-size: 2.48rem !important; line-height: 1.1; }
+}
+
+@media (max-width: 480px) {
+  .event-card { padding: 18px; }
+  .event-card h3 { font-size: 1.15rem; }
 }

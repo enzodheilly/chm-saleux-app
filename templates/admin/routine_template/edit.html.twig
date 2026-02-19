@@ -1,0 +1,207 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Modifier un template{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .dashboard-container { width: 100%; max-width: 1200px; margin: 0 auto; }
+
+    /* =================== HEADER & TOOLS =================== */
+    .page-header {
+        display: flex; justify-content: space-between; align-items: flex-end;
+        margin-bottom: 2rem; padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
+
+    .toolbar { display: flex; gap: 1rem; }
+
+    /* =================== FORM & TABLE WRAPPERS =================== */
+    .form-wrapper, .table-wrapper {
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        margin-bottom: 2rem;
+        overflow: hidden;
+    }
+    .form-wrapper { padding: 2rem; }
+
+    /* Form Design */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media(max-width: 768px){ .form-row { grid-template-columns: 1fr; } }
+
+    .form-group { margin-bottom: 1.5rem; }
+    .label {
+        display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-muted);
+        text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.6rem;
+    }
+
+    .control {
+        width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); color: var(--text-main);
+        padding: 0.75rem 1rem; border-radius: 4px; outline: none; font-size: 0.9rem;
+        font-family: inherit; transition: 0.2s;
+    }
+    .control:focus { border-color: var(--accent); background: rgba(255,255,255,0.05); }
+
+    .checkbox-wrapper {
+        display: flex; gap: 10px; align-items: center;
+        background: rgba(255,255,255,0.02); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--border-color);
+    }
+    .errors { color: var(--danger); font-size: 0.8rem; margin-top: 0.4rem; }
+
+    /* Table Design */
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .admin-table th {
+        background: rgba(255,255,255,0.02); color: var(--text-muted);
+        font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.75rem;
+        text-align: left; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color);
+    }
+    .admin-table td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); color: var(--text-main); vertical-align: middle; }
+    .admin-table tr:hover td { background: rgba(255,255,255,0.01); }
+
+    .mono { font-family: 'JetBrains Mono', 'Fira Code', monospace; color: var(--accent); font-size: 0.85rem; }
+    .info-secondary { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* =================== BUTTONS =================== */
+    .btn-create {
+        background: var(--text-main); color: var(--bg-body); padding: 0.6rem 1.2rem;
+        border-radius: 4px; font-weight: 700; font-size: 0.85rem;
+        cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
+        transition: 0.2s; border: none; text-decoration: none; display: inline-block;
+    }
+    .btn-create:hover { opacity: 0.9; }
+
+    .btn-cancel {
+        background: transparent; border: 1px solid var(--border-color); color: var(--text-muted);
+        padding: 0.6rem 1.2rem; border-radius: 4px; font-weight: 600; font-size: 0.85rem;
+        text-transform: uppercase; letter-spacing: 0.05em; text-decoration: none; transition: 0.2s;
+    }
+    .btn-cancel:hover { border-color: var(--text-muted); color: var(--text-main); }
+
+    .act-link { 
+        font-size: 0.75rem; font-weight: 600; text-transform: uppercase; 
+        letter-spacing: 0.05em; cursor: pointer; opacity: 0.7; background: none; border: none; padding: 0;
+    }
+    .act-link:hover { opacity: 1; text-decoration: underline; }
+    .act-del { color: var(--danger); }
+
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="dashboard-container">
+
+    <div class="page-header">
+        <div>
+            <h1>Modifier le template</h1>
+            <p>{{ template.name }} — <span class="mono">{{ template.goal|replace({'_':' '})|upper }}</span></p>
+        </div>
+        <div class="toolbar">
+            <a href="{{ path('admin_routine_template_index') }}" class="btn-cancel">Retour</a>
+            <a href="{{ path('admin_routine_template_exercise_new', {id: template.id}) }}" class="btn-create">
+                + Ajouter un exercice
+            </a>
+        </div>
+    </div>
+
+    <div class="form-wrapper">
+        {{ form_start(form) }}
+        <div class="form-group">
+            <span class="label">Nom du template</span>
+            {{ form_widget(form.name, {'attr': {'class': 'control'}}) }}
+            <div class="errors">{{ form_errors(form.name) }}</div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <span class="label">Objectif</span>
+                {{ form_widget(form.goal, {'attr': {'class': 'control'}}) }}
+            </div>
+            <div class="form-group">
+                <span class="label">Niveau</span>
+                {{ form_widget(form.level, {'attr': {'class': 'control'}}) }}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <span class="label">Groupe Musculaire</span>
+                {{ form_widget(form.muscleGroup, {'attr': {'class': 'control'}}) }}
+            </div>
+            <div class="form-group">
+                <span class="label">Durée (min)</span>
+                {{ form_widget(form.estimatedDurationMin, {'attr': {'class': 'control'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <span class="label">Visibilité</span>
+            <div class="checkbox-wrapper">
+                {{ form_widget(form.isPublished) }}
+                <span class="info-secondary" style="color: var(--text-main)">Publier ce template (visible par les utilisateurs)</span>
+            </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; padding-top: 1.5rem; border-top: 1px solid var(--border-color); margin-top: 1rem;">
+            <button class="btn-create" type="submit">Enregistrer les modifications</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+    <div class="page-header" style="border:none; margin-bottom: 1rem;">
+        <div>
+            <h1>Exercices inclus</h1>
+            <p>Gérez l'ordre et la configuration des mouvements.</p>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <div style="overflow-x: auto;">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th width="60">Ordre</th>
+                        <th>Exercice</th>
+                        <th>Séries</th>
+                        <th>Reps</th>
+                        <th>Repos</th>
+                        <th>RIR</th>
+                        <th style="text-align:right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                        <tr>
+                            <td class="mono" style="color: var(--text-muted)">#{{ item.position }}</td>
+                            <td>
+                                <strong style="display:block; color: var(--text-main)">{{ item.exercise.name }}</strong>
+                                <span class="info-secondary">{{ item.exercise.muscleGroup }}</span>
+                            </td>
+                            <td><span class="mono">{{ item.sets }}</span></td>
+                            <td><span class="mono">{{ item.repsMin }}–{{ item.repsMax }}</span></td>
+                            <td><span class="info-secondary">{{ item.restSeconds }}s</span></td>
+                            <td><span class="mono">{{ item.rir ?? '—' }}</span></td>
+                            <td>
+                                <div style="display:flex; justify-content: flex-end;">
+                                    <form method="post" action="{{ path('admin_routine_template_exercise_delete', {id: item.id}) }}"
+                                          onsubmit="return confirm('Retirer cet exercice ?');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete_tpl_item_' ~ item.id) }}">
+                                        <button class="act-link act-del">Supprimer</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7" style="text-align:center; padding: 4rem; color: var(--text-muted);">
+                                Aucun exercice dans ce template.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

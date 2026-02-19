@@ -1,209 +1,141 @@
-/* --- VARIABLES --- */
+/* --- VARIABLES & FOND --- */
 :root {
-    --primary-color: #0056b3; /* Bleu Club */
-    --accent-color: #fd7e14; /* Orange */
+    --primary-color: #F57706;
     --dark-bg: #111;
-    --text-main: #333;
-    --text-muted: #555;
-    --bg-light: #f8f9fa;
-    --border-radius: 12px;
-    --shadow-soft: 0 10px 40px rgba(0,0,0,0.05);
+    --text-main: #e0e0e0;
+    --text-muted: #a0a0a0;
 }
 
-body {
-    background-color: var(--bg-light);
-    color: var(--text-main);
-}
+body { background-color: var(--dark-bg); color: var(--text-main); }
 
-/* --- HEADER --- */
-.page-header {
-    position: relative;
-    height: 60vh; /* Un peu moins haut que les pages principales */
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    color: white;
-    margin-bottom: 60px;
-}
-
-.header-bg {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-size: cover;
-    background-position: center;
-    z-index: 1;
-}
-
-.header-overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    /* Dégradé Neutre/Bleu */
-    background: linear-gradient(45deg, rgba(0,0,0,0.9), rgba(0, 86, 179, 0.5));
-    z-index: 2;
-}
-
-.header-content {
-    position: relative;
-    z-index: 3;
-    width: 100%;
-    top:65px;
+.container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 0.25rem;
 }
 
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    margin-bottom: 20px;
-    opacity: 0.8;
-    transition: opacity 0.3s;
+/* =========================================
+   2. HEADER SPORTIF
+   ========================================= */
+.page-header-sport {
+    position: relative;
+    padding-top: var(--nav-height);
+    height: 60vh;
+    min-height: 450px;
+    display: flex; align-items: center;
+    background-color: var(--dark-bg);
+    margin-bottom: 0;
 }
-.back-link:hover { opacity: 1; }
-.back-link svg { margin-right: 8px; }
+.page-header-sport::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: var(--bg-image);
+    background-size: cover; background-position: center 35%;
+    z-index: 1; filter: grayscale(30%) brightness(0.6);
+}
+.header-overlay-gradient {
+    position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(to right, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.6) 100%);
+}
+.header-content { position: relative; z-index: 3; width: 100%; top:-3.5px; }
 
-.header-title-box h1 {
-    font-size: 3rem;
-    font-weight: 900;
-    margin: 10px 0;
+.badge-accent {
+    background: var(--primary-color); color: white;
+    padding: 6px 14px; font-weight: 800; font-size: 0.75rem;
+    text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
+}
+.header-main-box h1 {
+    font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 900;
+    text-transform: uppercase; line-height: 1; margin: 0 0 1.5rem 0; color: #fff;
+}
+.text-outline { -webkit-text-stroke: 1px white; color: transparent; }
+.header-main-box .lead {
+    font-size: 1.2rem; color: #ccc; max-width: 650px; line-height: 1.6;
+}
+
+.back-link-minimal {
+    color: var(--primary-color); text-decoration: none;
+    font-weight: 700; text-transform: uppercase; font-size: 0.8rem;
+    letter-spacing: 2px; display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 3rem; transition: var(--transition);
+}
+.back-link-minimal:hover { color: white; }
+
+
+/* --- BARRE DE PROGRESSION --- */
+.reading-progress-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 3px;
+    z-index: 1000; background: rgba(255,255,255,0.05);
+}
+.reading-progress-bar {
+    height: 100%; width: 0%; background: var(--primary-color);
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+/* --- HEADER MINIMAL --- */
+.page-header-minimal {
+    position: relative; height: 450px; display: flex; align-items: center;
+    background-image: var(--bg-image); background-size: cover; background-position: center;
+}
+.header-overlay-advanced {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.4), var(--dark-bg));
+}
+.header-content { position: relative; z-index: 10; }
+
+.minimal-back {
+    display: inline-flex; align-items: center; gap: 10px;
+    color: var(--primary-color); text-decoration: none; font-weight: 700;
+    margin-bottom: 30px; transition: 0.3s;
+}
+.minimal-back:hover { transform: translateX(-5px); }
+
+.category-label { color: var(--primary-color); font-weight: 800; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; }
+.header-main-title h1 { font-size: 4rem; font-weight: 900; color: #fff; margin: 10px 0; }
+.header-meta { color: var(--text-muted); font-size: 0.9rem; display: flex; gap: 20px; }
+
+/* --- CONTENU ARTICLE --- */
+.content-root { padding: 80px 0; }
+.article-container { max-width: 850px; margin: 0 auto; padding: 0 20px; }
+
+.pro-content { line-height: 1.8; font-size: 1.1rem; color: #ccc; }
+
+/* Style des éléments HTML générés par le WYSIWYG */
+.pro-content h2 { color: #fff; font-size: 2rem; font-weight: 800; margin: 50px 0 25px; border-left: 4px solid var(--primary-color); padding-left: 20px; }
+.pro-content h3 { color: var(--primary-color); font-size: 1.5rem; margin-top: 35px; }
+.pro-content p { margin-bottom: 25px; }
+.pro-content strong { color: #fff; }
+.pro-content ul { margin-bottom: 30px; padding-left: 20px; list-style: none; }
+.pro-content ul li::before { content: "→"; color: var(--primary-color); margin-right: 10px; font-weight: bold; }
+
+/* --- CTA FOOTER --- */
+.article-footer-cta {
+    margin-top: 80px; padding: 40px; background: #0a0a0a;
+    border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); text-align: center;
+}
+.btn-cta-dark {
+    display: inline-block; margin-top: 20px; padding: 15px 35px;
+    background: #fff; color: #000; text-decoration: none;
+    font-weight: 800; border-radius: 50px; transition: 0.3s;
+}
+.btn-cta-dark:hover { background: var(--primary-color); color: #fff; }
+
+@media (max-width: 992px){
+      .page-header-sport {
+    height: auto !important;
+    min-height: 400px !important;
+  }
+
+  .header-content {
+    top: 0 !important;
+  }
+
+  .page-header-sport .container{
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  .header-main-box h1 {
+    font-size: 2.7rem !important;
     line-height: 1.1;
-}
-.subtitle {
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    background: rgba(255,255,255,0.2);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    backdrop-filter: blur(5px);
-}
-
-/* --- DOCUMENT CONTAINER --- */
-.main-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px 80px;
-}
-
-.content-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: -80px; /* Chevauchement Header */
-    position: relative;
-    z-index: 10;
-}
-
-.document-paper {
-    padding: 60px;
-    border-radius: var(--border-radius);
-    width: 100%;
-    max-width: 900px; /* Largeur de lecture idéale */
-}
-
-.last-update {
-    font-size: 0.85rem;
-    color: #888;
-    margin-bottom: 30px;
-    font-style: italic;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 15px;
-}
-
-/* --- STYLE DU CONTENU (WYSIWYG) --- */
-/* Ces styles s'appliquent au HTML brut généré par le CMS */
-
-.wysiwyg-body {
-    font-size: 1.05rem;
-    line-height: 1.8;
-    color: var(--text-main);
-}
-
-/* Titres dans le contenu */
-.wysiwyg-body h2 {
-    font-size: 1.8rem;
-    color: var(--primary-color);
-    margin-top: 40px;
-    margin-bottom: 20px;
-    font-weight: 800;
-}
-
-.wysiwyg-body h3 {
-    font-size: 1.4rem;
-    color: var(--dark-bg);
-    margin-top: 30px;
-    margin-bottom: 15px;
-    font-weight: 700;
-}
-
-/* Paragraphes et Listes */
-.wysiwyg-body p {
-    margin-bottom: 20px;
-    text-align: justify;
-}
-
-.wysiwyg-body ul, .wysiwyg-body ol {
-    margin-bottom: 20px;
-    padding-left: 20px;
-}
-
-.wysiwyg-body li {
-    margin-bottom: 10px;
-}
-
-/* Liens */
-.wysiwyg-body a {
-    color: var(--primary-color);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    font-weight: 600;
-    transition: color 0.2s;
-}
-.wysiwyg-body a:hover {
-    color: var(--accent-color);
-}
-
-/* Citations / Mises en avant */
-.wysiwyg-body blockquote {
-    background: #f9f9f9;
-    border-left: 4px solid var(--accent-color);
-    margin: 30px 0;
-    padding: 20px;
-    font-style: italic;
-    color: #555;
-    border-radius: 0 8px 8px 0;
-}
-
-/* Tables (au cas où) */
-.wysiwyg-body table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 30px 0;
-    font-size: 0.95rem;
-}
-.wysiwyg-body th {
-    background: var(--primary-color);
-    color: white;
-    padding: 12px;
-    text-align: left;
-}
-.wysiwyg-body td {
-    padding: 12px;
-    border-bottom: 1px solid #eee;
-}
-
-/* --- RESPONSIVE --- */
-@media (max-width: 900px) {
-    .header-title-box h1 { font-size: 2.2rem; }
-    
-    .content-wrapper { margin-top: 0; }
-    .document-paper { 
-        padding: 30px; 
-        border-radius: 0 0 12px 12px;
-        box-shadow: none;
-    }
+  }
 }
