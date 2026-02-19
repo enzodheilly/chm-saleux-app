@@ -22,7 +22,7 @@ class NewsletterSubscriber
     private ?string $confirmationToken = null;
 
     #[ORM\Column(type: 'string', length: 64, unique: true)]
-    private ?string $unsubscribeToken = null; // ✅ token dédié au désabonnement
+    private ?string $unsubscribeToken = null;
 
     #[ORM\Column(type: "boolean")]
     private bool $isConfirmed = false;

@@ -13,10 +13,10 @@ class CompetitionRepository extends ServiceEntityRepository
         parent::__construct($registry, Competition::class);
     }
 
-    public function findLastCompetition(): ?Competition
+    public function findLatestCompetition(): ?Competition
     {
         return $this->createQueryBuilder('c')
-            ->orderBy('c.date', 'DESC')
+            ->orderBy('c.eventDate', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();

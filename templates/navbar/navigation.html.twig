@@ -1,167 +1,150 @@
-<nav class="nav-fixed">
+<nav class="nav-fixed" id="mainNav">
+    
+    {# --- TOP BAR --- #}
     <div class="info-banner">
         <div class="info-banner-content">
-<div class="info-banner-horaire">
-    <button class="mobile-info-arrow mobile-info-prev" aria-label="Précédent">
-        <i class="fa-solid fa-chevron-left"></i>
-    </button>
+            <div class="info-track">
+                {# 1. Logo FFHM #}
+                <div class="info-item">
+                    <img src="{{ asset('images/nav/test.png') }}" alt="FFHM">
+                    <strong>CLUB AFFILIÉ FFHM</strong>
+                </div>
 
-    <p class="ffhm-label info-slide active">
-        <img src="{{ asset('images/nav/test.png') }}" alt="Logo FFHM" style="height: 24px; vertical-align: middle;">
-        <strong>Club affilié FFHM</strong>
-    </p>
+                {# 2. Localisation #}
+                <div class="info-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>SALEUX – COMPLEXE SPORTIF</span>
+                </div>
 
-    <p class="location-label info-slide">
-        <i class="fa-solid fa-location-dot" style="color: #fff;"></i>
-        <strong>Saleux – Complexe sportif</strong>
-    </p>
+                {# 3. Téléphone (AJOUTÉ) #}
+                <div class="info-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <a href="tel:0322897257">03.22.89.72.57</a>
+                </div>
 
-<p class="phone-label info-slide">
-        <a href="tel:0322897257" style="color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-            <i class="fa-solid fa-phone"></i>
-            <strong>03.22.89.72.57</strong>
-        </a>
-    </p>
-
-<p class="info-slide" style="white-space: nowrap;">
-    {# J'ai remplacé # par path('app_partenaire') #}
-    <a href="{{ path('app_partenaire') }}" style="color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-        <i class="fa-solid fa-handshake"></i>
-        <strong>Devenir partenaire du club</strong>
-    </a>
-</p>
-
-    <button class="mobile-info-arrow mobile-info-next" aria-label="Suivant">
-        <i class="fa-solid fa-chevron-right"></i>
-    </button>
-</div>
-
-            <div class="info-banner-links">
-                <a href="{{ path('faq') }}" class="info-link"><i class="fa-solid fa-headset"></i> J'ai besoin d'aide</a>
+                {# 4. Partenaire (AJOUTÉ) #}
+                <div class="info-item">
+                    <i class="fa-solid fa-handshake"></i>
+                    <a href="{{ path('app_partenaire') }}">DEVENIR PARTENAIRE</a>
+                </div>
+            </div>
+            
+            {# Liens de droite (Aide / Connexion) #}
+            <div class="info-actions">
+                <a href="{{ path('faq') }}" class="top-link"><i class="fa-solid fa-circle-question"></i> AIDE</a>
                 {% if app.user %}
-                    <a href="{{ path('app_logout') }}" class="info-link"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
+                    <a href="{{ path('app_logout') }}" class="top-link"><i class="fa-solid fa-power-off"></i> DÉCONNEXION</a>
                 {% else %}
-<a href="#" class="info-link js-trigger-login">
-    <i class="fa-regular fa-user"></i> Mon espace adhérent
-</a>                {% endif %}
+                    <a href="#" class="top-link js-trigger-login"><i class="fa-solid fa-user"></i> ESPACE ADHÉRENT</a>
+                {% endif %}
             </div>
         </div>
     </div>
 
-    <div class="nav-content">
-        <div class="nav-logo-container">
-            <div class="logo-rectangle">
-                <a href="{{ path('home') }}" class="logo-link">
-                    <img id="nav-logo" src="{{ asset('images/logo/new.png') }}" alt="CHM Saleux"/>
-                </a>
-            </div>
-        </div>
-
-        <div class="nav-links-center">
-            <a href="{{ path('home') }}">Accueil</a>
-            <a class="nav-link has-arrow" id="club-hover-link">Club & membres du bureau<i class="fa-solid fa-chevron-down nav-arrow"></i></a>
-            <a href="{{ path('app_pricing') }}">Nos tarifs</a>
-            <a href="{{ path('ecole') }}">Notre école</a>
-            <a href="{{ path('competition') }}">Competitions & résultats</a>
-        </div>
-
-        <div class="nav-buttons">
-            <a id="assistantWidgetOpen" class="btn-ai-assistant mobile-item-2" title="Assistant IA">
-                <img src="{{ asset('images/ia.png') }}" alt="Elios Avatar" class="elios-avatar-icon">
+    {# --- MAIN NAV (Barre principale) --- #}
+    <div class="nav-main-wrapper">
+        <div class="nav-content">
+            
+           <a href="{{ path('home') }}" class="nav-brand">
+                <img src="{{ asset('images/favicon/icon2.png') }}" alt="CHM Saleux">
+                <span class="brand-text">CHM <span class="text-red">SALEUX</span></span>
             </a>
 
-            {% if app.user %}
-                <a href="{{ path('dashboard') }}" class="btn-inscription mobile-item-1">Mon espace</a>
-            {% else %}
-                <a href="#" class="btn-inscription js-open-register-modal mobile-item-1">S'INSCRIRE</a>
-            {% endif %}
+            <div class="nav-links-desktop">
+                <a href="{{ path('home') }}" class="nav-item">Accueil</a>
+                
+                {# Menu Déroulant #}
+                <div class="nav-item has-dropdown">
+                    Club & Membres du Bureau <i class="fa-solid fa-chevron-down"></i>
+                    
+                    <div id="club-panel" class="nav-hover-panel">
+                        <div class="nav-hover-panel-content">
+                            <div class="panel-column">
+                                <h3>Services du Club</h3>
+                                <a href="{{ path('halterophilie') }}">Haltérophilie</a>
+                                <a href="{{ path('musculation') }}">Musculation</a>
+                                <a href="{{ path('cours_collectifs') }}">Cours collectifs</a>
+                                <a href="{{ path('seance_essai') }}">Séance d'essai</a>
+                                <a href="{{ path('evenements') }}">Événements organisés</a>
+                                <a href="{{ path('sauna') }}">Sauna</a>
+                            </div>
 
-            <button class="hamburger-menu mobile-item-3" aria-label="Menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+                            <div class="panel-column">
+                                <h3>Membres du bureau</h3>
+                                <a href="{{ path('president') }}">Le Président</a>
+                                <a href="{{ path('tresorier') }}">Le Trésorier</a>
+                                <a href="{{ path('secretaire') }}">La Secrétaire</a>
+                                <a href="{{ path('membres_bureau') }}">Les membres du bureau</a>
+                            </div>
+
+                            <div class="panel-column">
+                                <h3>A propos de notre club</h3>
+                                <a href="{{ path('app_club') }}">Présentation du club</a>
+                                <a href="{{ path('labels_club') }}">Les labels du club</a>
+                                <a href="{{ path('horaires') }}">Les horaires</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="{{ path('app_pricing') }}" class="nav-item">Tarifs</a>
+                <a href="{{ path('ecole') }}" class="nav-item">École</a>
+                <a href="{{ path('competition') }}" class="nav-item">Compétitions & Résultats</a>
+            </div>
+
+            <div class="nav-actions">
+                <a id="assistantWidgetOpen" class="btn-icon-ai" title="Assistant IA">
+                    <img src="{{ asset('images/ia.png') }}" alt="IA">
+                </a>
+
+                {% if app.user %}
+                     <a href="{{ path('dashboard') }}" class="btn-nav-primary"><span>MON ESPACE</span></a>
+                {% else %}
+                     <a href="#" class="btn-nav-primary js-open-register-modal"><span>S'INSCRIRE</span></a>
+                {% endif %}
+
+                <button class="hamburger-btn" id="mobileMenuTrigger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
         </div>
     </div>
 
-    {# Dropdown desktop (panel hover) #}
-<div id="club-panel" class="nav-hover-panel" aria-hidden="true">
-  <div class="nav-hover-panel-content">
-    <div class="panel-column">
-      <h3>Services du Club</h3>
-      <a href="{{ path('halterophilie') }}">Haltérophilie</a>
-      <a href="{{ path('musculation') }}">Musculation</a>
-      <a href="{{ path('cours_collectifs') }}">Cours collectifs</a>
-      <a href="{{ path('seance_essai') }}">Séance d'essai</a>
-      <a href="{{ path('evenements') }}">Événements organisés</a>
-      <a href="{{ path('sauna') }}">Sauna</a>
-    </div>
-
-    <div class="panel-column">
-      <h3>Membres du bureau</h3>
-      <a href="{{ path('president') }}">Le Président</a>
-      <a href="{{ path('tresorier') }}">Le Trésorier</a>
-      <a href="{{ path('secretaire') }}">La Secrétaire</a>
-      <a href="{{ path('membres_bureau') }}">Les membres du bureau</a>
-    </div>
-
-    <div class="panel-column">
-      <h3>À propos de notre club</h3>
-      <a href="{{ path('app_club') }}">Présentation du club</a>
-      <a href="{{ path('labels_club') }}">Les labels du club</a>
-      <a href="{{ path('horaires') }}">Les horaires</a>
-    </div>
-  </div>
-</div>
-
-    <div class="mobile-nav-overlay">
-<div class="mobile-nav-links">
-    <a href="{{ path('home') }}">Accueil</a>
-
-    <div class="mobile-dropdown-container">
-        <div class="mobile-dropdown-trigger">
-            <span>Club & membres du bureau</span>
-            <i class="fa-solid fa-chevron-down mobile-arrow-icon"></i>
-        </div>
-
-        <div class="mobile-dropdown-content">
+    {# --- MOBILE MENU --- #}
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <div class="mobile-links">
+            <a href="{{ path('home') }}">Accueil</a>
             
-            <div class="mobile-sub-group">
-                <span class="mobile-sub-title">Services du Club</span>
-                <a href="{{ path('halterophilie') }}">Haltérophilie</a>
-                <a href="{{ path('musculation') }}">Musculation</a>
-                <a href="{{ path('cours_collectifs') }}">Cours collectifs</a>
-                <a href="{{ path('seance_essai') }}">Séance d'essai</a>
-                <a href="{{ path('evenements') }}">Événements organisés</a>
-                <a href="{{ path('sauna') }}">Sauna</a>
+            <div class="mobile-accordion">
+                <button>Le Club <i class="fa-solid fa-plus"></i></button>
+                <div class="accordion-content">
+                    <div class="sub-group">
+                        <span>Activités</span>
+                        <a href="{{ path('halterophilie') }}">Haltérophilie</a>
+                        <a href="{{ path('musculation') }}">Musculation</a>
+                        <a href="{{ path('cours_collectifs') }}">Cours Co'</a>
+                    </div>
+                    <div class="sub-group">
+                        <span>Infos</span>
+                        <a href="{{ path('membres_bureau') }}">Le Bureau</a>
+                        <a href="{{ path('horaires') }}">Horaires</a>
+                        <a href="{{ path('app_pricing') }}">Tarifs</a>
+                    </div>
+                </div>
             </div>
 
-            <div class="mobile-sub-group">
-                <span class="mobile-sub-title">Membres du bureau</span>
-                <a href="{{ path('president') }}">Le Président</a>
-                <a href="{{ path('tresorier') }}">Le Trésorier</a>
-                <a href="{{ path('secretaire') }}">La Secrétaire</a>
-                <a href="{{ path('membres_bureau') }}">Les membres du bureau</a>
-            </div>
-
-            <div class="mobile-sub-group">
-                <span class="mobile-sub-title">À propos de notre club</span>
-                <a href="{{ path('app_club') }}">Présentation du club</a>
-                <a href="{{ path('labels_club') }}">Les labels du club</a>
-                <a href="{{ path('horaires') }}">Les horaires</a>
-            </div>
+            <a href="{{ path('ecole') }}">École Jeunes</a>
+            <a href="{{ path('competition') }}">Compétitions</a>
         </div>
-    </div>
-    <a href="{{ path('app_pricing') }}">Nos tarifs</a>
-    <a href="{{ path('ecole') }}">Notre école</a>
-    <a href="{{ path('competition') }}">Compétitions</a>
-    
-    <hr>
-    
-    <a href="{{ path('faq') }}"><i class="fa-solid fa-headset"></i> Aide</a>
-    {% if not app.user %}
-        <a href="{{ path('app_login') }}"><i class="fa-regular fa-user"></i> Espace adhérent</a>
-    {% endif %}
-</div>
+
+        <div class="mobile-footer-nav">
+            {% if not app.user %}
+                <a href="#" class="mobile-login-link js-trigger-login">SE CONNECTER / S'INSCRIRE</a>
+            {% else %}
+                <a href="{{ path('dashboard') }}" class="mobile-login-link">MON COMPTE</a>
+            {% endif %}
+        </div>
     </div>
 </nav>

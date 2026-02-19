@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\LicenceRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: LicenceRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -16,7 +15,7 @@ class Licence
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $type = null; // Ex: "Compétition", "Loisir", "Entraînement"
+    private ?string $type = null; // e.g. "Competition", "Leisure", "Training"
 
     #[ORM\Column(length: 20, unique: true)]
     private ?string $number = null;
@@ -27,7 +26,7 @@ class Licence
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $expiryDate = null;
 
-    // Relation vers User avec SET NULL à la suppression
+    // Relation to User with SET NULL on delete
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'licences')]
     #[ORM\JoinColumn(onDelete: 'SET NULL', nullable: true)]
     private ?User $user = null;
@@ -41,8 +40,10 @@ class Licence
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    #[ORM\ManyToOne(targetEntity: Forfait::class)]
-    private ?Forfait $forfait = null;
+    // ✅ Replaces Forfait
+    #[ORM\ManyToOne(targetEntity: MembershipPlan::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private ?MembershipPlan $membershipPlan = null;
 
     #[ORM\Column(type: 'boolean')]
     private bool $alreadyAssociated = false;
@@ -142,14 +143,14 @@ class Licence
         return $this;
     }
 
-    public function getForfait(): ?Forfait
+    public function getMembershipPlan(): ?MembershipPlan
     {
-        return $this->forfait;
+        return $this->membershipPlan;
     }
 
-    public function setForfait(?Forfait $forfait): self
+    public function setMembershipPlan(?MembershipPlan $membershipPlan): self
     {
-        $this->forfait = $forfait;
+        $this->membershipPlan = $membershipPlan;
         return $this;
     }
 
@@ -170,7 +171,7 @@ class Licence
     #[ORM\PreUpdate]
     public function updateAssociation(): void
     {
-        // Si la licence n'a pas de user, alreadyAssociated devient false
+        // If licence has no user, alreadyAssociated becomes false
         if ($this->user === null) {
             $this->alreadyAssociated = false;
         }

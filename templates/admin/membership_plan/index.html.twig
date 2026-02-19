@@ -1,0 +1,223 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Abonnements & Offres{% endblock %}
+
+{% block stylesheets %}
+<style>
+    /* =================== HEADER & TOOLS =================== */
+    .page-header {
+        display: flex; justify-content: space-between; align-items: flex-end;
+        margin-bottom: 2rem; padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
+
+    .toolbar { display: flex; gap: 1rem; }
+
+    .search-input {
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 0.6rem 1rem;
+        border-radius: 4px;
+        min-width: 280px;
+        font-size: 0.9rem;
+        font-family: inherit;
+        transition: 0.2s;
+    }
+    .search-input:focus { border-color: var(--accent); }
+
+    .btn-create {
+        background: var(--text-main);
+        color: var(--bg-body);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700; font-size: 0.85rem;
+        cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
+        transition: 0.2s; border: none;
+    }
+    .btn-create:hover { opacity: 0.9; }
+
+    /* =================== TABLEAU =================== */
+    .table-wrapper {
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        overflow: hidden;
+    }
+    
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    
+    .admin-table th {
+        background: rgba(255,255,255,0.02);
+        color: var(--text-muted);
+        font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.75rem;
+        text-align: left; padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .admin-table td {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-main); vertical-align: middle;
+    }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover td { background: rgba(255,255,255,0.01); }
+
+    /* Cellules Spécifiques */
+    .offer-name { font-weight: 700; font-size: 0.95rem; display: block; }
+    .offer-badge {
+        display: inline-block; margin-top: 4px;
+        font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+        padding: 2px 6px; border-radius: 4px; letter-spacing: 0.05em;
+        background: var(--accent); color: white;
+    }
+
+    .price-tag {
+        font-family: monospace; font-weight: 600; font-size: 1rem;
+        color: var(--text-main);
+    }
+    .freq-tag {
+        font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;
+    }
+
+    /* Liste Avantages (Compact) */
+    .features-list { margin: 0; padding: 0; list-style: none; opacity: 0.8; font-size: 0.85rem; }
+    .features-list li { display: inline; }
+    .features-list li::after { content: "•"; margin: 0 5px; color: var(--border-color); }
+    .features-list li:last-child::after { content: ""; }
+
+    /* Actions */
+    .actions { display: flex; gap: 15px; justify-content: flex-end; }
+    .act-link { 
+        font-size: 0.75rem; font-weight: 600; text-transform: uppercase; 
+        letter-spacing: 0.05em; cursor: pointer; transition: 0.2s; opacity: 0.7; 
+        background: none; border: none; padding: 0;
+    }
+    .act-link:hover { opacity: 1; text-decoration: underline; }
+    
+    .act-edit { color: var(--text-main); }
+    .act-del { color: var(--danger); }
+
+</style>
+{% endblock %}
+
+{% block page_title %}Offres & Tarifs{% endblock %}
+
+{% block body %}
+
+    <div class="page-header">
+        <div>
+            <h1>Abonnements</h1>
+            <p>Configuration des offres commerciales visibles sur le site.</p>
+        </div>
+        <div class="toolbar">
+            <input type="text" id="searchInput" class="search-input" placeholder="Filtrer les offres...">
+            <button class="btn-create" onclick="location.href='{{ path('admin_membership_plan_new') }}'">
+                + Nouvelle Offre
+            </button>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <div style="overflow-x: auto;">
+            <table class="admin-table" id="offersTable">
+                <thead>
+                    <tr>
+                        <th width="25%">Nom de l'offre</th>
+                        <th width="15%">Prix</th>
+                        <th width="15%">Fréquence</th>
+                        <th width="30%">Avantages (Aperçu)</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for plan in plans %}
+                        <tr>
+                            <td>
+                                <span class="offer-name">{{ plan.name }}</span>
+                                {% if plan.isPopular %}
+                                    <span class="offer-badge">Populaire</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                <span class="price-tag">{{ plan.price }} €</span>
+                            </td>
+
+                            <td>
+                                <span class="freq-tag">
+                                    {% set period = plan.billingPeriod %}
+                                    {% if period == 'year' %}Annuel
+                                    {% elseif period == 'month' %}Mensuel
+                                    {% elseif period == 'quarter' %}Trimestriel
+                                    {% elseif period == 'semester' %}Semestriel
+                                    {% elseif period == 'one_time' %}Séance unique
+                                    {% else %}{{ period }}{% endif %}
+                                </span>
+                            </td>
+
+                            <td>
+                                <ul class="features-list">
+                                    {# Show max 3 benefits for table preview #}
+                                    {% for benefit in plan.benefits|slice(0, 3) %}
+                                        <li>{{ benefit }}</li>
+                                    {% endfor %}
+
+                                    {% if plan.benefits|length > 3 %}
+                                        <li style="font-style: italic; color: var(--text-muted);">
+                                            +{{ plan.benefits|length - 3 }} autres...
+                                        </li>
+                                    {% endif %}
+
+                                    {% if plan.benefits|length == 0 %}
+                                        <li style="color: var(--text-muted); font-style: italic;">Aucun avantage listé</li>
+                                    {% endif %}
+                                </ul>
+                            </td>
+
+                            <td>
+                                <div class="actions">
+                                    <a href="{{ path('admin_membership_plan_edit', {'id': plan.id}) }}" class="act-link act-edit">
+                                        Modifier
+                                    </a>
+
+                                    <form method="post"
+                                          action="{{ path('admin_membership_plan_delete', {'id': plan.id}) }}"
+                                          style="display:inline;"
+                                          onsubmit="return confirm('Supprimer définitivement l\'offre {{ plan.name }} ?');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ plan.id) }}">
+                                        <button class="act-link act-del">Supprimer</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                                Aucune offre d'abonnement n'a été créée pour le moment.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    // Simple search filter
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#offersTable tbody tr');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(filter) ? '' : 'none';
+        });
+    });
+</script>
+{% endblock %}

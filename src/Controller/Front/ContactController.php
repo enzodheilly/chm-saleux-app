@@ -25,21 +25,22 @@ class ContactController extends AbstractController
         EntityManagerInterface $em,
         SystemLoggerService $logger
     ): Response {
-        $nom = $request->request->get('nom');
-        $prenom = $request->request->get('prenom');
-        $email = $request->request->get('email');
-        $telephone = $request->request->get('telephone');
-        $message = $request->request->get('message');
+        $lastName  = $request->request->get('lastName');
+        $firstName = $request->request->get('firstName');
+        $email     = $request->request->get('email');
+        $phone     = $request->request->get('phone');
+        $subject   = $request->request->get('subject');
+        $content   = $request->request->get('content');
 
         $contact = new ContactMessage();
-        $contact->setNom($nom);
-        $contact->setPrenom($prenom);
+        $contact->setLastName($lastName);
+        $contact->setFirstName($firstName);
         $contact->setEmail($email);
-        $contact->setTelephone($telephone);
-        $contact->setMessage($message);
+        $contact->setPhone($phone);
+        $contact->setSubject($subject);
+        $contact->setContent($content);
 
-        // ✅ LIEN AVEC L'ADHÉRENT CONNECTÉ
-        // Si l'utilisateur est connecté, on attache son compte au message
+        // ✅ Link with the logged-in member (if any)
         if ($this->getUser()) {
             $contact->setUser($this->getUser());
         }
@@ -47,19 +48,20 @@ class ContactController extends AbstractController
         $em->persist($contact);
         $em->flush();
 
-        // ✅ Enregistrement dans les logs système
+        // ✅ System logs
         $logger->add(
-            'Message de contact',
+            'Contact message',
             sprintf(
-                'Nouveau message reçu de %s %s (%s). Adhérent : %s',
-                $prenom,
-                $nom,
+                'New message received from %s %s (%s). Subject: %s. Member: %s',
+                $firstName,
+                $lastName,
                 $email,
-                $this->getUser() ? 'OUI' : 'NON (Visiteur)'
+                $subject ?: 'N/A',
+                $this->getUser() ? 'YES' : 'NO (Visitor)'
             )
         );
 
-        $this->addFlash('success', 'Votre message a bien été envoyé !');
+        $this->addFlash('success', 'Your message has been sent successfully!');
 
         return $this->redirectToRoute('contact');
     }

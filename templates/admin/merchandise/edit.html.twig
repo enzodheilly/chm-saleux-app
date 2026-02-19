@@ -1,0 +1,165 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Modifier le produit{% endblock %}
+
+{% block stylesheets %}
+<style>
+    /* =================== CONTAINER =================== */
+    .form-container { max-width: 800px; margin: 0 auto; }
+
+    /* =================== HEADER =================== */
+    .page-header {
+        margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;
+        display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
+    .back-link { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; text-decoration: underline; cursor: pointer; }
+    .back-link:hover { color: var(--text-main); }
+
+    /* =================== FORM CARD =================== */
+    .form-card { background: var(--bg-sidebar); border: 1px solid var(--border-color); border-radius: 6px; padding: 2rem; }
+    .form-group { margin-bottom: 1.5rem; }
+
+    .form-label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+
+    .form-control {
+        width: 100%; background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main);
+        padding: 0.75rem 1rem; border-radius: 4px; font-size: 0.95rem; font-family: inherit; transition: 0.2s; box-sizing: border-box;
+    }
+    .form-control:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.1); }
+    
+    textarea.form-control { min-height: 120px; line-height: 1.5; resize: vertical; }
+
+    .row-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+    @media(max-width: 600px) { .row-2 { grid-template-columns: 1fr; gap: 0; } }
+
+    /* Image Preview Mode Edit */
+    .img-preview-container { display: flex; gap: 20px; align-items: flex-start; margin-top: 10px; }
+    .img-box { text-align: center; }
+    .img-box span { display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
+    .preview-frame { 
+        width: 130px; height: 130px; border-radius: 4px; border: 1px solid var(--border-color); 
+        background: var(--bg-body); overflow: hidden; 
+    }
+    .preview-frame img { width: 100%; height: 100%; object-fit: cover; }
+    #new-preview-box .preview-frame { border: 1px dashed var(--accent); }
+
+    /* =================== ACTIONS =================== */
+    .form-actions {
+        margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);
+        display: flex; justify-content: space-between; align-items: center;
+    }
+    .btn-group-right { display: flex; gap: 1rem; }
+
+    .btn-cancel { padding: 0.7rem 1.2rem; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; border-radius: 4px; }
+    .btn-save { background: var(--text-main); color: var(--bg-body); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 700; border: none; cursor: pointer; }
+    .btn-save:hover { opacity: 0.9; }
+    
+    .btn-delete { color: var(--danger); background: none; border: none; font-size: 0.85rem; font-weight: 600; cursor: pointer; text-transform: uppercase; opacity: 0.7; transition: 0.2s; }
+    .btn-delete:hover { opacity: 1; text-decoration: underline; }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="form-container">
+
+    <div class="page-header">
+        <div>
+            <h1>Edit item</h1>
+            <p>Updating: <span style="font-weight: 700; color: var(--text-main);">{{ item.title }}</span></p>
+        </div>
+        <a href="{{ path('admin_merchandise_index') }}" class="back-link">Back to catalogue</a>
+    </div>
+
+    <div class="form-card">
+        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+        <div class="row-2">
+            <div class="form-group">
+                {{ form_label(form.title, 'Item name', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.price, 'Price (€)', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.price, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.description, 'Detailed description', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.image, 'Photo (leave empty to keep current)', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+
+            <div class="img-preview-container">
+                {% if item.image %}
+                    <div class="img-box">
+                        <span>Current</span>
+                        <div class="preview-frame">
+                            <img src="{{ asset('uploads/' ~ item.image) }}" alt="Current">
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="img-box" id="new-preview-box" style="display:none;">
+                    <span>New</span>
+                    <div class="preview-frame">
+                        <img id="image-preview" alt="New">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button"
+                    class="btn-delete"
+                    onclick="if(confirm('⚠️ Permanently delete this item from the catalogue?')) document.getElementById('delete-form').submit();">
+                Delete item
+            </button>
+
+            <div class="btn-group-right">
+                <a href="{{ path('admin_merchandise_index') }}" class="btn-cancel">Exit</a>
+                <button type="submit" class="btn-save">Update</button>
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+
+    <form id="delete-form"
+          method="post"
+          action="{{ path('admin_merchandise_delete', {id: item.id}) }}"
+          style="display: none;">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+    </form>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const input = document.querySelector("input[type='file']");
+    const preview = document.getElementById("image-preview");
+    const previewBox = document.getElementById("new-preview-box");
+
+    if (input) {
+        input.addEventListener("change", function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    previewBox.style.display = "block";
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

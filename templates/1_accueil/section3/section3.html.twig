@@ -1,7 +1,6 @@
 <section class="equipment-section">
   <div class="equipment-container">
 
-    
     <div class="equipment-layout">
       
       <div class="equipment-info">
@@ -35,9 +34,9 @@
             </li>
           </ul>
           
-   <div class="scroll-indicator" aria-hidden="true">
-  <span>Glissez pour voir</span> &rarr;
-</div>
+          <div class="scroll-indicator" aria-hidden="true">
+            <span>Glissez pour voir</span> &rarr;
+          </div>
 
         </div>
       </div>
@@ -45,14 +44,14 @@
       <div class="equipment-gallery">
         <div class="gallery-track">
           
-          {% for machine in machines %}
+          {% for equipment in newEquipments %}
             <article class="machine-card">
               <div class="image-box">
-                <img src="{{ asset('uploads/machines/' ~ machine.image) }}" alt="{{ machine.name }}" loading="lazy">
+                <img src="{{ asset('uploads/machines/' ~ equipment.image) }}" alt="{{ equipment.name }}" loading="lazy">
                 <div class="card-overlay"></div>
               </div>
               <div class="machine-info">
-                <h3>{{ machine.name }}</h3>
+                <h3>{{ equipment.name }}</h3>
                 <span class="category">Nouveauté</span>
               </div>
             </article>
@@ -61,7 +60,7 @@
           <article class="machine-card last-card">
             <div class="last-content">
               <h3>Venez les tester</h3>
-              <a href="#" class="btn-test">Séance d'essai</a>
+              <a href="{{ path('seance_essai') }}" class="btn-test">Séance d'essai</a>
             </div>
           </article>
 
