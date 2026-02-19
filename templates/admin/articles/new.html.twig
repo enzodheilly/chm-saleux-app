@@ -68,55 +68,56 @@
     
     <div class="page-header">
         <div>
-            <h1>Rédiger un article</h1>
-            <p>Créez une nouvelle actualité ou un article de blog.</p>
+            <h1>Write an article</h1>
+            <p>Create a new news post or blog article.</p>
         </div>
-        <a href="{{ path('admin_articles_index') }}" class="back-link">Retour aux articles</a>
+        <a href="{{ path('admin_articles_index') }}" class="back-link">Back to articles</a>
     </div>
 
     <div class="form-card">
         {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
 
         <div class="form-group">
-            {{ form_label(form.title, 'Titre de l\'actualité', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Résultats du tournoi interne...'}}) }}
+            {{ form_label(form.title, 'Title', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'e.g. Club tournament results...'}}) }}
             <div class="form-error">{{ form_errors(form.title) }}</div>
         </div>
 
         <div class="form-row-2">
             <div class="form-group">
-                {{ form_label(form.publishedAt, 'Date de publication', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_label(form.publishedAt, 'Publish date', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.publishedAt, {'attr': {'class': 'form-control'}}) }}
                 <div class="form-error">{{ form_errors(form.publishedAt) }}</div>
             </div>
             
-            {# Champ catégorie si présent dans ton ArticleType #}
-            {% if form.categorie is defined %}
-            <div class="form-group">
-                {{ form_label(form.categorie, 'Catégorie', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
-            </div>
+            {# Category field (ArticleCategory relation) #}
+            {% if form.category is defined %}
+                <div class="form-group">
+                    {{ form_label(form.category, 'Category', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+                    <div class="form-error">{{ form_errors(form.category) }}</div>
+                </div>
             {% endif %}
         </div>
 
         <div class="form-group">
-            {{ form_label(form.description, 'Contenu de l\'article', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Rédigez votre contenu ici...'}}) }}
+            {{ form_label(form.description, 'Content', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Write your content here...'}}) }}
             <div class="form-error">{{ form_errors(form.description) }}</div>
         </div>
 
         <div class="form-group">
-            {{ form_label(form.photo, 'Image de couverture', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_label(form.photo, 'Cover image', {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.photo, {'attr': {'class': 'form-control'}}) }}
             <div class="form-error">{{ form_errors(form.photo) }}</div>
-            <small style="color: var(--text-muted); display: block; margin-top: 8px;">
-                Image mise en avant sur le blog (Max 2Mo). Formats : JPG, PNG, WEBP.
+            <small style="color: var(--text-muted); display:block; margin-top:8px;">
+                Featured image on the blog (Max 5MB). Formats: JPG, PNG, WEBP.
             </small>
         </div>
 
         <div class="form-actions">
-            <a href="{{ path('admin_articles_index') }}" class="btn-cancel">Annuler</a>
-            <button type="submit" class="btn-save">Publier l'article</button>
+            <a href="{{ path('admin_articles_index') }}" class="btn-cancel">Cancel</a>
+            <button type="submit" class="btn-save">Publish article</button>
         </div>
 
         {{ form_end(form) }}

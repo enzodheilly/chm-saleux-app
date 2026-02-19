@@ -8,9 +8,10 @@
 /* =========================================
    SECTION ACTUALITÉS (NEWS)
    ========================================= */
+
 .news-section {
   padding: 80px 0;
-  background-color: #ffffff; /* Fond blanc pur */
+  background-color: #ffffff;
 }
 
 .section-header {
@@ -26,39 +27,38 @@
   margin-bottom: 10px;
 }
 
-.title .highlight {
-  color: #F57706;
-}
+.title .highlight { color: #F57706; }
 
 .subtitle {
   color: #666;
   font-size: 1.1rem;
 }
 
-/* GRILLE */
-.news-grid {
+/* GRILLE (au lieu de .news-grid) */
+.news-grid-home{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 30px;
   margin-bottom: 50px;
 }
 
-/* CARTE */
-.news-card {
+/* CARTE (au lieu de .news-card) */
+.news-card-minimal{
   background: #fff;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Ombre douce */
   border: 1px solid #f0f0f0;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-.news-card:hover {
+.news-card-minimal:hover{
   transform: translateY(-8px);
   box-shadow: 0 15px 40px rgba(0,0,0,0.1);
   border-color: #F57706;
 }
 
-.news-link {
+/* LIEN (au lieu de .news-link) */
+.news-card-minimal .card-anchor{
   text-decoration: none;
   color: inherit;
   display: flex;
@@ -66,24 +66,26 @@
   height: 100%;
 }
 
-.news-image {
+/* IMAGE (au lieu de .news-image) */
+.news-card-minimal .card-img-container{
   height: 220px;
   position: relative;
   overflow: hidden;
 }
 
-.news-image img {
+.news-card-minimal .card-img-container img{
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
 }
 
-.news-card:hover .news-image img {
+.news-card-minimal:hover .card-img-container img{
   transform: scale(1.05);
 }
 
-.news-date {
+/* DATE (au lieu de .news-date) */
+.news-card-minimal .info-date{
   position: absolute;
   top: 15px;
   right: 15px;
@@ -94,16 +96,44 @@
   padding: 5px 12px;
   border-radius: 20px;
   backdrop-filter: blur(5px);
+  z-index: 2;
 }
 
-.news-content {
+/* overlay "Lire l'article" (ton HTML l'a déjà) */
+.news-card-minimal .img-overlay{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 16px;
+  background: linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0));
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+
+.news-card-minimal:hover .img-overlay{ opacity: 1; }
+
+.news-card-minimal .read-label{
+  background: rgba(255,255,255,0.9);
+  color: #002952;
+  font-size: .85rem;
+  font-weight: 800;
+  padding: 8px 12px;
+  border-radius: 999px;
+}
+
+/* CONTENU (au lieu de .news-content) */
+.news-card-minimal .card-info{
   padding: 25px;
   flex: 1;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
-.news-item-title {
+/* ✅ TITRE (au lieu de .news-item-title) */
+.news-card-minimal .info-title{
   font-size: 1.25rem;
   font-weight: 700;
   color: #002952;
@@ -111,7 +141,8 @@
   line-height: 1.4;
 }
 
-.news-excerpt {
+/* extrait */
+.news-card-minimal .info-excerpt{
   font-size: 0.95rem;
   color: #666;
   line-height: 1.6;
@@ -119,35 +150,21 @@
   flex-grow: 1;
 }
 
-.read-more {
+/* continuer */
+.news-card-minimal .info-more{
   font-weight: 700;
   color: #F57706;
   font-size: 0.9rem;
-  margin-top: auto; /* Pousse en bas */
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/* BOUTON VOIR PLUS */
-.news-footer {
-  text-align: center;
+.news-card-minimal:hover .info-more{
+  transform: translateX(2px);
+  transition: transform .2s ease;
 }
-
-.btn-primary-outline {
-  display: inline-block;
-  padding: 12px 30px;
-  border: 2px solid #002952;
-  color: #002952;
-  font-weight: 700;
-  text-decoration: none;
-  border-radius: 50px;
-  text-transform: uppercase;
-  transition: all 0.3s ease;
-}
-
-.btn-primary-outline:hover {
-  background: #002952;
-  color: #fff;
-}
-
 
 /* =========================================
    SECTION FAQ

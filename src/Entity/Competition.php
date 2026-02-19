@@ -6,39 +6,60 @@ use App\Repository\CompetitionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompetitionRepository::class)]
+#[ORM\Index(columns: ['event_date'], name: 'idx_competition_event_date')]
 class Competition
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: "integer")]
-    private $id;
+    private ?int $id = null;
 
     #[ORM\Column(type: "string", length: 255)]
-    private $titre;
+    #[Assert\NotBlank(message: "Title is required.")]
+    #[Assert\Length(max: 255)]
+    private ?string $title = null;
 
-    #[ORM\Column(type: "datetime")]
-    private $date;
+    #[ORM\Column(name: "event_date", type: "datetime")]
+    #[Assert\NotNull(message: "Event date is required.")]
+    private ?\DateTimeInterface $eventDate = null;
+
+    #[ORM\Column(name: "team_ranking", type: "string", length: 10, nullable: true)]
+    #[Assert\Length(max: 10)]
+    private ?string $teamRanking = null;
+
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    private ?string $location = null;
 
     #[ORM\Column(type: "string", length: 10, nullable: true)]
-    private ?string $classementEquipe = null;
+    #[Assert\Choice(choices: ["female", "male"], message: "Gender must be 'female' or 'male'.")]
+    private ?string $gender = null;
+
+    #[ORM\Column(name: "competition_type", type: "string", length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    private ?string $competitionType = null;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private $lieu;
+    #[Assert\Length(max: 255)]
+    private ?string $image = null;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private $equipe; // 'male' ou 'female'
+    /**
+     * @var Collection<int, CompetitionResult>
+     */
+    #[ORM\OneToMany(
+        mappedBy: 'competition',
+        targetEntity: CompetitionResult::class,
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
+    private Collection $results;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private $type; // type de compétition (ex: Régionale, Coupe de France)
-
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private $image; // nom du fichier ou chemin de l'image
-
-    #[ORM\OneToMany(mappedBy: 'competition', targetEntity: Result::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private $results;
-
+    /**
+     * @var Collection<int, Athlete>
+     */
     #[ORM\ManyToMany(targetEntity: Athlete::class, inversedBy: "competitions")]
     private Collection $athletes;
 
@@ -55,58 +76,69 @@ class Competition
         return $this->id;
     }
 
-    public function getTitre(): ?string
+    public function getTitle(): ?string
     {
-        return $this->titre;
+        return $this->title;
     }
 
-    public function setTitre(string $titre): self
+    public function setTitle(string $title): self
     {
-        $this->titre = $titre;
+        $this->title = trim($title);
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getEventDate(): ?\DateTimeInterface
     {
-        return $this->date;
+        return $this->eventDate;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setEventDate(\DateTimeInterface $eventDate): self
     {
-        $this->date = $date;
+        $this->eventDate = $eventDate;
         return $this;
     }
 
-    public function getLieu(): ?string
+    public function getTeamRanking(): ?string
     {
-        return $this->lieu;
+        return $this->teamRanking;
     }
 
-    public function setLieu(?string $lieu): self
+    public function setTeamRanking(?string $teamRanking): self
     {
-        $this->lieu = $lieu;
+        $this->teamRanking = $teamRanking ? trim($teamRanking) : null;
         return $this;
     }
 
-    public function getEquipe(): ?string
+    public function getLocation(): ?string
     {
-        return $this->equipe;
+        return $this->location;
     }
 
-    public function setEquipe(?string $equipe): self
+    public function setLocation(?string $location): self
     {
-        $this->equipe = $equipe;
+        $this->location = $location ? trim($location) : null;
         return $this;
     }
 
-    public function getType(): ?string
+    public function getGender(): ?string
     {
-        return $this->type;
+        return $this->gender;
     }
 
-    public function setType(?string $type): self
+    public function setGender(?string $gender): self
     {
-        $this->type = $type;
+        $this->gender = $gender ? strtolower(trim($gender)) : null;
+        return $this;
+    }
+
+    public function getCompetitionType(): ?string
+    {
+        return $this->competitionType;
+    }
+
+    public function setCompetitionType(?string $competitionType): self
+    {
+        $this->competitionType = $competitionType ? trim($competitionType) : null;
         return $this;
     }
 
@@ -117,28 +149,28 @@ class Competition
 
     public function setImage(?string $image): self
     {
-        $this->image = $image;
+        $this->image = $image ? basename($image) : null;
         return $this;
     }
 
     /**
-     * @return Collection|Result[]
+     * @return Collection<int, CompetitionResult>
      */
     public function getResults(): Collection
     {
         return $this->results;
     }
 
-    public function addResult(Result $result): self
+    public function addResult(CompetitionResult $result): self
     {
         if (!$this->results->contains($result)) {
-            $this->results[] = $result;
+            $this->results->add($result);
             $result->setCompetition($this);
         }
         return $this;
     }
 
-    public function removeResult(Result $result): self
+    public function removeResult(CompetitionResult $result): self
     {
         if ($this->results->removeElement($result)) {
             if ($result->getCompetition() === $this) {
@@ -148,10 +180,8 @@ class Competition
         return $this;
     }
 
-    // ======= RELATION ATHLETES =======
-
     /**
-     * @return Collection|Athlete[]
+     * @return Collection<int, Athlete>
      */
     public function getAthletes(): Collection
     {
@@ -161,7 +191,7 @@ class Competition
     public function addAthlete(Athlete $athlete): self
     {
         if (!$this->athletes->contains($athlete)) {
-            $this->athletes[] = $athlete;
+            $this->athletes->add($athlete);
             $athlete->addCompetition($this);
         }
         return $this;
@@ -172,17 +202,6 @@ class Competition
         if ($this->athletes->removeElement($athlete)) {
             $athlete->removeCompetition($this);
         }
-        return $this;
-    }
-
-    public function getClassementEquipe(): ?string
-    {
-        return $this->classementEquipe;
-    }
-
-    public function setClassementEquipe(?string $classementEquipe): self
-    {
-        $this->classementEquipe = $classementEquipe;
         return $this;
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Controller\Front;
 
-use App\Entity\ClubInfo;
 use App\Entity\Licence;
 use App\Entity\LicenceRequest;
 use App\Service\EliosAiService;
@@ -37,13 +36,7 @@ class AssistantController extends AbstractController
             return $this->json(['reply' => "Je n’ai pas compris 😅"]);
         }
 
-        // 1. Priorité aux infos du club en BDD
-        $dbReply = $this->getInfoFromDatabase($message);
-        if ($dbReply) {
-            return $this->json(['reply' => $dbReply]);
-        }
-
-        // 2. Appel au Service IA (On passe un tableau vide pour l'historique pour éviter les bugs)
+        // Appel direct au Service IA (historique vide)
         $reply = $this->eliosAi->getReply($message, []);
 
         return $this->json(['reply' => $reply]);
@@ -63,7 +56,8 @@ class AssistantController extends AbstractController
             return new JsonResponse(['status' => 'error', 'error' => 'Aucune licence trouvée pour cet email.'], 404);
         }
 
-        $code = str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        $code = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+
         $licenceReq = new LicenceRequest();
         $licenceReq->setUserEmail($emailInput);
         $licenceReq->setVerificationCode($code);
@@ -104,13 +98,18 @@ class AssistantController extends AbstractController
 
         $licenceReq = $this->em->getRepository(LicenceRequest::class)->findOneBy(['token' => $token]);
 
-        if (!$licenceReq || $licenceReq->getStatus() !== LicenceRequest::STATUS_PENDING || $licenceReq->isExpired()) {
+        if (
+            !$licenceReq ||
+            $licenceReq->getStatus() !== LicenceRequest::STATUS_PENDING ||
+            $licenceReq->isExpired()
+        ) {
             return new JsonResponse(['status' => 'error', 'error' => 'Session de vérification invalide ou expirée.'], 400);
         }
 
         if ($licenceReq->getVerificationCode() !== $codeInput) {
             $licenceReq->incrementFailedAttempts();
             $this->em->flush();
+
             return new JsonResponse(['status' => 'error', 'error' => 'Code incorrect.'], 400);
         }
 
@@ -124,29 +123,5 @@ class AssistantController extends AbstractController
             'status' => 'success',
             'licenseNumber' => $licence->getNumber()
         ]);
-    }
-
-    // --- MÉTHODES PRIVÉES ---
-
-    private function getInfoFromDatabase(string $message): ?string
-    {
-        $categories = [
-            'horaires' => ['horaire', 'ouvert', 'heures', 'fermeture'],
-            'tarifs'   => ['tarif', 'prix', 'abonnement', 'payer'],
-            'contact'  => ['contact', 'téléphone', 'mail'],
-            'adresse'  => ['adresse', 'où', 'situe', 'localisation'],
-            'coach'    => ['coach', 'entraîneur'],
-        ];
-
-        $lowerMsg = mb_strtolower($message);
-        foreach ($categories as $cat => $keywords) {
-            foreach ($keywords as $word) {
-                if (str_contains($lowerMsg, $word)) {
-                    $info = $this->em->getRepository(ClubInfo::class)->findOneBy(['category' => $cat]);
-                    return $info ? $info->getContent() : null;
-                }
-            }
-        }
-        return null;
     }
 }

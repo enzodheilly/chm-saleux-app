@@ -1,123 +1,116 @@
-<section class="news-section">
-  <div class="site-container">
-
-    <div class="section-header">
-      <h2 class="title">Dernières <span class="highlight">Actualités</span></h2>
-      <p class="subtitle">Compétitions, événements, vie du club : ne ratez rien.</p>
-    </div>
-
-    <div class="news-grid">
-      {% for article in articles|slice(0, 3) %}
-        <article class="news-card">
-          <a href="{{ path('article_show', { id: article.id }) }}" class="news-link">
-            <div class="news-image">
-              {% if article.photo %}
-                <img
-                  src="{{ asset('uploads/' ~ article.photo) }}"
-                  alt="{{ article.title }}"
-                  loading="lazy"
-                  decoding="async"
-                >
-              {% else %}
-                <img
-                  src="{{ asset('images/default-article.png') }}"
-                  alt="Illustration par défaut"
-                  loading="lazy"
-                  decoding="async"
-                >
-              {% endif %}
-
-              <span class="news-date" aria-hidden="true">Lire l'article</span>
+{# --- SECTION : DERNIÈRES ACTUALITÉS --- #}
+<section class="home-news-section">
+    <div class="container">
+        
+        <div class="section-header-elite">
+            <div class="header-text">
+                <h2 class="section-title">Dernières <span class="text-outline">Actualités</span></h2>
             </div>
-
-            <div class="news-content">
-              <h3 class="news-item-title">
-                {{ article.title|length > 40 ? article.title|slice(0, 40) ~ '...' : article.title }}
-              </h3>
-
-              <p class="news-excerpt">
-                {{ article.description|length > 80 ? article.description|slice(0, 80) ~ '...' : article.description }}
-              </p>
-
-              <span class="read-more">En savoir plus &rarr;</span>
-            </div>
-          </a>
-        </article>
-      {% else %}
-        <div class="no-news">
-          <p>Aucune actualité pour le moment. Revenez vite !</p>
+            <a href="{{ path('actualites') }}" class="btn-link-all">
+                Voir tout le journal <i class="fa-solid fa-arrow-right"></i>
+            </a>
         </div>
-      {% endfor %}
-    </div>
 
-    <div class="news-footer">
-      <a href="{{ path('actualites') }}" class="btn-primary-outline">Voir toutes les actualités</a>
-    </div>
+        <div class="news-grid-home">
+            {% for article in articles|slice(0, 3) %}
+                <article class="news-card-minimal">
+                    <a href="{{ path('article_show', { id: article.id }) }}" class="card-anchor">
+                        <div class="card-img-container">
+                            {% if article.photo %}
+                                <img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}" loading="lazy">
+                            {% else %}
+                                <img src="{{ asset('images/default-article.png') }}" alt="CHM Saleux">
+                            {% endif %}
+                            <div class="img-overlay">
+                                <span class="read-label">Lire l'article</span>
+                            </div>
+                        </div>
 
-  </div>
+                        <div class="card-info">
+                            <span class="info-date">{{ article.publishedAt|date('d/m/Y') }}</span>
+                            <h3 class="info-title">
+                                {{ article.title|length > 45 ? article.title|slice(0, 45) ~ '...' : article.title }}
+                            </h3>
+                            <p class="info-excerpt">
+                                {{ article.description|striptags|length > 90 ? article.description|striptags|slice(0, 90) ~ '...' : article.description }}
+                            </p>
+                            <span class="info-more">Continuer <i class="fa-solid fa-chevron-right"></i></span>
+                        </div>
+                    </a>
+                </article>
+            {% else %}
+                <div class="empty-news-minimal">
+                    <p>De nouvelles actualités arrivent bientôt !</p>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
 </section>
 
+{# --- SECTION : FAQ & AIDE --- #}
+<section class="home-faq-section">
+    <div class="container">
+        
+        <div class="faq-grid-layout">
+            
+            {# Colonne Gauche : Intro #}
+            <aside class="faq-intro-box">
+                <div class="sticky-content">
+                    <h2 class="faq-main-title">Questions <span class="text-outline">Fréquentes</span></h2>
+                    <p class="faq-main-desc">Vous hésitez encore ? Voici les réponses aux questions les plus posées par nos nouveaux adhérents.</p>
+                    
+                    <div class="faq-contact-card">
+                        <h4>Encore un doute ?</h4>
+                        <p>Nos coachs vous répondent directement par message.</p>
+                        <a href="{{ path('contact') }}" class="btn-elite-contact">
+                            Nous contacter <i class="fa-solid fa-paper-plane"></i>
+                        </a>
+                    </div>
+                </div>
+            </aside>
 
-<section class="faq-section">
-  <div class="site-container">
+            {# Colonne Droite : Accordéons #}
+            <div class="faq-accordion-list">
+                {% set faqItems = [
+                    {
+                        q: "Quels types d'abonnements proposez-vous ?",
+                        a: "Nous proposons des formules adaptées : <strong>Compétition</strong> (Haltérophilie Jeunes & Adultes) et <strong>Loisir</strong> (Musculation & Haltérophilie santé)."
+                    },
+                    {
+                        q: "Quelle différence entre les licences ?",
+                        a: "La licence <strong>Jeune</strong> inclut un encadrement spécifique renforcé. La licence <strong>Adulte</strong> offre un accès complet au plateau et aux compétitions."
+                    },
+                    {
+                        q: "Puis-je essayer avant de m'inscrire ?",
+                        a: "Absolument ! Une <strong>séance d'essai gratuite</strong> est offerte pour découvrir l'ambiance et le matériel avec un coach."
+                    },
+                    {
+                        q: "Quels sont les horaires d'accès ?",
+                        a: "Le club est ouvert tous les jours de la semaine avec des créneaux spécifiques pour l'haltérophilie encadrée en soirée."
+                    }
+                ] %}
 
-    <div class="faq-layout">
-      <div class="faq-sidebar">
-        <h2 class="faq-title">Questions <br>Fréquentes</h2>
-        <p class="faq-desc">Tout ce que vous devez savoir avant de nous rejoindre.</p>
+                {% for item in faqItems %}
+                    <div class="faq-elite-item">
+                        <button class="faq-elite-trigger" type="button" aria-expanded="false">
+                            <span class="q-text">{{ item.q }}</span>
+                            <span class="q-icon"><i class="fa-solid fa-plus"></i></span>
+                        </button>
+                        <div class="faq-elite-content">
+                            <div class="inner-text">
+                                {{ item.a|raw }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
 
-        <div class="contact-card">
-          <h3>Une autre question ?</h3>
-          <p>Notre équipe est là pour vous.</p>
-          <a href="{{ path('contact') }}" class="btn-contact">Nous contacter</a>
-        </div>
-      </div>
-
-      <div class="faq-list">
-
-        {% set faqItems = [
-          {
-            q: "Quels types d'abonnements proposez-vous ?",
-            a: "Nous proposons des formules adaptées : <strong>Compétition</strong> (Haltérophilie Jeunes & Adultes) et <strong>Loisir</strong> (Musculation & Haltérophilie pour tous âges)."
-          },
-          {
-            q: "Quelle différence entre les licences ?",
-            a: "La licence <strong>Jeune (14-20 ans)</strong> inclut un encadrement spécifique. La licence <strong>Adulte</strong> offre un accès complet à la salle et aux compétitions officielles."
-          },
-          {
-            q: "Que comprend l'abonnement Loisir ?",
-            a: "Accès illimité au plateau musculation, espace cardio, cours collectifs et créneaux d'haltérophilie loisir encadrés."
-          },
-          {
-            q: "Quels équipements sont disponibles ?",
-            a: "Plateaux d'haltérophilie, Racks, Barres olympiques Eleiko, Haltères, Kettlebells, Machines guidées et espace Cardio complet."
-          }
-        ] %}
-
-        {% for item in faqItems %}
-          {% set contentId = 'faq-content-' ~ loop.index %}
-          <div class="faq-item">
-            <button
-              class="faq-trigger"
-              type="button"
-              aria-expanded="false"
-              aria-controls="{{ contentId }}"
-            >
-              <span>{{ item.q }}</span>
-              <span class="icon" aria-hidden="true">+</span>
-            </button>
-
-            <div class="faq-content" id="{{ contentId }}" role="region">
-              <div class="text">
-                {{ item.a|raw }}
-              </div>
+                <div class="faq-footer-link">
+                    <a href="{{ path('faq') }}">Consulter la FAQ complète <i class="fa-solid fa-arrow-right-long"></i></a>
+                </div>
             </div>
-          </div>
-        {% endfor %}
 
-        <a href="{{ path('faq') }}" class="faq-link-all">Voir toutes les questions &rarr;</a>
-      </div>
+        </div>
+
     </div>
-
-  </div>
 </section>

@@ -1,0 +1,163 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Créer un template{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .dashboard-container { width: 100%; max-width: 900px; margin: 0 auto; }
+
+    /* =================== HEADER =================== */
+    .page-header {
+        display: flex; justify-content: space-between; align-items: flex-end;
+        margin-bottom: 2rem; padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
+
+    /* =================== FORM CONTAINER =================== */
+    .form-wrapper {
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 2rem;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media(max-width: 768px){ .form-row { grid-template-columns: 1fr; } }
+
+    .form-group { margin-bottom: 1.5rem; }
+    
+    .label {
+        display: block; 
+        font-size: 0.75rem; 
+        font-weight: 600; 
+        color: var(--text-muted);
+        text-transform: uppercase; 
+        letter-spacing: 0.05em; 
+        margin-bottom: 0.6rem;
+    }
+
+    .control {
+        width: 100%; 
+        background: rgba(255,255,255,0.03); 
+        border: 1px solid var(--border-color); 
+        color: var(--text-main);
+        padding: 0.75rem 1rem; 
+        border-radius: 4px; 
+        outline: none; 
+        font-size: 0.9rem;
+        font-family: inherit;
+        transition: 0.2s;
+    }
+    .control:focus { border-color: var(--accent); background: rgba(255,255,255,0.05); }
+    
+    /* Style spécifique pour les checkbox */
+    .checkbox-wrapper {
+        display: flex; gap: 10px; align-items: center;
+        background: rgba(255,255,255,0.02);
+        padding: 0.8rem; border-radius: 4px; border: 1px solid var(--border-color);
+    }
+
+    .errors { color: var(--danger); font-size: 0.8rem; margin-top: 0.4rem; font-weight: 500; }
+
+    /* =================== BUTTONS =================== */
+    .footer-toolbar { 
+        display: flex; gap: 1rem; justify-content: flex-end; 
+        padding-top: 2rem; margin-top: 1rem; 
+        border-top: 1px solid var(--border-color); 
+    }
+
+    .btn-save {
+        background: var(--text-main);
+        color: var(--bg-body);
+        padding: 0.7rem 1.8rem;
+        border-radius: 4px;
+        font-weight: 700; font-size: 0.85rem;
+        cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
+        transition: 0.2s; border: none; text-decoration: none;
+    }
+    .btn-save:hover { opacity: 0.9; }
+
+    .btn-cancel {
+        background: transparent; 
+        border: 1px solid var(--border-color); 
+        color: var(--text-muted);
+        padding: 0.7rem 1.5rem; 
+        border-radius: 4px; 
+        font-weight: 600; font-size: 0.85rem;
+        text-transform: uppercase; letter-spacing: 0.05em;
+        text-decoration: none; transition: 0.2s;
+    }
+    .btn-cancel:hover { border-color: var(--text-muted); color: var(--text-main); }
+
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="dashboard-container">
+
+    <div class="page-header">
+        <div>
+            <h1>Créer un template</h1>
+            <p>Définissez l’objectif, le niveau et le groupe musculaire de la routine.</p>
+        </div>
+        <a href="{{ path('admin_routine_template_index') }}" class="btn-cancel" style="padding: 0.5rem 1rem; font-size: 0.75rem;">Retour</a>
+    </div>
+
+    <div class="form-wrapper">
+        {{ form_start(form) }}
+
+        <div class="form-group">
+            <span class="label">Nom du template</span>
+            {{ form_widget(form.name, {'attr': {'class': 'control', 'placeholder': 'Ex: Full Body Evolution'}}) }}
+            <div class="errors">{{ form_errors(form.name) }}</div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <span class="label">Objectif</span>
+                {{ form_widget(form.goal, {'attr': {'class': 'control'}}) }}
+                <div class="errors">{{ form_errors(form.goal) }}</div>
+            </div>
+
+            <div class="form-group">
+                <span class="label">Niveau requis</span>
+                {{ form_widget(form.level, {'attr': {'class': 'control'}}) }}
+                <div class="errors">{{ form_errors(form.level) }}</div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <span class="label">Groupe Musculaire</span>
+                {{ form_widget(form.muscleGroup, {'attr': {'class': 'control', 'placeholder': 'Ex: Pectoraux / Dos'}}) }}
+                <div class="errors">{{ form_errors(form.muscleGroup) }}</div>
+            </div>
+
+            <div class="form-group">
+                <span class="label">Durée estimée (minutes)</span>
+                {{ form_widget(form.estimatedDurationMin, {'attr': {'class': 'control', 'placeholder': '60'}}) }}
+                <div class="errors">{{ form_errors(form.estimatedDurationMin) }}</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <span class="label">Visibilité</span>
+            <div class="checkbox-wrapper">
+                {{ form_widget(form.isPublished) }}
+                <span style="font-size: 0.85rem; color: var(--text-main);">Rendre ce template disponible immédiatement</span>
+            </div>
+            <div class="errors">{{ form_errors(form.isPublished) }}</div>
+        </div>
+
+        <div class="footer-toolbar">
+            <a href="{{ path('admin_routine_template_index') }}" class="btn-cancel">Annuler</a>
+            <button class="btn-save" type="submit">Enregistrer le template</button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{% endblock %}

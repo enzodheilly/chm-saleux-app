@@ -85,6 +85,7 @@
                         <th width="120">Date</th>
                         <th width="220">Expéditeur</th>
                         <th width="140">Contact</th>
+                        <th width="180">Sujet</th>
                         <th>Message reçu</th>
                         <th style="text-align: right;">Traitement / Réponse</th>
                     </tr>
@@ -99,18 +100,22 @@
                             
                             <td>
                                 <div class="sender-info">
-                                    <span class="sender-name">{{ message.prenom }} {{ message.nom|upper }}</span>
+                                    <span class="sender-name">{{ message.firstName }} {{ message.lastName|upper }}</span>
                                     <span class="sender-email">{{ message.email }}</span>
                                 </div>
                             </td>
 
                             <td style="color: var(--text-muted); font-family: monospace; font-size: 0.85rem;">
-                                {{ message.telephone ?: '—' }}
+                                {{ message.phone ?: '—' }}
+                            </td>
+
+                            <td style="color: var(--text-muted);">
+                                {{ message.subject ?: '—' }}
                             </td>
 
                             <td>
-                                <div class="message-bubble" title="{{ message.message }}">
-                                    "{{ message.message|length > 100 ? message.message|slice(0, 100) ~ '...' : message.message }}"
+                                <div class="message-bubble" title="{{ message.content }}">
+                                    "{{ message.content|length > 100 ? message.content|slice(0, 100) ~ '...' : message.content }}"
                                 </div>
                             </td>
 
@@ -122,7 +127,7 @@
                                 {% else %}
                                     <form action="{{ path('admin_contact_reply', {id: message.id}) }}" method="POST" class="reply-form">
                                         <input type="hidden" name="_token" value="{{ csrf_token('reply' ~ message.id) }}">
-                                        <textarea name="reponse" class="reply-textarea" placeholder="Rédiger une réponse rapide..." required></textarea>
+                                        <textarea name="response" class="reply-textarea" placeholder="Rédiger une réponse rapide..." required></textarea>
                                         <button type="submit" class="btn-validate">Répondre</button>
                                     </form>
                                 {% endif %}
@@ -130,7 +135,7 @@
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="5" style="text-align: center; padding: 5rem; color: var(--text-muted);">
+                            <td colspan="6" style="text-align: center; padding: 5rem; color: var(--text-muted);">
                                 Aucun message n'a été reçu via le formulaire.
                             </td>
                         </tr>

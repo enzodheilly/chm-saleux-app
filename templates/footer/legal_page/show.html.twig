@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page.title }} — CHM Saleux{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/footer/pages/generic_page.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}
+
+{% block body %}
+    {# Progress bar ultra-fine #}
+    <div class="reading-progress-container"><div id="readingProgress" class="reading-progress-bar"></div></div>
+
+
+        <header class="page-header-sport" style="--bg-image: url('{{ asset('images/menu_dropdown/services_du_club/evenements/2.jpg') }}');">
+        <div class="header-overlay-gradient"></div>
+        <div class="container header-content">
+            <nav class="breadcrumb-nav">
+                <a href="{{ path('home') }}" class="back-link-minimal">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                </a>
+            </nav>
+
+            <div class="header-main-box">
+                <div class="badge-accent">Document Officiel</div>
+                <h1>{{ page.title }}</h1>
+  <div class="header-meta">
+                    <span><i class="fa-regular fa-calendar"></i> {{ page.updatedAt ? page.updatedAt|date('d.m.Y') : "now"|date('d.m.Y') }}</span>
+                    <span class="separator">|</span>
+                    <span><i class="fa-regular fa-clock"></i> {{ (page.content|striptags|split(' ')|length / 200)|round(0, 'ceil') }} min de lecture</span>
+                </div>            </div>
+        </div>
+    </header>
+
+    <main class="content-root">
+        <div class="article-container">
+            {# On injecte le contenu WYSIWYG ici #}
+            <article class="pro-content">
+                {{ page.content|raw }}
+            </article>
+
+            <aside class="article-footer-cta">
+                <div class="cta-inner">
+                    <h3>Une question ?</h3>
+                    <p>Notre équipe est à votre disposition pour toute précision concernant nos conditions.</p>
+                    <a href="#" class="btn-cta-dark">Contacter le club</a>
+                </div>
+            </aside>
+        </div>
+    </main>
+{% endblock %}

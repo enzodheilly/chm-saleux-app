@@ -11,51 +11,53 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CompetitionController extends AbstractController
 {
-    /**
-     * Affiche la page complète (Header + Calendrier + Liste Équipes)
-     */
-    #[Route('/competition/{year}/{month}', name: 'competition', defaults: ['year' => null, 'month' => null])]
-    public function index(EntityManagerInterface $em, ?int $year, ?int $month): Response
+    #[Route('/competition', name: 'competition_root')]
+    #[Route(
+        '/competition/{year}/{month}',
+        name: 'competition',
+        defaults: ['year' => null, 'month' => null],
+        requirements: ['year' => '\d{4}', 'month' => '\d{1,2}']
+    )]
+    public function index(EntityManagerInterface $em, ?string $year = null, ?string $month = null): Response
     {
-        // On récupère toutes les données via la méthode privée
-        $data = $this->getCalendarData($em, $year, $month);
+        $yearInt = $year !== null ? (int) $year : null;
+        $monthInt = $month !== null ? (int) $month : null;
+
+        $data = $this->getCalendarData($em, $yearInt, $monthInt);
 
         return $this->render('competitions/index.html.twig', $data);
     }
 
-    /**
-     * NOUVELLE ROUTE : Appelée par le JavaScript pour mettre à jour UNIQUEMENT le calendrier
-     */
-    #[Route('/ajax/competition/{year}/{month}', name: 'ajax_competition')]
-    public function ajaxCalendar(EntityManagerInterface $em, int $year, int $month): Response
+    #[Route(
+        '/ajax/competition/{year}/{month}',
+        name: 'ajax_competition',
+        requirements: ['year' => '\d{4}', 'month' => '\d{1,2}']
+    )]
+    public function ajaxCalendar(EntityManagerInterface $em, string $year, string $month): Response
     {
-        $data = $this->getCalendarData($em, $year, $month);
+        $data = $this->getCalendarData($em, (int) $year, (int) $month);
 
-        // On rend uniquement le template partiel de la grille
         return $this->render('competitions/_calendar_grid.html.twig', $data);
     }
 
-    /**
-     * Méthode privée pour centraliser la logique (DRY - Don't Repeat Yourself)
-     */
     private function getCalendarData(EntityManagerInterface $em, ?int $year, ?int $month): array
     {
-        // 1. Gestion de la date
-        $now = new \DateTime();
-        $year = $year ?? (int)$now->format('Y');
-        $month = $month ?? (int)$now->format('m');
+        $now = new \DateTimeImmutable();
+        $year = $year ?? (int) $now->format('Y');
+        $month = $month ?? (int) $now->format('m');
 
-        $currentMonthDate = new \DateTime("$year-$month-01");
+        $month = max(1, min(12, $month));
 
-        // 2. Calcul des mois Précédent / Suivant
-        $prevMonth = (clone $currentMonthDate)->modify('-1 month');
-        $nextMonth = (clone $currentMonthDate)->modify('+1 month');
+        $currentMonthDate = new \DateTimeImmutable(sprintf('%04d-%02d-01', $year, $month));
 
-        // 3. Infos pour la grille
-        $daysInMonth = (int)$currentMonthDate->format('t');
-        $startDayOfWeek = (int)$currentMonthDate->format('N'); // 1 (Lun) à 7 (Dim)
+        $prevMonth = $currentMonthDate->modify('-1 month');
+        $nextMonth = $currentMonthDate->modify('+1 month');
 
-        // 4. Récupération des données
+        $daysInMonth = (int) $currentMonthDate->format('t');
+        $startDayOfWeek = (int) $currentMonthDate->format('N'); // 1..7
+
+        // ✅ Perf: tu peux remplacer par une requête filtrée sur le mois,
+        // mais je garde ton findAll pour l’instant.
         $competitions = $em->getRepository(Competition::class)->findAll();
 
         $femaleCompetitions = [];
@@ -63,36 +65,41 @@ class CompetitionController extends AbstractController
         $eventsByDate = [];
 
         foreach ($competitions as $comp) {
-            $formattedDate = $comp->getDate()->format('Y-m-d');
+            $eventDate = $comp->getEventDate();
+            if (!$eventDate) {
+                continue;
+            }
+
+            $formattedDate = $eventDate->format('Y-m-d');
 
             $compData = [
                 'id' => $comp->getId(),
-                'titre' => $comp->getTitre(),
-                'type' => $comp->getType(),
-                'date' => $comp->getDate()->format('d/m/Y'),
-                'lieu' => $comp->getLieu(),
+                'title' => $comp->getTitle(),
+                'type' => $comp->getCompetitionType(),
+                'date' => $eventDate->format('d/m/Y'),
+                'location' => $comp->getLocation(),
                 'image' => $comp->getImage() ? '/uploads/competitions/' . $comp->getImage() : null,
-                'classementEquipe' => $comp->getClassementEquipe() ?? null,
-                'resultats' => array_map(fn($r) => [
-                    'nom' => $r->getNom(),
-                    'prenom' => $r->getPrenom(),
-                    'categorie' => $r->getCategorie(),
-                    'categoriePoids' => $r->getCategoriePoids(),
-                    'epauleJete' => $r->getEpauleJete(),
-                    'arracher' => $r->getArracher(),
+                'teamRanking' => $comp->getTeamRanking(),
+                'results' => array_map(static fn($r) => [
+                    'lastName' => $r->getLastName(),
+                    'firstName' => $r->getFirstName(),
+                    'category' => $r->getCategory(),
+                    'weightClass' => $r->getWeightClass(),
+                    'cleanAndJerk' => $r->getCleanAndJerk(),
+                    'snatch' => $r->getSnatch(),
                     'total' => $r->getTotal(),
-                    'point' => $r->getPoint(),
-                    'pdc' => $r->getPdc(),
-                    'classee' => $r->getClassee(),
-                ], $comp->getResults()->toArray())
+                    'points' => $r->getPoints(),
+                    'bodyWeight' => $r->getBodyWeight(),
+                    'rankingLevel' => $r->getRankingLevel(),
+                ], $comp->getResults()->toArray()),
             ];
 
-            // On remplit le tableau indexé par date pour le calendrier
-            $eventsByDate[$formattedDate] = $compData;
+            // ✅ support multiple competitions same day
+            $eventsByDate[$formattedDate][] = $compData;
 
-            if ($comp->getEquipe() === 'female') {
+            if ($comp->getGender() === 'female') {
                 $femaleCompetitions[] = $compData;
-            } elseif ($comp->getEquipe() === 'male') {
+            } elseif ($comp->getGender() === 'male') {
                 $maleCompetitions[] = $compData;
             }
         }
@@ -102,7 +109,7 @@ class CompetitionController extends AbstractController
             'femaleCompetitions' => $femaleCompetitions,
             'maleCompetitions' => $maleCompetitions,
             'eventsByDate' => $eventsByDate,
-            // Variables de navigation temporelle
+
             'currentMonthName' => $currentMonthDate,
             'daysInMonth' => $daysInMonth,
             'startDay' => $startDayOfWeek,
@@ -117,10 +124,10 @@ class CompetitionController extends AbstractController
     public function feminine(EntityManagerInterface $em): Response
     {
         $competitions = $em->getRepository(Competition::class)
-            ->findBy(['equipe' => 'female'], ['date' => 'DESC']);
+            ->findBy(['gender' => 'female'], ['eventDate' => 'DESC']);
 
         $athletes = $em->getRepository(Athlete::class)
-            ->findBy(['equipe' => 'female']);
+            ->findBy(['gender' => 'female']);
 
         $classement = $athletes;
 
@@ -135,10 +142,10 @@ class CompetitionController extends AbstractController
     public function masculine(EntityManagerInterface $em): Response
     {
         $competitions = $em->getRepository(Competition::class)
-            ->findBy(['equipe' => 'male'], ['date' => 'DESC']);
+            ->findBy(['gender' => 'male'], ['eventDate' => 'DESC']);
 
         $athletes = $em->getRepository(Athlete::class)
-            ->findBy(['equipe' => 'male']);
+            ->findBy(['gender' => 'male']);
 
         $classement = $athletes;
 

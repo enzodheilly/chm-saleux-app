@@ -54,76 +54,83 @@
 
 {% block body %}
 <div class="dashboard-container">
-    
+
     <div id="athletes-data" data-athletes="{{ athletesJson|default('[]')|e('html_attr') }}" style="display:none;"></div>
 
     <div class="page-header">
-        <h1>Modifier la compétition</h1>
-        <p>Édition : {{ competition.titre }}</p>
+        <h1>Edit competition</h1>
+        <p>Editing: {{ competition.title }}</p>
     </div>
 
     <div class="form-card">
-        <form action="{{ path('admin_competition_edit', {id: competition.id}) }}" method="POST" enctype="multipart/form-data">
-            
+        <form id="competitionEditForm" action="{{ path('admin_competition_edit', {id: competition.id}) }}" method="POST" enctype="multipart/form-data">
+
             <div class="row-2">
                 <div>
-                    <label>Titre</label>
-                    <input type="text" name="titre" value="{{ competition.titre }}" required>
+                    <label>Title</label>
+                    <input type="text" name="title" value="{{ competition.title }}" required>
                 </div>
                 <div>
                     <label>Type</label>
-                    <input type="text" name="type" value="{{ competition.type }}">
+                    <input type="text" name="competitionType" value="{{ competition.competitionType }}">
                 </div>
             </div>
 
             <div class="row-3" style="margin-top: 1.5rem;">
                 <div>
                     <label>Date</label>
-                    <input type="date" name="date" value="{{ competition.date|date('Y-m-d') }}" required>
+                    {# eventDate est datetime => datetime-local #}
+                    <input type="datetime-local" name="eventDate" value="{{ competition.eventDate ? competition.eventDate|date('Y-m-d\\TH:i') : '' }}" required>
                 </div>
                 <div>
-                    <label>Lieu</label>
-                    <input type="text" name="lieu" value="{{ competition.lieu }}" required>
+                    <label>Location</label>
+                    <input type="text" name="location" value="{{ competition.location }}" required>
                 </div>
                 <div>
-                    <label style="color:var(--accent);">Genre Équipe (Filtre)</label>
-                    <select id="equipeSelect" name="equipe" required>
-                        <option value="male" {% if competition.equipe == 'male' %}selected{% endif %}>Masculine</option>
-                        <option value="female" {% if competition.equipe == 'female' %}selected{% endif %}>Féminine</option>
-                        <option value="mixed" {% if competition.equipe == 'mixed' %}selected{% endif %}>Mixte</option>
+                    <label style="color:var(--accent);">Team Gender (Filter)</label>
+                    <select id="genderSelect" name="gender" required>
+                        <option value="male" {% if competition.gender == 'male' %}selected{% endif %}>Male</option>
+                        <option value="female" {% if competition.gender == 'female' %}selected{% endif %}>Female</option>
+                        <option value="" {% if competition.gender is empty %}selected{% endif %}>Mixed (All)</option>
                     </select>
                 </div>
             </div>
 
             <div class="row-2" style="margin-top: 1.5rem;">
                 <div>
-                    <label>Classement Équipe</label>
-                    <input type="text" name="classementEquipe" value="{{ competition.classementEquipe }}">
+                    <label>Team ranking</label>
+                    <input type="text" name="teamRanking" value="{{ competition.teamRanking }}">
                 </div>
                 <div>
-                    <label>Image (Optionnel)</label>
+                    <label>Image (Optional)</label>
                     <input type="file" name="image">
                     {% if competition.image %}
-                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Actuelle : {{ competition.image }}</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">
+                            Current: {{ competition.image }}
+                        </div>
                     {% endif %}
                 </div>
             </div>
 
-            <h3 style="margin-top: 2rem; color: var(--text-main); font-size:1rem; border-bottom:1px dashed var(--border-color); padding-bottom:0.5rem;">RÉSULTATS</h3>
-            
+            <h3 style="margin-top: 2rem; color: var(--text-main); font-size:1rem; border-bottom:1px dashed var(--border-color); padding-bottom:0.5rem;">
+                RESULTS
+            </h3>
+
             <div class="results-wrapper">
                 <table class="result-table" id="resultsTable">
                     <thead>
                         <tr>
-                            <th width="20%" style="color:var(--accent);">★ Sélection Rapide</th>
-                            <th width="12%">Nom</th>
-                            <th width="12%">Prénom</th>
-                            <th width="10%">Catégorie</th>
-                            <th width="10%">Poids</th>
-                            <th width="8%">Arraché</th>
-                            <th width="8%">Ép-Jeté</th>
+                            <th width="20%" style="color:var(--accent);">★ Quick select</th>
+                            <th width="12%">Last name</th>
+                            <th width="12%">First name</th>
+                            <th width="10%">Category</th>
+                            <th width="10%">Weight class</th>
+                            <th width="8%">Snatch</th>
+                            <th width="8%">C&amp;J</th>
                             <th width="8%">Total</th>
                             <th width="8%">Points</th>
+                            <th width="8%">BW</th>
+                            <th width="10%">Level</th>
                             <th width="5%"></th>
                         </tr>
                     </thead>
@@ -131,39 +138,50 @@
                         {% for index, result in competition.results %}
                         <tr class="result-row">
                             <td>
-                                {# IMPORTANT : On met des data-init pour que le JS retrouve l'athlète #}
-                                <select class="js-athlete-select" 
-                                        data-init-nom="{{ result.nom }}" 
-                                        data-init-prenom="{{ result.prenom }}">
-                                    </select>
+                                {# data-init pour retrouver l’athlète dans le JSON #}
+                                <select class="js-athlete-select"
+                                        data-init-last-name="{{ result.lastName }}"
+                                        data-init-first-name="{{ result.firstName }}">
+                                </select>
                             </td>
-                            <td><input type="text" name="results[{{ index }}][nom]" class="input-nom" value="{{ result.nom }}"></td>
-                            <td><input type="text" name="results[{{ index }}][prenom]" class="input-prenom" value="{{ result.prenom }}"></td>
-                            <td><input type="text" name="results[{{ index }}][categorie]" class="input-cat" value="{{ result.categorie }}"></td>
-                            <td><input type="text" name="results[{{ index }}][categoriePoids]" class="input-poids" value="{{ result.categoriePoids }}"></td>
-                            <td><input type="number" step="1" name="results[{{ index }}][arracher]" class="calc-input" value="{{ result.arracher }}"></td>
-                            <td><input type="number" step="1" name="results[{{ index }}][epauleJete]" class="calc-input" value="{{ result.epauleJete }}"></td>
-                            <td><input type="number" step="1" name="results[{{ index }}][total]" class="total-output" value="{{ result.total }}" readonly tabindex="-1" style="opacity:0.7;"></td>
-                            <td><input type="number" step="0.01" name="results[{{ index }}][point]" value="{{ result.point }}"></td>
+
+                            <td><input type="text" name="results[{{ index }}][lastName]" class="input-last-name" value="{{ result.lastName }}"></td>
+                            <td><input type="text" name="results[{{ index }}][firstName]" class="input-first-name" value="{{ result.firstName }}"></td>
+                            <td><input type="text" name="results[{{ index }}][category]" class="input-category" value="{{ result.category }}"></td>
+                            <td><input type="text" name="results[{{ index }}][weightClass]" class="input-weight-class" value="{{ result.weightClass }}"></td>
+
+                            <td><input type="number" step="1" min="0" name="results[{{ index }}][snatch]" class="calc-input" value="{{ result.snatch }}"></td>
+                            <td><input type="number" step="1" min="0" name="results[{{ index }}][cleanAndJerk]" class="calc-input" value="{{ result.cleanAndJerk }}"></td>
+
+                            {# total affiché uniquement, pas envoyé #}
+                            <td><input type="number" step="1" class="total-output" value="{{ result.total }}" readonly tabindex="-1" style="opacity:0.7;"></td>
+
+                            <td><input type="number" step="0.01" min="0" name="results[{{ index }}][points]" value="{{ result.points }}"></td>
+                            <td><input type="number" step="0.01" min="0" name="results[{{ index }}][bodyWeight]" value="{{ result.bodyWeight }}"></td>
+                            <td><input type="text" name="results[{{ index }}][rankingLevel]" value="{{ result.rankingLevel }}"></td>
+
                             <td style="text-align:center;"><button type="button" class="btn-remove">×</button></td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
-            
-            <button type="button" class="btn-add-row" id="addResultBtn">+ Ajouter une ligne</button>
+
+            <button type="button" class="btn-add-row" id="addResultBtn">+ Add a row</button>
 
             <div class="form-actions">
-                <button type="button" class="btn-delete" onclick="if(confirm('Supprimer cet événement ?')) document.getElementById('del-form').submit();">Supprimer</button>
+                <button type="button" class="btn-delete"
+                        onclick="if(confirm('Delete this event?')) document.getElementById('del-form').submit();">
+                    Delete
+                </button>
                 <div style="display:flex; gap:10px;">
-                    <a href="{{ path('admin_competition_index') }}" class="btn-cancel">Annuler</a>
-                    <button type="submit" class="btn-save">Mettre à jour</button>
+                    <a href="{{ path('admin_competition_index') }}" class="btn-cancel">Cancel</a>
+                    <button type="submit" class="btn-save">Update</button>
                 </div>
             </div>
         </form>
     </div>
-    
+
     <form id="del-form" method="post" action="{{ path('admin_competition_delete', {id: competition.id}) }}" style="display:none;">
         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ competition.id) }}">
     </form>
@@ -171,84 +189,95 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. DATA LOAD
-    const rawData = document.getElementById('athletes-data').dataset.athletes;
+    // =========================================================
+    // DATA LOAD
+    // =========================================================
+    const rawData = document.getElementById('athletes-data')?.dataset?.athletes || '[]';
     let allAthletes = [];
     try { allAthletes = JSON.parse(rawData); } catch(e) { console.error("JSON Error", e); }
 
-    const equipeSelect = document.getElementById('equipeSelect');
+    const genderSelect = document.getElementById('genderSelect');
     const tableBody = document.querySelector('#resultsTable tbody');
     const addBtn = document.getElementById('addResultBtn');
     let counter = tableBody.querySelectorAll('tr').length;
 
-    // --- LOGIC ---
-    
-    // Identifie les athlètes sur les lignes existantes au chargement
+    // Helpers (support old + new athlete JSON keys)
+    const getGender = (a) => String(a.gender ?? a.equipe ?? a.sexe ?? a.genre ?? '').toLowerCase();
+    const getFirstName = (a) => (a.firstName ?? a.prenom ?? '').toString();
+    const getLastName  = (a) => (a.lastName ?? a.nom ?? '').toString();
+    const getCategory  = (a) => (a.category ?? a.categorie ?? '').toString();
+    const getWeightClass = (a) => (a.weightClass ?? a.categoriePoids ?? '').toString();
+
+    // =========================================================
+    // INIT: match existing rows to athlete ids (by name)
+    // =========================================================
     function matchRowsToIds() {
         const selects = document.querySelectorAll('.js-athlete-select');
+
         selects.forEach(select => {
-            // On récupère le nom/prenom qui a été rendu par Twig dans les attributs data-init
-            const initNom = select.dataset.initNom ? select.dataset.initNom.trim().toLowerCase() : '';
-            const initPrenom = select.dataset.initPrenom ? select.dataset.initPrenom.trim().toLowerCase() : '';
-            
-            if(initNom && initPrenom) {
-                // On cherche l'ID correspondant dans le JSON
-                const found = allAthletes.find(a => 
-                    a.nom.trim().toLowerCase() === initNom && 
-                    a.prenom.trim().toLowerCase() === initPrenom
+            const initLN = (select.dataset.initLastName || '').trim().toLowerCase();
+            const initFN = (select.dataset.initFirstName || '').trim().toLowerCase();
+
+            if (initLN && initFN) {
+                const found = allAthletes.find(a =>
+                    getLastName(a).trim().toLowerCase() === initLN &&
+                    getFirstName(a).trim().toLowerCase() === initFN
                 );
-                
-                if(found) {
-                    // On "marque" ce select comme ayant cet ID sélectionné
+
+                if (found) {
                     select.dataset.selectedId = found.id;
                 }
             }
         });
     }
 
-    // Récupère tous les IDs actuellement sélectionnés (pour l'exclusion)
     function getAllSelectedIds() {
         const ids = [];
         document.querySelectorAll('.js-athlete-select').forEach(select => {
-            // Soit c'est la valeur du select (si user a changé), soit c'est le data-selected-id (chargement initial)
             const val = select.value || select.dataset.selectedId;
-            if(val) ids.push(parseInt(val));
+            if (val) ids.push(parseInt(val, 10));
         });
         return ids;
     }
 
-    // Génère les options HTML pour un select donné
     function renderDropdowns() {
-        const teamType = equipeSelect.value;
+        const teamType = genderSelect.value; // male | female | '' (mixed)
         const usedIds = getAllSelectedIds();
         const selects = document.querySelectorAll('.js-athlete-select');
 
         selects.forEach(select => {
-            // L'ID actuellement choisi pour CETTE ligne spécifique
-            const currentId = select.value ? parseInt(select.value) : (select.dataset.selectedId ? parseInt(select.dataset.selectedId) : null);
+            const currentId = select.value
+                ? parseInt(select.value, 10)
+                : (select.dataset.selectedId ? parseInt(select.dataset.selectedId, 10) : null);
 
-            // Filtrage Team + Exclusion
-            let optionsHTML = '<option value="">-- Sélectionner --</option>';
-            
+            let optionsHTML = '<option value="">-- Select --</option>';
+
             allAthletes.forEach(a => {
-                // 1. Filtre Equipe (M/F)
-                const genre = (a.sexe || a.genre || a.equipe || '').toLowerCase();
+                // 1) gender filter
+                const g = getGender(a);
                 let matchTeam = true;
-                if(teamType === 'male' && !['m','h','homme','masculin','male'].some(s=>genre.includes(s))) matchTeam = false;
-                if(teamType === 'female' && !['f','femme','feminin','female'].some(s=>genre.includes(s))) matchTeam = false;
+                if (teamType === 'male') {
+                    matchTeam = ['m','h','homme','masculin','male'].some(s => g.includes(s));
+                } else if (teamType === 'female') {
+                    matchTeam = ['f','femme','feminin','female'].some(s => g.includes(s));
+                }
 
-                // 2. Filtre Exclusion (Est-ce que cet athlète est pris ailleurs ?)
-                // Il est valide SI (il n'est pas utilisé ailleurs) OU (c'est lui-même sur cette ligne)
+                // 2) exclude duplicates except current row
                 const isAvailable = !usedIds.includes(a.id) || (a.id === currentId);
 
-                if(matchTeam && isAvailable) {
+                if (matchTeam && isAvailable) {
                     const selected = (a.id === currentId) ? 'selected' : '';
+                    const ln = getLastName(a);
+                    const fn = getFirstName(a);
+                    const cat = getCategory(a);
+                    const wc  = getWeightClass(a);
+
                     optionsHTML += `<option value="${a.id}" ${selected}
-                        data-nom="${a.nom}" 
-                        data-prenom="${a.prenom}" 
-                        data-cat="${a.categorie || ''}" 
-                        data-poids="${a.categoriePoids || ''}">
-                        ${a.nom} ${a.prenom}
+                        data-last-name="${ln.replace(/"/g, '&quot;')}"
+                        data-first-name="${fn.replace(/"/g, '&quot;')}"
+                        data-category="${cat.replace(/"/g, '&quot;')}"
+                        data-weight-class="${wc.replace(/"/g, '&quot;')}">
+                        ${ln} ${fn}
                     </option>`;
                 }
             });
@@ -257,80 +286,92 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- ACTIONS ---
-
-    // Ajout Ligne
+    // =========================================================
+    // Add row
+    // =========================================================
     function addRow() {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td><select class="js-athlete-select"></select></td>
-            <td><input type="text" name="results[${counter}][nom]" class="input-nom"></td>
-            <td><input type="text" name="results[${counter}][prenom]" class="input-prenom"></td>
-            <td><input type="text" name="results[${counter}][categorie]" class="input-cat"></td>
-            <td><input type="text" name="results[${counter}][categoriePoids]" class="input-poids"></td>
-            <td><input type="number" step="1" name="results[${counter}][arracher]" class="calc-input"></td>
-            <td><input type="number" step="1" name="results[${counter}][epauleJete]" class="calc-input"></td>
-            <td><input type="number" step="1" name="results[${counter}][total]" class="total-output" readonly tabindex="-1" style="opacity:0.7;"></td>
-            <td><input type="number" step="0.01" name="results[${counter}][point]"></td>
+
+            <td><input type="text" name="results[${counter}][lastName]" class="input-last-name"></td>
+            <td><input type="text" name="results[${counter}][firstName]" class="input-first-name"></td>
+            <td><input type="text" name="results[${counter}][category]" class="input-category"></td>
+            <td><input type="text" name="results[${counter}][weightClass]" class="input-weight-class"></td>
+
+            <td><input type="number" step="1" min="0" name="results[${counter}][snatch]" class="calc-input"></td>
+            <td><input type="number" step="1" min="0" name="results[${counter}][cleanAndJerk]" class="calc-input"></td>
+
+            <td><input type="number" step="1" class="total-output" readonly tabindex="-1" style="opacity:0.7;"></td>
+
+            <td><input type="number" step="0.01" min="0" name="results[${counter}][points]"></td>
+            <td><input type="number" step="0.01" min="0" name="results[${counter}][bodyWeight]"></td>
+            <td><input type="text" name="results[${counter}][rankingLevel]"></td>
+
             <td style="text-align:center;"><button type="button" class="btn-remove">×</button></td>
         `;
         tableBody.appendChild(tr);
         counter++;
-        renderDropdowns(); // Met à jour les listes
+        renderDropdowns();
     }
 
-    // Event Delegation
+    // =========================================================
+    // Delegation
+    // =========================================================
     tableBody.addEventListener('change', (e) => {
         const t = e.target;
         const row = t.closest('tr');
+        if (!row) return;
 
-        // Selection Athlète
-        if(t.classList.contains('js-athlete-select')) {
+        if (t.classList.contains('js-athlete-select')) {
             const opt = t.selectedOptions[0];
-            if(t.value) {
-                row.querySelector('.input-nom').value = opt.dataset.nom;
-                row.querySelector('.input-prenom').value = opt.dataset.prenom;
-                row.querySelector('.input-cat').value = opt.dataset.cat;
-                row.querySelector('.input-poids').value = opt.dataset.poids;
-                // Met à jour l'ID sélectionné (pour l'exclusion)
+
+            if (t.value && opt) {
+                row.querySelector('.input-last-name').value = opt.dataset.lastName || '';
+                row.querySelector('.input-first-name').value = opt.dataset.firstName || '';
+                row.querySelector('.input-category').value = opt.dataset.category || '';
+                row.querySelector('.input-weight-class').value = opt.dataset.weightClass || '';
+
                 t.dataset.selectedId = t.value;
             } else {
                 delete t.dataset.selectedId;
             }
-            // IMPORTANT : Rafraîchir toutes les autres listes pour appliquer l'exclusion
+
             renderDropdowns();
         }
 
-        // Calcul
-        if(t.classList.contains('calc-input')) {
-            const arr = parseFloat(row.querySelectorAll('.calc-input')[0].value)||0;
-            const epj = parseFloat(row.querySelectorAll('.calc-input')[1].value)||0;
-            row.querySelector('.total-output').value = (arr+epj)>0?(arr+epj):'';
+        if (t.classList.contains('calc-input')) {
+            const inputs = row.querySelectorAll('.calc-input');
+            const snatch = parseFloat(inputs[0].value) || 0;
+            const cj = parseFloat(inputs[1].value) || 0;
+            const total = snatch + cj;
+            row.querySelector('.total-output').value = total > 0 ? total : '';
         }
     });
 
     tableBody.addEventListener('click', (e) => {
-        if(e.target.classList.contains('btn-remove')) {
-            if(confirm('Supprimer cette ligne ?')) {
+        if (e.target.classList.contains('btn-remove')) {
+            if (confirm('Delete this row?')) {
                 e.target.closest('tr').remove();
-                renderDropdowns(); // Libère l'athlète supprimé
+                renderDropdowns();
             }
         }
     });
 
-    equipeSelect.addEventListener('change', () => {
-        // Reset des sélections si changement de genre radical
+    genderSelect.addEventListener('change', () => {
         document.querySelectorAll('.js-athlete-select').forEach(s => {
-            s.value = ""; 
+            s.value = "";
             delete s.dataset.selectedId;
         });
         renderDropdowns();
     });
 
-    // --- INIT ---
+    // =========================================================
+    // INIT
+    // =========================================================
     addBtn.addEventListener('click', addRow);
-    matchRowsToIds(); // Etape 1 : Retrouver les IDs des lignes existantes
-    renderDropdowns(); // Etape 2 : Générer les HTML corrects avec exclusions
+    matchRowsToIds();
+    renderDropdowns();
 });
 </script>
 {% endblock %}

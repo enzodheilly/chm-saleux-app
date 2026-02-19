@@ -1,192 +1,148 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Horaires d'entraînement - CHM Saleux{% endblock %}
+{% block title %}Horaires d'entraînement — CHM Saleux{% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/menu_dropdown/a_propos_de_notre_club/horaires/index.css') }}">
 {% endblock %}
 
 {% block body %}
 
-    {# --- HEADER IMMERSIF (NE PAS TOUCHER) --- #}
-    <header class="page-header">
-        <div class="header-bg" style="background-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/horaires/1.jpg') }}');"></div>
-        <div class="header-overlay"></div>
-
+    {# --- HEADER ELITE --- #}
+    <header class="page-header-sport" style="--bg-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/horaires/1.jpg') }}');">
+        <div class="header-overlay-gradient"></div>
         <div class="container header-content">
-            <a href="{{ path('home') }}" class="back-link">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                <span>Retour à l'accueil</span>
-            </a>
+            <nav class="breadcrumb-nav">
+                <a href="{{ path('home') }}" class="back-link-minimal">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                </a>
+            </nav>
 
-            <div class="header-title-box">
-                <span class="subtitle">Planning Hebdomadaire</span>
-                <h1>Nos Créneaux</h1>
-                <p>Des horaires adaptés pour vous entraîner matin et soir, encadrés par nos bénévoles passionnés.</p>
+            <div class="header-main-box">
+                <div class="badge-accent">Planning Hebdomadaire</div>
+                <h1>Nos <span class="text-outline">Créneaux</span></h1>
+                <p class="lead">Des horaires adaptés pour vous entraîner matin et soir, encadrés par nos bénévoles passionnés.</p>
             </div>
         </div>
     </header>
 
-    <main class="main-container">
+    <main class="horaires-root">
 
-        {# --- QUICK BAR (nouveau bandeau) --- #}
-        <section class="quickbar-section">
-            <div class="quickbar">
-                <div class="quick-item">
-                    <div class="quick-icon">📍</div>
-                    <div class="quick-text">
-                        <h3>Adresse</h3>
-                        <p>Complexe sportif — Saleux</p>
+        {# --- QUICKBAR INFO --- #}
+        <section class="container">
+            <div class="quick-info-bar">
+                <div class="info-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div>
+                        <strong>Adresse</strong>
+                        <span>Complexe sportif, Saleux</span>
                     </div>
                 </div>
-
-                <div class="quick-item">
-                    <div class="quick-icon">📞</div>
-                    <div class="quick-text">
-                        <h3>Contact</h3>
-                        <p><a href="tel:0322897257">03.22.89.72.57</a></p>
+                <div class="info-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <div>
+                        <strong>Contact</strong>
+                        <span><a href="tel:0322897257">03.22.89.72.57</a></span>
                     </div>
                 </div>
-
-                <div class="quick-item">
-                    <div class="quick-icon">💬</div>
-                    <div class="quick-text">
-                        <h3>Infos / Fermetures</h3>
-                        <p>WhatsApp + réseaux sociaux</p>
+                <div class="info-item">
+                    <i class="fa-solid fa-bell"></i>
+                    <div>
+                        <strong>Alertes</strong>
+                        <span>Groupe WhatsApp</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        {# --- SECTION 1 : PLANNING --- #}
-        <section class="schedule-section">
-            <div class="intro-text text-center">
-                <p>Le club est ouvert sur les créneaux suivants (hors jours fériés et imprévus).</p>
-            </div>
-
+        {# --- PLANNING SECTION --- #}
+        <section class="container section-spacer">
             <div class="schedule-grid">
-
+                
                 {# Lundi / Mercredi / Vendredi #}
-                <article class="schedule-card primary-card">
-                    <div class="card-header">
-                        <div class="icon-day"></div>
-                        <h3>Lundi • Mercredi • Vendredi</h3>
-                        <span class="pill pill-blue">Créneaux principaux</span>
+                <div class="schedule-card active-day">
+                    <div class="card-glow"></div>
+                    <div class="card-head">
+                        <h3>Lun • Mer • Ven</h3>
+                        <span class="day-tag">Créneaux Longs</span>
                     </div>
-
-                    <div class="card-body">
-                        <div class="time-block">
-                            <div class="time-chip">Matin</div>
-                            <div class="time-range">10h00 — 12h00</div>
+                    <div class="card-times">
+                        <div class="time-slot">
+                            <span class="slot-label">Matin</span>
+                            <span class="slot-hour">10:00 — 12:00</span>
                         </div>
-
-                        <div class="divider"></div>
-
-                        <div class="time-block">
-                            <div class="time-chip">Après-midi</div>
-                            <div class="time-range">16h00 — 20h00</div>
+                        <div class="time-separator"></div>
+                        <div class="time-slot">
+                            <span class="slot-label">Après-midi</span>
+                            <span class="slot-hour">16:00 — 20:00</span>
                         </div>
                     </div>
-
-                    <div class="card-footer">
-                        <span class="note">* Vendredi : fermeture possible à 18h45 (veilles de compétition)</span>
+                    <div class="card-foot">
+                        <p>* Ven : Fermeture possible 18h45 (Compétition)</p>
                     </div>
-                </article>
+                </div>
 
                 {# Mardi / Jeudi #}
-                <article class="schedule-card secondary-card">
-                    <div class="card-header">
-                        <div class="icon-day"></div>
-                        <h3>Mardi • Jeudi</h3>
-                        <span class="pill pill-green">Créneaux réguliers</span>
+                <div class="schedule-card active-day">
+                    <div class="card-head">
+                        <h3>Mar • Jeu</h3>
+                        <span class="day-tag">Créneaux Soir</span>
                     </div>
-
-                    <div class="card-body">
-                        <div class="time-block">
-                            <div class="time-chip">Matin</div>
-                            <div class="time-range">10h00 — 12h00</div>
+                    <div class="card-times">
+                        <div class="time-slot">
+                            <span class="slot-label">Matin</span>
+                            <span class="slot-hour">10:00 — 12:00</span>
                         </div>
-
-                        <div class="divider"></div>
-
-                        <div class="time-block">
-                            <div class="time-chip">Après-midi</div>
-                            <div class="time-range">16h00 — 19h30</div>
+                        <div class="time-separator"></div>
+                        <div class="time-slot">
+                            <span class="slot-label">Après-midi</span>
+                            <span class="slot-hour">16:00 — 19:30</span>
                         </div>
                     </div>
-                </article>
+                </div>
 
                 {# Week-end #}
-                <article class="schedule-card closed-card">
-                    <div class="card-header">
-                        <div class="icon-day"></div>
-                        <h3>Samedi • Dimanche</h3>
-                        <span class="pill pill-red">Fermé</span>
+                <div class="schedule-card closed-day">
+                    <div class="card-head">
+                        <h3>Sam • Dim</h3>
+                        <span class="day-tag closed">Fermé</span>
                     </div>
-
-                    <div class="card-body centered-body">
-                        <span class="closed-badge">FERMÉ</span>
-                        <p>Repos ou compétitions extérieures</p>
-                        <div class="mini-hint">Les infos sont annoncées sur WhatsApp et nos réseaux.</div>
+                    <div class="closed-content">
+                        <i class="fa-solid fa-calendar-xmark"></i>
+                        <p>Repos ou Compétitions extérieures</p>
                     </div>
-                </article>
+                </div>
 
             </div>
         </section>
 
-        {# --- SECTION 2 : INFOS IMPORTANTES --- #}
-        <section class="info-section">
-            <h2 class="section-heading">Informations Pratiques</h2>
-
-            <div class="info-grid">
-
-                <div class="info-box info-volunteer">
-                    <div class="info-icon">
-                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
+        {# --- INFOS PRATIQUES --- #}
+        <section class="bg-dark-alternate section-spacer">
+            <div class="container">
+                <h2 class="section-heading centered" style="margin-top: 50px;">Infos <span>Pratiques</span></h2>
+                <div class="info-blocks-grid mt-5">
+                    <div class="info-mini-card">
+                        <i class="fa-solid fa-handshake-angle"></i>
+                        <h4>Gestion Bénévole</h4>
+                        <p>Le club vit grâce à nos bénévoles. Les horaires peuvent varier selon leurs impératifs.</p>
                     </div>
-                    <div class="info-content">
-                        <h3>Gestion Bénévole</h3>
-                        <p>Notre club vit grâce à l'engagement de bénévoles. Les horaires peuvent varier exceptionnellement selon leurs disponibilités professionnelles ou personnelles. Merci de votre compréhension.</p>
+                    <div class="info-mini-card">
+                        <i class="fa-solid fa-trophy"></i>
+                        <h4>Compétitions</h4>
+                        <p>Le vendredi soir précédant un match à domicile, la salle ferme à 18h45 pour installation.</p>
                     </div>
-                </div>
-
-                <div class="info-box info-competition">
-                    <div class="info-icon">
-                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                        </svg>
-                    </div>
-                    <div class="info-content">
-                        <h3>Jours de Compétition</h3>
-                        <p>Lors des week-ends de compétition à domicile, la salle ferme exceptionnellement le <strong>vendredi à 18h45</strong> pour l'installation du plateau.</p>
+                    <div class="info-mini-card">
+                        <i class="fa-solid fa-mobile-screen-button"></i>
+                        <h4>WhatsApp</h4>
+                        <p>Rejoignez le groupe pour être informé en temps réel des fermetures exceptionnelles.</p>
                     </div>
                 </div>
-
-                <div class="info-box info-weather">
-                    <div class="info-icon">
-                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <div class="info-content">
-                        <h3>Restez Connectés</h3>
-                        <p>Neige, jour férié ou imprévu ? Les fermetures ponctuelles sont annoncées en priorité sur notre <strong>groupe WhatsApp</strong> et nos réseaux sociaux.</p>
-                    </div>
+                
+                <div class="call-to-action-horaires">
+                    <p>Un doute sur l'ouverture ?</p>
+                    <a href="tel:0322897257" class="btn-phone"><i class="fa-solid fa-phone-volume"></i> Appeler le club</a>
                 </div>
-
-            </div>
-
-            <div class="info-note">
-                <span class="info-note-icon">ℹ️</span>
-                <p>En cas de doute, n’hésitez pas à nous appeler avant de vous déplacer.</p>
-                <a class="info-note-btn" href="tel:0322897257">Appeler le club</a>
             </div>
         </section>
 

@@ -1,94 +1,95 @@
 document.addEventListener("DOMContentLoaded", () => {
-    
-    // =========================================================
-    // 1. GESTION DU SLIDER ATHLÈTES
-    // =========================================================
-    const track = document.getElementById("athleteTrack");
-    const prevBtn = document.getElementById("prevAthlete");
-    const nextBtn = document.getElementById("nextAthlete");
 
-    if (track && prevBtn && nextBtn) {
-        
-        // Fonction pour calculer la largeur de défilement dynamiquement
-        // On prend la largeur du premier enfant + le gap (écart)
-        const getScrollAmount = () => {
-            const firstCard = track.firstElementChild;
-            if (!firstCard) return 285; // Valeur par défaut si vide
-            
-            const style = window.getComputedStyle(track);
-            const gap = parseFloat(style.columnGap) || 25; // Récupère le gap du CSS
-            return firstCard.offsetWidth + gap;
-        };
+  // =========================================================
+  // 1. GESTION DU SLIDER ATHLÈTES
+  // =========================================================
+  const track = document.getElementById("athleteTrack");
+  const prevBtn = document.getElementById("prevAthlete");
+  const nextBtn = document.getElementById("nextAthlete");
 
-        nextBtn.addEventListener("click", () => {
-            track.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
-        });
+  const scroller = track?.closest(".athlete-viewport") || track;
 
-        prevBtn.addEventListener("click", () => {
-            track.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
-        });
+  if (track && scroller && prevBtn && nextBtn) {
 
-        // Gestion visuelle des boutons (Opacité)
-        const updateButtonState = () => {
-            // Marge de tolérance de 5px pour les écrans haute densité
-            const maxScrollLeft = track.scrollWidth - track.clientWidth - 5;
-            
-            prevBtn.style.opacity = track.scrollLeft <= 0 ? "0.5" : "1";
-            prevBtn.style.pointerEvents = track.scrollLeft <= 0 ? "none" : "auto";
+    const getScrollAmount = () => {
+      const firstCard = track.firstElementChild;
+      if (!firstCard) return 285;
 
-            nextBtn.style.opacity = track.scrollLeft >= maxScrollLeft ? "0.5" : "1";
-            nextBtn.style.pointerEvents = track.scrollLeft >= maxScrollLeft ? "none" : "auto";
-        };
+      // On récupère gap (flex) ou columnGap (grid) selon le cas
+      const style = window.getComputedStyle(track);
+      const gap =
+        parseFloat(style.gap) ||
+        parseFloat(style.columnGap) ||
+        parseFloat(style.rowGap) ||
+        25;
 
-        track.addEventListener("scroll", updateButtonState);
-        // On écoute aussi le redimensionnement de la fenêtre
-        window.addEventListener("resize", updateButtonState);
-        
-        // Init
-        updateButtonState();
-    }
+      return firstCard.getBoundingClientRect().width + gap;
+    };
 
-    // =========================================================
-    // 2. GESTION DU CALENDRIER (AJAX)
-    // =========================================================
-    
-    // On utilise la délégation d'événement car les boutons sont recréés à chaque clic
-    document.body.addEventListener('click', function(e) {
-        
-        const navBtn = e.target.closest('.js-calendar-nav');
-        if (!navBtn) return;
+    const updateButtonState = () => {
+      // tolérance
+      const maxScrollLeft = scroller.scrollWidth - scroller.clientWidth - 5;
 
-        e.preventDefault(); 
-        
-        const url = navBtn.href;
-        // Transformation de l'URL pour appeler la route AJAX
-        const ajaxUrl = url.replace('/competition/', '/ajax/competition/');
-        const container = document.querySelector('#calendar-container');
+      const atStart = scroller.scrollLeft <= 0;
+      const atEnd = scroller.scrollLeft >= maxScrollLeft;
 
-        if (container) {
-            container.style.opacity = '0.5';
-            container.style.pointerEvents = 'none'; // Empêche le double clic pendant le chargement
+      prevBtn.style.opacity = atStart ? "0.5" : "1";
+      prevBtn.style.pointerEvents = atStart ? "none" : "auto";
 
-            fetch(ajaxUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error("Erreur réseau");
-                    return response.text();
-                })
-                .then(html => {
-                    container.innerHTML = html;
-                    container.style.opacity = '1';
-                    container.style.pointerEvents = 'auto';
-                    
-                    // Mise à jour de l'URL du navigateur (Historique)
-                    window.history.pushState({}, '', url);
-                })
-                .catch(error => {
-                    console.error('Erreur chargement calendrier:', error);
-                    container.style.opacity = '1';
-                    container.style.pointerEvents = 'auto';
-                    // En cas d'erreur, on redirige vers la page classique pour ne pas bloquer l'utilisateur
-                    window.location.href = url;
-                });
-        }
+      nextBtn.style.opacity = atEnd ? "0.5" : "1";
+      nextBtn.style.pointerEvents = atEnd ? "none" : "auto";
+    };
+
+    nextBtn.addEventListener("click", () => {
+      scroller.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
     });
+
+    prevBtn.addEventListener("click", () => {
+      scroller.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
+    });
+
+    scroller.addEventListener("scroll", updateButtonState);
+    window.addEventListener("resize", updateButtonState);
+
+    // Init après un “tick” pour être sûr que les widths sont calculées
+    requestAnimationFrame(updateButtonState);
+  }
+
+  // =========================================================
+  // 2. GESTION DU CALENDRIER (AJAX)
+  // =========================================================
+  document.body.addEventListener('click', function(e) {
+
+    const navBtn = e.target.closest('.js-calendar-nav');
+    if (!navBtn) return;
+
+    e.preventDefault();
+
+    const url = navBtn.href;
+    const ajaxUrl = url.replace('/competition/', '/ajax/competition/');
+    const container = document.querySelector('#calendar-container');
+
+    if (container) {
+      container.style.opacity = '0.5';
+      container.style.pointerEvents = 'none';
+
+      fetch(ajaxUrl)
+        .then(response => {
+          if (!response.ok) throw new Error("Erreur réseau");
+          return response.text();
+        })
+        .then(html => {
+          container.innerHTML = html;
+          container.style.opacity = '1';
+          container.style.pointerEvents = 'auto';
+          window.history.pushState({}, '', url);
+        })
+        .catch(error => {
+          console.error('Erreur chargement calendrier:', error);
+          container.style.opacity = '1';
+          container.style.pointerEvents = 'auto';
+          window.location.href = url;
+        });
+    }
+  });
 });

@@ -3,13 +3,14 @@
 namespace App\Form;
 
 use App\Entity\Article;
+use App\Entity\ArticleCategory;
+use App\Repository\ArticleCategoryRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType; // 👈 Pour le select de catégorie
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
@@ -20,38 +21,46 @@ class ArticleType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre de l’article',
-                'attr' => ['placeholder' => 'Entrez le titre...']
+                'label' => 'Article title',
+                'attr' => ['placeholder' => 'Enter the title...'],
+                'trim' => true,
+                'empty_data' => '',
             ])
             ->add('publishedAt', DateTimeType::class, [
-                'label' => 'Date de publication',
+                'label' => 'Publication date',
                 'widget' => 'single_text',
+                'required' => true,
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
-                'attr' => ['placeholder' => 'Rédigez le contenu de l’article...']
+                'attr' => ['placeholder' => 'Write the article content...'],
+                'trim' => true,
+                'required' => false,
             ])
             ->add('photo', FileType::class, [
-                'label' => 'Image de l’article',
+                'label' => 'Article image',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '5M',
+                        'maxSizeMessage' => 'The image is too large (max 5MB).',
                         'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp'],
-                        'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPEG, PNG, WebP).',
+                        'mimeTypesMessage' => 'Please upload a valid image (JPEG, PNG, WebP).',
                     ])
                 ],
             ])
-            ->add('categorie', ChoiceType::class, [
-                'label' => 'Catégorie',
-                'choices' => [
-                    '#Événement' => '#Événement',
-                    '#Actualité' => '#Actualité',
-                    '#Annonce' => '#Annonce',
-                ],
-                'placeholder' => 'Sélectionnez une catégorie',
+            ->add('category', EntityType::class, [
+                'label' => 'Category',
+                'class' => ArticleCategory::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Select a category',
                 'required' => false,
+                // ✅ Tri des catégories par nom
+                'query_builder' => function (ArticleCategoryRepository $repo) {
+                    return $repo->createQueryBuilder('c')
+                        ->orderBy('c.name', 'ASC');
+                },
             ]);
     }
 

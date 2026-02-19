@@ -15,10 +15,12 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     /**
-     * Pour la home : récupère les N derniers articles (triés par date).
+     * For homepage: get the latest N articles (sorted by published date).
      */
     public function findLatest(int $limit = 3): array
     {
+        $limit = max(1, min($limit, 50));
+
         return $this->createQueryBuilder('a')
             ->orderBy('a.publishedAt', 'DESC')
             ->setMaxResults($limit)
@@ -27,31 +29,31 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     /**
-     * Récupère les articles filtrés par catégorie (string), date et pagination.
-     * Retourne ['data' => Article[], 'total' => int]
+     * Get filtered articles by category name, date range and pagination.
+     * Returns ['data' => Article[], 'total' => int]
      */
     public function findFilteredArticles(
-        ?string $categorieName,
-        ?string $dateFrom,
-        ?string $dateTo,
+        ?string $categoryName,
+        ?\DateTimeImmutable $dateFrom,
+        ?\DateTimeImmutable $dateTo,
         int $page,
         int $limit
     ): array {
         $page = max(1, $page);
-        $limit = max(1, $limit);
+        $limit = max(1, min($limit, 100)); // safety cap
         $offset = ($page - 1) * $limit;
 
-        $qb = $this->baseFilteredQb($categorieName, $dateFrom, $dateTo);
+        $qb = $this->baseFilteredQb($categoryName, $dateFrom, $dateTo);
 
-        // ✅ Total via COUNT SQL (rapide)
+        // Total count (fast)
         $countQb = clone $qb;
         $total = (int) $countQb
-            ->select('COUNT(a.id)')
+            ->select('COUNT(DISTINCT a.id)')
             ->resetDQLPart('orderBy')
             ->getQuery()
             ->getSingleScalarResult();
 
-        // ✅ Data paginée
+        // Paginated data
         $data = $qb
             ->setFirstResult($offset)
             ->setMaxResults($limit)
@@ -65,27 +67,32 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     /**
-     * Construit le QueryBuilder de base avec filtres.
+     * Base QueryBuilder with filters.
      */
-    private function baseFilteredQb(?string $categorieName, ?string $dateFrom, ?string $dateTo): QueryBuilder
-    {
+    private function baseFilteredQb(
+        ?string $categoryName,
+        ?\DateTimeImmutable $dateFrom,
+        ?\DateTimeImmutable $dateTo
+    ): QueryBuilder {
         $qb = $this->createQueryBuilder('a')
+            ->leftJoin('a.category', 'c')   // ✅ relation
+            ->addSelect('c')                // évite N+1 si tu affiches la catégorie
             ->orderBy('a.publishedAt', 'DESC');
 
-        if ($categorieName) {
-            $qb->andWhere('LOWER(a.categorie) = LOWER(:catname)')
-                ->setParameter('catname', $categorieName);
+        if ($categoryName) {
+            $qb->andWhere('LOWER(c.name) = LOWER(:catname)')
+                ->setParameter('catname', trim($categoryName));
         }
 
-        if (!empty($dateFrom)) {
-            // si dateFrom invalide => DateTime va throw, tu peux try/catch si besoin
+        if ($dateFrom) {
             $qb->andWhere('a.publishedAt >= :dateFrom')
-                ->setParameter('dateFrom', new \DateTimeImmutable($dateFrom));
+                ->setParameter('dateFrom', $dateFrom);
         }
 
-        if (!empty($dateTo)) {
+        if ($dateTo) {
+            // inclure toute la journée si dateTo est juste une date (00:00:00)
             $qb->andWhere('a.publishedAt <= :dateTo')
-                ->setParameter('dateTo', (new \DateTimeImmutable($dateTo))->setTime(23, 59, 59));
+                ->setParameter('dateTo', $dateTo->setTime(23, 59, 59));
         }
 
         return $qb;

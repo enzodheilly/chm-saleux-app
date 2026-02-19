@@ -1,167 +1,115 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Présentation du Club - CHM Saleux{% endblock %}
+{% block title %}Présentation du Club — CHM Saleux{% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/menu_dropdown/a_propos_de_notre_club/presentation_club/index.css') }}">
 {% endblock %}
 
 {% block body %}
 
-    {# --- HEADER IMMERSIF --- #}
-    <header class="page-header">
-        {# Image de fond (tu peux changer le path) #}
-        <div class="header-bg" style="background-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/presentation_club/ddd.jpg') }}');"></div>
-        <div class="header-overlay"></div>
-        
+    {# --- HEADER ELITE --- #}
+    <header class="page-header-sport" style="--bg-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/presentation_club/ddd.jpg') }}');">
+        <div class="header-overlay-gradient"></div>
         <div class="container header-content">
-            <a href="{{ path('home') }}" class="back-link">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                <span>Retour à l'accueil</span>
-            </a>
-            
-            <div class="header-title-box">
-                <span class="subtitle">Depuis 1984</span>
-                <h1>L'Esprit CHM Saleux</h1>
-                <p>Bien plus qu'une salle de sport. Une association bâtie sur l'amitié, la performance et le partage.</p>
+            <nav class="breadcrumb-nav">
+                <a href="{{ path('home') }}" class="back-link-minimal">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                </a>
+            </nav>
+
+            <div class="header-main-box">
+                <div class="badge-accent">Depuis 1984</div>
+                <h1>L'Esprit <span class="text-outline">CHM Saleux</span></h1>
+                <p class="lead">Bien plus qu'une salle de sport. Une association bâtie sur l'amitié, la performance et le partage depuis 40 ans.</p>
             </div>
         </div>
     </header>
 
-    <main class="main-container">
+    <main class="presentation-root">
 
-        {# --- SECTION 1 : HISTOIRE (Split Layout) --- #}
-        <section class="section-history">
+        {# --- SECTION HISTOIRE --- #}
+        <section class="container section-spacer">
             <div class="split-layout">
                 <div class="split-content">
-                    <h2 class="section-heading">Notre Histoire</h2>
-                    <p class="lead-text">
-                        Fondé en 1984 au cœur de Saleux par Michel et Francine, le CHM est né d’une volonté simple : offrir un espace sérieux et chaleureux.
+                    <h2 class="section-heading">Notre <span>Histoire</span></h2>
+                    <p class="desc-text-large">
+                        Fondé en 1984 par Michel et Francine, le CHM est né d’une volonté simple : offrir un espace d'entraînement sérieux et chaleureux au cœur de Saleux.
                     </p>
-                    <p>
-                        Au fil des années, le club s’est développé autour de valeurs fortes telles que la progression, le partage et le respect. Grâce à l’engagement de ses fondateurs et de ses membres, le CHM est devenu un lieu incontournable pour tous ceux qui souhaitent s’entraîner dans une ambiance conviviale et motivante.
-                    </p>
-                    <p>
-                        Des centaines d’adhérents sont passés par nos bancs, chacun avec son objectif : prise de masse, perte de poids, préparation physique ou performance.
-                    </p>
+                    <div class="bio-content">
+                        <p>Grâce à l’engagement de ses fondateurs, le club est devenu un lieu incontournable. Des centaines d’adhérents ont franchi nos portes avec un objectif commun : se dépasser dans une ambiance familiale.</p>
+                    </div>
                 </div>
                 <div class="split-image">
                     <div class="image-frame">
                         <img src="{{ asset('images/menu_dropdown/a_propos_de_notre_club/presentation_club/2.jpg') }}" alt="Histoire du club">
-                    </div>
-                    <div class="experience-badge">
-                        <span class="years">40+</span>
-                        <span class="label">Ans d'expérience</span>
+                        <div class="experience-floating-badge">
+                            <span class="years">40+</span>
+                            <span class="label">Ans de passion</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        {# --- SECTION 2 : VALEURS (Grid Cards) --- #}
-        <section class="section-values">
-            <div class="text-center mb-5">
-                <h2 class="section-heading centered">Nos Piliers</h2>
-                <p class="section-subtitle">Ce qui nous rassemble et nous fait avancer.</p>
-            </div>
-
-            <div class="values-grid">
-                <article class="value-card">
-                    <div class="icon-box">💪</div>
-                    <h3>Dépassement de soi</h3>
-                    <p>La progression se construit dans la constance. Nous valorisons l’effort intelligent et durable.</p>
-                </article>
-
-                <article class="value-card">
-                    <div class="icon-box">🤝</div>
-                    <h3>Convivialité</h3>
-                    <p>Quel que soit ton niveau, tu es accueilli avec bienveillance. Ici, on se soutient et on progresse ensemble.</p>
-                </article>
-
-                <article class="value-card">
-                    <div class="icon-box">🔓</div>
-                    <h3>Accessibilité</h3>
-                    <p>Débuter ici ne demande aucune condition. Tu évolues à ton rythme, accompagné par des passionnés.</p>
-                </article>
-
-                <article class="value-card">
-                    <div class="icon-box">🛡️</div>
-                    <h3>Sécurité</h3>
-                    <p>Technique, charge adaptée et prévention des blessures sont nos priorités absolues.</p>
-                </article>
+        {# --- SECTION VALEURS --- #}
+        <section class="bg-dark-alternate section-spacer">
+            <div class="container">
+                <div class="intro-centered-box mb-5">
+                    <h2 class="section-heading centered" style="margin-top: 50px;">Nos <span>Piliers</span></h2>
+                </div>
+                <div class="values-grid">
+                    <div class="value-card">
+                        <div class="value-icon">💪</div>
+                        <h3>Dépassement</h3>
+                        <p>Nous valorisons l'effort intelligent et la constance dans la progression.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">🤝</div>
+                        <h3>Convivialité</h3>
+                        <p>Ici, on se soutient. Quel que soit ton niveau, tu es chez toi.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">🛡️</div>
+                        <h3>Sécurité</h3>
+                        <p>Technique et prévention des blessures sont nos priorités absolues.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
-        {# --- SECTION 3 : LE BUREAU (Team Grid) --- #}
-        <section class="section-team">
-            <h2 class="section-heading centered">Le Bureau</h2>
-            <p class="section-subtitle text-center">Les bénévoles qui font vivre l'association au quotidien.</p>
-
-            <div class="staff-grid">
-                {# Carte Président (Mise en avant) #}
-                <article class="staff-card president-card">
-                    <div class="staff-photo">
-                        <img src="{{ asset('images/club/president.jpg') }}" alt="Florian ROHAUT">
-                    </div>
-                    <div class="staff-info">
+        {# --- SECTION BUREAU --- #}
+        <section class="container section-spacer">
+            <h2 class="section-heading centered" style="margin-top: 50px;">Le <span>Bureau</span></h2>
+            <div class="staff-grid mt-5">
+                <div class="staff-card highlight-staff">
+                    <img src="{{ asset('images/menu_dropdown/membres_du_bureau/president/president.jpg') }}" alt="Florian">
+                    <div class="staff-overlay">
                         <h3>Florian ROHAUT</h3>
-                        <span class="role">Président</span>
-                        <p class="staff-bio">Ancien compétiteur, Florian porte les valeurs de passion et de discipline du CHM.</p>
+                        <span>Président</span>
                     </div>
-                </article>
-
-                {# Autres membres #}
-                <article class="staff-card">
-                    <div class="staff-photo">
-                        <img src="{{ asset('images/club/bureau-secretaire.png') }}" alt="Ema BERTRAND">
-                    </div>
-                    <div class="staff-info">
+                </div>
+                <div class="staff-card">
+                    <img src="{{ asset('images/menu_dropdown/membres_du_bureau/secretaire/secretaire.png') }}" alt="Ema">
+                    <div class="staff-overlay">
                         <h3>Ema BERTRAND</h3>
-                        <span class="role">Secrétaire</span>
+                        <span>Secrétaire</span>
                     </div>
-                </article>
-
-                <article class="staff-card">
-                    <div class="staff-photo">
-                        <img src="{{ asset('images/club/bureau-tresorier.png') }}" alt="Aurore BERTRAND">
-                    </div>
-                    <div class="staff-info">
+                </div>
+                <div class="staff-card">
+                    <img src="{{ asset('images/menu_dropdown/membres_du_bureau/tresorier/tresorier.jpg') }}" alt="Aurore">
+                    <div class="staff-overlay">
                         <h3>Aurore BERTRAND</h3>
-                        <span class="role">Trésorière</span>
+                        <span>Trésorière</span>
                     </div>
-                </article>
-
-                <article class="staff-card">
-                    <div class="staff-photo">
-                        <img src="{{ asset('images/club/bg3.jpg') }}" alt="Marianne NOM">
+                </div>
+                        <div class="staff-card">
+                    <img src="{{ asset('images/menu_dropdown/membres_du_bureau/membre_bureau/1.png') }}" alt="Marianne BOULANGER-BAILLEUX">
+                    <div class="staff-overlay">
+                        <h3>Marianne BOULANGER-BAILLEUX</h3>
+                        <span>Membre du bureau</span>
                     </div>
-                    <div class="staff-info">
-                        <h3>Marianne NOM</h3>
-                        <span class="role">Membre du bureau</span>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        {# --- SECTION 4 : ALBUM (Marquee Infini) --- #}
-        <section class="section-gallery">
-            <h2 class="section-heading">La vie du club</h2>
-            
-            <div class="marquee-wrapper">
-                <div class="marquee-track">
-                    {# On boucle deux fois pour l'effet infini #}
-                    {% for i in 1..10 %}
-                        <div class="marquee-item">
-                            <img src="{{ asset('images/club/' ~ i ~ '.jpg') }}" alt="Photo {{ i }}" loading="lazy">
-                        </div>
-                    {% endfor %}
-                    {# Duplication pour le scroll infini #}
-                    {% for i in 1..10 %}
-                        <div class="marquee-item">
-                            <img src="{{ asset('images/club/' ~ i ~ '.jpg') }}" alt="Photo {{ i }}" loading="lazy">
-                        </div>
-                    {% endfor %}
                 </div>
             </div>
         </section>
