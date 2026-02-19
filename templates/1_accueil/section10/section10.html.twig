@@ -1,155 +1,104 @@
-<section class="cc-hero-section">
-  <div class="container">
-    <div class="cc-grid">
+{# --- SECTION : COURS COLLECTIFS --- #}
+<section class="home-cc-section">
+    <div class="container">
+        <div class="cc-grid-layout">
 
-      <div class="cc-content">
-        <span class="cc-badge">COURS COLLECTIFS</span>
-        <h2 class="cc-title">L’énergie du groupe,<br>la progression en plus.</h2>
+            {# Contenu Texte #}
+            <div class="cc-info-side">
+                <h2 class="cc-main-title">L’énergie du groupe,<br><span class="text-outline">la progression en plus.</span></h2>
+                
+                <p class="cc-description">
+                    Marre de s'entraîner seul ? Rejoignez nos séances rythmées et encadrées par des coachs diplômés. Du cardio au renforcement, on se dépasse ensemble dans une ambiance survoltée.
+                </p>
 
-        <p class="cc-desc">
-          Marre de s'entraîner seul ? Rejoignez nos séances rythmées et encadrées par des coachs diplômés.
-          Du cardio au renforcement, on se motive ensemble.
-        </p>
+                <div class="cc-stats-grid">
+                    <div class="stat-elite-box">
+                        <i class="fa-regular fa-clock"></i>
+                        <div class="stat-text">
+                            <span class="v">45</span>
+                            <span class="u">min / séance</span>
+                        </div>
+                    </div>
+                    <div class="stat-elite-box accent">
+                        <i class="fa-solid fa-calendar-week"></i>
+                        <div class="stat-text">
+                            <span class="v">2</span>
+                            <span class="u">cours / semaine</span>
+                        </div>
+                    </div>
+                    <div class="stat-elite-box">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <div class="stat-text">
+                            <span class="v">100%</span>
+                            <span class="u">Adapté à tous</span>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="cc-stats-wrapper">
+          <div class="cc-cta-group">
+    <a href="{{ path('cours_collectifs') }}" class="btn-elite">
+        Découvrir les cours <i class="fa-solid fa-arrow-right"></i>
+    </a>
+</div>
 
-          <div class="cc-stat-box highlight">
-            <div class="stat-icon">
-              <i class="fa-regular fa-clock" aria-hidden="true"></i>
             </div>
-            <div class="stat-info">
-              <span class="stat-value">45</span>
-              <span class="stat-unit">minutes / séance</span>
-            </div>
-          </div>
 
-          <div class="cc-stat-box highlight">
-            <div class="stat-icon">
-              <i class="fa-solid fa-calendar-week" aria-hidden="true"></i>
+            {# Visuel avec Floating Cards #}
+            <div class="cc-visual-side">
+                <div class="image-stack">
+                    <div class="main-img-frame">
+                        <img src="{{ asset('images/menu_dropdown/services_du_club/cours_collectifs/cours-co.jpg') }}" alt="Cours Collectifs CHM">
+                    </div>
+                    
+                    <div class="floating-cards-container">
+                        <div class="mini-card float-1">
+                            <div class="m-icon cardio"><i class="fa-solid fa-heart-pulse"></i></div>
+                            <div class="m-txt"><strong>Cardio</strong><span>Intensité</span></div>
+                        </div>
+                        <div class="mini-card float-2">
+                            <div class="m-icon renfo"><i class="fa-solid fa-dumbbell"></i></div>
+                            <div class="m-txt"><strong>Renfo</strong><span>Tonification</span></div>
+                        </div>
+                        <div class="mini-card float-3">
+                            <div class="m-icon zen"><i class="fa-solid fa-leaf"></i></div>
+                            <div class="m-txt"><strong>Zen</strong><span>Mobilité</span></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="stat-info">
-              <span class="stat-value">2</span>
-              <span class="stat-unit">cours / semaine</span>
-            </div>
-          </div>
-
-          <div class="cc-stat-box">
-            <div class="stat-icon">
-              <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
-            </div>
-            <div class="stat-info">
-              <span class="stat-value">100%</span>
-              <span class="stat-unit">adapté à tous</span>
-            </div>
-          </div>
 
         </div>
-
-        <div class="cc-actions">
-          <a href="{{ path('cours_collectifs') }}" class="btn-primary-action">
-            En savoir plus
-          </a>
-          <a href="#cc-avis" class="btn-text-action" aria-label="Aller aux avis des cours collectifs">
-            Lire les avis
-          </a>
-        </div>
-      </div>
-
-      <div class="cc-visual">
-        <div class="image-frame">
-          <img
-            src="{{ asset('images/menu_dropdown/services_du_club/cours_collectifs/cours-co.jpg') }}"
-            alt="Ambiance pendant un cours collectif"
-            loading="lazy"
-            decoding="async"
-          >
-        </div>
-
-        <div class="floating-cards">
-          <div class="mini-card cardio">
-            <i class="fa-solid fa-heart-pulse" aria-hidden="true"></i>
-            <div>
-              <strong>Cardio</strong>
-              <span>Brûler &amp; Transpirer</span>
-            </div>
-          </div>
-
-          <div class="mini-card renfo">
-            <i class="fa-solid fa-dumbbell" aria-hidden="true"></i>
-            <div>
-              <strong>Renfo</strong>
-              <span>Tonifier &amp; Sculpter</span>
-            </div>
-          </div>
-
-          <div class="mini-card zen">
-            <i class="fa-solid fa-leaf" aria-hidden="true"></i>
-            <div>
-              <strong>Zen</strong>
-              <span>Mobilité &amp; Détente</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
-  </div>
 </section>
 
-<section class="cc-reviews-section" id="cc-avis">
-  <div class="container">
+{# --- SECTION : AVIS CLIENTS --- #}
+<section class="home-reviews-section" id="cc-avis">
+    <div class="container">
+        <div class="reviews-top">
+            <h3 class="reviews-title">Ils s'entraînent <span class="text-outline">avec nous</span></h3>
+            <div class="reviews-nav">
+                <span class="scroll-hint">Scrollez pour lire <i class="fa-solid fa-arrow-right-long"></i></span>
+            </div>
+        </div>
 
-    <div class="reviews-header">
-      <h3>Ils s'entraînent avec nous</h3>
-      <div class="separator" aria-hidden="true"></div>
+        <div class="reviews-slider">
+            {% set reviews = [
+                {n: 'Sarah M.', i: 'S', t: 'Super ambiance et coachs au top ! J’ai repris le sport avec plaisir grâce à l\'énergie du groupe.'},
+                {n: 'Julien D.', i: 'J', t: 'Séances dynamiques de 45min, c\'est parfait pour mon emploi du temps. On se sent fier après.'},
+                {n: 'Nadia K.', i: 'N', t: 'Une source de motivation énorme. Je ne rate plus ma séance du mardi !'},
+                {n: 'Alex P.', i: 'A', t: 'On progresse vite, on s’accroche grâce au collectif. Ça change tout par rapport à la muscu solo.'}
+            ] %}
+
+            {% for r in reviews %}
+                <div class="review-elite-card">
+                    <div class="rev-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="rev-quote">"{{ r.t }}"</p>
+                    <div class="rev-user">
+                        <div class="rev-avatar">{{ r.i }}</div>
+                        <span class="rev-name">{{ r.n }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-
-    <div class="reviews-scroller" aria-label="Avis des adhérents">
-
-      <article class="review-card" aria-label="Avis de Sarah M. : 5 sur 5">
-        <div class="review-header">
-          <div class="avatar s-color" aria-hidden="true">S</div>
-          <div class="meta">
-            <span class="name">Sarah M.</span>
-            <div class="stars" aria-hidden="true">★★★★★</div>
-          </div>
-        </div>
-        <p class="quote">“Super ambiance et coachs au top ! J’ai repris le sport avec plaisir grâce à l'énergie du groupe.”</p>
-      </article>
-
-      <article class="review-card" aria-label="Avis de Julien D. : 5 sur 5">
-        <div class="review-header">
-          <div class="avatar j-color" aria-hidden="true">J</div>
-          <div class="meta">
-            <span class="name">Julien D.</span>
-            <div class="stars" aria-hidden="true">★★★★★</div>
-          </div>
-        </div>
-        <p class="quote">“Séances dynamiques de 45min, c'est parfait pour mon emploi du temps. On se sent fier après.”</p>
-      </article>
-
-      <article class="review-card" aria-label="Avis de Nadia K. : 5 sur 5">
-        <div class="review-header">
-          <div class="avatar n-color" aria-hidden="true">N</div>
-          <div class="meta">
-            <span class="name">Nadia K.</span>
-            <div class="stars" aria-hidden="true">★★★★★</div>
-          </div>
-        </div>
-        <p class="quote">“Une source de motivation énorme. Je ne rate plus ma séance du mardi !”</p>
-      </article>
-
-      <article class="review-card" aria-label="Avis de Alex P. : 5 sur 5">
-        <div class="review-header">
-          <div class="avatar a-color" aria-hidden="true">A</div>
-          <div class="meta">
-            <span class="name">Alex P.</span>
-            <div class="stars" aria-hidden="true">★★★★★</div>
-          </div>
-        </div>
-        <p class="quote">“On progresse vite, on s’accroche grâce au collectif. Ça change tout par rapport à la muscu solo.”</p>
-      </article>
-
-    </div>
-  </div>
 </section>

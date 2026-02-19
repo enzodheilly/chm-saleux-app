@@ -1,49 +1,72 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}{{ article.title }} - CHM Saleux{% endblock %}
+
 {% block stylesheets %}
-	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('css/accueil/section4/actualites/showarticles.css') }}">
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/accueil/section4/actualites/showarticles.css') }}">
 {% endblock %}
 
 {% block body %}
+<main class="article-root">
 
-<!-- Fil d’Ariane -->
-<section class="breadcrumb-banner">
-    <div class="breadcrumb-container">
-        <a href="{{ path('home') }}">ACCUEIL</a>
-        <span>&gt;</span>
-        <a href="{{ path('actualites') }}">ACTUALITÉS</a>
-        <span>&gt;</span>
-        <span class="current">{{ article.title|upper }}</span>
-    </div>
-</section>
+    {# --- HEADER DE L'ARTICLE --- #}
+    <header class="article-hero">
+        {% if article.photo %}
+            <div class="hero-bg" style="background-image: url('{{ asset('uploads/' ~ article.photo) }}');"></div>
+        {% endif %}
+        <div class="hero-overlay"></div>
+        
+        <div class="container hero-content">
+            <nav class="article-breadcrumb">
+                <a href="{{ path('home') }}">Accueil</a>
+                <i class="fa-solid fa-chevron-right"></i>
+                <a href="{{ path('actualites') }}">Actualités</a>
+            </nav>
 
-<!-- Contenu de l’article -->
-<article class="article-detail">
-    <a href="{{ path('actualites') }}" class="back-link">← Retour aux actualités</a>
-
-    {% if article.categorie is defined and article.categorie %}
-        <span class="article-category">{{ article.categorie|upper }}</span>
-    {% endif %}
-
-    <h1>{{ article.title }}</h1>
-
-    {% if article.publishedAt %}
-        <span class="news-date">{{ article.publishedAt|date('d F Y') }}</span>
-    {% endif %}
-
-    {% if article.photo %}
-        <img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}">
-    {% endif %}
-
-    {% if article.description %}
-        <p>{{ article.description }}</p>
-    {% endif %}
-
-    {% if article.content is defined and article.content %}
-        <div class="article-content">
-            {{ article.content|raw }}
+            <div class="title-area">
+                {% if article.category %}
+                    <span class="badge-category">{{ article.category|upper }}</span>
+                {% endif %}
+                <h1>{{ article.title }}</h1>
+                <div class="article-meta">
+                    <span class="meta-item"><i class="fa-regular fa-calendar-check"></i> {{ article.publishedAt|date('d/m/Y') }}</span>
+                    <span class="meta-item"><i class="fa-regular fa-clock"></i> 3 min de lecture</span>
+                </div>
+            </div>
         </div>
-    {% endif %}
-</article>
+    </header>
+
+    {# --- CONTENU DE L'ARTICLE --- #}
+    <section class="article-body-wrapper">
+        <div class="container-narrow">
+            
+            <a href="{{ path('actualites') }}" class="back-to-news">
+                <i class="fa-solid fa-arrow-left-long"></i> Retour aux actualités
+            </a>
+
+            {# Corps de l'article #}
+        {# On remplace article.content par article.description #}
+{% if article.description %}
+    <div class="article-main-content">
+        {{ article.description|raw }}
+    </div>
+{% endif %}
+
+            {# Footer d'article #}
+            <footer class="article-footer">
+                <div class="share-box">
+                    <span>Partager cet article :</span>
+                    <div class="share-links">
+                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </section>
+
+</main>
 {% endblock %}

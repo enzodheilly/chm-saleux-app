@@ -9,26 +9,23 @@
 {% block body %}
 
     {# --- HEADER IMMERSIF --- #}
-    <header class="page-header">
-        <div class="header-bg" style="background-image: url('{{ asset('images/menu_dropdown/services_du_club/musculation/1.jpg') }}');"></div>
-        <div class="header-overlay"></div>
-        
-        <div class="container header-content">
-            <a href="{{ path('home') }}" class="back-link">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                <span>Retour à l'accueil</span>
-            </a>
-            
-            <div class="header-title-box">
-                <span class="subtitle">Santé & Performance</span>
-                <h1>La Musculation</h1>
-                <p>Bien plus que soulever des poids. Sculptez votre corps, renforcez votre santé et améliorez votre quotidien.</p>
-            </div>
-            <a href="#intro" class="cta-scroll">En savoir plus ↓</a>
-        </div>
-    </header>
+        <header class="page-header-sport" style="--bg-image: url('{{ asset('images/menu_dropdown/services_du_club/musculation/1.jpg') }}');">
+  <div class="header-overlay-gradient"></div>
+
+  <div class="container header-content">
+    <nav class="breadcrumb-nav">
+      <a href="{{ path('home') }}" class="back-link-minimal">
+        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+      </a>
+    </nav>
+
+    <div class="header-main-box">
+      <div class="badge-accent">Santé & Performance</div>
+      <h1>La Musculation<span class="text-outline"></span></h1>
+      <p class="lead">Bien plus que soulever des poids. Sculptez votre corps, renforcez votre santé et améliorez votre quotidien.</p>
+    </div>
+  </div>
+</header>
 
     <main class="main-container">
 

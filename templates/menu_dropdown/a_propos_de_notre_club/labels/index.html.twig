@@ -3,143 +3,99 @@
 {% block title %}Labels & Certifications - CHM Saleux{% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/menu_dropdown/a_propos_de_notre_club/labels/index.css') }}">
 {% endblock %}
 
 {% block body %}
 
-    {# --- HEADER IMMERSIF (NE PAS TOUCHER) --- #}
-    <header class="page-header">
-        <div class="header-bg" style="background-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/labels/1.jpg') }}');"></div>
-        <div class="header-overlay"></div>
-
+    {# --- HEADER ELITE --- #}
+    <header class="page-header-sport" style="--bg-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/labels/1.jpg') }}');">
+        <div class="header-overlay-gradient"></div>
         <div class="container header-content">
-            <a href="{{ path('home') }}" class="back-link">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                <span>Retour à l'accueil</span>
-            </a>
+            <nav class="breadcrumb-nav">
+                <a href="{{ path('home') }}" class="back-link-minimal">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                </a>
+            </nav>
 
-            <div class="header-title-box">
-                <span class="subtitle">Reconnaissance Fédérale</span>
-                <h1>Labels Qualité</h1>
-                <p>Performance, Pédagogie et Santé. Découvrez les certifications officielles qui valident notre expertise auprès de tous les publics.</p>
+            <div class="header-main-box">
+                <div class="badge-accent">Reconnaissance Fédérale</div>
+                <h1>Labels <span class="text-outline">Qualité</span></h1>
+                <p class="lead">Performance, Pédagogie et Santé. Découvrez les certifications officielles qui valident notre expertise.</p>
             </div>
         </div>
     </header>
+    
 
-<main class="main-container">
+    <main class="labels-root">
 
-        {# --- SECTION 1 : LA PROMESSE (Intro) --- #}
-        <section class="promise-section">
-            <div class="container-narrow">
-                <div class="promise-badge">Engagement Qualité</div>
-                <h2 class="promise-title">Pourquoi ces labels comptent pour vous ?</h2>
-                <p class="promise-text">
-                    Au CHM Saleux, nos certifications ne sont pas juste des logos sur un mur. 
-                    Elles garantissent que vous pratiquez dans une structure auditée, sécurisée 
-                    et reconnue par la Fédération Française pour son excellence pédagogique.
+        {# --- SECTION INTRO --- #}
+        <section class="container section-spacer">
+            <div class="intro-centered-box">
+                <h2 class="section-heading centered">L'excellence <span>certifiée</span></h2>
+                <p class="desc-text-large">
+                    Au CHM Saleux, nos certifications garantissent que vous pratiquez dans une structure auditée, sécurisée et reconnue par la FFHM pour son excellence pédagogique.
                 </p>
                 
-                <div class="key-benefits">
-                    <div class="benefit-item">
-                        <div class="benefit-icon"><i class="fa-solid fa-user-graduate"></i></div>
-                        <span>Encadrement Diplômé</span>
-                    </div>
-                    <div class="benefit-item">
-                        <div class="benefit-icon"><i class="fa-solid fa-shield-heart"></i></div>
-                        <span>Pratique Sécurisée</span>
-                    </div>
-                    <div class="benefit-item">
-                        <div class="benefit-icon"><i class="fa-solid fa-medal"></i></div>
-                        <span>Matériel Homologué</span>
-                    </div>
+                <div class="benefit-row mt-5">
+                    <div class="benefit-chip"><i class="fa-solid fa-user-graduate"></i> Encadrement Diplômé</div>
+                    <div class="benefit-chip"><i class="fa-solid fa-shield-heart"></i> Pratique Sécurisée</div>
+                    <div class="benefit-chip"><i class="fa-solid fa-medal"></i> Matériel Homologué</div>
                 </div>
             </div>
         </section>
 
-        {# --- SECTION 2 : LES LABELS (DÉTAILLÉS) --- #}
-        <section class="certifications-section">
+        {# --- SECTION LABELS --- #}
+        <section class="bg-dark-alternate section-spacer">
             <div class="container">
                 
-                {# Label 1 : École #}
-                <article class="certif-card highlight-card">
-                    <div class="certif-content">
-                        <div class="certif-header">
-                            <span class="certif-icon-box gold"><i class="fa-solid fa-star"></i></span>
-                            <h3>École d'Haltérophilie & Club Formateur</h3>
-                        </div>
-                        <p class="certif-desc">
-                            Ce label d'excellence récompense notre savoir-faire dans l'accueil et la formation des jeunes athlètes.
-                            Il valide notre capacité à enseigner les mouvements techniques avec pédagogie et sécurité.
-                        </p>
-                        <ul class="certif-points">
-                            <li><i class="fa-solid fa-check"></i> Apprentissage progressif par niveaux</li>
-                            <li><i class="fa-solid fa-check"></i> Détection et suivi des talents</li>
-                            <li><i class="fa-solid fa-check"></i> Participation aux compétitions fédérales</li>
+                {# Label Principal : École #}
+                <article class="label-main-card">
+                    <div class="label-main-content">
+                        <div class="label-tag gold-tag"><i class="fa-solid fa-award"></i> Label Or</div>
+                        <h3>École d'Haltérophilie & Club Formateur</h3>
+                        <p>Ce label récompense notre savoir-faire dans l'accueil et la formation des jeunes. Il valide notre pédagogie et notre sécurité.</p>
+                        <ul class="elite-list">
+                            <li><i class="fa-solid fa-check"></i> Apprentissage par niveaux</li>
+                            <li><i class="fa-solid fa-check"></i> Suivi des jeunes talents</li>
+                            <li><i class="fa-solid fa-check"></i> Compétitions fédérales</li>
                         </ul>
                     </div>
-                    <div class="certif-visual" style="background-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/labels/1.jpg') }}');">
-                        </div>
+                    <div class="label-main-img" style="background-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/labels/1.jpg') }}');"></div>
                 </article>
 
-                {# Grille pour les autres labels #}
-                <div class="secondary-labels-grid">
-                    
-                    {# Label 2 : Muscu Loisir #}
-                    <article class="certif-card simple-card">
-                        <div class="certif-icon-box blue"><i class="fa-solid fa-dumbbell"></i></div>
-                        <h3>Musculation Loisir</h3>
-                        <p>
-                            Garantit un accès libre à un plateau de musculation complet et entretenu, 
-                            permettant une pratique autonome ou guidée dans une ambiance conviviale.
-                        </p>
-                    </article>
-
-                    {# Label 3 : Muscu Bien-être #}
-                    <article class="certif-card simple-card">
-                        <div class="certif-icon-box green"><i class="fa-solid fa-heart-pulse"></i></div>
-                        <h3>Musculation Bien-être</h3>
-                        <p>
-                            Certifie notre compétence à accueillir des publics cherchant une pratique "Santé". 
-                            Adaptation des charges, prévention des blessures et lutte contre la sédentarité.
-                        </p>
-                    </article>
-
-                    {# Label 4 : Sport Santé (Optionnel si pertinent) #}
-                    <article class="certif-card simple-card">
-                        <div class="certif-icon-box purple"><i class="fa-solid fa-users"></i></div>
-                        <h3>Affiliation FFHM</h3>
-                        <p>
-                            En tant que club affilié, nous respectons scrupuleusement les règlements fédéraux, 
-                            assurant une éthique sportive irréprochable et une assurance adaptée.
-                        </p>
-                    </article>
-
+                {# Grille Labels Secondaires #}
+                <div class="labels-grid mt-4">
+                    <div class="label-small-card">
+                        <div class="icon-circle blue-icon"><i class="fa-solid fa-dumbbell"></i></div>
+                        <h4>Musculation Loisir</h4>
+                        <p>Accès libre à un plateau complet pour une pratique autonome ou guidée.</p>
+                    </div>
+                    <div class="label-small-card">
+                        <div class="icon-circle green-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                        <h4>Musculation Bien-être</h4>
+                        <p>Adaptation des charges et prévention santé pour tous les âges.</p>
+                    </div>
+                    <div class="label-small-card">
+                        <div class="icon-circle purple-icon"><i class="fa-solid fa-users-gear"></i></div>
+                        <h4>Affiliation FFHM</h4>
+                        <p>Respect strict des règlements et éthique sportive irréprochable.</p>
+                    </div>
                 </div>
 
             </div>
         </section>
 
-        {# --- SECTION 3 : PARTENAIRES & CONFIANCE --- #}
-        <section class="trust-section">
-            <div class="container-narrow">
-                <div class="trust-box">
-                    <div class="trust-logo">
-                        <img src="{{ asset('images/ffhm.png') }}" alt="Logo FFHM" onerror="this.style.display='none'">
-                        <h4 class="trust-fallback">Fédération Française d'Haltérophilie - Musculation</h4>
-                    </div>
-                    <div class="trust-content">
-                        <h4>Un gage de sérieux</h4>
-                        <p>
-                            Le CHM Saleux est audité régulièrement par la Fédération. 
-                            Ces labels sont renouvelés périodiquement sur la base de critères stricts : 
-                            diplômes des encadrants, qualité des installations et résultats sportifs.
-                        </p>
-                        <a href="http://www.ffhaltero.fr" target="_blank" class="trust-link">
-                            En savoir plus sur la FFHM <i class="fa-solid fa-arrow-right"></i>
-                        </a>
+        {# --- TRUST BOX --- #}
+        <section class="container section-spacer">
+            <div class="ffhm-trust-box">
+                <div class="trust-flex">
+                    <img src="{{ asset('images/ffhm.png') }}" alt="FFHM" class="ffhm-logo">
+                    <div class="trust-text">
+                        <h3>Un gage de sérieux</h3>
+                        <p>Le CHM Saleux est audité régulièrement. Nos labels sont renouvelés sur la base de critères stricts : diplômes, installations et résultats.</p>
+                        <a href="https://www.ffhaltero.fr" target="_blank" class="elite-btn-link">En savoir plus sur la FFHM <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>

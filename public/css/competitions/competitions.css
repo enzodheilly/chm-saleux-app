@@ -1,130 +1,416 @@
-/* --- VARIABLES --- */
+/* =========================================
+   1. VARIABLES & CONFIGURATION
+   ========================================= */
 :root {
-    --primary-color: #0056b3;
-    --accent-color: #e31b23;
-    --dark-bg: #111;
-    --text-main: #333;
-    --text-muted: #666;
-    --bg-light: #f8f9fa;
-    --border-radius: 12px;
+  /* Couleurs */
+  --primary-color: #1a1a1a;
+  --bg-darker: #111;
+  --bg-card: #121212;
+  --accent-color: #F57706;
+  --text-primary: #ffffff;
+  --text-muted: #adb5bd;
+
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --card-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+
+  /* Layout */
+  --nav-height: 80px; /* Hauteur de ta navbar fixe */
+  --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* --- HEADER (Héritage des autres pages) --- */
-.page-header {
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-height) + 20px);
+}
+
+body {
+  background-color: var(--bg-darker);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 0.25rem;
+}
+
+/* =========================================
+   2. HEADER SPORTIF (MÊME QUE PRICING / ÉQUIPES)
+   ✅ remplace ton ancien .page-header
+   ========================================= */
+.page-header-sport {
     position: relative;
+    padding-top: var(--nav-height);
     height: 60vh;
-    min-height: 400px;
-    display: flex;
-    align-items: center;
-    color: white;
-    background-size: cover;
-    background-position: center 20%;
-    margin-bottom: 60px;
+    min-height: 450px;
+    display: flex; align-items: center;
+    background-color: var(--bg-darker);
+    margin-bottom: 0; /* On gère l'espace avec section-spacer ensuite */
 }
-.header-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.4));
-    z-index: 1;
+.page-header-sport::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: var(--bg-image);
+    background-size: cover; background-position: center 35%;
+    z-index: 1; filter: grayscale(30%);
 }
-.header-content { position: relative; z-index: 2; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px;top:65px; }
-.back-link { display: inline-flex; align-items: center; gap: 10px; color: white; text-decoration: none; margin-bottom: 20px; opacity: 0.8; transition: 0.3s; }
-.back-link:hover { opacity: 1; }
-.header-title-box h1 { font-size: 3.5rem; font-weight: 900; margin: 10px 0; }
-.subtitle { background: var(--primary-color); padding: 4px 10px; border-radius: 4px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; }
+.header-overlay-gradient {
+    position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(to right, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.6) 100%);
+}
+.header-content { position: relative; z-index: 3; width: 100%;top:10px; }
 
-/* --- MAIN CONTAINER --- */
-.main-container { max-width: 1200px; margin: 0 auto; padding: 0 20px 80px; }
+.badge-accent {
+    background: var(--accent-color); color: white;
+    padding: 6px 14px; font-weight: 800; font-size: 0.75rem;
+    text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
+}
+.header-main-box h1 {
+    font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 900;
+    text-transform: uppercase; line-height: 1; margin: 0 0 1.5rem 0;color: #fff;
+}
+.text-outline { -webkit-text-stroke: 1px white; color: transparent; }
+.header-main-box .lead {
+    font-size: 1.2rem; color: #ccc; max-width: 650px; line-height: 1.6;
+}
 
-.section-title-wrapper { text-align: center; margin-bottom: 40px; }
-.section-heading { font-size: 2.2rem; font-weight: 800; color: #111; position: relative; display: inline-block; margin-bottom: 10px; }
-.section-heading::after { content: ''; display: block; width: 60px; height: 4px; background: var(--primary-color); margin: 10px auto 0; }
+.back-link-minimal {
+    color: var(--accent-color); text-decoration: none;
+    font-weight: 700; text-transform: uppercase; font-size: 0.8rem;
+    letter-spacing: 2px; display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 3rem; transition: var(--transition);
+}
+.back-link-minimal:hover { color: white; }
+/* =========================================
+   3. STRUCTURE PRINCIPALE
+   ========================================= */
+.main-container {
+  padding: 5rem 2rem;
+  background-color: var(--bg-darker);
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
 
-/* --- CALENDAR --- */
+.calendar-section,
+.teams-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title-wrapper {
+  margin-bottom: 3rem;
+}
+
+.section-heading {
+  font-size: 2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 0.5rem;
+}
+
+.section-heading::before {
+  content: '';
+  width: 4px;
+  height: 35px;
+  background: var(--accent-color);
+}
+
+.section-title-wrapper p {
+  color: var(--text-muted);
+  margin-left: 20px;
+  font-size: 1rem;
+}
+
+/* =========================================
+   4. CALENDRIER (GRID SYSTEM)
+   ========================================= */
 .calendar-card {
-    background: white;
-    border-radius: var(--border-radius);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-    padding: 40px;
-    margin-bottom: 80px;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: var(--card-shadow);
 }
-.calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-.nav-btn { background: #f0f2f5; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.3s; }
-.nav-btn:hover { background: var(--primary-color); color: white; }
-.current-month { font-size: 1.5rem; font-weight: 800; }
 
-.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
-.day-name { text-align: center; font-weight: 700; color: var(--text-muted); text-transform: uppercase; font-size: 0.8rem; padding-bottom: 15px; }
-.day-cell { 
-    background: #fdfdfd; 
-    border: 1px solid #f0f0f0; 
-    min-height: 100px; 
-    padding: 10px; 
-    border-radius: 8px; 
-    position: relative; 
-    transition: 0.3s;
+/* Navigation Mois */
+.calendar-header-minimal {
+  margin-bottom: 2rem;
 }
-.day-cell:hover { border-color: var(--primary-color); background: #fff; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-.day-number { font-weight: 700; color: #888; }
-.day-cell.has-event { background: #f0f7ff; border-color: #cfe2ff; }
-.day-cell.has-event .day-number { color: var(--primary-color); }
 
-.event-indicator { margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
-.event-indicator .dot { width: 8px; height: 8px; background: var(--primary-color); border-radius: 50%; }
-.event-label { font-size: 0.7rem; font-weight: 700; color: var(--primary-color); text-transform: uppercase; }
+.month-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
 
-/* Couleur par défaut (Bleu) */
-.day-cell.has-event .dot { background: #005b94; }
-.day-cell.has-event .event-label { color: #005b94; }
+.current-month-display {
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  min-width: 250px;
+  text-align: center;
+}
 
-/* Si le type est 'National' (Rouge) */
-.day-cell.event-national .dot { background: #e31b23; }
-.day-cell.event-national .event-label { color: #e31b23; }
+.nav-arrow {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: white;
+  transition: var(--transition);
+}
+.nav-arrow:hover {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+}
 
-/* Si le type est 'Interne' (Orange) */
-.day-cell.event-interne .dot { background: #f57706; }
-.day-cell.event-interne .event-label { color: #f57706; }
+/* Grille Principale */
+.calendar-main-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+  background: var(--glass-border);
+  gap: 1px;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
 
-.day-cell.empty { background: #f9f9f9; border: none; }
+.day-header {
+  background: #111;
+  padding: 1rem 0.5rem;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
 
-/* --- TEAMS GRID --- */
-.teams-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px; }
+.day-cell-wrapper {
+  background: var(--bg-card);
+  min-height: 120px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.day-cell-wrapper:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+.day-cell-wrapper.empty {
+  background: #0a0a0a;
+}
+
+.day-num {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+/* Événements dans le calendrier */
+.mini-event-tag {
+  background: rgba(230, 57, 70, 0.15);
+  border-left: 2px solid var(--accent-color);
+  padding: 4px 6px;
+  border-radius: 2px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.event-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.event-name {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================================
+   5. GRID ÉQUIPES
+   ========================================= */
+.teams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2.5rem;
+}
 
 .team-card {
-    position: relative;
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    height: 400px;
-    text-decoration: none;
-    display: block;
+  position: relative;
+  background: var(--bg-card);
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
 }
-.card-img-box { position: absolute; inset: 0; }
-.card-img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s ease; }
-.card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 20%, transparent); }
+
+.team-card:hover {
+  transform: translateY(-10px);
+  border-color: var(--accent-color);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.card-img-box {
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+}
+
+.card-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.team-card:hover .card-img-box img {
+  transform: scale(1.1);
+}
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--bg-card) 0%, transparent 50%);
+}
+
+.pille {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: var(--accent-color);
+  color: white;
+  padding: 5px 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  z-index: 2;
+}
 
 .card-info {
-    position: absolute; inset: 0;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    z-index: 2;
-    color: white;
+  padding: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
-.pille { align-self: flex-start; background: var(--accent-color); padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin-bottom: 15px; }
-.card-info h3 { font-size: 2rem; line-height: 1.1; margin-bottom: 10px; font-weight: 400; }
-.card-info h3 strong { font-weight: 900; text-transform: uppercase; }
-.card-info p { opacity: 0.8; font-size: 0.95rem; margin-bottom: 20px; }
-.card-footer-link { font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; }
+.card-info h3 {
+  font-size: 1.8rem;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+.card-info h3 strong {
+  color: var(--accent-color);
+}
+.card-info p {
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
 
-.team-card:hover .card-img-box img { transform: scale(1.1); }
-.team-card:hover .card-info .card-footer-link { color: var(--accent-color); }
+.card-footer-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent-color);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
 
-/* --- RESPONSIVE --- */
-@media (max-width: 900px) {
-    .calendar-grid { grid-template-columns: repeat(7, 1fr); gap: 5px; }
-    .day-cell { min-height: 60px; padding: 5px; }
-    .event-label { display: none; }
-    .teams-grid { grid-template-columns: 1fr; }
-    .team-card { height: 350px; }
-    .header-title-box h1 { font-size: 2.5rem; }
+/* =========================================
+   6. RESPONSIVE MOBILE FIXES
+   ========================================= */
+@media (max-width: 768px) {
+  /* ✅ HEADER SPORTIF : même comportement que pricing */
+  .page-header-sport {
+    height: auto !important;
+    min-height: 400px !important;
+  }
+
+  .header-content {
+    top: 0 !important;
+  }
+
+  .page-header-sport .container{
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  .header-main-box h1 {
+    font-size: 2.7rem !important;
+    line-height: 1.1;
+  }
+
+  /* --- CALENDRIER MOBILE --- */
+  .calendar-main-grid {
+    border: none;
+    background: transparent;
+    gap: 5px;
+  }
+
+  .day-cell-wrapper {
+    min-height: 60px;
+    padding: 5px;
+    border-radius: 6px;
+    border: 1px solid var(--glass-border);
+  }
+
+  /* Sur mobile, on cache le texte des events, on garde juste un point */
+  .event-name {
+    display: none;
+  }
+  .mini-event-tag {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    background: var(--accent-color);
+    border-radius: 50%;
+    margin: 2px auto 0;
+  }
+
+  .current-month-display {
+    font-size: 1.2rem;
+    min-width: auto;
+  }
+
+  /* --- TEAMS GRID --- */
+  .teams-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* --- LAYOUT --- */
+  .main-container {
+    padding: 3rem 1rem;
+    gap: 4rem;
+  }
 }

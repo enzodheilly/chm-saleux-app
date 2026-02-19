@@ -1,367 +1,472 @@
-/* --- VARIABLES --- */
+/* =========================================
+   1. VARIABLES & BASE (Elite Dark Theme)
+   ✅ HEADER + PARALLAX inchangés
+   ✅ CORPS DE PAGE en BLANC
+   ========================================= */
 :root {
-    --primary-color: #005b94;
-    --accent-color: #f57706;
-    --text-dark: #1f2937;
-    --text-light: #6b7280;
-    --bg-white: #ffffff;
-    --bg-gray: #f9fafb;
-    --border-radius: 16px;
-    --shadow: 0 10px 30px rgba(0,0,0,0.08);
+    /* (on garde tes variables dark pour le header/parallax) */
+    --bg-darker: #111;
+    --bg-card: #121212;
+    --bg-alt: #0d0d0d;
+    --accent-red: #F57706;
+
+    /* ⚠️ ton texte était en noir, OK pour le corps blanc */
+    --text-primary: #000000;
+    --text-secondary: #a0a0a0;
+
+    --border-soft: rgba(255, 255, 255, 0.08);
+    --nav-height: 60px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body {
-    background-color: #fff;
-    color: var(--text-dark);
+/* ✅ PAGE /pricing : corps blanc */
+.pricing-root {
+    background-color: var(--bg-darker);
+    color: #111111;
+    font-family: 'Inter', sans-serif;
+    padding-bottom: 5rem;
 }
 
-/* --- HEADER (Re-stylisé) --- */
-.page-header {
+/* Tes sections dark (2 et 4) */
+.bg-dark-alternate{
+  background-color: var(--bg-darker);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* container */
+.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 24px;           /* au lieu de 0.25rem */
+}
+
+.section-spacer { padding: 6rem 0; }
+
+/* ✅ sections alternées : blanc aussi (au lieu de dark) */
+.bg-dark-alternate {
+    background-color: var(--bg-darker);
+    border-top: 1px solid rgba(0,0,0,0.08);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+/* =========================================
+   2. HEADER (Compact & Sportif)
+   ✅ INCHANGÉ (photo + overlay + dark)
+   ========================================= */
+.page-header-sport {
     position: relative;
+    padding-top: var(--nav-height);
     height: 60vh;
-    min-height: 400px;
-    display: flex;
-    align-items: center;
-    color: white;
-    background-size: cover;
-    background-position: center;
+    min-height: 450px;
+    display: flex; align-items: center;
+    background-color: var(--bg-darker);
+    margin-bottom: 0;
+}
+.page-header-sport::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: var(--bg-image);
+    background-size: cover; background-position: center 5%;
+    z-index: 1; filter: grayscale(30%);
+}
+.header-overlay-gradient {
+    position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(to right, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.6) 100%);
+}
+.header-content { position: relative; z-index: 3; width: 100%; top:25px; }
+
+.badge-accent {
+    background: var(--accent-red); color: white;
+    padding: 6px 14px; font-weight: 800; font-size: 0.75rem;
+    text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
+}
+.header-main-box h1 {
+    font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 900;
+    text-transform: uppercase; line-height: 1; margin: 0 0 1.5rem 0;color: #fff;
+}
+.text-outline { -webkit-text-stroke: 1px white; color: transparent; }
+.header-main-box .lead {
+    font-size: 1.2rem; color: #ccc; max-width: 650px; line-height: 1.6;
 }
 
-.header-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(rgba(0,0,0,0.8), rgba(0, 91, 148, 0.4));
+.back-link-minimal {
+    color: var(--accent-red); text-decoration: none;
+    font-weight: 700; text-transform: uppercase; font-size: 0.8rem;
+    letter-spacing: 2px; display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 3rem; transition: var(--transition);
 }
+.back-link-minimal:hover { color: white; }
 
-.header-content {
-    position: relative;
-    z-index: 5;
-    top:65px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    color: #fff;
-    text-decoration: none;
-    font-weight: 600;
-    margin-bottom: 20px;
-    opacity: 0.8;
-}
-
-.header-title-box h1 {
-    font-size: 3.5rem;
-    font-weight: 900;
-}
-
-.subtitle {
-    background: var(--accent-color);
-    padding: 4px 12px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 800;
-    letter-spacing: 1px;
-}
-
-.text-center { text-align: center; }
-
-/* ========================================================= */
-/* =================  1. CARTES DE TARIFS  ================= */
-/* ========================================================= */
-
-/* --- CONFIGURATION --- */
-.sleek-pricing-section {
-    padding: 80px 0;
-    background-color: #ffffff;
-    color: #1f2937; /* Gris très foncé, moins dur que le noir pur */
-  }
-  
-  .container-narrow {
-    max-width: 1100px; /* Largeur contenue pour éviter l'effet "étiré" */
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-  
-  /* --- HEADER SECTION --- */
-  .pricing-header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  
-  .section-title {
-    font-size: 2.2rem; /* Taille raisonnable */
-    font-weight: 800;
-    margin-bottom: 15px;
-    letter-spacing: -0.5px;
+/* =========================================
+   3. TYPOGRAPHIE & TITRES
+   ✅ adapté au fond blanc
+   ========================================= */
+.title-with-bar {
+    font-size: 2rem; font-weight: 900; text-transform: uppercase;
+    display: flex; align-items: center; gap: 15px; margin-bottom: 1.5rem;
     color: #111;
-  }
-  
-  .section-subtitle {
-    font-size: 1rem;
-    color: #6b7280; /* Gris moyen */
-    line-height: 1.5;
-  }
-  
-  /* --- SWITCH SELECTOR (Segmented Control) --- */
-  .pricing-selector-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 50px;
-  }
-  
-  .pricing-selector {
-    position: relative;
-    display: flex;
-    background: #f3f4f6; /* Fond gris clair */
-    padding: 4px;
+}
+.title-with-bar span { color: var(--accent-red); }
+
+.center-bar { justify-content: center; text-align: center; flex-direction: column; gap: 10px; }
+.center-bar::after { 
+    content: ''; display: block; width: 50px; height: 4px; 
+    background: var(--accent-red); margin-top: 10px;
+}
+
+.section-header-center { text-align: center; margin-bottom: 4rem; }
+.section-header-center p { color: #6b7280; font-size: 1.1rem; margin-top: -1rem; }
+
+/* =========================================
+   4. SÉLECTEUR (SWITCH)
+   ✅ adapté au fond blanc
+   ========================================= */
+.pricing-selector-wrapper {
+    display: flex; justify-content: center; margin-bottom: 3rem;
+}
+
+.pricing-selector {
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.10);
+    padding: 5px;
     border-radius: 50px;
-    border: 1px solid #e5e7eb;
-  }
-  
-  /* Cache les radios */
-  .pricing-selector input { display: none; }
-  
-  .selector-item {
+    display: flex;
     position: relative;
-    z-index: 2;
-    padding: 10px 25px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: #6b7280;
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.pricing-selector input { display: none; }
+
+.pricing-selector label {
+    padding: 10px 30px;
     cursor: pointer;
-    transition: color 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .discount-tag {
-    background: #F57706;
-    color: white;
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 10px;
-  }
-  
-  /* Le fond blanc qui glisse */
-  .selector-glider {
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    z-index: 1;
-    height: calc(100% - 8px);
-    width: calc(50% - 4px); /* Suppose 2 options */
-    background: white;
-    border-radius: 40px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-  }
-  
-  /* États actifs */
-  #type-standard:checked ~ .selector-glider { transform: translateX(0%); }
-  #type-student:checked ~ .selector-glider { transform: translateX(100%); }
-  #type-standard:checked + label { color: #111; }
-  #type-student:checked + label { color: #111; }
-  
-  
-  /* --- GRILLE --- */
-  .pricing-grid {
-    display: grid;
-    /* Colonnes auto-adaptatives mais pas trop larges */
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 25px;
-    align-items: stretch; /* Cartes de même hauteur */
-  }
-  
-  /* --- CARTE STANDARD --- */
-  .sleek-card {
-    background: white;
-    border: 1px solid #e5e7eb; /* Bordure fine grise */
-    border-radius: 16px;
-    padding: 35px 25px;
-    display: flex;
-    flex-direction: column;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    z-index: 2;
     position: relative;
-  }
-  
-  .sleek-card:hover {
-    border-color: #d1d5db;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  }
-  
-  /* --- CARTE POPULAIRE (Mise en avant subtile) --- */
-  .popular-card {
-    border: 2px solid #e63946; /* Bordure rouge plus épaisse */
-    background: #fffafa; /* Fond très légèrement teinté rouge */
-  }
-  
-  .popular-badge {
-    position: absolute;
-    top: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #F57706;
-    color: white;
-    font-size: 0.75rem;
     font-weight: 700;
-    text-transform: uppercase;
-    padding: 4px 15px;
-    border-radius: 20px;
-  }
-  
-  /* HEADER CARTE */
-  .card-header {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  .plan-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: #1f2937;
-    margin-bottom: 15px;
-    letter-spacing: 1px;
-  }
-  
-  .plan-price {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    line-height: 1;
-    color: #111;
-  }
-  
-  .currency {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-top: 4px;
-  }
-  
-  .price-value {
-    font-size: 3rem; /* Grand mais fin */
-    font-weight: 700; /* Pas trop gras */
-  }
-  
-  .period {
-    align-self: flex-end;
-    font-size: 1rem;
     color: #6b7280;
-    margin-bottom: 6px;
-    margin-left: 4px;
-  }
-  
-  .monthly-detail {
-    font-size: 0.85rem;
-    color: #9ca3af;
-    margin-top: 10px;
-  }
-  
-  .invisible { visibility: hidden; }
-  
-  /* BODY CARTE */
-  .card-body {
-    flex-grow: 1; /* Remplit l'espace */
-  }
-  
-  .trial-info {
-    font-weight: 600;
-    color: #002952;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.95rem;
-  }
-  
-  .features-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .features-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 12px;
-    font-size: 0.9rem;
-    color: #4b5563;
-    line-height: 1.4;
-  }
-  
-  .icon-check {
-    color: #F57706; /* Coche rouge pour tout le monde */
-    margin-top: 3px;
-    flex-shrink: 0;
-  }
-  
-  /* FOOTER & BOUTONS */
-  .card-footer {
-    margin-top: 30px;
-  }
-  
-  .btn-select {
-    display: block;
-    width: 100%;
-    text-align: center;
-    padding: 12px 0;
-    border-radius: 8px; /* Coins moins ronds = plus moderne */
-    font-weight: 700;
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-  
-  .btn-dark {
-    background: #1f2937;
+    transition: 0.3s;
+}
+
+.discount-badge {
+    background: #10b981;
     color: white;
-  }
-  .btn-dark:hover { background: #374151; }
-  
-  .btn-red {
-    background: #F57706;
-    color: white;
-    box-shadow: 0 4px 15px rgba(230, 57, 70, 0.2);
-  }
-  .btn-red:hover { background: #d62839; transform: translateY(-2px); }
-  
-  /* FOOTER NOTE */
-  .pricing-note {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 50px;
-    color: #6b7280;
-    font-size: 0.9rem;
-    background: #f9fafb;
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #e5e7eb;
-  }
-  
-  .pricing-note i { color: #002952; }
-  
-  /* MOBILE SPECIFIQUE PRICING */
-  @media (max-width: 768px) {
-    .pricing-grid {
-      grid-template-columns: 1fr; /* Une seule colonne */
-      max-width: 400px;
-      margin: 0 auto;
-    }
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    border-radius: 4px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.selector-highlight {
+    position: absolute; top: 5px; left: 5px; bottom: 5px; width: calc(50% - 5px);
+    background: var(--accent-red);
+    border-radius: 50px;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+#type-student:checked ~ .selector-highlight { left: 50%; }
+#type-standard:checked + label,
+#type-student:checked + label { color: white; }
+
+/* =========================================
+   5. CARTES ABONNEMENTS (SLEEK CARDS)
+   ========================================= */
+
+/* --- GRID identique Home (cartes fines + centrées) --- */
+.pricing-root .pricing-grid{
+  display: grid;
+
+  /* ✅ 3 cartes fines, pas full width */
+  grid-template-columns: repeat(3, minmax(0, 340px));
+  justify-content: center;
+
+  gap: 20px;
+  max-width: 1120px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+/* --- CARD (mapping .sleek-card -> .pricing-card-elite) --- */
+.pricing-root .sleek-card{
+  background: #121212;
+  border-radius: 16px;
+  padding: 22px;
+  border: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition, all .35s cubic-bezier(.23,1,.32,1));
+
+  /* ✅ bouton en bas */
+  display: flex;
+  flex-direction: column;
+}
+
+.pricing-root .sleek-card:hover{
+  transform: translateY(-8px);
+  border-color: rgba(245,119,6,0.55);
+}
+
+/* --- POPULAR (mapping .popular-card + .popular-badge) --- */
+.pricing-root .popular-card{
+  border-color: rgba(245,119,6,0.9);
+  background: #171717;
+  box-shadow: 0 18px 40px rgba(245,119,6,0.08);
+}
+
+.pricing-root .popular-badge{
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  left: auto;
+  transform: none;
+
+  background: var(--brand-orange, #F57706);
+  color: #fff;
+  font-size: .68rem;
+  font-weight: 900;
+  padding: 5px 10px;
+  border-radius: 999px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* --- TITRES / PRIX (mapping Home) --- */
+.pricing-root .sleek-card .card-header{
+  text-align: left;        /* comme home */
+  margin-bottom: 0;
+}
+
+.pricing-root .plan-title{
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 10px;
+}
+
+.pricing-root .plan-price{
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 6px;
+  margin: 16px 0 8px;
+  line-height: 1;
+  color: #fff;
+}
+
+.pricing-root .currency{
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--brand-orange, #F57706);
+  margin-top: 0;
+}
+
+.pricing-root .price-value{
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.pricing-root .period{
+  font-size: 1rem;
+  color: rgba(255,255,255,0.65);
+  margin: 0;
+}
+
+.pricing-root .monthly-detail{
+  font-size: .85rem;
+  color: rgba(255,255,255,0.55);
+  margin-top: 6px;
+}
+
+/* --- BODY / LISTE FEATURES (mapping .p-features) --- */
+.pricing-root .sleek-card .card-body{
+  flex: 1;
+  margin-top: 12px;
+}
+
+.pricing-root .trial-info{
+  color: rgba(255,255,255,0.85);
+}
+
+.pricing-root .features-list{
+  list-style: none;
+  padding: 0;
+  margin: 18px 0 16px;
+
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 16px;
+
+  flex: 1;
+}
+
+.pricing-root .features-list li{
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: #cfcfcf;
+  font-size: .92rem;
+  line-height: 1.45;
+}
+
+.pricing-root .icon-check{
+  color: var(--brand-orange, #F57706);
+  font-size: 1rem;
+  margin-top: 2px;
+}
+
+/* --- FOOTER / BOUTON (mapping .btn-pricing) --- */
+.pricing-root .sleek-card .card-footer{
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+.pricing-root .btn-select{
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 13px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: var(--transition, all .35s cubic-bezier(.23,1,.32,1));
+}
+
+/* CTA principal (orange) */
+.pricing-root .btn-red{
+  background: var(--brand-orange, #F57706);
+  color: #fff;
+  box-shadow: none;
+}
+
+.pricing-root .btn-red:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px rgba(245,119,6,0.22);
+}
+
+/* CTA secondaire (outline dark -> outline blanc) */
+.pricing-root .btn-dark{
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.14);
+}
+
+.pricing-root .btn-dark:hover{
+  border-color: #fff;
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   RESPONSIVE (même logique que Home)
+   ========================================= */
+
+/* Tablette */
+@media (max-width: 992px){
+  .pricing-root .pricing-grid{
+    grid-template-columns: repeat(2, minmax(0, 360px));
+    max-width: 820px;
+    gap: 18px;
   }
 
-/* ========================================================= */
-/* =================  2. TRANSITIONS PARALLAX  ============= */
-/* ========================================================= */
-.parallax-divider {
+  .pricing-root .popular-badge{
+    top: 14px;
+    right: 14px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px){
+  .pricing-root .pricing-grid{
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    padding: 0 18px;
+    gap: 14px;
+  }
+
+  .pricing-root .sleek-card{
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .pricing-root .price-value{
+    font-size: 2.45rem;
+  }
+
+  .pricing-root .features-list{
+    margin: 16px 0 14px;
+    padding-top: 14px;
+  }
+
+  .pricing-root .btn-select{
+    padding: 13px 12px;
+  }
+}
+
+/* Très petit mobile */
+@media (max-width: 420px){
+  .pricing-root .pricing-grid{
+    max-width: 100%;
+    padding: 0 14px;
+  }
+
+  .pricing-root .sleek-card{
+    padding: 18px;
+  }
+
+  .pricing-root .price-value{
+    font-size: 2.25rem;
+  }
+}
+
+/* NOTE (compatible avec .pricing-note ET .info-note) */
+.pricing-note,
+.info-note{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  margin: 50px auto 0;      /* ✅ centre le bloc */
+  max-width: 900px;         /* ✅ évite que ça prenne toute la ligne */
+  width: calc(100% - 3rem); /* ✅ respire sur mobile */
+
+  color: #111;              /* ou #6b7280 si tu veux gris */
+  font-size: 0.95rem;
+  background: #f9fafb;
+  padding: 16px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+.pricing-note i,
+.info-note i{
+  color: #002952;
+  flex: 0 0 auto;
+}
+
+/* ✅ centre le texte */
+.pricing-note p,
+.info-note p{
+  margin: 0;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* =========================================
+   6. PARALLAX SEPARATORS (Images Transition)
+   ✅ INCHANGÉ (photo + overlay sombre)
+   ========================================= */
+.parallax-separator {
     position: relative;
-    height: 400px;
+    height: 350px; 
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
@@ -370,325 +475,309 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: white;
-}
-
-.parallax-divider-pricing-parallax{
-    position: relative;
-    height: 400px;
-    background-attachment: fixed;
-    background-position: center -40%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
 }
 
 .parallax-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-}
-
-.parallax-content {
-    position: relative;
-    z-index: 2;
-}
-
-.parallax-content h2 {
-    font-size: 3rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-/* ========================================================= */
-/* =================  3. OFFRES SPÉCIFIQUES  =============== */
-/* ========================================================= */
-.section-light {
-    background: var(--bg-gray); /* J'ai remis la variable var(--bg-gray) si définie, sinon #f9fafb */
-    padding: 80px 20px; /* AJOUT : Padding gauche/droite pour que le texte ne touche pas le bord */
-}
-
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 30px;
-    
-    /* --- CORRECTION LARGEUR --- */
-    max-width: 1100px;    /* Bloque la largeur comme la section 1 */
-    margin: 40px auto 0;  /* Centre le bloc au milieu de l'écran */
-    width: 100%;          /* Assure qu'il prend la place dispo jusqu'au max-width */
-}
-
-.info-card {
-    background: white;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: var(--shadow);
-}
-
-.info-icon {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-}
-
-.custom-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-.custom-table td {
-    padding: 12px 0;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-/* ========================================================= */
-/* =================  4. TABLEAU DÉGRESSIF  ================ */
-/* ========================================================= */
-.section-white {
-    background: #fff;
-    padding: 80px 20px; /* AJOUT : Padding gauche/droite pour éviter de coller aux bords */
-}
-
-.table-container {
-    /* --- CORRECTION LARGEUR --- */
-    max-width: 1100px;    /* Bloque la largeur */
-    margin: 40px auto 0;  /* Centre le tableau */
-    
-    overflow-x: auto;     /* Garde le scroll horizontal sur mobile si besoin */
-    border-radius: 15px;
-    border: 1px solid #e2e8f0;
-}
-
-.custom-table th {
-    background: var(--primary-color);
-    color: white;
-    padding: 20px;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    text-align: left;
-}
-
-.section-white .custom-table td {
-    padding: 15px 20px;
-}
-/* ========================================================= */
-/* =================  5. FOOTER PAIEMENT  ================== */
-/* ========================================================= */
-/* --- SECTION CONTAINER --- */
-.payment-pro-section {
-    padding: 4rem 0;
-    background-color: #f8fafc; /* Gris très léger pour contraster avec le blanc */
-}
-
-/* --- LA CARTE PRINCIPALE --- */
-.payment-card-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08); /* Ombre douce et moderne */
-    overflow: hidden;
-    border: 1px solid #e2e8f0;
-}
-
-/* --- COLONNE GAUCHE (INFO) --- */
-.payment-info {
-    flex: 1 1 400px; /* Minimum 400px de large */
-    padding: 3rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.payment-badge {
-    display: inline-block;
-    background: #e0f2fe;
-    color: #0369a1; /* Bleu pro */
-    padding: 6px 14px;
-    border-radius: 50px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 1.5rem;
-    align-self: flex-start;
-}
-
-.payment-title {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: #0f172a;
-    line-height: 1.2;
-    margin-bottom: 1rem;
-}
-
-.payment-desc {
-    color: #64748b;
-    font-size: 1.05rem;
-    margin-bottom: 2rem;
-    line-height: 1.6;
-}
-
-/* Liste des avantages */
-.payment-features {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.payment-features li {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-    color: #334155;
-}
-
-.payment-features .icon-box {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: #f1f5f9;
-    color: #10b981; /* Vert validation */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 15px;
-    flex-shrink: 0;
-}
-
-/* --- COLONNE DROITE (VISUEL) --- */
-.payment-visual {
-    flex: 1 1 350px;
-    background: #f1f5f9; /* Fond légèrement contrasté */
-    padding: 3rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-left: 1px solid #e2e8f0;
-}
-
-.visual-header {
-    text-align: center;
-    font-weight: 600;
-    color: #475569;
-    margin-bottom: 2rem;
-    font-size: 0.9rem;
-}
-
-/* Timeline verticale */
-.timeline-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-}
-
-.step {
-    display: flex;
-    align-items: center;
-    position: relative;
-    z-index: 2;
-}
-
-.step-marker {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #fff;
-    border: 2px solid #cbd5e1;
-    color: #64748b;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 20px;
-    transition: all 0.3s ease;
-}
-
-/* Style de l'étape active (la première) */
-.step.active .step-marker {
-    background: #0f172a; /* Noir/Bleu foncé */
-    border-color: #0f172a;
-    color: #fff;
-    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.3);
-}
-
-.step-content {
-    display: flex;
-    flex-direction: column;
-}
-
-.step-title {
-    font-weight: 700;
-    color: #1e293b;
-    font-size: 0.95rem;
-}
-
-.step-price {
-    font-weight: 800;
-    color: #0f172a;
-    font-size: 1.1rem;
-}
-
-.step-sub {
-    font-size: 0.75rem;
-    color: #94a3b8;
-}
-
-/* Connecteur (Ligne verticale) */
-.step-connector {
-    width: 2px;
-    height: 30px;
-    background: #cbd5e1;
-    margin-left: 19px; /* Centré sous le marker de 40px */
-    margin-top: -5px;
-    margin-bottom: -5px;
+    position: absolute; inset: 0;
+    background: rgba(0, 0, 0, 0.7); 
     z-index: 1;
 }
 
-.visual-note {
-    margin-top: 2rem;
+.parallax-content { position: relative; z-index: 2; padding: 2rem; }
+
+.parallax-content h2 {
+    font-size: 2.8rem; font-weight: 900; text-transform: uppercase;
+    color: white; margin-bottom: 1rem; letter-spacing: 2px;
+}
+
+.parallax-content p { font-size: 1.3rem; color: #e0e0e0; font-weight: 500; }
+
+/* =========================================
+   7. OFFRES SPÉCIFIQUES & TABLEAUX
+   ========================================= */
+.specials-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;
+}
+
+.special-card {
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.icon-box { font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--accent-red); }
+.icon-box.gold { color: #fbbf24; }
+
+.special-list { list-style: none; padding: 0; margin: 1.5rem 0; }
+.special-list li {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding: 12px 0; color: #374151;
+}
+
+.table-container-modern {
+    overflow-x: auto;
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.pricing-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+.pricing-table th {
+    text-align: left; text-transform: uppercase; font-size: 0.8rem; color: #6b7280;
+    padding: 1.2rem; border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.pricing-table td {
+    padding: 1.2rem;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    color: #374151;
+}
+.pricing-table strong { color: var(--accent-red); font-weight: 800; }
+
+/* =========================================
+   8. PAIEMENT TIMELINE
+   ========================================= */
+.split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+
+.feature-check-list { list-style: none; padding: 0; margin-top: 2rem; }
+.feature-check-list li { margin-bottom: 1.2rem; color: #ddd; display: flex; gap: 12px; align-items: center; }
+.feature-check-list i { color: var(--accent-red); font-size: 1.2rem; }
+
+.timeline-visual { position: relative; padding-left: 1rem; }
+.timeline-step { display: flex; gap: 20px; align-items: center; }
+.step-icon {
+    width: 45px; height: 45px;
+    background: #ffffff;
+    border: 2px solid rgba(0,0,0,0.08);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; color: #6b7280;
+    transition: 0.3s;
+}
+.timeline-step.current .step-icon {
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+    background: rgba(245,119,6,0.08);
+}
+.timeline-connector { width: 2px; height: 40px; background: rgba(0,0,0,0.08); margin-left: 22px; }
+
+.step-info strong { display: block; color: #fff; font-size: 1.1rem; margin-bottom: 4px; }
+.step-info span { color: #ddd; font-size: 0.9rem; }
+
+/* ======================================================================
+   9. RESPONSIVE (✅ PAGE UNIQUEMENT — on ne touche pas au header)
+   Objectifs :
+   - Container/paddings fluides
+   - Switch wrap propre
+   - Cartes : 3 -> 2 -> 1 colonnes sans "cards géantes"
+   - Tables scrollables + lisibles
+   - Split layout stack + espacements cohérents
+   ====================================================================== */
+
+/* ✅ gros desktop */
+@media (min-width: 1400px){
+  .container{ max-width: 1240px; }
+}
+
+/* ✅ tablette / petits laptops */
+@media (max-width: 1199px){
+  .section-spacer{ padding: 5rem 0; }
+
+  /* grilles plus compactes */
+  .pricing-grid{ gap: 20px; }
+  .sleek-card{ padding: 30px 22px; }
+
+  /* pricing note moins “large” */
+  .pricing-note{ margin-top: 40px; }
+}
+
+/* ✅ tablette portrait */
+@media (max-width: 992px){
+
+  .container{ padding: 0 1.25rem; }
+  .section-spacer{ padding: 4.5rem 0; }
+
+  /* split layout stack */
+  .split-layout{
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  /* Grille cartes : 2 colonnes propres */
+  .pricing-root .pricing-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  /* Specials : 1 colonne large */
+  .specials-grid{
+    grid-template-columns: 1fr;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  /* Table : scroll + padding réduit */
+  .table-container-modern{ padding: 1.5rem; }
+  .pricing-table{ min-width: 680px; } /* garde scroll sur tablette */
+}
+
+/* ✅ mobile */
+@media (max-width: 768px){
+  .container{ padding: 0 1rem; }
+  .section-spacer{ padding: 3.5rem 0; }
+
+  .page-header-sport {
+    height: auto !important;
+    min-height: 400px !important;
+  }
+
+  .header-content {
+    top: 0 !important;
+  }
+
+  .page-header-sport .container{
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  .header-main-box h1 {
+    font-size: 2.55rem !important;
+    line-height: 1.1;
+  }
+  .header-content { top: 0px; }
+
+  /* Switch : prend toute la largeur + labels centrés */
+  .pricing-selector{
+    width: 100%;
+    max-width: 420px;
+  }
+  .pricing-selector label{
+    flex: 1;
     text-align: center;
-    font-size: 0.8rem;
-    color: #64748b;
-    background: rgba(255,255,255,0.5);
-    padding: 10px;
-    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+  .selector-highlight{
+    width: calc(50% - 5px);
+  }
+
+  /* Cartes : 1 colonne */
+  .pricing-root .pricing-grid{
+    grid-template-columns: 1fr;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  /* Cards plus compactes */
+  .sleek-card{
+    padding: 26px 18px;
+    border-radius: 14px;
+  }
+
+  /* Typo pricing */
+  .price-value{ font-size: 2.6rem; }
+  .plan-title{ font-size: 1rem; }
+  .features-list li{ font-size: 0.88rem; }
+
+  /* Note sous la grille */
+  .pricing-note{
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 14px;
+  }
+
+  /* Specials */
+  .special-card{ padding: 1.8rem; }
+
+  /* Table : scroll + police un peu plus petite */
+  .table-container-modern{ padding: 1.25rem; }
+  .pricing-table{ min-width: 720px; }
+  .pricing-table th,
+  .pricing-table td{
+    padding: 0.9rem;
+    font-size: 0.9rem;
+  }
+
+    .section-header-center{
+    padding-top: 2.5rem;   /* ajuste 1.5rem -> 4rem */
+  }
+
+   .title-with-bar{
+    display: block;          /* au lieu de flex */
+    text-align: center;
+    gap: 0;                  /* inutile en block */
+    line-height: 1.05;
+  }
+
+   .title-with-bar span{
+    display: inline;         /* reste sur la même ligne si possible */
+  }
+
+    .title-with-bar span{
+    display: block;
+    margin-top: 0.35rem;
+  }
+
+    .section-header-center{
+    padding-top: 2rem;
+  }
 }
 
-/* --- RESPONSIVE --- */
-@media (max-width: 768px) {
-    .payment-info {
-        padding: 2rem;
-    }
-    .payment-visual {
-        padding: 2rem;
-        border-left: none;
-        border-top: 1px solid #e2e8f0;
-    }
-    .payment-title {
-        font-size: 1.5rem;
-    }
+/* ✅ très petit mobile */
+@media (max-width: 420px){
+  .container{ padding: 0 0.85rem; }
+
+  .pricing-selector label{
+    padding: 9px 12px;
+    font-size: 0.85rem;
+  }
+
+  .price-value{ font-size: 2.35rem; }
+  .currency{ font-size: 1.05rem; }
+  .period{ font-size: 0.95rem; }
+
+  .btn-select{ padding: 11px 0; }
 }
 
-/* --- Responsive Global --- */
-@media (max-width: 768px) {
-    .parallax-divider {
-        background-attachment: scroll; /* Meilleure perf sur mobile */
-        height: 300px;
-    }
-    .parallax-divider-pricing-parallax{
-        background-attachment: scroll;
-        height: 300px;
-    }
-    .parallax-content h2 { font-size: 2rem; }
-    /* Note : .section-title gère sa propre taille dans la nouvelle section, 
-       mais ceci reste utile pour les autres sections */
-    .section-title { font-size: 1.8rem; }
+/* ✅ Respect accessibilité : réduit les anims si demandé */
+@media (prefers-reduced-motion: reduce){
+  *{ transition: none !important; }
+}
+
+/* =========================================
+   FIX: cards sleek trop larges sur /pricing
+   (conservé + ajusté pour ne pas casser le responsive)
+   ========================================= */
+
+/* Desktop large : 3 colonnes */
+@media (min-width: 1200px){
+  .pricing-root .pricing-grid{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 1100px;
+    margin: 0 auto;
+    gap: 25px;
+  }
+}
+
+/* Entre 992px et 1199px : 2 colonnes propres */
+@media (min-width: 992px) and (max-width: 1199px){
+  .pricing-root .pricing-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 760px;
+    margin: 0 auto;
+  }
+}
+
+/* Mobile : 1 colonne */
+@media (max-width: 991px){
+  .pricing-root .pricing-grid{
+    grid-template-columns: 1fr;
+    max-width: 420px;
+    margin: 0 auto;
+  }
 }

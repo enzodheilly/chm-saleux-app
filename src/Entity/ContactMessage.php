@@ -15,35 +15,37 @@ class ContactMessage
     #[ORM\Column]
     private ?int $id = null;
 
-    // ✅ Lien avec l'adhérent (nullable pour les visiteurs anonymes)
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     private ?User $user = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $nom = null;
+    private ?string $lastName = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $prenom = null;
+    private ?string $firstName = null;
 
     #[ORM\Column(length: 150)]
     private ?string $email = null;
 
     #[ORM\Column(length: 20, nullable: true)]
-    private ?string $telephone = null;
+    private ?string $phone = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $subject = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $message = null;
+    private ?string $content = null;
 
-    // ✅ Champ pour la réponse de l'administrateur
+    // ✅ Field for the administrator's response
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $reponse = null;
+    private ?string $response = null;
 
-    // ✅ Nom de l'admin qui a traité la demande
+    // ✅ Name of the admin who processed the request
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $resolvedBy = null;
 
-    // ✅ Indique si le message affiché est une réponse admin
+    // ✅ Indicates whether the displayed message is an admin response
     #[ORM\Column(type: 'boolean')]
     private bool $isFromAdmin = false;
 
@@ -72,25 +74,25 @@ class ContactMessage
         return $this;
     }
 
-    public function getNom(): ?string
+    public function getLastName(): ?string
     {
-        return $this->nom;
+        return $this->lastName;
     }
 
-    public function setNom(string $nom): self
+    public function setLastName(string $lastName): self
     {
-        $this->nom = $nom;
+        $this->lastName = $lastName;
         return $this;
     }
 
-    public function getPrenom(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->prenom;
+        return $this->firstName;
     }
 
-    public function setPrenom(string $prenom): self
+    public function setFirstName(string $firstName): self
     {
-        $this->prenom = $prenom;
+        $this->firstName = $firstName;
         return $this;
     }
 
@@ -105,36 +107,47 @@ class ContactMessage
         return $this;
     }
 
-    public function getTelephone(): ?string
+    public function getPhone(): ?string
     {
-        return $this->telephone;
+        return $this->phone;
     }
 
-    public function setTelephone(?string $telephone): self
+    public function setPhone(?string $phone): self
     {
-        $this->telephone = $telephone;
+        $this->phone = $phone;
         return $this;
     }
 
-    public function getMessage(): ?string
+    public function getSubject(): ?string
     {
-        return $this->message;
+        return $this->subject;
     }
 
-    public function setMessage(string $message): self
+    public function setSubject(?string $subject): self
     {
-        $this->message = $message;
+        $this->subject = $subject;
         return $this;
     }
 
-    public function getReponse(): ?string
+    public function getContent(): ?string
     {
-        return $this->reponse;
+        return $this->content;
     }
 
-    public function setReponse(?string $reponse): self
+    public function setContent(string $content): self
     {
-        $this->reponse = $reponse;
+        $this->content = $content;
+        return $this;
+    }
+
+    public function getResponse(): ?string
+    {
+        return $this->response;
+    }
+
+    public function setResponse(?string $response): self
+    {
+        $this->response = $response;
         return $this;
     }
 
@@ -149,7 +162,7 @@ class ContactMessage
         return $this;
     }
 
-    public function isFromAdmin(): ?bool
+    public function isFromAdmin(): bool
     {
         return $this->isFromAdmin;
     }

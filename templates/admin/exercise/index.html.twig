@@ -1,0 +1,215 @@
+{# templates/admin/exercise/index.html.twig #}
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Gestion des exercices{% endblock %}
+{% block page_title %}Inventaire Exercices{% endblock %}
+
+{% block stylesheets %}
+<style>
+    /* =================== HEADER & TOOLS (même style que machines) =================== */
+    .page-header {
+        display: flex; justify-content: space-between; align-items: flex-end;
+        margin-bottom: 2rem; padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
+
+    .toolbar {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .btn-create {
+        background: var(--text-main);
+        color: var(--bg-body);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700; font-size: 0.85rem;
+        cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
+        transition: 0.2s; border: none; text-decoration: none; display: inline-block;
+        white-space: nowrap;
+    }
+    .btn-create:hover { opacity: 0.9; }
+
+    /* Inputs style “machines” */
+    .input {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 0.6rem 1rem;
+        border-radius: 4px;
+        outline: none;
+        font-size: 0.9rem;
+        transition: border-color 0.2s;
+        min-width: 240px;
+    }
+    .input:focus { border-color: var(--text-main); }
+    .input::placeholder { color: var(--text-muted); opacity: 0.6; }
+
+    /* Petite aide label au-dessus des champs (simple) */
+    .tool-label {
+        display: block;
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.35rem;
+    }
+
+    /* =================== TABLEAU (même style que machines) =================== */
+    .table-wrapper {
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+
+    .admin-table th {
+        background: rgba(255,255,255,0.02);
+        color: var(--text-muted);
+        font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.75rem;
+        text-align: left; padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        white-space: nowrap;
+    }
+
+    .admin-table td {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-main); vertical-align: middle;
+    }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover td { background: rgba(255,255,255,0.01); }
+
+    /* Exercise specifics */
+    .exercise-info { display: flex; align-items: center; gap: 15px; }
+    .exercise-name { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
+
+    .mono {
+        color: var(--text-muted);
+        font-family: monospace;
+        font-size: 0.85rem;
+    }
+
+    /* Actions (même style que machines) */
+    .actions { display: flex; gap: 15px; justify-content: flex-end; }
+    .act-link {
+        font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+        letter-spacing: 0.05em; cursor: pointer; transition: 0.2s; opacity: 0.7;
+        background: none; border: none; padding: 0;
+        color: inherit; text-decoration: none;
+    }
+    .act-link:hover { opacity: 1; text-decoration: underline; }
+    .act-edit { color: var(--text-main); }
+    .act-del { color: var(--danger); }
+
+    /* Responsive */
+    @media(max-width: 700px) {
+        .page-header { align-items: flex-start; flex-direction: column; }
+        .actions { justify-content: flex-start; }
+        .toolbar { justify-content: flex-start; width: 100%; }
+        .input { min-width: 100%; }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <h1>Exercices</h1>
+            <p>Gérez la liste des exercices disponibles.</p>
+        </div>
+
+        <div class="toolbar">
+            {# Recherche #}
+            <div style="min-width: 260px;">
+                <span class="tool-label">Rechercher</span>
+                <input type="text" id="searchExercise" class="input" placeholder="Rechercher un exercice...">
+            </div>
+
+            {# Bouton créer (si tu as une route /new) #}
+            <a href="{{ path('admin_exercise_new') }}" class="btn-create">+ Ajouter</a>
+        </div>
+    </div>
+
+    {# Flash messages #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div style="margin-bottom: 1rem; padding: 0.9rem 1rem; border-radius: 6px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.02); color: var(--text-main);">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div class="table-wrapper">
+        <div style="overflow-x: auto;">
+            <table class="admin-table" id="exerciseTable">
+                <thead>
+                    <tr>
+                        <th width="120">ID</th>
+                        <th>Exercice</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for exercise in exercises %}
+                        <tr>
+                            <td class="mono">#{{ exercise.id }}</td>
+
+                            <td>
+                                <div class="exercise-info">
+                                    <span class="exercise-name">{{ exercise.name }}</span>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="actions">
+                                    <a href="{{ path('admin_exercise_edit', {id: exercise.id}) }}" class="act-link act-edit">
+                                        Modifier
+                                    </a>
+
+                                    <form method="post"
+                                          action="{{ path('admin_exercise_delete', {id: exercise.id}) }}"
+                                          onsubmit="return confirm('Supprimer définitivement l\\'exercice « {{ exercise.name }} » ?');"
+                                          style="display:inline;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete_exercise_' ~ exercise.id) }}">
+                                        <button class="act-link act-del" type="submit">Supprimer</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3" style="text-align: center; padding: 4rem; color: var(--text-muted);">
+                                Aucun exercice enregistré.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Recherche simple en JS
+        document.getElementById('searchExercise').addEventListener('keyup', function() {
+            const val = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#exerciseTable tbody tr');
+
+            rows.forEach(row => {
+                const text = row.querySelector('td:nth-child(2)')?.textContent.toLowerCase() || '';
+                row.style.display = text.includes(val) ? '' : 'none';
+            });
+        });
+    </script>
+{% endblock %}

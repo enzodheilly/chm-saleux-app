@@ -83,7 +83,12 @@
     <div class="page-header">
         <div>
             <h1>Modifier le profil</h1>
-            <p>Mise à jour de : <span style="font-weight: 700; color: var(--text-main);">{{ athlete.prenom }} {{ athlete.nom }}</span></p>
+            <p>
+                Mise à jour de :
+                <span style="font-weight:700; color:var(--text-main);">
+                    {{ athlete.firstName }} {{ athlete.lastName }}
+                </span>
+            </p>
         </div>
         <a href="{{ path('admin_athlete_index') }}" class="back-link">Retour à la liste</a>
     </div>
@@ -93,45 +98,48 @@
 
         <div class="form-row-2">
             <div class="form-group">
-                {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
-                <div class="form-error">{{ form_errors(form.prenom) }}</div>
+                {{ form_label(form.firstName, 'Prénom', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+                <div class="form-error">{{ form_errors(form.firstName) }}</div>
             </div>
+
             <div class="form-group">
-                {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
-                <div class="form-error">{{ form_errors(form.nom) }}</div>
+                {{ form_label(form.lastName, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
+                <div class="form-error">{{ form_errors(form.lastName) }}</div>
             </div>
         </div>
 
         <div class="form-row-2">
             <div class="form-group">
-                {{ form_label(form.dateNaissance, 'Date de Naissance', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.dateNaissance, {'attr': {'class': 'form-control'}}) }}
-                <div class="form-error">{{ form_errors(form.dateNaissance) }}</div>
+                {{ form_label(form.birthDate, 'Date de naissance', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.birthDate, {'attr': {'class': 'form-control'}}) }}
+                <div class="form-error">{{ form_errors(form.birthDate) }}</div>
             </div>
+
             <div class="form-group">
-                {{ form_label(form.equipe, 'Équipe / Club', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.equipe, {'attr': {'class': 'form-control'}}) }}
-                <div class="form-error">{{ form_errors(form.equipe) }}</div>
+                {{ form_label(form.gender, 'Genre', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.gender, {'attr': {'class': 'form-control'}}) }}
+                <div class="form-error">{{ form_errors(form.gender) }}</div>
             </div>
         </div>
 
         <div class="form-row-2">
             <div class="form-group">
-                {{ form_label(form.categorie, 'Catégorie Sportive', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
-                <div class="form-error">{{ form_errors(form.categorie) }}</div>
+                {{ form_label(form.category, 'Catégorie sportive', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+                <div class="form-error">{{ form_errors(form.category) }}</div>
             </div>
+
             <div class="form-group">
-                {{ form_label(form.categoriePoids, 'Catégorie de Poids', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.categoriePoids, {'attr': {'class': 'form-control'}}) }}
-                <div class="form-error">{{ form_errors(form.categoriePoids) }}</div>
+                {{ form_label(form.weightClass, 'Catégorie de poids', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.weightClass, {'attr': {'class': 'form-control'}}) }}
+                <div class="form-error">{{ form_errors(form.weightClass) }}</div>
             </div>
         </div>
 
         <div class="form-group">
-            {{ form_label(form.image, 'Photo de Profil', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_label(form.image, 'Photo de profil', {'label_attr': {'class': 'form-label'}}) }}
             
             {% if athlete.image %}
                 <div class="preview-container">
@@ -148,7 +156,8 @@
         </div>
 
         <div class="form-actions">
-            <button type="button" class="btn-delete" onclick="if(confirm('⚠️ Attention : Voulez-vous vraiment supprimer cet athlète de la base de données ?')) document.getElementById('delete-form').submit();">
+            <button type="button" class="btn-delete"
+                onclick="if(confirm('⚠️ Attention : Voulez-vous vraiment supprimer cet athlète de la base de données ?')) document.getElementById('delete-form').submit();">
                 Supprimer le profil
             </button>
 
@@ -161,7 +170,9 @@
         {{ form_end(form) }}
     </div>
 
-    <form id="delete-form" method="post" action="{{ path('admin_athlete_delete', {'id': athlete.id}) }}" style="display: none;">
+    <form id="delete-form" method="post"
+          action="{{ path('admin_athlete_delete', {'id': athlete.id}) }}"
+          style="display:none;">
         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ athlete.id) }}">
     </form>
 </div>

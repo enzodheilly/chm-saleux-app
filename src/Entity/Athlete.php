@@ -3,11 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\AthleteRepository;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AthleteRepository::class)]
+#[ORM\Index(columns: ['last_name', 'first_name'], name: 'idx_athlete_name')]
+#[ORM\UniqueConstraint(name: 'uniq_athlete_identity', columns: ['first_name', 'last_name', 'birth_date'])]
+
 class Athlete
 {
     #[ORM\Id]
@@ -15,29 +19,43 @@ class Athlete
     #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
-    #[ORM\Column(type: "string", length: 100)]
-    private ?string $prenom = null;
+    #[ORM\Column(name: "first_name", type: "string", length: 100)]
+    #[Assert\NotBlank(message: "First name is required.")]
+    #[Assert\Length(max: 100)]
+    private ?string $firstName = null;
 
-    #[ORM\Column(type: "string", length: 100)]
-    private ?string $nom = null;
+    #[ORM\Column(name: "last_name", type: "string", length: 100)]
+    #[Assert\NotBlank(message: "Last name is required.")]
+    #[Assert\Length(max: 100)]
+    private ?string $lastName = null;
 
-    #[ORM\Column(type: "date", nullable: true)]
-    private ?\DateTimeInterface $dateNaissance = null;
+    #[ORM\Column(name: "birth_date", type: "date", nullable: true)]
+    #[Assert\LessThanOrEqual("today", message: "Birth date cannot be in the future.")]
+    private ?\DateTimeInterface $birthDate = null;
 
+    // Stocke uniquement un nom de fichier (pas un chemin complet)
     #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $image = null;
 
-    #[ORM\Column(type: "integer", nullable: true)]
-    private ?int $points = null;
+    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Assert\PositiveOrZero(message: "Points must be zero or positive.")]
+    private int $points = 0;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private ?string $categoriePoids = null;
+    #[ORM\Column(name: "weight_class", type: "string", length: 50, nullable: true)]
+    #[Assert\Length(max: 50)]
+    private ?string $weightClass = null;
 
-    #[ORM\Column(type: "string", length: 50)]
-    private ?string $categorie = null; // Maintenant une string
+    // Ex: "junior", "senior", "elite" (ou "kata", "kumite" etc selon ton sport)
+    #[ORM\Column(type: "string", length: 50, nullable: true)]
+    #[Assert\Length(max: 50)]
+    private ?string $category = null;
 
+    // Vu ton commentaire female/male -> le terme correct est "gender"
     #[ORM\Column(type: "string", length: 10)]
-    private ?string $equipe = null; // 'female' ou 'male'
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ["female", "male"], message: "Gender must be 'female' or 'male'.")]
+    private ?string $gender = null;
 
     #[ORM\ManyToMany(targetEntity: Competition::class, mappedBy: "athletes")]
     private Collection $competitions;
@@ -47,43 +65,43 @@ class Athlete
         $this->competitions = new ArrayCollection();
     }
 
-    // --- GETTERS ET SETTERS ---
+    // --- Getters & Setters ---
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPrenom(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->prenom;
+        return $this->firstName;
     }
 
-    public function setPrenom(string $prenom): self
+    public function setFirstName(string $firstName): self
     {
-        $this->prenom = $prenom;
+        $this->firstName = trim($firstName);
         return $this;
     }
 
-    public function getNom(): ?string
+    public function getLastName(): ?string
     {
-        return $this->nom;
+        return $this->lastName;
     }
 
-    public function setNom(string $nom): self
+    public function setLastName(string $lastName): self
     {
-        $this->nom = $nom;
+        $this->lastName = trim($lastName);
         return $this;
     }
 
-    public function getDateNaissance(): ?\DateTimeInterface
+    public function getBirthDate(): ?\DateTimeInterface
     {
-        return $this->dateNaissance;
+        return $this->birthDate;
     }
 
-    public function setDateNaissance(?\DateTimeInterface $dateNaissance): self
+    public function setBirthDate(?\DateTimeInterface $birthDate): self
     {
-        $this->dateNaissance = $dateNaissance;
+        $this->birthDate = $birthDate;
         return $this;
     }
 
@@ -94,34 +112,57 @@ class Athlete
 
     public function setImage(?string $image): self
     {
-        $this->image = $image;
+        // sécurité simple: on stocke seulement le nom de fichier
+        $this->image = $image ? basename($image) : null;
         return $this;
     }
 
-    public function getCategorie(): ?string
+    public function getPoints(): int
     {
-        return $this->categorie;
+        return $this->points;
     }
 
-    public function setCategorie(?string $categorie): self
+    public function setPoints(int $points): self
     {
-        $this->categorie = $categorie;
+        $this->points = max(0, $points);
         return $this;
     }
 
-    public function getEquipe(): ?string
+    public function getWeightClass(): ?string
     {
-        return $this->equipe;
+        return $this->weightClass;
     }
 
-    public function setEquipe(string $equipe): self
+    public function setWeightClass(?string $weightClass): self
     {
-        $this->equipe = $equipe;
+        $this->weightClass = $weightClass ? trim($weightClass) : null;
+        return $this;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?string $category): self
+    {
+        $this->category = $category ? trim($category) : null;
+        return $this;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): self
+    {
+        $this->gender = strtolower(trim($gender));
         return $this;
     }
 
     /**
-     * @return Collection|Competition[]
+     * @return Collection<int, Competition>
      */
     public function getCompetitions(): Collection
     {
@@ -131,7 +172,7 @@ class Athlete
     public function addCompetition(Competition $competition): self
     {
         if (!$this->competitions->contains($competition)) {
-            $this->competitions[] = $competition;
+            $this->competitions->add($competition);
             $competition->addAthlete($this);
         }
         return $this;
@@ -145,25 +186,8 @@ class Athlete
         return $this;
     }
 
-    public function getPoints(): ?int
+    public function getFullName(): string
     {
-        return $this->points;
-    }
-
-    public function setPoints(?int $points): self
-    {
-        $this->points = $points;
-        return $this;
-    }
-
-
-    public function getCategoriePoids(): ?string
-    {
-        return $this->categoriePoids;
-    }
-    public function setCategoriePoids(?string $categoriePoids): self
-    {
-        $this->categoriePoids = $categoriePoids;
-        return $this;
+        return trim(($this->firstName ?? '') . ' ' . ($this->lastName ?? ''));
     }
 }

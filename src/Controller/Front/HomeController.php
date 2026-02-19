@@ -3,8 +3,8 @@
 namespace App\Controller\Front;
 
 use App\Repository\ArticleRepository;
-use App\Repository\MachineRepository;
-use App\Repository\ForfaitRepository;
+use App\Repository\NewEquipmentRepository;
+use App\Repository\MembershipPlanRepository;
 use App\Repository\NewsletterSubscriberRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,12 +16,12 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(
         ArticleRepository $articleRepository,
-        MachineRepository $machineRepository,
-        ForfaitRepository $forfaitRepository,
+        NewEquipmentRepository $newEquipmentRepository,
+        MembershipPlanRepository $membershipPlanRepository,
         NewsletterSubscriberRepository $subscriberRepository,
         Request $request
     ): Response {
-        // Si tu veux que les admins ne passent jamais par la home
+        // If you want admins to never go through the homepage
         if ($this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('admin_dashboard');
         }
@@ -30,7 +30,6 @@ class HomeController extends AbstractController
 
         $subscriber = null;
         $isSubscribed = false;
-        $membershipDuration = null;
 
         if ($user) {
             $subscriber = $subscriberRepository->findOneBy([
@@ -39,17 +38,15 @@ class HomeController extends AbstractController
             ]);
 
             $isSubscribed = $subscriber !== null;
-            $membershipDuration = $this->computeMembershipDuration($user->getCreatedAt());
         }
 
         return $this->render('0_home/index.html.twig', [
             'articles' => $articleRepository->findLatest(3),
-            'machines' => $machineRepository->findLatest(),
-            'plans' => $forfaitRepository->findBy([], ['prix' => 'ASC']),
+            'newEquipments' => $newEquipmentRepository->findLatest(),
+            'plans' => $membershipPlanRepository->findBy([], ['price' => 'ASC']),
             'isSubscribed' => $isSubscribed,
             'subscriber' => $subscriber,
             'showSetPasswordModal' => (bool) $request->query->get('showSetPasswordModal', false),
-            'membershipDuration' => $membershipDuration,
         ]);
     }
 
