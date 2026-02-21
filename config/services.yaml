@@ -1,4 +1,3 @@
-# config/services.yaml
 parameters:
     # 🖼️ Dossiers d'upload
     upload_dir: "%kernel.project_dir%/public/uploads"
@@ -12,12 +11,22 @@ services:
     # ⚙️ CONFIGURATION PAR DÉFAUT
     # ============================================================
     _defaults:
-        autowire: true # Injecte automatiquement les dépendances
-        autoconfigure: true # Enregistre automatiquement les services (tags, etc.)
+        autowire: true
+        autoconfigure: true
         bind:
-            # Ces variables seront injectées par défaut dans tous tes constructeurs
             $projectDir: "%kernel.project_dir%"
             $geminiApiKey: "%env(GEMINI_API_KEY)%"
+
+            # ✅ Bind RateLimiterFactory -> factories Symfony
+            # (Ça évite d'écrire l'ID partout)
+            $registerLimiter: "@limiter.register"
+            $loginLimiter: "@limiter.login"
+            $verifyCodeLimiter: "@limiter.verify_code"
+            $resendCodeLimiter: "@limiter.resend_code"
+            $resetRequestLimiter: "@limiter.reset_request"
+            $resetFinalLimiter: "@limiter.reset_final"
+            $setPasswordLimiter: "@limiter.set_password"
+            $googleOauthCheckLimiter: "@limiter.google_oauth_check"
 
     # ============================================================
     # 📦 AUTO-DÉCOUVERTE DES SERVICES
@@ -34,13 +43,13 @@ services:
     # ============================================================
     # 🔐 AUTHENTICATOR & LISTENERS
     # ============================================================
-
     App\EventListener\LoginAttemptListener:
         tags:
+            # ✅ Symfony moderne : LoginFailureEvent
             - {
                   name: kernel.event_listener,
-                  event: Symfony\Component\Security\Core\Event\AuthenticationFailureEvent,
-                  method: onAuthenticationFailure,
+                  event: Symfony\Component\Security\Http\Event\LoginFailureEvent,
+                  method: onLoginFailure,
               }
             - {
                   name: kernel.event_listener,
@@ -56,11 +65,6 @@ services:
     # ============================================================
     # 🧱 SERVICES AVEC ARGUMENTS SPÉCIFIQUES
     # ============================================================
-
-    # Cloudflare Turnstile
     App\Service\TurnstileVerifierService:
         arguments:
             $secretKey: "%env(TURNSTILE_SECRET_KEY)%"
-
-    # Note : App\Service\EliosAiService n'a plus besoin d'être déclaré ici
-    # car $apiKey et $projectDir sont gérés par le 'bind' dans _defaults.

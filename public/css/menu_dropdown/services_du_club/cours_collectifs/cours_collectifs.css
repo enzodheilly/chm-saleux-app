@@ -1,318 +1,367 @@
-/* =========================================
-   1. VARIABLES & BASE (Harmony)
-   ========================================= */
-:root {
-    --bg-darker: #111;
-    --bg-card: #121212;
-    --bg-alt: #0d0d0d;
-    --accent-red: #F57706;
-    --text-primary: #ffffff;
-    --text-secondary: #a0a0a0;
-    --border-soft: rgba(255, 255, 255, 0.08);
-    --nav-height: 60px;
-}
-
-.collectif-root {
-    background-color: var(--bg-darker);
-    color: var(--text-primary);
-    font-family: 'Inter', sans-serif;
-    padding:50px;
-}
-
-.section-spacer { padding:6rem 0; }
-.bg-dark-alternate { background-color: var(--bg-alt); border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); }
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 0.25rem;
-}
+/* =========================================================
+   COURS COLLECTIFS — PAGE SPECIFIQUE
+   (header + page-shell + page-container + typo globale gérés globalement)
+   ========================================================= */
 
 /* =========================================
-   2. HEADER SPORTIF (MÊME QUE PRICING / ÉQUIPES)
-   ✅ remplace ton ancien .page-header
+   LAYOUT & INFOS
    ========================================= */
-.page-header-sport {
-    position: relative;
-    padding-top: var(--nav-height);
-    height: 60vh;
-    min-height: 450px;
-    display: flex; align-items: center;
-    background-color: var(--bg-darker);
-    margin-bottom: 0; /* On gère l'espace avec section-spacer ensuite */
-}
-.page-header-sport::before {
-    content: ""; position: absolute; inset: 0;
-    background-image: var(--bg-image);
-    background-size: cover; background-position: center 35%;
-    z-index: 1; filter: grayscale(30%);
-}
-.header-overlay-gradient {
-    position: absolute; inset: 0; z-index: 2;
-    background: linear-gradient(to right, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.6) 100%);
-}
-.header-content { position: relative; z-index: 3; width: 100%;top:26px; }
-
-.badge-accent {
-    background: var(--accent-red); color: white;
-    padding: 6px 14px; font-weight: 800; font-size: 0.75rem;
-    text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
-}
-.header-main-box h1 {
-    font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 900;
-    text-transform: uppercase; line-height: 1; margin: 0 0 1.5rem 0;color: #fff;
-}
-.text-outline { -webkit-text-stroke: 1px white; color: transparent; }
-.header-main-box .lead {
-    font-size: 1.2rem; color: #ccc; max-width: 650px; line-height: 1.6;
+.split-layout{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
 }
 
-.back-link-minimal {
-    color: var(--accent-red); text-decoration: none;
-    font-weight: 700; text-transform: uppercase; font-size: 0.8rem;
-    letter-spacing: 2px; display: inline-flex; align-items: center; gap: 10px;
-    margin-bottom: 3rem; transition: var(--transition);
+/* IMPORTANT :
+   .section-heading (font-size / uppercase / couleur / span orange)
+   est géré globalement.
+   Ici on garde seulement la mise en page du titre custom.
+*/
+.title-with-bar{
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
-.back-link-minimal:hover { color: white; }
-/* =========================================
-   3. LAYOUT & INFOS
-   ========================================= */
-.split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-.title-with-bar { font-size: 2rem; font-weight: 900; text-transform: uppercase; display: flex; align-items: center; gap: 15px; margin-bottom: 1.5rem; }
-.title-with-bar span { color: var(--accent-red); }
-.center-bar { justify-content: center; flex-direction: column; text-align: center; }
-.center-bar::after { content: ''; display: block; width: 50px; height: 4px; background: var(--accent-red); margin-top: 10px; }
-.desc-text { color: var(--text-secondary); line-height: 1.7; font-size: 1.05rem; }
 
-.key-facts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-.fact-card { background: var(--bg-card); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-soft); text-align: center; }
-.fact-card i { color: var(--accent-red); font-size: 1.5rem; margin-bottom: 10px; display: block; }
-.fact-card strong { display: block; color: white; font-size: 1rem; }
-.fact-card span { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; }
+.center-bar{
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
 
-/* =========================================
-   4. ACTIVITÉS GRID
-   ========================================= */
-.activities-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-.activity-card { background: var(--bg-card); padding: 2.5rem; border-radius: 12px; border: 1px solid var(--border-soft); transition: 0.3s; }
-.activity-card:hover { border-color: var(--accent-red); transform: translateY(-5px); }
-.card-icon { font-size: 2.5rem; color: var(--accent-red); margin-bottom: 1.5rem; }
-.activity-card h3 { font-size: 1.4rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1rem; }
-.activity-card p { color: #ccc; font-size: 0.95rem; margin-bottom: 1.5rem; }
-.tags-row { display: flex; gap: 8px; flex-wrap: wrap; }
-.tags-row span { background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); }
+.center-bar::after{
+  content: '';
+  display: block;
+  width: 50px;
+  height: 4px;
+  background: var(--primary-color);
+  margin-top: 10px;
+  border-radius: 999px;
+}
 
-/* =========================================
-   5. COACH SPOTLIGHT
-   ========================================= */
-.coach-spotlight-wrapper { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 5rem; align-items: center; }
-.framed-image { position: relative; border: 1px solid var(--border-soft); padding: 10px; background: var(--bg-card); }
-.framed-image img { width: 100%; display: block; filter: grayscale(20%); }
-.coach-quote { margin-top: 2rem; padding: 1.5rem; background: rgba(255,255,255,0.02); border-left: 3px solid var(--accent-red); }
-.coach-quote i { color: var(--accent-red); margin-bottom: 10px; }
-.coach-quote p { font-style: italic; color: white; }
+.desc-text{
+  color: var(--text-muted);
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+/* --- Key facts --- */
+.key-facts-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.fact-card{
+  background: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-soft);
+  text-align: center;
+}
+
+.fact-card i{
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.fact-card strong{
+  display: block;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.fact-card span{
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
 
 /* =========================================
-   6. CTA & PAIEMENT
+   ACTIVITÉS GRID
    ========================================= */
-.cta-card { background: linear-gradient(145deg, #1a1a1a, #080808); padding: 4rem 2rem; border-radius: 12px; border: 1px solid var(--border-soft); }
-.cta-card h2 { font-size: 2rem; font-weight: 900; margin-bottom: 1rem; }
-.cta-actions { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; }
-.btn-whatsapp { background: #25D366; color: white; padding: 15px 30px; font-weight: 800; border-radius: 4px; text-decoration: none; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
-.btn-whatsapp:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3); }
-.btn-trial-white { border: 1px solid white; color: white; padding: 15px 30px; font-weight: 800; border-radius: 4px; text-decoration: none; transition: 0.3s; }
-.btn-trial-white:hover { background: white; color: black; }
-.cta-footer-note { font-size: 0.8rem; color: var(--text-secondary); margin-top: 2rem; }
+.activities-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.activity-card{
+  background: var(--bg-card);
+  padding: 2.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-soft);
+  transition: var(--transition);
+}
+
+.activity-card:hover{
+  border-color: rgba(245, 119, 6, 0.35);
+  transform: translateY(-5px);
+}
+
+.card-icon{
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+.activity-card h3{
+  font-size: 1.4rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.activity-card p{
+  color: #ccc;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.tags-row{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tags-row span{
+  background: rgba(255,255,255,0.05);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: 1px solid rgba(255,255,255,0.04);
+}
 
 /* =========================================
-   7. RESPONSIVE (BODY ONLY)
-   - Ne modifie pas le header (tu le gardes tel quel)
+   COACH SPOTLIGHT
    ========================================= */
+.coach-spotlight-wrapper{
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 4rem;
+  align-items: center;
+}
 
-/* --- TABLETTE --- */
-@media (max-width: 992px) {
+.framed-image{
+  position: relative;
+  border: 1px solid var(--border-soft);
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--bg-card);
+}
 
-  /* BODY wrapper */
-  .collectif-root {
-    padding: 28px;            /* au lieu de 50px */
-  }
+.framed-image img{
+  width: 100%;
+  display: block;
+  border-radius: 8px;
+  filter: grayscale(20%);
+}
 
-  .section-spacer {
-    padding: 4.5rem 0;        /* un peu plus compact */
-  }
+.coach-quote{
+  margin-top: 2rem;
+  padding: 1.25rem;
+  background: rgba(255,255,255,0.02);
+  border-left: 3px solid var(--primary-color);
+  border-radius: 8px;
+}
 
-  /* Layouts */
+.coach-quote i{
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.coach-quote p{
+  font-style: italic;
+  color: #fff;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* =========================================
+   CTA & PLANNING
+   ========================================= */
+.cta-card{
+  background: linear-gradient(145deg, #1a1a1a, #080808);
+  padding: 4rem 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-soft);
+}
+
+/* On laisse .section-heading gérer le style du h2 */
+.cta-card .section-heading{
+  margin-bottom: 1rem;
+}
+
+.cta-card .lead{
+  color: #ccc;
+  max-width: 720px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.cta-actions{
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.btn-whatsapp{
+  background: #25D366;
+  color: #fff;
+  padding: 15px 30px;
+  font-weight: 800;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.btn-whatsapp:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(37, 211, 102, 0.25);
+}
+
+.btn-trial-white{
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 15px 30px;
+  font-weight: 800;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background .25s ease, color .25s ease;
+}
+
+.btn-trial-white:hover{
+  background: #fff;
+  color: #000;
+}
+
+.cta-footer-note{
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 1.4rem;
+}
+
+/* =========================================
+   RESPONSIVE (BODY ONLY)
+   ========================================= */
+@media (max-width: 992px){
   .split-layout,
-  .coach-spotlight-wrapper {
+  .coach-spotlight-wrapper{
     grid-template-columns: 1fr;
     gap: 3rem;
   }
 
-  /* Texte */
-  .title-with-bar {
-    font-size: 1.7rem;
-    gap: 12px;
-  }
-
-  .desc-text {
-    font-size: 1rem;
-  }
-
-  /* Grilles */
-  .key-facts-grid {
+  .key-facts-grid{
     grid-template-columns: 1fr;
     gap: 1rem;
   }
 
-  .activities-grid {
+  .activities-grid{
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1.5rem;
   }
 
-  /* Cartes */
-  .activity-card {
+  .activity-card{
     padding: 2rem;
   }
 
-  /* Coach */
-  .floating-coach-badge {
-    right: 12px;
-    bottom: 12px;
-  }
-
-  /* CTA */
-  .cta-card {
+  .cta-card{
     padding: 3rem 1.5rem;
   }
 
-  .cta-actions {
+  .cta-actions{
     flex-direction: column;
     align-items: stretch;
   }
 
   .btn-whatsapp,
-  .btn-trial-white {
+  .btn-trial-white{
     width: 100%;
     justify-content: center;
   }
 }
 
-/* --- MOBILE --- */
-@media (max-width: 768px) {
-
-      .page-header-sport {
-    height: auto !important;
-    min-height: 400px !important;
+@media (max-width: 768px){
+  .split-layout,
+  .coach-spotlight-wrapper{
+    gap: 2.5rem;
   }
 
-  .header-content {
-    top: 0 !important;
-  }
-
-  .page-header-sport .container{
-    padding-left: 18px !important;
-    padding-right: 18px !important;
-  }
-
-  .header-main-box h1 {
-    font-size: 2.7rem !important;
-    line-height: 1.1;
-  }
-
-  .collectif-root {
-    padding: 18px;
-  }
-
-  .section-spacer {
-    padding: 3.5rem 0;
-  }
-
-  /* Titres */
-  .title-with-bar {
-    font-size: 1.45rem;
+  .title-with-bar{
+    gap: 10px;
     flex-wrap: wrap;
   }
 
-  /* Key facts */
-  .fact-card {
-    padding: 1.25rem;
+  .desc-text{
+    font-size: 1rem;
   }
 
-  .fact-card strong {
-    font-size: 0.95rem;
-  }
-
-  .fact-card span {
-    font-size: 0.75rem;
-  }
-
-  /* Activités */
-  .activities-grid {
+  .activities-grid{
     grid-template-columns: 1fr;
   }
 
-  .activity-card {
+  .activity-card{
     padding: 1.6rem;
     border-radius: 10px;
   }
 
-  .card-icon {
+  .card-icon{
     font-size: 2.2rem;
     margin-bottom: 1rem;
   }
 
-  .activity-card h3 {
+  .activity-card h3{
     font-size: 1.2rem;
   }
 
-  /* Coach */
-  .coach-spotlight-wrapper {
-    gap: 2.5rem;
-  }
-
-  .framed-image {
+  .framed-image{
     padding: 8px;
   }
 
-  .coach-quote {
-    padding: 1.2rem;
+  .coach-quote{
+    padding: 1rem;
   }
 
-  /* CTA */
-  .cta-card {
+  .cta-card{
     padding: 2.4rem 1.2rem;
   }
 
-  .cta-card h2 {
-    font-size: 1.6rem;
-  }
-
-  .cta-footer-note {
+  .cta-footer-note{
     font-size: 0.78rem;
   }
 }
 
-/* --- PETITS MOBILES --- */
-@media (max-width: 480px) {
-
-  .collectif-root {
-    padding: 14px;
+@media (max-width: 480px){
+  .fact-card{
+    padding: 1.1rem;
   }
 
-  .section-spacer {
-    padding: 3rem 0;
+  .fact-card strong{
+    font-size: 0.95rem;
   }
 
-  .title-with-bar {
-    font-size: 1.3rem;
+  .fact-card span{
+    font-size: 0.75rem;
   }
 
-  .activity-card p {
+  .activity-card p{
     font-size: 0.92rem;
   }
 
   .btn-whatsapp,
-  .btn-trial-white {
+  .btn-trial-white{
     padding: 14px 18px;
   }
 }

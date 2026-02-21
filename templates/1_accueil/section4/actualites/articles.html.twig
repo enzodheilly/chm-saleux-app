@@ -9,10 +9,12 @@
 
 {% block body %}
 
-    {# --- HEADER ELITE --- #}
-    <header class="page-header-sport" style="--bg-image: url('{{ asset('images/competitions/1.jpg') }}');">
-        <div class="header-overlay-gradient"></div>
-        <div class="container header-content">
+    {# --- HEADER ELITE (GLOBAL) --- #}
+<header class="page-header-sport" style="--bg-image: url('{{ asset('images/competitions/1.jpg') }}');">
+    <div class="header-overlay-gradient"></div>
+
+    <div class="header-content">
+        <div class="page-container">
             <nav class="breadcrumb-nav">
                 <a href="{{ path('home') }}" class="back-link-minimal">
                     <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
@@ -25,12 +27,15 @@
                 <p class="lead">Résultats, événements et vie de l'association : ne manquez rien de l'actu du CHM.</p>
             </div>
         </div>
-    </header>
+    </div>
+</header>
 
-    <main class="news-root">
-        
+    <main class="news-root page-shell">
+
         {# --- FILTRES --- #}
-        <section class="container">
+        <section class="page-container section-spacer">
+            <h2 class="section-heading">Filtrer <span>les actualités</span></h2>
+
             <div class="filter-card-wrapper">
                 <form method="get" action="{{ path('actualites', {'page': 1}) }}" class="elite-filter-bar">
                     <div class="filter-inputs">
@@ -67,7 +72,9 @@
         </section>
 
         {# --- GRILLE D'ARTICLES --- #}
-        <section class="container section-spacer">
+        <section class="page-container section-spacer">
+            <h2 class="section-heading">Dernières <span>Actualités</span></h2>
+
             {% if articles is not empty %}
                 <div class="news-grid-layout">
                     {% for article in articles %}
@@ -81,23 +88,31 @@
                                 <span class="card-date"><i class="fa-regular fa-calendar"></i> {{ article.publishedAt|date('d/m/Y') }}</span>
                                 <h3><a href="{{ path('article_show', {'id': article.id}) }}">{{ article.title }}</a></h3>
                                 <p>{{ article.description|striptags|slice(0, 100) ~ '...' }}</p>
-                                <a href="{{ path('article_show', {'id': article.id}) }}" class="link-arrow">Lire l'article <i class="fa-solid fa-arrow-right"></i></a>
+                                <a href="{{ path('article_show', {'id': article.id}) }}" class="link-arrow">
+                                    Lire l'article <i class="fa-solid fa-arrow-right"></i>
+                                </a>
                             </div>
                         </article>
                     {% endfor %}
                 </div>
 
-                {# --- PAGINATION --- #}
                 {% if totalPages > 1 %}
                     <div class="pagination-elite mt-5">
                         {% set query = filters %}
-                        <a href="{{ page > 1 ? path('actualites', query|merge({'page': page - 1})) : '#' }}" class="page-btn {{ page <= 1 ? 'disabled' : '' }}"><i class="fa-solid fa-chevron-left"></i></a>
+                        <a href="{{ page > 1 ? path('actualites', query|merge({'page': page - 1})) : '#' }}"
+                           class="page-btn {{ page <= 1 ? 'disabled' : '' }}">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
                         
                         {% for i in 1..totalPages %}
-                            <a href="{{ path('actualites', query|merge({'page': i})) }}" class="page-btn {{ i == page ? 'active' : '' }}">{{ i }}</a>
+                            <a href="{{ path('actualites', query|merge({'page': i})) }}"
+                               class="page-btn {{ i == page ? 'active' : '' }}">{{ i }}</a>
                         {% endfor %}
 
-                        <a href="{{ page < totalPages ? path('actualites', query|merge({'page': page + 1})) : '#' }}" class="page-btn {{ page >= totalPages ? 'disabled' : '' }}"><i class="fa-solid fa-chevron-right"></i></a>
+                        <a href="{{ page < totalPages ? path('actualites', query|merge({'page': page + 1})) : '#' }}"
+                           class="page-btn {{ page >= totalPages ? 'disabled' : '' }}">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
                     </div>
                 {% endif %}
 

@@ -3,161 +3,144 @@
 {% block title %}Découverte de l'Haltérophilie - CHM Saleux{% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/menu_dropdown/services_du_club/halterophilie/index.css') }}">
 {% endblock %}
 
 {% block body %}
 
     {# --- HEADER IMMERSIF --- #}
-    <header class="page-header-sport" style="--bg-image: url('{{ asset('https://www.ffhaltero.fr/wp-content/uploads/2024/08/IMS0002-scaled.jpg') }}');">
-  <div class="header-overlay-gradient"></div>
+    <header class="page-header-sport" style="--bg-image: url('https://www.ffhaltero.fr/wp-content/uploads/2024/08/IMS0002-scaled.jpg');">
+        <div class="header-overlay-gradient"></div>
 
-  <div class="container header-content">
-    <nav class="breadcrumb-nav">
-      <a href="{{ path('home') }}" class="back-link-minimal">
-        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-      </a>
-    </nav>
+        <div class="header-content">
+            <div class="page-container">
+                <nav class="breadcrumb-nav">
+                    <a href="{{ path('home') }}" class="back-link-minimal">
+                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                    </a>
+                </nav>
 
-    <div class="header-main-box">
-      <div class="badge-accent">Discipline Olympique</div>
-      <h1>L'Haltérophilie<span class="text-outline"></span></h1>
-      <p class="lead">Force, puissance, vitesse et technique. Découvrez un sport complet qui forge le corps et l'esprit.</p>
-    </div>
-  </div>
-</header>
-
-    <main class="main-container">
-
-        {# --- SECTION 1 : POURQUOI (Texte Gauche / Image Droite) --- #}
-        <section class="split-section">
-            <div class="split-content">
-                <h2 class="section-heading">Pourquoi pratiquer ?</h2>
-                <p class="lead-text">
-                    L’haltérophilie est le seul sport de force inscrit aux Jeux Olympiques. C'est l'art de soulever une charge maximale en un seul mouvement explosif.
-                </p>
-                <p>
-                    Au-delà de la compétition, sa pratique régulière développe des qualités physiques essentielles : <strong>puissance explosive</strong> (utile pour le rugby, le sprint, le basket), <strong>souplesse</strong> et <strong>coordination</strong>. C'est également une école de discipline mentale et de persévérance.
-                </p>
-            </div>
-            <div class="split-image">
-                <div class="image-frame">
-                    <img src="https://www.ffhaltero.fr/wp-content/uploads/2024/08/IMS0002-scaled.jpg" alt="Haltérophile en action">
+                <div class="header-main-box">
+                    <div class="badge-accent">Discipline Olympique</div>
+                    <h1>L'Haltérophilie</h1>
+                    <p class="lead">
+                        Force, puissance, vitesse et technique. Découvrez un sport complet qui forge le corps et l'esprit.
+                    </p>
                 </div>
             </div>
-        </section>
+        </div>
+    </header>
 
-        {# --- SECTION 2 : BIENFAITS (Image Gauche / Texte Droite) --- #}
-        <section class="split-section reversed">
-            <div class="split-image">
-                <div class="image-frame">
-                    <img src="https://www.ffhaltero.fr/wp-content/uploads/2024/08/IMS4771-scaled.jpg" alt="Entraînement Haltérophilie">
+    <main class="haltero-root page-shell">
+        <div class="main-container">
+
+            {# --- SECTION 1 : POURQUOI --- #}
+            <section class="split-section">
+                <div class="split-content">
+                    <h2 class="section-heading">Pourquoi pratiquer ?</h2>
+                    <p class="lead-text">
+                        L’haltérophilie est le seul sport de force inscrit aux Jeux Olympiques. C'est l'art de soulever une charge maximale en un seul mouvement explosif.
+                    </p>
+                    <p>
+                        Au-delà de la compétition, sa pratique régulière développe des qualités physiques essentielles :
+                        <strong>puissance explosive</strong> (utile pour le rugby, le sprint, le basket),
+                        <strong>souplesse</strong> et <strong>coordination</strong>.
+                        C'est également une école de discipline mentale et de persévérance.
+                    </p>
                 </div>
-            </div>
-            <div class="split-content">
-                <h2 class="section-heading">Les Bienfaits</h2>
-                <ul class="benefits-list">
-                    <li>
-                        <strong>Densité Osseuse :</strong> La charge renforce le squelette et prévient l'ostéoporose.
-                    </li>
-                    <li>
-                        <strong>Posture & Dos :</strong> L'apprentissage technique renforce les muscles profonds et améliore le maintien.
-                    </li>
-                    <li>
-                        <strong>Mobilité :</strong> Contrairement aux idées reçues, l'haltérophilie nécessite et développe une grande souplesse articulaire.
-                    </li>
-                    <li>
-                        <strong>Mental :</strong> Se dépasser face à la barre booste la confiance en soi.
-                    </li>
-                </ul>
-            </div>
-        </section>
-
-        {# --- SECTION 3 : PUBLIC (Texte Gauche / Image Droite) --- #}
-        <section class="split-section">
-            <div class="split-content">
-                <h2 class="section-heading">Pour qui ?</h2>
-                <div class="audience-grid">
-                    <div class="audience-item">
-                        <h3>Enfants (dès 7-8 ans)</h3>
-                        <p>Apprentissage ludique de la motricité avec des bâtons ou barres très légères. Priorité à la technique.</p>
-                    </div>
-                    <div class="audience-item">
-                        <h3>Femmes & Hommes</h3>
-                        <p>Sport mixte par excellence. Les femmes y développent force et tonicité sans prise de masse excessive.</p>
-                    </div>
-                    <div class="audience-item">
-                        <h3>Seniors</h3>
-                        <p>Le meilleur moyen de lutter contre la fonte musculaire (sarcopénie) avec des charges adaptées.</p>
+                <div class="split-image">
+                    <div class="image-frame">
+                        <img src="https://www.ffhaltero.fr/wp-content/uploads/2024/08/IMS0002-scaled.jpg" alt="Haltérophile en action">
                     </div>
                 </div>
-            </div>
-            <div class="split-image">
-                <div class="image-frame">
-                    <img src="https://www.ffhaltero.fr/wp-content/uploads/2024/08/KOCHETOVA-MARGOT_FRA_W49A__IMS7633-scaled.jpg" alt="Compétition féminine">
+            </section>
+
+            {# --- SECTION 2 : BIENFAITS --- #}
+            <section class="split-section reversed">
+                <div class="split-image">
+                    <div class="image-frame">
+                        <img src="https://www.ffhaltero.fr/wp-content/uploads/2024/08/IMS4771-scaled.jpg" alt="Entraînement Haltérophilie">
+                    </div>
                 </div>
-            </div>
-        </section>
+                <div class="split-content">
+                    <h2 class="section-heading">Les Bienfaits</h2>
+                    <ul class="benefits-list">
+                        <li><strong>Densité Osseuse :</strong> La charge renforce le squelette et prévient l'ostéoporose.</li>
+                        <li><strong>Posture & Dos :</strong> L'apprentissage technique renforce les muscles profonds et améliore le maintien.</li>
+                        <li><strong>Mobilité :</strong> Contrairement aux idées reçues, l'haltérophilie nécessite et développe une grande souplesse articulaire.</li>
+                        <li><strong>Mental :</strong> Se dépasser face à la barre booste la confiance en soi.</li>
+                    </ul>
+                </div>
+            </section>
 
-        {# --- SECTION 4 : TECHNIQUE (Les Mouvements) --- #}
-        <section class="tech-section">
-            <div class="tech-header text-center">
-                <h2 class="section-heading centered">Les 2 Mouvements Olympiques</h2>
-                <p>La compétition se joue sur le total de deux épreuves distinctes.</p>
-            </div>
-
-            <div class="movements-grid">
-                
-                {# ARRACHÉ #}
-                <article class="movement-card">
-                    <div class="card-badge">1er Mouvement</div>
-                    <h3>L'Arraché (Snatch)</h3>
-                    <p class="movement-def">Le plus technique. La barre passe du sol à au-dessus de la tête en <strong>un seul mouvement ininterrompu</strong>.</p>
-                    
-                    <div class="step-list">
-                        <div class="step">
-                            <span class="step-num">1</span>
-                            <span>Prise large, départ jambes fléchies.</span>
+            {# --- SECTION 3 : PUBLIC --- #}
+            <section class="split-section">
+                <div class="split-content">
+                    <h2 class="section-heading">Pour qui ?</h2>
+                    <div class="audience-grid">
+                        <div class="audience-item">
+                            <h3>Enfants (dès 7-8 ans)</h3>
+                            <p>Apprentissage ludique de la motricité avec des bâtons ou barres très légères. Priorité à la technique.</p>
                         </div>
-                        <div class="step">
-                            <span class="step-num">2</span>
-                            <span>Tirage explosif pour donner de la vitesse.</span>
+                        <div class="audience-item">
+                            <h3>Femmes & Hommes</h3>
+                            <p>Sport mixte par excellence. Les femmes y développent force et tonicité sans prise de masse excessive.</p>
                         </div>
-                        <div class="step">
-                            <span class="step-num">3</span>
-                            <span>Passage rapide sous la barre (réception bras tendus).</span>
-                        </div>
-                        <div class="step">
-                            <span class="step-num">4</span>
-                            <span>Redressement complet jusqu'à l'immobilité.</span>
+                        <div class="audience-item">
+                            <h3>Seniors</h3>
+                            <p>Le meilleur moyen de lutter contre la fonte musculaire (sarcopénie) avec des charges adaptées.</p>
                         </div>
                     </div>
-                </article>
-
-                {# ÉPAULÉ-JETÉ #}
-                <article class="movement-card">
-                    <div class="card-badge">2ème Mouvement</div>
-                    <h3>L'Épaulé-Jeté (Clean & Jerk)</h3>
-                    <p class="movement-def">Le plus puissant. Il se décompose en <strong>deux temps</strong> distincts.</p>
-
-                    <div class="step-list">
-                        <div class="step">
-                            <span class="step-num">1</span>
-                            <span><strong>L'Épaulé :</strong> Tirage du sol pour amener la barre sur les épaules (clavicules).</span>
-                        </div>
-                        <div class="step">
-                            <span class="step-num">2</span>
-                            <span>Redressement pour se mettre debout.</span>
-                        </div>
-                        <div class="step">
-                            <span class="step-num">3</span>
-                            <span><strong>Le Jeté :</strong> Impulsion des jambes et des bras pour propulser la barre à bout de bras.</span>
-                        </div>
+                </div>
+                <div class="split-image">
+                    <div class="image-frame">
+                        <img src="https://www.ffhaltero.fr/wp-content/uploads/2024/08/KOCHETOVA-MARGOT_FRA_W49A__IMS7633-scaled.jpg" alt="Compétition féminine">
                     </div>
-                </article>
+                </div>
+            </section>
 
-            </div>
-        </section>
+            {# --- SECTION 4 : TECHNIQUE --- #}
+            <section class="tech-section">
+                <div class="tech-header">
+                    <h2 class="section-heading centered">Les 2 Mouvements Olympiques</h2>
+                    <p>La compétition se joue sur le total de deux épreuves distinctes.</p>
+                </div>
 
+                <div class="movements-grid">
+
+                    <article class="movement-card">
+                        <div class="card-badge">1er Mouvement</div>
+                        <h3>L'Arraché (Snatch)</h3>
+                        <p class="movement-def">
+                            Le plus technique. La barre passe du sol à au-dessus de la tête en <strong>un seul mouvement ininterrompu</strong>.
+                        </p>
+
+                        <div class="step-list">
+                            <div class="step"><span class="step-num">1</span><span>Prise large, départ jambes fléchies.</span></div>
+                            <div class="step"><span class="step-num">2</span><span>Tirage explosif pour donner de la vitesse.</span></div>
+                            <div class="step"><span class="step-num">3</span><span>Passage rapide sous la barre (réception bras tendus).</span></div>
+                            <div class="step"><span class="step-num">4</span><span>Redressement complet jusqu'à l'immobilité.</span></div>
+                        </div>
+                    </article>
+
+                    <article class="movement-card">
+                        <div class="card-badge">2ème Mouvement</div>
+                        <h3>L'Épaulé-Jeté (Clean & Jerk)</h3>
+                        <p class="movement-def">
+                            Le plus puissant. Il se décompose en <strong>deux temps</strong> distincts.
+                        </p>
+
+                        <div class="step-list">
+                            <div class="step"><span class="step-num">1</span><span><strong>L'Épaulé :</strong> Tirage du sol pour amener la barre sur les épaules (clavicules).</span></div>
+                            <div class="step"><span class="step-num">2</span><span>Redressement pour se mettre debout.</span></div>
+                            <div class="step"><span class="step-num">3</span><span><strong>Le Jeté :</strong> Impulsion des jambes et des bras pour propulser la barre à bout de bras.</span></div>
+                        </div>
+                    </article>
+
+                </div>
+            </section>
+
+        </div>
     </main>
 {% endblock %}

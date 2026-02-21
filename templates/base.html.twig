@@ -1,3 +1,4 @@
+{# templates/base.html.twig #}
 <!DOCTYPE html>
 <html lang="fr" data-theme="dark">
 <head>
@@ -56,9 +57,22 @@
     {% endblock %}
 
     {% include 'modal/modal_auth.html.twig' %}
-    
+
     <style nonce="{{ csp_nonce('script') }}">
-        .toast-mini { position: fixed; right:16px; bottom:16px; background:#111; color:#fff; padding:10px 14px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.2); opacity:0; transform:translateY(10px); transition:0.25s; z-index:3000; }
+        .toast-mini {
+            position: fixed;
+            right:16px;
+            bottom:16px;
+            background:#111;
+            color:#fff;
+            padding:10px 14px;
+            border-radius:10px;
+            box-shadow:0 6px 20px rgba(0,0,0,0.2);
+            opacity:0;
+            transform:translateY(10px);
+            transition:0.25s;
+            z-index:3000;
+        }
         .toast-mini.show { opacity:1; transform:none; }
     </style>
 
@@ -68,17 +82,18 @@
     <script src="{{ asset('js/footer/newsletter.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer nonce="{{ csp_nonce('script') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js" defer nonce="{{ csp_nonce('script') }}"></script>
-<script nonce="{{ csp_nonce('script') }}">
-  // déclenché quand Turnstile est chargé
-  window.turnstileOnload = function () {
-    document.dispatchEvent(new Event("turnstile:ready"));
-  };
-</script>
 
-<script
-  src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=turnstileOnload"
-  async defer
-  nonce="{{ csp_nonce('script') }}"></script>
+    {# ✅ Turnstile EXPLICIT (obligatoire si ton JS fait turnstile.render) #}
+    <script nonce="{{ csp_nonce('script') }}">
+        window.turnstileOnload = function () {
+            document.dispatchEvent(new Event("turnstile:ready"));
+        };
+    </script>
+
+    <script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=turnstileOnload"
+        async defer
+        nonce="{{ csp_nonce('script') }}"></script>
 
     <script nonce="{{ csp_nonce('script') }}">
         window.showToast = (msg) => {
@@ -87,7 +102,10 @@
             t.textContent = msg;
             document.body.appendChild(t);
             requestAnimationFrame(() => t.classList.add('show'));
-            setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 200); }, 2200);
+            setTimeout(() => {
+                t.classList.remove('show');
+                setTimeout(() => t.remove(), 200);
+            }, 2200);
         };
     </script>
 
@@ -97,8 +115,7 @@
         <script src="{{ asset('js/assistant/elios.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
     {% endif %}
 
-    {# BLOC UNIQUE POUR PAGES SPÉCIFIQUES #}
     {% block javascripts %}{% endblock %}
-    
+
 </body>
 </html>

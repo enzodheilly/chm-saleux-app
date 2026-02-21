@@ -2,55 +2,37 @@
 
 namespace App\Service;
 
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+
 class TurnstileVerifierService
 {
     public function __construct(
-        private readonly string $secretKey // 🔒 clé secrète injectée via services.yaml
+        private readonly HttpClientInterface $httpClient,
+        private readonly string $secretKey
     ) {}
 
-    /**
-     * Vérifie la validité d'un token Turnstile envoyé par le client.
-     *
-     * @param string|null $token Le token renvoyé par Cloudflare Turnstile
-     * @param string|null $ip    (Optionnel) IP de l'utilisateur
-     * @return bool              True si validé, False sinon
-     */
     public function verify(?string $token, ?string $ip = null): bool
     {
-        // 🚫 Aucun token => on refuse immédiatement
-        if (empty($token)) {
+        if (!$token) {
             return false;
         }
 
-        // Prépare les données à envoyer à l'API Cloudflare
-        $postData = http_build_query([
-            'secret'   => $this->secretKey,
-            'response' => $token,
-            'remoteip' => $ip,
-        ]);
-
-        // Configure la requête POST HTTP
-        $options = [
-            'http' => [
-                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method'  => 'POST',
-                'content' => $postData,
+        try {
+            $response = $this->httpClient->request('POST', 'https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+                'body' => [
+                    'secret' => $this->secretKey,
+                    'response' => $token,
+                    'remoteip' => $ip,
+                ],
                 'timeout' => 5,
-            ],
-        ];
+            ]);
 
-        $context = stream_context_create($options);
-        $result  = @file_get_contents('https://challenges.cloudflare.com/turnstile/v0/siteverify', false, $context);
+            $data = $response->toArray(false);
 
-        // ⚠️ Si échec de connexion à l’API Cloudflare → on refuse par sécurité
-        if ($result === false) {
+            return !empty($data['success']);
+        } catch (\Throwable) {
+            // fail closed (sécurité)
             return false;
         }
-
-        // Analyse de la réponse JSON
-        $data = json_decode($result, true);
-
-        // ✅ Retourne true uniquement si success = true
-        return !empty($data['success']);
     }
 }

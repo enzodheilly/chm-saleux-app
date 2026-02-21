@@ -10,138 +10,159 @@
 
 {% block body %}
 
-    {# Header Sportif Immersif #}
+<header class="page-header-sport" style="--bg-image: url('{{ asset('images/competitions/2.jpg') }}');">
+    <div class="header-overlay-gradient"></div>
 
-        <header class="page-header-sport" style="--bg-image: url('{{ asset('images/competitions/2.jpg') }}');">
-  <div class="header-overlay-gradient"></div>
+    <div class="header-content">
+        <div class="page-container">
+            <nav class="breadcrumb-nav">
+                <a href="{{ path('competition_root') }}" class="back-link-minimal">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Retour aux compétitions</span>
+                </a>
+            </nav>
 
-  <div class="container header-content">
-    <nav class="breadcrumb-nav">
-      <a href="{{ path('competition_root') }}" class="back-link-minimal">
-        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-      </a>
-    </nav>
-
-    <div class="header-main-box">
-      <div class="badge-accent">Saison 2025 / 2026</div>
-      <h1>Équipe<span class="text-outline">Masculine</span></h1>
-      <p class="lead">Performance, puissance & progression. Suivez le parcours de nos athlètes.</p>
+            <div class="header-main-box">
+                <div class="badge-accent">Saison 2025 / 2026</div>
+                <h1>Équipe <span class="text-outline">Masculine</span></h1>
+                <p class="lead">Performance, puissance & progression. Suivez le parcours de nos athlètes.</p>
+            </div>
+        </div>
     </div>
-  </div>
 </header>
 
-    <main class="dashboard-root">
+<main class="page-shell dashboard-root">
 
-        {# --- EFFECTIF --- #}
-        <section class="athlete-section">
-            <div class="section-header-row">
-                <h2 class="title-with-bar">Effectif <span>Saison 25/26</span></h2>
-                <div class="slider-nav">
-                    <button id="prevAthlete" type="button" class="nav-circle" aria-label="Précédent"><i class="fa-solid fa-arrow-left"></i></button>
-                    <button id="nextAthlete" type="button" class="nav-circle" aria-label="Suivant"><i class="fa-solid fa-arrow-right"></i></button>
-                </div>
+    {# --- EFFECTIF --- #}
+    <section class="page-container section-spacer athlete-section">
+        <div class="section-header-row">
+            <h2 class="section-heading">Effectif <span>Saison 25/26</span></h2>
+
+            <div class="slider-nav">
+                <button id="prevAthlete" type="button" class="nav-circle" aria-label="Précédent">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <button id="nextAthlete" type="button" class="nav-circle" aria-label="Suivant">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
             </div>
+        </div>
 
-            <div class="athlete-viewport">
-                <div class="athlete-track" id="athleteTrack">
-                    {% for athlete in athletes %}
-                        <div class="athlete-card-modern">
-                            <div class="athlete-img-wrapper">
-                                <img src="{{ athlete.image ? asset('uploads/athletes/' ~ athlete.image) : asset('images/defaults/athlete-placeholder.jpg') }}" 
-                                     alt="{{ athlete.firstName }} {{ athlete.lastName }}" loading="lazy">
-                                <div class="athlete-overlay"></div>
-                                {% if athlete.category %}
-                                    <div class="athlete-cat-tag">{{ athlete.category }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="athlete-info">
-                                <span class="last-name">{{ athlete.lastName }}</span>
-                                <span class="first-name">{{ athlete.firstName }}</span>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </section>
-
-        {# --- DERNIERS RÉSULTATS --- #}
-        <section class="last-result-section">
-            <h2 class="title-with-bar">Dernier Plateau <span>Résultats Officiels</span></h2>
-
-            {% set lastCompetition = competitions|first %}
-            {% if lastCompetition %}
-                <div class="result-card-main">
-                    <div class="result-header" {% if lastCompetition.image %} style="background-image: url('{{ asset('uploads/competitions/' ~ lastCompetition.image) }}');" {% endif %}>
-                        <div class="result-header-overlay"></div>
-                        <div class="result-meta-data">
-                            <div class="meta-left">
-                                <span class="date-label"><i class="fa-regular fa-calendar"></i> {{ lastCompetition.eventDate|date('d F Y') }}</span>
-                                <h3>{{ lastCompetition.title }}</h3>
-                                <div class="comp-location">
-                                    <i class="fa-solid fa-location-dot"></i> {{ lastCompetition.location }}
-                                </div>
-                            </div>
-                            {% if lastCompetition.teamRanking %}
-                                <div class="team-rank-box">
-                                    <span class="rank-label">Classement Club</span>
-                                    <span class="rank-number">{{ lastCompetition.teamRanking }}<sup>er</sup></span>
-                                </div>
+        <div class="athlete-viewport">
+            <div class="athlete-track" id="athleteTrack">
+                {% for athlete in athletes %}
+                    <div class="athlete-card-modern">
+                        <div class="athlete-img-wrapper">
+                            <img src="{{ athlete.image ? asset('uploads/athletes/' ~ athlete.image) : asset('images/defaults/athlete-placeholder.jpg') }}"
+                                 alt="{{ athlete.firstName }} {{ athlete.lastName }}" loading="lazy">
+                            <div class="athlete-overlay"></div>
+                            {% if athlete.category %}
+                                <div class="athlete-cat-tag">{{ athlete.category }}</div>
                             {% endif %}
                         </div>
+                        <div class="athlete-info">
+                            <span class="last-name">{{ athlete.lastName }}</span>
+                            <span class="first-name">{{ athlete.firstName }}</span>
+                        </div>
                     </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
 
-                    <div class="table-container">
-                        <table class="stats-table">
-                            <thead>
-                                <tr>
-                                    <th>Athlète</th>
-                                    <th class="text-center">Arraché</th>
-                                    <th class="text-center">E.J.</th>
-                                    <th class="highlight">Total</th>
-                                    <th class="highlight-accent">Points</th>
-                                    <th>Statut</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for result in lastCompetition.results %}
-                                    <tr class="athlete-row">
-                                        <td>
-                                            <div class="ath-name-cell">
-                                                <strong>{{ result.lastName }}</strong> {{ result.firstName }}
-                                                <small>Poids de corps : {{ result.bodyWeight|default('--') }} kg</small>
-                                            </div>
-                                        </td>
-                                        <td class="text-center weight-val">{{ result.snatch }} kg</td>
-                                        <td class="text-center weight-val">{{ result.cleanAndJerk }} kg</td>
-                                        <td class="highlight total-val">{{ result.total }} kg</td>
-                                        <td class="highlight-accent points-val">{{ result.points }}</td>
-                                        <td>
-                                            {% if result.rankingLevel %}
-                                                <span class="status-pill success">Classé</span>
-                                            {% else %}
-                                                <span class="status-pill error">Non classé</span>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+    {# --- DERNIERS RÉSULTATS --- #}
+    <section class="page-container section-spacer pt-0 last-result-section">
+        <div class="section-header-compact">
+            <h2 class="section-heading">Dernier Plateau <span>Résultats officiels</span></h2>
+        </div>
+
+        {% set lastCompetition = competitions|first %}
+        {% if lastCompetition %}
+            <div class="result-card-main">
+                <div class="result-header"
+                     {% if lastCompetition.image %}
+                        style="background-image: url('{{ asset('uploads/competitions/' ~ lastCompetition.image) }}');"
+                     {% endif %}>
+                    <div class="result-header-overlay"></div>
+
+                    <div class="result-meta-data">
+                        <div class="meta-left">
+                            <span class="date-label">
+                                <i class="fa-regular fa-calendar"></i> {{ lastCompetition.eventDate|date('d F Y') }}
+                            </span>
+                            <h3>{{ lastCompetition.title }}</h3>
+                            <div class="comp-location">
+                                <i class="fa-solid fa-location-dot"></i> {{ lastCompetition.location }}
+                            </div>
+                        </div>
+
+                        {% if lastCompetition.teamRanking %}
+                            <div class="team-rank-box">
+                                <span class="rank-label">Classement Club</span>
+                                <span class="rank-number">{{ lastCompetition.teamRanking }}<sup>er</sup></span>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
-            {% endif %}
-        </section>
 
-        {# --- ARCHIVES DE LA SAISON --- #}
-        {% if competitions|length > 1 %}
-        <section class="container section-history">
-            <h2 class="title-with-bar">Archives <span>Saison en cours</span></h2>
-            
+                <div class="table-container">
+                    <table class="stats-table">
+                        <thead>
+                            <tr>
+                                <th>Athlète</th>
+                                <th class="text-center">Arraché</th>
+                                <th class="text-center">E.J.</th>
+                                <th class="highlight">Total</th>
+                                <th class="highlight-accent">Points</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for result in lastCompetition.results %}
+                                <tr class="athlete-row">
+                                    <td>
+                                        <div class="ath-name-cell">
+                                            <strong>{{ result.lastName }}</strong> {{ result.firstName }}
+                                            <small>Poids de corps : {{ result.bodyWeight|default('--') }} kg</small>
+                                        </div>
+                                    </td>
+                                    <td class="text-center weight-val">{{ result.snatch }} kg</td>
+                                    <td class="text-center weight-val">{{ result.cleanAndJerk }} kg</td>
+                                    <td class="highlight total-val">{{ result.total }} kg</td>
+                                    <td class="highlight-accent points-val">{{ result.points }}</td>
+                                    <td>
+                                        {% if result.rankingLevel %}
+                                            <span class="status-pill success">Classé</span>
+                                        {% else %}
+                                            <span class="status-pill error">Non classé</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-dashboard">
+                <p>La saison n’a pas encore commencé.</p>
+            </div>
+        {% endif %}
+    </section>
+
+    {# --- ARCHIVES DE LA SAISON --- #}
+    {% if competitions|length > 1 %}
+        <section class="page-container section-spacer pt-0 section-history">
+            <div class="section-header-compact">
+                <h2 class="section-heading">Archives <span>Saison en cours</span></h2>
+            </div>
+
             <div class="history-grid">
                 {% for comp in competitions %}
                     {% if not loop.first %}
                         <article class="history-card">
                             <div class="card-thumb">
-                                <img src="{{ comp.image ? asset('uploads/competitions/' ~ comp.image) : asset('images/defaults/competition-placeholder.jpg') }}" alt="{{ comp.title }}">
+                                <img src="{{ comp.image ? asset('uploads/competitions/' ~ comp.image) : asset('images/defaults/competition-placeholder.jpg') }}"
+                                     alt="{{ comp.title }}">
                                 <div class="card-date">{{ comp.eventDate|date('d/m') }}</div>
                             </div>
                             <div class="card-body">
@@ -154,10 +175,9 @@
                 {% endfor %}
             </div>
         </section>
-        {% endif %}
+    {% endif %}
 
-    </main>
-
+</main>
 {% endblock %}
 
 {% block javascripts %}

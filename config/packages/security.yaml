@@ -13,7 +13,6 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        # ✅ 1. LE GUICHET D'ENTRÉE MOBILE (Récupérer le Token + Refresh Token)
         login:
             pattern: ^/api/login
             stateless: true
@@ -24,27 +23,23 @@ security:
                 username_path: email
                 password_path: password
 
-        # ✅ 2. LE GUICHET DE RENOUVELLEMENT (Échanger Refresh Token contre Token)
-        # C'est ici que l'appli viendra quand son Token est périmé
         api_token_refresh:
             pattern: ^/api/token/refresh
             stateless: true
             refresh_jwt:
                 check_path: /api/token/refresh
 
-        # ✅ 3. LA ZONE VIP MOBILE (Accès aux données)
         api:
             pattern: ^/api
             stateless: true
             jwt: ~
 
-        # ✅ 4. LE SITE WEB CLASSIQUE
         main:
             lazy: true
             provider: app_user_provider
+            stateless: false
 
-            # Important : Le pattern permet d'éviter que 'main' n'essaie de gérer l'API
-            # pattern: ^/
+            user_checker: App\Security\UserChecker
 
             login_throttling:
                 max_attempts: 3
@@ -53,12 +48,8 @@ security:
             custom_authenticators:
                 - App\Authenticator\LoginFormAuthenticator
                 - App\Security\GoogleAuthenticator
-            entry_point: App\Authenticator\LoginFormAuthenticator
 
-            form_login:
-                login_path: app_login
-                check_path: app_login
-                enable_csrf: true
+            entry_point: App\Authenticator\LoginFormAuthenticator
 
             two_factor:
                 auth_form_path: 2fa_login
@@ -75,19 +66,26 @@ security:
                 always_remember_me: false
                 name: REMEMBERME
 
-            stateless: false
-
     access_control:
-        # --- RÈGLES API ---
-        - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS } # 👈 Indispensable : il faut pouvoir rafraîchir sans être connecté
+        # --- API ---
+        - { path: ^/api/login$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/login_check$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/token/refresh$, roles: PUBLIC_ACCESS }
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }
+        - { path: ^/api/reset-password-final$, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
-        # --- RÈGLES SITE WEB ---
-        - { path: ^/2fa, role: PUBLIC_ACCESS }
+        # --- Web public ---
+        - { path: ^/2fa, roles: PUBLIC_ACCESS }
         - { path: ^/connect/google, roles: PUBLIC_ACCESS }
+        - { path: ^/connect/google/check, roles: PUBLIC_ACCESS }
         - { path: ^/login$, roles: PUBLIC_ACCESS }
+        - { path: ^/register$, roles: PUBLIC_ACCESS }
+        - { path: ^/reset-password, roles: PUBLIC_ACCESS }
+        - { path: ^/verify/code, roles: PUBLIC_ACCESS }
+
+        # --- Web privé ---
+        - { path: ^/set-password, roles: ROLE_USER }
         - { path: ^/dashboard, roles: ROLE_USER }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/admin, roles: ROLE_ADMIN }

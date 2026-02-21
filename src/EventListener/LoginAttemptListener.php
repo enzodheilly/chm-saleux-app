@@ -3,31 +3,22 @@
 namespace App\EventListener;
 
 use App\Entity\SecurityLog;
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Http\Event\AuthenticationFailureEvent;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 
 class LoginAttemptListener
 {
-    private RequestStack $requestStack;
-    private EntityManagerInterface $em;
-    private UserRepository $userRepository;
-    private TokenStorageInterface $tokenStorage;
-
     public function __construct(
-        RequestStack $requestStack,
-        EntityManagerInterface $em,
-        UserRepository $userRepository,
-        TokenStorageInterface $tokenStorage
-    ) {
-        $this->requestStack = $requestStack;
-        $this->em = $em;
-        $this->userRepository = $userRepository;
-        $this->tokenStorage = $tokenStorage;
-    }
+        private readonly RequestStack $requestStack,
+        private readonly EntityManagerInterface $em,
+        private readonly UserRepository $userRepository,
+        private readonly TokenStorageInterface $tokenStorage
+    ) {}
 
     /**
      * 🔍 Détecte le système et le navigateur depuis le User-Agent
@@ -56,18 +47,19 @@ class LoginAttemptListener
     }
 
     /**
-     * 🔴 Échec de connexion
+     * 🔴 Échec de connexion (log uniquement)
+     * ✅ Symfony moderne : LoginFailureEvent
      */
-    public function onAuthenticationFailure(AuthenticationFailureEvent $event): void
+    public function onLoginFailure(LoginFailureEvent $event): void
     {
-        $request = $this->requestStack->getCurrentRequest();
-        if (!$request) return;
+        $request = $event->getRequest();
 
         $ip = $request->getClientIp() ?? '0.0.0.0';
-        $userAgent = $request->headers->get('User-Agent', '');
+        $userAgent = (string) $request->headers->get('User-Agent', '');
         $ua = $this->parseUserAgent($userAgent);
-        $token = $event->getAuthenticationToken();
-        $username = method_exists($token, 'getUser') ? $token->getUser() : null;
+
+        // Email soumis au formulaire (plus fiable que token sur failure)
+        $submittedEmail = strtolower(trim((string) $request->request->get('email', '')));
 
         $log = new SecurityLog();
         $log->setIp($ip);
@@ -76,16 +68,17 @@ class LoginAttemptListener
         $log->setBrowser($ua['browser']);
         $log->setSuccess(false);
         $log->setType('Connexion');
-        $log->setMessage('Échec de connexion');
         $log->setCreatedAt(new \DateTimeImmutable());
 
-        if (is_string($username)) {
-            $log->setEmailAttempt($username);
-            $user = $this->userRepository->findOneBy(['email' => $username]);
-            if ($user) $log->setUser($user);
-        } elseif ($username instanceof \App\Entity\User) {
-            $log->setUser($username);
-            $log->setEmailAttempt($username->getEmail());
+        // Message (évite le "event unused" + utile en debug)
+        $log->setMessage('Échec de connexion');
+
+        if ($submittedEmail !== '') {
+            $log->setEmailAttempt($submittedEmail);
+            $user = $this->userRepository->findOneBy(['email' => $submittedEmail]);
+            if ($user) {
+                $log->setUser($user);
+            }
         }
 
         $this->em->persist($log);
@@ -93,17 +86,23 @@ class LoginAttemptListener
     }
 
     /**
-     * 🟢 Connexion réussie
+     * 🟢 Connexion réussie (log + empreinte session)
      */
     public function onInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $request = $this->requestStack->getCurrentRequest();
-        if (!$request) return;
+        if (!$request) {
+            return;
+        }
 
         $ip = $request->getClientIp() ?? '0.0.0.0';
-        $userAgent = $request->headers->get('User-Agent', '');
+        $userAgent = (string) $request->headers->get('User-Agent', '');
         $ua = $this->parseUserAgent($userAgent);
+
         $user = $event->getAuthenticationToken()->getUser();
+        if (!$user instanceof User) {
+            return;
+        }
 
         $log = new SecurityLog();
         $log->setIp($ip);
@@ -119,57 +118,77 @@ class LoginAttemptListener
 
         $this->em->persist($log);
 
-        if (method_exists($user, 'setLastLoginAt')) {
-            $user->setLastLoginAt(new \DateTimeImmutable());
+        // ✅ Empreinte session
+        if ($request->hasSession()) {
+            $session = $request->getSession();
+            $session->set('login_ip', $ip);
+            $session->set('login_agent', substr($userAgent, 0, 180));
+            $session->set('session_context_last_log_at', time());
         }
-        if (method_exists($user, 'setLastLoginIp')) {
-            $user->setLastLoginIp($ip);
-        }
-
-        // ✅ Stocke les infos de session pour détection future
-        $session = $request->getSession();
-        $session->set('login_ip', $ip);
-        $session->set('login_agent', substr($userAgent, 0, 120));
 
         $this->em->flush();
     }
 
     /**
-     * 👁️ Détection de changement de contexte de session (IP / appareil)
+     * 👁️ Détection de changement de contexte
+     * - Anti-flood (1 log max / 15 min)
+     * - Log seulement si l'agent change (plus fiable que l'IP)
      */
     public function checkSessionContext(): void
     {
         $token = $this->tokenStorage->getToken();
         $user = $token ? $token->getUser() : null;
-        if (!$user instanceof \App\Entity\User) return;
+        if (!$user instanceof User) {
+            return;
+        }
 
         $request = $this->requestStack->getCurrentRequest();
-        if (!$request || !$request->hasSession()) return;
+        if (!$request || !$request->hasSession()) {
+            return;
+        }
 
         $session = $request->getSession();
-        $currentIp = $request->getClientIp();
-        $currentAgent = substr($request->headers->get('User-Agent'), 0, 120);
+        if (!$session->has('login_agent')) {
+            return;
+        }
 
-        if (!$session->has('login_ip')) return;
+        $now = time();
+        $last = (int) $session->get('session_context_last_log_at', 0);
+        if ($last > 0 && ($now - $last) < (15 * 60)) {
+            return;
+        }
 
-        $initialIp = $session->get('login_ip');
-        $initialAgent = $session->get('login_agent');
+        $currentIp = (string) ($request->getClientIp() ?? '');
+        $currentAgent = substr((string) $request->headers->get('User-Agent', ''), 0, 180);
 
-        if ($currentIp !== $initialIp || $currentAgent !== $initialAgent) {
+        $initialIp = (string) $session->get('login_ip', '');
+        $initialAgent = (string) $session->get('login_agent', '');
+
+        $agentChanged = $currentAgent !== $initialAgent;
+        $ipChanged = $currentIp !== $initialIp;
+
+        if ($agentChanged) {
             $log = new SecurityLog();
-            $log->setIp($currentIp);
+            $log->setIp($currentIp !== '' ? $currentIp : '0.0.0.0');
             $log->setUser($user);
             $log->setSuccess(true);
             $log->setType('Session');
-            $log->setMessage(sprintf('Session suspecte : IP %s → %s ou appareil différent', $initialIp, $currentIp));
+            $log->setMessage(sprintf(
+                'Session suspecte : changement appareil/navigateur. IP %s → %s',
+                $initialIp !== '' ? $initialIp : 'n/a',
+                $currentIp !== '' ? $currentIp : 'n/a'
+            ));
             $log->setCreatedAt(new \DateTimeImmutable());
 
             $this->em->persist($log);
             $this->em->flush();
 
-            // Mise à jour des données pour éviter le spam de logs
-            $session->set('login_ip', $currentIp);
+            $session->set('session_context_last_log_at', $now);
             $session->set('login_agent', $currentAgent);
+            $session->set('login_ip', $currentIp);
+        } elseif ($ipChanged) {
+            // IP seule change souvent (mobile/Wi-Fi), update silencieux
+            $session->set('login_ip', $currentIp);
         }
     }
 }

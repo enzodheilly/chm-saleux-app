@@ -9,75 +9,90 @@
 
 {% block body %}
 
-    {# --- HEADER ÉLITE --- #}
 <header class="page-header-sport" style="--bg-image: url('{{ asset('images/sauna.jpg') }}');">
-  <div class="header-overlay-gradient"></div>
+    <div class="header-overlay-gradient"></div>
 
-  <div class="container header-content">
-    <nav class="breadcrumb-nav">
-      <a href="{{ path('home') }}" class="back-link-minimal">
-        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-      </a>
-    </nav>
+    <div class="header-content">
+        <div class="page-container">
+            <nav class="breadcrumb-nav">
+                <a href="{{ path('home') }}" class="back-link-minimal">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                </a>
+            </nav>
 
-    <div class="header-main-box">
-      <div class="badge-accent">Récupération & Bien-être</div>
-      <h1>Espace<span class="text-outline">Sauna</span></h1>
-    <p class="lead">Optimisez votre récupération. La chaleur sèche est l'alliée indispensable de l'athlète pour détendre les tissus et éliminer les toxines.</p>
-    </div>
-  </div>
-</header>
-
-    <main class="sauna-root">
-
-        {# --- SECTION INTRO --- #}
-        <section class="container section-spacer">
-            <div class="intro-centered-box">
-                <h2 class="section-heading centered">La Performance <span>par le chaud</span></h2>
-                <p class="desc-text-large">
-                    Le sauna au CHM Saleux n'est pas qu'un moment de détente, c'est un véritable outil de **récupération active**. Il stimule la circulation sanguine et permet une relaxation mentale totale après vos séances les plus lourdes.
+            <div class="header-main-box">
+                <div class="badge-accent">Récupération & Bien-être</div>
+                <h1>Espace <span class="text-outline">Sauna</span></h1>
+                <p class="lead">
+                    Optimisez votre récupération. La chaleur sèche est l'alliée indispensable de l'athlète
+                    pour détendre les tissus et éliminer les toxines.
                 </p>
             </div>
-        </section>
+        </div>
+    </div>
+</header>
 
-        {# --- INFOS & RÈGLES --- #}
-        <section class="bg-dark-alternate section-spacer">
-            <div class="container">
-                <div class="sauna-grid">
-                    
-                    <article class="sauna-card">
-                        <div class="card-icon"><i class="fa-solid fa-calendar-day"></i></div>
-                        <h3>Le Vendredi soir</h3>
-                        <p>Le sauna est mis en chauffe exclusivement le <strong>vendredi</strong> pour clôturer votre semaine d'entraînement en beauté.</p>
-                        <span class="elite-badge">Inclus dans l'adhésion</span>
-                    </article>
+<main class="page-shell sauna-root">
 
-                    <article class="sauna-card">
-                        <div class="card-icon"><i class="fa-solid fa-users"></i></div>
-                        <h3>Capacité 4 places</h3>
-                        <p>Pour préserver votre confort et la qualité de l'air, l'accès est limité à 4 personnes simultanément.</p>
-                    </article>
-
-                    <article class="sauna-card">
-                        <div class="card-icon"><i class="fa-solid fa-shower"></i></div>
-                        <h3>Hygiène stricte</h3>
-                        <p>Douche obligatoire avant l'entrée et <strong>serviette large</strong> impérative pour couvrir le bois des bancs.</p>
-                    </article>
-
-                </div>
+    {# --- SECTION INTRO --- #}
+    <section class="section-spacer">
+        <div class="page-container">
+            <div class="intro-centered-box">
+                <h2 class="section-heading centered">
+                    La Performance <span>par le chaud</span>
+                </h2>
+                <p class="desc-text-large">
+                    Le sauna au CHM Saleux n'est pas qu'un moment de détente, c'est un véritable outil de
+                    récupération active. Il stimule la circulation sanguine et permet une relaxation mentale
+                    totale après vos séances les plus lourdes.
+                </p>
             </div>
-        </section>
+        </div>
+    </section>
 
-        {# --- CONTRE-INDICATIONS (Style Alerte Elite) --- #}
-        <section class="container section-spacer">
+    {# --- INFOS & RÈGLES --- #}
+    <section class="bg-dark-alternate section-spacer">
+        <div class="page-container">
+            <div class="sauna-grid">
+
+                <article class="sauna-card">
+                    <div class="card-icon"><i class="fa-solid fa-calendar-day"></i></div>
+                    <h3>Le Vendredi soir</h3>
+                    <p>Le sauna est mis en chauffe exclusivement le <strong>vendredi</strong> pour clôturer votre semaine d'entraînement en beauté.</p>
+                    <span class="elite-badge">Inclus dans l'adhésion</span>
+                </article>
+
+                <article class="sauna-card">
+                    <div class="card-icon"><i class="fa-solid fa-users"></i></div>
+                    <h3>Capacité 4 places</h3>
+                    <p>Pour préserver votre confort et la qualité de l'air, l'accès est limité à 4 personnes simultanément.</p>
+                </article>
+
+                <article class="sauna-card">
+                    <div class="card-icon"><i class="fa-solid fa-shower"></i></div>
+                    <h3>Hygiène stricte</h3>
+                    <p>Douche obligatoire avant l'entrée et <strong>serviette large</strong> impérative pour couvrir le bois des bancs.</p>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    {# --- CONTRE-INDICATIONS --- #}
+    <section class="section-spacer">
+        <div class="page-container">
             <div class="info-box-elite">
                 <div class="info-header">
                     <i class="fa-solid fa-circle-exclamation"></i>
                     <h3>Précautions Médicales</h3>
                 </div>
-                <p>L'utilisation du sauna est déconseillée en cas de troubles cardiaques, d'hypertension ou de problèmes circulatoires. Hydratez-vous abondamment avant et après la séance.</p>
+                <p>
+                    L'utilisation du sauna est déconseillée en cas de troubles cardiaques, d'hypertension
+                    ou de problèmes circulatoires. Hydratez-vous abondamment avant et après la séance.
+                </p>
             </div>
-        </section>
+        </div>
+    </section>
 
-    </main>
+</main>
 {% endblock %}

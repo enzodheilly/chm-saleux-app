@@ -2,17 +2,19 @@
 
 namespace App\Controller\Security;
 
+use App\Authenticator\LoginFormAuthenticator;
 use App\Repository\UserRepository;
 use App\Service\SystemLoggerService;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 class VerifyCodeController extends AbstractController
 {
@@ -21,148 +23,150 @@ class VerifyCodeController extends AbstractController
         Request $request,
         SessionInterface $session,
         UserRepository $userRepository,
-        EntityManagerInterface $entityManager,
-        SystemLoggerService $logger
+        EntityManagerInterface $em,
+        SystemLoggerService $logger,
+        RateLimiterFactory $verify_codeLimiter,
+        UserAuthenticatorInterface $userAuthenticator,
+        LoginFormAuthenticator $authenticator
     ): JsonResponse {
-        $email = $session->get('verify_email');
-        $code = trim($request->request->get('code', ''));
+        $csrf = (string) $request->request->get('_token', '');
+        if (!$this->isCsrfTokenValid('verify_code', $csrf)) {
+            return $this->json(['success' => false, 'message' => 'Session invalide.'], 400);
+        }
 
-        if (!$email) {
-            $msg = 'Aucun e-mail de vérification trouvé. Veuillez vous inscrire à nouveau.';
-            $logger->add('Erreur vérification compte', $msg);
-            return $this->json(['success' => false, 'message' => $msg], 400);
+        $ip = (string) $request->getClientIp();
+        $email = (string) $session->get('verify_email', '');
+        $code  = trim((string) $request->request->get('code', ''));
+
+        $limit = $verify_codeLimiter->create($ip . '|' . ($email ?: 'no-email'))->consume(1);
+        if (!$limit->isAccepted()) {
+            return $this->json(['success' => false, 'message' => 'Trop de tentatives. Réessayez plus tard.'], 429);
+        }
+
+        if ($email === '') {
+            $logger->add('Erreur vérification', "Session vide (IP: $ip)");
+            return $this->json(['success' => false, 'message' => 'Session introuvable. Veuillez vous réinscrire.'], 400);
+        }
+
+        if (!preg_match('/^\d{6}$/', $code)) {
+            return $this->json(['success' => false, 'message' => 'Code invalide.'], 400);
         }
 
         $user = $userRepository->findOneBy(['email' => $email]);
         if (!$user) {
-            $msg = 'Utilisateur introuvable.';
-            $logger->add('Erreur vérification compte', $msg);
-            return $this->json(['success' => false, 'message' => $msg], 404);
+            $session->remove('verify_email');
+            $logger->add('Erreur vérification', "User introuvable (email: $email, IP: $ip)");
+            return $this->json(['success' => false, 'message' => 'Erreur de vérification.'], 400);
         }
 
-        // ⚠️ Si déjà vérifié
         if ($user->isVerified()) {
-            return $this->json(['success' => false, 'message' => 'Ce compte est déjà vérifié.']);
+            $session->remove('verify_email');
+
+            // ✅ déjà vérifié : on peut aussi le connecter direct (optionnel)
+            $userAuthenticator->authenticateUser($user, $authenticator, $request);
+
+            return $this->json([
+                'success' => true,
+                'redirect' => $this->generateUrl('home'),
+            ]);
         }
 
-        // ⏳ Vérifie expiration du code
-        if (!$user->getVerificationCodeExpiresAt() || $user->getVerificationCodeExpiresAt() < new \DateTimeImmutable()) {
-            return $this->json(['success' => false, 'message' => 'Le code a expiré. Veuillez en redemander un.']);
+        $expiresAt = $user->getVerificationCodeExpiresAt();
+        if (!$expiresAt || $expiresAt < new \DateTimeImmutable()) {
+            return $this->json(['success' => false, 'message' => 'Le code a expiré.'], 400);
         }
 
-        // ❌ Mauvais code
-        if ($user->getVerificationCode() !== $code) {
-            return $this->json(['success' => false, 'message' => 'Code incorrect.']);
+        if ((string) $user->getVerificationCode() !== $code) {
+            return $this->json(['success' => false, 'message' => 'Code incorrect.'], 400);
         }
 
-        // ✅ Succès
         $user->setIsVerified(true);
         $user->setVerificationCode(null);
         $user->setVerificationCodeExpiresAt(null);
-        $entityManager->flush();
+        $em->flush();
 
         $session->remove('verify_email');
-        $logger->add('Compte vérifié', sprintf('Le compte %s a été vérifié avec succès.', $user->getEmail()));
+        $logger->add('Compte vérifié', sprintf('%s vérifié (IP: %s)', $user->getEmail(), $ip));
 
-        // 💡 On renvoie un signal de succès SANS message texte
-        return $this->json(['success' => true]);
+        // ✅ AUTO-LOGIN
+        $userAuthenticator->authenticateUser($user, $authenticator, $request);
+
+        return $this->json([
+            'success' => true,
+            'redirect' => $this->generateUrl('home'),
+        ]);
     }
 
-    #[Route('/verify/code/resend', name: 'app_resend_code', methods: ['GET'])]
+    #[Route('/verify/code/resend', name: 'app_resend_code', methods: ['POST'])]
     public function resendCode(
         Request $request,
         SessionInterface $session,
         UserRepository $userRepository,
-        EntityManagerInterface $entityManager,
+        EntityManagerInterface $em,
         MailerInterface $mailer,
-        SystemLoggerService $logger
+        SystemLoggerService $logger,
+        RateLimiterFactory $resend_codeLimiter
     ): JsonResponse {
-        $email = $session->get('verify_email');
+        $csrf = (string) $request->request->get('_token', '');
+        if (!$this->isCsrfTokenValid('resend_code', $csrf)) {
+            return $this->json(['success' => false, 'message' => 'Session invalide.'], 400);
+        }
 
-        if (!$email) {
-            return $this->json(['success' => false, 'message' => 'Aucun e-mail trouvé dans la session.'], 400);
+        $ip = (string) $request->getClientIp();
+        $email = (string) $session->get('verify_email', '');
+
+        $limit = $resend_codeLimiter->create($ip . '|' . ($email ?: 'no-email'))->consume(1);
+        if (!$limit->isAccepted()) {
+            return $this->json(['success' => false, 'message' => 'Trop de demandes. Réessayez plus tard.'], 429);
+        }
+
+        if ($email === '') {
+            return $this->json(['success' => false, 'message' => 'Session introuvable. Veuillez vous réinscrire.'], 400);
         }
 
         $user = $userRepository->findOneBy(['email' => $email]);
         if (!$user) {
-            return $this->json(['success' => false, 'message' => 'Utilisateur introuvable.'], 404);
+            $session->remove('verify_email');
+            return $this->json(['success' => false, 'message' => 'Erreur. Veuillez vous réinscrire.'], 400);
         }
 
-        // 🔒 Vérifie délai minimal de 15 minutes
-        $lastSent = $user->getVerificationCodeExpiresAt();
-        if ($lastSent && $lastSent > new \DateTimeImmutable('-14 minutes')) {
-            $wait = $lastSent->diff(new \DateTimeImmutable())->i;
-            $msg = sprintf('Veuillez patienter encore %d minute(s) avant de demander un nouveau code.', 15 - $wait);
-            return $this->json(['success' => false, 'message' => $msg], 429);
+        if ($user->isVerified()) {
+            $session->remove('verify_email');
+            return $this->json(['success' => false, 'message' => 'Ce compte est déjà vérifié.'], 400);
         }
 
-        // 🆕 Nouveau code
-        $newCode = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        $now = new \DateTimeImmutable();
+        $expiresAt = $user->getVerificationCodeExpiresAt();
+        if ($expiresAt && $expiresAt > $now) {
+            return $this->json(['success' => false, 'message' => 'Un code est déjà actif.'], 429);
+        }
+
+        $newCode = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
         $user->setVerificationCode($newCode);
-        $user->setVerificationCodeExpiresAt(new \DateTimeImmutable('+15 minutes'));
-        $entityManager->flush();
+        $user->setVerificationCodeExpiresAt($now->modify('+15 minutes'));
+        $em->flush();
 
         try {
             $emailMessage = (new Email())
                 ->from('no-reply@monsite.com')
                 ->to($user->getEmail())
                 ->subject('Nouveau code de vérification')
-                ->html("
-                    <p>Bonjour <strong>{$user->getFirstName()}</strong>,</p>
-                    <p>Voici votre nouveau code de vérification :</p>
-                    <h2 style='font-size: 24px; letter-spacing: 4px; color: #005b94;'>{$newCode}</h2>
-                    <p>Ce code est valable pendant 15 minutes.</p>
-                ");
+                ->html(sprintf(
+                    "<p>Bonjour <strong>%s</strong>,</p>
+                     <p>Voici votre code :</p>
+                     <h2 style='font-size:24px; letter-spacing:4px; color:#005b94;'>%s</h2>
+                     <p>Valable 15 minutes.</p>",
+                    htmlspecialchars((string) $user->getFirstName(), ENT_QUOTES),
+                    $newCode
+                ));
+
             $mailer->send($emailMessage);
+            $logger->add('Renvoi code', sprintf('Code renvoyé à %s (IP: %s)', $user->getEmail(), $ip));
 
-            $logger->add('Nouveau code envoyé', sprintf('Nouveau code envoyé à %s', $user->getEmail()));
-
-            return $this->json(['success' => true, 'message' => '✅ Un nouveau code vous a été envoyé par e-mail.']);
+            return $this->json(['success' => true, 'message' => 'Un nouveau code a été envoyé.']);
         } catch (\Throwable $e) {
             $logger->add('Erreur renvoi code', $e->getMessage());
-            return $this->json(['success' => false, 'message' => 'Erreur lors de l’envoi du code.'], 500);
+            return $this->json(['success' => false, 'message' => 'Erreur lors de l’envoi.'], 500);
         }
     }
-
-    /*#[Route('/test/verify-code', name: 'test_verify_code')]
-    public function testVerifyCode(MailerInterface $mailer): Response
-    {
-        // 🧑‍💻 Fake user
-        $fakeUser = new class {
-            public function getFirstName(): string
-            {
-                return 'Enzo';
-            }
-            public function getEmail(): string
-            {
-                return 'enzodheilly134@gmail.com';
-            }
-        };
-
-        // 🔢 Génère un code de vérification fictif
-        $fakeCode = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-        $expiresAt = new \DateTimeImmutable('+15 minutes');
-
-        // 📧 Envoi du mail via template Twig
-        try {
-            $email = (new \Symfony\Bridge\Twig\Mime\TemplatedEmail())
-                ->from('no-reply@monsite.com')
-                ->to($fakeUser->getEmail())
-                ->subject('Test - Code de vérification')
-                ->htmlTemplate('emails/licence_code.html.twig')
-                ->context([
-                    'user' => $fakeUser,
-                    'code' => $fakeCode,
-                    'expiresAt' => $expiresAt,
-                    'firstName' => $fakeUser->getFirstName(),
-
-                ]);
-
-            $mailer->send($email);
-
-            return new Response("✅ Mail de test pour le code de vérification envoyé à {$fakeUser->getEmail()} !");
-        } catch (\Throwable $e) {
-            return new Response("❌ Erreur lors de l'envoi du mail : " . $e->getMessage(), 500);
-        }
-    }*/
 }

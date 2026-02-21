@@ -5,14 +5,12 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
+use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
-// ✅ AJOUTS POUR L'API MOBILE
 use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -20,7 +18,6 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['email'], message: 'Cette adresse email est déjà utilisée.')]
-// ✅ ACTIVATION DE L'API
 #[ApiResource(
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:write']],
@@ -30,11 +27,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: "integer")]
-    #[Groups(['user:read'])] // L'appli doit connaître l'ID
+    #[Groups(['user:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: "string", length: 180, unique: true)]
-    #[Groups(['user:read', 'user:write'])] // Visible et modifiable par l'appli
+    #[Groups(['user:read', 'user:write'])]
     private string $email;
 
     #[ORM\Column(type: "string", length: 50, nullable: true)]
@@ -46,23 +43,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     private ?string $lastName = null;
 
     #[ORM\Column(type: "json")]
-    #[Groups(['user:read'])] // L'appli peut lire les rôles mais pas les forcer
+    #[Groups(['user:read'])]
     private array $roles = [];
 
     #[ORM\Column(type: 'json', nullable: true)]
-    // Pas de groupe : Donnée sensible
     private array $backupCodes = [];
 
     #[ORM\Column(type: "string", nullable: true)]
-    // Pas de groupe : JAMAIS exposer le mot de passe hashé
     private ?string $password = null;
 
-    // ✅ La clé secrète pour Google Authenticator
     #[ORM\Column(type: "string", nullable: true)]
-    // Pas de groupe : Secret !
     private ?string $googleAuthenticatorSecret = null;
 
-    // ✅ Le champ qui confirme si l'admin a bien scanné le code
     #[ORM\Column(type: "boolean", options: ["default" => false])]
     private bool $isTotpConfirmed = false;
 
@@ -125,11 +117,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     #[Groups(['user:read'])]
     private ?\DateTimeInterface $licenceEndDate = null;
 
-
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: 'boolean', options: ["default" => true])]
     private bool $needsPassword = false;
 
-    // 🚨 PAS de Groupe ici car le BLOB binaire ferait planter l'API JSON
     #[ORM\Column(type: "blob", nullable: true)]
     private $profileImage;
 
@@ -173,8 +163,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     {
         $this->updatedAt = new \DateTimeImmutable();
     }
-
-    // ========== GETTERS / SETTERS ==========
 
     public function getId(): ?int
     {
@@ -237,7 +225,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    // ✅ cohérence : champ nullable => setter nullable
+    public function setPassword(?string $password): self
     {
         $this->password = $password;
         return $this;
@@ -360,7 +349,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         return $this;
     }
 
-    public function getAcceptedTerms(): bool
+    // ✅ un seul getter cohérent pour acceptedTerms
+    public function isAcceptedTerms(): bool
     {
         return $this->acceptedTerms;
     }
@@ -411,6 +401,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         $this->licenceNumber = $licenceNumber;
         return $this;
     }
+
     public function getLicenceType(): ?string
     {
         return $this->licenceType;
@@ -485,7 +476,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         return $this;
     }
 
-    // ✅ CETTE FONCTION SERT MAINTENANT A L'API
     #[Groups(['user:read'])]
     #[SerializedName("profileImageUrl")]
     public function getProfileImageDataUrl(): ?string
@@ -520,7 +510,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
             $this->licences[] = $licence;
             $licence->setUser($this);
         }
-
         return $this;
     }
 
@@ -531,7 +520,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
                 $licence->setUser(null);
             }
         }
-
         return $this;
     }
 
@@ -546,7 +534,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
             $this->passwordHistories[] = $passwordHistory;
             $passwordHistory->setUser($this);
         }
-
         return $this;
     }
 
@@ -557,7 +544,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
                 $passwordHistory->setUser(null);
             }
         }
-
         return $this;
     }
 
@@ -572,7 +558,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
             $this->securityLogs->add($log);
             $log->setUser($this);
         }
-
         return $this;
     }
 
@@ -583,7 +568,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
                 $log->setUser(null);
             }
         }
-
         return $this;
     }
 
@@ -591,11 +575,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     {
         $this->createdAt = $createdAt;
         return $this;
-    }
-
-    public function isAcceptedTerms(): ?bool
-    {
-        return $this->acceptedTerms;
     }
 
     public function getPhone(): ?string
@@ -633,14 +612,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
 
     public function isBackupCode(string $code): bool
     {
-        return in_array($code, $this->backupCodes);
+        return in_array($code, $this->backupCodes, true);
     }
 
     public function invalidateBackupCode(string $code): void
     {
-        if (($key = array_search($code, $this->backupCodes)) !== false) {
+        if (($key = array_search($code, $this->backupCodes, true)) !== false) {
             unset($this->backupCodes[$key]);
-            // On réindexe le tableau pour garder un JSON propre en BDD
             $this->backupCodes = array_values($this->backupCodes);
         }
     }
@@ -656,16 +634,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         return $this;
     }
 
-    // ==============================================================
-    // ✅ MÉTHODES OBLIGATOIRES POUR GOOGLE AUTHENTICATOR (2FA)
-    // ==============================================================
-
     public function isGoogleAuthenticatorEnabled(): bool
     {
-        // 🚨 POINT CRUCIAL : On ne bloque le login QUE si l'admin a déjà validé son code (isTotpConfirmed = true).
-        // S'il ne l'a pas fait, on retourne false, ce qui lui permet d'arriver au Dashboard.
-        // C'est ensuite le Dashboard qui le bloquera avec le QR code géant.
-        return in_array('ROLE_ADMIN', $this->getRoles())
+        return in_array('ROLE_ADMIN', $this->getRoles(), true)
             && $this->googleAuthenticatorSecret !== null
             && $this->isTotpConfirmed;
     }

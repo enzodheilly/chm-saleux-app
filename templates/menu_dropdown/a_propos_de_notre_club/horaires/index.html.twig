@@ -9,28 +9,31 @@
 
 {% block body %}
 
-    {# --- HEADER ELITE --- #}
+    {# --- HEADER ELITE (GLOBAL) --- #}
     <header class="page-header-sport" style="--bg-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/horaires/1.jpg') }}');">
         <div class="header-overlay-gradient"></div>
-        <div class="container header-content">
-            <nav class="breadcrumb-nav">
-                <a href="{{ path('home') }}" class="back-link-minimal">
-                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                </a>
-            </nav>
 
-            <div class="header-main-box">
-                <div class="badge-accent">Planning Hebdomadaire</div>
-                <h1>Nos <span class="text-outline">Créneaux</span></h1>
-                <p class="lead">Des horaires adaptés pour vous entraîner matin et soir, encadrés par nos bénévoles passionnés.</p>
+        <div class="header-content">
+            <div class="page-container">
+                <nav class="breadcrumb-nav">
+                    <a href="{{ path('home') }}" class="back-link-minimal">
+                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                    </a>
+                </nav>
+
+                <div class="header-main-box">
+                    <div class="badge-accent">Planning Hebdomadaire</div>
+                    <h1>Nos <span class="text-outline">Créneaux</span></h1>
+                    <p class="lead">Des horaires adaptés pour vous entraîner matin et soir, encadrés par nos bénévoles passionnés.</p>
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="horaires-root">
+    <main class="horaires-root page-shell">
 
         {# --- QUICKBAR INFO --- #}
-        <section class="container">
+        <section class="page-container">
             <div class="quick-info-bar">
                 <div class="info-item">
                     <i class="fa-solid fa-location-dot"></i>
@@ -39,6 +42,7 @@
                         <span>Complexe sportif, Saleux</span>
                     </div>
                 </div>
+
                 <div class="info-item">
                     <i class="fa-solid fa-phone"></i>
                     <div>
@@ -46,6 +50,7 @@
                         <span><a href="tel:0322897257">03.22.89.72.57</a></span>
                     </div>
                 </div>
+
                 <div class="info-item">
                     <i class="fa-solid fa-bell"></i>
                     <div>
@@ -57,10 +62,9 @@
         </section>
 
         {# --- PLANNING SECTION --- #}
-        <section class="container section-spacer">
+        <section class="page-container section-spacer">
             <div class="schedule-grid">
-                
-                {# Lundi / Mercredi / Vendredi #}
+
                 <div class="schedule-card active-day">
                     <div class="card-glow"></div>
                     <div class="card-head">
@@ -83,7 +87,6 @@
                     </div>
                 </div>
 
-                {# Mardi / Jeudi #}
                 <div class="schedule-card active-day">
                     <div class="card-head">
                         <h3>Mar • Jeu</h3>
@@ -102,7 +105,6 @@
                     </div>
                 </div>
 
-                {# Week-end #}
                 <div class="schedule-card closed-day">
                     <div class="card-head">
                         <h3>Sam • Dim</h3>
@@ -119,29 +121,34 @@
 
         {# --- INFOS PRATIQUES --- #}
         <section class="bg-dark-alternate section-spacer">
-            <div class="container">
-                <h2 class="section-heading centered" style="margin-top: 50px;">Infos <span>Pratiques</span></h2>
-                <div class="info-blocks-grid mt-5">
+            <div class="page-container">
+                <h2 class="section-heading centered horaires-section-title">Infos <span>Pratiques</span></h2>
+
+                <div class="info-blocks-grid">
                     <div class="info-mini-card">
                         <i class="fa-solid fa-handshake-angle"></i>
                         <h4>Gestion Bénévole</h4>
                         <p>Le club vit grâce à nos bénévoles. Les horaires peuvent varier selon leurs impératifs.</p>
                     </div>
+
                     <div class="info-mini-card">
                         <i class="fa-solid fa-trophy"></i>
                         <h4>Compétitions</h4>
                         <p>Le vendredi soir précédant un match à domicile, la salle ferme à 18h45 pour installation.</p>
                     </div>
+
                     <div class="info-mini-card">
                         <i class="fa-solid fa-mobile-screen-button"></i>
                         <h4>WhatsApp</h4>
                         <p>Rejoignez le groupe pour être informé en temps réel des fermetures exceptionnelles.</p>
                     </div>
                 </div>
-                
+
                 <div class="call-to-action-horaires">
                     <p>Un doute sur l'ouverture ?</p>
-                    <a href="tel:0322897257" class="btn-phone"><i class="fa-solid fa-phone-volume"></i> Appeler le club</a>
+                    <a href="tel:0322897257" class="btn-phone">
+                        <i class="fa-solid fa-phone-volume"></i> Appeler le club
+                    </a>
                 </div>
             </div>
         </section>
