@@ -9,10 +9,11 @@
 
 {% block body %}
 
-    {# --- HEADER IMPACT --- #}
-            <header class="page-header-sport" style="--bg-image: url('{{ asset('images/nos_pratiques/musculation/histoire-club.jpg') }}');">
-        <div class="header-overlay-gradient"></div>
-        <div class="container header-content">
+<header class="page-header-sport" style="--bg-image: url('{{ asset('images/nos_pratiques/musculation/histoire-club.jpg') }}');">
+    <div class="header-overlay-gradient"></div>
+
+    <div class="header-content">
+        <div class="page-container">
             <nav class="breadcrumb-nav">
                 <a href="{{ path('home') }}" class="back-link-minimal">
                     <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
@@ -20,120 +21,145 @@
             </nav>
 
             <div class="header-main-box">
-                <div class="badge-accent">Force & Hypertrophiee</div>
-                <h1>ESPACE <span class="text-outline">MUSCULATION</span></h1>
+                <div class="badge-accent">Force & Hypertrophie</div>
+                <h1>Espace <span class="text-outline">Musculation</span></h1>
                 <p class="lead">Un plateau de 300m² combinant charges libres et machines guidées de dernière génération.</p>
             </div>
         </div>
-    </header>
+    </div>
+</header>
 
-    <main class="elite-main">
+<main class="page-shell elite-main">
 
-        {# --- SECTION 1 : PECS --- #}
-        <section class="feature-section">
-            <div class="container grid-2">
-                <div class="text-side">
-                    <span class="side-badge">Zone Pectoraux</span>
-                    <h2>DÉVELOPPEZ <br><span class="text-highlight">VOTRE PUISSANCE</span></h2>
-                    <p>Un arsenal complet pour le travail polyarticulaire et l’isolation, adapté à tous les niveaux de pratique.</p>
-                    
-                    <div class="specs-mini-grid">
-                        <div class="spec-item">
-                            <i class="fa-solid fa-dumbbell"></i>
-                            <div><strong>Charges</strong><small>Haltères 1 à 34kg</small></div>
-                        </div>
-                        <div class="spec-item">
-                            <i class="fa-solid fa-couch"></i>
-                            <div><strong>Bancs</strong><small>Incliné / Décliné</small></div>
-                        </div>
+    {# --- SECTION 1 : PECS --- #}
+    <section class="feature-section">
+        <div class="page-container grid-2">
+            <div class="text-side">
+                <span class="side-badge">Zone Pectoraux</span>
+
+                <h2 class="section-heading section-heading-xl">
+                    Développez <span>Votre Puissance</span>
+                </h2>
+
+                <p>Un arsenal complet pour le travail polyarticulaire et l’isolation, adapté à tous les niveaux de pratique.</p>
+
+                <div class="specs-mini-grid">
+                    <div class="spec-item">
+                        <i class="fa-solid fa-dumbbell"></i>
+                        <div><strong>Charges</strong><small>Haltères 1 à 34kg</small></div>
                     </div>
-                </div>
-                <div class="visual-side">
-                    <div class="img-frame-elite">
-                        <img src="{{ asset('images/zones/pecs.jpg') }}" alt="Pectoraux">
-                        <div class="frame-glow"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        {# --- SECTION 2 : DOS (Inversé) --- #}
-        <section class="feature-section alt-bg">
-            <div class="container grid-2 reversed">
-                <div class="text-side">
-                    <span class="side-badge">Zone Dos</span>
-                    <h2>ÉPAISSEUR & <br><span class="text-highlight">DENSITÉ</span></h2>
-                    <p>Sollicitez votre chaîne postérieure sous tous les angles grâce à notre station de tirage polyvalente et nos postes de rowing.</p>
-                    
-                    <ul class="elite-check-list">
-                        <li><i class="fa-solid fa-circle-check"></i> Station 4 tirages complète</li>
-                        <li><i class="fa-solid fa-circle-check"></i> Espace Deadlift & Tirages lourds</li>
-                        <li><i class="fa-solid fa-circle-check"></i> Bancs à lombaires & Tractions</li>
-                    </ul>
-                </div>
-                <div class="visual-side">
-                    <div class="img-frame-elite">
-                        <img src="{{ asset('images/zones/dos.jpg') }}" alt="Dos">
-                        <div class="frame-glow primary"></div>
+                    <div class="spec-item">
+                        <i class="fa-solid fa-couch"></i>
+                        <div><strong>Bancs</strong><small>Incliné / Décliné</small></div>
                     </div>
                 </div>
             </div>
-        </section>
 
-        {# --- SECTION 3 : JAMBES --- #}
-        <section class="feature-section">
-            <div class="container grid-2">
-                <div class="text-side">
-                    <span class="side-badge">Zone Bas du Corps</span>
-                    <h2>FORCE ET <br><span class="text-highlight">MOBILITÉ</span></h2>
-                    <p>Presse à 45°, Squat Rack et postes d'isolation pour construire des fondations solides.</p>
-                    
-                    <div class="tag-cloud">
-                        <span>Presse 45°</span>
-                        <span>Squat Rack</span>
-                        <span>Hip Thrust</span>
-                        <span>Leg Extension</span>
-                        <span>Trap Bar</span>
-                    </div>
+            <div class="visual-side">
+                <div class="img-frame-elite">
+                    <img src="{{ asset('images/zones/pecs.jpg') }}" alt="Zone pectoraux">
                 </div>
-                <div class="visual-side">
-                    <div class="img-frame-elite">
-                        <img src="{{ asset('images/zones/jambes.jpg') }}" alt="Jambes">
-                    </div>
+                <div class="frame-glow"></div>
+            </div>
+        </div>
+    </section>
+
+    {# --- SECTION 2 : DOS --- #}
+    <section class="feature-section alt-bg">
+        <div class="page-container grid-2 reversed">
+            <div class="text-side">
+                <span class="side-badge">Zone Dos</span>
+
+                <h2 class="section-heading section-heading-xl">
+                    Épaisseur & <span>Densité</span>
+                </h2>
+
+                <p>Sollicitez votre chaîne postérieure sous tous les angles grâce à notre station de tirage polyvalente et nos postes de rowing.</p>
+
+                <ul class="elite-check-list">
+                    <li><i class="fa-solid fa-circle-check"></i> Station 4 tirages complète</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Espace Deadlift & Tirages lourds</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Bancs à lombaires & Tractions</li>
+                </ul>
+            </div>
+
+            <div class="visual-side">
+                <div class="img-frame-elite">
+                    <img src="{{ asset('images/zones/dos.jpg') }}" alt="Zone dos">
+                </div>
+                <div class="frame-glow primary"></div>
+            </div>
+        </div>
+    </section>
+
+    {# --- SECTION 3 : JAMBES --- #}
+    <section class="feature-section">
+        <div class="page-container grid-2">
+            <div class="text-side">
+                <span class="side-badge">Zone Bas du Corps</span>
+
+                <h2 class="section-heading section-heading-xl">
+                    Force et <span>Mobilité</span>
+                </h2>
+
+                <p>Presse à 45°, Squat Rack et postes d'isolation pour construire des fondations solides.</p>
+
+                <div class="tag-cloud">
+                    <span>Presse 45°</span>
+                    <span>Squat Rack</span>
+                    <span>Hip Thrust</span>
+                    <span>Leg Extension</span>
+                    <span>Trap Bar</span>
                 </div>
             </div>
-        </section>
 
-        {# --- SECTION CARDIO (FULL WIDTH) --- #}
-        <section class="elite-cardio-section">
-            <div class="cardio-bg" style="background-image: url('{{ asset('images/zones/cardio.jpg') }}');"></div>
-            <div class="cardio-overlay"></div>
-            <div class="container cardio-content">
-                <div class="cardio-header">
-                    <h2>ESPACE <span class="text-outline">CARDIO</span></h2>
-                    <p>Performance cardiovasculaire et condition physique.</p>
-                </div>
-                <div class="cardio-stats-grid">
-                    <div class="stat-card"><strong>4</strong><span>Tapis</span></div>
-                    <div class="stat-card active"><strong>5</strong><span>Vélos</span></div>
-                    <div class="stat-card"><strong>2</strong><span>Rameurs</span></div>
-                    <div class="stat-card"><strong>2</strong><span>Climbers</span></div>
+            <div class="visual-side">
+                <div class="img-frame-elite">
+                    <img src="{{ asset('images/zones/jambes.jpg') }}" alt="Zone jambes">
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        {# --- BANNER CTA --- #}
-        <section class="elite-cta">
+    {# --- SECTION CARDIO --- #}
+    <section class="elite-cardio-section">
+        <div class="cardio-bg" style="background-image: url('{{ asset('images/zones/cardio.jpg') }}');"></div>
+        <div class="cardio-overlay"></div>
+
+        <div class="page-container cardio-content">
+            <div class="cardio-header">
+                <h2 class="section-heading section-heading-xl centered">
+                    Espace <span>Cardio</span>
+                </h2>
+                <p>Performance cardiovasculaire et condition physique.</p>
+            </div>
+
+            <div class="cardio-stats-grid">
+                <div class="stat-card"><strong>4</strong><span>Tapis</span></div>
+                <div class="stat-card active"><strong>5</strong><span>Vélos</span></div>
+                <div class="stat-card"><strong>2</strong><span>Rameurs</span></div>
+                <div class="stat-card"><strong>2</strong><span>Climbers</span></div>
+            </div>
+        </div>
+    </section>
+
+    {# --- CTA --- #}
+    <section class="elite-cta">
+        <div class="page-container">
             <div class="cta-box">
                 <div class="cta-content">
-                    <h3>PRÊT POUR LE <span class="text-outline">CHANGEMENT ?</span></h3>
+                    <h2 class="section-heading section-heading-xl cta-title">
+                        Prêt pour le <span>Changement ?</span>
+                    </h2>
                     <p>Réservez votre séance d'essai et découvrez notre plateau Musculation.</p>
                 </div>
+
                 <a href="{{ path('contact') }}" class="btn-elite-big">
-                    S'INSCRIRE <i class="fa-solid fa-arrow-right"></i>
+                    S'inscrire <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
-        </section>
+        </div>
+    </section>
 
-    </main>
+</main>
 {% endblock %}

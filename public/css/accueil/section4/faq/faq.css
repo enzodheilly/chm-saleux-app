@@ -1,174 +1,94 @@
-:root{
-  --primary-color:#F57706;
-  --dark-bg:#111;
-  --bg-card:#121212;
-  --text-muted:#a0a0a0;
-  --border-soft:rgba(255,255,255,0.08);
-
-  /* manquants */
-  --nav-height:60px;
-  --transition: all .35s cubic-bezier(.23,1,.32,1);
-}
-
-.faq-root{
-  background:var(--dark-bg);
-  color:#fff;
-  font-family:"Inter", sans-serif;
-  padding: 8rem 0 5rem;     /* ✅ spacing global */
-  overflow-x:hidden;
-}
-
-.container{
-  max-width:1200px;
-  margin:0 auto;
-  padding:0 5px;           /* ✅ au lieu de 0.25rem */
-}
-
-/* =========================================
-   HEADER SPORTIF
-   ========================================= */
-.page-header-sport{
-  position:relative;
-  padding-top:var(--nav-height);
-  height:60vh;
-  min-height:450px;
-  display:flex;
-  align-items:center;
-  background-color:var(--dark-bg);
-  margin-bottom:0;
-  overflow:hidden;
-}
-.page-header-sport::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background-image:var(--bg-image);
-  background-size:cover;
-  background-position:center 35%;
-  z-index:1;
-  filter:grayscale(30%) brightness(0.6);
-  transform: scale(1.02);
-}
-.header-overlay-gradient{
-  position:absolute;
-  inset:0;
-  z-index:2;
-  background:linear-gradient(to right, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.6) 100%);
-}
-.header-content{ position:relative; z-index:3; width:100%; top:25px; }
-
-.badge-accent{
-  background:var(--primary-color);
-  color:#fff;
-  padding:6px 14px;
-  font-weight:800;
-  font-size:.75rem;
-  text-transform:uppercase;
-  margin-bottom:1.5rem;
-  display:inline-block;
-}
-.header-main-box h1{
-  font-size:clamp(3rem, 5vw, 4.5rem);
-  font-weight:900;
-  text-transform:uppercase;
-  line-height:1;
-  margin:0 0 1.5rem 0;
-  color:#fff;
-}
-.text-outline{ -webkit-text-stroke:1px #fff; color:transparent; }
-.header-main-box .lead{
-  font-size:1.2rem;
-  color:#ccc;
-  max-width:650px;
-  line-height:1.6;
-}
-.back-link-minimal{
-  color:var(--primary-color);
-  text-decoration:none;
-  font-weight:800;
-  text-transform:uppercase;
-  font-size:.8rem;
-  letter-spacing:2px;
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:2.2rem; /* ✅ un peu moins que 3rem */
-  transition:var(--transition);
-}
-.back-link-minimal:hover{ color:#fff; }
+/* =========================================================
+   FAQ — PAGE SPECIFIQUE
+   (header / page-shell / page-container / typo globale gérés globalement)
+   ========================================================= */
 
 /* =========================================
    FILTERS NAV
    ========================================= */
 .faq-nav-wrapper{
-  margin-top:-40px;        /* ✅ overlap plus propre */
-  position:relative;
-  z-index:10;
+  margin-top: -40px;
+  position: relative;
+  z-index: 10;
 }
 
 .faq-filters-scroll{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
   padding: 14px;
   border-radius: 18px;
   background: rgba(18,18,18,0.75);
   border: 1px solid rgba(255,255,255,0.06);
   backdrop-filter: blur(10px);
-  scrollbar-width:none;
+  scrollbar-width: none;
 }
 .faq-filters-scroll::-webkit-scrollbar{ display:none; }
 
 .filter-btn{
-  background:var(--bg-card);
-  border:1px solid rgba(255,255,255,0.08);
-  color:#fff;
-  padding:11px 18px;
-  border-radius:999px;
-  white-space:nowrap;
-  cursor:pointer;
-  transition:var(--transition);
-  font-weight:900;
-  font-size:.85rem;
-  letter-spacing:1px;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--text-white, #fff);
+  padding: 11px 18px;
+  border-radius: 999px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: var(--transition-base, .3s ease);
+  font-weight: 900;
+  font-size: .85rem;
+  letter-spacing: 1px;
 }
+
 .filter-btn:hover{
   transform: translateY(-1px);
   border-color: rgba(245,119,6,0.35);
 }
+
 .filter-btn.active{
-  background:var(--primary-color);
-  border-color:var(--primary-color);
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
 }
 
 /* =========================================
-   SECTION TITLES
+   TITRES DE GROUPES (connectés à .section-heading global)
+   HTML conseillé : <h2 class="section-heading group-title">...</h2>
    ========================================= */
 .group-title{
   margin-top: 2.2rem;
-  font-size:2rem;
-  font-weight:900;
-  text-transform:uppercase;
-  margin-bottom:22px;
-  letter-spacing:1px;
+  margin-bottom: 22px;
 }
-.group-title span{ color:var(--primary-color); }
+
+/* si tu veux garder un style un peu plus serré uniquement pour FAQ */
+.faq-group:first-child .group-title{
+  margin-top: 0.5rem;
+}
 
 /* =========================================
    ACCORDION
    ========================================= */
+.faq-container{
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.faq-group{
+  width: 100%;
+}
+
 .accordion-elite{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 .accordion-item{
-  background:var(--bg-card);
-  border:1px solid rgba(255,255,255,0.07);
-  border-radius:16px;
-  overflow:hidden;
-  transition:var(--transition);
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: var(--transition-base, .3s ease);
 }
 
 .accordion-item:hover{
@@ -177,35 +97,36 @@
 }
 
 .accordion-header{
-  padding:18px 22px;
-  cursor:pointer;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:14px;
-  font-weight:900;
-  font-size:1.05rem;
-  line-height:1.25;
+  padding: 18px 22px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  font-weight: 900;
+  font-size: 1.05rem;
+  line-height: 1.25;
+  color: var(--text-white, #fff);
 }
 
 .accordion-header i{
-  font-size:.95rem;
-  color:var(--primary-color);
-  transition:var(--transition);
+  font-size: .95rem;
+  color: var(--primary-color);
+  transition: var(--transition-base, .3s ease);
   flex: 0 0 auto;
 }
 
 .accordion-body{
-  max-height:0;
-  padding:0 22px;
-  overflow:hidden;
+  max-height: 0;
+  padding: 0 22px;
+  overflow: hidden;
   transition: max-height .45s cubic-bezier(.4,0,.2,1), padding .35s ease;
   background: rgba(255,255,255,0.02);
 }
 
 .accordion-body p{
   margin: 0;
-  color: var(--text-muted);
+  color: var(--subtitle-color, var(--text-muted));
   line-height: 1.7;
   padding-top: 14px;
 }
@@ -214,6 +135,7 @@
   max-height: 520px;
   padding: 0 22px 20px;
 }
+
 .accordion-item.open .accordion-header i{
   transform: rotate(45deg);
 }
@@ -222,27 +144,27 @@
    CONTACT BAR
    ========================================= */
 .contact-bar-elite{
-  display:flex;
-  justify-content:center;
-  gap:14px;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
   margin-top: 2.6rem;
   padding-top: 2rem;
   border-top: 1px solid rgba(255,255,255,0.06);
 }
 
 .contact-circle{
-  width:56px;
-  height:56px;
-  border-radius:50%;
-  background:var(--bg-card);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:1.35rem;
-  color:#fff;
-  border:1px solid rgba(255,255,255,0.08);
-  transition:var(--transition);
-  text-decoration:none;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: var(--transition-base, .3s ease);
+  text-decoration: none;
 }
 
 .contact-circle:hover{
@@ -253,42 +175,56 @@
 
 .whatsapp:hover{ color:#25D366; border-color:#25D366; }
 .instagram:hover{ color:#E1306C; border-color:#E1306C; }
+.facebook:hover{ color:#1877F2; border-color:#1877F2; }
 
 /* =========================================
-   RESPONSIVE
+   RESPONSIVE (spécifique FAQ seulement)
    ========================================= */
 @media (max-width: 992px){
-  .faq-root{ padding: 3.2rem 0 4rem; }
+  .faq-nav-wrapper{
+    margin-top: -28px;
+  }
 }
 
 @media (max-width: 768px){
-  .group-title{ font-size:1.5rem; }
-  .accordion-header{ font-size:1rem; padding:15px 18px; }
-  .accordion-body{ padding: 0 18px; }
-  .accordion-item.open .accordion-body{ padding: 0 18px 18px; }
-
-  /* header responsive (tu le voulais comme ça) */
-.page-header-sport {
-    height: auto !important;
-    min-height: 400px !important;
+  .group-title{
+    margin-top: 1.4rem;
+    margin-bottom: 16px;
   }
 
-  .header-content {
-    top: 0 !important;
+  .accordion-header{
+    font-size: 1rem;
+    padding: 15px 18px;
   }
 
-  .page-header-sport .container{
-    padding-left: 18px !important;
-    padding-right: 18px !important;
+  .accordion-body{
+    padding: 0 18px;
   }
 
-  .header-main-box h1 {
-    font-size: 2.7rem !important;
-    line-height: 1.1;
+  .accordion-item.open .accordion-body{
+    padding: 0 18px 18px;
   }
 }
 
 @media (max-width: 480px){
-  .filter-btn{ padding: 10px 14px; font-size: .8rem; }
-  .contact-circle{ width:52px; height:52px; font-size:1.25rem; }
+  .faq-filters-scroll{
+    padding: 10px;
+    gap: 8px;
+    border-radius: 14px;
+  }
+
+  .filter-btn{
+    padding: 10px 14px;
+    font-size: .8rem;
+  }
+
+  .contact-bar-elite{
+    gap: 10px;
+  }
+
+  .contact-circle{
+    width: 52px;
+    height: 52px;
+    font-size: 1.25rem;
+  }
 }

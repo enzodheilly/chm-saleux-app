@@ -9,28 +9,32 @@
 
 {% block body %}
 
-    {# --- HEADER ELITE --- #}
     <header class="page-header-sport" style="--bg-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/horaires/1.jpg') }}');">
         <div class="header-overlay-gradient"></div>
-        <div class="container header-content">
-            <nav class="breadcrumb-nav">
-                <a href="{{ path('home') }}" class="back-link-minimal">
-                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                </a>
-            </nav>
 
-            <div class="header-main-box">
-                <div class="badge-accent">Centre d'aide</div>
-                <h1>Questions <span class="text-outline">Fréquentes</span></h1>
-                <p class="lead">Abonnements, entraînements, équipements... Trouvez toutes les réponses pour bien débuter au club.</p>
+        <div class="header-content">
+            <div class="page-container">
+                <nav class="breadcrumb-nav">
+                    <a href="{{ path('home') }}" class="back-link-minimal">
+                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                    </a>
+                </nav>
+
+                <div class="header-main-box">
+                    <div class="badge-accent">Centre d'aide</div>
+                    <h1>Questions <span class="text-outline">Fréquentes</span></h1>
+                    <p class="lead">
+                        Abonnements, entraînements, équipements... Trouvez toutes les réponses pour bien débuter au club.
+                    </p>
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="faq-root">
+    <main class="page-shell faq-root">
 
         {# --- FILTRES DE NAVIGATION --- #}
-        <section class="container faq-nav-wrapper">
+        <section class="page-container faq-nav-wrapper">
             <div class="faq-filters-scroll">
                 <button class="filter-btn active" data-target="questions">Général</button>
                 <button class="filter-btn" data-target="abonnement">Abonnement</button>
@@ -42,12 +46,13 @@
         </section>
 
         {# --- CONTENU FAQ --- #}
-        <section class="container section-spacer">
+        <section class="page-container section-spacer">
             <div class="faq-container">
-                
+
                 {# GROUPE : GÉNÉRAL #}
                 <div class="faq-group active" id="questions">
-                    <h2 class="group-title">Questions <span>Fréquentes</span></h2>
+                    <h2 class="section-heading group-title">Questions <span>Fréquentes</span></h2>
+
                     <div class="accordion-elite">
                         <div class="accordion-item">
                             <div class="accordion-header">
@@ -58,6 +63,7 @@
                                 <p>Pas du tout ! Le CHM Saleux accueille les débutants comme les confirmés. Nos coachs sont là pour vous apprendre les bases et vous accompagner selon votre niveau.</p>
                             </div>
                         </div>
+
                         <div class="accordion-item">
                             <div class="accordion-header">
                                 <span>Puis-je faire une séance d’essai ?</span>
@@ -70,9 +76,10 @@
                     </div>
                 </div>
 
-                {# GROUPE : ABONNEMENT (masqué par défaut) #}
+                {# GROUPE : ABONNEMENT #}
                 <div class="faq-group" id="abonnement" style="display:none;">
-                    <h2 class="group-title">Mon <span>Abonnement</span></h2>
+                    <h2 class="section-heading group-title">Mon <span>Abonnement</span></h2>
+
                     <div class="accordion-elite">
                         <div class="accordion-item">
                             <div class="accordion-header">
@@ -85,16 +92,16 @@
                         </div>
                     </div>
                 </div>
-                
-                {# Répéter pour les autres groupes... #}
 
+                {# ... autres groupes #}
             </div>
         </section>
 
-        {# --- BARRE DE CONTACT MINIMALE --- #}
+        {# --- BARRE DE CONTACT --- #}
         <section class="bg-dark-alternate section-spacer">
-            <div class="container text-center">
-                <h2 class="section-heading centered"style="margin-top: 50px;">Toujours <span>une question ?</span></h2>
+            <div class="page-container text-center">
+                <h2 class="section-heading centered" style="margin-top: 50px;">Toujours <span>une question ?</span></h2>
+
                 <div class="contact-bar-elite mt-5">
                     <a href="{{ path('contact') }}" class="contact-circle" title="Email"><i class="fa-solid fa-envelope"></i></a>
                     <a href="https://chat.whatsapp.com/..." class="contact-circle whatsapp" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>

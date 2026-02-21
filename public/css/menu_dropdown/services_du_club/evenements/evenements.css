@@ -1,225 +1,136 @@
-/* =========================================
-   1. BASE & VARIABLES
-   ========================================= */
-:root {
-  --bg-dark: #111;
-  --bg-card: #121212;
-  --accent-red: #F57706;
-  --border-soft: rgba(255, 255, 255, 0.08);
+/* =========================================================
+   ÉVÉNEMENTS — PAGE SPÉCIFIQUE
+   (root + header + container + titres globaux gérés globalement)
+   ========================================================= */
 
-  --nav-height: 60px; /* ajouté */
-  --transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1); /* ajouté */
-}
-
-.events-root {
-  background: var(--bg-dark);
-  color: white;
-  font-family: 'Inter', sans-serif;
-
-  /* meilleur placement général */
-  padding: 4rem 0;              /* au lieu de 50px partout */
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 18px;              /* plus réaliste que 0.25rem */
-}
-
-/* =========================================
-   2. HEADER SPORTIF (inchangé visuellement)
-   ========================================= */
-.page-header-sport {
-  position: relative;
-  padding-top: var(--nav-height);
-  height: 60vh;
-  min-height: 450px;
-  display: flex;
-  align-items: center;
-  background-color: var(--bg-dark); /* correction */
-  margin-bottom: 0;
-}
-
-.page-header-sport::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: var(--bg-image);
-  background-size: cover;
-  background-position: center 5%;
-  z-index: 1;
-  filter: grayscale(30%) brightness(0.6);
-}
-
-.header-overlay-gradient {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: linear-gradient(
-    to right,
-    rgba(8,8,8,0.95) 0%,
-    rgba(8,8,8,0.6) 100%
-  );
-}
-
-.header-content {
-  position: relative;
-  z-index: 3;
-  width: 100%;
-  top: 27px;
-}
-
-.badge-accent {
-  background: var(--accent-red);
-  color: white;
+/* Petit badge local (intro) */
+.badge-outline{
+  display: inline-block;
   padding: 6px 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  color: var(--primary-color);
   font-weight: 800;
   font-size: 0.75rem;
   text-transform: uppercase;
-  margin-bottom: 1.5rem;
-  display: inline-block;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  background: rgba(255,255,255,0.02);
 }
 
-.header-main-box h1 {
-  font-size: clamp(3rem, 5vw, 4.5rem);
-  font-weight: 900;
-  text-transform: uppercase;
-  line-height: 1;
-  margin: 0 0 1.5rem 0;
-  color: #fff;
+.intro-centered-box{
+  text-align: center;
+  max-width: 860px;
+  margin: 0 auto;
 }
 
-.text-outline {
-  -webkit-text-stroke: 1px white;
-  color: transparent;
+.intro-centered-box .desc-text-large{
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
 }
-
-.header-main-box .lead {
-  font-size: 1.2rem;
-  color: #ccc;
-  max-width: 650px;
-  line-height: 1.6;
-}
-
-.back-link-minimal {
-  color: var(--accent-red);
-  text-decoration: none;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  letter-spacing: 2px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 3rem;
-  transition: var(--transition);
-}
-.back-link-minimal:hover { color: white; }
 
 /* =========================================
-   3. EVENTS GRID (meilleur placement)
+   EVENTS GRID
    ========================================= */
-.events-grid {
+.events-grid{
   display: grid;
-
-  /* meilleure répartition et évite les cards trop serrées */
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.6rem;
-
-  /* espace vertical */
-  margin-top: 2.5rem;
 }
 
-.event-card {
+.event-card{
   background: var(--bg-card);
   border-radius: 18px;
-  padding: 32px;                 /* un peu moins massif */
+  padding: 32px;
   position: relative;
   overflow: hidden;
   border: 1px solid var(--border-soft);
-  transition: transform 0.25s ease, border-color 0.25s ease;
+  transition: transform .25s ease, border-color .25s ease;
 }
 
-.event-card:hover {
+.event-card:hover{
   transform: translateY(-8px);
   border-color: rgba(245, 119, 6, 0.35);
 }
 
-.event-glow {
+.event-glow{
   position: absolute;
   inset: -60%;
   background: radial-gradient(circle at center, rgba(255,255,255,0.035) 0%, transparent 70%);
   pointer-events: none;
 }
 
-.event-date {
+.event-content{
+  position: relative;
+  z-index: 1;
+}
+
+.event-date{
   display: block;
   font-weight: 900;
   text-transform: uppercase;
   font-size: 0.75rem;
-  color: var(--accent-red);
+  color: var(--primary-color);
   letter-spacing: 2px;
   margin-bottom: 1.2rem;
 }
 
-.event-icon {
+.event-icon{
   font-size: 2.3rem;
   margin-bottom: 1.2rem;
-  color: white;
+  color: #fff;
 }
 
-.event-card h3 {
+.event-card h3{
   font-size: 1.35rem;
   font-weight: 900;
   text-transform: uppercase;
-  margin-bottom: 0.8rem;
+  margin: 0 0 .8rem;
+  color: #fff;
+  line-height: 1.15;
 }
 
-.event-card p {
-  color: #9a9a9a;
+.event-card p{
+  color: var(--text-muted);
   line-height: 1.6;
   font-size: 0.95rem;
   margin: 0;
 }
 
 /* Bords colorés thématiques */
-.border-gold { border-top: 4px solid #d4af37; }
-.border-blue { border-top: 4px solid #3498db; }
-.border-red { border-top: 4px solid #e63946; }
-.border-green { border-top: 4px solid #2ecc71; }
+.border-gold{ border-top: 4px solid #d4af37; }
+.border-blue{ border-top: 4px solid #3498db; }
+.border-red{ border-top: 4px solid #e63946; }
+.border-green{ border-top: 4px solid #2ecc71; }
 
 /* =========================================
-   4. WHATSAPP SECTION (placement + align)
+   WHATSAPP SECTION
    ========================================= */
-.whatsapp-connect-card {
+.whatsapp-connect-card{
   background: linear-gradient(145deg, #0f0f0f, #050505);
   border: 1px solid var(--border-soft);
   border-radius: 22px;
-
   padding: 56px;
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
   gap: 3rem;
   align-items: center;
-
-  margin-top: 4rem; /* respire par rapport à la grid */
 }
 
-.wa-info h2 {
-  font-size: 2.3rem;
-  font-weight: 900;
-  margin-bottom: 0.9rem;
-  line-height: 1.1;
-}
-
-.wa-info p {
-  color: #aaa;
-  margin-bottom: 2.2rem;
+.wa-info p{
+  color: var(--text-muted);
+  margin: .2rem 0 2rem;
   font-size: 1.05rem;
   line-height: 1.6;
 }
 
-.btn-wa {
+/* ✅ évite de casser le style global de .section-heading */
+.wa-info .section-heading{
+  margin-bottom: .8rem;
+}
+
+.btn-wa{
   background: #25d366;
   color: white;
   padding: 16px 30px;
@@ -229,16 +140,20 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  transition: var(--transition);
+  transition: var(--transition-base, all .3s ease);
 }
-.btn-wa:hover {
+
+.btn-wa:hover{
   transform: translateY(-2px) scale(1.02);
   box-shadow: 0 10px 30px rgba(37, 211, 102, 0.25);
 }
 
-.wa-visual { position: relative; height: 200px; }
+.wa-visual{
+  position: relative;
+  height: 200px;
+}
 
-.wa-bubble {
+.wa-bubble{
   background: #202c33;
   padding: 14px 20px;
   border-radius: 15px 15px 15px 0;
@@ -247,11 +162,11 @@
   left: 0;
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: .9rem;
   border: 1px solid rgba(255,255,255,0.05);
 }
 
-.wa-bubble.alt {
+.wa-bubble.alt{
   background: #005c4b;
   border-radius: 15px 15px 0 15px;
   top: 90px;
@@ -260,51 +175,86 @@
 }
 
 /* =========================================
-   5. RESPONSIVE (body)
+   RESPONSIVE (PAGE ONLY)
    ========================================= */
-@media (max-width: 992px) {
-  .events-root { padding: 3.2rem 0; }
+@media (max-width: 992px){
+  .event-card{
+    padding: 26px;
+    border-radius: 16px;
+  }
 
-  .event-card { padding: 26px; border-radius: 16px; }
-  .event-card h3 { font-size: 1.25rem; }
+  .event-card h3{
+    font-size: 1.25rem;
+  }
 
-  .whatsapp-connect-card {
+  .whatsapp-connect-card{
     grid-template-columns: 1fr;
     padding: 40px;
     text-align: center;
   }
 
-  .wa-info { display: flex; flex-direction: column; align-items: center; }
-  .wa-visual { display: none; }
+  .wa-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-  .btn-wa { justify-content: center; }
+  .wa-info .section-heading{
+    align-items: center; /* si .section-heading.centered n'est pas utilisé */
+  }
+
+  .wa-visual{
+    display: none;
+  }
+
+  .btn-wa{
+    justify-content: center;
+  }
 }
 
-@media (max-width: 768px) {
-  .container { padding: 0 14px; }
+@media (max-width: 768px){
+  .events-grid{
+    gap: 1.2rem;
+  }
 
-  .events-root { padding: 2.6rem 0; }
+  .event-card{
+    padding: 22px;
+  }
 
-  .events-grid { gap: 1.2rem; }
+  .event-icon{
+    font-size: 2.1rem;
+  }
 
-  .event-card { padding: 22px; }
-  .event-icon { font-size: 2.1rem; }
+  .whatsapp-connect-card{
+    padding: 24px 18px;
+    border-radius: 18px;
+  }
 
-  .wa-info h2 { font-size: 1.8rem; }
-  .wa-info p { font-size: 1rem; margin-bottom: 1.6rem; }
+  .wa-info .section-heading{
+    font-size: 1.8rem;
+  }
 
-  .btn-wa { width: 100%; }
+  .wa-info p{
+    font-size: 1rem;
+    margin-bottom: 1.6rem;
+  }
 
-      .page-header-sport {
-        height: auto !important;
-        min-height: 400px !important;
-    }
-    .header-content { top: 0 !important; }
-    .page-header-sport .container { padding-left: 18px !important; padding-right: 18px !important; }
-    .header-main-box h1 { font-size: 2.48rem !important; line-height: 1.1; }
+  .btn-wa{
+    width: 100%;
+    justify-content: center;
+  }
 }
 
-@media (max-width: 480px) {
-  .event-card { padding: 18px; }
-  .event-card h3 { font-size: 1.15rem; }
+@media (max-width: 480px){
+  .event-card{
+    padding: 18px;
+  }
+
+  .event-card h3{
+    font-size: 1.15rem;
+  }
+
+  .wa-info .section-heading{
+    font-size: 1.6rem;
+  }
 }

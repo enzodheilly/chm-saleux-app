@@ -10,57 +10,59 @@
 
 {% block body %}
 
-    {# --- HEADER SPORTIF IMMERSIF (Style Élite) --- #}
+    {# --- HEADER SPORTIF IMMERSIF (GLOBAL) --- #}
     <header class="page-header-sport" style="--bg-image: url('{{ asset('images/club/1.jpg') }}');">
         <div class="header-overlay-gradient"></div>
-        <div class="container header-content">
-            <nav class="breadcrumb-nav">
-                <a href="{{ path('home') }}" class="back-link-minimal">
-                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                </a>
-            </nav>
 
-            <div class="header-main-box">
-                <div class="badge-accent">Formation & Excellence</div>
-                <h1>L'École <span class="text-outline">d'Haltérophilie</span></h1>
-                <p class="lead">De l'initiation à la compétition : une structure encadrée pour apprendre la technique, développer sa force et grandir.</p>
+        <div class="header-content">
+            <div class="page-container">
+                <nav class="breadcrumb-nav">
+                    <a href="{{ path('home') }}" class="back-link-minimal">
+                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                    </a>
+                </nav>
+
+                <div class="header-main-box">
+                    <div class="badge-accent">Formation & Excellence</div>
+                    <h1>L'École <span class="text-outline">d'Haltérophilie</span></h1>
+                    <p class="lead">De l'initiation à la compétition : une structure encadrée pour apprendre la technique, développer sa force et grandir.</p>
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="dashboard-root">
-        
-        {# --- SECTION 1 : PHILOSOPHIE (Aérée) --- #}
-        <section class="container section-spacer">
+    <main class="page-shell ecole-root">
+
+        {# --- SECTION 1 : PHILOSOPHIE --- #}
+        <section class="page-container section-spacer">
             <div class="split-layout">
                 <div class="text-content">
-                    <h2 class="title-with-bar">Nos Valeurs <span>Fondamentales</span></h2>
+                    <h2 class="section-heading ecole-section-title-left">Nos Valeurs <span>Fondamentales</span></h2>
                     <p class="big-text">Respect, Discipline et Persévérance.</p>
                     <p class="desc-text">
-                        Notre école ne forme pas seulement des athlètes, elle forme des sportifs complets. 
-                        Nous valorisons le dépassement de soi dans un environnement bienveillant. 
+                        Notre école ne forme pas seulement des athlètes, elle forme des sportifs complets.
+                        Nous valorisons le dépassement de soi dans un environnement bienveillant.
                         Ici, l'esprit d'équipe et le fair-play sont aussi importants que la charge soulevée.
                     </p>
                 </div>
+
                 <div class="image-content">
                     <div class="framed-image">
-                        {# Image illustrative #}
                         <img src="{{ asset('images/club/4.jpg') }}" alt="Valeurs du club">
                     </div>
                 </div>
             </div>
         </section>
 
-        {# --- SECTION 2 : LES PROGRAMMES (Cartes espacées) --- #}
+        {# --- SECTION 2 : LES PROGRAMMES --- #}
         <section class="bg-dark-alternate section-spacer">
-            <div class="container">
+            <div class="page-container">
                 <div class="section-header-center">
-                    <h2 class="title-with-bar center-bar">Nos Pôles <span>De Formation</span></h2>
+                    <h2 class="section-heading centered">Nos Pôles <span>De Formation</span></h2>
                     <p>Des groupes de niveaux adaptés pour progresser à son rythme.</p>
                 </div>
-                
+
                 <div class="programs-grid">
-                    {# Carte Débutants #}
                     <article class="program-card">
                         <div class="card-icon"><i class="fa-solid fa-child-reaching"></i></div>
                         <h3>U13 / Débutants</h3>
@@ -71,7 +73,6 @@
                         <p>Découverte ludique et sécurisée. L'accent est mis sur la coordination, la posture et l'apprentissage technique sans charge lourde.</p>
                     </article>
 
-                    {# Carte Compétition (Highlight) #}
                     <article class="program-card highlight">
                         <div class="card-badge">Performance</div>
                         <div class="card-icon"><i class="fa-solid fa-trophy"></i></div>
@@ -83,7 +84,6 @@
                         <p>Suivi personnalisé et planification. Objectif : maîtrise technique parfaite, force et préparation aux championnats.</p>
                     </article>
 
-                    {# Carte Loisir #}
                     <article class="program-card">
                         <div class="card-icon"><i class="fa-solid fa-heart-pulse"></i></div>
                         <h3>Licence Loisir</h3>
@@ -98,29 +98,34 @@
         </section>
 
         {# --- SECTION 3 : COACH SLIDER --- #}
-        <section class="container section-spacer">
+        <section class="page-container section-spacer">
             <div class="split-layout reverse-mobile">
                 <div class="slider-wrapper-box">
-                    {# Slider HTML #}
                     <div class="coach-slider">
                         <div class="slides-track" id="track">
                             <img src="{{ asset('images/club/ema.jpg') }}" class="active" data-role="Coach Fédéral" data-name="Ema" alt="Ema">
                             <img src="{{ asset('images/club/florian.jpg') }}" data-role="Coach Fédéral" data-name="Florian" alt="Florian">
                             <img src="{{ asset('images/club/robert2.jpg') }}" data-role="Coach Fédéral" data-name="Robert" alt="Robert">
                         </div>
+
                         <div class="slider-info">
                             <h4 id="coachName">Ema</h4>
                             <span id="coachRole">Coach Fédéral</span>
                         </div>
+
                         <div class="slider-controls">
-                            <button id="prevBtn"><i class="fa-solid fa-arrow-left"></i></button>
-                            <button id="nextBtn"><i class="fa-solid fa-arrow-right"></i></button>
+                            <button id="prevBtn" type="button" aria-label="Photo précédente">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <button id="nextBtn" type="button" aria-label="Photo suivante">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <div class="text-content">
-                    <h2 class="title-with-bar">L'Équipe <span>Technique</span></h2>
+                    <h2 class="section-heading ecole-section-title-left">L'Équipe <span>Technique</span></h2>
                     <p class="desc-text">
                         Nos coachs sont diplômés d'État et fédéraux. Ils assurent un encadrement pédagogique de qualité, veillant à la sécurité physique et à la progression de chaque élève.
                     </p>
@@ -134,9 +139,9 @@
 
         {# --- SECTION 4 : TABLEAU --- #}
         <section class="bg-dark-alternate section-spacer">
-            <div class="container">
+            <div class="page-container">
                 <div class="section-header-center">
-                    <h2 class="title-with-bar center-bar">Catégories <span>D'Âge</span></h2>
+                    <h2 class="section-heading centered">Catégories <span>D'Âge</span></h2>
                 </div>
 
                 <div class="table-container-modern">

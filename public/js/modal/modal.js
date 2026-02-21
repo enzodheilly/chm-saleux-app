@@ -1,8 +1,12 @@
 // ============================================================
-//  MODAL REGISTER — VERSION OPTIMISÉE COMPLÈTE (refactor propre)
+//  MODAL AUTH — VERSION COMPLETE (REGISTER/LOGIN/VERIFY/RESET)
 //  ✅ 1 seul contrôleur modal + 1 seul showStep()
-//  ✅ click outside pour fermer + ESC + focus trap
-//  ✅ tes fetch/turnstile conservés + transitions step améliorées
+//  ✅ click outside + ESC + focus trap
+//  ✅ Turnstile multi-widgets (render explicit + reset ciblé) — sans doublons
+//  ✅ Login NOT_VERIFIED -> ouvre étape verify
+//  ✅ Resend code en AJAX (plus de page noire) + cooldown anti-spam
+//  ✅ VERIFY success -> AUTO redirect (home) (si backend renvoie redirect)
+//  ✅ fetch() garde la session (credentials)
 // ============================================================
 
 (() => {
@@ -11,12 +15,88 @@
   // ---------------------------
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
-
   const lockScroll = () => (document.documentElement.style.overflow = "hidden");
   const unlockScroll = () => (document.documentElement.style.overflow = "");
 
   // ---------------------------
-  // REGISTER MODAL
+  // TURNSTILE (EXPLICIT MODE)
+  // ---------------------------
+  const TURNSTILE_SELECTOR = ".cf-turnstile";
+  const turnstileWidgets = new WeakMap();
+
+  const isTurnstileReady = () =>
+    typeof window.turnstile !== "undefined" && typeof window.turnstile.render === "function";
+
+  const getTurnstileSiteKey = (el) => el?.getAttribute("data-sitekey") || "";
+
+  const hasAnyTurnstileMarkup = (container) => {
+    return !!container.querySelector("iframe, input[name='cf-turnstile-response'], .cf-turnstile");
+  };
+
+  const isVisible = (el) => {
+    if (!el) return false;
+    const style = window.getComputedStyle(el);
+    return style.display !== "none" && style.visibility !== "hidden";
+  };
+
+  const renderTurnstileFor = (container) => {
+    if (!container) return;
+    if (!isTurnstileReady()) return;
+    if (turnstileWidgets.has(container)) return;
+
+    if (hasAnyTurnstileMarkup(container)) {
+      container.dataset.turnstileRendered = "1";
+      return;
+    }
+
+    const sitekey = getTurnstileSiteKey(container);
+    if (!sitekey) return;
+    if (!isVisible(container)) return;
+
+    try {
+      const widgetId = window.turnstile.render(container, {
+        sitekey,
+        theme: container.getAttribute("data-theme") || "light",
+        size: container.getAttribute("data-size") || "normal",
+      });
+
+      turnstileWidgets.set(container, widgetId);
+      container.dataset.turnstileRendered = "1";
+    } catch (_) {}
+  };
+
+  const renderTurnstileIn = (rootEl) => {
+    if (!rootEl) return;
+    $$(TURNSTILE_SELECTOR, rootEl).forEach((el) => renderTurnstileFor(el));
+  };
+
+  const resetTurnstileInForm = (form) => {
+    if (!form || !isTurnstileReady()) return;
+    const container = $(TURNSTILE_SELECTOR, form);
+    if (!container) return;
+
+    const widgetId = turnstileWidgets.get(container);
+
+    try {
+      if (typeof widgetId !== "undefined") window.turnstile.reset(widgetId);
+      else window.turnstile.reset(container);
+    } catch (_) {
+      try {
+        window.turnstile.reset();
+      } catch (_) {}
+    }
+  };
+
+  const getTurnstileTokenFromForm = (form) => {
+    return form?.querySelector('input[name="cf-turnstile-response"]')?.value?.trim() || "";
+  };
+
+  document.addEventListener("turnstile:ready", () => {
+    renderTurnstileIn(document);
+  });
+
+  // ---------------------------
+  // MODAL
   // ---------------------------
   const modal = document.getElementById("registerModal");
   if (!modal) return;
@@ -42,15 +122,13 @@
       if (!el) return;
 
       const active = sid === id;
-
-      // ✅ Si tu as modifié ton HTML en <div class="modal-step" hidden>, ça marche direct
-      // ✅ Sinon, ça marche aussi car on force display via hidden
       el.hidden = !active;
       el.setAttribute("aria-hidden", String(!active));
-
-      // fallback si tu n'as pas encore mis "hidden" dans le HTML
       el.style.display = active ? "block" : "none";
     });
+
+    const activeEl = getStep(id);
+    if (activeEl) requestAnimationFrame(() => renderTurnstileIn(activeEl));
   };
 
   let lastFocus = null;
@@ -63,7 +141,6 @@
     modal.setAttribute("aria-hidden", "false");
     lockScroll();
 
-    // si aucune step visible, on met social
     const anyVisible = stepIds.some((id) => {
       const el = getStep(id);
       if (!el) return false;
@@ -72,6 +149,7 @@
     });
     if (!anyVisible) showStep("modal-step-social");
 
+    requestAnimationFrame(() => renderTurnstileIn(modal));
     closeBtn?.focus();
   };
 
@@ -82,22 +160,16 @@
     lastFocus?.focus?.();
   };
 
-  // expose global (pratique pour tes callbacks fetch)
   window.__authModal = { openModal, closeModal, showStep };
 
-  // open buttons
   openBtns.forEach((b) => b.addEventListener("click", openModal));
-
-  // close button
   closeBtn?.addEventListener("click", closeModal);
 
-  // click outside closes (UX ++)
   modal.addEventListener("click", (e) => {
     if (!card) return;
     if (!card.contains(e.target)) closeModal();
   });
 
-  // ESC closes
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && modal.classList.contains("is-open")) {
       e.preventDefault();
@@ -105,7 +177,7 @@
     }
   });
 
-  // Focus trap (Tab reste dans la modale)
+  // Focus trap
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Tab") return;
     if (!modal.classList.contains("is-open")) return;
@@ -129,7 +201,7 @@
   });
 
   // ---------------------------
-  // Navigation steps (IDs existants)
+  // NAVIGATION STEPS
   // ---------------------------
   document.addEventListener("DOMContentLoaded", () => {
     const onClick = (id, fn) => document.getElementById(id)?.addEventListener("click", fn);
@@ -152,11 +224,11 @@
       sessionStorage.removeItem("registerStep");
     });
 
-    // passage vers login
     $$(".js-open-login-modal").forEach((l) =>
       l.addEventListener("click", (e) => {
         e.preventDefault();
         showStep("modal-step-login");
+        requestAnimationFrame(() => renderTurnstileIn(getStep("modal-step-login")));
       })
     );
 
@@ -165,11 +237,10 @@
       showStep("modal-step-social");
     });
 
-    // forgot password
     onClick("js-forgot-password", (e) => {
       e.preventDefault();
       showStep("modal-step-reset-email");
-      openModal(); // au cas où (si click depuis ailleurs)
+      openModal();
     });
 
     onClick("js-back-to-login", (e) => {
@@ -182,15 +253,16 @@
       showStep("modal-step-login");
     });
 
-    // restauration auto étape "verify"
     if (sessionStorage.getItem("registerStep") === "verify") {
       openModal();
       showStep("modal-step-verify");
     }
+
+    if (isTurnstileReady()) renderTurnstileIn(document);
   });
 
   // ============================================================
-  //  FORMULAIRE D’INSCRIPTION — VALIDATIONS + AJAX + TURNSTILE
+  // REGISTER — AJAX + TURNSTILE
   // ============================================================
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("emailRegisterForm");
@@ -219,52 +291,45 @@
         return;
       }
 
-      // ✅ mieux : chercher le turnstile dans le form (s'il existe)
-      const captcha =
-        form.querySelector('input[name="cf-turnstile-response"]')?.value ||
-        document.querySelector('input[name="cf-turnstile-response"]')?.value;
-
+      const captcha = getTurnstileTokenFromForm(form);
       if (!captcha) {
         showFormError("⚠️ Veuillez passer la vérification anti-robot.");
-        if (typeof turnstile !== "undefined") turnstile.reset();
+        resetTurnstileInForm(form);
         return;
       }
 
-      // UI loading
       if (submitButton) submitButton.disabled = true;
       if (btnText) btnText.style.display = "none";
       if (btnSpinner) btnSpinner.style.display = "inline-flex";
 
-      const formData = new FormData(form);
-
       try {
-        const res = await fetch(form.action, { method: "POST", body: formData });
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          credentials: "same-origin", // ✅ IMPORTANT (session)
+        });
         const json = await res.json();
 
         if (json.success) {
-          // move to verification step
           showStep("modal-step-verify");
           sessionStorage.setItem("registerStep", "verify");
-
-          if (typeof turnstile !== "undefined") turnstile.reset();
         } else {
           const errors = json.errors || [json.message || "Erreur inconnue"];
           showFormError("<ul>" + errors.map((m) => `<li>${m}</li>`).join("") + "</ul>");
-          if (typeof turnstile !== "undefined") turnstile.reset();
         }
       } catch {
         showFormError("⚠️ Erreur serveur. Réessayez plus tard.");
+      } finally {
+        resetTurnstileInForm(form);
+        if (submitButton) submitButton.disabled = false;
+        if (btnText) btnText.style.display = "inline";
+        if (btnSpinner) btnSpinner.style.display = "none";
       }
-
-      // reset button
-      if (submitButton) submitButton.disabled = false;
-      if (btnText) btnText.style.display = "inline";
-      if (btnSpinner) btnSpinner.style.display = "none";
     });
   });
 
   // ============================================================
-  //  SYSTÈME DE VÉRIFICATION DU CODE À 6 CHIFFRES
+  // VERIFY CODE — AJAX
   // ============================================================
   document.addEventListener("DOMContentLoaded", () => {
     const formVerify = document.getElementById("verify-form");
@@ -277,8 +342,18 @@
 
     const codeInputs = $$(".code-input");
     const hiddenInput = document.getElementById("verify-full-code");
-
     if (!codeInputs.length || !hiddenInput) return;
+
+    const showVerifyMsg = (msg, type = "") => {
+      if (!messageBox) return;
+      if (!msg) {
+        messageBox.style.display = "none";
+        return;
+      }
+      messageBox.textContent = msg;
+      messageBox.className = "verify-message " + type;
+      messageBox.style.display = "block";
+    };
 
     const updateHidden = () => {
       hiddenInput.value = codeInputs.map((i) => i.value).join("");
@@ -306,17 +381,6 @@
       });
     });
 
-    const showVerifyMsg = (msg, type = "") => {
-      if (!messageBox) return;
-      if (!msg) {
-        messageBox.style.display = "none";
-        return;
-      }
-      messageBox.textContent = msg;
-      messageBox.className = "verify-message " + type;
-      messageBox.style.display = "block";
-    };
-
     formVerify.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -330,34 +394,29 @@
       if (btnSpinner) btnSpinner.style.display = "inline-flex";
       if (submitBtn) submitBtn.disabled = true;
 
-      const formData = new FormData(formVerify);
-
       try {
         const res = await fetch(formVerify.action, {
           method: "POST",
-          body: formData,
+          body: new FormData(formVerify),
           headers: { Accept: "application/json" },
+          credentials: "same-origin", // ✅ IMPORTANT (session)
         });
+
         const data = await res.json();
 
         if (data.success) {
           showVerifyMsg("", "");
           sessionStorage.removeItem("registerStep");
 
-          // étape verify -> login (simple + stable)
-          showStep("modal-step-login");
-
-          if (btnText) btnText.style.display = "inline";
-          if (btnSpinner) btnSpinner.style.display = "none";
-          if (submitBtn) submitBtn.disabled = false;
+          // ✅ Redirection directe (HOME) si backend renvoie redirect
+          window.location.replace(data.redirect || "/");
+          return;
         } else {
           showVerifyMsg(data.message || "Code invalide.", "error");
-          if (btnText) btnText.style.display = "inline";
-          if (btnSpinner) btnSpinner.style.display = "none";
-          if (submitBtn) submitBtn.disabled = false;
         }
       } catch {
         showVerifyMsg("⚠️ Erreur serveur. Réessayez plus tard.", "error");
+      } finally {
         if (btnText) btnText.style.display = "inline";
         if (btnSpinner) btnSpinner.style.display = "none";
         if (submitBtn) submitBtn.disabled = false;
@@ -366,7 +425,71 @@
   });
 
   // ============================================================
-  //  FORMULAIRE LOGIN (avec CAPTCHA TURNSTILE)
+  // RESEND CODE — interception globale (évite la page noire JSON)
+  // ============================================================
+  document.addEventListener(
+    "submit",
+    async (e) => {
+      const form = e.target;
+      if (!(form instanceof HTMLFormElement)) return;
+      if (form.id !== "resendCodeForm") return;
+
+      e.preventDefault();
+
+      const btn = document.getElementById("resendCodeBtn") || form.querySelector("button[type='submit']");
+      const messageBox = document.getElementById("verifyMessage");
+
+      const showVerifyMsg = (msg, type = "") => {
+        if (!messageBox) return;
+        if (!msg) {
+          messageBox.style.display = "none";
+          return;
+        }
+        messageBox.textContent = msg;
+        messageBox.className = "verify-message " + type;
+        messageBox.style.display = "block";
+      };
+
+      const COOLDOWN_MS = 15000;
+      const KEY = "resendCodeCooldownUntil";
+      const now = Date.now();
+      const until = parseInt(sessionStorage.getItem(KEY) || "0", 10);
+      if (until > now) {
+        const left = Math.ceil((until - now) / 1000);
+        showVerifyMsg(`Patiente ${left}s avant de renvoyer.`, "error");
+        return;
+      }
+
+      if (btn) btn.disabled = true;
+      showVerifyMsg("", "");
+
+      try {
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+          credentials: "same-origin", // ✅ IMPORTANT (session)
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          showVerifyMsg(data.message || "✅ Nouveau code envoyé.", "success");
+        } else {
+          showVerifyMsg(data.message || "❌ Impossible de renvoyer le code.", "error");
+        }
+      } catch {
+        showVerifyMsg("⚠️ Erreur serveur. Réessayez plus tard.", "error");
+      } finally {
+        sessionStorage.setItem(KEY, String(Date.now() + COOLDOWN_MS));
+        if (btn) btn.disabled = false;
+      }
+    },
+    true
+  );
+
+  // ============================================================
+  // LOGIN — AJAX + TURNSTILE + NOT_VERIFIED -> step verify
   // ============================================================
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("login-form");
@@ -401,13 +524,11 @@
       if (btnSpinner) btnSpinner.style.display = "inline-flex";
       btn.disabled = true;
 
-      const captcha =
-        form.querySelector('input[name="cf-turnstile-response"]')?.value ||
-        document.querySelector('input[name="cf-turnstile-response"]')?.value;
-
+      const captcha = getTurnstileTokenFromForm(form);
       if (!captcha) {
         showError("⚠️ Veuillez valider le CAPTCHA.");
         resetBtn();
+        resetTurnstileInForm(form);
         return;
       }
 
@@ -416,7 +537,9 @@
           method: "POST",
           body: new FormData(form),
           headers: { Accept: "application/json" },
+          credentials: "same-origin", // ✅ IMPORTANT (session)
         });
+
         const data = await res.json();
 
         if (data.success) {
@@ -424,18 +547,26 @@
           return;
         }
 
+        if (data.code === "NOT_VERIFIED") {
+          openModal();
+          showStep("modal-step-verify");
+          sessionStorage.setItem("registerStep", "verify");
+          showError("");
+          return;
+        }
+
         showError(data.message || "Identifiants incorrects.");
-        resetBtn();
       } catch {
         showError("⚠️ Erreur serveur.");
+      } finally {
         resetBtn();
+        resetTurnstileInForm(form);
       }
     });
   });
 
   // ============================================================
-  //  MOT DE PASSE OUBLIÉ — Étape 1 : demande d'email
-  //  ✅ changement : on n'efface plus le HTML du step (plus propre)
+  // RESET REQUEST — demande email (avec Turnstile)
   // ============================================================
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("resetRequestForm");
@@ -460,6 +591,20 @@
         errorBox.classList.remove("success", "error");
       }
 
+      const captcha = getTurnstileTokenFromForm(form);
+      if (!captcha) {
+        if (errorBox) {
+          errorBox.textContent = "⚠️ Veuillez valider le CAPTCHA.";
+          errorBox.className = "verify-message error";
+          errorBox.style.display = "block";
+        }
+        if (btnText) btnText.style.display = "inline";
+        if (spinner) spinner.style.display = "none";
+        if (btn) btn.disabled = false;
+        resetTurnstileInForm(form);
+        return;
+      }
+
       try {
         const email = resetEmailInput?.value?.trim() || "";
         const res = await fetch(form.action, {
@@ -467,6 +612,7 @@
           headers: { "Content-Type": "application/json", Accept: "application/json" },
           body: JSON.stringify({ email }),
         });
+
         const data = await res.json();
 
         if (data.success) {
@@ -488,16 +634,17 @@
           errorBox.className = "verify-message error";
           errorBox.style.display = "block";
         }
+      } finally {
+        resetTurnstileInForm(form);
+        if (btnText) btnText.style.display = "inline";
+        if (spinner) spinner.style.display = "none";
+        if (btn) btn.disabled = false;
       }
-
-      if (btnText) btnText.style.display = "inline";
-      if (spinner) spinner.style.display = "none";
-      if (btn) btn.disabled = false;
     });
   });
 
   // ============================================================
-  //  RESET PASSWORD — Étape 2 : nouveau mot de passe
+  // RESET FINAL — nouveau mot de passe
   // ============================================================
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("resetNewForm");
@@ -537,6 +684,7 @@
           headers: { "Content-Type": "application/json", Accept: "application/json" },
           body: JSON.stringify({ token, password: pass1 }),
         });
+
         const data = await res.json();
 
         if (data.success) {
@@ -546,16 +694,16 @@
         }
       } catch {
         showResetError("⚠️ Erreur serveur.");
+      } finally {
+        if (btnText) btnText.style.display = "inline";
+        if (spinner) spinner.style.display = "none";
+        if (btn) btn.disabled = false;
       }
-
-      if (btnText) btnText.style.display = "inline";
-      if (spinner) spinner.style.display = "none";
-      if (btn) btn.disabled = false;
     });
   });
 
   // ============================================================
-  //  AUTO-OUVERTURE DU MODAL SI resetToken PRÉSENT DANS L’URL
+  // AUTO-OPEN RESET TOKEN
   // ============================================================
   document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -570,7 +718,7 @@
   });
 
   // ============================================================
-  //  PANNEAU RÈGLES MOT DE PASSE + VALIDATION TEMPS RÉEL
+  // PASSWORD RULES PANEL + LIVE VALIDATION
   // ============================================================
   document.addEventListener("DOMContentLoaded", () => {
     const openBtn = document.getElementById("openPasswordRules");
@@ -609,12 +757,10 @@
   });
 
   // ============================================================
-  //  TOGGLE PASSWORD (tous les champs)
+  // TOGGLE PASSWORD
   // ============================================================
   document.addEventListener("DOMContentLoaded", () => {
-    const toggles = $$(".toggle-password");
-
-    toggles.forEach((toggle) => {
+    $$(".toggle-password").forEach((toggle) => {
       toggle.addEventListener("click", () => {
         const targetId = toggle.getAttribute("data-target");
         const input = document.getElementById(targetId);
@@ -626,7 +772,6 @@
         const isPassword = input.type === "password";
         input.type = isPassword ? "text" : "password";
 
-        // icônes
         eyeOpen?.classList.toggle("hide", isPassword);
         eyeClosed?.classList.toggle("hide", !isPassword);
       });
@@ -634,7 +779,7 @@
   });
 
   // ============================================================
-  //  SET PASSWORD MODAL (si présent)
+  // SET PASSWORD MODAL (si présent)
   // ============================================================
   document.addEventListener("DOMContentLoaded", () => {
     const spModal = document.getElementById("setPasswordModal");
@@ -643,15 +788,12 @@
     spModal.classList.add("is-open");
     lockScroll();
 
-    const closeBtn = spModal.querySelector(".js-close-set-password");
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
-        spModal.classList.remove("is-open");
-        unlockScroll();
-      });
-    }
+    const close = spModal.querySelector(".js-close-set-password");
+    close?.addEventListener("click", () => {
+      spModal.classList.remove("is-open");
+      unlockScroll();
+    });
 
-    // Afficher les messages flash si besoin
     spModal.querySelectorAll(".form-error-message").forEach((msg) => (msg.style.display = "block"));
     spModal.querySelectorAll(".form-success-message").forEach((msg) => (msg.style.display = "block"));
   });

@@ -1,327 +1,401 @@
-/* --- CONFIGURATION ÉLITE --- */
-:root {
-    --primary-color: #F57706;
-    --dark-pure: #111;
-    --border-elite: rgba(255, 255, 255, 0.08);
-    --text-muted: #888;
-}
+/* =========================================================
+   HALTEROPHILIE — PAGE SPECIFIQUE
+   (s'appuie sur la base globale : page-shell / page-container / header / typo)
+   ========================================================= */
 
-body { background: var(--dark-pure); color: #fff; font-family: 'Inter', sans-serif; }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 0.25rem;
-}
 /* =========================================
-   2. HEADER (Même style que Équipes)
+   SECTIONS
    ========================================= */
-.page-header-sport {
-    position: relative;
-    padding-top: var(--nav-height);
-    height: 60vh;
-    min-height: 450px;
-    display: flex; align-items: center;
-    background-color: var(--bg-darker);
-    margin-bottom: 0; /* On gère l'espace avec section-spacer ensuite */
-}
-.page-header-sport::before {
-    content: ""; position: absolute; inset: 0;
-    background-image: var(--bg-image);
-    background-size: cover; background-position: center 35%;
-    z-index: 1; filter: grayscale(30%);
-}
-.header-overlay-gradient {
-    position: absolute; inset: 0; z-index: 2;
-    background: linear-gradient(to right, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.6) 100%);
-}
-.header-content { position: relative; z-index: 3; width: 100%;top:18px; }
-
-.badge-accent {
-    background: var(--primary-color); color: white;
-    padding: 6px 14px; font-weight: 800; font-size: 0.75rem;
-    text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
-}
-.header-main-box h1 {
-    font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 900;
-    text-transform: uppercase; line-height: 1; margin: 0 0 1.5rem 0;color: #fff;
-}
-.text-outline { -webkit-text-stroke: 1px white; color: transparent; }
-.header-main-box .lead {
-    font-size: 1.2rem; color: #ccc; max-width: 650px; line-height: 1.6;
+.feature-section {
+  padding: 120px 0;
 }
 
-.back-link-minimal {
-    color: var(--primary-color); text-decoration: none;
-    font-weight: 700; text-transform: uppercase; font-size: 0.8rem;
-    letter-spacing: 2px; display: inline-flex; align-items: center; gap: 10px;
-    margin-bottom: 3rem; transition: var(--transition);
-}
-.back-link-minimal:hover { color: white; }
-
-/* --- SECTIONS DE CARACTÉRISTIQUES --- */
-.feature-section { padding: 120px 0; }
-.alt-bg { background: var(--dark-soft); }
-
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-.reversed { direction: rtl; } 
-.reversed .text-side { direction: ltr; } /* On remet le texte dans le bon sens */
-
-/* Côté Texte */
-.side-badge { 
-    color: var(--primary-color); font-weight: 900; font-size: 0.8rem; 
-    text-transform: uppercase; border-left: 3px solid var(--primary-color); padding-left: 15px;
-}
-.text-side h2 { font-size: 3.5rem; font-weight: 900; line-height: 1; margin: 20px 0; }
-.text-highlight { color: var(--primary-color); }
-.text-side p { color: var(--text-muted); line-height: 1.7; font-size: 1.1rem; margin-bottom: 30px; }
-
-/* Mini Grille de Specs */
-.specs-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.spec-item { 
-    display: flex; align-items: center; gap: 15px; background: #111; 
-    padding: 15px; border-radius: 12px; border: 1px solid var(--border-elite);
-}
-.spec-item i { color: var(--primary-color); font-size: 1.2rem; }
-.spec-item strong { display: block; font-size: 0.9rem; }
-.spec-item small { color: var(--text-muted); font-size: 0.75rem; }
-
-/* Liste Check Elite */
-.elite-check-list { list-style: none; padding: 0; }
-.elite-check-list li { margin-bottom: 15px; font-weight: 600; display: flex; align-items: center; gap: 12px; }
-.elite-check-list i { color: var(--primary-color); }
-
-/* Tag Cloud */
-.tag-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
-.tag-cloud span { 
-    background: #1a1a1a; padding: 8px 18px; border-radius: 50px; 
-    font-size: 0.85rem; font-weight: 700; border: 1px solid var(--border-elite);
+.alt-bg {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-soft);
+  border-bottom: 1px solid var(--border-soft);
 }
 
-/* --- VISUELS (Frame Glow) --- */
-.visual-side { position: relative; }
-.img-frame-elite { 
-    position: relative; border-radius: 24px; overflow: hidden; 
-    border: 1px solid var(--border-elite); z-index: 2;
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
 }
-.img-frame-elite img { width: 100%; height: auto; display: block; transition: 0.6s ease; }
-.feature-section:hover img { transform: scale(1.05); }
+
+.reversed {
+  direction: rtl;
+}
+
+.reversed .text-side {
+  direction: ltr;
+}
+
+/* =========================================
+   TEXTE
+   ========================================= */
+.side-badge {
+  color: var(--primary-color);
+  font-weight: var(--fw-black);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  border-left: 3px solid var(--primary-color);
+  padding-left: 15px;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+/* ✅ On garde section-heading global, mais version “XL” locale */
+.section-heading-xl {
+  font-size: clamp(2rem, 4.4vw, 3.2rem);
+  line-height: 0.98;
+  margin: 0 0 1.2rem;
+}
+
+.section-heading-xl span {
+  display: inline;
+}
+
+.text-side p {
+  color: var(--text-muted);
+  line-height: 1.7;
+  font-size: 1.05rem;
+  margin: 0 0 30px;
+}
+
+/* =========================================
+   SPECS / LISTES
+   ========================================= */
+.specs-mini-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.spec-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #111;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid var(--border-elite);
+}
+
+.spec-item i {
+  color: var(--primary-color);
+  font-size: 1.15rem;
+}
+
+.spec-item strong {
+  display: block;
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+.spec-item small {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.elite-check-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.elite-check-list li {
+  margin-bottom: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  line-height: 1.4;
+}
+
+.elite-check-list i {
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag-cloud span {
+  background: #1a1a1a;
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid var(--border-elite);
+  color: #fff;
+}
+
+/* =========================================
+   VISUELS
+   ========================================= */
+.visual-side {
+  position: relative;
+}
+
+.img-frame-elite {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid var(--border-elite);
+  z-index: 2;
+  background: #101010;
+}
+
+.img-frame-elite img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.feature-section:hover .img-frame-elite img {
+  transform: scale(1.05);
+}
 
 .frame-glow {
-    position: absolute; width: 80%; height: 80%;
-    background: rgba(255,255,255,0.05); filter: blur(100px);
-    top: 10%; left: 10%; z-index: 1; pointer-events: none;
-}
-.frame-glow.primary { background: rgba(245, 119, 6, 0.15); }
-
-/* --- CTA BANNER --- */
-.elite-cta { padding: 120px 0; }
-.cta-box {
-    background: #111; border-radius: 30px; padding: 60px;
-    display: flex; justify-content: space-between; align-items: center;
-    border: 1px solid var(--border-elite); position: relative; overflow: hidden;
-}
-.cta-box::before {
-    content: ''; position: absolute; top: -50%; right: -10%; width: 400px; height: 400px;
-    background: var(--primary-color); filter: blur(150px); opacity: 0.1;
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  top: 10%;
+  left: 10%;
+  z-index: 1;
+  pointer-events: none;
+  background: rgba(255,255,255,0.05);
+  filter: blur(100px);
 }
 
-.cta-content h3 { font-size: 3rem; font-weight: 950; margin-bottom: 10px; }
-.btn-elite-big {
-    background: var(--primary-color); color: #fff; padding: 20px 40px;
-    border-radius: 15px; text-decoration: none; font-weight: 900;
-    display: flex; align-items: center; gap: 15px; transition: 0.3s;
+.frame-glow.primary {
+  background: rgba(245, 119, 6, 0.15);
 }
-.btn-elite-big:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(245, 119, 6, 0.3); }
 
 /* =========================================
-   RESPONSIVE ÉLITE (amélioré)
-   - Header plus safe sur mobile
-   - Grilles qui stack proprement
-   - Specs mini grid passe en 1 colonne
-   - CTA plus compact + bouton full width
-   - Typo fluid + paddings cohérents
+   CTA
    ========================================= */
+.elite-cta {
+  padding: 120px 0;
+}
 
-/* ✅ Tablette / petits laptops */
-@media (max-width: 992px){
+.cta-box {
+  background: #111;
+  border-radius: 30px;
+  padding: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  border: 1px solid var(--border-elite);
+  position: relative;
+  overflow: hidden;
+}
 
-    .page-header-sport {
-    height: auto !important;
-    min-height: 400px !important;
-  }
+.cta-box::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: var(--primary-color);
+  filter: blur(150px);
+  opacity: 0.1;
+}
 
-  .header-content {
+.cta-content {
+  position: relative;
+  z-index: 2;
+}
+
+.cta-title {
+  margin-bottom: 0.8rem;
+}
+
+.cta-content p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.btn-elite-big {
+  position: relative;
+  z-index: 2;
+  background: var(--primary-color);
+  color: #fff;
+  padding: 18px 30px;
+  border-radius: 14px;
+  text-decoration: none;
+  font-weight: var(--fw-black);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: var(--transition-base);
+  white-space: nowrap;
+}
+
+.btn-elite-big:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(245, 119, 6, 0.3);
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 992px) {
+  .page-header-sport .header-content {
     top: 0 !important;
   }
 
-  .page-header-sport .container{
-    padding-left: 18px !important;
-    padding-right: 18px !important;
+  .feature-section {
+    padding: 90px 0;
   }
 
-  .header-main-box h1 {
-    font-size: 2.7rem !important;
-    line-height: 1.1;
-  }
-
-  /* Sections */
-  .feature-section{ padding: 90px 0; }
-
-  /* Layout grid => stack */
   .grid-2,
-  .grid-2.reversed{
+  .grid-2.reversed {
     grid-template-columns: 1fr;
     gap: 46px;
     text-align: center;
   }
 
-  /* stop RTL trick en responsive */
-  .reversed{ direction: ltr; }
-  .reversed .text-side{ direction: ltr; }
+  .reversed {
+    direction: ltr;
+  }
 
-  /* Badge */
-  .side-badge{
+  .reversed .text-side {
+    direction: ltr;
+  }
+
+  .side-badge {
     border-left: none;
     border-bottom: 3px solid var(--primary-color);
     padding: 0 0 10px 0;
-    display: inline-block;
   }
 
-  /* Titres contenus */
-  .text-side h2{
-    font-size: clamp(2.1rem, 5.8vw, 3rem);
-    line-height: 1.02;
+  .section-heading-xl {
+    justify-content: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .text-side p{
-    font-size: 1.05rem;
+  .text-side p {
+    font-size: 1.02rem;
     margin-bottom: 22px;
   }
 
-  /* Specs => 2 colonnes mais plus compact */
-  .specs-mini-grid{
+  .specs-mini-grid {
     gap: 14px;
     max-width: 760px;
     margin: 0 auto;
   }
 
-  .spec-item{
+  .spec-item {
     justify-content: center;
     text-align: left;
   }
 
-  /* CTA => colonne */
-  .elite-cta{ padding: 90px 0; }
+  .tag-cloud {
+    justify-content: center;
+  }
 
-  .cta-box{
+  .elite-cta {
+    padding: 90px 0;
+  }
+
+  .cta-box {
     flex-direction: column;
     text-align: center;
-    gap: 28px;
+    gap: 26px;
     padding: 46px 34px;
     border-radius: 26px;
   }
 
-  .cta-content h3{
-    font-size: clamp(2rem, 5.5vw, 2.6rem);
+  .cta-title {
+    justify-content: center;
+    text-align: center;
   }
 
-  .btn-elite-big{
+  .btn-elite-big {
     justify-content: center;
   }
 }
 
-/* ✅ Mobile */
-@media (max-width: 768px){
-
-  /* Header encore plus compact */
-  .elite-header{
-    min-height: 480px;
-    padding: 80px 0 40px;
+@media (max-width: 768px) {
+  .feature-section {
+    padding: 70px 0;
   }
 
-  .back-btn{
-    font-size: 0.75rem;
+  .grid-2 {
+    gap: 34px;
   }
 
-  .top-tag{
-    font-size: 0.8rem;
-    letter-spacing: 3px;
-  }
-
-  .main-titles h1{
-    font-size: clamp(2.25rem, 9vw, 3.4rem);
-    line-height: 0.92;
-    margin: 14px 0;
-  }
-
-  .lead{
-    font-size: 1rem;
-    line-height: 1.55;
-    max-width: 520px;
-  }
-
-  /* Sections spacing */
-  .feature-section{ padding: 70px 0; }
-  .grid-2{ gap: 34px; }
-
-  /* Image frame */
-  .img-frame-elite{
+  .img-frame-elite {
     border-radius: 18px;
   }
 
-  /* Texte */
-  .text-side h2{
-    font-size: 2rem;
-    margin: 16px 0;
+  .section-heading-xl {
+    font-size: clamp(1.7rem, 8vw, 2.2rem);
+    line-height: 1.02;
   }
 
-  .text-side p{
+  /* Si le titre devient trop long, on autorise le retour ligne du span */
+  .section-heading-xl span {
+    display: block;
+    margin-top: 0.15rem;
+  }
+
+  .text-side p {
     font-size: 1rem;
   }
 
-  /* ✅ Specs mini => 1 colonne (sinon trop serré) */
-  .specs-mini-grid{
+  .specs-mini-grid {
     grid-template-columns: 1fr;
     max-width: 520px;
   }
 
-  .spec-item{
+  .spec-item {
     padding: 14px;
   }
 
-  /* Check list */
-  .elite-check-list li{
+  .elite-check-list li {
     justify-content: flex-start;
     text-align: left;
     gap: 10px;
   }
 
-  /* Tag cloud */
-  .tag-cloud{
-    justify-content: center;
-  }
-
-  .tag-cloud span{
+  .tag-cloud span {
     padding: 7px 14px;
     font-size: 0.83rem;
   }
 
-  /* CTA */
-  .elite-cta{ padding: 70px 0; }
+  .elite-cta {
+    padding: 70px 0;
+  }
 
-  .cta-box{
+  .cta-box {
     padding: 36px 18px;
     border-radius: 22px;
   }
 
-  .cta-content h3{
-    font-size: 1.9rem;
-    line-height: 1.05;
+  .cta-content p {
+    font-size: 0.95rem;
   }
 
-  /* bouton full width “premium” */
-  .btn-elite-big{
+  .btn-elite-big {
     width: 100%;
     max-width: 420px;
     padding: 16px 18px;
@@ -329,37 +403,23 @@ body { background: var(--dark-pure); color: #fff; font-family: 'Inter', sans-ser
   }
 }
 
-/* ✅ Très petit mobile */
-@media (max-width: 420px){
-
-  .elite-header{
-    min-height: 440px;
-    padding: 72px 0 34px;
+@media (max-width: 420px) {
+  .section-heading-xl {
+    font-size: 1.55rem;
   }
 
-  .main-titles h1{
-    font-size: 2.05rem;
-  }
-
-  .text-side h2{
-    font-size: 1.75rem;
-  }
-
-  .spec-item{
+  .spec-item {
     gap: 12px;
   }
 
-  .cta-content h3{
-    font-size: 1.65rem;
-  }
-
-  .btn-elite-big{
+  .btn-elite-big {
     max-width: 100%;
     padding: 15px 16px;
   }
 }
 
-/* ✅ Accessibilité : réduit les animations si l’utilisateur le demande */
-@media (prefers-reduced-motion: reduce){
-  *{ transition: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
 }

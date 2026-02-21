@@ -16,7 +16,7 @@
             <div class="hero-bg" style="background-image: url('{{ asset('uploads/' ~ article.photo) }}');"></div>
         {% endif %}
         <div class="hero-overlay"></div>
-        
+
         <div class="container hero-content">
             <nav class="article-breadcrumb">
                 <a href="{{ path('home') }}">Accueil</a>
@@ -40,27 +40,56 @@
     {# --- CONTENU DE L'ARTICLE --- #}
     <section class="article-body-wrapper">
         <div class="container-narrow">
-            
+
             <a href="{{ path('actualites') }}" class="back-to-news">
                 <i class="fa-solid fa-arrow-left-long"></i> Retour aux actualités
             </a>
 
             {# Corps de l'article #}
-        {# On remplace article.content par article.description #}
-{% if article.description %}
-    <div class="article-main-content">
-        {{ article.description|raw }}
-    </div>
-{% endif %}
+            {% if article.description %}
+                <div class="article-main-content">
+                    {{ article.description|raw }}
+                </div>
+            {% endif %}
+
+            {# =========================
+               Préparation des URLs de partage
+               ========================= #}
+            {% set articleUrl = absolute_url(path('article_show', {'id': article.id})) %}
+            {% set shareTitle = article.title ~ ' | CHM Saleux' %}
+
+            {% set facebookShareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' ~ (articleUrl|url_encode) %}
+            {% set xShareUrl = 'https://twitter.com/intent/tweet?url=' ~ (articleUrl|url_encode) ~ '&text=' ~ (shareTitle|url_encode) %}
+            {% set whatsappShareUrl = 'https://wa.me/?text=' ~ ((shareTitle ~ ' ' ~ articleUrl)|url_encode) %}
 
             {# Footer d'article #}
             <footer class="article-footer">
                 <div class="share-box">
                     <span>Partager cet article :</span>
                     <div class="share-links">
-                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-                        <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="{{ facebookShareUrl }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           aria-label="Partager sur Facebook"
+                           title="Partager sur Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+
+                        <a href="{{ xShareUrl }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           aria-label="Partager sur X"
+                           title="Partager sur X">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+
+                        <a href="{{ whatsappShareUrl }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           aria-label="Partager sur WhatsApp"
+                           title="Partager sur WhatsApp">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
                     </div>
                 </div>
             </footer>

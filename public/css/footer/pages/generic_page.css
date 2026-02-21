@@ -1,141 +1,251 @@
-/* --- VARIABLES & FOND --- */
+/* =========================================================
+   GENERIC PAGE — PAGE SPECIFIQUE (uniformisée)
+   Header + page-shell + page-container gérés globalement
+   ========================================================= */
+
 :root {
-    --primary-color: #F57706;
-    --dark-bg: #111;
-    --text-main: #e0e0e0;
-    --text-muted: #a0a0a0;
+  --primary-color: #F57706;
+  --dark-bg: #111;
+  --text-main: #e0e0e0;
+  --text-muted: #a0a0a0;
+  --bg-card: #121212;
+  --border-soft: rgba(255,255,255,0.08);
+  --transition: all .35s cubic-bezier(.23,1,.32,1);
 }
 
-body { background-color: var(--dark-bg); color: var(--text-main); }
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 0.25rem;
+.generic-page-root {
+  background: var(--dark-bg);
+  color: var(--text-main);
+  overflow-x: hidden;
 }
-
-/* =========================================
-   2. HEADER SPORTIF
-   ========================================= */
-.page-header-sport {
-    position: relative;
-    padding-top: var(--nav-height);
-    height: 60vh;
-    min-height: 450px;
-    display: flex; align-items: center;
-    background-color: var(--dark-bg);
-    margin-bottom: 0;
-}
-.page-header-sport::before {
-    content: ""; position: absolute; inset: 0;
-    background-image: var(--bg-image);
-    background-size: cover; background-position: center 35%;
-    z-index: 1; filter: grayscale(30%) brightness(0.6);
-}
-.header-overlay-gradient {
-    position: absolute; inset: 0; z-index: 2;
-    background: linear-gradient(to right, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.6) 100%);
-}
-.header-content { position: relative; z-index: 3; width: 100%; top:-3.5px; }
-
-.badge-accent {
-    background: var(--primary-color); color: white;
-    padding: 6px 14px; font-weight: 800; font-size: 0.75rem;
-    text-transform: uppercase; margin-bottom: 1.5rem; display: inline-block;
-}
-.header-main-box h1 {
-    font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 900;
-    text-transform: uppercase; line-height: 1; margin: 0 0 1.5rem 0; color: #fff;
-}
-.text-outline { -webkit-text-stroke: 1px white; color: transparent; }
-.header-main-box .lead {
-    font-size: 1.2rem; color: #ccc; max-width: 650px; line-height: 1.6;
-}
-
-.back-link-minimal {
-    color: var(--primary-color); text-decoration: none;
-    font-weight: 700; text-transform: uppercase; font-size: 0.8rem;
-    letter-spacing: 2px; display: inline-flex; align-items: center; gap: 10px;
-    margin-bottom: 3rem; transition: var(--transition);
-}
-.back-link-minimal:hover { color: white; }
-
 
 /* --- BARRE DE PROGRESSION --- */
 .reading-progress-container {
-    position: fixed; top: 0; left: 0; width: 100%; height: 3px;
-    z-index: 1000; background: rgba(255,255,255,0.05);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.05);
 }
+
 .reading-progress-bar {
-    height: 100%; width: 0%; background: var(--primary-color);
-    box-shadow: 0 0 10px var(--primary-color);
+  height: 100%;
+  width: 0%;
+  background: var(--primary-color);
+  box-shadow: 0 0 10px var(--primary-color);
 }
 
-/* --- HEADER MINIMAL --- */
-.page-header-minimal {
-    position: relative; height: 450px; display: flex; align-items: center;
-    background-image: var(--bg-image); background-size: cover; background-position: center;
+/* --- META HEADER (spécifique page) --- */
+.header-meta {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
 }
-.header-overlay-advanced {
-    position: absolute; inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.4), var(--dark-bg));
-}
-.header-content { position: relative; z-index: 10; }
 
-.minimal-back {
-    display: inline-flex; align-items: center; gap: 10px;
-    color: var(--primary-color); text-decoration: none; font-weight: 700;
-    margin-bottom: 30px; transition: 0.3s;
+.header-meta i {
+  color: var(--primary-color);
+  margin-right: 6px;
 }
-.minimal-back:hover { transform: translateX(-5px); }
 
-.category-label { color: var(--primary-color); font-weight: 800; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; }
-.header-main-title h1 { font-size: 4rem; font-weight: 900; color: #fff; margin: 10px 0; }
-.header-meta { color: var(--text-muted); font-size: 0.9rem; display: flex; gap: 20px; }
+.header-meta .separator {
+  opacity: 0.5;
+}
 
 /* --- CONTENU ARTICLE --- */
-.content-root { padding: 80px 0; }
-.article-container { max-width: 850px; margin: 0 auto; padding: 0 20px; }
+.article-container {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
 
-.pro-content { line-height: 1.8; font-size: 1.1rem; color: #ccc; }
+.pro-content {
+  line-height: 1.8;
+  font-size: 1.08rem;
+  color: #ccc;
+}
 
-/* Style des éléments HTML générés par le WYSIWYG */
-.pro-content h2 { color: #fff; font-size: 2rem; font-weight: 800; margin: 50px 0 25px; border-left: 4px solid var(--primary-color); padding-left: 20px; }
-.pro-content h3 { color: var(--primary-color); font-size: 1.5rem; margin-top: 35px; }
-.pro-content p { margin-bottom: 25px; }
-.pro-content strong { color: #fff; }
-.pro-content ul { margin-bottom: 30px; padding-left: 20px; list-style: none; }
-.pro-content ul li::before { content: "→"; color: var(--primary-color); margin-right: 10px; font-weight: bold; }
+/* Contenu WYSIWYG */
+.pro-content h2 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 50px 0 25px;
+  border-left: 4px solid var(--primary-color);
+  padding-left: 20px;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.pro-content h3 {
+  color: var(--primary-color);
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 35px 0 12px;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.pro-content p {
+  margin-bottom: 22px;
+}
+
+.pro-content strong {
+  color: #fff;
+}
+
+.pro-content a {
+  color: var(--primary-color);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pro-content ul,
+.pro-content ol {
+  margin-bottom: 28px;
+  padding-left: 20px;
+}
+
+.pro-content ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.pro-content ul li {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 10px;
+}
+
+.pro-content ul li::before {
+  content: "→";
+  color: var(--primary-color);
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+.pro-content blockquote {
+  margin: 28px 0;
+  padding: 16px 18px;
+  border-left: 3px solid var(--primary-color);
+  background: rgba(255,255,255,0.02);
+  color: #e8e8e8;
+  border-radius: 0 10px 10px 0;
+}
+
+.pro-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  margin: 12px 0 20px;
+}
+
+.pro-content hr {
+  border: none;
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  margin: 36px 0;
+}
 
 /* --- CTA FOOTER --- */
 .article-footer-cta {
-    margin-top: 80px; padding: 40px; background: #0a0a0a;
-    border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); text-align: center;
+  margin-top: 70px;
+  padding: 34px;
+  background: #0a0a0a;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.05);
+  text-align: center;
 }
+
+.article-footer-cta h3 {
+  margin: 0 0 8px;
+  color: #fff;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+}
+
+.article-footer-cta p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
 .btn-cta-dark {
-    display: inline-block; margin-top: 20px; padding: 15px 35px;
-    background: #fff; color: #000; text-decoration: none;
-    font-weight: 800; border-radius: 50px; transition: 0.3s;
+  display: inline-block;
+  margin-top: 20px;
+  padding: 14px 28px;
+  background: #fff;
+  color: #000;
+  text-decoration: none;
+  font-weight: 800;
+  border-radius: 999px;
+  transition: var(--transition);
+  text-transform: uppercase;
+  letter-spacing: .4px;
 }
-.btn-cta-dark:hover { background: var(--primary-color); color: #fff; }
 
-@media (max-width: 992px){
-      .page-header-sport {
-    height: auto !important;
-    min-height: 400px !important;
+.btn-cta-dark:hover {
+  background: var(--primary-color);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* --- RESPONSIVE (page spécifique uniquement) --- */
+@media (max-width: 768px) {
+  .article-container {
+    padding: 0 14px;
   }
 
-  .header-content {
-    top: 0 !important;
+  .header-meta {
+    font-size: 0.86rem;
+    gap: 10px;
   }
 
-  .page-header-sport .container{
-    padding-left: 18px !important;
-    padding-right: 18px !important;
+  .header-meta .separator {
+    display: none;
   }
 
-  .header-main-box h1 {
-    font-size: 2.7rem !important;
-    line-height: 1.1;
+  .pro-content {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  .pro-content h2 {
+    font-size: 1.45rem;
+    margin: 36px 0 18px;
+    padding-left: 14px;
+  }
+
+  .pro-content h3 {
+    font-size: 1.1rem;
+    margin-top: 28px;
+  }
+
+  .article-footer-cta {
+    margin-top: 50px;
+    padding: 24px 18px;
+    border-radius: 16px;
+  }
+
+  .btn-cta-dark {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .reading-progress-container {
+    height: 2px;
+  }
+
+  .article-footer-cta h3 {
+    font-size: 1.05rem;
   }
 }

@@ -9,29 +9,34 @@
 
 {% block body %}
 
-    {# --- HEADER ELITE --- #}
     <header class="page-header-sport" style="--bg-image: url('{{ asset('images/partenariat.jpg') }}');">
         <div class="header-overlay-gradient"></div>
-        <div class="container header-content">
-            <nav class="breadcrumb-nav">
-                <a href="{{ path('home') }}" class="back-link-minimal">
-                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                </a>
-            </nav>
 
-            <div class="header-main-box">
-                <div class="badge-accent">Sponsoring & Mécénat</div>
-                <h1>Devenez <span class="text-outline">Partenaire</span></h1>
-                <p class="lead">Associez l'image de votre entreprise aux valeurs de performance, de dépassement de soi et de solidarité du CHM Saleux.</p>
+        <div class="header-content">
+            <div class="page-container">
+                <nav class="breadcrumb-nav">
+                    <a href="{{ path('home') }}" class="back-link-minimal">
+                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                    </a>
+                </nav>
+
+                <div class="header-main-box">
+                    <div class="badge-accent">Sponsoring & Mécénat</div>
+                    <h1>Devenez <span class="text-outline">Partenaire</span></h1>
+                    <p class="lead">
+                        Associez l'image de votre entreprise aux valeurs de performance, de dépassement de soi
+                        et de solidarité du CHM Saleux.
+                    </p>
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="partner-root">
+    <main class="page-shell partner-root">
 
         {# --- ARGUMENTS --- #}
-        <section class="container section-spacer">
-            <div class="text-center mb-5">
+        <section class="page-container section-spacer">
+            <div class="partner-heading-wrap">
                 <h2 class="section-heading centered">Pourquoi nous <span>Soutenir ?</span></h2>
             </div>
 
@@ -56,39 +61,43 @@
             </div>
         </section>
 
-        {# --- FISCALITÉ (Bandeau Impact) --- #}
+        {# --- FISCALITÉ --- #}
         <section class="tax-impact-section">
-            <div class="container">
+            <div class="page-container">
                 <div class="tax-card">
                     <div class="tax-info">
                         <span class="badge-tax">Loi Mécénat</span>
                         <h2>Réduction d'impôt majeure</h2>
                         <p>Le CHM Saleux est une association reconnue d'intérêt général. Votre soutien ouvre droit à un avantage fiscal significatif.</p>
                     </div>
+
                     <div class="tax-figure">
                         <div class="number">60%</div>
                         <div class="label">Déduction fiscale*</div>
                     </div>
                 </div>
+
                 <p class="tax-legal">*Dans la limite de 20 000 € ou 5 ‰ du chiffre d'affaires HT (Art. 238 bis du CGI).</p>
             </div>
         </section>
 
         {# --- TYPES DE SOUTIEN --- #}
-        <section class="container section-spacer">
+        <section class="page-container section-spacer">
             <h2 class="section-heading centered">Trois façons de <span>nous aider</span></h2>
-            
+
             <div class="support-flex">
                 <div class="support-box">
                     <span class="support-num">01</span>
                     <h4>Mécénat Financier</h4>
                     <p>Financement direct de matériel olympique ou des déplacements en compétition nationale.</p>
                 </div>
+
                 <div class="support-box">
                     <span class="support-num">02</span>
                     <h4>Mécénat en Nature</h4>
                     <p>Don de matériel, dotation pour nos événements ou ravitaillement pour nos athlètes.</p>
                 </div>
+
                 <div class="support-box">
                     <span class="support-num">03</span>
                     <h4>Compétences</h4>
@@ -99,18 +108,21 @@
 
         {# --- CONTACT CTA --- #}
         <section class="bg-dark-alternate">
-            <div class="container section-spacer">
+            <div class="page-container section-spacer">
                 <div class="partner-cta-card">
                     <div class="cta-content">
                         <h2>Construisons un projet <span>Ensemble</span></h2>
                         <p>Nous étudions chaque demande pour créer un partenariat sur-mesure, adapté à vos objectifs de communication et à votre budget.</p>
+
                         <div class="cta-actions">
-                            <a href="{{ path('contact') }}" class="btn-elite">Prendre rendez-vous <i class="fa-solid fa-calendar-check"></i></a>
+                            <a href="{{ path('contact') }}" class="btn-elite">
+                                Prendre rendez-vous <i class="fa-solid fa-calendar-check"></i>
+                            </a>
                             <a href="tel:0322897257" class="btn-outline-white">03.22.89.72.57</a>
                         </div>
                     </div>
-                    <div class="cta-image">
-                        {# Optionnel : Une icône ou une petite illustration discrète #}
+
+                    <div class="cta-image" aria-hidden="true">
                         <i class="fa-solid fa-briefcase"></i>
                     </div>
                 </div>
