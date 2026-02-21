@@ -10,31 +10,15 @@
 				LA FORCE SE CONSTRUIT. COMMENCE AUJOURD’HUI !
 			</h3>
 
-		<div class="modal-actions">
-    <div class="button-wrap-payment">
-        <a class="btn-payment" href="{{ path('oauth_google_start') }}">
-            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" width="20" height="20">
-            <span style="color:black;font-weight: 700;">CONTINUER AVEC GOOGLE</span>
-        </a>
-        <div class="button-shadow"></div>
-    </div>
-
-    <!--<div class="button-wrap-payment">
-        <a class="btn-payment" href="#">
-            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/apple.svg" alt="Apple" width="20" height="20">
-            <span style="color:black;font-weight: 700;">CONTINUER AVEC APPLE</span>
-        </a>
-        <div class="button-shadow"></div>
-    </div>
-
-    <div class="button-wrap-payment">
-        <a class="btn-payment" href="#">
-            <img src="{{ asset('images/facebook-icon.png') }}" alt="Facebook" width="20" height="20">
-            <span style="color:black;font-weight: 700;">CONTINUER AVEC FACEBOOK</span>
-        </a>
-        <div class="button-shadow"></div>
-    </div>-->
-</div>
+			<div class="modal-actions">
+				<div class="button-wrap-payment">
+					<a class="btn-payment" href="{{ path('oauth_google_start') }}">
+						<img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" width="20" height="20">
+						<span style="color:black;font-weight: 700;">CONTINUER AVEC GOOGLE</span>
+					</a>
+					<div class="button-shadow"></div>
+				</div>
+			</div>
 
 			<div class="modal-divider">
 				<span>ou</span>
@@ -56,27 +40,48 @@
 			<div class="email-register-card">
 				<h3 class="modal-title" style="font-weight:800;line-height: 2.4;">CRÉER UN COMPTE</h3>
 
+				<form id="emailRegisterForm"
+					  class="email-register-form"
+					  action="{{ path('app_register') }}"
+					  method="POST"
+					  novalidate
+					  autocomplete="on">
 
-				<form id="emailRegisterForm" class="email-register-form" action="{{ path('app_register') }}" method="POST" novalidate>
+					{# ✅ CSRF register (validé côté controller) #}
+					<input type="hidden" name="_token" value="{{ csrf_token('register') }}">
 
 					<div class="form-group">
 						<label for="register-firstname">Prénom</label>
-						<input type="text" id="register-firstname" name="registration_form[firstName]" placeholder="Votre prénom" required>
+						<input type="text"
+							   id="register-firstname"
+							   name="registration_form[firstName]"
+							   placeholder="Votre prénom"
+							   required
+							   autocomplete="given-name">
 					</div>
 
 					<div class="form-group">
 						<label for="register-lastname">Nom</label>
-						<input type="text" id="register-lastname" name="registration_form[lastName]" placeholder="Votre nom" required>
+						<input type="text"
+							   id="register-lastname"
+							   name="registration_form[lastName]"
+							   placeholder="Votre nom"
+							   required
+							   autocomplete="family-name">
 					</div>
 
 					<div class="form-group">
 						<label for="register-email">Email</label>
-						<input type="email" id="register-email" name="registration_form[email]" placeholder="exemple@email.com" required>
+						<input type="email"
+							   id="register-email"
+							   name="registration_form[email]"
+							   placeholder="exemple@email.com"
+							   required
+							   autocomplete="email">
 					</div>
 
 					<!-- === Bloc mot de passe === -->
-					<div
-						class="form-group password-group">
+					<div class="form-group password-group">
 
 						<!-- ✅ Sous-modale Critères du mot de passe -->
 						<div class="password-criteria-modal" id="passwordRulesModal">
@@ -84,26 +89,16 @@
 								<h2>Critères du mot de passe</h2>
 								<p class="password-rules-intro">
 									Conformément aux recommandations RGPD, ton mot de passe doit respecter ces critères
-																																																																																																																																																																																																																																																																																																																																																																																	pour garantir une sécurité optimale de ton compte :
+									pour garantir une sécurité optimale de ton compte :
 								</p>
 								<ul>
-									<li id="rule-length">Au moins
-										<strong>12 caractères</strong>
-									</li>
-									<li id="rule-uppercase">Contenir
-										<strong>une majuscule</strong>
-									</li>
-									<li id="rule-lowercase">Contenir
-										<strong>une minuscule</strong>
-									</li>
-									<li id="rule-number">Contenir
-										<strong>un chiffre</strong>
-									</li>
-									<li id="rule-special">Contenir
-										<strong>un caractère spécial</strong>
-									</li>
+									<li id="rule-length">Au moins <strong>12 caractères</strong></li>
+									<li id="rule-uppercase">Contenir <strong>une majuscule</strong></li>
+									<li id="rule-lowercase">Contenir <strong>une minuscule</strong></li>
+									<li id="rule-number">Contenir <strong>un chiffre</strong></li>
+									<li id="rule-special">Contenir <strong>un caractère spécial</strong></li>
 								</ul>
-								<button class="btn-close-rules" id="closePasswordRules">Fermer</button>
+								<button type="button" class="btn-close-rules" id="closePasswordRules">Fermer</button>
 							</div>
 						</div>
 
@@ -114,7 +109,14 @@
 						</div>
 
 						<div class="password-input-wrapper">
-							<input type="password" id="register-password" name="registration_form[password][first]" placeholder="Mot de passe" required>
+							<input type="password"
+								   id="register-password"
+								   name="registration_form[password][first]"
+								   placeholder="Mot de passe"
+								   required
+								   minlength="12"
+								   maxlength="128"
+								   autocomplete="new-password">
 							<span class="toggle-password" data-target="register-password">
 								<img src="{{ asset('images/eye/eye-open.png') }}" alt="Afficher" class="eye-open" style="margin-top:12px;">
 								<img src="{{ asset('images/eye/eye-closed.png') }}" alt="Cacher" class="eye-closed hide" style="margin-top:12px;">
@@ -125,7 +127,14 @@
 					<div class="form-group password-group">
 						<label for="register-confirm-password">Confirmer le mot de passe</label>
 						<div class="password-input-wrapper">
-							<input type="password" id="register-confirm-password" name="registration_form[password][second]" placeholder="Confirmez le mot de passe" required>
+							<input type="password"
+								   id="register-confirm-password"
+								   name="registration_form[password][second]"
+								   placeholder="Confirmez le mot de passe"
+								   required
+								   minlength="12"
+								   maxlength="128"
+								   autocomplete="new-password">
 							<span class="toggle-password" data-target="register-confirm-password">
 								<img src="{{ asset('images/eye/eye-open.png') }}" alt="Afficher" class="eye-open" style="margin-top:12px;">
 								<img src="{{ asset('images/eye/eye-closed.png') }}" alt="Cacher" class="eye-closed hide" style="margin-top:12px;">
@@ -146,7 +155,10 @@
 					<div id="form-error-message" class="form-error-message" style="display:none;"></div>
 
 					<div class="form-group text-center mt-3">
-						<div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}" data-theme="light" data-size="normal"></div>
+						<div class="cf-turnstile"
+							 data-sitekey="{{ turnstile_site_key }}"
+							 data-theme="light"
+							 data-size="normal"></div>
 					</div>
 
 					<button type="submit" class="btn-register">
@@ -168,14 +180,29 @@
 			<h3 class="modal-title">Vérification de votre compte</h3>
 			<p class="modal-subtitle">Entrez le code à 6 chiffres reçu par e-mail.</p>
 
-			<form id="verify-form" action="{{ path('app_verify_code') }}" method="POST">
+			{# ✅ autocomplete off pour éviter l'autofill qui casse les 6 inputs #}
+			<form id="verify-form" action="{{ path('app_verify_code') }}" method="POST" novalidate autocomplete="off">
+				{# ✅ CSRF verify #}
+				<input type="hidden" name="_token" value="{{ csrf_token('verify_code') }}">
+
 				<div class="verify-code-inputs">
 					{% for i in 1..6 %}
-						<input type="text" maxlength="1" inputmode="numeric" class="code-input" name="code_digit_{{ i }}" data-index="{{ i }}" required>
+						<input type="text"
+							   maxlength="1"
+							   inputmode="numeric"
+							   pattern="[0-9]*"
+							   class="code-input"
+							   name="code_digit_{{ i }}"
+							   data-index="{{ i }}"
+							   required
+							   {# ✅ meilleur comportement iOS: one-time-code sur le premier uniquement #}
+							   {% if i == 1 %}autocomplete="one-time-code"{% else %}autocomplete="off"{% endif %}>
 					{% endfor %}
 				</div>
 
+				{# ✅ C'est CE champ qui est lu par le controller: request->get('code') #}
 				<input type="hidden" name="code" id="verify-full-code">
+
 				<div id="verifyMessage" class="verify-message" style="display:none;"></div>
 
 				<button type="submit" id="verifyButton" class="btn-register">
@@ -188,7 +215,11 @@
 
 			<p class="resend">
 				Pas reçu ?
-				<a href="{{ path('app_resend_code') }}" id="resendCodeLink">Renvoyer un nouveau code</a>
+				{# ✅ POST + CSRF + rate-limit côté backend #}
+				<form id="resendCodeForm" action="{{ path('app_resend_code') }}" method="POST" style="display:inline;">
+					<input type="hidden" name="_token" value="{{ csrf_token('resend_code') }}">
+					<button type="submit" id="resendCodeBtn" class="link-like-button">Renvoyer un nouveau code</button>
+				</form>
 			</p>
 
 			<p class="modal-footer">
@@ -200,18 +231,28 @@
 		<div id="modal-step-login" style="display:none;">
 			<h3 class="modal-title" style="font-weight:800;line-height: 2.4;">CONNEXION</h3>
 
-			<form id="login-form" action="{{ path('app_login') }}" method="POST" novalidate>
+			<form id="login-form" action="{{ path('app_login') }}" method="POST" novalidate autocomplete="on">
 				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 				<div class="form-group">
 					<label for="login-email">Adresse e-mail</label>
-					<input type="email" id="login-email" name="email" placeholder="exemple@email.com" required>
+					<input type="email"
+						   id="login-email"
+						   name="email"
+						   placeholder="exemple@email.com"
+						   required
+						   autocomplete="email">
 				</div>
 
 				<div class="form-group password-group">
 					<label for="login-password">Mot de passe</label>
 					<div class="password-input-wrapper">
-						<input type="password" id="login-password" name="password" placeholder="Votre mot de passe" required>
+						<input type="password"
+							   id="login-password"
+							   name="password"
+							   placeholder="Votre mot de passe"
+							   required
+							   autocomplete="current-password">
 						<span class="toggle-password" data-target="login-password">
 							<img src="{{ asset('images/eye/eye-open.png') }}" alt="Afficher" class="eye-open" style="margin-top:13px;">
 							<img src="{{ asset('images/eye/eye-closed.png') }}" alt="Cacher" class="eye-closed hide" style="margin-top:13px;">
@@ -226,9 +267,11 @@
 					</label>
 				</div>
 
-				<!-- ✅ CAPTCHA Turnstile visible -->
 				<div class="form-group text-center mt-3">
-					<div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}" data-theme="light" data-size="normal"></div>
+					<div class="cf-turnstile"
+						 data-sitekey="{{ turnstile_site_key }}"
+						 data-theme="light"
+						 data-size="normal"></div>
 				</div>
 
 				<div id="loginError" class="login-error" style="display:none;"></div>
@@ -249,9 +292,6 @@
 			</p>
 		</div>
 
-		<!-- ✅ Script Turnstile -->
-
-
 		<!-- === ÉTAPE 5 : Mot de passe oublié === -->
 		<div id="modal-step-reset-email" style="display:none; text-align:center;">
 			<h3 class="modal-title" style="font-weight:800;line-height: 2.4;">MOT DE PASSE OUBLIÉ</h3>
@@ -260,7 +300,16 @@
 			<div id="resetError" class="verify-message" style="display:none;"></div>
 
 			<form id="resetRequestForm" action="{{ path('app_reset_password_request') }}" method="POST" novalidate>
-				<input type="email" name="email" id="resetEmail" placeholder="Votre adresse e-mail" required>
+				<input type="hidden" name="_token" value="{{ csrf_token('reset_request') }}">
+				<input type="email" name="email" id="resetEmail" placeholder="Votre adresse e-mail" required autocomplete="email">
+
+				<div class="form-group text-center mt-3">
+					<div class="cf-turnstile"
+						 data-sitekey="{{ turnstile_site_key }}"
+						 data-theme="light"
+						 data-size="normal"></div>
+				</div>
+
 				<button type="submit" id="resetRequestBtn" class="btn-register" style="margin-right:53px;">
 					<span class="btn-text">ENVOYER</span>
 					<span class="btn-spinner" style="display:none;">
@@ -282,13 +331,20 @@
 			<div id="resetNewError" class="verify-message" style="display:none;"></div>
 
 			<form id="resetNewForm" action="{{ path('app_reset_password_final') }}" method="POST" novalidate>
-				<input
-				type="hidden" id="resetToken" name="token" value="">
+				<input type="hidden" name="_token" value="{{ csrf_token('reset_final') }}">
+				<input type="hidden" id="resetToken" name="token" value="">
 
-				<!-- Champ : nouveau mot de passe -->
 				<div class="password-group">
 					<div class="password-input-wrapper">
-						<input type="password" id="newPassword" name="newPassword" placeholder="Nouveau mot de passe" minlength="12" maxlength="64" required style="margin-left:14px;">
+						<input type="password"
+							   id="newPassword"
+							   name="newPassword"
+							   placeholder="Nouveau mot de passe"
+							   minlength="12"
+							   maxlength="128"
+							   required
+							   autocomplete="new-password"
+							   style="margin-left:14px;">
 						<span class="toggle-password" data-target="newPassword">
 							<img class="eye-open" src="{{ asset('images/eye/eye-open.png') }}" alt="Afficher" style="margin-right:10px;margin-top:-10px">
 							<img class="eye-closed hide" src="{{ asset('images/eye/eye-closed.png') }}" alt="Cacher" style="margin-right:10px;margin-top:-10px">
@@ -296,10 +352,17 @@
 					</div>
 				</div>
 
-				<!-- Champ : confirmation -->
 				<div class="password-group">
 					<div class="password-input-wrapper">
-						<input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmer le mot de passe" minlength="12" maxlength="64" required style="margin-left:14px;">
+						<input type="password"
+							   id="confirmPassword"
+							   name="confirmPassword"
+							   placeholder="Confirmer le mot de passe"
+							   minlength="12"
+							   maxlength="128"
+							   required
+							   autocomplete="new-password"
+							   style="margin-left:14px;">
 						<span class="toggle-password" data-target="confirmPassword">
 							<img class="eye-open" src="{{ asset('images/eye/eye-open.png') }}" alt="Afficher" style="margin-right:10px;margin-top:-10px">
 							<img class="eye-closed hide" src="{{ asset('images/eye/eye-closed.png') }}" alt="Cacher" style="margin-right:10px;margin-top:-10px">
@@ -307,7 +370,6 @@
 					</div>
 				</div>
 
-				<!-- Bouton -->
 				<button type="submit" id="resetNewBtn" class="btn-register" style="margin-top:15px;">
 					<span class="btn-text">CHANGER LE MOT DE PASSE</span>
 					<span class="btn-spinner" style="display:none;">
@@ -325,52 +387,50 @@
 
 {# === ETAPE 2b : Set password modal si app.user.getNeedsPassword() === #}
 {% if app.user and app.user.getNeedsPassword() %}
-<div class="modal-overlay is-open" id="setPasswordModal" aria-hidden="false">
-<div class="modal-card modal-card-set-password" role="dialog" aria-modal="true" aria-labelledby="setPasswordTitle">
+	<div class="modal-overlay is-open" id="setPasswordModal" aria-hidden="false">
+		<div class="modal-card modal-card-set-password" role="dialog" aria-modal="true" aria-labelledby="setPasswordTitle">
 
+			<h3 id="setPasswordTitle" class="modal-title">Définir votre mot de passe</h3>
+			<p class="modal-subtitle">Assurez-vous de choisir un mot de passe sécurisé pour protéger votre compte.</p>
 
-        <h3 id="setPasswordTitle" class="modal-title">Définir votre mot de passe</h3>
-        <p class="modal-subtitle">Assurez-vous de choisir un mot de passe sécurisé pour protéger votre compte.</p>
+			{% for message in app.flashes('error') %}
+				<div class="form-error-message set-password-error">{{ message }}</div>
+			{% endfor %}
 
-{% for message in app.flashes('error') %}
-    <div class="form-error-message set-password-error">{{ message|raw }}</div>
-{% endfor %}
+			<form action="{{ path('set_password') }}" method="POST" class="email-register-form" novalidate autocomplete="on">
+				<input type="hidden" name="_token" value="{{ csrf_token('set_password') }}">
 
+				<div class="form-group password-group">
+					<label for="password">Mot de passe</label>
+					<div class="password-input-wrapper">
+						<input type="password" id="password" name="password" placeholder="Mot de passe" required minlength="12" maxlength="128" autocomplete="new-password">
+						<span class="toggle-password" data-target="password">
+							<img class="eye-open" src="{{ asset('images/eye/eye-open.png') }}" alt="Afficher">
+							<img class="eye-closed hide" src="{{ asset('images/eye/eye-closed.png') }}" alt="Cacher">
+						</span>
+					</div>
+				</div>
 
-        <form action="{{ path('set_password') }}" method="POST" class="email-register-form" novalidate>
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('set_password') }}">
+				<div class="form-group password-group">
+					<label for="confirm_password">Confirmer le mot de passe</label>
+					<div class="password-input-wrapper">
+						<input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmez le mot de passe" required minlength="12" maxlength="128" autocomplete="new-password">
+						<span class="toggle-password" data-target="confirm_password">
+							<img class="eye-open" src="{{ asset('images/eye/eye-open.png') }}" alt="Afficher">
+							<img class="eye-closed hide" src="{{ asset('images/eye/eye-closed.png') }}" alt="Cacher">
+						</span>
+					</div>
+				</div>
 
-            <div class="form-group password-group">
-                <label for="password">Mot de passe</label>
-                <div class="password-input-wrapper">
-                    <input type="password" id="password" name="password" placeholder="Mot de passe" required>
-                    <span class="toggle-password" data-target="password">
-                        <img class="eye-open" src="{{ asset('images/eye/eye-open.png') }}" alt="Afficher">
-                        <img class="eye-closed hide" src="{{ asset('images/eye/eye-closed.png') }}" alt="Cacher">
-                    </span>
-                </div>
-            </div>
+				<div class="checkbox-group">
+					<label>
+						<input type="checkbox" name="acceptedTerms" required>
+						J’accepte les <a href="#">Conditions générales</a> et la <a href="#">Politique de confidentialité</a>.
+					</label>
+				</div>
 
-            <div class="form-group password-group">
-                <label for="confirm_password">Confirmer le mot de passe</label>
-                <div class="password-input-wrapper">
-                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmez le mot de passe" required>
-                    <span class="toggle-password" data-target="confirm_password">
-                        <img class="eye-open" src="{{ asset('images/eye/eye-open.png') }}" alt="Afficher">
-                        <img class="eye-closed hide" src="{{ asset('images/eye/eye-closed.png') }}" alt="Cacher">
-                    </span>
-                </div>
-            </div>
-
-            <div class="checkbox-group">
-                <label>
-                    <input type="checkbox" name="acceptedTerms" required>
-                    J’accepte les <a href="#">Conditions générales</a> et la <a href="#">Politique de confidentialité</a>.
-                </label>
-            </div>
-
-            <button type="submit" class="btn-register">Enregistrer</button>
-        </form>
-    </div>
-</div>
+				<button type="submit" class="btn-register">Enregistrer</button>
+			</form>
+		</div>
+	</div>
 {% endif %}

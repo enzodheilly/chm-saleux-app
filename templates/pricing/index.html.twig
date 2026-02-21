@@ -5,36 +5,38 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/pricing/index.css') }}">
-    {# FontAwesome pour les icônes #}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 {% endblock %}
 
 {% block body %}
 
-    {# --- HEADER SPORTIF IMMERSIF --- #}
+    {# --- HEADER SPORTIF IMMERSIF (GLOBAL) --- #}
     <header class="page-header-sport" style="--bg-image: url('{{ asset('images/page.jpg') }}');">
         <div class="header-overlay-gradient"></div>
-        <div class="container header-content">
-            <nav class="breadcrumb-nav">
-                <a href="{{ path('home') }}" class="back-link-minimal">
-                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                </a>
-            </nav>
 
-            <div class="header-main-box">
-                <div class="badge-accent">Saison 2025 / 2026</div>
-                <h1>Tarifs & <span class="text-outline">Adhésions</span></h1>
-                <p class="lead">Une structure de haut niveau accessible à tous. Choisissez la formule qui correspond à vos objectifs sportifs.</p>
+        <div class="header-content">
+            <div class="page-container">
+                <nav class="breadcrumb-nav">
+                    <a href="{{ path('home') }}" class="back-link-minimal">
+                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                    </a>
+                </nav>
+
+                <div class="header-main-box">
+                    <div class="badge-accent">Saison 2025 / 2026</div>
+                    <h1>Tarifs & <span class="text-outline">Adhésions</span></h1>
+                    <p class="lead">Une structure de haut niveau accessible à tous. Choisissez la formule qui correspond à vos objectifs sportifs.</p>
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="pricing-root">
+    <main class="page-shell pricing-root">
 
         {# --- SECTION 1 : GRILLE DES TARIFS --- #}
-        <section class="container section-spacer">
+        <section class="page-container section-spacer">
             <div class="section-header-center">
-                <h2 class="title-with-bar center-bar" style="color:#fff;">Nos <span>Formules</span></h2>
+                <h2 class="section-heading centered pricing-section-title-light">Nos <span>Formules</span></h2>
                 <p>Accès illimité 800m² : Cardio, Musculation, Haltérophilie et Cours Collectifs.</p>
             </div>
 
@@ -43,106 +45,103 @@
                 <div class="pricing-selector">
                     <input type="radio" id="type-standard" name="pricing-type" value="standard" checked>
                     <label for="type-standard">Standard</label>
-                    
+
                     <input type="radio" id="type-student" name="pricing-type" value="student">
                     <label for="type-student">Étudiant <span class="discount-badge">-10€</span></label>
-                    
+
                     <div class="selector-highlight"></div>
                 </div>
             </div>
 
-            {# Grille d'abonnements (mêmes cards que ton exemple sleek) #}
-<div class="pricing-grid">
-    {% for plan in plans|default([]) %}
+            {# Grille d'abonnements #}
+            <div class="pricing-grid">
+                {% for plan in plans|default([]) %}
 
-        {# --- PRICE LOGIC (standard vs student) --- #}
-        {% set standardPrice = plan.price %}
-        {% set studentPrice = plan.price %}
+                    {% set standardPrice = plan.price %}
+                    {% set studentPrice = plan.price %}
 
-        {% if standardPrice is not null %}
-            {% set studentPrice = (standardPrice + 0) - 10 %}
-        {% endif %}
-        {# --- END LOGIC --- #}
+                    {% if standardPrice is not null %}
+                        {% set studentPrice = (standardPrice + 0) - 10 %}
+                    {% endif %}
 
-        <article class="sleek-card {{ plan.isPopular ? 'popular-card' : '' }}">
+                    <article class="sleek-card {{ plan.isPopular ? 'popular-card' : '' }}">
 
-            {% if plan.isPopular %}
-                <div class="popular-badge">Le plus choisi</div>
-            {% endif %}
+                        {% if plan.isPopular %}
+                            <div class="popular-badge">Le plus choisi</div>
+                        {% endif %}
 
-            <div class="card-header">
-                <h3 class="plan-title">{{ plan.name }}</h3>
+                        <div class="card-header">
+                            <h3 class="plan-title">{{ plan.name }}</h3>
 
-                <div class="plan-price">
-                    <span class="currency">€</span>
-                    <span class="price-value"
-                          data-standard="{{ standardPrice }}"
-                          data-student="{{ studentPrice }}">
-                        {{ standardPrice }}
-                    </span>
+                            <div class="plan-price">
+                                <span class="currency">€</span>
+                                <span class="price-value"
+                                      data-standard="{{ standardPrice }}"
+                                      data-student="{{ studentPrice }}">
+                                    {{ standardPrice }}
+                                </span>
 
-                    <span class="period">
-                        /
-                        {% set period = plan.billingPeriod %}
-                        {% if period == 'year' %}an
-                        {% elseif period == 'month' %}mois
-                        {% elseif period == 'quarter' %}trimestre
-                        {% elseif period == 'semester' %}semestre
-                        {% else %}session{% endif %}
-                    </span>
-                </div>
+                                <span class="period">
+                                    /
+                                    {% set period = plan.billingPeriod %}
+                                    {% if period == 'year' %}an
+                                    {% elseif period == 'month' %}mois
+                                    {% elseif period == 'quarter' %}trimestre
+                                    {% elseif period == 'semester' %}semestre
+                                    {% else %}session{% endif %}
+                                </span>
+                            </div>
 
-                {% if plan.monthlyPrice %}
-                    <div class="monthly-detail">Soit ~{{ plan.monthlyPrice|number_format(0) }}€ / mois</div>
-                {% else %}
-                    <div class="monthly-detail invisible">-</div>
-                {% endif %}
+                            {% if plan.monthlyPrice %}
+                                <div class="monthly-detail">Soit ~{{ plan.monthlyPrice|number_format(0) }}€ / mois</div>
+                            {% else %}
+                                <div class="monthly-detail invisible">-</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-body">
+                            <div class="trial-info">
+                                <i class="fa-solid fa-check-circle" aria-hidden="true"></i>
+                                <span>Séance d'essai incluse</span>
+                            </div>
+
+                            <ul class="features-list">
+                                {% for benefit in plan.benefits %}
+                                    {% set parts = benefit|split('|') %}
+                                    <li>
+                                        <i class="fa-solid fa-check icon-check" aria-hidden="true"></i>
+                                        <span>
+                                            {% if parts|length > 1 %}
+                                                {{ parts[1]|trim }}
+                                            {% else %}
+                                                {{ benefit }}
+                                            {% endif %}
+                                        </span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div class="card-footer">
+                            <a href="{{ path('contact') }}"
+                               class="btn-select {{ plan.isPopular ? 'btn-red' : 'btn-dark' }}">
+                                Sélectionner
+                            </a>
+                        </div>
+
+                    </article>
+
+                {% endfor %}
             </div>
 
-            <div class="card-body">
-                <div class="trial-info">
-                    <i class="fa-solid fa-check-circle" aria-hidden="true"></i>
-                    <span>Séance d'essai incluse</span>
-                </div>
-
-                <ul class="features-list">
-                    {% for benefit in plan.benefits %}
-                        {% set parts = benefit|split('|') %}
-                        <li>
-                            <i class="fa-solid fa-check icon-check" aria-hidden="true"></i>
-                            <span>
-                                {% if parts|length > 1 %}
-                                    {{ parts[1]|trim }}
-                                {% else %}
-                                    {{ benefit }}
-                                {% endif %}
-                            </span>
-                        </li>
-                    {% endfor %}
-                </ul>
+            <div class="info-note">
+                <p>
+                    <strong>Important :</strong>
+                    Pour valider votre adhésion, merci de remplir le formulaire officiel de licence <strong>FFHM</strong>.
+                    Vous pouvez le télécharger <a href="{{ asset('docs/formulaire-licence-ffhm.pdf') }}" target="_blank" rel="noopener">ici</a>.
+                    Une fois votre paiement effectué, vous pourrez remettre le formulaire complété au bureau du club.
+                </p>
             </div>
-
-            <div class="card-footer">
-                <a href="{{ path('contact') }}"
-                   class="btn-select {{ plan.isPopular ? 'btn-red' : 'btn-dark' }}">
-                    Sélectionner
-                </a>
-            </div>
-
-        </article>
-
-    {% endfor %}
-</div>
-
-        <div class="info-note">
-  <p>
-    <strong>Important :</strong>
-    Pour valider votre adhésion, merci de remplir le formulaire officiel de licence <strong>FFHM</strong>.
-    Vous pouvez le télécharger <a href="{{ asset('docs/formulaire-licence-ffhm.pdf') }}" target="_blank" rel="noopener">ici</a>.
-    Une fois votre paiement effectué, vous pourrez remettre le formulaire complété au bureau du club.
-  </p>
-</div>
-
         </section>
 
         {# --- IMAGE DE TRANSITION 1 (PARALLAX) --- #}
@@ -156,14 +155,13 @@
 
         {# --- SECTION 2 : OFFRES SPÉCIFIQUES --- #}
         <section class="bg-dark-alternate section-spacer">
-            <div class="container">
+            <div class="page-container">
                 <div class="section-header-center">
-                    <h2 class="title-with-bar center-bar" style="color:#fff;">Offres <span>Spécifiques</span></h2>
+                    <h2 class="section-heading centered pricing-section-title-light">Offres <span>Spécifiques</span></h2>
                     <p>Familles nombreuses ou compétiteurs, nous avons pensé à vous.</p>
                 </div>
 
                 <div class="specials-grid">
-                    {# Carte Famille #}
                     <div class="special-card">
                         <div class="icon-box"><i class="fa-solid fa-users"></i></div>
                         <h3>Offre Famille</h3>
@@ -175,7 +173,6 @@
                         </ul>
                     </div>
 
-                    {# Carte Compétition #}
                     <div class="special-card">
                         <div class="icon-box gold"><i class="fa-solid fa-trophy"></i></div>
                         <h3>Compétition FFHM</h3>
@@ -201,9 +198,9 @@
         </div>
 
         {# --- SECTION 3 : TARIFS DÉGRESSIFS --- #}
-        <section class="container section-spacer">
+        <section class="page-container section-spacer">
             <div class="section-header-center">
-                <h2 class="title-with-bar center-bar" style="color:#fff;">Tarifs <span>Dégressifs</span></h2>
+                <h2 class="section-heading centered pricing-section-title-light">Tarifs <span>Dégressifs</span></h2>
                 <p>Prorata temporis selon votre mois d'arrivée.</p>
             </div>
 
@@ -233,13 +230,13 @@
 
         {# --- SECTION 4 : FACILITÉS DE PAIEMENT --- #}
         <section class="bg-dark-alternate section-spacer">
-            <div class="container">
+            <div class="page-container">
                 <div class="split-layout">
                     <div class="text-content">
                         <div class="badge-accent">Facilités de paiement</div>
-                        <h2 class="title-with-bar" style="color:#fff;">Payez à <span>Votre Rythme</span></h2>
-                        <p class="desc-text" style="color:#ddd;">
-                            Nous croyons que le budget ne doit pas être un frein à la pratique du sport. 
+                        <h2 class="section-heading pricing-section-title-light pricing-section-title-left">Payez à <span>Votre Rythme</span></h2>
+                        <p class="pricing-desc-light">
+                            Nous croyons que le budget ne doit pas être un frein à la pratique du sport.
                             Étalez votre cotisation annuelle sur 3 mois, par chèque, sans aucun frais supplémentaire.
                         </p>
                         <ul class="feature-check-list">
@@ -290,15 +287,14 @@
 
             radios.forEach(radio => {
                 radio.addEventListener('change', (e) => {
-                    const type = e.target.value; // 'standard' ou 'student'
-                    
+                    const type = e.target.value;
+
                     priceValues.forEach(el => {
                         const newPrice = el.dataset[type];
-                        
-                        // Petite animation de transition
+
                         el.style.opacity = '0';
                         el.style.transform = 'translateY(-10px)';
-                        
+
                         setTimeout(() => {
                             el.textContent = newPrice ? newPrice : '-';
                             el.style.opacity = '1';

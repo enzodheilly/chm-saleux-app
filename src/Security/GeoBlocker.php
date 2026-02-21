@@ -3,62 +3,88 @@
 namespace App\Security;
 
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class GeoBlocker
+class GeoBlocker implements EventSubscriberInterface
 {
-    private Security $security;
+    public function __construct(
+        private readonly Security $security,
+        private readonly HttpClientInterface $httpClient,
+        private readonly CacheInterface $cache,
+        private readonly string $allowedCountry = 'FR',
+    ) {}
 
-    public function __construct(Security $security)
+    public static function getSubscribedEvents(): array
     {
-        $this->security = $security;
+        return [
+            KernelEvents::REQUEST => ['onKernelRequest', 10],
+        ];
     }
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        if (!$event->isMainRequest()) return;
+        if (!$event->isMainRequest()) {
+            return;
+        }
 
         $request = $event->getRequest();
-        $ip = $request->getClientIp();
-        $route = $request->attributes->get('_route');
+        $route = (string) $request->attributes->get('_route', '');
 
-        // 1. ✅ EXCEPTION : Localhost
-        if ($ip === '127.0.0.1' || $ip === '::1') return;
+        // ✅ Appliquer seulement aux routes sensibles
+        if (!str_starts_with($request->getPathInfo(), '/admin')) {
+            return;
+        }
 
-        // 2. ✅ EXCEPTION : Tes emails (Seulement si on n'est pas en plein login/2FA)
-        // Cela évite l'erreur "User is not in a two-factor authentication process"
-        if (!in_array($route, ['app_login', '2fa_login', '2fa_login_check'])) {
+        $ip = (string) ($request->getClientIp() ?? '');
+        if ($ip === '' || $ip === '127.0.0.1' || $ip === '::1') {
+            return;
+        }
+
+        // ✅ Optionnel : si déjà connecté admin -> laisse passer
+        $user = $this->security->getUser();
+        if ($user && in_array('ROLE_ADMIN', method_exists($user, 'getRoles') ? $user->getRoles() : [], true)) {
+            return;
+        }
+
+        $country = $this->getCountryCodeCached($ip);
+
+        // ✅ Si on n'a pas pu déterminer le pays -> fail-open (ne bloque pas)
+        if ($country === null) {
+            return;
+        }
+
+        if ($country !== $this->allowedCountry) {
+            throw new AccessDeniedHttpException('Accès restreint.');
+        }
+    }
+
+    private function getCountryCodeCached(string $ip): ?string
+    {
+        return $this->cache->get('geoip_' . md5($ip), function (ItemInterface $item) use ($ip) {
+            $item->expiresAfter(86400); // 24h
+
             try {
-                $user = $this->security->getUser();
-                if ($user && in_array($user->getUserIdentifier(), [
-                    'enzodheilly134@gmail.com',
-                    'enzo.dheilly78@gmail.com'
-                ])) {
-                    return;
+                // ✅ Provider HTTPS (exemple). Choisis un provider fiable.
+                $response = $this->httpClient->request('GET', 'https://ipapi.co/' . urlencode($ip) . '/country/', [
+                    'timeout' => 1.5,
+                    'headers' => ['Accept' => 'text/plain'],
+                ]);
+
+                if (200 !== $response->getStatusCode()) {
+                    return null;
                 }
-            } catch (\Exception $e) {
-                // Si la 2FA bloque toujours l'accès à l'user, on continue simplement
-            }
-        }
 
-        // 3. 🌍 VERIFICATION GEOGRAPHIQUE
-        try {
-            // On laisse toujours l'accès libre aux routes de connexion 
-            // pour permettre aux admins de se connecter depuis l'étranger
-            if (in_array($route, ['app_login', '2fa_login', '2fa_login_check'])) {
-                return;
+                $country = trim($response->getContent(false));
+                return $country !== '' ? $country : null;
+            } catch (\Throwable) {
+                return null;
             }
-
-            $context = stream_context_create(['http' => ['timeout' => 2]]);
-            $response = @file_get_contents("http://ip-api.com/json/{$ip}?fields=countryCode", false, $context);
-            $data = json_decode($response, true);
-
-            if ($data && isset($data['countryCode']) && $data['countryCode'] !== 'FR') {
-                throw new AccessDeniedHttpException("Accès réservé à la France.");
-            }
-        } catch (\Exception $e) {
-            return; // En cas d'erreur API, on laisse passer pour éviter de bloquer tout le monde
-        }
+        });
     }
 }

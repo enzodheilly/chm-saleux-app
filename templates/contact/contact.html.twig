@@ -9,64 +9,70 @@
 
 {% block body %}
 
-    {# --- HEADER ELITE --- #}
+    {# --- HEADER GLOBAL UNIFORMISÉ --- #}
     <header class="page-header-sport" style="--bg-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/horaires/1.jpg') }}');">
         <div class="header-overlay-gradient"></div>
-        <div class="container header-content">
-            <nav class="breadcrumb-nav">
-                <a href="{{ path('home') }}" class="back-link-minimal">
-                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                </a>
-            </nav>
 
-            <div class="header-main-box">
-                <div class="badge-accent">À votre écoute</div>
-                <h1>Contactez<span class="text-outline">-nous</span></h1>
-                <p class="lead">Une question sur les tarifs ou envie d'une séance d'essai ? Notre équipe vous répond sous 48h.</p>
+        <div class="header-content">
+            <div class="page-container">
+                <nav class="breadcrumb-nav">
+                    <a href="{{ path('home') }}" class="back-link-minimal">
+                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                    </a>
+                </nav>
+
+                <div class="header-main-box">
+                    <div class="badge-accent">À votre écoute</div>
+                    <h1>Contactez <span class="text-outline">nous</span></h1>
+                    <p class="lead">
+                        Une question sur les tarifs ou envie d'une séance d'essai ?
+                        Notre équipe vous répond sous 48h.
+                    </p>
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="contact-root">
+    <main class="contact-root page-shell">
 
-        {# --- QUICK INFO --- #}
-<section class="container clinic-contact-section">
-  <div class="clinic-contact-bar">
-    <div class="clinic-contact-item">
-      <i class="clinic-contact-icon fa-solid fa-location-dot"></i>
-      <div class="clinic-contact-text">
-        <strong class="clinic-contact-label">Adresse</strong>
-        <span class="clinic-contact-value">CHM Saleux — 8 rue Marx Dormoy, 80480 Saleux</span>
-      </div>
-    </div>
+        {# --- QUICK INFO BAR --- #}
+        <section class="page-container clinic-contact-section">
+            <div class="clinic-contact-bar">
+                <div class="clinic-contact-item">
+                    <i class="clinic-contact-icon fa-solid fa-location-dot"></i>
+                    <div class="clinic-contact-text">
+                        <strong class="clinic-contact-label">Adresse</strong>
+                        <span class="clinic-contact-value">CHM Saleux — 8 rue Marx Dormoy, 80480 Saleux</span>
+                    </div>
+                </div>
 
-    <div class="clinic-contact-item">
-      <i class="clinic-contact-icon fa-solid fa-phone"></i>
-      <div class="clinic-contact-text">
-        <strong class="clinic-contact-label">Téléphone</strong>
-        <span class="clinic-contact-value">03.22.89.72.57</span>
-      </div>
-    </div>
+                <div class="clinic-contact-item">
+                    <i class="clinic-contact-icon fa-solid fa-phone"></i>
+                    <div class="clinic-contact-text">
+                        <strong class="clinic-contact-label">Téléphone</strong>
+                        <span class="clinic-contact-value">03.22.89.72.57</span>
+                    </div>
+                </div>
 
-    <div class="clinic-contact-item">
-      <i class="clinic-contact-icon fa-solid fa-envelope"></i>
-      <div class="clinic-contact-text">
-        <strong class="clinic-contact-label">Email</strong>
-        <span class="clinic-contact-value">contact@chmsaleux.fr</span>
-      </div>
-    </div>
-  </div>
-</section>
+                <div class="clinic-contact-item">
+                    <i class="clinic-contact-icon fa-solid fa-envelope"></i>
+                    <div class="clinic-contact-text">
+                        <strong class="clinic-contact-label">Email</strong>
+                        <span class="clinic-contact-value">contact@chmsaleux.fr</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        {# --- FORM + SIDEBAR + MAP (même container) --- #}
-        <section class="container section-spacer">
+        {# --- FORM + SIDEBAR --- #}
+        <section class="page-container section-spacer">
             <div class="contact-grid">
 
                 {# FORMULAIRE #}
                 <div class="contact-form-container">
                     <div class="form-header">
-                        <h2>Envoyez un <span>Message</span></h2>
-                        <p>Pour une réponse rapide, merci de remplir tous les champs.</p>
+                        <h2 class="section-heading">Envoyez un <span>message</span></h2>
+                        <p class="desc-text-large">Pour une réponse rapide, merci de remplir tous les champs.</p>
                     </div>
 
                     <form action="{{ path('contact_submit') }}" method="POST" class="elite-form">
@@ -106,45 +112,47 @@
                     </form>
                 </div>
 
-                {# SIDEBAR INFO #}
-           <aside class="contact-sidebar">
-    <div class="sidebar-box">
-        <h3><i class="fa-solid fa-circle-question"></i> FAQ Rapide</h3>
-        <details class="faq-mini">
-            <summary>Séance d'essai ?</summary>
-            <p>Oui ! Précisez vos disponibilités dans le message, nous vous proposerons un créneau.</p>
-        </details>
-        <details class="faq-mini">
-            <summary>Parking ?</summary>
-            <p>Parking gratuit disponible juste en face du complexe sportif.</p>
-        </details>
-    </div>
+                {# SIDEBAR #}
+                <aside class="contact-sidebar">
+                    <div class="sidebar-box">
+                        <h3><i class="fa-solid fa-circle-question"></i> FAQ Rapide</h3>
 
-    {# ✅ MAP DANS LA SIDEBAR (donc plus tout en bas) #}
-    <div class="map-card map-card--sidebar">
-        <div class="map-head">
-            <div class="map-title">
-                <h3>CHM Saleux</h3>
-                <p>8 rue Marx Dormoy, 80480 Saleux</p>
-            </div>
+                        <details class="faq-mini">
+                            <summary>Séance d'essai ?</summary>
+                            <p>Oui ! Précisez vos disponibilités dans le message, nous vous proposerons un créneau.</p>
+                        </details>
 
-            <a class="map-cta" target="_blank" rel="noopener"
-               href="https://www.google.com/maps/search/?api=1&query=CHM%20Saleux%2C%208%20rue%20Marx%20Dormoy%2C%2080480%20Saleux">
-                Itinéraire <i class="fa-solid fa-arrow-up-right-from-square"></i>
-            </a>
-        </div>
+                        <details class="faq-mini">
+                            <summary>Parking ?</summary>
+                            <p>Parking gratuit disponible juste en face du complexe sportif.</p>
+                        </details>
+                    </div>
 
-        <div class="map-frame">
-            <iframe
-                src="https://www.google.com/maps?q=CHM%20Saleux%2C%208%20rue%20Marx%20Dormoy%2C%2080480%20Saleux&output=embed"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                allowfullscreen>
-            </iframe>
-            <div class="map-overlay"></div>
-        </div>
-    </div>
-</aside>
+                    <div class="map-card map-card--sidebar">
+                        <div class="map-head">
+                            <div class="map-title">
+                                <h3>CHM Saleux</h3>
+                                <p>8 rue Marx Dormoy, 80480 Saleux</p>
+                            </div>
+
+                            <a class="map-cta" target="_blank" rel="noopener"
+                               href="https://www.google.com/maps/search/?api=1&query=CHM%20Saleux%2C%208%20rue%20Marx%20Dormoy%2C%2080480%20Saleux">
+                                Itinéraire <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+
+                        <div class="map-frame">
+                            <iframe
+                                src="https://www.google.com/maps?q=CHM%20Saleux%2C%208%20rue%20Marx%20Dormoy%2C%2080480%20Saleux&output=embed"
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                allowfullscreen>
+                            </iframe>
+                            <div class="map-overlay"></div>
+                        </div>
+                    </div>
+                </aside>
+
             </div>
         </section>
 

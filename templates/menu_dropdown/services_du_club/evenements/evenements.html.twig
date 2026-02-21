@@ -5,50 +5,62 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/menu_dropdown/services_du_club/evenements/evenements.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {# inutile si déjà chargé globalement #}
+    {# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> #}
 {% endblock %}
 
 {% block body %}
 
-    {# --- HEADER SPORTIF --- #}
-        <header class="page-header-sport" style="--bg-image: url('{{ asset('images/menu_dropdown/services_du_club/evenements/1.jpg') }}');">
-  <div class="header-overlay-gradient"></div>
+    <header class="page-header-sport" style="--bg-image: url('{{ asset('images/menu_dropdown/services_du_club/evenements/1.jpg') }}');">
+        <div class="header-overlay-gradient"></div>
 
-  <div class="container header-content">
-    <nav class="breadcrumb-nav">
-      <a href="{{ path('home') }}" class="back-link-minimal">
-        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-      </a>
-    </nav>
+        <div class="header-content">
+            <div class="page-container">
+                <nav class="breadcrumb-nav">
+                    <a href="{{ path('home') }}" class="back-link-minimal">
+                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                    </a>
+                </nav>
 
-    <div class="header-main-box">
-      <div class="badge-accent">Convivialité & Partage</div>
-      <h1>La Vie <span class="text-outline">du Club</span></h1>
-                <p class="lead">Parce qu'un club de sport, c'est aussi une famille. Découvrez les moments festifs qui nous rassemblent hors des plateaux.</p>
-    </div>
-  </div>
-</header>
+                <div class="header-main-box">
+                    <div class="badge-accent">Convivialité & Partage</div>
+                    <h1>La Vie <span class="text-outline">du Club</span></h1>
+                    <p class="lead">
+                        Parce qu'un club de sport, c'est aussi une famille. Découvrez les moments festifs
+                        qui nous rassemblent hors des plateaux.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <main class="events-root">
+    <main class="page-shell events-root">
 
         {# --- SECTION 1 : INTRO --- #}
-        <section class="container section-spacer">
-            <div class="intro-centered-box">
-                <div class="badge-outline">Esprit d'équipe</div>
-                <h2 class="title-with-bar center-bar">Plus qu'une salle, <span>une famille.</span></h2>
-                <p class="desc-text-large">
-                    La performance c'est bien, mais les souvenirs c'est mieux. 
-                    Au CHM Saleux, nous croyons que la cohésion se forge autant autour d'un bon repas que sous une barre chargée.
-                </p>
+        <section class="section-spacer">
+            <div class="page-container">
+                <div class="intro-centered-box">
+                    <div class="badge-outline">Esprit d'équipe</div>
+
+                    {# ✅ connecté à la typo globale #}
+                    <h2 class="section-heading centered">
+                        Plus qu'une salle, <span>une famille.</span>
+                    </h2>
+
+                    <p class="desc-text-large">
+                        La performance c'est bien, mais les souvenirs c'est mieux.
+                        Au CHM Saleux, nous croyons que la cohésion se forge autant
+                        autour d'un bon repas que sous une barre chargée.
+                    </p>
+                </div>
             </div>
         </section>
 
         {# --- SECTION 2 : CALENDRIER FESTIF --- #}
         <section class="bg-dark-alternate section-spacer">
-            <div class="container">
+            <div class="page-container">
                 <div class="events-grid">
-                    
-                    {# JANVIER #}
+
                     <article class="event-card border-gold">
                         <div class="event-glow"></div>
                         <div class="event-content">
@@ -59,7 +71,6 @@
                         </div>
                     </article>
 
-                    {# AVRIL #}
                     <article class="event-card border-blue">
                         <div class="event-glow"></div>
                         <div class="event-content">
@@ -70,7 +81,6 @@
                         </div>
                     </article>
 
-                    {# DÉCEMBRE #}
                     <article class="event-card border-red">
                         <div class="event-glow"></div>
                         <div class="event-content">
@@ -81,7 +91,6 @@
                         </div>
                     </article>
 
-                    {# TOUTE L'ANNÉE #}
                     <article class="event-card border-green">
                         <div class="event-glow"></div>
                         <div class="event-content">
@@ -97,18 +106,24 @@
         </section>
 
         {# --- SECTION 3 : WHATSAPP CONNECT --- #}
-        <section class="container section-spacer">
-            <div class="whatsapp-connect-card">
-                <div class="wa-info">
-                    <h2>Ne ratez aucune info !</h2>
-                    <p>L'organisation des événements et les sondages circulent sur notre groupe privé réservé aux membres.</p>
-                    <a href="https://chat.whatsapp.com/TON-LIEN" target="_blank" class="btn-wa">
-                        <i class="fa-brands fa-whatsapp"></i> Rejoindre le groupe Membres
-                    </a>
-                </div>
-                <div class="wa-visual">
-                    <div class="wa-bubble">Prochain BBQ Samedi ! 🍖</div>
-                    <div class="wa-bubble alt">Qui vient pour Noël ? 🎄</div>
+        <section class="section-spacer">
+            <div class="page-container">
+                <div class="whatsapp-connect-card">
+                    <div class="wa-info">
+                        {# ✅ connecté au style global section title #}
+                        <h2 class="section-heading">
+                            Ne ratez <span>aucune info</span> !
+                        </h2>
+                        <p>L'organisation des événements et les sondages circulent sur notre groupe privé réservé aux membres.</p>
+                        <a href="https://chat.whatsapp.com/TON-LIEN" target="_blank" class="btn-wa">
+                            <i class="fa-brands fa-whatsapp"></i> Rejoindre le groupe Membres
+                        </a>
+                    </div>
+
+                    <div class="wa-visual">
+                        <div class="wa-bubble">Prochain BBQ Samedi ! 🍖</div>
+                        <div class="wa-bubble alt">Qui vient pour Noël ? 🎄</div>
+                    </div>
                 </div>
             </div>
         </section>

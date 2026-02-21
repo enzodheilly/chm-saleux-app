@@ -9,29 +9,32 @@
 
 {% block body %}
 
-    {# --- HEADER ELITE --- #}
+    {# --- HEADER ELITE (GLOBAL) --- #}
     <header class="page-header-sport" style="--bg-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/labels/1.jpg') }}');">
         <div class="header-overlay-gradient"></div>
-        <div class="container header-content">
-            <nav class="breadcrumb-nav">
-                <a href="{{ path('home') }}" class="back-link-minimal">
-                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                </a>
-            </nav>
 
-            <div class="header-main-box">
-                <div class="badge-accent">Reconnaissance Fédérale</div>
-                <h1>Labels <span class="text-outline">Qualité</span></h1>
-                <p class="lead">Performance, Pédagogie et Santé. Découvrez les certifications officielles qui valident notre expertise.</p>
+        <div class="header-content">
+            <div class="page-container">
+                <nav class="breadcrumb-nav">
+                    <a href="{{ path('home') }}" class="back-link-minimal">
+                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                    </a>
+                </nav>
+
+                <div class="header-main-box">
+                    <div class="badge-accent">Reconnaissance Fédérale</div>
+                    <h1>Labels <span class="text-outline">Qualité</span></h1>
+                    <p class="lead">Performance, Pédagogie et Santé. Découvrez les certifications officielles qui valident notre expertise.</p>
+                </div>
             </div>
         </div>
     </header>
     
 
-    <main class="labels-root">
+    <main class="labels-root page-shell">
 
         {# --- SECTION INTRO --- #}
-        <section class="container section-spacer">
+        <section class="page-container section-spacer">
             <div class="intro-centered-box">
                 <h2 class="section-heading centered">L'excellence <span>certifiée</span></h2>
                 <p class="desc-text-large">
@@ -48,7 +51,7 @@
 
         {# --- SECTION LABELS --- #}
         <section class="bg-dark-alternate section-spacer">
-            <div class="container">
+            <div class="page-container">
                 
                 {# Label Principal : École #}
                 <article class="label-main-card">
@@ -88,7 +91,7 @@
         </section>
 
         {# --- TRUST BOX --- #}
-        <section class="container section-spacer">
+        <section class="page-container section-spacer">
             <div class="ffhm-trust-box">
                 <div class="trust-flex">
                     <img src="{{ asset('images/ffhm.png') }}" alt="FFHM" class="ffhm-logo">

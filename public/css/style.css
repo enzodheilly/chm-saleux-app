@@ -1,37 +1,389 @@
-:root{
-  --brand-blue:#005b94;
-  --brand-orange:#F57706;
-  --brand-navy:#002952;
-  --bg-light-1:#ffffff;
-  --bg-light-2:#f4f6f8;
+/* =========================================================
+   ROOT — DESIGN TOKENS (GLOBAL)
+   ========================================================= */
+:root {
+  /* =========================
+     BRAND / COLORS
+     ========================= */
+  --brand-blue: #005b94;
+  --brand-orange: #F57706;
+  --brand-navy: #002952;
+
+  /* Backgrounds */
   --dark-bg: #080808;
+  --bg-dark: #0f0f11;
+  --bg-section: #111111;
   --bg-card: #121212;
-    --bg-dark:#0f0f11;
+  --bg-card-hover: #171717;
+  --bg-light-1: #ffffff;
+  --bg-light-2: #f4f6f8;
+  --bg-overlay-strong: rgba(5, 5, 5, .85);
+  --bg-overlay-soft: rgba(5, 5, 5, .65);
 
-  --text-dark:#111;
-  --text-body:#1f2937;
-  --text-muted:#6b7280;
-    --text-gray:#666;
-  --text-dark-2:#333;
-   --text-muted-2:#a1a1aa;
-   --text-muted: #a0a0a0;
+  /* Surfaces */
+  --surface: #ffffff;
+  --surface-soft: #f9fafb;
+  --surface-muted: #f3f4f6;
+  --surface-dark: #18181b;
 
-  --border:#e5e7eb;
-   --border-soft: rgba(255, 255, 255, 0.08);
-    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Texts */
+  --text-white: #ffffff;
+  --text-body: #e5e7eb;
+  --text-muted: #a0a0a0;
+  --text-muted-2: #cfcfcf;
+  --text-dark: #111;
+  --text-dark-2: #333;
+  --text-gray: #666;
 
-  --surface:#ffffff;
-  --surface-soft:#f9fafb;
-  --surface-muted:#f3f4f6;
-  --surface-dark:#18181b;
+  /* Borders */
+  --border: #e5e7eb;
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --border-soft-2: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.24);
+  --border-accent: rgba(245, 119, 6, 0.55);
 
+  /* Accent / semantic */
+  --primary-color: var(--brand-orange);
+  --accent-color: var(--brand-orange);
+  --accent-contrast: #ffffff;
+  --success-color: #2ed573;
+  --danger-color: #ff4757;
+  --warning-color: #f1c40f;
 
+  /* =========================
+     TYPOGRAPHY
+     ========================= */
+  --font-family-base: 'Inter', sans-serif;
+  --font-family-heading: 'Inter', sans-serif;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+  --fw-black: 900;
+
+  /* Tailles */
+  --fs-hero-title: clamp(2.2rem, 4vw, 4rem);
+  --fs-section-title-xl: clamp(2rem, 4vw, 3.5rem);
+  --fs-section-title: clamp(1.8rem, 3vw, 3rem);
+  --fs-card-title: 1.2rem;
+  --fs-subtitle: 1.05rem;
+  --fs-body: 1rem;
+  --fs-body-sm: 0.92rem;
+  --fs-caption: 0.8rem;
+  --fs-overline: 0.75rem;
+
+  /* Line heights */
+  --lh-tight: 1.05;
+  --lh-heading: 1.1;
+  --lh-body: 1.6;
+  --lh-relaxed: 1.75;
+
+  /* Letter spacing */
+  --ls-tight: 0.02em;
+  --ls-wide: 0.06em;
+  --ls-xwide: 0.12em;
+
+  /* =========================
+     SPACING
+     ========================= */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+  --space-10: 60px;
+  --space-11: 80px;
+  --space-12: 100px;
+  --space-13: 120px;
+
+  /* Section paddings */
+  --section-padding-y: 100px;
+  --section-padding-y-tablet: 80px;
+  --section-padding-y-mobile: 70px;
+
+  /* Containers */
+  --container-max: 1200px;
+  --container-wide: 1400px;
+  --container-ultra: 1600px;
+  --container-padding-x: 20px;
+  --container-padding-x-mobile: 18px;
+
+  /* =========================
+     RADIUS
+     ========================= */
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-pill: 999px;
+
+  /* =========================
+     SHADOWS
+     ========================= */
+  --shadow-sm: 0 8px 20px rgba(0,0,0,0.20);
+  --shadow-md: 0 12px 30px rgba(0,0,0,0.30);
+  --shadow-lg: 0 20px 40px rgba(0,0,0,0.40);
+  --shadow-accent: 0 12px 22px rgba(245,119,6,0.22);
+  --shadow-accent-lg: 0 18px 40px rgba(245,119,6,0.10);
+
+  /* =========================
+     TRANSITIONS / MOTION
+     ========================= */
+  --transition-fast: 0.25s ease;
+  --transition-base: 0.35s cubic-bezier(.23,1,.32,1);
+  --transition-slow: 0.5s ease;
+  --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* =========================
+     COMPONENT TOKENS
+     ========================= */
+  --btn-height: 48px;
+  --btn-padding-x: 24px;
+  --btn-font-size: 0.9rem;
+  --btn-radius: 10px;
+
+  --card-padding: 22px;
+  --card-border: 1px solid var(--border-soft);
+
+  --title-color: var(--text-white);
+  --subtitle-color: var(--text-muted);
+  --link-accent: var(--brand-orange);
+
+  /* Hero */
+  --hero-min-height: 650px;
+  --hero-overlay-desktop: linear-gradient(
+    to right,
+    rgba(5,5,5,0.90) 20%,
+    rgba(5,5,5,0.70) 45%,
+    rgba(5,5,5,0.20) 100%
+  );
+  --hero-overlay-mobile: rgba(5,5,5,0.75);
+
+  /* Composants CC */
   --cc-shadow: 0 10px 30px -5px rgba(0,0,0,0.08);
   --cc-radius: 16px;
   --cc-dark: #0f172a;
   --cc-light: #f8fafc;
   --cc-white: #ffffff;
-  
+}
+
+/* =========================================================
+   PAGES INTERNES — BASE GLOBALE
+   ========================================================= */
+
+/* Wrapper générique de page interne */
+.page-shell {
+  background: var(--bg-section);
+  color: var(--text-white);
+  font-family: var(--font-family-base);
+  overflow-x: hidden;
+  padding: 4rem 0 5rem;
+}
+
+/* Container global interne (évite .container Bootstrap si conflit) */
+.page-container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding-x);
+}
+
+/* Responsive page shell */
+@media (max-width: 992px) {
+  .page-shell {
+    padding: 3.2rem 0 4rem;
+  }
+
+  .page-container {
+    padding: 0 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-shell {
+    padding: 2.6rem 0 3.4rem;
+  }
+
+  .page-container {
+    padding: 0 14px;
+  }
+}
+
+/* =========================================================
+   HEADER GLOBAL — PAGES INTERNES
+   ========================================================= */
+
+.page-header-sport {
+  position: relative;
+  padding-top: var(--nav-height, 60px);
+  height: 60vh;
+  min-height: 450px;
+  display: flex;
+  align-items: center;
+  background-color: var(--dark-bg);
+  margin-bottom: 0;
+  overflow: hidden;
+}
+
+.page-header-sport::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center 35%;
+  z-index: 1;
+  filter: grayscale(30%) brightness(0.6);
+  transform: scale(1.02);
+}
+
+.header-overlay-gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(to right, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.6) 100%);
+}
+
+.header-content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  top: 25px;
+}
+
+.badge-accent {
+  background: var(--primary-color);
+  color: var(--text-white);
+  padding: 6px 14px;
+  font-weight: var(--fw-extrabold);
+  font-size: var(--fs-overline);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  margin-bottom: 1.5rem;
+  display: inline-block;
+  border-radius: var(--radius-pill);
+}
+
+.back-link-minimal {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 3rem;
+  transition: var(--transition-base);
+}
+.back-link-minimal:hover { color: var(--text-white); }
+
+.header-main-box h1 {
+  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  font-weight: var(--fw-black);
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0 0 1.5rem 0;
+  color: var(--title-color);
+}
+
+.text-outline {
+  -webkit-text-stroke: 1px var(--text-white);
+  color: transparent;
+}
+
+.header-main-box .lead {
+  font-size: 1.1rem;
+  color: var(--subtitle-color);
+  max-width: 650px;
+  line-height: var(--lh-body);
+}
+
+/* Responsive header global */
+@media (max-width: 992px) {
+  .page-header-sport {
+    height: auto !important;
+    min-height: 400px !important;
+  }
+
+  .header-content { top: 0 !important; }
+
+  .page-header-sport .page-container {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  .header-main-box h1 {
+    font-size: 2.7rem !important;
+    line-height: 1.1;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-main-box .lead {
+    font-size: 1rem;
+  }
+}
+
+/* =========================================================
+   TYPO GLOBALE — PAGES INTERNES
+   ========================================================= */
+
+.section-heading {
+  font-size: var(--fs-section-title);
+  font-weight: var(--fw-black);
+  text-transform: uppercase;
+  line-height: var(--lh-heading);
+  margin-bottom: 1.2rem;
+  color: var(--title-color);
+  letter-spacing: var(--ls-tight);
+}
+
+.section-heading span {
+  color: var(--primary-color);
+}
+
+.section-subtitle,
+.desc-text-large {
+  color: var(--subtitle-color);
+  font-size: 1.05rem;
+  line-height: var(--lh-body);
+}
+
+.centered {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.centered::after {
+  content: "";
+  width: 56px;
+  height: 4px;
+  background: var(--primary-color);
+  margin-top: 14px;
+  border-radius: var(--radius-pill);
+}
+
+/* Responsive titres globaux */
+@media (max-width: 992px) {
+  .section-heading {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-heading {
+    font-size: 1.7rem;
+  }
 }
 
 html, body {

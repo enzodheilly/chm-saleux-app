@@ -1,186 +1,57 @@
-/* --- VARIABLES ELITE --- */
-:root {
-  --primary-color: #F57706;
-  --dark-bg: #111;
-  --bg-card: #121212;
-  --text-main: #ffffff;
-  --text-muted: #a0a0a0;
-  --border-soft: rgba(255, 255, 255, 0.08);
-
-  --nav-height: 60px; /* ajouté */
-  --transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1); /* ajouté */
-}
-
-.sauna-root {
-  background: var(--dark-bg);
-  color: white;
-
-  /* meilleur placement global */
-  padding: 4rem 0; /* au lieu de 50px partout */
-  font-family: 'Inter', sans-serif;
-}
-
-.container {
-  max-width: 1200px;
+/* =========================================================
+   SAUNA — PAGE SPECIFIQUE
+   (root + header + container + titres gérés globalement)
+   ========================================================= *
+   
+/* Intro */
+.intro-centered-box{
+  max-width: 900px;
   margin: 0 auto;
-  padding: 0 18px;
+  text-align: center;
 }
 
-/* =========================================
-   HEADER SPORTIF (inchangé visuellement)
-   ========================================= */
-.page-header-sport {
-  position: relative;
-  padding-top: var(--nav-height);
-  height: 60vh;
-  min-height: 450px;
-  display: flex;
-  align-items: center;
-
-  background-color: var(--dark-bg); /* correction */
-  margin-bottom: 0;
-}
-
-.page-header-sport::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: var(--bg-image);
-  background-size: cover;
-  background-position: center 5%;
-  z-index: 1;
-  filter: grayscale(30%) brightness(0.6);
-}
-
-.header-overlay-gradient {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: linear-gradient(to right, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.6) 100%);
-}
-
-.header-content {
-  position: relative;
-  z-index: 3;
-  width: 100%;
-  top: 27px;
-}
-
-.badge-accent {
-  background: var(--primary-color);
-  color: white;
-  padding: 6px 14px;
-  font-weight: 800;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
-  display: inline-block;
-}
-
-.header-main-box h1 {
-  font-size: clamp(3rem, 5vw, 4.5rem);
-  font-weight: 900;
-  text-transform: uppercase;
-  line-height: 1;
-  margin: 0 0 1.5rem 0;
-  color: #fff;
-}
-
-.text-outline { -webkit-text-stroke: 1px white; color: transparent; }
-
-.header-main-box .lead {
-  font-size: 1.2rem;
-  color: #ccc;
-  max-width: 650px;
-  line-height: 1.6;
-}
-
-.back-link-minimal {
-  color: var(--primary-color);
-  text-decoration: none;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  letter-spacing: 2px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 3rem;
-  transition: var(--transition);
-}
-.back-link-minimal:hover { color: white; }
-
-/* --- TITRES --- */
-.section-heading {
-  font-size: 2.35rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  margin-bottom: 1.2rem;
-  line-height: 1.05;
-}
-.section-heading span { color: var(--primary-color); }
-
-.centered { text-align: center; }
-.centered::after {
-  content: '';
-  display: block;
-  width: 56px;
-  height: 4px;
-  background: var(--primary-color);
-  margin: 14px auto 0;
-}
-
-.desc-text-large {
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  line-height: 1.7;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-/* --- GRID CARDS --- */
-.sauna-grid {
+/* Grid cards */
+.sauna-grid{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.6rem;
-
-  /* respiration */
-  margin-top: 2.5rem;
 }
 
-.sauna-card {
+.sauna-card{
   background: var(--bg-card);
-  padding: 32px;              /* moins “bloc” */
+  padding: 32px;
   border-radius: 14px;
   border: 1px solid var(--border-soft);
-  transition: var(--transition);
+  transition: var(--transition-base, all 0.3s ease);
 }
 
-.sauna-card:hover {
+.sauna-card:hover{
   border-color: rgba(245, 119, 6, 0.45);
   transform: translateY(-6px);
 }
 
-.card-icon {
+.card-icon{
   font-size: 2.3rem;
   color: var(--primary-color);
   margin-bottom: 1.2rem;
 }
 
-.sauna-card h3 {
+.sauna-card h3{
   font-size: 1.25rem;
   font-weight: 800;
   text-transform: uppercase;
-  margin-bottom: 0.85rem;
+  margin: 0 0 0.85rem;
+  color: var(--title-color, #fff);
+  line-height: 1.2;
 }
 
-.sauna-card p {
+.sauna-card p{
   color: var(--text-muted);
   line-height: 1.6;
   margin: 0;
 }
 
-.elite-badge {
+.elite-badge{
   display: inline-block;
   margin-top: 1.25rem;
   padding: 6px 12px;
@@ -192,17 +63,15 @@
   border-radius: 6px;
 }
 
-/* --- INFO BOX --- */
-.info-box-elite {
+/* Info box */
+.info-box-elite{
   background: rgba(255, 255, 255, 0.02);
   border-left: 4px solid var(--primary-color);
   padding: 26px;
   border-radius: 0 12px 12px 0;
-
-  margin-top: 2.5rem;
 }
 
-.info-header {
+.info-header{
   display: flex;
   align-items: center;
   gap: 12px;
@@ -210,50 +79,39 @@
   color: var(--primary-color);
 }
 
-.info-header h3 {
+.info-header h3{
   text-transform: uppercase;
   font-weight: 900;
   margin: 0;
   font-size: 1.05rem;
+  color: var(--title-color, #fff);
 }
 
-.info-box-elite p {
+.info-box-elite p{
   color: var(--text-muted);
   margin: 0;
   line-height: 1.6;
 }
 
-/* =========================================
-   RESPONSIVE (BODY + micro-ajustements)
-   ========================================= */
-@media (max-width: 992px) {
-  .sauna-root { padding: 3.2rem 0; }
-
-  .section-heading { font-size: 2rem; }
-
-  .sauna-card { padding: 26px; }
-  .card-icon { font-size: 2.15rem; }
+/* Responsive page only */
+@media (max-width: 992px){
+  .sauna-card{ padding: 26px; }
+  .card-icon{ font-size: 2.15rem; }
 }
 
-@media (max-width: 768px) {
-  .container { padding: 0 14px; }
-  .sauna-root { padding: 2.6rem 0; }
+@media (max-width: 768px){
+  .sauna-grid{
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
 
-  .section-heading { font-size: 1.7rem; }
-  .desc-text-large { font-size: 1rem; }
+  .sauna-card{
+    padding: 22px;
+    border-radius: 12px;
+  }
 
-  .sauna-grid { grid-template-columns: 1fr; gap: 1.2rem; }
-  .sauna-card { padding: 22px; border-radius: 12px; }
-
-  .info-box-elite { padding: 20px; border-radius: 12px; }
+  .info-box-elite{
+    padding: 20px;
+    border-radius: 12px;
+  }
 }
-
-/* ⚠️ Ton header responsive existant : je le laisse, mais garde-le à la fin si tu veux qu’il override */
-@media (max-width: 768px) {
-      .page-header-sport {
-        height: auto !important;
-        min-height: 400px !important;
-    }
-    .header-content { top: 0 !important; }
-    .page-header-sport .container { padding-left: 18px !important; padding-right: 18px !important; }
-    .header-main-box h1 { font-size: 2.48rem !important; line-height: 1.1; }}

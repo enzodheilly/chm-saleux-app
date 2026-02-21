@@ -1,187 +1,187 @@
+/* =========================================================
+   HORAIRES — PAGE SPECIFIQUE
+   (s'appuie sur la base globale : page-shell / page-container / header / typo)
+   ========================================================= */
+
+/* Petit alias local si besoin de cohérence visuelle */
 :root {
-  --primary-color: #F57706;
-  --dark-bg: #111;
-  --bg-card: #121212;
-  --text-muted: #a0a0a0;
-  --border-soft: rgba(255, 255, 255, 0.08);
-
-  /* manquants */
-  --nav-height: 60px;
-  --transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.horaires-root {
-  background: var(--dark-bg);
-  color: white;
-  font-family: "Inter", sans-serif;
-
-  /* placement global propre */
-  padding: 4rem 0 5rem;
-  overflow-x: hidden;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 4px; /* au lieu de 4px */
+  --card-radius-lg: 22px;
+  --card-radius-md: 16px;
+  --shadow-elevated: 0 16px 34px rgba(0,0,0,0.35);
+  --accent-border-soft: rgba(245, 119, 6, 0.35);
 }
 
 /* =========================================
-   HEADER SPORTIF (inchangé visuellement)
-   ========================================= */
-.page-header-sport {
-  position: relative;
-  padding-top: var(--nav-height);
-  height: 60vh;
-  min-height: 450px;
-  display: flex;
-  align-items: center;
-  background-color: var(--dark-bg);
-  margin-bottom: 0;
-  overflow: hidden;
-}
-
-.page-header-sport::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: var(--bg-image);
-  background-size: cover;
-  background-position: center 35%;
-  z-index: 1;
-  filter: grayscale(30%) brightness(0.6);
-  transform: scale(1.02);
-}
-
-.header-overlay-gradient {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: linear-gradient(to right, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.6) 100%);
-}
-
-.header-content { position: relative; z-index: 3; width: 100%; top: 25px; }
-
-.badge-accent {
-  background: var(--primary-color);
-  color: white;
-  padding: 6px 14px;
-  font-weight: 800;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
-  display: inline-block;
-}
-
-.header-main-box h1 {
-  font-size: clamp(3rem, 5vw, 4.5rem);
-  font-weight: 900;
-  text-transform: uppercase;
-  line-height: 1;
-  margin: 0 0 1.5rem 0;
-  color: #fff;
-}
-
-.text-outline { -webkit-text-stroke: 1px white; color: transparent; }
-
-.header-main-box .lead {
-  font-size: 1.2rem;
-  color: #ccc;
-  max-width: 650px;
-  line-height: 1.6;
-}
-
-.back-link-minimal {
-  color: var(--primary-color);
-  text-decoration: none;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  letter-spacing: 2px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 3rem;
-  transition: var(--transition);
-}
-.back-link-minimal:hover { color: white; }
-
-/* =========================================
-   QUICK INFO BAR (mieux placée)
+   QUICK INFO BAR
    ========================================= */
 .quick-info-bar {
   display: flex;
   justify-content: space-around;
   gap: 24px;
-
   background: var(--bg-card);
   padding: 28px;
   border-radius: 20px;
   border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-elevated);
 
-  /* overlap premium avec le header */
+  /* overlap premium avec le header (desktop only) */
   margin-top: -70px;
   position: relative;
   z-index: 10;
-
-  box-shadow: 0 16px 34px rgba(0,0,0,0.35);
 }
 
-.info-item { display: flex; align-items: center; gap: 14px; }
-.info-item i { color: var(--primary-color); font-size: 1.45rem; }
-.info-item strong { display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
-.info-item span { color: var(--text-muted); font-size: 0.92rem; }
-.info-item a { color: inherit; text-decoration: none; }
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.info-item i {
+  color: var(--primary-color);
+  font-size: 1.45rem;
+  flex-shrink: 0;
+}
+
+.info-item strong {
+  display: block;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-white);
+}
+
+.info-item span {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.info-item a {
+  color: inherit;
+  text-decoration: none;
+}
+.info-item a:hover {
+  color: var(--text-white);
+}
 
 /* =========================================
    SCHEDULE CARDS
    ========================================= */
 .schedule-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.4rem;
   margin-top: 2.2rem;
 }
 
 .schedule-card {
   background: var(--bg-card);
-  border-radius: 22px;
+  border-radius: var(--card-radius-lg);
   padding: 34px;
   border: 1px solid var(--border-soft);
   position: relative;
   overflow: hidden;
-  transition: var(--transition);
+  transition: var(--transition-base);
 }
 
 .schedule-card:hover {
   transform: translateY(-6px);
-  border-color: rgba(245, 119, 6, 0.35);
+  border-color: var(--accent-border-soft);
 }
 
-.active-day { border-top: 4px solid var(--primary-color); }
-.closed-day { opacity: 0.75; background: rgba(255, 255, 255, 0.02); }
+.active-day {
+  border-top: 4px solid var(--primary-color);
+}
 
-.card-head h3 { font-size: 1.25rem; font-weight: 900; margin-bottom: 6px; }
-.day-tag { font-size: 0.72rem; text-transform: uppercase; font-weight: 900; letter-spacing: 1px; color: var(--primary-color); }
-.day-tag.closed { color: #ff4444; }
+.closed-day {
+  opacity: 0.78;
+  background: rgba(255, 255, 255, 0.02);
+}
 
-.card-times { margin: 26px 0; }
-.time-slot { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-.slot-label { color: var(--text-muted); font-size: 0.92rem; }
-.slot-hour { font-weight: 800; font-size: 1.05rem; }
-.time-separator { height: 1px; background: var(--border-soft); margin: 14px 0; }
+.card-head h3 {
+  font-size: 1.25rem;
+  font-weight: var(--fw-black);
+  margin: 0 0 6px;
+  color: var(--text-white);
+  text-transform: uppercase;
+  line-height: 1.2;
+}
 
-.closed-content { text-align: center; padding: 34px 0; }
-.closed-content i { font-size: 2.7rem; color: #ff4444; margin-bottom: 12px; display: block; }
+.day-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  font-weight: var(--fw-black);
+  letter-spacing: 1px;
+  color: var(--primary-color);
+}
 
-.card-foot p { font-size: 0.78rem; color: var(--text-muted); font-style: italic; margin-top: 18px; }
+.day-tag.closed {
+  color: #ff4444;
+}
+
+.card-times {
+  margin: 26px 0;
+}
+
+.time-slot {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.slot-label {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.slot-hour {
+  font-weight: var(--fw-extrabold);
+  font-size: 1.05rem;
+  color: var(--text-white);
+  text-align: right;
+}
+
+.time-separator {
+  height: 1px;
+  background: var(--border-soft);
+  margin: 14px 0;
+}
+
+.closed-content {
+  text-align: center;
+  padding: 34px 0;
+}
+
+.closed-content i {
+  font-size: 2.7rem;
+  color: #ff4444;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.closed-content p {
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.card-foot p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 18px 0 0;
+  line-height: 1.5;
+}
 
 /* =========================================
    INFO BLOCKS
    ========================================= */
 .info-blocks-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.2rem;
   margin-top: 2.4rem;
 }
@@ -189,72 +189,119 @@
 .info-mini-card {
   background: rgba(255,255,255,0.03);
   padding: 26px;
-  border-radius: 16px;
+  border-radius: var(--card-radius-md);
   text-align: center;
   border: 1px solid rgba(255,255,255,0.04);
+  transition: var(--transition-base);
 }
 
-.info-mini-card i { color: var(--primary-color); font-size: 1.9rem; margin-bottom: 14px; }
-.info-mini-card h4 { text-transform: uppercase; font-weight: 900; margin-bottom: 10px; letter-spacing: 1px; }
-.info-mini-card p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; margin: 0; }
+.info-mini-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,0.08);
+}
 
-.call-to-action-horaires { text-align: center; margin-top: 44px; }
+.info-mini-card i {
+  color: var(--primary-color);
+  font-size: 1.9rem;
+  margin-bottom: 14px;
+}
+
+.info-mini-card h4 {
+  text-transform: uppercase;
+  font-weight: var(--fw-black);
+  margin: 0 0 10px;
+  letter-spacing: 1px;
+  color: var(--text-white);
+  line-height: 1.2;
+}
+
+.info-mini-card p {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.call-to-action-horaires {
+  text-align: center;
+  margin-top: 44px;
+}
+
+.call-to-action-horaires p {
+  color: var(--text-muted);
+  margin: 0 0 14px;
+}
 
 .btn-phone {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   background: var(--primary-color);
-  color: white;
+  color: var(--text-white);
   padding: 15px 30px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   text-decoration: none;
-  font-weight: 900;
-  transition: var(--transition);
+  font-weight: var(--fw-black);
+  transition: var(--transition-base);
 }
-.btn-phone:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 20px rgba(245, 119, 6, 0.25); }
+
+.btn-phone:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(245, 119, 6, 0.25);
+}
 
 /* =========================================
-   RESPONSIVE
+   RESPONSIVE (spécifique horaires seulement)
    ========================================= */
 @media (max-width: 992px) {
-  .horaires-root { padding: 3.2rem 0 4rem; }
-
-    .page-header-sport{
-    height:auto !important;
-    min-height:400px !important;
-  }
-  .header-content{ top:0 !important; }
-  .page-header-sport .container{
-    padding-left:18px !important;
-    padding-right:18px !important;
-  }
-  .header-main-box h1{
-    font-size:2.7rem !important;
-    line-height:1.1;
-  }
-
   .quick-info-bar {
     flex-direction: column;
+    align-items: flex-start;
     gap: 18px;
-    margin-top: 0;     /* stop overlap en mobile */
+    margin-top: 0; /* stop overlap en mobile */
     padding: 20px;
   }
 
   .schedule-grid,
-  .info-blocks-grid { grid-template-columns: 1fr; }
+  .info-blocks-grid {
+    grid-template-columns: 1fr;
+  }
 
-  .schedule-card { padding: 28px 20px; }
+  .schedule-card {
+    padding: 28px 20px;
+  }
 }
 
 @media (max-width: 768px) {
-  .container { padding: 0 14px; }
-  .horaires-root { padding: 2.6rem 0 3.4rem; }
+  .card-head h3 {
+    font-size: 1.15rem;
+  }
 
-  .card-head h3 { font-size: 1.15rem; }
-  .closed-content { padding: 28px 0; }
+  .closed-content {
+    padding: 28px 0;
+  }
+
+  .time-slot {
+    align-items: flex-start;
+  }
+
+  .slot-hour {
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 480px) {
-  .btn-phone { width: 100%; justify-content: center; }
+  .btn-phone {
+    width: 100%;
+  }
+
+  .time-slot {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .slot-hour {
+    text-align: left;
+  }
 }

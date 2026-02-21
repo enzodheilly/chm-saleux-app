@@ -9,28 +9,31 @@
 
 {% block body %}
 
-    {# --- HEADER ELITE --- #}
+    {# --- HEADER ELITE (GLOBAL) --- #}
     <header class="page-header-sport" style="--bg-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/presentation_club/ddd.jpg') }}');">
         <div class="header-overlay-gradient"></div>
-        <div class="container header-content">
-            <nav class="breadcrumb-nav">
-                <a href="{{ path('home') }}" class="back-link-minimal">
-                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                </a>
-            </nav>
 
-            <div class="header-main-box">
-                <div class="badge-accent">Depuis 1984</div>
-                <h1>L'Esprit <span class="text-outline">CHM Saleux</span></h1>
-                <p class="lead">Bien plus qu'une salle de sport. Une association bâtie sur l'amitié, la performance et le partage depuis 40 ans.</p>
+        <div class="header-content">
+            <div class="page-container">
+                <nav class="breadcrumb-nav">
+                    <a href="{{ path('home') }}" class="back-link-minimal">
+                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
+                    </a>
+                </nav>
+
+                <div class="header-main-box">
+                    <div class="badge-accent">Depuis 1984</div>
+                    <h1>L'Esprit <span class="text-outline">CHM Saleux</span></h1>
+                    <p class="lead">Bien plus qu'une salle de sport. Une association bâtie sur l'amitié, la performance et le partage depuis 40 ans.</p>
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="presentation-root">
+    <main class="presentation-root page-shell">
 
         {# --- SECTION HISTOIRE --- #}
-        <section class="container section-spacer">
+        <section class="page-container section-spacer">
             <div class="split-layout">
                 <div class="split-content">
                     <h2 class="section-heading">Notre <span>Histoire</span></h2>
@@ -41,6 +44,7 @@
                         <p>Grâce à l’engagement de ses fondateurs, le club est devenu un lieu incontournable. Des centaines d’adhérents ont franchi nos portes avec un objectif commun : se dépasser dans une ambiance familiale.</p>
                     </div>
                 </div>
+
                 <div class="split-image">
                     <div class="image-frame">
                         <img src="{{ asset('images/menu_dropdown/a_propos_de_notre_club/presentation_club/2.jpg') }}" alt="Histoire du club">
@@ -55,21 +59,24 @@
 
         {# --- SECTION VALEURS --- #}
         <section class="bg-dark-alternate section-spacer">
-            <div class="container">
+            <div class="page-container">
                 <div class="intro-centered-box mb-5">
                     <h2 class="section-heading centered" style="margin-top: 50px;">Nos <span>Piliers</span></h2>
                 </div>
+
                 <div class="values-grid">
                     <div class="value-card">
                         <div class="value-icon">💪</div>
                         <h3>Dépassement</h3>
                         <p>Nous valorisons l'effort intelligent et la constance dans la progression.</p>
                     </div>
+
                     <div class="value-card">
                         <div class="value-icon">🤝</div>
                         <h3>Convivialité</h3>
                         <p>Ici, on se soutient. Quel que soit ton niveau, tu es chez toi.</p>
                     </div>
+
                     <div class="value-card">
                         <div class="value-icon">🛡️</div>
                         <h3>Sécurité</h3>
@@ -80,8 +87,9 @@
         </section>
 
         {# --- SECTION BUREAU --- #}
-        <section class="container section-spacer">
+        <section class="page-container section-spacer">
             <h2 class="section-heading centered" style="margin-top: 50px;">Le <span>Bureau</span></h2>
+
             <div class="staff-grid mt-5">
                 <div class="staff-card highlight-staff">
                     <img src="{{ asset('images/menu_dropdown/membres_du_bureau/president/president.jpg') }}" alt="Florian">
@@ -90,6 +98,7 @@
                         <span>Président</span>
                     </div>
                 </div>
+
                 <div class="staff-card">
                     <img src="{{ asset('images/menu_dropdown/membres_du_bureau/secretaire/secretaire.png') }}" alt="Ema">
                     <div class="staff-overlay">
@@ -97,6 +106,7 @@
                         <span>Secrétaire</span>
                     </div>
                 </div>
+
                 <div class="staff-card">
                     <img src="{{ asset('images/menu_dropdown/membres_du_bureau/tresorier/tresorier.jpg') }}" alt="Aurore">
                     <div class="staff-overlay">
@@ -104,7 +114,8 @@
                         <span>Trésorière</span>
                     </div>
                 </div>
-                        <div class="staff-card">
+
+                <div class="staff-card">
                     <img src="{{ asset('images/menu_dropdown/membres_du_bureau/membre_bureau/1.png') }}" alt="Marianne BOULANGER-BAILLEUX">
                     <div class="staff-overlay">
                         <h3>Marianne BOULANGER-BAILLEUX</h3>
