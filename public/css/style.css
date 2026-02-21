@@ -321,7 +321,7 @@
   }
 
   .header-main-box h1 {
-    font-size: 2.7rem !important;
+    font-size: 2.41rem !important;
     line-height: 1.1;
   }
 }
@@ -383,6 +383,29 @@
 @media (max-width: 480px) {
   .section-heading {
     font-size: 1.7rem;
+  }
+}
+
+/* =========================================================
+   ESPACEMENT GLOBAL DES SECTIONS INTERNES
+   ========================================================= */
+.section-spacer {
+  padding-top: var(--section-padding-y);
+  padding-bottom: var(--section-padding-y);
+  position: relative;
+}
+
+@media (max-width: 992px) {
+  .section-spacer {
+    padding-top: var(--section-padding-y-tablet);
+    padding-bottom: var(--section-padding-y-tablet);
+  }
+}
+
+@media (max-width: 768px) {
+  .section-spacer {
+    padding-top: var(--section-padding-y-mobile);
+    padding-bottom: var(--section-padding-y-mobile);
   }
 }
 
