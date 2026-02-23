@@ -44,9 +44,9 @@
    1) OVERLAY
    ========================= */
 .modal-overlay{
+  display: none;
   position: fixed;
   inset: 0;
-  display: grid;
   place-items: center;
   padding: clamp(10px, 3vw, 28px);
   background: var(--modal-bg);
@@ -57,6 +57,7 @@
 }
 
 .modal-overlay.is-open{
+  display: grid;
   opacity: 1;
   pointer-events: auto;
   backdrop-filter: blur(4px);
