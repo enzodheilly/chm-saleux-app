@@ -163,4 +163,23 @@ class CompetitionController extends AbstractController
             'athlete' => $athlete,
         ]);
     }
+
+    #[Route('/competition/feminine/archives', name: 'competition_feminine_archives')]
+    public function feminineArchives(EntityManagerInterface $em): Response
+    {
+        $competitions = $em->getRepository(Competition::class)
+            ->findBy(['gender' => 'female'], ['eventDate' => 'DESC']);
+
+        return $this->render('competitions/feminine_archives.html.twig', [
+            'competitions' => $competitions,
+        ]);
+    }
+
+    #[Route('/competition/details/{id}', name: 'competition_show', requirements: ['id' => '\d+'])]
+    public function showCompetition(Competition $competition): Response
+    {
+        return $this->render('competitions/show_competition.html.twig', [
+            'competition' => $competition,
+        ]);
+    }
 }
