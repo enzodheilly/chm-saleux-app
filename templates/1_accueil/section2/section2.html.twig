@@ -2,7 +2,7 @@
 <section class="home-pricing-section">
     <div class="container-narrow">
         
-        <div class="pricing-header-elite">
+        <div class="pricing-header-elite reveal">
             <h2 class="section-title">Choisissez votre <span class="text-outline">Performance</span></h2>
             <p class="section-subtitle">
                 Accès illimité à nos 800m² d'installations : Cardio, Musculation, Haltérophilie et Cours Collectifs.
@@ -10,7 +10,7 @@
         </div>
 
         {# --- SELECTEUR TYPE DE TARIF --- #}
-        <div class="pricing-toggle-container">
+        <div class="pricing-toggle-container reveal-up d-1">
             <div class="toggle-wrapper">
                 <input type="radio" id="type-standard" name="pricing-type" value="standard" checked>
                 <label for="type-standard">Standard</label>
@@ -24,7 +24,7 @@
 
         <div class="pricing-grid">
             {% for plan in plans|default([]) %}
-                <article class="pricing-card-elite {{ plan.isPopular ? 'is-popular' : '' }}">
+                <article class="pricing-card-elite {{ plan.isPopular ? 'is-popular' : '' }} reveal-up d-{{ (loop.index <= 6 ? loop.index : 6) }}">
                     {% if plan.isPopular %}
                         <div class="popular-ribbon">Plus populaire</div>
                     {% endif %}
@@ -61,25 +61,26 @@
             {% endfor %}
         </div>
 
-<div class="pricing-navigation">
-  <button class="slider-arrow" id="prevCard" aria-label="Carte précédente">&#10094;</button>
-  
-  <div class="pricing-indicators">
-    <span class="dot active"></span>
-    <span class="dot"></span>
-    <span class="dot"></span>
-  </div>
-  
-  <button class="slider-arrow" id="nextCard" aria-label="Carte suivante">&#10095;</button>
-</div>
+        <div class="pricing-navigation reveal-up d-2">
+            <button class="slider-arrow" id="prevCard" aria-label="Carte précédente">&#10094;</button>
+            
+            <div class="pricing-indicators">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+            
+            <button class="slider-arrow" id="nextCard" aria-label="Carte suivante">&#10095;</button>
+        </div>
 
-        <div class="pricing-disclaimer">
-  <p>
-    <strong>Important :</strong>
-    Pour valider votre adhésion, merci de remplir le formulaire officiel de licence <strong>FFHM</strong>.
-    Vous pouvez le télécharger <a href="{{ asset('docs/formulaire-licence-ffhm.pdf') }}" target="_blank" rel="noopener">ici</a>.
-    Une fois votre paiement effectué, vous pourrez remettre le formulaire complété au bureau du club.
-  </p>        </div>
+        <div class="pricing-disclaimer reveal-up d-3">
+            <p>
+                <strong>Important :</strong>
+                Pour valider votre adhésion, merci de remplir le formulaire officiel de licence <strong>FFHM</strong>.
+                Vous pouvez le télécharger <a href="{{ asset('docs/formulaire-licence-ffhm.pdf') }}" target="_blank" rel="noopener">ici</a>.
+                Une fois votre paiement effectué, vous pourrez remettre le formulaire complété au bureau du club.
+            </p>
+        </div>
 
     </div>
 </section>

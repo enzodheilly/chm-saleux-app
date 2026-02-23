@@ -4,29 +4,31 @@
         <div class="cc-grid-layout">
 
             {# Contenu Texte #}
-            <div class="cc-info-side">
-                <h2 class="cc-main-title">L’énergie du groupe,<br><span class="text-outline">la progression en plus.</span></h2>
+            <div class="cc-info-side reveal-left">
+                <h2 class="cc-main-title reveal">
+                    L’énergie du groupe,<br><span class="text-outline">la progression en plus.</span>
+                </h2>
                 
-                <p class="cc-description">
+                <p class="cc-description reveal-up d-1">
                     Marre de s'entraîner seul ? Rejoignez nos séances rythmées et encadrées par des coachs diplômés. Du cardio au renforcement, on se dépasse ensemble dans une ambiance survoltée.
                 </p>
 
                 <div class="cc-stats-grid">
-                    <div class="stat-elite-box">
+                    <div class="stat-elite-box reveal-up d-1">
                         <i class="fa-regular fa-clock"></i>
                         <div class="stat-text">
                             <span class="v">45</span>
                             <span class="u">min / séance</span>
                         </div>
                     </div>
-                    <div class="stat-elite-box accent">
+                    <div class="stat-elite-box accent reveal-up d-2">
                         <i class="fa-solid fa-calendar-week"></i>
                         <div class="stat-text">
                             <span class="v">2</span>
                             <span class="u">cours / semaine</span>
                         </div>
                     </div>
-                    <div class="stat-elite-box">
+                    <div class="stat-elite-box reveal-up d-3">
                         <i class="fa-solid fa-layer-group"></i>
                         <div class="stat-text">
                             <span class="v">100%</span>
@@ -35,31 +37,30 @@
                     </div>
                 </div>
 
-          <div class="cc-cta-group">
-    <a href="{{ path('cours_collectifs') }}" class="btn-elite">
-        Découvrir les cours <i class="fa-solid fa-arrow-right"></i>
-    </a>
-</div>
-
+                <div class="cc-cta-group reveal-up d-4">
+                    <a href="{{ path('cours_collectifs') }}" class="btn-elite">
+                        Découvrir les cours <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
 
             {# Visuel avec Floating Cards #}
-            <div class="cc-visual-side">
-                <div class="image-stack">
+            <div class="cc-visual-side reveal-right">
+                <div class="image-stack reveal-zoom d-1">
                     <div class="main-img-frame">
                         <img src="{{ asset('images/menu_dropdown/services_du_club/cours_collectifs/cours-co.jpg') }}" alt="Cours Collectifs CHM">
                     </div>
                     
                     <div class="floating-cards-container">
-                        <div class="mini-card float-1">
+                        <div class="mini-card float-1 reveal-up d-2">
                             <div class="m-icon cardio"><i class="fa-solid fa-heart-pulse"></i></div>
                             <div class="m-txt"><strong>Cardio</strong><span>Intensité</span></div>
                         </div>
-                        <div class="mini-card float-2">
+                        <div class="mini-card float-2 reveal-up d-3">
                             <div class="m-icon renfo"><i class="fa-solid fa-dumbbell"></i></div>
                             <div class="m-txt"><strong>Renfo</strong><span>Tonification</span></div>
                         </div>
-                        <div class="mini-card float-3">
+                        <div class="mini-card float-3 reveal-up d-4">
                             <div class="m-icon zen"><i class="fa-solid fa-leaf"></i></div>
                             <div class="m-txt"><strong>Zen</strong><span>Mobilité</span></div>
                         </div>
@@ -74,14 +75,14 @@
 {# --- SECTION : AVIS CLIENTS --- #}
 <section class="home-reviews-section" id="cc-avis">
     <div class="container">
-        <div class="reviews-top">
+        <div class="reviews-top reveal">
             <h3 class="reviews-title">Ils s'entraînent <span class="text-outline">avec nous</span></h3>
             <div class="reviews-nav">
                 <span class="scroll-hint">Scrollez pour lire <i class="fa-solid fa-arrow-right-long"></i></span>
             </div>
         </div>
 
-        <div class="reviews-slider">
+        <div class="reviews-slider reveal-stagger" style="--stagger-step: 110ms;">
             {% set reviews = [
                 {n: 'Sarah M.', i: 'S', t: 'Super ambiance et coachs au top ! J’ai repris le sport avec plaisir grâce à l\'énergie du groupe.'},
                 {n: 'Julien D.', i: 'J', t: 'Séances dynamiques de 45min, c\'est parfait pour mon emploi du temps. On se sent fier après.'},
