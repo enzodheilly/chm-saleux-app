@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Archives — Équipe Féminine | CHM Saleux{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/competitions/feminine.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/competitions/feminine-archives.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}
+
+{% block body %}
+
+<header class="page-header-sport" style="--bg-image: url('{{ asset('images/competitions/1.jpg') }}');">
+    <div class="header-overlay-gradient"></div>
+
+    <div class="header-content">
+        <div class="page-container">
+            <nav class="breadcrumb-nav archives-breadcrumbs">
+                <a href="{{ path('competitions_feminine') }}" class="back-link-minimal">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Retour page équipe féminine</span>
+                </a>
+
+            </nav>
+
+            <div class="header-main-box">
+                <div class="badge-accent">Historique complet</div>
+                <h1>Archives <span class="text-outline">Féminines</span></h1>
+                <p class="lead">
+                    Retrouvez l’ensemble des plateaux de l’équipe féminine, classés du plus récent au plus ancien.
+                </p>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="page-shell dashboard-root archives-page-root">
+
+    <section class="page-container section-spacer pt-0 section-history-full">
+        <div class="archives-topbar">
+            <div class="section-header-compact">
+                <h2 class="section-heading">Tous les <span>Résultats</span></h2>
+                <p class="archives-subtext">
+                    {{ competitions|length }} compétition{{ competitions|length > 1 ? 's' : '' }} enregistrée{{ competitions|length > 1 ? 's' : '' }}
+                </p>
+            </div>
+
+        </div>
+
+        {% if competitions is not empty %}
+            <div class="history-grid history-grid-archives">
+                {% for comp in competitions %}
+                    <article class="history-card history-card-archives">
+                        <div class="card-thumb">
+                            <img src="{{ comp.image ? asset('uploads/competitions/' ~ comp.image) : asset('images/defaults/competition-placeholder.jpg') }}"
+                                 alt="{{ comp.title }}">
+                            <div class="card-date">{{ comp.eventDate ? comp.eventDate|date('d/m/Y') : '--/--/----' }}</div>
+
+                            {% if comp.teamRanking %}
+                                <div class="card-ranking-badge">
+                                    {{ comp.teamRanking }}<sup>er</sup>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-body">
+                            <h4>{{ comp.title }}</h4>
+
+                            <p class="card-lieu">
+                                <i class="fa-solid fa-location-dot"></i>
+                                {{ comp.location ?: 'Lieu non renseigné' }}
+                            </p>
+
+                            <div class="archive-meta-list">
+                                <div class="archive-meta-item">
+                                    <span class="meta-label">Date</span>
+                                    <span class="meta-value">
+                                        {{ comp.eventDate ? comp.eventDate|date('d F Y') : 'Non renseignée' }}
+                                    </span>
+                                </div>
+
+                                <div class="archive-meta-item">
+                                    <span class="meta-label">Résultats</span>
+                                    <span class="meta-value">
+                                        {{ comp.results|length }} athlète{{ comp.results|length > 1 ? 's' : '' }}
+                                    </span>
+                                </div>
+
+                                {% if comp.teamRanking %}
+                                    <div class="archive-meta-item">
+                                        <span class="meta-label">Classement</span>
+                                        <span class="meta-value meta-rank">
+                                            {{ comp.teamRanking }}<sup>er</sup> équipe
+                                        </span>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            {# Si tu crées plus tard une page détail compétition, remplace le href #}
+                          <a href="{{ path('competition_show', { id: comp.id }) }}" class="card-link">
+    Consulter le plateau <i class="fa-solid fa-arrow-right"></i>
+</a>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-dashboard">
+                <p>Aucune archive disponible pour l’équipe féminine pour le moment.</p>
+            </div>
+        {% endif %}
+    </section>
+
+</main>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
