@@ -281,12 +281,11 @@
     padding: 10px 24px;
     font-weight: 900;
     text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
+    font-size: 0.95rem;
 
     /* ✅ NORMAL (plus de skew) */
     transform: none;
-    border-radius: 10px;              /* optionnel */
+    border-radius:px;              /* optionnel */
     display: inline-flex;             /* mieux pour centrer */
     align-items: center;
     justify-content: center;

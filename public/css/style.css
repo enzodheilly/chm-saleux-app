@@ -64,7 +64,7 @@
   --fw-black: 900;
 
   /* Tailles */
-  --fs-hero-title: clamp(2.2rem, 4vw, 4rem);
+  --fs-hero-title: clamp(2.2rem, 4vw, 3rem);
   --fs-section-title-xl: clamp(2rem, 4vw, 3.5rem);
   --fs-section-title: clamp(1.8rem, 3vw, 3rem);
   --fs-card-title: 1.2rem;
@@ -147,7 +147,7 @@
   --btn-height: 48px;
   --btn-padding-x: 24px;
   --btn-font-size: 0.9rem;
-  --btn-radius: 10px;
+  --btn-radius: 0px;
 
   --card-padding: 22px;
   --card-border: 1px solid var(--border-soft);
@@ -160,9 +160,9 @@
   --hero-min-height: 650px;
   --hero-overlay-desktop: linear-gradient(
     to right,
-    rgba(5,5,5,0.90) 20%,
-    rgba(5,5,5,0.70) 45%,
-    rgba(5,5,5,0.20) 100%
+    rgba(5,5,5,0.90) 10%,
+    rgba(5,5,5,0.70) 10%,
+    rgba(5,5,5,0.20) 10%
   );
   --hero-overlay-mobile: rgba(5,5,5,0.75);
 
@@ -172,6 +172,9 @@
   --cc-dark: #0f172a;
   --cc-light: #f8fafc;
   --cc-white: #ffffff;
+
+  /*mockup*/
+  --mockup-size: 1280px;
 }
 
 /* =========================================================

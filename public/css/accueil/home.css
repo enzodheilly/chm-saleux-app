@@ -1458,16 +1458,29 @@
   padding: 120px 0;
   background: var(--bg-section);
   overflow: hidden;
+
+  /* Variables de contrôle de la mockup (DESKTOP) */
+  --app-visual-col: 620px;
+  --app-visual-h: 700px;
+  --mockup-size: 1200px;
+  --mockup-offset-x: -35px; /* décale légèrement la mockup vers la gauche (desktop) */
 }
 
 .app-grid-layout {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  grid-template-columns: minmax(0, 1.2fr) var(--app-visual-col);
   gap: 80px;
   align-items: center;
 }
 
-/* TEXT SIDE */
+/* =========================
+   TEXT SIDE
+   ========================= */
+
+.app-info-side {
+  min-width: 0;
+}
+
 .badge-status {
   display: inline-flex;
   align-items: center;
@@ -1483,7 +1496,8 @@
 }
 
 .badge-status .dot {
-  width: 8px; height: 8px;
+  width: 8px;
+  height: 8px;
   background: var(--brand-orange);
   border-radius: 50%;
   box-shadow: 0 0 10px var(--brand-orange);
@@ -1505,7 +1519,7 @@
 .app-benefits {
   list-style: none;
   padding: 0;
-  margin-bottom: 50px;
+  margin: 0 0 50px 0;
 }
 
 .app-benefits li {
@@ -1518,74 +1532,377 @@
   margin-bottom: 15px;
 }
 
-.app-benefits i { color: var(--primary-color); font-size: 1.3rem; }
+.app-benefits li:last-child {
+  margin-bottom: 0;
+}
 
-/* STORES */
-.store-group { display: flex; gap: 20px; }
+.app-benefits i {
+  color: var(--primary-color);
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+/* =========================
+   STORES
+   ========================= */
+
+.store-group {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
 .btn-fake-store {
   background: var(--bg-section);
   border: 1px solid var(--border-soft);
-  padding: 12px 25px;
+  padding: 12px 20px;
   border-radius: 12px;
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 14px;
   opacity: 0.6;
   cursor: not-allowed;
   transition: var(--transition-fast);
+  min-width: 190px;
 }
 
-.btn-fake-store i { font-size: 1.8rem; color: var(--text-white); }
-.btn-text { display: flex; flex-direction: column; line-height: 1.2; }
-.btn-text .top { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; }
-.btn-text .bottom { font-size: 1.1rem; font-weight: var(--fw-extrabold); color: var(--text-white); }
+.btn-fake-store i {
+  font-size: 1.7rem;
+  color: var(--text-white);
+  flex-shrink: 0;
+}
 
-/* VISUAL SIDE */
-.visual-container { position: relative; display: flex; justify-content: center; }
+.btn-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.btn-text .top {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.btn-text .bottom {
+  font-size: 1.05rem;
+  font-weight: var(--fw-extrabold);
+  color: var(--text-white);
+}
+
+/* =========================
+   VISUAL SIDE
+   ========================= */
+
+.app-visual-side {
+  width: var(--app-visual-col);
+  justify-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.visual-container {
+  position: relative;
+  width: 100%;
+  height: var(--app-visual-h);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+}
 
 .glow-bg {
   position: absolute;
-  width: 400px; height: 400px;
+  width: 400px;
+  height: 400px;
   background: radial-gradient(circle, rgba(245, 119, 6, 0.15) 0%, transparent 70%);
-  top: 50%; left: 50%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
+  pointer-events: none;
 }
 
-.phone-wrapper { position: relative; z-index: 2; perspective: 1000px; }
+.phone-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
 
 .floating-phone {
-  max-width: 320px;
-  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.8));
-  animation: float 6s ease-in-out infinite;
+  width: var(--mockup-size);
+  max-width: none;
+  height: auto;
+  display: block;
+
+  /* remplace le margin-right fixe cassant */
+  transform: translateX(var(--mockup-offset-x)) !important;
+  animation: none !important;
 }
 
-/* ANIMATIONS */
+/* =========================
+   ANIMATIONS
+   ========================= */
+
 @keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.5); opacity: 0.5; }
+  0%   { transform: scale(1); opacity: 1; }
+  50%  { transform: scale(1.5); opacity: 0.5; }
   100% { transform: scale(1); opacity: 1; }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotateX(5deg) rotateY(-5deg); }
-  50% { transform: translateY(-20px) rotateX(10deg) rotateY(5deg); }
+/* =========================
+   RESPONSIVE APP
+   ========================= */
+
+/* Laptop / petit desktop */
+@media (max-width: 1200px) {
+  .home-app-section {
+    --app-visual-col: 500px;
+    --app-visual-h: 580px;
+    --mockup-size: 410px;
+    --mockup-offset-x: -15px;
+  }
+
+  .app-grid-layout {
+    gap: 56px;
+  }
+
+  .app-description {
+    font-size: 1.05rem;
+  }
+
+  .app-benefits li {
+    font-size: 1rem;
+  }
 }
 
-/* RESPONSIVE APP */
+/* Tablette */
 @media (max-width: 992px) {
-  .home-app-section { padding: var(--section-padding-y-tablet) 0; }
-  .app-grid-layout { grid-template-columns: 1fr; text-align: center; }
-  .app-info-side { display: flex; flex-direction: column; align-items: center; }
-  .app-main-title { font-size: 3rem; }
-  .store-group { flex-direction: column; width: 100%; }
-  .btn-fake-store { justify-content: center; }
+  .home-app-section {
+    padding: var(--section-padding-y-tablet) 0;
+
+    --app-visual-col: min(100%, 460px);
+    --app-visual-h: 390px;  /* mockup moins perdue */
+    --mockup-size: 990px;   /* mockup plus grande */
+    --mockup-offset-x: 0px; /* recentrage */
+  }
+
+  .app-grid-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    text-align: center;
+  }
+
+  .app-info-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .app-main-title {
+    font-size: clamp(2rem, 6vw, 3rem);
+    line-height: 1.05;
+  }
+
+  .app-description {
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1rem;
+    margin-bottom: 32px;
+  }
+
+  .app-benefits {
+    width: min(100%, 640px);
+    margin: 0 auto 34px auto;
+    padding: 0;
+  }
+
+  /* ✅ Alignement propre à gauche (icône + texte) */
+  .app-benefits li {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    align-items: start;
+    justify-content: start;
+    gap: 12px;
+    text-align: left;
+    font-size: 1rem;
+    line-height: 1.35;
+    margin-bottom: 12px;
+    width: 100%;
+  }
+
+  .app-benefits i {
+    font-size: 1.05rem;
+    margin-top: 3px;
+    justify-self: start;
+  }
+
+  .store-group {
+    justify-content: center;
+    width: 100%;
+    gap: 14px;
+  }
+
+  .btn-fake-store {
+    justify-content: center;
+    min-width: 210px;
+  }
+
+  .app-visual-side {
+    order: 2;
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  .visual-container {
+    height: var(--app-visual-h);
+    margin-top: 6px;
+  }
+
+  .glow-bg {
+    width: 320px;
+    height: 320px;
+  }
 }
 
+/* Mobile large */
 @media (max-width: 768px) {
-  .home-app-section { padding: var(--section-padding-y-mobile) 0; }
+  .home-app-section {
+    padding: var(--section-padding-y-mobile) 0;
+
+    --app-visual-h: 430px;
+    --mockup-size: 720px;
+  }
+
+  .app-grid-layout {
+    gap: 24px;
+  }
+
+  .badge-status {
+    font-size: 0.72rem;
+    padding: 7px 14px;
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+
+  .app-main-title {
+    margin-bottom: 18px;
+  }
+
+  .app-description {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    margin-bottom: 26px;
+  }
+
+  .app-benefits {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 26px;
+  }
+
+  .app-benefits li {
+    grid-template-columns: 26px 1fr;
+    gap: 10px;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    margin-bottom: 10px;
+  }
+
+  .app-benefits i {
+    font-size: 1rem;
+    margin-top: 2px;
+  }
+
+  .store-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    width: min(100%, 340px);
+  }
+
+  .btn-fake-store {
+    width: 100%;
+    min-width: 0;
+    padding: 12px 16px;
+    border-radius: 10px;
+  }
+
+  .btn-fake-store i {
+    font-size: 1.5rem;
+  }
+
+  .btn-text .top {
+    font-size: 0.65rem;
+  }
+
+  .btn-text .bottom {
+    font-size: 1rem;
+  }
+
+  .visual-container {
+    height: var(--app-visual-h);
+    margin-top: 0;
+  }
+
+  .glow-bg {
+    width: 250px;
+    height: 250px;
+  }
 }
 
+/* Très petits écrans */
+@media (max-width: 480px) {
+  .home-app-section {
+    --app-visual-h: 350px;
+    --mockup-size: 590px;
+  }
+
+  .app-grid-layout {
+    gap: 20px;
+  }
+
+  .badge-status {
+    font-size: 0.68rem;
+    padding: 6px 12px;
+    margin-bottom: 18px;
+  }
+
+  .badge-status .dot {
+    width: 7px;
+    height: 7px;
+  }
+
+  .app-description {
+    font-size: 0.92rem;
+    margin-bottom: 22px;
+  }
+
+  .app-benefits li {
+    font-size: 0.9rem;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .glow-bg {
+    width: 220px;
+    height: 220px;
+  }
+}
+
+/* Respect accessibilité : réduit les animations */
+@media (prefers-reduced-motion: reduce) {
+  .badge-status .dot {
+    animation: none;
+  }
+}
 /* =========================
    ACCUEIL — SECTION (SLIDER CLUB)
    ========================= */
