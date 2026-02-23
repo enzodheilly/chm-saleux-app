@@ -1,0 +1,229 @@
+/* =========================================================
+   COMPETITION DETAIL — PAGE SPECIFIQUE
+   (complète feminine.css)
+   ========================================================= */
+
+.competition-detail-root {
+  padding-bottom: 1.5rem;
+}
+
+.detail-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.detail-breadcrumbs .crumb-sep {
+  color: rgba(255,255,255,0.35);
+  font-weight: 700;
+}
+
+.detail-breadcrumbs .is-secondary {
+  opacity: 0.9;
+}
+
+.detail-lead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 20px;
+  align-items: center;
+}
+
+.detail-lead span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail-top-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 0.8fr;
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.detail-info-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 1.1rem;
+}
+
+.detail-rank-card {
+  background: linear-gradient(180deg, rgba(245,119,6,0.12), rgba(245,119,6,0.04));
+  border: 1px solid rgba(245,119,6,0.18);
+  border-radius: 16px;
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 180px;
+  box-shadow: var(--shadow-accent);
+}
+
+.detail-rank-card .rank-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: rgba(255,255,255,0.8);
+  font-weight: var(--fw-bold);
+}
+
+.detail-rank-card .rank-number {
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: var(--fw-black);
+  color: #fff;
+  margin: 0.4rem 0 0.3rem;
+}
+
+.detail-rank-card .rank-caption {
+  margin: 0;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.9rem;
+}
+
+.detail-meta-list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.detail-meta-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.detail-meta-item .meta-label {
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.detail-meta-item .meta-value {
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: var(--fw-semibold);
+  text-align: right;
+}
+
+.detail-result-card {
+  border-radius: 16px;
+}
+
+.ranking-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: var(--fw-bold);
+}
+
+.detail-bottom-actions {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 2rem;
+}
+
+/* réutilise le style du bouton ghost si présent dans feminine-archives.css */
+.btn-history-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-weight: var(--fw-bold);
+  color: #fff;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.09);
+  transition: var(--transition-base);
+}
+
+.btn-history-ghost:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.06);
+}
+
+@media (max-width: 992px) {
+  .detail-top-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-rank-card {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .detail-meta-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .detail-meta-item .meta-value {
+    text-align: left;
+  }
+
+  .detail-rank-card .rank-number {
+    font-size: 2.4rem;
+  }
+
+  .detail-lead {
+    gap: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Table mobile (compatible avec ta base feminine.css) */
+  .stats-table thead {
+    display: none;
+  }
+
+  .stats-table,
+  .stats-table tbody {
+    display: block;
+    min-width: 100%;
+  }
+
+  .stats-table tr {
+    display: block;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 0.65rem 0;
+  }
+
+  .stats-table td {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 0.45rem 1rem;
+    border: none;
+    text-align: left !important;
+  }
+
+  .stats-table td::before {
+    display: none;
+  }
+
+  .highlight,
+  .highlight-accent {
+    background: transparent;
+    font-size: 1rem;
+    width: auto;
+  }
+}
