@@ -16,36 +16,43 @@ class UserRoutine
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['routine:read'])]
+    #[Groups(['custom_routine:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
 
-    #[ORM\Column(length: 15)]
-    #[Assert\NotBlank(message: 'Le jour est obligatoire.')]
-    #[Assert\Choice(
-        choices: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-        message: 'Jour invalide.'
-    )]
-    #[Groups(['routine:read'])]
-    private ?string $dayOfWeek = null; // "Monday", "Friday", etc.
-
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Le nom de la routine est obligatoire.')]
     #[Assert\Length(max: 255)]
-    #[Groups(['routine:read'])]
-    private ?string $name = null; // Ex: "Ma séance Dos"
+    #[Groups(['custom_routine:read'])]
+    private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Exercise::class)]
-    #[ORM\JoinTable(name: 'user_routine_exercise')]
-    #[Groups(['routine:read'])]
-    private Collection $exercises;
+    #[ORM\Column(nullable: true)]
+    #[Groups(['custom_routine:read'])]
+    private ?int $estimatedDurationMin = null;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Groups(['custom_routine:read'])]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    /**
+     * @var Collection<int, UserRoutineExercise>
+     */
+    #[ORM\OneToMany(
+        mappedBy: 'routine',
+        targetEntity: UserRoutineExercise::class,
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
+    #[ORM\OrderBy(['exerciseOrder' => 'ASC'])]
+    private Collection $routineExercises;
 
     public function __construct()
     {
-        $this->exercises = new ArrayCollection();
+        $this->routineExercises = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -64,17 +71,6 @@ class UserRoutine
         return $this;
     }
 
-    public function getDayOfWeek(): ?string
-    {
-        return $this->dayOfWeek;
-    }
-
-    public function setDayOfWeek(string $dayOfWeek): self
-    {
-        $this->dayOfWeek = $dayOfWeek;
-        return $this;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
@@ -86,26 +82,54 @@ class UserRoutine
         return $this;
     }
 
-    /**
-     * @return Collection<int, Exercise>
-     */
-    public function getExercises(): Collection
+    public function getEstimatedDurationMin(): ?int
     {
-        return $this->exercises;
+        return $this->estimatedDurationMin;
     }
 
-    public function addExercise(Exercise $exercise): self
+    public function setEstimatedDurationMin(?int $estimatedDurationMin): self
     {
-        if (!$this->exercises->contains($exercise)) {
-            $this->exercises->add($exercise);
+        $this->estimatedDurationMin = $estimatedDurationMin;
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserRoutineExercise>
+     */
+    public function getRoutineExercises(): Collection
+    {
+        return $this->routineExercises;
+    }
+
+    public function addRoutineExercise(UserRoutineExercise $routineExercise): self
+    {
+        if (!$this->routineExercises->contains($routineExercise)) {
+            $this->routineExercises->add($routineExercise);
+            $routineExercise->setRoutine($this);
         }
 
         return $this;
     }
 
-    public function removeExercise(Exercise $exercise): self
+    public function removeRoutineExercise(UserRoutineExercise $routineExercise): self
     {
-        $this->exercises->removeElement($exercise);
+        if ($this->routineExercises->removeElement($routineExercise)) {
+            if ($routineExercise->getRoutine() === $this) {
+                $routineExercise->setRoutine(null);
+            }
+        }
+
         return $this;
     }
 
