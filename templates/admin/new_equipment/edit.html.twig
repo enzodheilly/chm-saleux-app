@@ -1,135 +1,353 @@
 {% extends 'admin/base_admin.html.twig' %}
 
 {% block title %}Modifier la machine{% endblock %}
+{% block page_title %}Modifier la machine{% endblock %}
 
 {% block stylesheets %}
 <style>
-    /* =================== CONTAINER =================== */
-    .form-container { max-width: 800px; margin: 0 auto; }
-
-    /* =================== HEADER =================== */
     .page-header {
-        margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;
-        display: flex; justify-content: space-between; align-items: flex-end;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        gap: 1rem;
+        flex-wrap: wrap;
     }
-    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
-    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
-    .back-link { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; text-decoration: underline; cursor: pointer; }
-    .back-link:hover { color: var(--text-main); }
 
-    /* =================== FORM CARD =================== */
-    .form-card { background: var(--bg-sidebar); border: 1px solid var(--border-color); border-radius: 6px; padding: 2rem; }
-    .form-group { margin-bottom: 1.5rem; }
-
-    /* Labels */
-    .form-label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
-
-    /* Inputs */
-    .form-control {
-        width: 100%; background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main);
-        padding: 0.75rem 1rem; border-radius: 4px; font-size: 0.95rem; font-family: inherit; transition: 0.2s; box-sizing: border-box;
+    .page-header h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+        color: var(--text-main);
     }
-    .form-control:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.1); }
 
-    /* Image Comparison Layout */
-    .img-comparison { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 1rem; }
-    .img-item { flex: 1; min-width: 150px; }
-    .img-label { display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
-    
-    .preview-frame { 
-        width: 100%; height: 160px; border-radius: 4px; border: 1px solid var(--border-color); 
-        background: var(--bg-body); overflow: hidden; position: relative;
+    .page-header p {
+        margin: 5px 0 0 0;
+        color: var(--text-muted);
+        font-size: 0.9rem;
     }
-    .preview-frame img { width: 100%; height: 100%; object-fit: cover; }
-    .preview-frame.new-frame { border: 1px dashed var(--accent); }
 
-    /* =================== ACTIONS =================== */
-    .form-actions { 
-        margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); 
-        display: flex; justify-content: space-between; align-items: center; 
+    .toolbar {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        justify-content: flex-end;
     }
-    .btn-group-right { display: flex; gap: 1rem; }
 
-    .btn-cancel { padding: 0.7rem 1.2rem; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; border-radius: 4px; }
-    .btn-save { background: var(--text-main); color: var(--bg-body); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 700; border: none; cursor: pointer; }
-    
-    .btn-delete { color: var(--danger); background: none; border: none; font-size: 0.85rem; font-weight: 600; cursor: pointer; text-transform: uppercase; opacity: 0.7; }
-    .btn-delete:hover { opacity: 1; text-decoration: underline; }
+    .btn-create {
+        background: var(--text-main);
+        color: var(--bg-body);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: 0.2s;
+        border: none;
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+    }
 
+    .btn-create:hover {
+        opacity: 0.9;
+    }
+
+    .btn-outline {
+        background: transparent;
+        color: var(--text-main);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: 0.2s;
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+        opacity: 0.9;
+    }
+
+    .btn-outline:hover {
+        opacity: 1;
+        border-color: var(--text-main);
+    }
+
+    .btn-danger-link {
+        background: transparent;
+        color: var(--danger);
+        padding: 0.6rem 0;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: 0.2s;
+        border: none;
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .btn-danger-link:hover {
+        opacity: 0.85;
+        text-decoration: underline;
+    }
+
+    .table-wrapper {
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        max-width: 800px;
+    }
+
+    .tool-label {
+        display: block;
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.35rem;
+    }
+
+    .input {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 0.6rem 1rem;
+        border-radius: 4px;
+        outline: none;
+        font-size: 0.9rem;
+        transition: border-color 0.2s;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .input:focus {
+        border-color: var(--text-main);
+    }
+
+    .input::placeholder {
+        color: var(--text-muted);
+        opacity: 0.6;
+    }
+
+    input[type="file"].input {
+        padding: 0.45rem;
+        cursor: pointer;
+    }
+
+    input[type="file"]::file-selector-button {
+        background: var(--bg-body);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 0.35rem 0.8rem;
+        margin-right: 0.8rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    input[type="file"]::file-selector-button:hover {
+        background: rgba(255,255,255,0.05);
+    }
+
+    .form-error {
+        color: var(--danger);
+        font-size: 0.85rem;
+        margin-top: 0.35rem;
+    }
+
+    .form-error ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .img-comparison {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .img-item {
+        flex: 1;
+        min-width: 180px;
+    }
+
+    .img-label {
+        display: block;
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+    }
+
+    .preview-frame {
+        width: 100%;
+        height: 160px;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        background: var(--bg-body);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .preview-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .preview-frame.new-frame {
+        border: 1px dashed var(--accent);
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+    }
+
+    .form-actions-right {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    @media (max-width: 700px) {
+        .page-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .toolbar {
+            justify-content: flex-start;
+            width: 100%;
+        }
+
+        .form-actions {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .form-actions-right {
+            width: 100%;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block body %}
-<div class="form-container">
-    
-    <div class="page-header">
-        <div>
-            <h1>Modifier la machine</h1>
-            <p>Mise à jour de : <span style="font-weight: 700; color: var(--text-main);">{{ equipment.name }}</span></p>
-        </div>
-        <a href="{{ path('admin_new_equipment_index') }}" class="back-link">Retour à l'inventaire</a>
+<div class="page-header">
+    <div>
+        <h1>Modifier la machine</h1>
+        <p>Mise à jour de : <span style="font-weight: 700; color: var(--text-main);">{{ equipment.name }}</span></p>
     </div>
 
-    <div class="form-card">
+    <div class="toolbar">
+        <a href="{{ path('admin_new_equipment_index') }}" class="btn-outline">Retour à l'inventaire</a>
+    </div>
+</div>
+
+<div class="table-wrapper">
+    <div class="card-body">
         {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
 
-        <div class="form-group">
-            {{ form_label(form.name, 'Nom de l\'équipement', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
-        </div>
+            <div class="form-error">{{ form_errors(form) }}</div>
 
-        {# ✅ Optionnel : si ton NewEquipmentType contient aussi "description" #}
-        {#
-        <div class="form-group">
-            {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 4}}) }}
-        </div>
-        #}
+            <div class="form-grid">
+                <div>
+                    <span class="tool-label">Nom de l'équipement</span>
+                    {{ form_widget(form.name, {'attr': {'class': 'input'}}) }}
+                    <div class="form-error">{{ form_errors(form.name) }}</div>
+                </div>
 
-        <div class="form-group">
-            {{ form_label(form.image, 'Photo (Laisser vide pour conserver)', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
-            
-            <div class="img-comparison">
-                <div class="img-item">
-                    <span class="img-label">Actuelle</span>
-                    <div class="preview-frame">
-                        <img src="{{ asset('uploads/machines/' ~ equipment.image) }}" alt="Image actuelle">
+                {#
+                {% if form.description is defined %}
+                    <div>
+                        <span class="tool-label">Description</span>
+                        {{ form_widget(form.description, {'attr': {'class': 'input', 'rows': 4}}) }}
+                        <div class="form-error">{{ form_errors(form.description) }}</div>
+                    </div>
+                {% endif %}
+                #}
+
+                <div>
+                    <span class="tool-label">Photo (laisser vide pour conserver)</span>
+                    {{ form_widget(form.image, {'attr': {'class': 'input'}}) }}
+                    <div class="form-error">{{ form_errors(form.image) }}</div>
+
+                    <div class="img-comparison">
+                        <div class="img-item">
+                            <span class="img-label">Actuelle</span>
+                            <div class="preview-frame">
+                                <img src="{{ asset('uploads/machines/' ~ equipment.image) }}" alt="Image actuelle">
+                            </div>
+                        </div>
+
+                        <div class="img-item" id="new-preview-item" style="display:none;">
+                            <span class="img-label">Nouvelle</span>
+                            <div class="preview-frame new-frame">
+                                <img id="image-preview" src="" alt="Nouvel aperçu">
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="img-item" id="new-preview-item" style="display:none;">
-                    <span class="img-label">Nouvelle</span>
-                    <div class="preview-frame new-frame">
-                        <img id="image-preview" src="" alt="Nouvel aperçu">
+
+                <div class="form-actions">
+                    <button
+                        type="button"
+                        class="btn-danger-link"
+                        onclick="if(confirm('⚠️ Supprimer cet équipement définitivement ?')) document.getElementById('delete-equipment-form').submit();"
+                    >
+                        Supprimer la machine
+                    </button>
+
+                    <div class="form-actions-right">
+                        <a href="{{ path('admin_new_equipment_index') }}" class="btn-outline">Annuler</a>
+                        <button type="submit" class="btn-create">Mettre à jour</button>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="form-actions">
-            <button type="button" class="btn-delete"
-                    onclick="if(confirm('⚠️ Supprimer cet équipement définitivement ?')) document.getElementById('delete-equipment-form').submit();">
-                Supprimer la machine
-            </button>
-
-            <div class="btn-group-right">
-                <a href="{{ path('admin_new_equipment_index') }}" class="btn-cancel">Annuler</a>
-                <button type="submit" class="btn-save">Mettre à jour</button>
-            </div>
-        </div>
 
         {{ form_end(form) }}
     </div>
-
-    {# Hidden delete form (POST + CSRF) #}
-    <form id="delete-equipment-form"
-          method="post"
-          action="{{ path('admin_new_equipment_delete', {id: equipment.id}) }}"
-          style="display: none;">
-        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ equipment.id) }}">
-    </form>
 </div>
+
+<form id="delete-equipment-form"
+      method="post"
+      action="{{ path('admin_new_equipment_delete', {id: equipment.id}) }}"
+      style="display: none;">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ equipment.id) }}">
+</form>
 {% endblock %}
 
 {% block javascripts %}
@@ -139,16 +357,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const previewImg = document.getElementById("image-preview");
     const previewItem = document.getElementById("new-preview-item");
 
-    if (fileInput) {
+    if (fileInput && previewImg && previewItem) {
         fileInput.addEventListener("change", function() {
             const file = this.files[0];
+
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     previewImg.src = e.target.result;
                     previewItem.style.display = "block";
-                }
+                };
                 reader.readAsDataURL(file);
+            } else {
+                previewImg.src = "";
+                previewItem.style.display = "none";
             }
         });
     }
