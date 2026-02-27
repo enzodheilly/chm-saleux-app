@@ -21,26 +21,27 @@ class WorkoutSessionController extends AbstractController
         WorkoutScheduleRepository $scheduleRepo,
         EntityManagerInterface $em
     ): JsonResponse {
-        // 1. On récupère l'utilisateur connecté (via le Token JWT)
         $user = $this->getUser();
         if (!$user) {
             return $this->json(['error' => 'User not found'], 401);
         }
 
-        // 2. On décode le JSON envoyé par Flutter
         $data = json_decode($request->getContent(), true);
 
         if (!$data) {
             return $this->json(['error' => 'Invalid JSON'], 400);
         }
 
-        // 3. On crée la nouvelle Session (L'historique)
         $session = new WorkoutSession();
         $session->setUser($user);
         $session->setDurationSeconds($data['duration_seconds'] ?? 0);
         $session->setTotalVolume($data['total_volume'] ?? 0);
+        $session->setTotalCompletedSets($data['total_completed_sets'] ?? 0);
 
-        // Gestion de la date (si envoyée, sinon maintenant)
+        // ✅ On sauvegarde directement le nom et l'id de la routine
+        $session->setRoutineName($data['routine_name'] ?? null);
+        $session->setRoutineId($data['routine_id'] ?? null);
+
         if (!empty($data['performed_at'])) {
             try {
                 $session->setPerformedAt(new \DateTime($data['performed_at']));
@@ -51,32 +52,27 @@ class WorkoutSessionController extends AbstractController
             $session->setPerformedAt(new \DateTime());
         }
 
-        // 4. Si c'était une séance du planning, on la marque comme "Fait"
-        // (On cherche si une routine était prévue aujourd'hui ou via l'ID envoyé)
         if (!empty($data['routine_id'])) {
-            // On cherche la séance prévue la plus pertinente (ex: aujourd'hui avec ce template)
-            // Note: Ici tu pourras affiner la logique si tu envoies l'ID exact du schedule
-            // Pour l'instant, on cherche si l'user avait prévu cette routine ce jour-là
             $today = new \DateTime();
             $schedule = $scheduleRepo->findOneBy([
                 'user' => $user,
                 'routineTemplate' => $data['routine_id'],
-                'scheduledDate' => new \DateTime($today->format('Y-m-d')) // Date du jour sans l'heure
+                'scheduledDate' => new \DateTime($today->format('Y-m-d'))
             ]);
 
             if ($schedule) {
                 $schedule->setIsCompleted(true);
-                $session->setWorkoutSchedule($schedule); // On lie les deux
-                $em->persist($schedule); // On prépare la mise à jour
+                $session->setWorkoutSchedule($schedule);
+                $em->persist($schedule);
             }
         }
 
-        // 5. On sauvegarde tout
-        $sessionRepo->save($session, true); // Le 'true' fait le flush()
+        $sessionRepo->save($session, true);
 
         return $this->json([
             'message' => 'Workout saved successfully!',
-            'id' => $session->getId()
+            'id' => $session->getId(),
+            'total_completed_sets' => $session->getTotalCompletedSets(),
         ], 201);
     }
 
@@ -88,7 +84,7 @@ class WorkoutSessionController extends AbstractController
             return $this->json(['error' => 'User not found'], 401);
         }
 
-        $range = (int)($request->query->get('range', 30)); // 7 / 30 / 90 / 0(all)
+        $range = (int)($request->query->get('range', 30));
 
         $qb = $repo->createQueryBuilder('ws')
             ->andWhere('ws.user = :user')
@@ -103,15 +99,15 @@ class WorkoutSessionController extends AbstractController
 
         $sessions = $qb->getQuery()->getResult();
 
-        // ✅ Réponse simple et clean pour Flutter
         $data = array_map(function (WorkoutSession $s) {
             return [
                 'id' => $s->getId(),
                 'performed_at' => $s->getPerformedAt()?->format(DATE_ATOM),
                 'duration_seconds' => $s->getDurationSeconds(),
                 'total_volume' => $s->getTotalVolume(),
-                'routine_name' => $s->getWorkoutSchedule()?->getRoutineTemplate()?->getName(), // si dispo
-                'routine_id' => $s->getWorkoutSchedule()?->getRoutineTemplate()?->getId(),
+                'total_completed_sets' => $s->getTotalCompletedSets(),
+                'routine_name' => $s->getRoutineName() ?? $s->getWorkoutSchedule()?->getRoutineTemplate()?->getName(),
+                'routine_id' => $s->getRoutineId() ?? $s->getWorkoutSchedule()?->getRoutineTemplate()?->getId(),
                 'is_from_planning' => $s->getWorkoutSchedule() !== null,
             ];
         }, $sessions);
@@ -130,7 +126,12 @@ class WorkoutSessionController extends AbstractController
         $range = (int)($request->query->get('range', 30)); // 7 / 30 / 90 / 0(all)
 
         $qb = $repo->createQueryBuilder('ws')
-            ->select('COUNT(ws.id) as sessionsCount, SUM(ws.totalVolume) as totalVolume, SUM(ws.durationSeconds) as totalDuration')
+            ->select('
+                COUNT(ws.id) as sessionsCount,
+                SUM(ws.totalVolume) as totalVolume,
+                SUM(ws.durationSeconds) as totalDuration,
+                SUM(ws.totalCompletedSets) as totalCompletedSets
+            ')
             ->andWhere('ws.user = :user')
             ->setParameter('user', $user);
 
@@ -147,6 +148,7 @@ class WorkoutSessionController extends AbstractController
             'sessions' => (int)($result['sessionsCount'] ?? 0),
             'total_volume' => (float)($result['totalVolume'] ?? 0),
             'total_duration_seconds' => (int)($result['totalDuration'] ?? 0),
+            'total_completed_sets' => (int)($result['totalCompletedSets'] ?? 0),
         ]);
     }
 }

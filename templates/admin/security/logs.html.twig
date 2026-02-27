@@ -74,7 +74,7 @@
     /* Stats Target */
     .target-card { background: var(--bg-body); padding: 1rem; border-radius: 6px; border-left: 4px solid var(--danger); flex: 1; min-width: 220px; border: 1px solid var(--border-color); border-left: 4px solid var(--danger); }
     
-    .btn-ban { color: var(--danger); font-size: 1.1rem; padding: 5px; opacity: 0.7; transition: 0.2s; }
+    .btn-ban { color: var(--danger); font-size: 1.1rem; padding: 5px; opacity: 0.7; transition: 0.2s; text-decoration: none; }
     .btn-ban:hover { opacity: 1; transform: scale(1.2); }
 
 </style>
@@ -83,7 +83,6 @@
 {% block body %}
 <div class="dashboard-container">
     
-    {# --- NOTIFICATIONS --- #}
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">{{ message|raw }}</div>
     {% endfor %}
@@ -100,16 +99,18 @@
         </div>
     </div>
 
-    {# --- ANALYSE DES TENTATIVES CRITIQUES --- #}
     <div class="content-card" style="margin-bottom: 2rem; padding: 1.5rem;">
         <h3 style="margin: 0 0 1.2rem 0; font-size: 0.9rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;">
             🚨 Comptes les plus visés (Échecs)
         </h3>
         <div style="display: flex; gap: 1.2rem; flex-wrap: wrap;">
             {% for target in topTargets|default([]) %}
+                {% set targetUser = target.user is defined ? target.user : (target[0] is defined ? target[0] : null) %}
                 <div class="target-card">
                     <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; font-weight: 700;">Utilisateur cible</div>
-                    <div style="font-weight: 700; color: var(--text-main); font-size: 0.9rem; word-break: break-all;">{{ target.user }}</div>
+                    <div style="font-weight: 700; color: var(--text-main); font-size: 0.9rem; word-break: break-all;">
+                        {{ targetUser ? targetUser.email : 'Utilisateur inconnu' }}
+                    </div>
                     <div style="margin-top: 10px; font-size: 1.3rem; font-weight: 800; color: var(--danger);">
                         {{ target.attempts }} <span style="font-size: 0.75rem; font-weight: 500; opacity: 0.8;">échecs</span>
                     </div>
@@ -122,7 +123,6 @@
         </div>
     </div>
 
-    {# --- FILTRES & RECHERCHE --- #}
     <div class="toolbar-container">
         <div class="filter-group">
             <button class="filter-btn active" data-filter="all">Tous</button>
@@ -139,7 +139,6 @@
         </div>
     </div>
 
-    {# --- TABLEAU DES LOGS --- #}
     <div class="content-card">
         <div class="table-responsive">
             <table class="table" id="logsTable">
@@ -165,11 +164,13 @@
                             </td>
                             
                             <td>
-                                <strong style="color: var(--text-main);">{{ log.user ?? 'Système' }}</strong>
+                                <strong style="color: var(--text-main);">
+                                    {{ log.user ? log.user.email : 'Système' }}
+                                </strong>
                             </td>
 
                             <td>
-                                <span class="ip-address ip-lookup" data-ip="{{ log.ip }}">{{ log.ip|default('—') }}</span>
+                                <span class="ip-address ip-lookup" data-ip="{{ log.ip|default('') }}">{{ log.ip|default('—') }}</span>
                                 <span class="geo-info" id="geo-{{ loop.index }}">Recherche...</span>
                             </td>
 
@@ -191,7 +192,6 @@
                                     <span>{{ log.message ?? '—' }}</span>
                                 </div>
                                 
-                                {# SUPERVISION COMPORTEMENTALE #}
                                 <div style="margin-top: 6px; display: flex; gap: 6px;">
                                     {% set hour = log.createdAt|date('H') %}
                                     {% if hour < 7 or hour > 21 %}
@@ -219,7 +219,9 @@
                                        title="Bannir l'IP">
                                         🚫
                                     </a>
-                                {% else %}<span style="opacity: 0.2;">—</span>{% endif %}
+                                {% else %}
+                                    <span style="opacity: 0.2;">—</span>
+                                {% endif %}
                             </td>
                         </tr>
                     {% else %}
@@ -263,6 +265,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 row.style.display = 'none';
             }
         });
+
         noResultsMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
     }
 
@@ -276,10 +279,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     searchInput.addEventListener('input', applyFilters);
 
-    // Géo-IP via ipapi (Uniquement IP publiques)
     const ipElements = document.querySelectorAll('.ip-lookup');
     const uniqueIps = [...new Set(Array.from(ipElements).map(el => el.dataset.ip))]
-                       .filter(ip => ip && !['127.0.0.1', '::1', '—'].includes(ip));
+        .filter(ip => ip && !['127.0.0.1', '::1', '—'].includes(ip));
 
     uniqueIps.forEach(ip => {
         fetch(`https://ipapi.co/${ip}/json/`)
@@ -287,9 +289,14 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.city) {
                     const info = `${data.city}, ${data.country_name}`;
-                    const flag = `https://flagcdn.com/16x12/${data.country_code.toLowerCase()}.png`;
+                    const flag = data.country_code
+                        ? `https://flagcdn.com/16x12/${data.country_code.toLowerCase()}.png`
+                        : '';
+
                     document.querySelectorAll(`.ip-lookup[data-ip="${ip}"]`).forEach(el => {
-                        el.nextElementSibling.innerHTML = `<img src="${flag}" style="vertical-align:middle; margin-right:4px;"> ${info}`;
+                        el.nextElementSibling.innerHTML = flag
+                            ? `<img src="${flag}" style="vertical-align:middle; margin-right:4px;"> ${info}`
+                            : info;
                     });
                 } else {
                     document.querySelectorAll(`.ip-lookup[data-ip="${ip}"]`).forEach(el => {
