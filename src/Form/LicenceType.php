@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Licence;
-use App\Entity\Forfait;
+use App\Entity\MembershipPlan;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -33,14 +33,14 @@ class LicenceType extends AbstractType
                 'label' => 'Numéro de licence',
                 'required' => true,
             ])
-            ->add('forfait', EntityType::class, [
-                'class' => Forfait::class,
+            ->add('membershipPlan', EntityType::class, [
+                'class' => MembershipPlan::class,
                 'label' => 'Forfait choisi',
-                'choice_label' => function (Forfait $forfait) {
+                'choice_label' => function (MembershipPlan $membershipPlan) {
                     return sprintf(
                         '%s - %.2f€ / an',
-                        strtoupper($forfait->getNom()),
-                        $forfait->getPrix()
+                        strtoupper($membershipPlan->getName()),
+                        $membershipPlan->getPrice()
                     );
                 },
                 'placeholder' => 'Sélectionnez un forfait',

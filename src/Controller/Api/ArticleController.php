@@ -6,28 +6,32 @@ namespace App\Controller\Api;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ArticleController extends AbstractController
 {
     #[Route('/api/actus', name: 'api_actus_list', methods: ['GET'])]
     public function getActus(ArticleRepository $articleRepository): JsonResponse
     {
-        // Récupère les 5 derniers articles (triés par ID décroissant pour avoir les plus récents)
-        // Si tu as un champ date, tu peux remplacer 'id' par 'createdAt'
-        $articles = $articleRepository->findBy([], ['id' => 'DESC'], 5);
+        // ✅ Mieux que id : tri par date de publication
+        $articles = $articleRepository->findBy([], ['publishedAt' => 'DESC'], 5);
 
         $data = [];
+
         foreach ($articles as $article) {
+            $description = $article->getDescription() ?? '';
+            $plainText = trim(preg_replace('/\s+/', ' ', strip_tags($description)));
+            $excerpt = mb_strimwidth($plainText, 0, 140, '…');
+
             $data[] = [
                 'id' => $article->getId(),
-                // ⚠️ Attention : adapte les "get..." selon les noms exacts des propriétés dans ton entité Article
-                'title' => $article->getTitre(), // ou getTitle()
-                'subtitle' => $article->getContenu(), // ou getResume(), getDescription()...
+                'title' => $article->getTitle() ?? 'Sans titre',
+                'subtitle' => $excerpt ?: 'Aucune description',
+                'publishedAt' => $article->getPublishedAt()?->format(DATE_ATOM),
+                'photo' => $article->getPhoto(), // optionnel (si tu veux l'afficher plus tard dans Flutter)
             ];
         }
 
-        // Renvoie un tableau JSON propre à ton application Flutter
         return $this->json($data);
     }
 }

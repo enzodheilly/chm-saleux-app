@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Licence;
 use App\Form\LicenceType;
 use App\Repository\LicenceRepository;
-use App\Repository\ForfaitRepository;
+use App\Repository\MembershipPlanRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,12 +32,11 @@ class AdminLicenceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $forfait = $licence->getForfait();
+            $membershipPlan = $licence->getMembershipPlan();
 
-            // 🧠 Si un forfait est sélectionné, on définit automatiquement le type
-            if ($forfait) {
-                $licence->setType($forfait->getNom());
-                $licence->setBenefits($forfait->getAvantages());
+            if ($membershipPlan) {
+                $licence->setType($membershipPlan->getName());
+                $licence->setBenefits($membershipPlan->getBenefits());
             }
 
             $em->persist($licence);
@@ -52,7 +51,6 @@ class AdminLicenceController extends AbstractController
         ]);
     }
 
-
     #[Route('/{id}/edit', name: 'admin_licence_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Licence $licence, EntityManagerInterface $em): Response
     {
@@ -60,7 +58,15 @@ class AdminLicenceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $membershipPlan = $licence->getMembershipPlan();
+
+            if ($membershipPlan) {
+                $licence->setType($membershipPlan->getName());
+                $licence->setBenefits($membershipPlan->getBenefits());
+            }
+
             $em->flush();
+
             $this->addFlash('success', '📝 Licence mise à jour avec succès.');
             return $this->redirectToRoute('admin_licence_index');
         }
@@ -83,18 +89,18 @@ class AdminLicenceController extends AbstractController
         return $this->redirectToRoute('admin_licence_index');
     }
 
-    // 🧠 Nouvelle route AJAX pour renvoyer les avantages d’un forfait
-    #[Route('/forfait/{id}/avantages', name: 'admin_licence_forfait_avantages', methods: ['GET'])]
-    public function getForfaitAvantages(int $id, ForfaitRepository $repo): JsonResponse
+    #[Route('/membership-plan/{id}/benefits', name: 'admin_licence_membership_plan_benefits', methods: ['GET'])]
+    public function getMembershipPlanBenefits(int $id, MembershipPlanRepository $repo): JsonResponse
     {
-        $forfait = $repo->find($id);
-        if (!$forfait) {
-            return new JsonResponse(['error' => 'Forfait introuvable'], 404);
+        $membershipPlan = $repo->find($id);
+
+        if (!$membershipPlan) {
+            return new JsonResponse(['error' => 'Plan introuvable'], 404);
         }
 
         return new JsonResponse([
-            'nom' => $forfait->getNom(),
-            'avantages' => $forfait->getAvantages(),
+            'nom' => $membershipPlan->getNom(),
+            'benefits' => $membershipPlan->getBenefits(),
         ]);
     }
 }
