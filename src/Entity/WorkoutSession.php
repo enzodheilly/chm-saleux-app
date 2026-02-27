@@ -21,8 +21,6 @@ class WorkoutSession
     #[Groups(['session:read'])]
     private ?User $user = null;
 
-    // 🔗 Lien facultatif vers le planning (Schedule)
-    // Si c'est null, c'est une séance "libre" (Freestyle)
     #[ORM\OneToOne(targetEntity: WorkoutSchedule::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[Groups(['session:read', 'session:write'])]
@@ -36,13 +34,24 @@ class WorkoutSession
     #[Groups(['session:read', 'session:write'])]
     private ?float $totalVolume = null;
 
+    #[ORM\Column(nullable: true)]
+    #[Groups(['session:read', 'session:write'])]
+    private ?int $totalCompletedSets = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups(['session:read', 'session:write'])]
     private ?\DateTimeInterface $performedAt = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['session:read', 'session:write'])]
+    private ?string $routineName = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['session:read', 'session:write'])]
+    private ?int $routineId = null;
+
     public function __construct()
     {
-        // Par défaut, on met la date de maintenant si elle n'est pas spécifiée
         $this->performedAt = new \DateTime();
     }
 
@@ -59,7 +68,6 @@ class WorkoutSession
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
         return $this;
     }
 
@@ -71,7 +79,6 @@ class WorkoutSession
     public function setWorkoutSchedule(?WorkoutSchedule $workoutSchedule): self
     {
         $this->workoutSchedule = $workoutSchedule;
-
         return $this;
     }
 
@@ -83,7 +90,6 @@ class WorkoutSession
     public function setDurationSeconds(?int $durationSeconds): self
     {
         $this->durationSeconds = $durationSeconds;
-
         return $this;
     }
 
@@ -95,7 +101,17 @@ class WorkoutSession
     public function setTotalVolume(?float $totalVolume): self
     {
         $this->totalVolume = $totalVolume;
+        return $this;
+    }
 
+    public function getTotalCompletedSets(): ?int
+    {
+        return $this->totalCompletedSets;
+    }
+
+    public function setTotalCompletedSets(?int $totalCompletedSets): self
+    {
+        $this->totalCompletedSets = $totalCompletedSets;
         return $this;
     }
 
@@ -107,7 +123,28 @@ class WorkoutSession
     public function setPerformedAt(\DateTimeInterface $performedAt): self
     {
         $this->performedAt = $performedAt;
+        return $this;
+    }
 
+    public function getRoutineName(): ?string
+    {
+        return $this->routineName;
+    }
+
+    public function setRoutineName(?string $routineName): self
+    {
+        $this->routineName = $routineName;
+        return $this;
+    }
+
+    public function getRoutineId(): ?int
+    {
+        return $this->routineId;
+    }
+
+    public function setRoutineId(?int $routineId): self
+    {
+        $this->routineId = $routineId;
         return $this;
     }
 }

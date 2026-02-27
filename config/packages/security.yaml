@@ -29,6 +29,17 @@ security:
             refresh_jwt:
                 check_path: /api/token/refresh
 
+        # ✅ Firewall public pour les actualités (AVANT le firewall "api")
+        # Couvre :
+        # - /api/actus
+        # - /api/actus/
+        # - /api/actus/{id}
+        api_public_actus:
+            pattern: ^/api/actus(?:/|$)
+            stateless: true
+            security: false
+
+        # ✅ Toutes les autres routes API restent protégées par JWT
         api:
             pattern: ^/api
             stateless: true
@@ -67,12 +78,17 @@ security:
                 name: REMEMBERME
 
     access_control:
-        # --- API ---
+        # --- API public ---
         - { path: ^/api/login$, roles: PUBLIC_ACCESS }
         - { path: ^/api/login_check$, roles: PUBLIC_ACCESS }
         - { path: ^/api/token/refresh$, roles: PUBLIC_ACCESS }
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }
         - { path: ^/api/reset-password-final$, roles: PUBLIC_ACCESS }
+
+        # ✅ Actus publiques (liste + détail)
+        - { path: ^/api/actus(?:/|$), roles: PUBLIC_ACCESS }
+
+        # --- API privée ---
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
         # --- Web public ---

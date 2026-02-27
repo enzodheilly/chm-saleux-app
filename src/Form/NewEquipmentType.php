@@ -20,12 +20,6 @@ class NewEquipmentType extends AbstractType
                 'label' => 'Nom de la machine'
             ])
 
-            ->add('description', TextareaType::class, [
-                'label' => 'Description',
-                'required' => false,
-                'attr' => ['rows' => 4],
-            ])
-
             ->add('image', FileType::class, [
                 'label' => 'Image de la machine',
                 'mapped' => false,

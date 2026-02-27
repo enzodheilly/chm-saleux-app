@@ -46,6 +46,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     #[Groups(['user:read'])]
     private array $roles = [];
 
+    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Groups(['user:read', 'user:write'])]
+    private int $totalXp = 0;
+
     #[ORM\Column(type: 'json', nullable: true)]
     private array $backupCodes = [];
 
@@ -229,6 +233,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     public function setPassword(?string $password): self
     {
         $this->password = $password;
+        return $this;
+    }
+
+    public function getTotalXp(): int
+    {
+        return $this->totalXp;
+    }
+
+    public function setTotalXp(int $totalXp): self
+    {
+        $this->totalXp = $totalXp;
         return $this;
     }
 
