@@ -7,16 +7,16 @@ use App\Entity\User;
 use App\Repository\SecurityLogRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Writer\PngWriter;
-use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel;
+use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/admin/security', name: 'admin_security_')]
 class AdminSecurityController extends AbstractController
@@ -30,18 +30,20 @@ class AdminSecurityController extends AbstractController
         $logs = $repo->findBy([], ['createdAt' => 'DESC'], 100);
 
         $topTargets = $repo->createQueryBuilder('l')
-            ->select('l.user, COUNT(l.id) as attempts')
+            ->join('l.user', 'u')
+            ->select('u.id AS userId, u.email AS email, COUNT(l.id) AS attempts')
             ->where('l.type = :type')
+            ->andWhere('l.user IS NOT NULL')
             ->setParameter('type', 'erreur')
-            ->groupBy('l.user')
+            ->groupBy('u.id, u.email')
             ->orderBy('attempts', 'DESC')
             ->setMaxResults(4)
             ->getQuery()
-            ->getResult();
+            ->getArrayResult();
 
         return $this->render('admin/security/logs.html.twig', [
             'logs' => $logs,
-            'topTargets' => $topTargets
+            'topTargets' => $topTargets,
         ]);
     }
 
@@ -101,7 +103,10 @@ class AdminSecurityController extends AbstractController
     #[Route('/purge', name: 'purge_logs')]
     public function purge(SecurityLogRepository $repo, EntityManagerInterface $em, Request $request): Response
     {
-        $repo->createQueryBuilder('l')->delete()->getQuery()->execute();
+        $repo->createQueryBuilder('l')
+            ->delete()
+            ->getQuery()
+            ->execute();
 
         /** @var User $admin */
         $admin = $this->getUser();
@@ -109,7 +114,7 @@ class AdminSecurityController extends AbstractController
         $log = new SecurityLog();
         $log->setType('Session');
         $log->setMessage('L\'historique complet des journaux a été purgé par l\'administrateur.');
-        $log->setUser($admin); // Correction : On passe l'objet User
+        $log->setUser($admin);
         $log->setIp($request->getClientIp());
         $log->setUserAgent($request->headers->get('User-Agent'));
         $log->setMethod($request->getMethod());
@@ -162,12 +167,11 @@ class AdminSecurityController extends AbstractController
             if ($ga->checkCode($user, $authCode)) {
                 $user->setIsTotpConfirmed(true);
 
-                // --- GÉNÉRATION DES CODES DE SECOURS ---
                 $backupCodes = [];
                 for ($i = 0; $i < 5; $i++) {
-                    // Génère un code format XXXX-XXXX (ex: A1B2-C3D4)
                     $backupCodes[] = strtoupper(bin2hex(random_bytes(2)) . '-' . bin2hex(random_bytes(2)));
                 }
+
                 $user->setBackupCodes($backupCodes);
 
                 $log = new SecurityLog();
@@ -181,39 +185,35 @@ class AdminSecurityController extends AbstractController
                 $em->persist($log);
                 $em->flush();
 
-                // On stocke les codes en session pour l'affichage unique sur la page suivante
                 $request->getSession()->set('show_backup_codes', $backupCodes);
 
                 $this->addFlash('success', 'Sécurité activée ! Notez bien vos codes de secours.');
 
-                // On redirige vers une nouvelle vue de succès pour afficher les codes
                 return $this->redirectToRoute('admin_security_setup_success');
-            } else {
-                $this->addFlash('danger', 'Le code est incorrect.');
             }
+
+            $this->addFlash('danger', 'Le code est incorrect.');
         }
 
         return $this->render('admin/security/setup_2fa.html.twig', [
             'qrCodeBase64' => $qrCodeBase64,
-            'qrContent' => $qrContent
+            'qrContent' => $qrContent,
         ]);
     }
 
     #[Route('/setup-2fa/success', name: 'setup_success')]
     public function setupSuccess(Request $request): Response
     {
-        // On récupère les codes stockés en session lors de l'activation
-        $backupCodes = $request->getSession()->get('show_backup_codes');
+        // remove() = affichage une seule fois, comme indiqué dans ton commentaire
+        $backupCodes = $request->getSession()->remove('show_backup_codes');
 
-        // Sécurité : si on accède à cette page sans avoir de codes en session
-        // (par exemple en rafraîchissant après avoir quitté), on redirige vers le dashboard
         if (!$backupCodes) {
             $this->addFlash('warning', 'Les codes de secours ne sont affichés qu\'une seule fois pour votre sécurité.');
             return $this->redirectToRoute('admin_dashboard');
         }
 
         return $this->render('admin/security/setup_success.html.twig', [
-            'backupCodes' => $backupCodes
+            'backupCodes' => $backupCodes,
         ]);
     }
 
@@ -221,8 +221,12 @@ class AdminSecurityController extends AbstractController
      * 🔐 Réinitialiser le 2FA d'un utilisateur
      */
     #[Route('/reset-2fa/{id}', name: 'reset_2fa')]
-    public function reset2fa(int $id, UserRepository $userRepository, EntityManagerInterface $em, Request $request): Response
-    {
+    public function reset2fa(
+        int $id,
+        UserRepository $userRepository,
+        EntityManagerInterface $em,
+        Request $request
+    ): Response {
         $user = $userRepository->find($id);
 
         if (!$user) {
@@ -239,7 +243,7 @@ class AdminSecurityController extends AbstractController
         $log = new SecurityLog();
         $log->setType('Session');
         $log->setMessage("Le 2FA de l'utilisateur {$user->getEmail()} a été réinitialisé par l'admin.");
-        $log->setUser($admin); // Déjà correct ici
+        $log->setUser($admin);
         $log->setIp($request->getClientIp());
         $log->setMethod('POST');
 
@@ -255,16 +259,19 @@ class AdminSecurityController extends AbstractController
      * 🔨 Bannir une IP
      */
     #[Route('/blocklist/ban-ip/{ip}', name: 'ban_ip')]
-    public function banIp(string $ip, SecurityLogRepository $repo, UserRepository $userRepository, EntityManagerInterface $em, Request $request): Response
-    {
+    public function banIp(
+        string $ip,
+        SecurityLogRepository $repo,
+        UserRepository $userRepository,
+        EntityManagerInterface $em,
+        Request $request
+    ): Response {
         $lastLog = $repo->findOneBy(['ip' => $ip], ['createdAt' => 'DESC']);
 
         if ($lastLog && $lastLog->getUser()) {
-            $userToBan = $userRepository->findOneBy(['email' => $lastLog->getUser()]);
-            if ($userToBan) {
-                $userToBan->setLockedUntil(new \DateTimeImmutable('+99 years'));
-                $em->persist($userToBan);
-            }
+            $userToBan = $lastLog->getUser();
+            $userToBan->setLockedUntil(new \DateTimeImmutable('+99 years'));
+            $em->persist($userToBan);
         }
 
         /** @var User $admin */
@@ -273,7 +280,7 @@ class AdminSecurityController extends AbstractController
         $log = new SecurityLog();
         $log->setType('Session');
         $log->setMessage("Bannissement manuel de l'IP : $ip.");
-        $log->setUser($admin); // Correction : On passe l'objet $admin
+        $log->setUser($admin);
         $log->setIp($request->getClientIp());
         $log->setUserAgent($request->headers->get('User-Agent'));
         $log->setMethod('POST');
@@ -293,7 +300,7 @@ class AdminSecurityController extends AbstractController
     {
         $logs = $repo->findBy([], ['createdAt' => 'DESC']);
 
-        $rows = [["ID", "Date", "Utilisateur", "IP", "Action"]];
+        $rows = [['ID', 'Date', 'Utilisateur', 'IP', 'Action']];
 
         foreach ($logs as $log) {
             $rows[] = [
@@ -301,16 +308,18 @@ class AdminSecurityController extends AbstractController
                 $log->getCreatedAt()->format('Y-m-d H:i:s'),
                 $log->getUser() ? $log->getUser()->getEmail() : 'Système',
                 $log->getIp(),
-                $log->getMessage()
+                $log->getMessage(),
             ];
         }
 
         $callback = function () use ($rows) {
             $file = fopen('php://output', 'w');
             fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
             foreach ($rows as $row) {
                 fputcsv($file, $row, ';');
             }
+
             fclose($file);
         };
 

@@ -47,6 +47,7 @@ class AdminRoutineTemplateController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
             $em->persist($template);
             $em->flush();
 
@@ -66,7 +67,9 @@ class AdminRoutineTemplateController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
             $em->flush();
+
             $this->addFlash('success', 'Template mis à jour.');
             return $this->redirectToRoute('admin_routine_template_edit', ['id' => $template->getId()]);
         }

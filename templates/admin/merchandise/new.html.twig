@@ -1,115 +1,278 @@
 {% extends 'admin/base_admin.html.twig' %}
 
 {% block title %}Nouveau Produit{% endblock %}
+{% block page_title %}Nouveau Produit{% endblock %}
 
 {% block stylesheets %}
 <style>
-    /* =================== CONTAINER =================== */
-    .form-container { max-width: 800px; margin: 0 auto; }
-
-    /* =================== HEADER =================== */
     .page-header {
-        margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;
-        display: flex; justify-content: space-between; align-items: flex-end;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        gap: 1rem;
+        flex-wrap: wrap;
     }
-    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
-    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
-    .back-link { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; text-decoration: underline; cursor: pointer; }
-    .back-link:hover { color: var(--text-main); }
 
-    /* =================== FORM CARD =================== */
-    .form-card { background: var(--bg-sidebar); border: 1px solid var(--border-color); border-radius: 6px; padding: 2rem; }
-    .form-group { margin-bottom: 1.5rem; }
-
-    /* Labels */
-    .form-label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
-
-    /* Inputs */
-    .form-control {
-        width: 100%; background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main);
-        padding: 0.75rem 1rem; border-radius: 4px; font-size: 0.95rem; font-family: inherit; transition: 0.2s; box-sizing: border-box;
+    .page-header h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+        color: var(--text-main);
     }
-    .form-control:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.1); }
-    
-    textarea.form-control { min-height: 120px; line-height: 1.5; resize: vertical; }
 
-    /* Grid Layout */
-    .form-row-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
-    @media(max-width: 600px) { .form-row-2 { grid-template-columns: 1fr; gap: 0; } }
+    .page-header p {
+        margin: 5px 0 0 0;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
 
-    /* Image Preview */
-    .preview-box { 
-        margin-top: 1rem; 
-        width: 150px; height: 150px; 
-        border: 1px dashed var(--border-color); 
-        border-radius: 4px; 
-        display: none; 
+    .toolbar {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .btn-create {
+        background: var(--text-main);
+        color: var(--bg-body);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: 0.2s;
+        border: none;
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .btn-create:hover {
+        opacity: 0.9;
+    }
+
+    .btn-outline {
+        background: transparent;
+        color: var(--text-main);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: 0.2s;
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+        opacity: 0.9;
+    }
+
+    .btn-outline:hover {
+        opacity: 1;
+        border-color: var(--text-main);
+    }
+
+    .table-wrapper {
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        max-width: 900px;
+    }
+
+    .form-row-2 {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1.2rem;
+    }
+
+    .tool-label {
+        display: block;
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.35rem;
+    }
+
+    .input {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 0.6rem 1rem;
+        border-radius: 4px;
+        outline: none;
+        font-size: 0.9rem;
+        transition: border-color 0.2s;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .input:focus {
+        border-color: var(--text-main);
+    }
+
+    .input::placeholder {
+        color: var(--text-muted);
+        opacity: 0.6;
+    }
+
+    textarea.input {
+        min-height: 120px;
+        line-height: 1.5;
+        resize: vertical;
+    }
+
+    input[type="file"].input {
+        padding: 0.45rem;
+        cursor: pointer;
+    }
+
+    input[type="file"]::file-selector-button {
+        background: var(--bg-body);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 0.35rem 0.8rem;
+        margin-right: 0.8rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    input[type="file"]::file-selector-button:hover {
+        background: rgba(255,255,255,0.05);
+    }
+
+    .preview-box {
+        margin-top: 1rem;
+        width: 150px;
+        height: 150px;
+        border: 1px dashed var(--border-color);
+        border-radius: 6px;
+        display: none;
         overflow: hidden;
         background: var(--bg-body);
     }
-    #image-preview { width: 100%; height: 100%; object-fit: cover; }
 
-    /* Actions */
-    .form-actions {
-        margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);
-        display: flex; justify-content: flex-end; gap: 1rem;
+    #image-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
-    .btn-cancel { padding: 0.7rem 1.2rem; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; border-radius: 4px; }
-    .btn-save { background: var(--text-main); color: var(--bg-body); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 700; border: none; cursor: pointer; }
-    .btn-save:hover { opacity: 0.9; }
+    .form-error {
+        color: var(--danger);
+        font-size: 0.85rem;
+        margin-top: 0.35rem;
+    }
 
+    .form-error ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+    }
+
+    @media (max-width: 600px) {
+        .form-row-2 {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 700px) {
+        .page-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .toolbar {
+            justify-content: flex-start;
+            width: 100%;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block body %}
-<div class="form-container">
-
-    <div class="page-header">
-        <div>
-            <h1>New Item</h1>
-            <p>Add a new item to the club shop catalogue.</p>
-        </div>
-        <a href="{{ path('admin_merchandise_index') }}" class="back-link">Back to catalogue</a>
+<div class="page-header">
+    <div>
+        <h1>New Item</h1>
+        <p>Add a new item to the club shop catalogue.</p>
     </div>
 
-    <div class="form-card">
+    <div class="toolbar">
+        <a href="{{ path('admin_merchandise_index') }}" class="btn-outline">Back to catalogue</a>
+    </div>
+</div>
+
+<div class="table-wrapper">
+    <div class="card-body">
         {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
 
-        <div class="form-row-2">
-            <div class="form-group">
-                {{ form_label(form.title, 'Item name', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'e.g. Club water bottle'}}) }}
-                <div style="color: var(--danger); font-size: 0.8rem;">{{ form_errors(form.title) }}</div>
+            <div class="form-error">{{ form_errors(form) }}</div>
+
+            <div class="form-grid">
+                <div class="form-row-2">
+                    <div>
+                        <span class="tool-label">Item name</span>
+                        {{ form_widget(form.title, {'attr': {'class': 'input', 'placeholder': 'e.g. Club water bottle'}}) }}
+                        <div class="form-error">{{ form_errors(form.title) }}</div>
+                    </div>
+
+                    <div>
+                        <span class="tool-label">Price (€)</span>
+                        {{ form_widget(form.price, {'attr': {'class': 'input', 'placeholder': '0.00'}}) }}
+                        <div class="form-error">{{ form_errors(form.price) }}</div>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="tool-label">Detailed description</span>
+                    {{ form_widget(form.description, {'attr': {'class': 'input', 'placeholder': 'Details, materials, usage tips...'}}) }}
+                    <div class="form-error">{{ form_errors(form.description) }}</div>
+                </div>
+
+                <div>
+                    <span class="tool-label">Item photo</span>
+                    {{ form_widget(form.image, {'attr': {'class': 'input'}}) }}
+                    <div class="form-error">{{ form_errors(form.image) }}</div>
+
+                    <div class="preview-box" id="preview-container">
+                        <img id="image-preview" src="" alt="Preview">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-create">Save item</button>
+                    <a href="{{ path('admin_merchandise_index') }}" class="btn-outline">Cancel</a>
+                </div>
             </div>
-
-            <div class="form-group">
-                {{ form_label(form.price, 'Price (€)', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.price, {'attr': {'class': 'form-control', 'placeholder': '0.00'}}) }}
-                <div style="color: var(--danger); font-size: 0.8rem;">{{ form_errors(form.price) }}</div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            {{ form_label(form.description, 'Detailed description', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Details, materials, usage tips...'}}) }}
-            <div style="color: var(--danger); font-size: 0.8rem;">{{ form_errors(form.description) }}</div>
-        </div>
-
-        <div class="form-group">
-            {{ form_label(form.image, 'Item photo', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
-            <div style="color: var(--danger); font-size: 0.8rem;">{{ form_errors(form.image) }}</div>
-
-            <div class="preview-box" id="preview-container">
-                <img id="image-preview" src="" alt="Preview">
-            </div>
-        </div>
-
-        <div class="form-actions">
-            <a href="{{ path('admin_merchandise_index') }}" class="btn-cancel">Cancel</a>
-            <button type="submit" class="btn-save">Save item</button>
-        </div>
 
         {{ form_end(form) }}
     </div>
@@ -123,16 +286,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const previewContainer = document.getElementById("preview-container");
     const previewImg = document.getElementById("image-preview");
 
-    if (fileInput) {
+    if (fileInput && previewContainer && previewImg) {
         fileInput.addEventListener("change", function() {
             const file = this.files[0];
+
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     previewImg.src = e.target.result;
                     previewContainer.style.display = "block";
-                }
+                };
                 reader.readAsDataURL(file);
+            } else {
+                previewImg.src = "";
+                previewContainer.style.display = "none";
             }
         });
     }

@@ -1,38 +1,142 @@
 {% extends 'admin/base_admin.html.twig' %}
 
 {% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
 
 {% block stylesheets %}
 <style>
-    /* =================== CONTAINER =================== */
-    .form-container { max-width: 1100px; margin: 0 auto; }
-
-    /* =================== HEADER =================== */
     .page-header {
-        margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;
-        display: flex; justify-content: space-between; align-items: flex-end;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        gap: 1rem;
+        flex-wrap: wrap;
     }
-    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
-    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
-    .back-link { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; text-decoration: underline; }
-    .back-link:hover { color: var(--text-main); }
 
-    /* =================== FORM CARD =================== */
-    .form-card { background: var(--bg-sidebar); border: 1px solid var(--border-color); border-radius: 6px; padding: 2rem; }
-    .form-group { margin-bottom: 1.5rem; }
-
-    /* Labels */
-    .form-label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
-
-    /* Inputs */
-    .form-control {
-        width: 100%; background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main);
-        padding: 0.75rem 1rem; border-radius: 4px; font-size: 0.95rem; font-family: inherit; transition: 0.2s; box-sizing: border-box;
+    .page-header h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+        color: var(--text-main);
     }
-    .form-control:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.1); }
-    
-    /* Textarea spécifique pour le contenu */
-    textarea.form-control {
+
+    .page-header p {
+        margin: 5px 0 0 0;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .toolbar {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .btn-create {
+        background: var(--text-main);
+        color: var(--bg-body);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: 0.2s;
+        border: none;
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .btn-create:hover {
+        opacity: 0.9;
+    }
+
+    .btn-outline {
+        background: transparent;
+        color: var(--text-main);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: 0.2s;
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+        opacity: 0.9;
+    }
+
+    .btn-outline:hover {
+        opacity: 1;
+        border-color: var(--text-main);
+    }
+
+    .table-wrapper {
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        max-width: 1100px;
+    }
+
+    .form-row-page {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1.2rem;
+    }
+
+    .tool-label {
+        display: block;
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.35rem;
+    }
+
+    .input {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 0.6rem 1rem;
+        border-radius: 4px;
+        outline: none;
+        font-size: 0.9rem;
+        transition: border-color 0.2s;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .input:focus {
+        border-color: var(--text-main);
+    }
+
+    .input::placeholder {
+        color: var(--text-muted);
+        opacity: 0.6;
+    }
+
+    textarea.input {
         min-height: 500px;
         font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
         line-height: 1.6;
@@ -40,73 +144,111 @@
         resize: vertical;
     }
 
-    /* Grid Titre / Slug */
-    .form-row-page { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
-    @media(max-width: 800px) { .form-row-page { grid-template-columns: 1fr; gap: 1rem; } }
-
-    .help-text { display: block; margin-top: 5px; font-size: 0.75rem; color: var(--text-muted); font-style: italic; }
-
-    /* Actions */
-    .form-actions {
-        margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);
-        display: flex; justify-content: flex-end; gap: 1rem;
+    .help-text {
+        display: block;
+        margin-top: 5px;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        font-style: italic;
     }
 
-    .btn-cancel { padding: 0.7rem 1.2rem; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; border-radius: 4px; }
-    .btn-save { background: var(--text-main); color: var(--bg-body); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 700; border: none; cursor: pointer; }
-    .btn-save:hover { opacity: 0.9; }
+    .route-preview {
+        color: var(--accent);
+        font-weight: 700;
+    }
 
+    .form-error {
+        color: var(--danger);
+        font-size: 0.85rem;
+        margin-top: 0.35rem;
+    }
+
+    .form-error ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+    }
+
+    @media (max-width: 800px) {
+        .form-row-page {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 700px) {
+        .page-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .toolbar {
+            justify-content: flex-start;
+            width: 100%;
+        }
+    }
 </style>
 {% endblock %}
 
-{% block page_title %}{{ title }}{% endblock %}
-
 {% block body %}
-<div class="form-container">
-    
     <div class="page-header">
         <div>
             <h1>Éditeur de page légale</h1>
             <p>
                 Le contenu sera publié sous le chemin :
-                <strong style="color: var(--accent);">/legal/{{ form.vars.value.slug|default('...') }}</strong>
+                <span class="route-preview">/legal/{{ form.vars.value.slug|default('...') }}</span>
             </p>
         </div>
-        <a href="{{ path('admin_legal_pages_index') }}" class="back-link">Annuler les modifications</a>
+
+        <div class="toolbar">
+            <a href="{{ path('admin_legal_pages_index') }}" class="btn-outline">Annuler les modifications</a>
+        </div>
     </div>
 
-    <div class="form-card">
-        {{ form_start(form) }}
+    <div class="table-wrapper">
+        <div class="card-body">
+            {{ form_start(form) }}
 
-        <div class="form-row-page">
-            <div class="form-group">
-                {{ form_label(form.title, 'Titre de la page', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Ex: CGU, Cookies, Confidentialité'}}) }}
-                <div style="color: var(--danger); font-size: 0.8rem;">{{ form_errors(form.title) }}</div>
-            </div>
+                <div class="form-error">{{ form_errors(form) }}</div>
 
-            <div class="form-group">
-                {{ form_label(form.slug, 'URL (Slug)', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.slug, {'attr': {'class': 'form-control', 'placeholder': 'cgu'}}) }}
-                <span class="help-text">Utilisé pour l’adresse de la page.</span>
-                <div style="color: var(--danger); font-size: 0.8rem;">{{ form_errors(form.slug) }}</div>
-            </div>
+                <div class="form-grid">
+                    <div class="form-row-page">
+                        <div>
+                            <span class="tool-label">Titre de la page</span>
+                            {{ form_widget(form.title, {'attr': {'class': 'input', 'placeholder': 'Ex: CGU, Cookies, Confidentialité'}}) }}
+                            <div class="form-error">{{ form_errors(form.title) }}</div>
+                        </div>
+
+                        <div>
+                            <span class="tool-label">URL (slug)</span>
+                            {{ form_widget(form.slug, {'attr': {'class': 'input', 'placeholder': 'cgu'}}) }}
+                            <span class="help-text">Utilisé pour l’adresse de la page.</span>
+                            <div class="form-error">{{ form_errors(form.slug) }}</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="tool-label">Contenu de la page (HTML ou texte)</span>
+                        {{ form_widget(form.content, {'attr': {'class': 'input'}}) }}
+                        <div class="form-error">{{ form_errors(form.content) }}</div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-create">
+                            {{ form.vars.value.id is not null ? 'Mettre à jour la page' : 'Publier la page' }}
+                        </button>
+                        <a href="{{ path('admin_legal_pages_index') }}" class="btn-outline">Quitter</a>
+                    </div>
+                </div>
+
+            {{ form_end(form) }}
         </div>
-
-        <div class="form-group">
-            {{ form_label(form.content, 'Contenu de la page (HTML ou Texte)', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
-            <div style="color: var(--danger); font-size: 0.8rem;">{{ form_errors(form.content) }}</div>
-        </div>
-
-        <div class="form-actions">
-            <a href="{{ path('admin_legal_pages_index') }}" class="btn-cancel">Quitter</a>
-            <button type="submit" class="btn-save">
-                {{ form.vars.value.id is not null ? 'Mettre à jour la page' : 'Publier la page' }}
-            </button>
-        </div>
-
-        {{ form_end(form) }}
     </div>
-</div>
 {% endblock %}

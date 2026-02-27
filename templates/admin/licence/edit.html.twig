@@ -1,152 +1,407 @@
 {% extends 'admin/base_admin.html.twig' %}
 
 {% block title %}Modifier la licence{% endblock %}
+{% block page_title %}Modifier la licence{% endblock %}
 
 {% block stylesheets %}
 <style>
-    /* ... On reprend exactement les styles de NEW pour la cohérence ... */
-    .dashboard-container { width: 100%; max-width: 1000px; margin: 0 auto; }
-    .page-header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
-    .page-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
-    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
-    
-    .form-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; }
-    .form-card > form > div { margin-bottom: 1.5rem; }
-    
-    label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
-    input[type="text"], input[type="email"], input[type="date"], select { width: 100%; background: var(--bg-darker); border: 1px solid var(--border); color: var(--text-main); padding: 0.7rem 1rem; border-radius: 4px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; box-sizing: border-box; }
-    input:focus, select:focus { border-color: var(--accent); }
-    
-    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    @media(max-width: 700px) { .row-2 { grid-template-columns: 1fr; gap: 0; } }
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
 
-    .form-actions { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; } /* Différence : Space-between pour le bouton supprimer à gauche */
+    .page-header h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+        color: var(--text-main);
+    }
 
-    .btn-submit { background: var(--accent); color: #fff; padding: 0.7rem 1.5rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
-    .btn-submit:hover { background: var(--accent-hover); }
+    .page-header p {
+        margin: 5px 0 0 0;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
 
-    .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.7rem 1.5rem; border-radius: 4px; font-weight: 500; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; transition: 0.2s; }
-    .btn-cancel:hover { border-color: var(--text-muted); color: var(--text-main); }
-    
-    .btn-delete { color: #ef4444; background: none; border: none; font-size: 0.9rem; cursor: pointer; font-weight: 500; padding: 0.5rem 0; opacity: 0.8; transition: opacity 0.2s; }
-    .btn-delete:hover { opacity: 1; text-decoration: underline; }
+    .toolbar {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
 
-    /* Box Avantages Dynamique */
-    .avantages-preview { margin-top: 1rem; padding: 1rem; background: rgba(255, 102, 0, 0.05); border: 1px dashed var(--accent); border-radius: 4px; display: none; }
-    .avantages-preview h4 { margin: 0 0 0.8rem 0; font-size: 0.9rem; color: var(--accent); text-transform: uppercase; font-weight: 700; }
-    .avantages-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem; }
-    .avantages-list li { font-size: 0.85rem; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
-    .avantages-list li::before { content: "✓"; color: var(--accent); font-weight: bold; }
+    .btn-create {
+        background: var(--text-main);
+        color: var(--bg-body);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: 0.2s;
+        border: none;
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .btn-create:hover {
+        opacity: 0.9;
+    }
+
+    .btn-outline {
+        background: transparent;
+        color: var(--text-main);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: 0.2s;
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+        opacity: 0.9;
+    }
+
+    .btn-outline:hover {
+        opacity: 1;
+        border-color: var(--text-main);
+    }
+
+    .btn-danger-link {
+        background: transparent;
+        color: var(--danger);
+        padding: 0.6rem 0;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: 0.2s;
+        border: none;
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .btn-danger-link:hover {
+        opacity: 0.85;
+        text-decoration: underline;
+    }
+
+    .table-wrapper {
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        max-width: 900px;
+    }
+
+    .form-row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.2rem;
+    }
+
+    .tool-label {
+        display: block;
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.35rem;
+    }
+
+    .input {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 0.6rem 1rem;
+        border-radius: 4px;
+        outline: none;
+        font-size: 0.9rem;
+        transition: border-color 0.2s;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .input:focus {
+        border-color: var(--text-main);
+    }
+
+    .input::placeholder {
+        color: var(--text-muted);
+        opacity: 0.6;
+    }
+
+    .form-error {
+        color: var(--danger);
+        font-size: 0.85rem;
+        margin-top: 0.35rem;
+    }
+
+    .form-error ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+    }
+
+    .form-actions-right {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .avantages-preview {
+        margin-top: 0.9rem;
+        padding: 1rem;
+        background: rgba(255, 102, 0, 0.05);
+        border: 1px dashed var(--accent);
+        border-radius: 6px;
+        display: none;
+    }
+
+    .avantages-preview h4 {
+        margin: 0 0 0.8rem 0;
+        font-size: 0.82rem;
+        color: var(--accent);
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+    }
+
+    .avantages-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 0.5rem;
+    }
+
+    .avantages-list li {
+        font-size: 0.85rem;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .avantages-list li::before {
+        content: "✓";
+        color: var(--accent);
+        font-weight: bold;
+    }
+
+    @media (max-width: 700px) {
+        .page-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .toolbar {
+            justify-content: flex-start;
+            width: 100%;
+        }
+
+        .form-row-2 {
+            grid-template-columns: 1fr;
+        }
+
+        .form-actions {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .form-actions-right {
+            width: 100%;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block body %}
-<div class="dashboard-container">
-    
     <div class="page-header">
-        <h1>Modifier la licence</h1>
-        <p>Mise à jour des informations pour la licence #{{ licence.number }}</p>
+        <div>
+            <h1>Modifier la licence</h1>
+            <p>Mise à jour des informations pour la licence #{{ licence.number }}</p>
+        </div>
+
+        <div class="toolbar">
+            <a href="{{ path('admin_licence_index') }}" class="btn-outline">Retour</a>
+        </div>
     </div>
 
-    <div class="form-card">
-        {{ form_start(form) }}
-        
-        <div class="row-2">
-            <div>
-                {{ form_label(form.firstName, 'Prénom') }}
-                {{ form_widget(form.firstName) }}
-            </div>
-            <div>
-                {{ form_label(form.lastName, 'Nom') }}
-                {{ form_widget(form.lastName) }}
-            </div>
+    <div class="table-wrapper">
+        <div class="card-body">
+            {{ form_start(form) }}
+
+                <div class="form-error">{{ form_errors(form) }}</div>
+
+                <div class="form-grid">
+                    <div class="form-row-2">
+                        <div>
+                            <span class="tool-label">Prénom</span>
+                            {{ form_widget(form.firstName, { attr: { class: 'input' } }) }}
+                            <div class="form-error">{{ form_errors(form.firstName) }}</div>
+                        </div>
+
+                        <div>
+                            <span class="tool-label">Nom</span>
+                            {{ form_widget(form.lastName, { attr: { class: 'input' } }) }}
+                            <div class="form-error">{{ form_errors(form.lastName) }}</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row-2">
+                        <div>
+                            <span class="tool-label">Email</span>
+                            {{ form_widget(form.email, { attr: { class: 'input' } }) }}
+                            <div class="form-error">{{ form_errors(form.email) }}</div>
+                        </div>
+
+                        <div>
+                            <span class="tool-label">Numéro de licence</span>
+                            {{ form_widget(form.number, { attr: { class: 'input' } }) }}
+                            <div class="form-error">{{ form_errors(form.number) }}</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row-2">
+                        <div>
+                            <span class="tool-label">Forfait associé</span>
+                            {{ form_widget(form.membershipPlan, { attr: { class: 'input' } }) }}
+                            <div class="form-error">{{ form_errors(form.membershipPlan) }}</div>
+                            <div id="membership-plan-benefits" class="avantages-preview"></div>
+                        </div>
+
+                        <div>
+                            <span class="tool-label">Date d'expiration</span>
+                            {{ form_widget(form.expiryDate, { attr: { class: 'input' } }) }}
+                            <div class="form-error">{{ form_errors(form.expiryDate) }}</div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button
+                            type="button"
+                            class="btn-danger-link"
+                            onclick="if(confirm('⚠️ Attention : Cette action est irréversible.\n\nVoulez-vous vraiment supprimer la licence {{ licence.number }} ?')) document.getElementById('delete-form').submit();"
+                        >
+                            Supprimer cette licence
+                        </button>
+
+                        <div class="form-actions-right">
+                            <a href="{{ path('admin_licence_index') }}" class="btn-outline">Annuler</a>
+                            <button type="submit" class="btn-create">Mettre à jour</button>
+                        </div>
+                    </div>
+                </div>
+
+            {{ form_end(form) }}
         </div>
-
-        <div class="row-2">
-            <div>
-                {{ form_label(form.email, 'Email') }}
-                {{ form_widget(form.email) }}
-            </div>
-            <div>
-                {{ form_label(form.number, 'Numéro de Licence') }}
-                {{ form_widget(form.number) }}
-            </div>
-        </div>
-
-        <div class="row-2">
-            <div>
-                {{ form_label(form.forfait, 'Forfait Associé') }}
-                {{ form_widget(form.forfait) }}
-                <div id="forfait-avantages" class="avantages-preview"></div>
-            </div>
-            <div>
-                {{ form_label(form.expiryDate, 'Date d\'Expiration') }}
-                {{ form_widget(form.expiryDate) }}
-            </div>
-        </div>
-
-        <div class="form-actions">
-            <button type="button" class="btn-delete" onclick="if(confirm('⚠️ Attention : Cette action est irréversible.\n\nVoulez-vous vraiment supprimer la licence {{ licence.number }} ?')) document.getElementById('delete-form').submit();">
-                Supprimer cette licence
-            </button>
-
-            <div style="display: flex; gap: 10px;">
-                <a href="{{ path('admin_licence_index') }}" class="btn-cancel">Annuler</a>
-                <button type="submit" class="btn-submit">Mettre à jour</button>
-            </div>
-        </div>
-
-        {{ form_end(form) }}
     </div>
 
     <form id="delete-form" method="post" action="{{ path('admin_licence_delete', {id: licence.id}) }}" style="display: none;">
         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ licence.id) }}">
     </form>
 
-</div>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const selectMembershipPlan = document.querySelector('#licence_membershipPlan');
+        const benefitsBox = document.getElementById('membership-plan-benefits');
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const selectForfait = document.querySelector('#licence_forfait');
-    const avantagesBox = document.getElementById('forfait-avantages');
+        if (!selectMembershipPlan || !benefitsBox) return;
 
-    if (!selectForfait) return;
+        async function loadBenefits() {
+            const id = selectMembershipPlan.value;
 
-    async function loadAvantages() {
-        const id = selectForfait.value;
-        if (!id) {
-            avantagesBox.style.display = 'none';
-            return;
-        }
+            if (!id) {
+                benefitsBox.style.display = 'none';
+                benefitsBox.innerHTML = '';
+                return;
+            }
 
-        try {
-            const resp = await fetch(`/admin/licences/forfait/${id}/avantages`);
-            const data = await resp.json();
+            try {
+                const urlTemplate = "{{ path('admin_licence_membership_plan_benefits', {'id': '__ID__'}) }}";
+                const url = urlTemplate.replace('__ID__', id);
 
-            if (data.avantages && data.avantages.length > 0) {
-                const cleanList = data.avantages.map(a => {
-                    const parts = a.split('|');
-                    return parts.length > 1 ? parts[1].trim() : a;
+                const resp = await fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
                 });
 
-                avantagesBox.innerHTML = `
-                    <h4>Inclus dans ${data.nom} :</h4>
-                    <ul class="avantages-list">
-                        ${cleanList.map(item => `<li>${item}</li>`).join('')}
-                    </ul>
-                `;
-                avantagesBox.style.display = 'block';
-            } else {
-                avantagesBox.style.display = 'none';
-            }
-        } catch (e) {
-            console.error("Erreur", e);
-            avantagesBox.style.display = 'none';
-        }
-    }
+                if (!resp.ok) {
+                    throw new Error('Réponse HTTP ' + resp.status);
+                }
 
-    selectForfait.addEventListener('change', loadAvantages);
-    if(selectForfait.value) loadAvantages();
-});
-</script>
+                const data = await resp.json();
+
+                if (data.benefits && data.benefits.length > 0) {
+                    const cleanList = data.benefits.map(item => {
+                        if (typeof item !== 'string') return item;
+                        const parts = item.split('|');
+                        return parts.length > 1 ? parts[1].trim() : item;
+                    });
+
+                    benefitsBox.innerHTML = `
+                        <h4>Inclus dans ${data.name} :</h4>
+                        <ul class="avantages-list">
+                            ${cleanList.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    `;
+                    benefitsBox.style.display = 'block';
+                } else {
+                    benefitsBox.style.display = 'none';
+                    benefitsBox.innerHTML = '';
+                }
+            } catch (e) {
+                console.error('Erreur chargement benefits', e);
+                benefitsBox.style.display = 'none';
+                benefitsBox.innerHTML = '';
+            }
+        }
+
+        selectMembershipPlan.addEventListener('change', loadBenefits);
+
+        if (selectMembershipPlan.value) {
+            loadBenefits();
+        }
+    });
+    </script>
 {% endblock %}
