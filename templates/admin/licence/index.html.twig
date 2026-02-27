@@ -1,48 +1,45 @@
 {% extends 'admin/base_admin.html.twig' %}
 
 {% block title %}Gestion des licences{% endblock %}
+{% block page_title %}Gestion des licences{% endblock %}
 
 {% block stylesheets %}
 <style>
-    /* =================== PAGE STYLE =================== */
-    .dashboard-container {
-        width: 100%;
-        max-width: 1600px;
-        margin: 0 auto;
-    }
-
-    /* Header */
     .page-header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-end;
         margin-bottom: 2rem;
-        border-bottom: 1px solid var(--border);
-        padding-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        gap: 1rem;
+        flex-wrap: wrap;
     }
-    .page-header h1 { 
-        margin: 0; 
-        font-size: 1.6rem; 
-        font-weight: 700; 
-        color: var(--text-main); 
-        letter-spacing: -0.5px;
+
+    .page-header h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+        color: var(--text-main);
     }
+
     .page-header p {
         margin: 5px 0 0 0;
         color: var(--text-muted);
         font-size: 0.9rem;
     }
 
-    /* Toolbar */
     .toolbar {
         display: flex;
-        gap: 1rem;
+        gap: 0.75rem;
         align-items: center;
+        flex-wrap: wrap;
+        justify-content: flex-end;
     }
 
     .search-input {
         background: transparent;
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-color);
         color: var(--text-main);
         padding: 0.6rem 1rem;
         border-radius: 4px;
@@ -51,93 +48,144 @@
         font-size: 0.9rem;
         transition: border-color 0.2s;
     }
-    .search-input:focus { border-color: var(--accent); }
-    .search-input::placeholder { color: var(--text-muted); opacity: 0.6; }
 
-    .btn-primary {
-        background: var(--accent);
-        color: #fff;
-        padding: 0.6rem 1.5rem;
+    .search-input:focus {
+        border-color: var(--text-main);
+    }
+
+    .search-input::placeholder {
+        color: var(--text-muted);
+        opacity: 0.6;
+    }
+
+    .btn-create {
+        background: var(--text-main);
+        color: var(--bg-body);
+        padding: 0.6rem 1.2rem;
         border-radius: 4px;
-        font-weight: 600;
-        font-size: 0.9rem;
+        font-weight: 700;
+        font-size: 0.85rem;
         cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
         transition: 0.2s;
         border: none;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
         text-decoration: none;
         display: inline-block;
-    }
-    .btn-primary:hover { background: var(--accent-hover); }
-
-    /* Carte Principale */
-    .content-card {
-        background: var(--bg-light);
-        border: 1px solid var(--border);
-        border-radius: 4px;
+        white-space: nowrap;
     }
 
-    /* Table */
-    .table-responsive { overflow-x: auto; }
-    .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    
-    .table th {
-        background: var(--bg-darker);
+    .btn-create:hover {
+        opacity: 0.9;
+    }
+
+    .table-wrapper {
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .table-scroll {
+        overflow-x: auto;
+    }
+
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+
+    .admin-table th {
+        background: var(--bg-body);
         color: var(--text-muted);
         font-weight: 600;
         text-align: left;
-        padding: 1rem 1.5rem;
-        border-bottom: 1px solid var(--border);
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--border-color);
         text-transform: uppercase;
         font-size: 0.75rem;
-        letter-spacing: 1px;
+        letter-spacing: 0.06em;
+        white-space: nowrap;
     }
-    
-    .table td {
-        padding: 1rem 1.5rem;
-        border-bottom: 1px solid var(--border);
+
+    .admin-table td {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--border-color);
         color: var(--text-main);
         vertical-align: middle;
     }
-    .table tr:last-child td { border-bottom: none; }
-    .table tr:hover { background: rgba(255,255,255,0.01); }
 
-    /* Data Styling */
+    .admin-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .admin-table tbody tr:hover {
+        background: var(--hover-bg);
+    }
+
     .licence-number {
-        font-family: "Courier New", Courier, monospace; /* Style Code */
+        font-family: "Courier New", Courier, monospace;
         font-weight: 700;
         letter-spacing: 1px;
-        background: var(--bg-darker);
+        background: var(--bg-body);
         padding: 4px 8px;
         border-radius: 4px;
         font-size: 0.85rem;
         color: var(--text-main);
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-color);
+        display: inline-block;
     }
 
-    .info-primary { font-weight: 600; display: block; color: var(--text-main); }
-    .info-secondary { font-size: 0.8rem; color: var(--text-muted); }
+    .info-primary {
+        font-weight: 600;
+        display: block;
+        color: var(--text-main);
+    }
 
-    /* Status Badges */
+    .info-secondary {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-top: 0.15rem;
+        display: block;
+    }
+
     .badge {
         font-size: 0.75rem;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.04em;
         padding: 4px 8px;
         border-radius: 4px;
+        display: inline-block;
     }
-    .badge-active { color: #22c55e; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); }
-    .badge-expired { color: #ef4444; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
-    .badge-type { color: var(--accent); border: 1px solid var(--border); }
 
-    /* Actions */
+    .badge-active {
+        color: #22c55e;
+        background: rgba(34, 197, 94, 0.1);
+        border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+
+    .badge-expired {
+        color: #ef4444;
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .badge-type {
+        color: var(--accent);
+        border: 1px solid var(--border-color);
+        background: transparent;
+    }
+
     .actions-cell {
         display: flex;
-        gap: 15px;
+        gap: 1rem;
         justify-content: flex-end;
+        align-items: center;
+        flex-wrap: wrap;
     }
+
     .action-link {
         font-size: 0.85rem;
         font-weight: 500;
@@ -147,35 +195,61 @@
         padding: 0;
         cursor: pointer;
     }
-    .link-edit { color: var(--text-muted); }
-    .link-edit:hover { color: var(--text-main); text-decoration: underline; }
-    .link-delete { color: #ef4444; opacity: 0.8; }
-    .link-delete:hover { opacity: 1; text-decoration: underline; }
 
+    .link-edit {
+        color: var(--text-muted);
+    }
+
+    .link-edit:hover {
+        color: var(--text-main);
+        text-decoration: underline;
+    }
+
+    .link-delete {
+        color: var(--danger);
+        opacity: 0.9;
+    }
+
+    .link-delete:hover {
+        opacity: 1;
+        text-decoration: underline;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 1.5rem;
+        color: var(--text-muted);
+    }
+
+    @media (max-width: 900px) {
+        .search-input {
+            min-width: 100%;
+        }
+
+        .toolbar {
+            width: 100%;
+            justify-content: flex-start;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block body %}
-<div class="dashboard-container">
-    
-    {# Header #}
     <div class="page-header">
         <div>
             <h1>Licences</h1>
             <p>Suivi des licences sportives et dates d'expiration</p>
         </div>
+
         <div class="toolbar">
             <input type="text" id="searchLicence" class="search-input" placeholder="Nom, email ou numéro...">
-            <a href="{{ path('admin_licence_new') }}" class="btn-primary">
-                Créer une licence
-            </a>
+            <a href="{{ path('admin_licence_new') }}" class="btn-create">Créer une licence</a>
         </div>
     </div>
 
-    {# Table #}
-    <div class="content-card">
-        <div class="table-responsive">
-            <table class="table" id="licenceTable">
+    <div class="table-wrapper">
+        <div class="table-scroll">
+            <table class="admin-table" id="licenceTable">
                 <thead>
                     <tr>
                         <th width="80">ID</th>
@@ -189,19 +263,18 @@
                 </thead>
                 <tbody>
                     {% for licence in licences %}
-                        {# Calcul de l'état (Active / Expirée) #}
                         {% set isExpired = licence.expiryDate < date() %}
-                        
+
                         <tr>
                             <td style="color: var(--text-muted); font-family: monospace;">#{{ licence.id }}</td>
-                            
+
                             <td>
                                 <span class="licence-number">{{ licence.number }}</span>
                             </td>
 
                             <td>
-                                <span class="info-primary search-target">{{ licence.firstName }} {{ licence.lastName }}</span>
-                                <span class="info-secondary search-target">{{ licence.email }}</span>
+                                <span class="info-primary">{{ licence.firstName }} {{ licence.lastName }}</span>
+                                <span class="info-secondary">{{ licence.email }}</span>
                             </td>
 
                             <td>
@@ -223,17 +296,20 @@
                             <td>
                                 <div class="actions-cell">
                                     <a href="{{ path('admin_licence_edit', {id: licence.id}) }}" class="action-link link-edit">Modifier</a>
-                                    
-                                    <form method="post" action="{{ path('admin_licence_delete', {id: licence.id}) }}" onsubmit="return confirm('Supprimer définitivement la licence {{ licence.number }} ?');" style="display:inline;">
+
+                                    <form method="post"
+                                          action="{{ path('admin_licence_delete', {id: licence.id}) }}"
+                                          onsubmit="return confirm('Supprimer définitivement la licence {{ licence.number }} ?');"
+                                          style="display:inline;">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ licence.id) }}">
-                                        <button class="action-link link-delete">Supprimer</button>
+                                        <button type="submit" class="action-link link-delete">Supprimer</button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="7" style="text-align: center; padding: 4rem; color: var(--text-muted);">
+                            <td colspan="7" class="empty-state">
                                 Aucune licence enregistrée.
                             </td>
                         </tr>
@@ -243,25 +319,17 @@
         </div>
     </div>
 
-</div>
-
-<script>
-    // Recherche simple en JS
+    <script>
     document.getElementById('searchLicence').addEventListener('keyup', function() {
         const val = this.value.toLowerCase();
         const rows = document.querySelectorAll('#licenceTable tbody tr');
 
         rows.forEach(row => {
-            // On cherche dans le numéro et dans le nom/email
             const number = row.querySelector('.licence-number')?.textContent.toLowerCase() || '';
-            const text = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase() || ''; // Colonne Titulaire
-            
-            if (number.includes(val) || text.includes(val)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+            const text = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase() || '';
+
+            row.style.display = (number.includes(val) || text.includes(val)) ? '' : 'none';
         });
     });
-</script>
+    </script>
 {% endblock %}

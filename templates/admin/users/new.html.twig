@@ -1,186 +1,204 @@
 {% extends 'admin/base_admin.html.twig' %}
 
 {% block title %}Nouvel utilisateur{% endblock %}
+{% block page_title %}Nouvel utilisateur{% endblock %}
 
 {% block stylesheets %}
 <style>
-    /* =================== CONTAINER =================== */
-    .form-container {
-        max-width: 800px; /* Plus étroit pour la lisibilité */
-        margin: 0 auto;
-    }
-
-    /* =================== HEADER =================== */
     .page-header {
-        margin-bottom: 2rem;
-        border-bottom: 1px solid var(--border-color);
-        padding-bottom: 1.5rem;
         display: flex; justify-content: space-between; align-items: flex-end;
+        margin-bottom: 2rem; padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        gap: 1rem;
+        flex-wrap: wrap;
     }
-    .page-header h1 { 
-        font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); 
-    }
-    .page-header p { 
-        margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; 
-    }
-    .back-link {
-        font-size: 0.85rem; color: var(--text-muted); font-weight: 500;
-        text-decoration: underline; cursor: pointer;
-    }
-    .back-link:hover { color: var(--text-main); }
+    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
 
-    /* =================== FORM CARD =================== */
-    .form-card {
+    .toolbar {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .btn-create {
+        background: var(--text-main);
+        color: var(--bg-body);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: 0.2s;
+        border: none;
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+    }
+    .btn-create:hover { opacity: 0.9; }
+
+    .btn-outline {
+        background: transparent;
+        color: var(--text-main);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: 0.2s;
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+        opacity: 0.9;
+    }
+    .btn-outline:hover { opacity: 1; border-color: var(--text-main); }
+
+    .table-wrapper {
         background: var(--bg-sidebar);
         border: 1px solid var(--border-color);
         border-radius: 6px;
-        padding: 2rem;
     }
 
-    /* Groupes de champs */
-    .form-group { margin-bottom: 1.5rem; }
+    .card-body { padding: 1.5rem; }
 
-    /* Labels */
-    .form-label {
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        max-width: 760px;
+    }
+
+    .form-row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.2rem;
+    }
+
+    .tool-label {
         display: block;
-        font-size: 0.75rem;
-        font-weight: 700;
         color: var(--text-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.35rem;
     }
 
-    /* Inputs (Text, Email, Password, Select) */
-    .form-control {
-        width: 100%;
-        background: var(--bg-body); /* Fond sombre pour contraste avec la carte */
+    .input {
+        background: transparent;
         border: 1px solid var(--border-color);
         color: var(--text-main);
-        padding: 0.75rem 1rem;
+        padding: 0.6rem 1rem;
         border-radius: 4px;
-        font-size: 0.95rem;
-        font-family: inherit;
-        transition: border-color 0.2s, box-shadow 0.2s;
+        outline: none;
+        font-size: 0.9rem;
+        transition: border-color 0.2s;
+        width: 100%;
         box-sizing: border-box;
     }
+    .input:focus { border-color: var(--text-main); }
+    .input::placeholder { color: var(--text-muted); opacity: 0.6; }
 
-    .form-control:focus {
-        border-color: var(--accent);
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.1); /* Lueur orange subtile */
-    }
-
-    .form-control::placeholder { color: var(--text-muted); opacity: 0.5; }
-
-    /* Grid Layout pour Prénom/Nom */
-    .form-row-2 {
-        display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
-    }
-    @media(max-width: 600px) { .form-row-2 { grid-template-columns: 1fr; gap: 0; } }
-
-    /* Help Text & Errors */
     .form-help {
-        display: block; margin-top: 0.4rem;
-        font-size: 0.8rem; color: var(--text-muted); opacity: 0.8;
-    }
-    .form-error {
-        color: var(--danger); font-size: 0.85rem; margin-top: 0.4rem; display: block;
-    }
-    .form-error ul { padding: 0; margin: 0; list-style: none; }
-
-    /* Actions Footer */
-    .form-actions {
-        margin-top: 2rem; padding-top: 1.5rem;
-        border-top: 1px solid var(--border-color);
-        display: flex; justify-content: flex-end; gap: 1rem;
-    }
-
-    .btn-cancel {
-        padding: 0.7rem 1.2rem;
+        display: block;
+        margin-top: 0.35rem;
         color: var(--text-muted);
-        font-weight: 600; font-size: 0.9rem;
-        border-radius: 4px;
-        transition: color 0.2s;
+        font-size: 0.8rem;
     }
-    .btn-cancel:hover { color: var(--text-main); }
 
-    .btn-save {
-        background: var(--text-main); /* Style Noir/Blanc "Pro" */
-        color: var(--bg-body);
-        padding: 0.7rem 1.5rem;
-        border-radius: 4px;
-        font-weight: 700; font-size: 0.9rem;
-        border: none; cursor: pointer;
-        transition: opacity 0.2s;
+    .form-error {
+        color: var(--danger);
+        font-size: 0.85rem;
+        margin-top: 0.35rem;
     }
-    .btn-save:hover { opacity: 0.9; }
+    .form-error ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
 
+    .form-actions {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+    }
+
+    @media(max-width: 700px) {
+        .page-header { align-items: flex-start; flex-direction: column; }
+        .toolbar { justify-content: flex-start; width: 100%; }
+        .form-row-2 { grid-template-columns: 1fr; }
+    }
 </style>
 {% endblock %}
 
 {% block body %}
-<div class="form-container">
-    
     <div class="page-header">
         <div>
             <h1>Créer un compte</h1>
             <p>Ajouter un nouvel utilisateur à la base de données.</p>
         </div>
-        <a href="{{ path('admin_users_index') }}" class="back-link">Retour à la liste</a>
+        <div class="toolbar">
+            <a href="{{ path('admin_users_index') }}" class="btn-outline">Retour</a>
+        </div>
     </div>
 
-    <div class="form-card">
-        {{ form_start(form) }}
-        
-        {# Ligne Prénom / Nom #}
-        <div class="form-row-2">
-            <div class="form-group">
-                {{ form_label(form.firstName, 'Prénom', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.firstName, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Thomas'}}) }}
-                <div class="form-error">{{ form_errors(form.firstName) }}</div>
-            </div>
-            <div class="form-group">
-                {{ form_label(form.lastName, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Anderson'}}) }}
-                <div class="form-error">{{ form_errors(form.lastName) }}</div>
-            </div>
-        </div>
+    <div class="table-wrapper">
+        <div class="card-body">
+            {{ form_start(form) }}
 
-        {# Email #}
-        <div class="form-group">
-            {{ form_label(form.email, 'Email Professionnel / Personnel', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'utilisateur@domaine.com'}}) }}
-            <div class="form-error">{{ form_errors(form.email) }}</div>
-        </div>
+                <div class="form-error">{{ form_errors(form) }}</div>
 
-        {# Password #}
-        <div class="form-group">
-            {{ form_label(form.password, 'Mot de passe initial', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
-            <span class="form-help">Minimum 6 caractères. L'utilisateur pourra le changer plus tard.</span>
-            <div class="form-error">{{ form_errors(form.password) }}</div>
-        </div>
+                <div class="form-grid">
+                    <div class="form-row-2">
+                        <div>
+                            <span class="tool-label">Prénom</span>
+                            {{ form_widget(form.firstName, { attr: { class: 'input', placeholder: 'Ex: Thomas' } }) }}
+                            <div class="form-error">{{ form_errors(form.firstName) }}</div>
+                        </div>
 
-        {# Rôles #}
-        <div class="form-group">
-            {{ form_label(form.roles, 'Niveau d\'accréditation', {'label_attr': {'class': 'form-label'}}) }}
-            {# 
-               Note : Si 'roles' est un ChoiceType(multiple=true), Symfony peut générer un select ou des checkboxes.
-               La classe .form-control s'adapte bien aux <select>.
-            #}
-            {{ form_widget(form.roles, {'attr': {'class': 'form-control', 'style': 'height: auto;'}}) }}
-            <span class="form-help">Maintenez CTRL (ou CMD) pour sélectionner plusieurs rôles si nécessaire.</span>
-            <div class="form-error">{{ form_errors(form.roles) }}</div>
-        </div>
+                        <div>
+                            <span class="tool-label">Nom</span>
+                            {{ form_widget(form.lastName, { attr: { class: 'input', placeholder: 'Ex: Anderson' } }) }}
+                            <div class="form-error">{{ form_errors(form.lastName) }}</div>
+                        </div>
+                    </div>
 
-        <div class="form-actions">
-            <a href="{{ path('admin_users_index') }}" class="btn-cancel">Annuler</a>
-            <button type="submit" class="btn-save">Enregistrer l'utilisateur</button>
-        </div>
+                    <div>
+                        <span class="tool-label">Email professionnel / personnel</span>
+                        {{ form_widget(form.email, { attr: { class: 'input', placeholder: 'utilisateur@domaine.com' } }) }}
+                        <div class="form-error">{{ form_errors(form.email) }}</div>
+                    </div>
 
-        {{ form_end(form) }}
+                    <div>
+                        <span class="tool-label">Mot de passe initial</span>
+                        {{ form_widget(form.password, { attr: { class: 'input' } }) }}
+                        <span class="form-help">Minimum 6 caractères. L'utilisateur pourra le changer plus tard.</span>
+                        <div class="form-error">{{ form_errors(form.password) }}</div>
+                    </div>
+
+                    <div>
+                        <span class="tool-label">Niveau d'accréditation</span>
+                        {{ form_widget(form.roles, { attr: { class: 'input', style: 'height:auto;' } }) }}
+                        <span class="form-help">Maintenez CTRL (ou CMD) pour sélectionner plusieurs rôles si nécessaire.</span>
+                        <div class="form-error">{{ form_errors(form.roles) }}</div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-create">Enregistrer</button>
+                        <a href="{{ path('admin_users_index') }}" class="btn-outline">Annuler</a>
+                    </div>
+                </div>
+
+            {{ form_end(form) }}
+        </div>
     </div>
-
-</div>
 {% endblock %}

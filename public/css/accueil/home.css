@@ -335,6 +335,7 @@
 .home-pricing-section {
   padding: var(--section-padding-y) 0;
   background: var(--bg-section);
+  border-bottom: 1px solid #4D4D4D;
 }
 
 .pricing-header-elite{
@@ -740,6 +741,8 @@
   color: var(--text-white);
   padding: 80px 0;
   overflow: hidden;
+  border-bottom: 1px solid #4D4D4D;
+  padding-bottom: 160px;
 }
 
 .equipment-section .equipment-container{
