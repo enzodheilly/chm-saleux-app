@@ -112,39 +112,54 @@
         </div>
     </div>
 
-    {# --- MOBILE MENU --- #}
-    <div class="mobile-nav-overlay" id="mobileNavOverlay">
-        <div class="mobile-links">
-            <a href="{{ path('home') }}">Accueil</a>
-            
-            <div class="mobile-accordion">
-                <button>Le Club <i class="fa-solid fa-plus"></i></button>
-                <div class="accordion-content">
-                    <div class="sub-group">
-                        <span>Activités</span>
-                        <a href="{{ path('halterophilie') }}">Haltérophilie</a>
-                        <a href="{{ path('musculation') }}">Musculation</a>
-                        <a href="{{ path('cours_collectifs') }}">Cours Co'</a>
-                    </div>
-                    <div class="sub-group">
-                        <span>Infos</span>
-                        <a href="{{ path('membres_bureau') }}">Le Bureau</a>
-                        <a href="{{ path('horaires') }}">Horaires</a>
-                        <a href="{{ path('app_pricing') }}">Tarifs</a>
-                    </div>
+{# --- MOBILE MENU --- #}
+<div class="mobile-nav-overlay" id="mobileNavOverlay">
+    <div class="mobile-links">
+        <a href="{{ path('home') }}">Accueil</a>
+        
+        <div class="mobile-accordion">
+            <button type="button" class="mobile-accordion-btn">
+                Club & Membres du Bureau
+                <i class="fa-solid fa-plus"></i>
+            </button>
+
+            <div class="accordion-content">
+                <div class="sub-group">
+                    <span>Le Club</span>
+                    <a href="{{ path('app_club') }}">Présentation du club</a>
+                    <a href="{{ path('halterophilie') }}">Haltérophilie</a>
+                    <a href="{{ path('musculation') }}">Musculation</a>
+                    <a href="{{ path('cours_collectifs') }}">Cours collectifs</a>
+                    <a href="{{ path('seance_essai') }}">Séance d'essai</a>
+                    <a href="{{ path('evenements') }}">Événements organisés</a>
+                    <a href="{{ path('sauna') }}">Sauna</a>
+                    <a href="{{ path('labels_club') }}">Les labels du club</a>
+                    <a href="{{ path('horaires') }}">Les horaires</a>
+                </div>
+
+                <div class="sub-group">
+                    <span>Membres du bureau</span>
+                    <a href="{{ path('president') }}">Le Président</a>
+                    <a href="{{ path('tresorier') }}">Le Trésorier</a>
+                    <a href="{{ path('secretaire') }}">La Secrétaire</a>
+                    <a href="{{ path('membres_bureau') }}">Les membres du bureau</a>
                 </div>
             </div>
-
-            <a href="{{ path('ecole') }}">École Jeunes</a>
-            <a href="{{ path('competition') }}">Compétitions</a>
         </div>
 
-        <div class="mobile-footer-nav">
-            {% if not app.user %}
-                <a href="#" class="mobile-login-link js-trigger-login">SE CONNECTER / S'INSCRIRE</a>
-            {% else %}
-                <a href="{{ path('dashboard') }}" class="mobile-login-link">MON COMPTE</a>
-            {% endif %}
-        </div>
+        <a href="{{ path('app_pricing') }}">Tarifs</a>
+        <a href="{{ path('ecole') }}">École</a>
+        <a href="{{ path('competition') }}">Compétitions & Résultats</a>
+        <a href="{{ path('faq') }}">Aide</a>
     </div>
+
+    <div class="mobile-footer-nav">
+        {% if not app.user %}
+            <a href="#" class="mobile-login-link js-open-register-modal">SE CONNECTER / S'INSCRIRE</a>
+        {% else %}
+            <a href="{{ path('dashboard') }}" class="mobile-login-link">MON ESPACE</a>
+            <a href="{{ path('app_logout') }}" class="mobile-login-link mobile-logout-link">SE DÉCONNECTER</a>
+        {% endif %}
+    </div>
+</div>
 </nav>
