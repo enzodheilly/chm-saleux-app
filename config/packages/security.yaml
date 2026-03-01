@@ -88,6 +88,8 @@ security:
         # ✅ Actus publiques (liste + détail)
         - { path: ^/api/actus(?:/|$), roles: PUBLIC_ACCESS }
 
+        - { path: ^/api/licences/recovery/request$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/licences/recovery/verify$, roles: PUBLIC_ACCESS }
         # --- API privée ---
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
