@@ -46,10 +46,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     #[Groups(['user:read'])]
     private array $roles = [];
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['user:read', 'user:write'])]
-    private int $totalXp = 0;
-
     #[ORM\Column(type: 'json', nullable: true)]
     private array $backupCodes = [];
 
@@ -105,35 +101,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: NewsletterSubscriber::class, cascade: ['persist', 'remove'])]
     private ?NewsletterSubscriber $newsletterSubscription = null;
 
-    #[ORM\Column(type: 'string', length: 50, nullable: true)]
-    #[Groups(['user:read'])]
-    private ?string $licenceNumber = null;
-
-    #[ORM\Column(type: 'string', length: 50, nullable: true)]
-    #[Groups(['user:read'])]
-    private ?string $licenceType = null;
-
-    #[ORM\Column(type: 'string', length: 20, nullable: true, options: ["default" => "Inactive"])]
-    #[Groups(['user:read'])]
-    private ?string $licenceStatus = 'Inactive';
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    #[Groups(['user:read'])]
-    private ?\DateTimeInterface $licenceEndDate = null;
-
-    #[ORM\Column(type: 'boolean', options: ["default" => true])]
+    #[ORM\Column(type: "boolean", options: ["default" => true])]
     private bool $needsPassword = false;
 
     #[ORM\Column(type: "blob", nullable: true)]
     private $profileImage;
-
-    #[ORM\Column(type: "string", length: 20, nullable: true)]
-    #[Groups(['user:read', 'user:write'])]
-    private ?string $phone = null;
-
-    #[ORM\Column(type: "boolean")]
-    #[Groups(['user:read'])]
-    private bool $phoneVerified = false;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $profileImageMime = null;
@@ -150,7 +122,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: SecurityLog::class, cascade: ['remove'], orphanRemoval: true)]
     private Collection $securityLogs;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Licence::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Licence::class)]
     private Collection $licences;
 
     public function __construct()
@@ -229,21 +201,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         return $this->password;
     }
 
-    // ✅ cohérence : champ nullable => setter nullable
     public function setPassword(?string $password): self
     {
         $this->password = $password;
-        return $this;
-    }
-
-    public function getTotalXp(): int
-    {
-        return $this->totalXp;
-    }
-
-    public function setTotalXp(int $totalXp): self
-    {
-        $this->totalXp = $totalXp;
         return $this;
     }
 
@@ -263,6 +223,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+        return $this;
     }
 
     public function getUpdatedAt(): \DateTimeImmutable
@@ -364,7 +330,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         return $this;
     }
 
-    // ✅ un seul getter cohérent pour acceptedTerms
     public function isAcceptedTerms(): bool
     {
         return $this->acceptedTerms;
@@ -402,51 +367,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         if ($newsletterSubscription && $newsletterSubscription->getUser() !== $this) {
             $newsletterSubscription->setUser($this);
         }
+
         $this->newsletterSubscription = $newsletterSubscription;
-        return $this;
-    }
-
-    public function getLicenceNumber(): ?string
-    {
-        return $this->licenceNumber;
-    }
-
-    public function setLicenceNumber(?string $licenceNumber): self
-    {
-        $this->licenceNumber = $licenceNumber;
-        return $this;
-    }
-
-    public function getLicenceType(): ?string
-    {
-        return $this->licenceType;
-    }
-
-    public function setLicenceType(?string $licenceType): self
-    {
-        $this->licenceType = $licenceType;
-        return $this;
-    }
-
-    public function getLicenceStatus(): ?string
-    {
-        return $this->licenceStatus;
-    }
-
-    public function setLicenceStatus(?string $licenceStatus): self
-    {
-        $this->licenceStatus = $licenceStatus;
-        return $this;
-    }
-
-    public function getLicenceEndDate(): ?\DateTimeInterface
-    {
-        return $this->licenceEndDate;
-    }
-
-    public function setLicenceEndDate(?\DateTimeInterface $licenceEndDate): self
-    {
-        $this->licenceEndDate = $licenceEndDate;
         return $this;
     }
 
@@ -500,6 +422,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         }
 
         $data = null;
+
         if (is_resource($this->profileImage)) {
             rewind($this->profileImage);
             $data = stream_get_contents($this->profileImage);
@@ -522,9 +445,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     public function addLicence(Licence $licence): self
     {
         if (!$this->licences->contains($licence)) {
-            $this->licences[] = $licence;
+            $this->licences->add($licence);
             $licence->setUser($this);
         }
+
         return $this;
     }
 
@@ -535,6 +459,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
                 $licence->setUser(null);
             }
         }
+
         return $this;
     }
 
@@ -549,6 +474,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
             $this->passwordHistories[] = $passwordHistory;
             $passwordHistory->setUser($this);
         }
+
         return $this;
     }
 
@@ -559,6 +485,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
                 $passwordHistory->setUser(null);
             }
         }
+
         return $this;
     }
 
@@ -573,6 +500,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
             $this->securityLogs->add($log);
             $log->setUser($this);
         }
+
         return $this;
     }
 
@@ -583,34 +511,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
                 $log->setUser(null);
             }
         }
-        return $this;
-    }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(?string $phone): self
-    {
-        $this->phone = $phone;
-        return $this;
-    }
-
-    public function isPhoneVerified(): bool
-    {
-        return $this->phoneVerified;
-    }
-
-    public function setPhoneVerified(bool $verified): self
-    {
-        $this->phoneVerified = $verified;
         return $this;
     }
 

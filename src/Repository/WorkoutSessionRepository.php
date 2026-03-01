@@ -57,8 +57,72 @@ class WorkoutSessionRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('w')
             ->andWhere('w.user = :user')
             ->setParameter('user', $user)
-            ->orderBy('w.performedAt', 'DESC') // Tri par date décroissante (le plus récent en haut)
+            ->orderBy('w.performedAt', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Récupère les séances d'un utilisateur sur une période donnée.
+     * Si $range = 0, on retourne tout.
+     *
+     * @return WorkoutSession[]
+     */
+    public function findSessionsByUserAndRange(User $user, int $range = 30, ?int $limit = null): array
+    {
+        $qb = $this->createQueryBuilder('ws')
+            ->leftJoin('ws.workoutSchedule', 'sched')
+            ->addSelect('sched')
+            ->andWhere('ws.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('ws.performedAt', 'DESC');
+
+        if ($range > 0) {
+            $from = (new \DateTimeImmutable())->modify("-{$range} days");
+            $qb->andWhere('ws.performedAt >= :from')
+                ->setParameter('from', $from);
+        }
+
+        if ($limit !== null) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Retourne les stats globales d'un utilisateur sur une période donnée.
+     * Compatible avec ton app mobile :
+     * - sessions
+     * - total_volume
+     * - total_duration_seconds
+     * - total_completed_sets
+     */
+    public function getStatsByUserAndRange(User $user, int $range = 30): array
+    {
+        $qb = $this->createQueryBuilder('ws')
+            ->select('
+                COUNT(ws.id) as sessionsCount,
+                COALESCE(SUM(ws.totalVolume), 0) as totalVolume,
+                COALESCE(SUM(ws.durationSeconds), 0) as totalDuration,
+                COALESCE(SUM(ws.totalCompletedSets), 0) as totalCompletedSets
+            ')
+            ->andWhere('ws.user = :user')
+            ->setParameter('user', $user);
+
+        if ($range > 0) {
+            $from = (new \DateTimeImmutable())->modify("-{$range} days");
+            $qb->andWhere('ws.performedAt >= :from')
+                ->setParameter('from', $from);
+        }
+
+        $result = $qb->getQuery()->getSingleResult();
+
+        return [
+            'sessions' => (int) ($result['sessionsCount'] ?? 0),
+            'total_volume' => (float) ($result['totalVolume'] ?? 0),
+            'total_duration_seconds' => (int) ($result['totalDuration'] ?? 0),
+            'total_completed_sets' => (int) ($result['totalCompletedSets'] ?? 0),
+        ];
     }
 }
