@@ -119,13 +119,15 @@
   gap: 18px;
 }
 
-.input-group {
+.contact-form-container .input-group,
+.elite-form .input-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.input-group label {
+.contact-form-container .input-group label,
+.elite-form .input-group label {
   font-size: 0.82rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -133,9 +135,12 @@
   color: var(--text-muted);
 }
 
-.input-group input,
-.input-group select,
-.input-group textarea {
+.contact-form-container .input-group input,
+.contact-form-container .input-group select,
+.contact-form-container .input-group textarea,
+.elite-form .input-group input,
+.elite-form .input-group select,
+.elite-form .input-group textarea {
   background: #1a1a1a;
   border: 1px solid rgba(255,255,255,0.10);
   padding: 12px 14px;
@@ -144,14 +149,18 @@
   transition: var(--transition);
 }
 
-.input-group textarea {
+.contact-form-container .input-group textarea,
+.elite-form .input-group textarea {
   min-height: 140px;
   resize: vertical;
 }
 
-.input-group input:focus,
-.input-group select:focus,
-.input-group textarea:focus {
+.contact-form-container .input-group input:focus,
+.contact-form-container .input-group select:focus,
+.contact-form-container .input-group textarea:focus,
+.elite-form .input-group input:focus,
+.elite-form .input-group select:focus,
+.elite-form .input-group textarea:focus {
   border-color: rgba(245, 119, 6, 0.70);
   outline: none;
   background: #202020;

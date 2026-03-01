@@ -4,9 +4,10 @@
    ========================================================= */
 
 .bg-dark-alternate {
+  position: relative;
   background-color: var(--dark-bg);
-  border-top: 1px solid var(--border-soft);
-  border-bottom: 1px solid var(--border-soft);
+  border: none;
+  box-shadow: inset 0 1px 0 var(--border-soft);
 }
 
 .section-header-competition {
@@ -253,6 +254,18 @@
   text-transform: uppercase;
   font-size: 0.8rem;
   letter-spacing: 0.8px;
+}
+
+.page-shell > .bg-dark-alternate:last-of-type::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 8px;
+  background: var(--dark-bg);
+  pointer-events: none;
+  z-index: 3;
 }
 
 /* =========================================
