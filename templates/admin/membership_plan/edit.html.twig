@@ -354,15 +354,15 @@
                         </div>
                     </div>
 
-                    <label class="toggle-card" onclick="document.getElementById('{{ form.isPopular.vars.id }}').click()">
-                        {{ form_widget(form.isPopular, {'attr': {'class': 'toggle-input'}}) }}
-                        <div>
-                            <span class="toggle-title">Offre populaire</span>
-                            <span class="toggle-desc">
-                                Cochez cette case pour mettre cet abonnement en avant sur le site.
-                            </span>
-                        </div>
-                    </label>
+  <label class="toggle-card">
+    {{ form_widget(form.isPopular, {'attr': {'class': 'toggle-input'}}) }}
+    <div>
+        <span class="toggle-title">Offre populaire</span>
+        <span class="toggle-desc">
+            Cochez cette case pour mettre cet abonnement en avant sur le site.
+        </span>
+    </div>
+</label>
 
                     <div class="form-actions">
                         <button

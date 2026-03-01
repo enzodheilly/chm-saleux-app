@@ -6,7 +6,6 @@ use App\Repository\LicenceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LicenceRepository::class)]
-#[ORM\HasLifecycleCallbacks]
 class Licence
 {
     #[ORM\Id]
@@ -15,7 +14,7 @@ class Licence
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $type = null; // e.g. "Competition", "Leisure", "Training"
+    private ?string $type = null;
 
     #[ORM\Column(length: 20, unique: true)]
     private ?string $number = null;
@@ -26,9 +25,8 @@ class Licence
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $expiryDate = null;
 
-    // Relation to User with SET NULL on delete
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'licences')]
-    #[ORM\JoinColumn(onDelete: 'SET NULL', nullable: true)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?User $user = null;
 
     #[ORM\Column(length: 100)]
@@ -40,15 +38,9 @@ class Licence
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    // ✅ Replaces Forfait
     #[ORM\ManyToOne(targetEntity: MembershipPlan::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?MembershipPlan $membershipPlan = null;
-
-    #[ORM\Column(type: 'boolean')]
-    private bool $alreadyAssociated = false;
-
-    // ================= Getters / Setters =================
 
     public function getId(): ?int
     {
@@ -156,24 +148,6 @@ class Licence
 
     public function isAlreadyAssociated(): bool
     {
-        return $this->alreadyAssociated;
-    }
-
-    public function setAlreadyAssociated(bool $alreadyAssociated): self
-    {
-        $this->alreadyAssociated = $alreadyAssociated;
-        return $this;
-    }
-
-    // ================= Doctrine Lifecycle Callbacks =================
-
-    #[ORM\PrePersist]
-    #[ORM\PreUpdate]
-    public function updateAssociation(): void
-    {
-        // If licence has no user, alreadyAssociated becomes false
-        if ($this->user === null) {
-            $this->alreadyAssociated = false;
-        }
+        return $this->user !== null;
     }
 }
