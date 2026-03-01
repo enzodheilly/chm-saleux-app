@@ -228,6 +228,7 @@
   opacity: 0;
   transition: opacity 1.3s ease, transform 1.3s ease;
   will-change: opacity, transform;
+  color: #ffffff;
 }
 
 .club-title,
