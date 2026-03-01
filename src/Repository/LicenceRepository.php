@@ -17,7 +17,7 @@ class LicenceRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('l')
             ->andWhere('l.number = :number')
-            ->setParameter('number', $number)
+            ->setParameter('number', trim($number))
             ->getQuery()
             ->getOneOrNullResult();
     }
@@ -29,19 +29,23 @@ class LicenceRepository extends ServiceEntityRepository
     ): array {
         $qb = $this->createQueryBuilder('l');
 
-        if ($firstName) {
+        $firstName = $firstName !== null ? trim($firstName) : null;
+        $lastName = $lastName !== null ? trim($lastName) : null;
+        $email = $email !== null ? trim($email) : null;
+
+        if ($firstName !== null && $firstName !== '') {
             $qb->andWhere('LOWER(l.firstName) LIKE LOWER(:firstName)')
-                ->setParameter('firstName', '%' . trim($firstName) . '%');
+                ->setParameter('firstName', '%' . $firstName . '%');
         }
 
-        if ($lastName) {
+        if ($lastName !== null && $lastName !== '') {
             $qb->andWhere('LOWER(l.lastName) LIKE LOWER(:lastName)')
-                ->setParameter('lastName', '%' . trim($lastName) . '%');
+                ->setParameter('lastName', '%' . $lastName . '%');
         }
 
-        if ($email) {
+        if ($email !== null && $email !== '') {
             $qb->andWhere('LOWER(l.email) = LOWER(:email)')
-                ->setParameter('email', trim($email));
+                ->setParameter('email', $email);
         }
 
         return $qb

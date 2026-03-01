@@ -17,6 +17,15 @@ class LicenceRequest
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $firstName = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $lastName = null;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $matchedLicences = null;
+
     #[ORM\Column(length: 255)]
     private ?string $userEmail = null;
 
@@ -76,6 +85,13 @@ class LicenceRequest
         return $this;
     }
 
+    public function markConfirmed(): self
+    {
+        $this->status = self::STATUS_CONFIRMED;
+        $this->confirmedAt = new \DateTimeImmutable();
+        return $this;
+    }
+
     // =====================
     //   GETTERS / SETTERS
     // =====================
@@ -83,6 +99,39 @@ class LicenceRequest
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): self
+    {
+        $this->firstName = $firstName;
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): self
+    {
+        $this->lastName = $lastName;
+        return $this;
+    }
+
+    public function getMatchedLicences(): ?array
+    {
+        return $this->matchedLicences;
+    }
+
+    public function setMatchedLicences(?array $matchedLicences): self
+    {
+        $this->matchedLicences = $matchedLicences;
+        return $this;
     }
 
     public function getUserEmail(): ?string
