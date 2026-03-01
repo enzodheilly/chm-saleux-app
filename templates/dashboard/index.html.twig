@@ -1,304 +1,1295 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Espace Membre - CHM SALEUX</title>
+{% extends 'base.html.twig' %}
+
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% set admin = adminInfo|default({}) %}
+{% set progress = mobileProgress|default({}) %}
+{% set stats = progress.stats|default({}) %}
+{% set sessions = progress.sessions|default([]) %}
+{% set maxVolume = progress.maxVolume|default(1) %}
+{% set totalVolumeKg = stats.total_volume|default(0) %}
+{% set totalSeconds = stats.total_duration_seconds|default(0) %}
+{% set totalHours = totalSeconds // 3600 %}
+{% set totalMinutes = (totalSeconds % 3600) // 60 %}
+{% set licence = currentLicence|default(null) %}
+{% set licenceActive = licence and licence.expiryDate and licence.expiryDate|date('U') >= "now"|date('U') %}
+{% set licenceStatusLabel = licence ? (licenceActive ? 'Active' : 'Inactive') : 'Aucune licence' %}
+{% set licenceNumberLabel = licence ? licence.number : 'Non renseignée' %}
+{% set licenceTypeLabel = licence ? licence.type : 'Loisir' %}
+{% set lastSession = sessions|first %}
+{% set firstName = app.user.firstname|default('Adhérent') %}
+{% set profileImage = app.user.profileImageDataUrl ? app.user.profileImageDataUrl : 'https://ui-avatars.com/api/?name=' ~ app.user.firstname ~ '+' ~ app.user.lastname ~ '&background=F57706&color=fff&size=256' %}
+{% set bannerRightImage = asset('images/dashboard/banner-athlete-right.png') %}
+
+{% block title %}Espace Membre - CHM SALEUX{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
-
     <link rel="stylesheet" href="{{ asset('css/assistant/elios.css') }}">
 
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --secondary: #64748b;
-
-            --bg-body: #f3f4f6;
-            --bg-card: #ffffff;
-
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-
-            --border: #e2e8f0;
-
-            --radius: 0px;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-
-            --sidebar-width: 260px;
-
-            /* surfaces / tints */
-            --surface-2: #f8fafc;
-            --surface-3: #f1f5f9;
-            --primary-soft: rgba(37, 99, 235, 0.12);
-            --primary-soft-border: rgba(37, 99, 235, 0.25);
+            --sidebar-width: 108px;
+            --topbar-height: 86px;
+            --content-max: 1600px;
+            --dash-bg: #000000;
+            --dash-border: var(--border-soft);
+            --dash-border-strong: var(--border-soft-2);
+            --dash-text: var(--text-white);
+            --dash-text-soft: var(--text-body);
+            --dash-text-muted: var(--text-muted);
         }
 
         * { box-sizing: border-box; }
+        html, body { min-height: 100%; }
 
         body {
             margin: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            height: 100vh;
+            min-height: 100vh;
             overflow: hidden;
+            font-family: var(--font-family-base);
+            background: var(--dash-bg);
+            color: var(--dash-text-soft);
+        }
+
+        a { color: inherit; text-decoration: none; }
+        button, input, textarea, select { font: inherit; }
+
+        *::-webkit-scrollbar { width: 10px; height: 10px; }
+        *::-webkit-scrollbar-track { background: transparent; }
+        *::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,.12);
+            border-radius: var(--radius-pill);
+        }
+
+        .flash-container {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            z-index: 9999;
             display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        /* -------------------------
-           THEME (Light/Dark)
-        ------------------------- */
-        body.theme-dark {
-            --bg-body: #0a0a0a;
-            --bg-card: #111111;
-
-            --text-main: #f5f5f5;
-            --text-muted: #a3a3a3;
-
-            --border: #262626;
-            --shadow: 0 10px 30px rgba(0,0,0,0.65);
-
-            --primary: #e5e5e5;
-            --primary-dark: #cfcfcf;
-
-            --surface-2: #141414;
-            --surface-3: #181818;
-
-            --primary-soft: rgba(255,255,255,0.08);
-            --primary-soft-border: rgba(255,255,255,0.12);
+        .flash-message {
+            min-width: 300px;
+            max-width: 430px;
+            padding: 14px 16px;
+            border-radius: var(--radius-xl);
+            background: rgba(10,10,10,.96);
+            color: var(--dash-text-soft);
+            border: 1px solid var(--dash-border);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(14px);
         }
 
-        /* --- SIDEBAR --- */
+        .flash-success { box-shadow: inset 4px 0 0 var(--success-color), var(--shadow-md); }
+        .flash-error,
+        .flash-danger { box-shadow: inset 4px 0 0 var(--danger-color), var(--shadow-md); }
+
+        .flash-close {
+            margin-left: auto;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            color: inherit;
+        }
+
+        .fade-out {
+            opacity: 0;
+            transform: translateY(-6px);
+            transition: .3s ease;
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.68);
+            z-index: 40;
+        }
+
+        .mobile-overlay.active { display: block; }
+
+        .app-shell {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+            height: 100vh;
+        }
+
         .sidebar {
             width: var(--sidebar-width);
-            background: var(--bg-card);
-            border-right: 1px solid var(--border);
+            padding: 22px 14px;
             display: flex;
             flex-direction: column;
-            padding: 24px;
+            align-items: center;
+            gap: 24px;
+            background: rgba(8,8,8,.82);
+            border-right: 1px solid var(--dash-border);
+            backdrop-filter: blur(16px);
             flex-shrink: 0;
-            z-index: 10;
+            z-index: 40;
         }
 
-        .brand {
+        .sidebar-top {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 26px;
+            height: 100%;
+        }
+
+        .brand-badge {
+            width: 58px;
+            height: 58px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 40px;
-            text-decoration: none;
-            color: var(--text-main);
+            justify-content: center;
+            background: transparent;
+            border: none;
+            box-shadow: none;
         }
 
-        .brand img { height: 40px; width: auto; }
-        .brand span { font-weight: 800; font-size: 1.1rem; letter-spacing: -0.5px; }
+        .brand-badge img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+        }
 
-        .nav-links { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            flex: 1;
+            width: 100%;
+        }
 
         .nav-item {
+            width: 62px;
+            height: 62px;
+            border-radius: 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: 12px;
-            color: var(--text-muted);
-            font-weight: 600;
+            justify-content: center;
+            color: var(--dash-text-soft);
+            background: rgba(255,255,255,.03);
+            border: 1px solid rgba(255,255,255,.05);
+            transition: var(--transition-fast);
             cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .nav-item:hover { background: var(--surface-2); color: var(--text-main); }
-        .nav-item.active { background: var(--surface-3); color: var(--text-main); }
-        .nav-item i { width: 20px; text-align: center; }
-
-        .user-mini {
-            margin-top: auto;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-        }
-
-        .user-avatar-small {
-            width: 40px; height: 40px; border-radius: 50%;
-            background: var(--text-main); color: white;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 0.9rem;
-        }
-        .user-avatar-small-img {
-            width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
-        }
-
-        /* --- MAIN CONTENT --- */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
             position: relative;
         }
 
+        .nav-item i {
+            font-size: 1.02rem;
+            pointer-events: none;
+        }
+
+        .nav-item:hover {
+            transform: translateY(-2px);
+            color: var(--dash-text);
+            background: rgba(255,255,255,.06);
+            border-color: var(--dash-border-strong);
+        }
+
+        .nav-item.active {
+            color: var(--accent-contrast);
+            background: linear-gradient(135deg, var(--brand-orange), #ff9a3d);
+            border-color: transparent;
+            box-shadow: var(--shadow-accent);
+        }
+
+        .nav-tooltip {
+            position: absolute;
+            left: 74px;
+            padding: 8px 12px;
+            border-radius: var(--radius-pill);
+            background: rgba(15,15,20,.96);
+            color: var(--dash-text);
+            border: 1px solid var(--dash-border);
+            white-space: nowrap;
+            font-size: .78rem;
+            font-weight: var(--fw-bold);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-6px);
+            transition: .18s ease;
+        }
+
+        .nav-item:hover .nav-tooltip {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .sidebar-bottom {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            padding-top: 16px;
+            border-top: 1px solid var(--dash-border);
+        }
+
+        .sidebar-link {
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dash-text-soft);
+            background: rgba(255,255,255,.03);
+            border: 1px solid rgba(255,255,255,.05);
+            transition: var(--transition-fast);
+        }
+
+        .sidebar-link:hover {
+            transform: translateY(-2px);
+            color: var(--dash-text);
+        }
+
+        .sidebar-profile {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--border-soft-2);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-profile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
         .topbar {
-            height: 80px;
-            padding: 0 40px;
+            height: var(--topbar-height);
+            min-height: var(--topbar-height);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: var(--bg-body);
+            gap: 18px;
+            padding: 0 28px;
+            border-bottom: 1px solid var(--dash-border);
+            background: rgba(8,8,8,.58);
+            backdrop-filter: blur(18px);
         }
 
-        .page-title { font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin: 0; }
-        .topbar-actions { display: flex; align-items: center; gap: 15px; }
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-width: 0;
+        }
 
-        .icon-btn {
-            width: 40px; height: 40px; border-radius: 50%;
-            border: 1px solid var(--border);
-            background: var(--bg-card);
-            color: var(--text-main);
+        .menu-toggle {
+            display: none;
+            width: 46px;
+            height: 46px;
+            border: 1px solid var(--dash-border);
+            border-radius: var(--radius-lg);
+            background: rgba(255,255,255,.04);
+            color: var(--dash-text);
             cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: 0.2s;
         }
-        .icon-btn:hover { border-color: var(--text-main); }
+
+        .topbar-title-wrap small {
+            display: block;
+            color: var(--dash-text-muted);
+            font-size: .82rem;
+            font-weight: var(--fw-medium);
+            margin-bottom: 5px;
+        }
+
+        .page-title {
+            margin: 0;
+            color: var(--dash-text);
+            font-size: 1.7rem;
+            font-weight: var(--fw-black);
+            letter-spacing: -0.04em;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .search-pill {
+            width: 310px;
+            max-width: 34vw;
+            height: 50px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--dash-border);
+            background: rgba(255,255,255,.04);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 16px;
+            color: var(--dash-text-muted);
+        }
+
+        .search-pill input {
+            flex: 1;
+            min-width: 0;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--dash-text);
+        }
+
+        .topbar-icon,
+        .topbar-cta {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--dash-border);
+            background: rgba(255,255,255,.04);
+            color: var(--dash-text);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            position: relative;
+        }
+
+        .topbar-cta {
+            width: auto;
+            padding: 0 18px;
+            gap: 10px;
+            border-radius: var(--radius-pill);
+            background: linear-gradient(135deg, var(--brand-orange), #ff9a3d);
+            border: none;
+            font-weight: var(--fw-bold);
+            box-shadow: var(--shadow-accent);
+        }
+
+        .topbar-icon:hover,
+        .topbar-cta:hover {
+            transform: translateY(-2px);
+        }
 
         .content-scroll {
             flex: 1;
+            min-height: 0;
             overflow-y: auto;
-            padding: 0 40px 40px 40px;
+            padding: 26px;
         }
 
-        /* --- DASHBOARD GRID & CARDS --- */
-        .section-view { display: none; animation: fadeIn 0.3s ease; }
+        .content-inner {
+            width: 100%;
+            max-width: var(--content-max);
+            margin: 0 auto;
+        }
+
+        .section-view { display: none; animation: fadeIn .2s ease; }
         .section-view.active { display: block; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-            margin-top: 24px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .card {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            overflow: hidden;
+        .hero-top {
+            display: grid;
+            grid-template-columns: 1.15fr .85fr;
+            gap: 22px;
+            margin-bottom: 22px;
+        }
+
+        .welcome-block {
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            gap: 8px;
+            padding: 6px 4px;
+        }
+
+        .welcome-block .eyebrow {
+            font-size: .92rem;
+            color: var(--dash-text-muted);
+            font-weight: var(--fw-medium);
+        }
+
+        .welcome-title {
+            margin: 0;
+            color: var(--dash-text);
+            font-size: clamp(2.3rem, 4vw, 3.6rem);
+            line-height: .98;
+            letter-spacing: -0.06em;
+            font-weight: var(--fw-black);
+        }
+
+        .welcome-title .accent { color: var(--brand-orange); }
+
+        .welcome-text {
+            max-width: 760px;
+            color: var(--dash-text-soft);
+            margin: 2px 0 0;
+            line-height: var(--lh-body);
+            font-size: .96rem;
+        }
+
+        .top-kcal-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 22px;
+            border-radius: 26px;
+            background: linear-gradient(180deg, rgba(245,119,6,.10), rgba(0,91,148,.10));
+            border: 1px solid var(--dash-border);
+            box-shadow: var(--shadow-md);
+            min-height: 126px;
+        }
+
+        .metric-mini-label {
+            color: var(--dash-text-muted);
+            font-size: .82rem;
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: var(--ls-wide);
+            margin-bottom: 8px;
+        }
+
+        .metric-mini-value {
+            color: var(--dash-text);
+            font-size: 2.25rem;
+            line-height: 1;
+            font-weight: var(--fw-black);
+            letter-spacing: -0.05em;
+        }
+
+        .metric-mini-sub {
+            margin-top: 8px;
+            color: var(--dash-text-soft);
+            font-size: .9rem;
+        }
+
+        .glass-card {
+            position: relative;
+            background: linear-gradient(180deg, rgba(18,18,18,.96), rgba(10,10,10,.96));
+            border: 1px solid var(--dash-border);
+            border-radius: 28px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
         }
 
         .card-padding { padding: 24px; }
 
-        h3 { font-size: 1.1rem; font-weight: 700; margin: 0 0 16px 0; color: var(--text-main); }
-        p { color: var(--text-muted); line-height: 1.6; margin-bottom: 0; }
+        .home-banner-wrap {
+            margin-bottom: 22px;
+        }
 
-        /* --- PROFILE HEADER --- */
-        .profile-header {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 30px;
+        .banner-card {
+            min-height: 228px;
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) 320px;
+            align-items: stretch;
+            background: linear-gradient(135deg, rgba(8,8,8,.96) 0%, rgba(12,12,12,.92) 55%, rgba(10,10,10,.88) 100%);
+        }
+
+        .banner-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 18% 28%, rgba(245,119,6,.10), transparent 28%),
+                radial-gradient(circle at 72% 52%, rgba(0,91,148,.10), transparent 30%),
+                linear-gradient(90deg, rgba(255,255,255,.015), transparent 34%);
+            pointer-events: none;
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            padding: 28px 34px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 14px;
+        }
+
+        .banner-visual {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: end;
+            justify-content: center;
+            padding: 10px 18px 0 0;
+            overflow: hidden;
+        }
+
+        .banner-visual::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245,119,6,.14) 0%, rgba(245,119,6,.04) 42%, transparent 72%);
+            filter: blur(8px);
+            pointer-events: none;
+        }
+
+        .banner-athlete {
+            position: relative;
+            z-index: 2;
+            max-width: 100%;
+            max-height: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: bottom center;
+            filter: drop-shadow(0 18px 30px rgba(0,0,0,.35));
+        }
+
+        .banner-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            min-height: 34px;
+            padding: 0 14px;
+            border-radius: var(--radius-pill);
+            background: rgba(245,119,6,.14);
+            border: 1px solid rgba(245,119,6,.22);
+            color: #ffffff;
+            font-weight: var(--fw-bold);
+            font-size: .8rem;
+        }
+
+        .banner-title {
+            margin: 0;
+            color: #ffffff;
+            font-size: clamp(2rem, 3vw, 3rem);
+            line-height: 1.02;
+            font-weight: var(--fw-black);
+            letter-spacing: -0.06em;
+            max-width: 650px;
+        }
+
+        .banner-title .strong { color: var(--brand-orange); }
+
+        .banner-text {
+            margin: 0;
+            max-width: 620px;
+            color: rgba(255,255,255,.80);
+            line-height: var(--lh-body);
+            font-size: .96rem;
+        }
+
+        .banner-inline-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .banner-inline-stat {
+            min-width: 152px;
+            padding: 12px 14px;
+            border-radius: 18px;
+            background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.08);
+        }
+
+        .banner-inline-stat span {
+            display: block;
+            color: var(--dash-text-muted);
+            font-size: .72rem;
+            text-transform: uppercase;
+            letter-spacing: var(--ls-wide);
+            font-weight: var(--fw-bold);
+            margin-bottom: 7px;
+        }
+
+        .banner-inline-stat strong {
+            color: var(--dash-text);
+            font-size: .98rem;
+            font-weight: var(--fw-extrabold);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.35fr .95fr;
+            gap: 22px;
+        }
+
+        .right-stack {
+            display: grid;
+            gap: 22px;
+        }
+
+        .weekly-progress-card {
+            padding: 22px;
+        }
+
+        .weekly-head {
+            margin-bottom: 16px;
+        }
+
+        .dashboard-card-heading {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .dashboard-card-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            min-height: 28px;
+            padding: 0 10px;
+            border-radius: 999px;
+            background: rgba(245,119,6,.10);
+            border: 1px solid rgba(245,119,6,.16);
+            color: var(--brand-orange);
+            font-size: .68rem;
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        .dashboard-card-title {
+            margin: 0;
+            color: var(--dash-text);
+            font-size: 1.34rem;
+            line-height: 1.05;
+            font-weight: var(--fw-black);
+            letter-spacing: -0.04em;
+        }
+
+        .dashboard-card-title-line {
+            width: 54px;
+            height: 3px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--brand-orange), rgba(245,119,6,.15));
+        }
+
+        .weekly-tabs {
+            display: inline-flex;
+            gap: 8px;
+            padding: 5px;
+            border-radius: 14px;
+            background: rgba(255,255,255,.03);
+            border: 1px solid var(--dash-border);
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+        }
+
+        .weekly-tab {
+            appearance: none;
+            border: 1px solid transparent;
+            background: transparent;
+            min-height: 34px;
+            padding: 0 14px;
+            border-radius: 10px;
+            font-size: .78rem;
+            font-weight: var(--fw-bold);
+            color: var(--dash-text-muted);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: .2s ease;
+            cursor: pointer;
+        }
+
+        .weekly-tab.active {
+            color: #fff;
+            background: rgba(245,119,6,.16);
+            border: 1px solid rgba(245,119,6,.22);
+        }
+
+        .refined-chart {
+            height: 230px;
+            display: grid;
+            gap: 14px;
+            align-items: end;
+            padding: 18px 10px 10px;
+            position: relative;
+            background: rgba(255,255,255,.02);
+            border: 1px solid rgba(255,255,255,.04);
+            border-radius: 22px;
+            margin-top: 12px;
+            overflow: visible;
+        }
+
+        .refined-chart::before,
+        .refined-chart::after {
+            content: '';
+            position: absolute;
+            left: 18px;
+            right: 18px;
+            height: 1px;
+            background: rgba(255,255,255,.05);
+        }
+
+        .refined-chart::before { top: 33%; }
+        .refined-chart::after { top: 66%; }
+
+        .bar-col {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            align-items: center;
+            gap: 10px;
+            overflow: visible;
+            cursor: pointer;
+        }
+
+        .bar {
+            width: 14px;
+            min-height: 8px;
+            border-radius: 3px;
+            background: var(--brand-orange);
+            box-shadow: 0 10px 20px rgba(245,119,6,.16);
+            transition: .2s ease;
+        }
+
+        .bar:hover {
+            transform: translateY(-2px);
+        }
+
+        .bar.muted {
+            background: rgba(255,255,255,.14);
+            box-shadow: none;
+        }
+
+        .refined-bubble {
+            position: absolute;
+            left: 50%;
+            top: calc(100% - var(--bubble-offset, 0px));
+            transform: translate(-50%, -100%) translateY(8px);
+            min-width: max-content;
+            padding: 7px 10px;
+            border-radius: 10px;
+            background: #101010;
+            border: 1px solid var(--dash-border);
+            color: #fff;
+            font-size: .72rem;
+            font-weight: var(--fw-bold);
+            white-space: nowrap;
+            box-shadow: var(--shadow-sm);
+            opacity: 0;
+            pointer-events: none;
+            transition: .2s ease;
+            z-index: 5;
+        }
+
+        .bar-col:hover .refined-bubble,
+        .bar-col.is-active .refined-bubble {
+            opacity: 1;
+            transform: translate(-50%, -100%) translateY(0);
+        }
+
+        .bar-label {
+            color: var(--dash-text-muted);
+            font-size: .74rem;
+            font-weight: var(--fw-bold);
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        .refined-weekly-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 1px solid var(--dash-border);
+        }
+
+        .weekly-stat-box,
+        .progress-summary-box {
+            padding: 14px 16px;
+            border-radius: 18px;
+            background: rgba(255,255,255,.03);
+            border: 1px solid rgba(255,255,255,.05);
+        }
+
+        .weekly-stat-label {
+            color: var(--dash-text-muted);
+            font-size: .74rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            font-weight: var(--fw-bold);
+        }
+
+        .weekly-stat-value {
+            color: var(--dash-text);
+            font-size: 1.05rem;
+            font-weight: var(--fw-black);
+            letter-spacing: -0.02em;
+        }
+
+        .today-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .today-item {
+            display: grid;
+            grid-template-columns: 44px 1fr auto;
+            gap: 12px;
+            align-items: center;
+            padding: 12px 14px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid var(--dash-border);
+            border-radius: 18px;
+        }
+
+        .today-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: rgba(0,91,148,.14);
+            color: var(--brand-blue);
             display: flex;
             align-items: center;
-            gap: 30px;
-            margin-bottom: 30px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
+            justify-content: center;
+            border: 1px solid rgba(0,91,148,.20);
+            font-size: .95rem;
         }
 
-        .profile-pic-big {
-            width: 100px; height: 100px; border-radius: 50%;
-            object-fit: cover; border: 4px solid rgba(255,255,255,0.08);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        .today-title {
+            margin: 0 0 4px;
+            color: var(--dash-text);
+            font-size: .95rem;
+            font-weight: var(--fw-black);
         }
 
-        .badge-status {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 6px 12px; border-radius: 20px;
-            font-size: 0.75rem; font-weight: 700;
+        .today-meta {
+            color: var(--dash-text-muted);
+            font-size: .78rem;
+            margin-bottom: 8px;
+        }
+
+        .today-stats {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .today-stat span {
+            display: block;
+            color: var(--dash-text-muted);
+            font-size: .7rem;
+            margin-top: 2px;
+        }
+
+        .today-stat strong {
+            color: var(--dash-text);
+            font-size: .9rem;
+            font-weight: var(--fw-extrabold);
+        }
+
+        .today-badge {
+            min-height: 30px;
+            padding: 0 10px;
+            border-radius: var(--radius-pill);
+            background: rgba(245,119,6,.10);
+            color: var(--brand-orange);
+            border: 1px solid rgba(245,119,6,.16);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .7rem;
+            font-weight: var(--fw-bold);
+            white-space: nowrap;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin: 0 0 18px;
+        }
+
+        .section-head h3 {
+            margin: 0;
+            color: var(--dash-text);
+            font-size: 1.25rem;
+            font-weight: var(--fw-black);
+            letter-spacing: -0.04em;
+        }
+
+        .section-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 38px;
+            padding: 0 14px;
+            border-radius: var(--radius-pill);
+            background: rgba(255,255,255,.04);
+            border: 1px solid var(--dash-border);
+            color: var(--dash-text-soft);
+            font-size: .78rem;
+            font-weight: var(--fw-bold);
+        }
+
+        .progress-detailed-card {
+            display: grid;
+            gap: 18px;
+        }
+
+        .progress-topbar {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .progress-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .progress-range-menu {
+            position: relative;
+        }
+
+        .progress-range-trigger {
+            min-height: 42px;
+            padding: 0 14px;
+            border-radius: 14px;
+            border: 1px solid var(--dash-border);
+            background: rgba(255,255,255,.04);
+            color: var(--dash-text);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: var(--fw-bold);
+            cursor: pointer;
+        }
+
+        .progress-range-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            min-width: 220px;
+            padding: 8px;
+            border-radius: 18px;
+            border: 1px solid var(--dash-border);
+            background: #0d0d0d;
+            box-shadow: var(--shadow-md);
+            display: none;
+            z-index: 20;
+        }
+
+        .progress-range-menu.open .progress-range-dropdown {
+            display: grid;
+            gap: 6px;
+        }
+
+        .progress-range-option {
+            min-height: 42px;
+            padding: 0 14px;
+            border: none;
+            border-radius: 12px;
+            background: transparent;
+            color: var(--dash-text-soft);
+            text-align: left;
+            font-weight: var(--fw-semibold);
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .progress-range-option:hover,
+        .progress-range-option.active {
+            background: rgba(245,119,6,.12);
+            color: #fff;
+        }
+
+        .progress-filters .weekly-tabs {
+            margin-bottom: 0;
+        }
+
+        .progress-detailed-chart {
+            min-height: 280px;
+        }
+
+        .progress-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .history-wrap { overflow-x: auto; }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 16px 14px;
+            border-bottom: 1px solid var(--dash-border);
+            text-align: left;
+        }
+
+        .history-table th {
+            color: var(--dash-text-muted);
+            font-size: .74rem;
             text-transform: uppercase;
-        }
-        .badge-success { background: #dcfce7; color: #166534; }
-        .badge-danger { background: #fee2e2; color: #991b1b; }
-
-        body.theme-dark .badge-success { background: rgba(34,197,94,0.18); color: #86efac; }
-        body.theme-dark .badge-danger  { background: rgba(239,68,68,0.18); color: #fca5a5; }
-
-        /* --- BUTTONS --- */
-        .btn-primary {
-            background: var(--text-main);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            border: none; cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-primary:hover { transform: translateY(-2px); }
-
-        body.theme-dark .btn-primary{
-            background: #f5f5f5;
-            color: #0a0a0a;
-        }
-        body.theme-dark .btn-primary:hover{
-            background: #e5e5e5;
+            letter-spacing: var(--ls-wide);
+            font-weight: var(--fw-black);
         }
 
-        .btn-outline {
-            background: transparent; border: 2px solid var(--border);
-            color: var(--text-main); padding: 10px 20px;
-            border-radius: 10px; font-weight: 600; cursor: pointer;
-        }
-        .btn-outline:hover { border-color: var(--text-main); }
-
-        /* --- FLASH MESSAGES --- */
-        .flash-container {
-            position: fixed; top: 20px; right: 20px;
-            z-index: 9999; display: flex; flex-direction: column; gap: 10px;
-        }
-        .flash-message {
-            padding: 16px; border-radius: 12px; background: var(--bg-card);
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-            border-left: 4px solid var(--text-main);
-            display: flex; align-items: center; gap: 12px; min-width: 300px;
-            border: 1px solid var(--border);
-        }
-        .flash-success { border-left-color: #10b981; }
-        .flash-error { border-left-color: #ef4444; }
-
-        /* Mobile */
-        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
-        .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 5; }
-
-        @media (max-width: 900px) {
-            .sidebar { position: fixed; left: -100%; height: 100%; transition: 0.3s; box-shadow: 20px 0 20px rgba(0,0,0,0.1); }
-            .sidebar.active { left: 0; }
-            .menu-toggle { display: block; }
-            .mobile-overlay.active { display: block; }
-            .topbar { padding: 0 20px; }
-            .content-scroll { padding: 0 20px 20px 20px; }
-            .profile-header { flex-direction: column; text-align: center; }
+        .history-table td {
+            color: var(--dash-text-soft);
+            font-size: .92rem;
+            font-weight: var(--fw-medium);
         }
 
-        /* -------------------------
-           SETTINGS DRAWER
-        ------------------------- */
+        .history-table tbody tr:hover {
+            background: rgba(255,255,255,.03);
+        }
+
+        .empty-state {
+            padding: 28px;
+            border-radius: 22px;
+            background: rgba(255,255,255,.03);
+            border: 1px dashed var(--dash-border-strong);
+            text-align: center;
+            color: var(--dash-text-muted);
+            font-weight: var(--fw-bold);
+        }
+
+        .licence-shell {
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 22px;
+        }
+
+        .licence-card-premium,
+        .licence-side-card {
+            padding: 28px;
+        }
+
+        .licence-topbar,
+        .licence-hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .licence-topbar {
+            margin-bottom: 28px;
+        }
+
+        .licence-brand-block {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .licence-brand-logo {
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            background: rgba(255,255,255,.06);
+            border: 1px solid var(--dash-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .licence-brand-logo img {
+            width: 34px;
+            height: 34px;
+            object-fit: contain;
+        }
+
+        .licence-brand-label,
+        .licence-member-label,
+        .licence-number-box span,
+        .licence-field-label {
+            color: var(--dash-text-muted);
+            font-size: .72rem;
+            text-transform: uppercase;
+            letter-spacing: var(--ls-wide);
+            font-weight: var(--fw-bold);
+        }
+
+        .licence-brand-name,
+        .licence-field-value,
+        .licence-info-row strong {
+            color: var(--dash-text);
+            font-weight: var(--fw-extrabold);
+        }
+
+        .licence-status-badge {
+            min-height: 40px;
+            padding: 0 14px;
+            border-radius: var(--radius-pill);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .78rem;
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        .licence-status-badge.is-active {
+            color: var(--success-color);
+            border: 1px solid rgba(46,213,115,.18);
+            background: rgba(46,213,115,.10);
+        }
+
+        .licence-status-badge.is-inactive {
+            color: var(--danger-color);
+            border: 1px solid rgba(255,71,87,.18);
+            background: rgba(255,71,87,.10);
+        }
+
+        .licence-member-name {
+            margin-top: 8px;
+            color: var(--dash-text);
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: var(--fw-black);
+            letter-spacing: -0.06em;
+            text-transform: uppercase;
+            line-height: 1.02;
+        }
+
+        .licence-member-sub {
+            margin-top: 10px;
+            color: var(--dash-text-soft);
+        }
+
+        .licence-number-box {
+            min-width: 250px;
+            padding: 16px 18px;
+            border-radius: 24px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid var(--dash-border);
+            text-align: right;
+        }
+
+        .licence-number-box strong {
+            display: block;
+            margin-top: 8px;
+            color: var(--dash-text);
+            font-size: 1.16rem;
+            font-weight: var(--fw-black);
+            font-family: monospace;
+        }
+
+        .licence-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-top: 24px;
+        }
+
+        .licence-field,
+        .licence-info-row {
+            padding: 16px;
+            border-radius: 20px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid var(--dash-border);
+        }
+
+        .licence-field-value { margin-top: 8px; font-size: .98rem; }
+
+        .licence-side-improved {
+            display: grid;
+            gap: 22px;
+        }
+
+        .licence-side-icon {
+            width: 76px;
+            height: 76px;
+            border-radius: 22px;
+            background: rgba(245,119,6,.10);
+            border: 1px solid rgba(245,119,6,.16);
+            color: var(--brand-orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 16px;
+        }
+
+        .licence-side-card h4 {
+            margin: 0 0 10px;
+            color: var(--dash-text);
+            font-size: 1rem;
+            font-weight: var(--fw-black);
+        }
+
+        .licence-side-card p {
+            margin: 0 0 18px;
+            color: var(--dash-text-soft);
+            line-height: var(--lh-body);
+            font-size: .92rem;
+        }
+
+        .licence-info-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .licence-info-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .licence-info-row span {
+            color: var(--dash-text-muted);
+            font-size: .86rem;
+            font-weight: var(--fw-semibold);
+        }
+
         .settings-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.55);
+            background: rgba(0,0,0,0.72);
             z-index: 9500;
             opacity: 0;
             pointer-events: none;
-            transition: 0.25s;
+            transition: var(--transition-fast);
+        }
+
+        .settings-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
         }
 
         .settings-drawer {
@@ -306,582 +1297,1034 @@
             top: 0;
             right: 0;
             height: 100%;
-            width: 420px;
+            width: 430px;
             max-width: 92vw;
-            background: var(--bg-card);
-            border-left: 1px solid var(--border);
+            background: #09090d;
+            border-left: 1px solid var(--dash-border);
+            box-shadow: -20px 0 50px rgba(0,0,0,0.35);
             z-index: 9600;
             transform: translateX(110%);
-            transition: 0.25s;
+            transition: var(--transition-fast);
             display: flex;
             flex-direction: column;
         }
 
         .settings-drawer.open { transform: translateX(0); }
-        .settings-overlay.open { opacity: 1; pointer-events: auto; }
 
         .settings-drawer-header {
-            height: 80px;
-            padding: 0 18px;
+            height: 88px;
+            padding: 0 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid var(--dash-border);
         }
 
         .settings-drawer-content {
             padding: 18px;
             overflow: auto;
+            display: grid;
+            gap: 14px;
         }
 
-        .settings-row {
+        .settings-feedback {
+            padding: 14px 16px;
+            border-radius: var(--radius-lg);
+            font-size: .9rem;
+            font-weight: var(--fw-semibold);
+            border: 1px solid transparent;
+        }
+
+        .settings-feedback.success {
+            background: rgba(46,213,115,.10);
+            color: var(--success-color);
+            border-color: rgba(46,213,115,.18);
+        }
+
+        .settings-feedback.error {
+            background: rgba(255,71,87,.10);
+            color: var(--danger-color);
+            border-color: rgba(255,71,87,.18);
+        }
+
+        .settings-pro-card {
+            background: rgba(255,255,255,.04);
+            border: 1px solid var(--dash-border);
+            border-radius: 24px;
+            padding: 18px;
+        }
+
+        .settings-pro-card-muted { background: rgba(255,255,255,.03); }
+
+        .settings-pro-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .settings-pro-eyebrow {
+            font-size: .72rem;
+            color: var(--dash-text-muted);
+            text-transform: uppercase;
+            letter-spacing: var(--ls-wide);
+            font-weight: var(--fw-bold);
+            margin-bottom: 4px;
+        }
+
+        .settings-pro-head h4 {
+            margin: 0;
+            color: var(--dash-text);
+            font-size: 1rem;
+            font-weight: var(--fw-black);
+        }
+
+        .settings-info-grid,
+        .settings-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .settings-info-box {
+            background: rgba(255,255,255,.04);
+            border: 1px solid var(--dash-border);
+            border-radius: 18px;
+            padding: 14px;
+        }
+
+        .settings-info-label {
+            display: block;
+            font-size: .74rem;
+            color: var(--dash-text-muted);
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: var(--ls-wide);
+            margin-bottom: 6px;
+        }
+
+        .settings-info-box strong {
+            color: var(--dash-text);
+            font-size: .95rem;
+            font-weight: var(--fw-bold);
+            word-break: break-word;
+        }
+
+        .settings-form-pro {
+            margin-top: 8px;
+            padding-top: 10px;
+        }
+
+        .settings-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .settings-field-full { grid-column: 1 / -1; }
+
+        .settings-field label {
+            font-size: .82rem;
+            color: var(--dash-text-muted);
+            font-weight: var(--fw-bold);
+        }
+
+        .settings-input {
+            width: 100%;
+            min-height: 48px;
+            padding: 0 14px;
+            border: 1px solid var(--dash-border);
+            border-radius: 16px;
+            background: rgba(255,255,255,.03);
+            color: var(--dash-text);
+            outline: none;
+            transition: var(--transition-fast);
+        }
+
+        .settings-input:focus {
+            border-color: var(--border-accent);
+            box-shadow: 0 0 0 3px rgba(245,119,6,.10);
+        }
+
+        .settings-actions-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 14px;
+        }
+
+        .btn-outline {
+            background: rgba(255,255,255,.04);
+            border: 1px solid var(--dash-border);
+            color: var(--dash-text);
+            min-height: 42px;
+            padding: 0 14px;
+            font-weight: var(--fw-bold);
+            cursor: pointer;
+            border-radius: 14px;
+        }
+
+        .btn-primary {
+            min-height: 46px;
+            padding: 0 16px;
+            border-radius: 14px;
+            font-size: .92rem;
+            font-weight: var(--fw-black);
+            border: none;
+            background: linear-gradient(135deg, var(--brand-orange), #ff9a3d);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: var(--shadow-accent);
+        }
+
+        .settings-static-row,
+        .danger-box {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
-            padding: 12px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            background: rgba(255,255,255,0.04);
+            gap: 14px;
         }
 
-        .settings-separator {
-            height: 1px;
-            background: var(--border);
-            margin: 18px 0;
+        .settings-dark-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 38px;
+            padding: 0 12px;
+            border-radius: var(--radius-pill);
+            background: rgba(245,119,6,.10);
+            color: var(--brand-orange);
+            border: 1px solid rgba(245,119,6,.16);
+            font-size: .78rem;
+            font-weight: var(--fw-bold);
         }
 
-        /* Switch (toggle) */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 52px;
-            height: 30px;
-            flex-shrink: 0;
-        }
-        .switch input { display: none; }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            inset: 0;
-            background: rgba(255,255,255,0.12);
-            transition: .2s;
-            border-radius: 999px;
-            border: 1px solid var(--border);
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: var(--bg-card);
-            transition: .2s;
-            border-radius: 999px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-        }
-        .switch input:checked + .slider {
-            background: rgba(255,255,255,0.22);
-        }
-        .switch input:checked + .slider:before {
-            transform: translate(22px, -50%);
-        }
-
-        /* =========================
-           HOME UI - KPIs Only
-        ========================= */
-        .kpi-row{
-            display:grid;
-            grid-template-columns: repeat(12,1fr);
-            gap:14px;
-            margin-top: 18px;
-        }
-        .kpi{
-            grid-column: span 3;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            border-radius: 16px;
+        .danger-box {
             padding: 16px;
-            display:flex;
-            gap:14px;
-            align-items:center;
+            background: rgba(255,71,87,0.08);
+            border: 1px solid rgba(255,71,87,0.16);
+            border-radius: 18px;
         }
-        @media (max-width: 1100px){ .kpi{ grid-column: span 6; } }
-        @media (max-width: 700px){ .kpi{ grid-column: span 12; } }
 
-        .kpi-ic{
-            width:44px;height:44px;border-radius:14px;
-            background: var(--surface-3);
-            border:1px solid var(--border);
-            display:flex;align-items:center;justify-content:center;
-            flex-shrink:0;
+        .danger-btn {
+            background: var(--danger-color);
+            color: #fff;
+            border: none;
+            padding: 10px 14px;
+            font-weight: var(--fw-black);
+            cursor: pointer;
+            border-radius: 14px;
         }
-        .kpi-t{ flex:1; min-width:0; }
-        .kpi-l{ font-size:.72rem; font-weight:900; text-transform:uppercase; color: var(--text-muted); }
-        .kpi-v{ font-size:1.2rem; font-weight:900; color: var(--text-main); margin-top:2px; }
-        .kpi-s{ font-size:.85rem; color: var(--text-muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+        /* ===== FIX chevauchement header cards dashboard ===== */
+
+.card-head,
+.weekly-head {
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.card-head-left {
+    align-items: flex-start;
+}
+
+.dashboard-card-heading {
+    padding-top: 2px;
+}
+
+.weekly-progress-card,
+.last-sessions-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.weekly-progress-card .card-head,
+.last-sessions-card .card-head {
+    flex-shrink: 0;
+}
+
+.weekly-progress-card .weekly-tabs {
+    margin-top: 2px;
+    margin-bottom: 24px;
+}
+
+.last-sessions-card .today-list {
+    margin-top: 4px;
+}
+
+/* optionnel : un peu plus d’air pour la card de droite */
+.last-sessions-card .today-item:first-child {
+    margin-top: 2px;
+}
+
+        @media (max-width: 1260px) {
+            .hero-top,
+            .dashboard-grid,
+            .licence-shell {
+                grid-template-columns: 1fr;
+            }
+
+            .search-pill {
+                width: 240px;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 980px) {
+            body { overflow: auto; }
+            .app-shell { height: auto; min-height: 100vh; }
+
+            .sidebar {
+                position: fixed;
+                left: -130px;
+                top: 0;
+                bottom: 0;
+                transition: .26s ease;
+            }
+
+            .sidebar.active { left: 0; }
+
+            .menu-toggle {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .topbar { padding: 0 20px; }
+            .content-scroll { padding: 18px; }
+            .topbar-actions .search-pill { display: none; }
+            .banner-card { grid-template-columns: 1fr; }
+            .banner-content { width: 100%; }
+            .banner-visual {
+                min-height: 180px;
+                padding: 0 14px 0;
+                justify-content: flex-end;
+            }
+            .banner-athlete { max-height: 180px; }
+            .progress-summary-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 760px) {
+            .today-item {
+                grid-template-columns: 1fr;
+                align-items: flex-start;
+            }
+
+            .today-badge { text-align: left; }
+
+            .settings-info-grid,
+            .settings-form-grid,
+            .licence-grid,
+            .progress-summary-grid,
+            .refined-weekly-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .banner-card,
+            .card-padding,
+            .licence-card-premium,
+            .licence-side-card { padding: 20px; }
+
+            .topbar-title-wrap small { display: none; }
+            .page-title { font-size: 1.2rem; }
+            .banner-inline-stats { display: grid; grid-template-columns: 1fr; }
+            .banner-visual { display: none; }
+            .progress-topbar { flex-direction: column; align-items: stretch; }
+            .progress-filters { justify-content: flex-start; }
+        }
     </style>
-</head>
+{% endblock %}
 
-<body>
-
-<div id="mobileOverlay" class="mobile-overlay" onclick="toggleMobileMenu()"></div>
-
-<div class="flash-container">
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="flash-message flash-{{ label }}">
-                <i class="fa-solid
-                    {% if label == 'success' %}fa-circle-check
-                    {% elseif label == 'error' or label == 'danger' %}fa-circle-xmark
-                    {% else %}fa-circle-info{% endif %}"
-                   style="color:var(--text-main);">
-                </i>
-                <span style="font-size:0.9rem; font-weight:500;">{{ message }}</span>
-                <div style="margin-left:auto; cursor:pointer;" onclick="this.parentElement.remove()">
-                    <i class="fa-solid fa-xmark"></i>
+{% block body %}
+    <div class="flash-container">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash-message flash-{{ label }}">
+                    <i class="fa-solid {% if label == 'success' %}fa-circle-check{% elseif label == 'error' or label == 'danger' %}fa-circle-xmark{% else %}fa-circle-info{% endif %}"></i>
+                    <span style="font-size:.9rem; font-weight:600;">{{ message }}</span>
+                    <button type="button" class="flash-close" aria-label="Fermer">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
-            </div>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
-</div>
+    </div>
 
-<nav class="sidebar">
-    <a href="{{ path('home') }}" class="brand">
-        <img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo">
-        <span>CHM SALEUX</span>
+    <div id="mobileOverlay" class="mobile-overlay"></div>
+
+    <div
+        class="app-shell"
+        id="memberDashboard"
+        data-route-update-email="{{ path('adherent_settings_update_email') }}"
+        data-route-update-password="{{ path('adherent_settings_update_password') }}"
+        data-route-update-licence="{{ path('adherent_edit_license') }}"
+        data-route-delete-account="{{ path('profile_delete_account') }}"
+        data-route-upload-photo="{{ path('profile_photo') }}"
+        data-sessions='{{ sessions|json_encode|e("html_attr") }}'
+    >
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <a href="{{ path('home') }}" class="brand-badge" title="Retour au site">
+                    <img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo CHM SALEUX">
+                </a>
+
+                <div class="sidebar-nav">
+                    <div class="nav-item active" data-target="home" title="Vue d'ensemble">
+                        <i class="fa-solid fa-grip"></i>
+                        <span class="nav-tooltip">Vue d'ensemble</span>
+                    </div>
+
+                    <div class="nav-item" data-target="progress" title="Mes progrès">
+                        <i class="fa-solid fa-chart-simple"></i>
+                        <span class="nav-tooltip">Mes progrès</span>
+                    </div>
+
+                    <div class="nav-item" data-target="history" title="Historique">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span class="nav-tooltip">Historique</span>
+                    </div>
+
+                    <div class="nav-item" data-target="licence" title="Ma licence">
+                        <i class="fa-solid fa-id-card"></i>
+                        <span class="nav-tooltip">Ma licence</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-bottom">
+                <a href="{{ path('home') }}" class="sidebar-link" title="Retour au site">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+
+                <div class="sidebar-profile">
+                    <img id="avatar-preview" src="{{ profileImage }}" alt="Photo de profil">
+                </div>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="sidebarToggle" type="button">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+
+                    <div class="topbar-title-wrap">
+                        <small>Espace membre CHM Saleux</small>
+                        <h2 class="page-title">Dashboard adhérent</h2>
+                    </div>
+                </div>
+
+                <div class="topbar-actions">
+                    <label class="search-pill" aria-label="Rechercher">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Rechercher une séance, une info...">
+                    </label>
+
+                    <button class="topbar-icon" style="position:relative;" title="Notifications" type="button">
+                        <i class="fa-regular fa-bell"></i>
+                        {% if notifications|default([])|length > 0 %}
+                            <span style="position:absolute; top:10px; right:10px; width:8px; height:8px; background:#ef4444; border-radius:50%;"></span>
+                        {% endif %}
+                    </button>
+
+                    <a href="{{ path('contact') }}" class="topbar-cta">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Contact
+                    </a>
+
+                    <button class="topbar-icon" id="openSettingsDrawer" title="Paramètres" type="button">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-scroll">
+                <div class="content-inner">
+                    <div class="hero-top">
+                        <div class="welcome-block">
+                            <div class="eyebrow">Suivez votre progression ici</div>
+                            <h1 class="welcome-title">Bon retour, <span class="accent">{{ firstName }}</span> !</h1>
+                            <p class="welcome-text">
+                                Retrouvez votre licence, vos statistiques d'entraînement et l’historique synchronisé avec l’application mobile dans une interface plus premium, plus sportive et plus claire.
+                            </p>
+                        </div>
+
+                        <div class="top-kcal-box">
+                            <div>
+                                <div class="metric-mini-label">Temps d'entraînement total</div>
+                                <div class="metric-mini-value">
+                                    {% if totalHours > 0 %}
+                                        {{ totalHours }}h {{ totalMinutes }}m
+                                    {% else %}
+                                        {{ totalMinutes }}m
+                                    {% endif %}
+                                </div>
+                                <div class="metric-mini-sub">Période : {{ progress.rangeLabel|default('30 jours') }}</div>
+                            </div>
+
+                            <div class="topbar-icon" style="width:58px; height:58px; border-radius:20px; background:linear-gradient(180deg, rgba(245,119,6,.14), rgba(0,91,148,.12)); border-color:var(--dash-border);">
+                                <i class="fa-solid fa-stopwatch"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section id="tab-home" class="section-view active">
+                        <div class="home-banner-wrap">
+                            <div class="glass-card banner-card">
+                                <div class="banner-content">
+                                    <div class="banner-chip">
+                                        <i class="fa-solid fa-bolt"></i>
+                                        Performance • Discipline • Régularité
+                                    </div>
+
+                                    <h2 class="banner-title">
+                                        Allez plus loin : <span class="strong">chaque séance</span> construit votre progression.
+                                    </h2>
+
+                                    <p class="banner-text">
+                                        Centralisez vos statistiques, votre licence et vos dernières séances dans un dashboard conçu pour mettre en valeur votre progression et votre engagement au sein du club.
+                                    </p>
+
+                                    <div class="banner-inline-stats">
+                                        <div class="banner-inline-stat">
+                                            <span>Licence</span>
+                                            <strong>{{ licenceStatusLabel }}</strong>
+                                        </div>
+
+                                        <div class="banner-inline-stat">
+                                            <span>Répétitions</span>
+                                            <strong id="homeTotalReps">0</strong>
+                                        </div>
+
+                                        <div class="banner-inline-stat">
+                                            <span>Dernière activité</span>
+                                            <strong>{{ lastSession and lastSession.performed_at is defined and lastSession.performed_at ? lastSession.performed_at|date('d/m/Y') : 'Aucune' }}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="banner-visual">
+                                    <img src="{{ bannerRightImage }}" alt="Athlète CHM" class="banner-athlete">
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="file" id="avatar-upload" accept="image/png, image/jpeg" style="display:none;">
+
+                        <div class="dashboard-grid">
+                            <div class="glass-card card-padding weekly-progress-card">
+                                <div class="card-head weekly-head">
+                                    <div class="card-head-left">
+                                        <div class="card-icon"></div>
+                                        <div class="dashboard-card-heading">
+                                            <span class="dashboard-card-kicker">Suivi performance</span>
+                                            <h3 class="dashboard-card-title">Progression hebdomadaire</h3>
+                                            <span class="dashboard-card-title-line"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="weekly-tabs home-metric-tabs" id="homeMetricTabs">
+                                    <button class="weekly-tab active" type="button" data-metric="volume">Volume</button>
+                                    <button class="weekly-tab" type="button" data-metric="duration">Durée</button>
+                                    <button class="weekly-tab" type="button" data-metric="reps">Reps</button>
+                                </div>
+
+                                {% if sessions|length > 0 %}
+                                    <div class="refined-chart" id="homeWeeklyChart"></div>
+
+                                    <div class="refined-weekly-stats">
+                                        <div class="weekly-stat-box">
+                                            <div class="weekly-stat-label">Total affiché</div>
+                                            <div class="weekly-stat-value" id="homeMetricTotal">{{ totalVolumeKg|number_format(0, ',', ' ') }} kg</div>
+                                        </div>
+
+                                        <div class="weekly-stat-box">
+                                            <div class="weekly-stat-label">Meilleure journée</div>
+                                            <div class="weekly-stat-value" id="homeBestDay">—</div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="empty-state">Aucune donnée disponible pour la progression hebdomadaire.</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="right-stack">
+                                <div class="glass-card card-padding last-sessions-card">
+                                    <div class="card-head">
+                                        <div class="card-head-left">
+                                            <div class="card-icon"></div>
+                                            <div class="dashboard-card-heading">
+                                                <span class="dashboard-card-kicker">Activité récente</span>
+                                                <h3 class="dashboard-card-title">Vos dernières séances</h3>
+                                                <span class="dashboard-card-title-line"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% if sessions|length > 0 %}
+                                        <div class="today-list">
+                                            {% for s in sessions|slice(0, 3) %}
+                                                {% set durSec = s.duration_seconds|default(0) %}
+                                                {% set durH = durSec // 3600 %}
+                                                {% set durM = (durSec % 3600) // 60 %}
+
+                                                <div class="today-item">
+                                                    <div class="today-icon">
+                                                        <i class="fa-solid fa-dumbbell"></i>
+                                                    </div>
+
+                                                    <div>
+                                                        <h4 class="today-title">{{ s.routine_name|default('Séance libre') }}</h4>
+                                                        <div class="today-meta">
+                                                            {{ s.performed_at|default(null) ? 'Le ' ~ s.performed_at|date('d/m/Y à H:i') : 'Date non renseignée' }}
+                                                        </div>
+
+                                                        <div class="today-stats">
+                                                            <div class="today-stat">
+                                                                <strong>
+                                                                    {% if durH > 0 %}
+                                                                        {{ durH }}h {{ durM }}m
+                                                                    {% else %}
+                                                                        {{ durM }}m
+                                                                    {% endif %}
+                                                                </strong>
+                                                                <span>Durée</span>
+                                                            </div>
+
+                                                            <div class="today-stat">
+                                                                <strong>{{ s.total_volume|default(0)|number_format(0, ',', ' ') }} kg</strong>
+                                                                <span>Volume</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {% if s.is_from_planning|default(false) %}
+                                                        <div class="today-badge">Planning</div>
+                                                    {% else %}
+                                                        <div class="today-badge">Libre</div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <div class="empty-state">Aucune séance récente à afficher.</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="tab-progress" class="section-view">
+                        <div class="section-head">
+                            <h3>Mes progrès</h3>
+
+                            <div class="progress-range-menu" id="progressRangeTabs">
+                                <button type="button" class="progress-range-trigger" id="progressRangeTrigger">
+                                    <i class="fa-solid fa-sliders"></i>
+                                    <span class="progress-range-label">30 derniers jours</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </button>
+
+                                <div class="progress-range-dropdown" id="progressRangeDropdown">
+                                    <button type="button" class="progress-range-option active" data-range="30">30 derniers jours</button>
+                                    <button type="button" class="progress-range-option" data-range="90">3 derniers mois</button>
+                                    <button type="button" class="progress-range-option" data-range="365">Cette année</button>
+                                    <button type="button" class="progress-range-option" data-range="0">All time</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if sessions|length > 0 %}
+                            <div class="glass-card card-padding progress-detailed-card">
+                                <div class="progress-topbar">
+                                    <div class="card-head-left">
+                                        <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
+                                        <div>
+                                            <h3 class="card-title">Progression globale</h3>
+                                            <div class="card-subtitle">Vue détaillée de votre activité avec filtres de période</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress-filters">
+                                        <div class="weekly-tabs progress-metric-tabs" id="progressMetricTabs">
+                                            <button class="weekly-tab active" type="button" data-metric="volume">Volume</button>
+                                            <button class="weekly-tab" type="button" data-metric="duration">Durée</button>
+                                            <button class="weekly-tab" type="button" data-metric="reps">Reps</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="refined-chart progress-detailed-chart" id="progressDetailedChart"></div>
+
+                                <div class="progress-summary-grid">
+                                    <div class="progress-summary-box">
+                                        <div class="weekly-stat-label">Total période</div>
+                                        <div class="weekly-stat-value" id="progressTotalValue">—</div>
+                                    </div>
+
+                                    <div class="progress-summary-box">
+                                        <div class="weekly-stat-label">Temps cumulé</div>
+                                        <div class="weekly-stat-value" id="progressDurationValue">—</div>
+                                    </div>
+
+                                    <div class="progress-summary-box">
+                                        <div class="weekly-stat-label">Répétitions</div>
+                                        <div class="weekly-stat-value" id="progressRepsValue">—</div>
+                                    </div>
+
+                                    <div class="progress-summary-box">
+                                        <div class="weekly-stat-label">Jours actifs</div>
+                                        <div class="weekly-stat-value" id="progressActiveDaysValue">—</div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="empty-state">Aucune donnée disponible pour afficher vos progrès.</div>
+                        {% endif %}
+                    </section>
+
+                    <section id="tab-history" class="section-view">
+                        <div class="section-head">
+                            <h3>Historique complet des séances</h3>
+                            <div class="section-pill">
+                                <i class="fa-solid fa-database"></i>
+                                {{ sessions|length }} enregistrements
+                            </div>
+                        </div>
+
+                        <div class="glass-card card-padding">
+                            {% if sessions|length > 0 %}
+                                <div class="history-wrap">
+                                    <table class="history-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Séance</th>
+                                                <th>Volume</th>
+                                                <th>Durée</th>
+                                                <th>Origine</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for s in sessions %}
+                                                {% set durSec = s.duration_seconds|default(0) %}
+                                                {% set durH = durSec // 3600 %}
+                                                {% set durM = (durSec % 3600) // 60 %}
+                                                <tr>
+                                                    <td>{{ s.performed_at|default(null) ? s.performed_at|date('d/m/Y') : '—' }}</td>
+                                                    <td>{{ s.routine_name|default('Séance') }}</td>
+                                                    <td>{{ s.total_volume|default(0)|number_format(0, ',', ' ') }} kg</td>
+                                                    <td>
+                                                        {% if durH > 0 %}
+                                                            {{ durH }}h {{ durM }}m
+                                                        {% else %}
+                                                            {{ durM }}m
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if s.is_from_planning|default(false) %}
+                                                            Planning
+                                                        {% else %}
+                                                            Libre
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <div class="empty-state">Aucun historique disponible.</div>
+                            {% endif %}
+                        </div>
+                    </section>
+
+                    <section id="tab-licence" class="section-view">
+                        <div class="section-head">
+                            <h3>Votre licence officielle</h3>
+                            <div class="section-pill">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                Saison 2025 / 2026
+                            </div>
+                        </div>
+
+                        <div class="licence-shell">
+                            <div class="glass-card licence-card-premium">
+                                <div class="licence-topbar">
+                                    <div class="licence-brand-block">
+                                        <div class="licence-brand-logo">
+                                            <img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo">
+                                        </div>
+                                        <div>
+                                            <div class="licence-brand-label">Club affilié</div>
+                                            <div class="licence-brand-name">CHM SALEUX</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="licence-status-badge {{ licenceActive ? 'is-active' : 'is-inactive' }}">
+                                        <i class="fa-solid {{ licenceActive ? 'fa-circle-check' : 'fa-triangle-exclamation' }}"></i>
+                                        {{ licenceActive ? 'Licence active' : 'Licence inactive' }}
+                                    </div>
+                                </div>
+
+                                <div class="licence-hero">
+                                    <div class="licence-member-block">
+                                        <div class="licence-member-label">Nom de l’adhérent</div>
+                                        <div class="licence-member-name">{{ app.user.firstname }} {{ app.user.lastname }}</div>
+                                        <div class="licence-member-sub">{{ app.user.email }}</div>
+                                    </div>
+
+                                    <div class="licence-number-box">
+                                        <span>N° licence</span>
+                                        <strong>{{ licenceNumberLabel }}</strong>
+                                    </div>
+                                </div>
+
+                                <div class="licence-grid">
+                                    <div class="licence-field">
+                                        <div class="licence-field-label">Club</div>
+                                        <div class="licence-field-value">CHM SALEUX</div>
+                                    </div>
+                                    <div class="licence-field">
+                                        <div class="licence-field-label">Saison</div>
+                                        <div class="licence-field-value">2025 / 2026</div>
+                                    </div>
+                                    <div class="licence-field">
+                                        <div class="licence-field-label">Type de licence</div>
+                                        <div class="licence-field-value">{{ licenceTypeLabel }}</div>
+                                    </div>
+                                    <div class="licence-field">
+                                        <div class="licence-field-label">Statut</div>
+                                        <div class="licence-field-value">{{ licenceStatusLabel }}</div>
+                                    </div>
+                                    <div class="licence-field">
+                                        <div class="licence-field-label">Cotisation</div>
+                                        <div class="licence-field-value">{{ admin.feesStatus|default('—') }}</div>
+                                    </div>
+                                    <div class="licence-field">
+                                        <div class="licence-field-label">Échéance cotisation</div>
+                                        <div class="licence-field-value">{{ admin.feesDue|default('—') }}</div>
+                                    </div>
+                                    <div class="licence-field">
+                                        <div class="licence-field-label">Certificat médical</div>
+                                        <div class="licence-field-value">{{ admin.medicalStatus|default('—') }}</div>
+                                    </div>
+                                    <div class="licence-field">
+                                        <div class="licence-field-label">Expiration certificat</div>
+                                        <div class="licence-field-value">{{ admin.medicalExpiry|default('—') }}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="licence-side-improved">
+                                <div class="glass-card licence-side-card">
+                                    <div class="licence-side-icon">
+                                        <i class="fa-solid fa-file-pdf"></i>
+                                    </div>
+                                    <h4>Justificatif adhérent</h4>
+                                    <p>Téléchargez votre justificatif pour mutuelle, CE ou dossier administratif.</p>
+                                    <a href="#" class="btn-primary" style="width:100%;">
+                                        <i class="fa-solid fa-download"></i>
+                                        Télécharger
+                                    </a>
+                                </div>
+
+                                <div class="glass-card licence-side-card">
+                                    <h4>Informations utiles</h4>
+                                    <div class="licence-info-list">
+                                        <div class="licence-info-row">
+                                            <span>Type</span>
+                                            <strong>{{ licenceTypeLabel }}</strong>
+                                        </div>
+                                        <div class="licence-info-row">
+                                            <span>Statut</span>
+                                            <strong>{{ licenceStatusLabel }}</strong>
+                                        </div>
+                                        <div class="licence-info-row">
+                                            <span>Certificat</span>
+                                            <strong>{{ admin.medicalStatus|default('—') }}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="settingsOverlay" class="settings-overlay"></div>
+
+    <aside id="settingsDrawer" class="settings-drawer" aria-hidden="true">
+        <div class="settings-drawer-header">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <i class="fa-solid fa-gear" style="color:var(--brand-orange);"></i>
+                <div>
+                    <strong style="font-size:1rem; color:var(--dash-text); display:block;">Paramètres du compte</strong>
+                    <span style="font-size:.8rem; color:var(--dash-text-muted);">Sécurité et informations de connexion</span>
+                </div>
+            </div>
+
+            <button class="topbar-icon" id="closeSettingsDrawer" title="Fermer" type="button" style="width:42px; height:42px; border-radius:14px;">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="settings-drawer-content">
+            <div id="settingsFeedback" class="settings-feedback" style="display:none;"></div>
+
+            <div class="settings-pro-card">
+                <div class="settings-pro-head">
+                    <div>
+                        <div class="settings-pro-eyebrow">Compte</div>
+                        <h4>Informations actuelles</h4>
+                    </div>
+                </div>
+
+                <div class="settings-info-grid">
+                    <div class="settings-info-box">
+                        <span class="settings-info-label">Nom</span>
+                        <strong>{{ app.user.firstname }} {{ app.user.lastname }}</strong>
+                    </div>
+                    <div class="settings-info-box">
+                        <span class="settings-info-label">E-mail</span>
+                        <strong id="currentEmailDisplay">{{ app.user.email }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-pro-card">
+                <div class="settings-pro-head">
+                    <div>
+                        <div class="settings-pro-eyebrow">Connexion</div>
+                        <h4>Modifier mon e-mail</h4>
+                    </div>
+                    <button class="btn-outline" type="button" data-toggle-form="email">Modifier</button>
+                </div>
+
+                <div id="form-email" class="settings-form-pro" style="display:none;">
+                    <div class="settings-form-grid">
+                        <div class="settings-field">
+                            <label for="input-email">Nouvel e-mail</label>
+                            <input type="email" id="input-email" class="settings-input" placeholder="nouvel@email.com">
+                        </div>
+                        <div class="settings-field">
+                            <label for="input-email-password">Mot de passe actuel</label>
+                            <input type="password" id="input-email-password" class="settings-input" placeholder="Votre mot de passe actuel">
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="email-csrf" value="{{ csrf_token('update_email') }}">
+
+                    <div class="settings-actions-row">
+                        <button class="btn-primary" type="button" id="saveEmailBtn">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            Enregistrer l’e-mail
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-pro-card">
+                <div class="settings-pro-head">
+                    <div>
+                        <div class="settings-pro-eyebrow">Sécurité</div>
+                        <h4>Changer mon mot de passe</h4>
+                    </div>
+                    <button class="btn-outline" type="button" data-toggle-form="password">Modifier</button>
+                </div>
+
+                <div id="form-password" class="settings-form-pro" style="display:none;">
+                    <div class="settings-form-grid">
+                        <div class="settings-field">
+                            <label for="old-pass">Mot de passe actuel</label>
+                            <input type="password" id="old-pass" class="settings-input" placeholder="Mot de passe actuel">
+                        </div>
+                        <div class="settings-field">
+                            <label for="new-pass">Nouveau mot de passe</label>
+                            <input type="password" id="new-pass" class="settings-input" placeholder="Minimum 8 caractères">
+                        </div>
+                        <div class="settings-field settings-field-full">
+                            <label for="confirm-pass">Confirmer le nouveau mot de passe</label>
+                            <input type="password" id="confirm-pass" class="settings-input" placeholder="Confirmez le nouveau mot de passe">
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="password-csrf" value="{{ csrf_token('update_password') }}">
+
+                    <div class="settings-actions-row">
+                        <button class="btn-primary" type="button" id="savePasswordBtn">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Mettre à jour le mot de passe
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-pro-card settings-pro-card-muted">
+                <div class="settings-pro-head">
+                    <div>
+                        <div class="settings-pro-eyebrow">Apparence</div>
+                        <h4>Thème du dashboard</h4>
+                    </div>
+                </div>
+
+                <div class="settings-static-row">
+                    <div>
+                        <div style="font-weight:800; color:var(--dash-text);">Thème sombre CHM</div>
+                        <div style="font-size:.85rem; color:var(--dash-text-muted);">Design basé sur les couleurs globales orange / bleu / noir du site</div>
+                    </div>
+
+                    <div class="settings-dark-pill">
+                        <i class="fa-solid fa-moon"></i>
+                        Actif
+                    </div>
+                </div>
+            </div>
+
+            <div class="danger-box">
+                <div>
+                    <h4 style="color:var(--danger-color); margin:0 0 5px 0;">Zone danger</h4>
+                    <p style="color:var(--dash-text-muted); font-size:.85rem; margin:0;">La suppression du compte est irréversible.</p>
+                </div>
+                <button type="button" id="deleteAccountBtn" class="danger-btn">Supprimer</button>
+            </div>
+        </div>
+    </aside>
+
+    <div id="cropperModal" class="cropper-modal-overlay"
+         style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,.82); align-items:center; justify-content:center;">
+        <div style="background:#09090d; border:1px solid var(--dash-border); padding:20px; border-radius:20px; width:90%; max-width:500px;">
+            <h3 style="margin-bottom:15px; color:var(--dash-text);">Ajuster la photo</h3>
+            <div style="height:300px; background:#050505; margin-bottom:15px; border-radius:16px; overflow:hidden;">
+                <img id="cropperImage" src="" style="max-width:100%;">
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:10px;">
+                <button id="cancelCropBtn" class="btn-outline" type="button">Annuler</button>
+                <button id="cropAndSaveBtn" class="btn-primary" type="button">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    {% include '_shared/_elios_widget.html.twig' %}
+
+    <a id="assistantWidgetOpen" title="Assistant IA"
+       style="position: fixed; bottom: 30px; right: 30px; width: 62px; height: 62px; background: linear-gradient(135deg, var(--brand-orange), #ff9a3d); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-accent); cursor: pointer; z-index: 5000;">
+        <img src="{{ asset('images/ia.png') }}" alt="Elios" style="width: 35px; height: 35px; object-fit: contain;">
     </a>
+{% endblock %}
 
-    <div class="nav-links">
-        <div class="nav-item active" data-target="home">
-            <i class="fa-solid fa-grid-2"></i> Vue d'ensemble
-        </div>
-        <div class="nav-item" data-target="licence">
-            <i class="fa-solid fa-id-card"></i> Ma Licence
-        </div>
+{% block javascripts %}
+    {{ parent() }}
 
-        <div style="margin-top: auto; padding-top: 10px;">
-            <a href="{{ path('home') }}"
-               style="text-decoration:none; color:var(--text-muted); font-size:0.85rem; display:flex; align-items:center; gap:10px;">
-                <i class="fa-solid fa-arrow-left"></i> Retour au site
-            </a>
-        </div>
-    </div>
-
-    <div class="user-mini">
-        {% if app.user.profileImageDataUrl %}
-            <img src="{{ app.user.profileImageDataUrl }}" class="user-avatar-small-img" alt="Avatar mini">
-        {% else %}
-            <div class="user-avatar-small">
-                {{ app.user.firstname|first }}{{ app.user.lastname|first }}
-            </div>
-        {% endif %}
-
-        <div style="display:flex; flex-direction:column;">
-            <span style="font-size:0.9rem; font-weight:700; color:var(--text-main);">{{ app.user.firstname }}</span>
-            <span style="font-size:0.75rem; color:var(--text-muted);">Adhérent</span>
-        </div>
-    </div>
-</nav>
-
-<main class="main-content">
-    <header class="topbar">
-        <div style="display:flex; align-items:center; gap:20px;">
-            <div class="menu-toggle" onclick="toggleMobileMenu()"><i class="fa-solid fa-bars"></i></div>
-            <h2 class="page-title">Tableau de bord adhérent</h2>
-        </div>
-
-        <div class="topbar-actions">
-            <button class="icon-btn" style="position:relative;">
-                <i class="fa-regular fa-bell"></i>
-                {% if notifications|default([])|length > 0 %}
-                    <span style="position:absolute; top:8px; right:10px; width:8px; height:8px; background:#ef4444; border-radius:50%; border:1px solid white;"></span>
-                {% endif %}
-            </button>
-
-            <a href="{{ path('contact') }}" class="btn-primary" style="padding: 8px 20px; font-size:0.9rem;">
-                Contact
-            </a>
-
-            <button class="icon-btn" id="openSettingsDrawer" title="Paramètres">
-                <i class="fa-solid fa-gear"></i>
-            </button>
-        </div>
-    </header>
-
-    <div class="content-scroll">
-
-        <div class="profile-header">
-            <div style="position:relative;">
-                <img src="{% if app.user.profileImageDataUrl %}{{ app.user.profileImageDataUrl }}{% else %}https://ui-avatars.com/api/?name={{ app.user.firstname }}+{{ app.user.lastname }}&background=0f172a&color=fff&size=256{% endif %}"
-                     class="profile-pic-big"
-                     id="avatar-preview"
-                     alt="Avatar">
-
-                <label for="avatar-upload"
-                       style="position:absolute; bottom:0; right:0; background:var(--text-main); color:white; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; border:2px solid var(--bg-card);">
-                    <i class="fa-solid fa-camera" style="font-size:0.8rem;"></i>
-                </label>
-                <input type="file" id="avatar-upload" accept="image/png, image/jpeg" style="display:none;">
-            </div>
-
-            <div style="flex:1;">
-                <h1 style="font-size:1.8rem; font-weight:800; margin:0 0 5px 0; color:var(--text-main);">
-                    Bonjour, {{ app.user.firstname }}
-                </h1>
-                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                    <span style="color:var(--text-muted);">Membre Adhérent</span>
-                    {% if app.user.licenceStatus is defined and app.user.licenceStatus == 'Active' %}
-                        <span class="badge-status badge-success"><i class="fa-solid fa-check"></i> Licence Active</span>
-                    {% else %}
-                        <span class="badge-status badge-danger"><i class="fa-solid fa-triangle-exclamation"></i> Inactif</span>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <section id="tab-home" class="section-view active">
-
-            {% set admin = adminInfo|default({}) %}
-
-            <div class="kpi-row">
-                <div class="kpi">
-                    <div class="kpi-ic"><i class="fa-solid fa-id-card"></i></div>
-                    <div class="kpi-t">
-                        <div class="kpi-l">Licence</div>
-                        <div class="kpi-v">{{ app.user.licenceNumber|default('Non renseignée') }}</div>
-                        <div class="kpi-s">Saison 2025 / 2026</div>
-                    </div>
-                </div>
-
-                <div class="kpi">
-                    <div class="kpi-ic"><i class="fa-solid fa-circle-check"></i></div>
-                    <div class="kpi-t">
-                        <div class="kpi-l">Statut</div>
-                        <div class="kpi-v">{{ app.user.licenceStatus|default('À vérifier') }}</div>
-                        <div class="kpi-s">Validation club / fédé</div>
-                    </div>
-                </div>
-
-                <div class="kpi">
-                    <div class="kpi-ic"><i class="fa-solid fa-receipt"></i></div>
-                    <div class="kpi-t">
-                        <div class="kpi-l">Cotisation</div>
-                        <div class="kpi-v">{{ admin.feesStatus|default('—') }}</div>
-                        <div class="kpi-s">Échéance : {{ admin.feesDue|default('—') }}</div>
-                    </div>
-                </div>
-
-                <div class="kpi">
-                    <div class="kpi-ic"><i class="fa-solid fa-file-medical"></i></div>
-                    <div class="kpi-t">
-                        <div class="kpi-l">Certificat</div>
-                        <div class="kpi-v">{{ admin.medicalStatus|default('—') }}</div>
-                        <div class="kpi-s">Expire : {{ admin.medicalExpiry|default('—') }}</div>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <section id="tab-licence" class="section-view">
-            <div style="margin-bottom:20px;">
-                <h3 style="font-size:1.4rem;">Votre Licence Officielle</h3>
-            </div>
-
-            <div class="card" style="margin-bottom: 30px;">
-                <div style="display:flex; flex-wrap:wrap;">
-                    <div style="flex:1; min-width:300px; padding:30px; border-right:1px solid var(--border);">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:30px;">
-                            <img src="{{ asset('images/favicon/icon2.png') }}" style="height:50px; opacity:0.8;" alt="Logo">
-                            <span style="font-size:1.5rem; font-weight:800; color:rgba(226,232,240,0.7); letter-spacing:-2px;">FFHM</span>
-                        </div>
-
-                        <div style="margin-bottom:20px;">
-                            <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Nom de l'adhérent</div>
-                            <div style="font-size:1.6rem; font-weight:800; text-transform:uppercase;">{{ app.user.firstname }} {{ app.user.lastname }}</div>
-                        </div>
-
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                            <div>
-                                <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Club</div>
-                                <div style="font-weight:600;">CHM SALEUX</div>
-                            </div>
-                            <div>
-                                <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Saison</div>
-                                <div style="font-weight:600;">2025 / 2026</div>
-                            </div>
-                            <div>
-                                <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Type</div>
-                                <div style="font-weight:600;">{{ (app.user.licenceType is defined) ? app.user.licenceType : 'Loisir' }}</div>
-                            </div>
-                            <div>
-                                <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">N° Affiliation</div>
-                                <div style="font-weight:600; font-family:monospace;">{{ app.user.licenceNumber|default('---') }}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="width:300px; background:var(--surface-2); padding:30px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; border-left:1px solid var(--border);">
-                        <div style="width:80px; height:80px; background:var(--bg-card); border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow); margin-bottom:15px; border:1px solid var(--border);">
-                            <i class="fa-solid fa-file-pdf" style="color:var(--text-main); font-size:2rem;"></i>
-                        </div>
-                        <h4 style="margin:0 0 10px 0; color:var(--text-main);">Justificatif</h4>
-                        <p style="font-size:0.85rem; margin-bottom:20px;">Besoin d'une facture pour votre CE ou mutuelle ?</p>
-                        <a href="#" class="btn-primary" style="width:100%;"><i class="fa-solid fa-download"></i> Télécharger</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card card-padding">
-                <h3 style="margin-bottom:20px;">Services Inclus</h3>
-                <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:15px;">
-                    {% set benefits = [
-                        {'icon': 'fa-dumbbell', 'text': 'Accès Plateau'},
-                        {'icon': 'fa-heart-pulse', 'text': 'Zone Cardio'},
-                        {'icon': 'fa-user-ninja', 'text': 'Suivi Coach'},
-                        {'icon': 'fa-shower', 'text': 'Vestiaires'},
-                        {'icon': 'fa-shield-halved', 'text': 'Assurance'},
-                        {'icon': 'fa-tags', 'text': 'Réductions'}
-                    ] %}
-                    {% for benefit in benefits %}
-                        <div style="display:flex; align-items:center; gap:10px; padding:10px; background:var(--surface-2); border-radius:8px; border:1px solid var(--border);">
-                            <i class="fa-solid {{ benefit.icon }}" style="color:var(--text-main);"></i>
-                            <span style="font-weight:600; font-size:0.9rem; color:var(--text-main);">{{ benefit.text }}</span>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </section>
-
-    </div>
-</main>
-
-<div id="settingsOverlay" class="settings-overlay"></div>
-
-<aside id="settingsDrawer" class="settings-drawer" aria-hidden="true">
-    <div class="settings-drawer-header">
-        <div style="display:flex; align-items:center; gap:10px;">
-            <i class="fa-solid fa-gear"></i>
-            <strong style="font-size:1rem;">Paramètres</strong>
-        </div>
-        <button class="icon-btn" id="closeSettingsDrawer" title="Fermer">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-    </div>
-
-    <div class="settings-drawer-content">
-
-        <div class="settings-row" style="margin-bottom:14px;">
-            <div>
-                <div style="font-weight:900;">Mode sombre</div>
-                <div style="font-size:0.85rem; color:var(--text-muted);">Noir / clair</div>
-            </div>
-
-            <label class="switch" title="Dark / Light">
-                <input type="checkbox" id="themeToggle">
-                <span class="slider"></span>
-            </label>
-        </div>
-
-        <div class="settings-separator"></div>
-
-        <div class="card" style="margin-bottom:14px;">
-            <div class="card-padding" style="border-bottom:1px solid var(--border);">
-                <h4 style="margin:0; color:var(--text-main);">Informations de connexion</h4>
-            </div>
-            <div class="card-padding">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; gap:12px;">
-                    <div>
-                        <label style="font-size:0.8rem; color:var(--text-muted); font-weight:800;">E-mail</label>
-                        <div style="font-weight:800; color:var(--text-main);">{{ app.user.email }}</div>
-                    </div>
-                    <button class="btn-outline" onclick="toggleEdit('email')">Modifier</button>
-                </div>
-
-                <div id="form-email" style="display:none; margin-bottom:18px; background:var(--surface-2); padding:15px; border-radius:12px; border:1px solid var(--border);">
-                    <input type="email" id="input-email" placeholder="Nouvel e-mail"
-                           style="width:100%; padding:10px; border:1px solid var(--border); border-radius:10px; margin-bottom:10px; background:var(--bg-card); color:var(--text-main);">
-                    <button class="btn-primary" onclick="updateProfile('email')">Enregistrer</button>
-                </div>
-
-                <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
-                    <div>
-                        <label style="font-size:0.8rem; color:var(--text-muted); font-weight:800;">Téléphone</label>
-                        <div style="font-weight:800; color:var(--text-main);">{{ app.user.phone|default('Non renseigné') }}</div>
-                    </div>
-                    <button class="btn-outline" onclick="toggleEdit('phone')">Modifier</button>
-                </div>
-
-                <div id="form-phone" style="display:none; margin-top:18px; background:var(--surface-2); padding:15px; border-radius:12px; border:1px solid var(--border);">
-                    <input type="text" id="input-phone" placeholder="06..."
-                           style="width:100%; padding:10px; border:1px solid var(--border); border-radius:10px; margin-bottom:10px; background:var(--bg-card); color:var(--text-main);">
-                    <button class="btn-primary" onclick="updateProfile('phone')">Enregistrer</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card" style="margin-bottom:14px;">
-            <div class="card-padding" style="border-bottom:1px solid var(--border);">
-                <h4 style="margin:0; color:var(--text-main);">Sécurité</h4>
-            </div>
-            <div class="card-padding">
-                <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                    <button class="btn-outline" style="flex:1; min-width:190px;" onclick="toggleEdit('password')">Changer mot de passe</button>
-                    <button class="btn-outline" style="flex:1; min-width:190px;" onclick="toggleA2F()">Activer 2FA</button>
-                </div>
-
-                <div id="form-password" style="display:none; margin-top:18px; background:var(--surface-2); padding:15px; border-radius:12px; border:1px solid var(--border);">
-                    <input type="password" id="old-pass" placeholder="Ancien mot de passe"
-                           style="display:block; width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:10px; background:var(--bg-card); color:var(--text-main);">
-                    <input type="password" id="new-pass" placeholder="Nouveau mot de passe"
-                           style="display:block; width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--border); border-radius:10px; background:var(--bg-card); color:var(--text-main);">
-                    <button class="btn-primary" onclick="updateProfile('password')">Valider</button>
-                </div>
-            </div>
-        </div>
-
-        <div style="padding:16px; border:1px solid rgba(239,68,68,0.35); background:rgba(239,68,68,0.08); border-radius:14px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
-            <div>
-                <h4 style="color:#ef4444; margin:0 0 5px 0;">Zone Danger</h4>
-                <p style="color:var(--text-muted); font-size:0.85rem;">La suppression du compte est irréversible.</p>
-            </div>
-            <button onclick="confirmDeleteAccount()"
-                    style="background:#ef4444; color:white; border:none; padding:10px 14px; border-radius:10px; font-weight:900; cursor:pointer;">
-                Supprimer
-            </button>
-        </div>
-
-    </div>
-</aside>
-
-<div id="cropperModal" class="cropper-modal-overlay"
-     style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.8); align-items:center; justify-content:center;">
-    <div style="background:var(--bg-card); padding:20px; border-radius:12px; width:90%; max-width:500px; border:1px solid var(--border);">
-        <h3 style="margin-bottom:15px;">Ajuster la photo</h3>
-        <div style="height:300px; background:#333; margin-bottom:15px;">
-            <img id="cropperImage" src="" style="max-width:100%;">
-        </div>
-        <div style="display:flex; justify-content:flex-end; gap:10px;">
-            <button id="cancelCropBtn" class="btn-outline">Annuler</button>
-            <button id="cropAndSaveBtn" class="btn-primary">Enregistrer</button>
-        </div>
-    </div>
-</div>
-
-<div id="licenceModal"
-     style="display:none; position:fixed; inset:0; z-index:9000; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
-    <div style="background:var(--bg-card); width:600px; border-radius:20px; overflow:hidden; display:flex; box-shadow:0 20px 25px -5px rgba(0,0,0,0.1); position:relative; border:1px solid var(--border);">
-        <div style="flex:1; padding:30px;">
-            <h3>Saisie manuelle</h3>
-            <input type="text" id="licenceInputManual" placeholder="00000000"
-                   style="width:100%; padding:12px; border:1px solid var(--border); border-radius:8px; margin:15px 0; background:var(--bg-card); color:var(--text-main);">
-            <button class="btn-primary" onclick="saveLicenceManual()">Valider</button>
-        </div>
-        <div style="width:1px; background:var(--border);"></div>
-        <div style="flex:1; padding:30px; background:var(--surface-2); text-align:center;">
-            <h3>Assistant</h3>
-            <p>Laisser l'IA trouver mon numéro</p>
-            <button onclick="openChatbot('licence')" class="btn-outline" style="background:var(--bg-card);">Lancer Elios</button>
-        </div>
-        <button onclick="closeLicenceModal()"
-                style="position:absolute; top:20px; right:20px; background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-main);">
-            &times;
-        </button>
-    </div>
-</div>
-
-{% include '_shared/_elios_widget.html.twig' %}
-
-<a id="assistantWidgetOpen" title="Assistant IA"
-   style="position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--text-main); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); cursor: pointer; z-index: 5000;">
-    <img src="{{ asset('images/ia.png') }}" alt="Elios" style="width: 35px; height: 35px; object-fit: contain;">
-</a>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-<script src="{{ asset('js/dashboard/test-v2.js') }}"></script>
-<script src="{{ asset('js/assistant/elios.js') }}"></script>
-
-<script>
-    // Tabs (dashboard content uniquement)
-    function openTab(target) {
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        const nav = document.querySelector(`.nav-item[data-target="${target}"]`);
-        if (nav) nav.classList.add('active');
-
-        document.querySelectorAll('.section-view').forEach(s => s.classList.remove('active'));
-        const tab = document.getElementById('tab-' + target);
-        if (tab) tab.classList.add('active');
-
-        if (window.innerWidth <= 900) {
-            const sb = document.querySelector('.sidebar');
-            if (sb.classList.contains('active')) toggleMobileMenu();
-        }
-    }
-
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', function() {
-            openTab(this.getAttribute('data-target'));
-        });
-    });
-
-    function toggleMobileMenu() {
-        document.querySelector('.sidebar').classList.toggle('active');
-        document.getElementById('mobileOverlay').classList.toggle('active');
-    }
-
-    // Drawer Paramètres
-    const settingsDrawer = document.getElementById('settingsDrawer');
-    const settingsOverlay = document.getElementById('settingsOverlay');
-    const openSettingsBtn = document.getElementById('openSettingsDrawer');
-    const closeSettingsBtn = document.getElementById('closeSettingsDrawer');
-
-    function openSettingsDrawer() {
-        settingsDrawer.classList.add('open');
-        settingsOverlay.classList.add('open');
-        settingsDrawer.setAttribute('aria-hidden', 'false');
-    }
-
-    function closeSettingsDrawer() {
-        settingsDrawer.classList.remove('open');
-        settingsOverlay.classList.remove('open');
-        settingsDrawer.setAttribute('aria-hidden', 'true');
-    }
-
-    openSettingsBtn?.addEventListener('click', openSettingsDrawer);
-    closeSettingsBtn?.addEventListener('click', closeSettingsDrawer);
-    settingsOverlay?.addEventListener('click', closeSettingsDrawer);
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeSettingsDrawer();
-    });
-
-    // Toggle Edit (forms dans le drawer)
-    function toggleEdit(field) {
-        const form = document.getElementById('form-' + field);
-        if (!form) return;
-        form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
-    }
-
-    // Dark/Light avec sauvegarde
-    const themeToggle = document.getElementById('themeToggle');
-
-    function applyTheme(isDark) {
-        document.body.classList.toggle('theme-dark', isDark);
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        if (themeToggle) themeToggle.checked = isDark;
-    }
-
-    const savedTheme = localStorage.getItem('theme');
-    applyTheme(savedTheme === 'dark');
-
-    themeToggle?.addEventListener('change', (e) => {
-        applyTheme(e.target.checked);
-    });
-</script>
-
-</body>
-</html>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <script src="{{ asset('js/dashboard/test-v2.js') }}"></script>
+    <script src="{{ asset('js/assistant/elios.js') }}"></script>
+{% endblock %}

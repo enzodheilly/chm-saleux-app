@@ -381,6 +381,29 @@
 }
 
 /* =========================================
+   FIX JONCTION DERNIERE SECTION / FOOTER
+   ========================================= */
+
+/* on supprime la ligne du bas sur la dernière section alternée */
+.ecole-root > .bg-dark-alternate:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: var(--section-padding-y);
+}
+
+/* évite qu'un dernier bloc interne ajoute un espace parasite */
+.ecole-root > section:last-of-type .cta-box,
+.ecole-root > section:last-of-type .cta-box p {
+  margin-bottom: 0;
+}
+
+/* sécurité : pas d'espace entre le main et le footer */
+.ecole-root {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* =========================================
    6. RESPONSIVE
    ========================================= */
 @media (max-width: 992px) {

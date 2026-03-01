@@ -183,13 +183,12 @@
    PAGES INTERNES — BASE GLOBALE
    ========================================================= */
 
-/* Wrapper générique de page interne */
 .page-shell {
   background: var(--bg-section);
   color: var(--text-white);
   font-family: var(--font-family-base);
   overflow-x: hidden;
-  padding: 4rem 0 5rem;
+  padding: 4rem 0 0;
 }
 
 /* Container global interne (évite .container Bootstrap si conflit) */
@@ -202,7 +201,7 @@
 /* Responsive page shell */
 @media (max-width: 992px) {
   .page-shell {
-    padding: 3.2rem 0 4rem;
+    padding: 3.2rem 0 0;
   }
 
   .page-container {
@@ -212,7 +211,7 @@
 
 @media (max-width: 768px) {
   .page-shell {
-    padding: 2.6rem 0 3.4rem;
+    padding: 2.6rem 0 0;
   }
 
   .page-container {

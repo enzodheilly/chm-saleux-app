@@ -53,8 +53,14 @@
                             </button>
                         </div>
 
-                        <div id="turnstile-newsletter" class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}" data-theme="dark"></div>
-                        <div id="newsletterSuccess" class="feedback success"></div>
+<div
+    id="turnstile-newsletter"
+    class="cf-turnstile"
+    data-sitekey="{{ turnstile_site_key }}"
+    data-theme="dark"
+    data-size="flexible"
+    data-appearance="interaction-only">
+</div>                        <div id="newsletterSuccess" class="feedback success"></div>
                         <div id="newsletterError" class="feedback error"></div>
                     </form>
                     <p class="privacy-note">Désabonnement en un clic. <a href="{{ path('legal_page_show', {'slug': 'confidentialite'}) }}">Confidentialité</a></p>
