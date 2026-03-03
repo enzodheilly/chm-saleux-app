@@ -406,7 +406,9 @@
   text-transform: uppercase;
   text-decoration: none;
 }
-
+.masculine-header-bg {
+  --bg-image: url('/images/competitions/2.jpg');
+}
 /* --- RESPONSIVE --- */
 @media (max-width: 992px) {
   .result-meta-data {

@@ -8,7 +8,9 @@
   margin: 0 auto;
   padding: 50px 20px 80px;
 }
-
+.musculation-page-header {
+    --bg-image: url('/images/menu_dropdown/services_du_club/musculation/1.jpg');
+}
 /* --- SPLIT SECTIONS --- */
 .split-section{
   display: flex;
