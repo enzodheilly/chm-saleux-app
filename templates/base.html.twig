@@ -30,11 +30,11 @@
     <link rel="stylesheet" href="{{ asset('vendor/cropper/cropper.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/fullcalendar/index.global.min.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/nav/nav.css') }}">
     <link rel="stylesheet" href="{{ asset('css/footer/footer.css') }}">
     <link rel="stylesheet" href="{{ asset('css/modal/modal.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/components/cookie-banner.css') }}">
+    
 
     {% block stylesheets %}{% endblock %}
 
@@ -46,8 +46,7 @@
         {% include '/navbar/navigation.html.twig' %}
     {% endblock %}
 
-    <main class="app-main">
-        {% block body %}{% endblock %}
+<main class="app-main">        {% block body %}{% endblock %}
     </main>
 
     {% block footer %}
@@ -55,11 +54,6 @@
     {% endblock %}
 
     {% include 'modal/modal_auth.html.twig' %}
-
-    {# Bannière cookies #}
-    {% include 'partials/_cookie_banner.html.twig' with {
-        ga_measurement_id: ga_measurement_id|default('')
-    } %}
 
     <style nonce="{{ csp_nonce('style') }}">
         .toast-mini {
@@ -89,7 +83,6 @@
     <script src="{{ asset('js/footer/newsletter.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
     <script src="{{ asset('vendor/chartjs/chart.umd.min.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
     <script src="{{ asset('vendor/fullcalendar/index.global.min.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-    <script src="{{ asset('js/cookies-consent.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 
     <script nonce="{{ csp_nonce('script') }}">
         window.turnstileOnload = function () {
@@ -119,5 +112,6 @@
     </script>
 
     {% block javascripts %}{% endblock %}
+
 </body>
 </html>
