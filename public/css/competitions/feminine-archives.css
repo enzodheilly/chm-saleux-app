@@ -154,6 +154,9 @@
   margin-top: auto;
   padding-top: 0.15rem;
 }
+.feminine-archives-header-bg {
+  --bg-image: url('/images/competitions/1.jpg');
+}
 
 /* ===== Responsive ===== */
 @media (max-width: 992px) {

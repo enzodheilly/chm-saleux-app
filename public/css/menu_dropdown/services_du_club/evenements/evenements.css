@@ -17,7 +17,9 @@
   margin-bottom: 1rem;
   background: rgba(255,255,255,0.02);
 }
-
+.evenements-page-header {
+    --bg-image: url('/images/menu_dropdown/services_du_club/evenements/1.jpg');
+}
 .intro-centered-box{
   text-align: center;
   max-width: 860px;

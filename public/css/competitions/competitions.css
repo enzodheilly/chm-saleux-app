@@ -267,7 +267,9 @@
   pointer-events: none;
   z-index: 3;
 }
-
+.competition-header-bg {
+  --bg-image: url('/images/90.jpg');
+}
 /* =========================================
    4. RESPONSIVE
    ========================================= */

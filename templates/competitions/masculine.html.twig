@@ -6,11 +6,24 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/competitions/masculine.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style nonce="{{ csp_nonce('style') }}">
+        {% set lastCompetitionStyle = competitions|first %}
+        {% if lastCompetitionStyle and lastCompetitionStyle.image %}
+            .masculine-result-header-bg {
+                background-image: url('{{ asset('uploads/competitions/' ~ lastCompetitionStyle.image) }}');
+            }
+        {% else %}
+            .masculine-result-header-bg {
+                background-image: url('{{ asset('images/defaults/competition-placeholder.jpg') }}');
+            }
+        {% endif %}
+    </style>
 {% endblock %}
 
 {% block body %}
 
-<header class="page-header-sport" style="--bg-image: url('{{ asset('images/competitions/2.jpg') }}');">
+<header class="page-header-sport masculine-header-bg">
     <div class="header-overlay-gradient"></div>
 
     <div class="header-content">
@@ -78,10 +91,7 @@
         {% set lastCompetition = competitions|first %}
         {% if lastCompetition %}
             <div class="result-card-main">
-                <div class="result-header"
-                     {% if lastCompetition.image %}
-                        style="background-image: url('{{ asset('uploads/competitions/' ~ lastCompetition.image) }}');"
-                     {% endif %}>
+                <div class="result-header masculine-result-header-bg">
                     <div class="result-header-overlay"></div>
 
                     <div class="result-meta-data">

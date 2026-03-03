@@ -12,6 +12,9 @@
   max-width: 1100px;
   margin: 0 auto;
 }
+.president-page-header {
+    --bg-image: url('/images/menu_dropdown/services_du_club/evenements/2.jpg');
+}
 
 .profile-grid {
   display: grid;

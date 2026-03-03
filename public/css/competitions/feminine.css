@@ -436,6 +436,12 @@
     opacity: 0.95;
 }
 
+.feminine-header-bg {
+  --bg-image: url('/images/competitions/1.jpg');
+}
+.section-header-offset {
+  margin-top: 50px;
+}
 /* --- RESPONSIVE --- */
 @media (max-width: 992px) {
   .section-header-row {
