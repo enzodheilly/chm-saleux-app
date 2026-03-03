@@ -7,6 +7,7 @@
 //  ✅ Resend code en AJAX (plus de page noire) + cooldown anti-spam
 //  ✅ VERIFY success -> AUTO redirect (home) (si backend renvoie redirect)
 //  ✅ fetch() garde la session (credentials)
+//  ✅ CSP friendly : plus de style.display / style.overflow
 // ============================================================
 
 (() => {
@@ -15,8 +16,40 @@
   // ---------------------------
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
-  const lockScroll = () => (document.documentElement.style.overflow = "hidden");
-  const unlockScroll = () => (document.documentElement.style.overflow = "");
+
+  const showEl = (el) => {
+    if (!el) return;
+    el.hidden = false;
+    el.classList.remove("is-hidden");
+    el.setAttribute("aria-hidden", "false");
+  };
+
+  const hideEl = (el) => {
+    if (!el) return;
+    el.hidden = true;
+    el.classList.add("is-hidden");
+    el.setAttribute("aria-hidden", "true");
+  };
+
+  const isElHidden = (el) => {
+    if (!el) return true;
+    return el.hidden || el.classList.contains("is-hidden");
+  };
+
+  const lockScroll = () => document.documentElement.classList.add("modal-scroll-lock");
+  const unlockScroll = () => document.documentElement.classList.remove("modal-scroll-lock");
+
+  const setBtnLoading = (btnText, btnSpinner, isLoading) => {
+    if (btnText) {
+      if (isLoading) hideEl(btnText);
+      else showEl(btnText);
+    }
+
+    if (btnSpinner) {
+      if (isLoading) showEl(btnSpinner);
+      else hideEl(btnSpinner);
+    }
+  };
 
   // ---------------------------
   // TURNSTILE (EXPLICIT MODE)
@@ -35,6 +68,7 @@
 
   const isVisible = (el) => {
     if (!el) return false;
+    if (isElHidden(el)) return false;
     const style = window.getComputedStyle(el);
     return style.display !== "none" && style.visibility !== "hidden";
   };
@@ -122,9 +156,8 @@
       if (!el) return;
 
       const active = sid === id;
-      el.hidden = !active;
-      el.setAttribute("aria-hidden", String(!active));
-      el.style.display = active ? "block" : "none";
+      if (active) showEl(el);
+      else hideEl(el);
     });
 
     const activeEl = getStep(id);
@@ -144,9 +177,9 @@
     const anyVisible = stepIds.some((id) => {
       const el = getStep(id);
       if (!el) return false;
-      const isHidden = el.hidden || el.style.display === "none";
-      return !isHidden;
+      return !isElHidden(el);
     });
+
     if (!anyVisible) showStep("modal-step-social");
 
     requestAnimationFrame(() => renderTurnstileIn(modal));
@@ -276,7 +309,7 @@
     const showFormError = (msg) => {
       if (!errorBox) return;
       errorBox.innerHTML = msg;
-      errorBox.style.display = "block";
+      showEl(errorBox);
       errorBox.classList.add("shake");
       setTimeout(() => errorBox.classList.remove("shake"), 600);
     };
@@ -299,18 +332,18 @@
       }
 
       if (submitButton) submitButton.disabled = true;
-      if (btnText) btnText.style.display = "none";
-      if (btnSpinner) btnSpinner.style.display = "inline-flex";
+      setBtnLoading(btnText, btnSpinner, true);
 
       try {
         const res = await fetch(form.action, {
           method: "POST",
           body: new FormData(form),
-          credentials: "same-origin", // ✅ IMPORTANT (session)
+          credentials: "same-origin",
         });
         const json = await res.json();
 
         if (json.success) {
+          hideEl(errorBox);
           showStep("modal-step-verify");
           sessionStorage.setItem("registerStep", "verify");
         } else {
@@ -322,8 +355,7 @@
       } finally {
         resetTurnstileInForm(form);
         if (submitButton) submitButton.disabled = false;
-        if (btnText) btnText.style.display = "inline";
-        if (btnSpinner) btnSpinner.style.display = "none";
+        setBtnLoading(btnText, btnSpinner, false);
       }
     });
   });
@@ -346,13 +378,15 @@
 
     const showVerifyMsg = (msg, type = "") => {
       if (!messageBox) return;
+
       if (!msg) {
-        messageBox.style.display = "none";
+        hideEl(messageBox);
         return;
       }
+
       messageBox.textContent = msg;
       messageBox.className = "verify-message " + type;
-      messageBox.style.display = "block";
+      showEl(messageBox);
     };
 
     const updateHidden = () => {
@@ -390,8 +424,7 @@
         return;
       }
 
-      if (btnText) btnText.style.display = "none";
-      if (btnSpinner) btnSpinner.style.display = "inline-flex";
+      setBtnLoading(btnText, btnSpinner, true);
       if (submitBtn) submitBtn.disabled = true;
 
       try {
@@ -399,7 +432,7 @@
           method: "POST",
           body: new FormData(formVerify),
           headers: { Accept: "application/json" },
-          credentials: "same-origin", // ✅ IMPORTANT (session)
+          credentials: "same-origin",
         });
 
         const data = await res.json();
@@ -407,8 +440,6 @@
         if (data.success) {
           showVerifyMsg("", "");
           sessionStorage.removeItem("registerStep");
-
-          // ✅ Redirection directe (HOME) si backend renvoie redirect
           window.location.replace(data.redirect || "/");
           return;
         } else {
@@ -417,15 +448,14 @@
       } catch {
         showVerifyMsg("⚠️ Erreur serveur. Réessayez plus tard.", "error");
       } finally {
-        if (btnText) btnText.style.display = "inline";
-        if (btnSpinner) btnSpinner.style.display = "none";
+        setBtnLoading(btnText, btnSpinner, false);
         if (submitBtn) submitBtn.disabled = false;
       }
     });
   });
 
   // ============================================================
-  // RESEND CODE — interception globale (évite la page noire JSON)
+  // RESEND CODE — interception globale
   // ============================================================
   document.addEventListener(
     "submit",
@@ -441,19 +471,22 @@
 
       const showVerifyMsg = (msg, type = "") => {
         if (!messageBox) return;
+
         if (!msg) {
-          messageBox.style.display = "none";
+          hideEl(messageBox);
           return;
         }
+
         messageBox.textContent = msg;
         messageBox.className = "verify-message " + type;
-        messageBox.style.display = "block";
+        showEl(messageBox);
       };
 
       const COOLDOWN_MS = 15000;
       const KEY = "resendCodeCooldownUntil";
       const now = Date.now();
       const until = parseInt(sessionStorage.getItem(KEY) || "0", 10);
+
       if (until > now) {
         const left = Math.ceil((until - now) / 1000);
         showVerifyMsg(`Patiente ${left}s avant de renvoyer.`, "error");
@@ -468,7 +501,7 @@
           method: "POST",
           body: new FormData(form),
           headers: { Accept: "application/json" },
-          credentials: "same-origin", // ✅ IMPORTANT (session)
+          credentials: "same-origin",
         });
 
         const data = await res.json();
@@ -502,17 +535,20 @@
 
     const showError = (msg) => {
       if (!errorBox) return;
+
       errorBox.textContent = msg || "";
-      errorBox.style.display = msg ? "block" : "none";
+
       if (msg) {
+        showEl(errorBox);
         errorBox.classList.add("shake");
         setTimeout(() => errorBox.classList.remove("shake"), 600);
+      } else {
+        hideEl(errorBox);
       }
     };
 
     const resetBtn = () => {
-      if (btnText) btnText.style.display = "inline";
-      if (btnSpinner) btnSpinner.style.display = "none";
+      setBtnLoading(btnText, btnSpinner, false);
       btn.disabled = false;
     };
 
@@ -520,8 +556,7 @@
       e.preventDefault();
       showError("");
 
-      if (btnText) btnText.style.display = "none";
-      if (btnSpinner) btnSpinner.style.display = "inline-flex";
+      setBtnLoading(btnText, btnSpinner, true);
       btn.disabled = true;
 
       const captcha = getTurnstileTokenFromForm(form);
@@ -537,7 +572,7 @@
           method: "POST",
           body: new FormData(form),
           headers: { Accept: "application/json" },
-          credentials: "same-origin", // ✅ IMPORTANT (session)
+          credentials: "same-origin",
         });
 
         const data = await res.json();
@@ -566,7 +601,7 @@
   });
 
   // ============================================================
-  // RESET REQUEST — demande email (avec Turnstile)
+  // RESET REQUEST — demande email
   // ============================================================
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("resetRequestForm");
@@ -582,12 +617,11 @@
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      if (btnText) btnText.style.display = "none";
-      if (spinner) spinner.style.display = "inline-flex";
+      setBtnLoading(btnText, spinner, true);
       if (btn) btn.disabled = true;
 
       if (errorBox) {
-        errorBox.style.display = "none";
+        hideEl(errorBox);
         errorBox.classList.remove("success", "error");
       }
 
@@ -596,10 +630,10 @@
         if (errorBox) {
           errorBox.textContent = "⚠️ Veuillez valider le CAPTCHA.";
           errorBox.className = "verify-message error";
-          errorBox.style.display = "block";
+          showEl(errorBox);
         }
-        if (btnText) btnText.style.display = "inline";
-        if (spinner) spinner.style.display = "none";
+
+        setBtnLoading(btnText, spinner, false);
         if (btn) btn.disabled = false;
         resetTurnstileInForm(form);
         return;
@@ -619,25 +653,24 @@
           if (errorBox) {
             errorBox.textContent = data.message || "✅ Email envoyé.";
             errorBox.className = "verify-message success";
-            errorBox.style.display = "block";
+            showEl(errorBox);
           }
         } else {
           if (errorBox) {
             errorBox.textContent = data.message || "⚠️ Erreur serveur.";
             errorBox.className = "verify-message error";
-            errorBox.style.display = "block";
+            showEl(errorBox);
           }
         }
       } catch {
         if (errorBox) {
           errorBox.textContent = "⚠️ Erreur serveur.";
           errorBox.className = "verify-message error";
-          errorBox.style.display = "block";
+          showEl(errorBox);
         }
       } finally {
         resetTurnstileInForm(form);
-        if (btnText) btnText.style.display = "inline";
-        if (spinner) spinner.style.display = "none";
+        setBtnLoading(btnText, spinner, false);
         if (btn) btn.disabled = false;
       }
     });
@@ -667,16 +700,15 @@
         if (!errorBox) return;
         errorBox.textContent = msg;
         errorBox.className = "verify-message error";
-        errorBox.style.display = "block";
+        showEl(errorBox);
       };
 
       if (pass1 !== pass2) return showResetError("Les mots de passe ne correspondent pas.");
       if (pass1.length < 12) return showResetError("Minimum 12 caractères.");
 
-      if (btnText) btnText.style.display = "none";
-      if (spinner) spinner.style.display = "inline-flex";
+      setBtnLoading(btnText, spinner, true);
       if (btn) btn.disabled = true;
-      if (errorBox) errorBox.style.display = "none";
+      if (errorBox) hideEl(errorBox);
 
       try {
         const res = await fetch(form.action, {
@@ -695,8 +727,7 @@
       } catch {
         showResetError("⚠️ Erreur serveur.");
       } finally {
-        if (btnText) btnText.style.display = "inline";
-        if (spinner) spinner.style.display = "none";
+        setBtnLoading(btnText, spinner, false);
         if (btn) btn.disabled = false;
       }
     });
@@ -794,7 +825,7 @@
       unlockScroll();
     });
 
-    spModal.querySelectorAll(".form-error-message").forEach((msg) => (msg.style.display = "block"));
-    spModal.querySelectorAll(".form-success-message").forEach((msg) => (msg.style.display = "block"));
+    spModal.querySelectorAll(".form-error-message").forEach((msg) => showEl(msg));
+    spModal.querySelectorAll(".form-success-message").forEach((msg) => showEl(msg));
   });
 })();

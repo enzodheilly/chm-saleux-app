@@ -177,6 +177,18 @@
 .instagram:hover{ color:#E1306C; border-color:#E1306C; }
 .facebook:hover{ color:#1877F2; border-color:#1877F2; }
 
+.faq-header-bg {
+  --bg-image: url('/images/menu_dropdown/a_propos_de_notre_club/horaires/1.jpg');
+}
+
+.faq-group-hidden {
+  display: none;
+}
+
+.faq-contact-title {
+  margin-top: 50px;
+}
+
 /* =========================================
    RESPONSIVE (spécifique FAQ seulement)
    ========================================= */

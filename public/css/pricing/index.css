@@ -585,6 +585,18 @@
 .pricing-indicators .dot.active {
   background-color: var(--brand-orange);
 }
+
+.pricing-header-bg {
+  --bg-image: url('/images/page.jpg');
+}
+
+.pricing-separator-1 {
+  background-image: url('/images/club4.jpg');
+}
+
+.pricing-separator-2 {
+  background-image: url('/images/club9.jpg');
+}
 /* =========================================
    RESPONSIVE
    ========================================= */

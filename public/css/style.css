@@ -624,6 +624,13 @@ body{
   --angle-1: -90deg;
 }
 
+.app-body,
+.app-main {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
 /* Petite optimisation responsive */
 @media (max-width: 420px) {
   .button-wrap-payment a.btn-payment {

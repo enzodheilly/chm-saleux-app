@@ -251,6 +251,10 @@
   box-shadow: 0 10px 20px rgba(245, 119, 6, 0.25);
 }
 
+.horaires-header-bg {
+  --bg-image: url('/images/menu_dropdown/a_propos_de_notre_club/horaires/1.jpg');
+}
+
 /* =========================================
    RESPONSIVE (spécifique horaires seulement)
    ========================================= */
