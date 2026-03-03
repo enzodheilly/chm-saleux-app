@@ -323,6 +323,10 @@
     linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 60%);
 }
 
+.contact-header-bg {
+  --bg-image: url('/images/menu_dropdown/a_propos_de_notre_club/horaires/1.jpg');
+}
+
 /* =========================================================
    RESPONSIVE
    ========================================================= */

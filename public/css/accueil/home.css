@@ -995,7 +995,9 @@
   gap: 80px;
   align-items: center;
 }
-
+.stagger-110 {
+  --stagger-step: 110ms;
+}
 .cc-main-title {
   margin: 20px 0;
 }
@@ -1241,6 +1243,10 @@
   opacity: 0.9;
 }
 
+.brand-orange-icon {
+  color: var(--brand-orange);
+}
+
 .panel-content {
   position: relative;
   z-index: 3;
@@ -1256,6 +1262,14 @@
   transform: translateY(30px);
   opacity: 0;
   transition: 0.5s ease;
+}
+
+.panel-bg-haltero {
+  background-image: url('/images/nos_pratiques/halterophilie/1.jpg');
+}
+
+.panel-bg-muscu {
+  background-image: url('/images/nos_pratiques/musculation/histoire-club.jpg');
 }
 
 .cinematic-panel:hover .panel-header { transform: translateY(0); opacity: 1; }

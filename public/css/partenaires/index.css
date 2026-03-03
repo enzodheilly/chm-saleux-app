@@ -262,6 +262,10 @@
   transform: rotate(-15deg);
 }
 
+.partner-page-header {
+    background-image: url('/images/partenariat.jpg');
+}
+
 /* =========================================
    RESPONSIVE
    ========================================= */

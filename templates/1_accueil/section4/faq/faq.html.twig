@@ -9,7 +9,7 @@
 
 {% block body %}
 
-    <header class="page-header-sport" style="--bg-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/horaires/1.jpg') }}');">
+    <header class="page-header-sport faq-header-bg">
         <div class="header-overlay-gradient"></div>
 
         <div class="header-content">
@@ -77,7 +77,7 @@
                 </div>
 
                 {# GROUPE : ABONNEMENT #}
-                <div class="faq-group" id="abonnement" style="display:none;">
+                <div class="faq-group faq-group-hidden" id="abonnement">
                     <h2 class="section-heading group-title">Mon <span>Abonnement</span></h2>
 
                     <div class="accordion-elite">
@@ -100,7 +100,7 @@
         {# --- BARRE DE CONTACT --- #}
         <section class="bg-dark-alternate section-spacer">
             <div class="page-container text-center">
-                <h2 class="section-heading centered" style="margin-top: 50px;">Toujours <span>une question ?</span></h2>
+                <h2 class="section-heading centered faq-contact-title">Toujours <span>une question ?</span></h2>
 
                 <div class="contact-bar-elite mt-5">
                     <a href="{{ path('contact') }}" class="contact-circle" title="Email"><i class="fa-solid fa-envelope"></i></a>

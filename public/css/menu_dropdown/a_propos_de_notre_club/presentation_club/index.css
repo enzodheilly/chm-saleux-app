@@ -160,6 +160,14 @@
   letter-spacing:1px;
 }
 
+.presentation-club-header-bg {
+  --bg-image: url('/images/menu_dropdown/a_propos_de_notre_club/presentation_club/ddd.jpg');
+}
+
+.section-title-offset {
+  margin-top: 50px;
+}
+
 /* =========================================
    RESPONSIVE (page spécifique uniquement)
    ========================================= */

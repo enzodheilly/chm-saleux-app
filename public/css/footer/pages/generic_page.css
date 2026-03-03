@@ -196,7 +196,9 @@
   color: #fff;
   transform: translateY(-2px);
 }
-
+.generic-page-header-bg {
+  --bg-image: url('/images/menu_dropdown/services_du_club/evenements/2.jpg');
+}
 /* --- RESPONSIVE (page spécifique uniquement) --- */
 @media (max-width: 768px) {
   .article-container {
