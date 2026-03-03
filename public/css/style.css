@@ -109,10 +109,10 @@
   --section-padding-y-tablet: 80px;
   --section-padding-y-mobile: 70px;
 
-  /* Containers */
+  /* Containers 
   --container-max: 1200px;
   --container-wide: 1400px;
-  --container-ultra: 1600px;
+  --container-ultra: 1600px;*/
   --container-padding-x: 20px;
   --container-padding-x-mobile: 18px;
 
@@ -192,10 +192,33 @@
 }
 
 /* Container global interne (évite .container Bootstrap si conflit) */
-.page-container {
-  max-width: var(--container-max);
+.page-container,
+.site-container,
+.container {
+  width: 100%;
+  max-width: none !important;
   margin: 0 auto;
-  padding: 0 var(--container-padding-x);
+  padding-left: 3%;
+  padding-right: 3%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 992px) {
+  .page-container,
+  .site-container,
+  .container {
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-container,
+  .site-container,
+  .container {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
 }
 
 /* Responsive page shell */
@@ -203,22 +226,13 @@
   .page-shell {
     padding: 3.2rem 0 0;
   }
-
-  .page-container {
-    padding: 0 18px;
-  }
 }
 
 @media (max-width: 768px) {
   .page-shell {
     padding: 2.6rem 0 0;
   }
-
-  .page-container {
-    padding: 0 14px;
-  }
 }
-
 /* =========================================================
    HEADER GLOBAL — PAGES INTERNES
    ========================================================= */
@@ -421,12 +435,6 @@ html, body {
 
 body{
   padding-top: calc(var(--info-h) + var(--nav-h));
-}
-
-.site-container{
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
 }
 
 :root{
