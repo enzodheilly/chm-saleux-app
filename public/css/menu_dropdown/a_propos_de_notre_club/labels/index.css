@@ -211,6 +211,14 @@
   color: var(--text-white);
 }
 
+.labels-header-bg {
+  --bg-image: url('/images/menu_dropdown/a_propos_de_notre_club/labels/1.jpg');
+}
+
+.labels-main-img-bg {
+  background-image: url('/images/menu_dropdown/a_propos_de_notre_club/labels/1.jpg');
+}
+
 /* =========================================
    RESPONSIVE (spécifique labels seulement)
    ========================================= */

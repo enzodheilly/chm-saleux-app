@@ -1,0 +1,69 @@
+<div
+    id="cookie-banner"
+    class="cookie-banner"
+    data-ga-id="{{ ga_measurement_id }}"
+    hidden
+>
+    <div class="cookie-banner__backdrop"></div>
+
+    <div class="cookie-banner__panel" role="dialog" aria-modal="true" aria-labelledby="cookie-banner-title">
+        <div class="cookie-banner__content">
+            <span class="cookie-banner__badge">Cookies & traceurs</span>
+            <h2 id="cookie-banner-title">Votre vie privée, votre choix</h2>
+
+            <p>
+                Nous utilisons des cookies strictement nécessaires au fonctionnement du site, et,
+                avec votre accord, des cookies de mesure d’audience pour améliorer nos contenus.
+            </p>
+
+            <div class="cookie-banner__actions">
+                <button type="button" class="cookie-btn cookie-btn--ghost" data-cookie-deny>
+                    Refuser
+                </button>
+
+                <button type="button" class="cookie-btn cookie-btn--secondary" data-cookie-open-settings>
+                    Personnaliser
+                </button>
+
+                <button type="button" class="cookie-btn cookie-btn--primary" data-cookie-accept>
+                    Tout accepter
+                </button>
+            </div>
+
+            <div class="cookie-banner__settings" data-cookie-settings hidden>
+                <div class="cookie-setting">
+                    <div>
+                        <strong>Cookies essentiels</strong>
+                        <p>Indispensables au fonctionnement du site et à la sécurité.</p>
+                    </div>
+                    <label class="cookie-switch">
+                        <input type="checkbox" checked disabled>
+                        <span>Actifs</span>
+                    </label>
+                </div>
+
+                <div class="cookie-setting">
+                    <div>
+                        <strong>Mesure d’audience</strong>
+                        <p>Google Analytics pour mesurer la fréquentation et améliorer le site.</p>
+                    </div>
+                    <label class="cookie-switch">
+                        <input type="checkbox" id="cookie-analytics-toggle">
+                        <span>Autoriser</span>
+                    </label>
+                </div>
+
+                <div class="cookie-banner__actions cookie-banner__actions--settings">
+                    <button type="button" class="cookie-btn cookie-btn--ghost" data-cookie-save-selection>
+                        Enregistrer mes choix
+                    </button>
+                </div>
+            </div>
+
+            <p class="cookie-banner__legal">
+                En savoir plus :
+                <a href="{{ path('legal_page_show', {'slug': 'cookies'}) }}">Politique de cookies</a>
+            </p>
+        </div>
+    </div>
+</div>

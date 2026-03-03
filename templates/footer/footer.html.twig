@@ -32,7 +32,7 @@
 
             <div class="footer-col footer-newsletter">
                 <h4 class="footer-title">Restez informé</h4>
-                
+
                 {% if app.user and isSubscribed %}
                     <div class="newsletter-card subscribed">
                         <div class="icon-circle"><i class="fa-solid fa-check"></i></div>
@@ -41,29 +41,41 @@
                     </div>
                 {% else %}
                     <p class="newsletter-desc">Recevez les actus et événements du club directement par mail.</p>
-                    
+
                     <form id="newsletter-form" class="modern-form" method="POST" action="{{ path('newsletter_subscribe') }}">
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('newsletter') }}">
-                        
+
                         <div class="input-group">
-                            <input type="email" name="email" placeholder="Votre adresse email" 
-                                   value="{{ app.user ? app.user.email : '' }}" required>
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Votre adresse email"
+                                value="{{ app.user ? app.user.email : '' }}"
+                                autocomplete="email"
+                                required
+                            >
                             <button type="submit" class="btn-submit-icon">
                                 <i class="fa-solid fa-paper-plane"></i>
                             </button>
                         </div>
 
-<div
-    id="turnstile-newsletter"
-    class="cf-turnstile"
-    data-sitekey="{{ turnstile_site_key }}"
-    data-theme="dark"
-    data-size="flexible"
-    data-appearance="interaction-only">
-</div>                        <div id="newsletterSuccess" class="feedback success"></div>
+                        <div
+                            id="turnstile-newsletter"
+                            class="cf-turnstile"
+                            data-sitekey="{{ turnstile_site_key }}"
+                            data-theme="dark"
+                            data-size="flexible"
+                            data-appearance="interaction-only">
+                        </div>
+
+                        <div id="newsletterSuccess" class="feedback success"></div>
                         <div id="newsletterError" class="feedback error"></div>
                     </form>
-                    <p class="privacy-note">Désabonnement en un clic. <a href="{{ path('legal_page_show', {'slug': 'confidentialite'}) }}">Confidentialité</a></p>
+
+                    <p class="privacy-note">
+                        Désabonnement en un clic.
+                        <a href="{{ path('legal_page_show', {'slug': 'confidentialite'}) }}">Confidentialité</a>
+                    </p>
                 {% endif %}
             </div>
         </div>
@@ -91,6 +103,7 @@
                 <a href="{{ path('legal_page_show', {'slug': 'conditions-utilisation'}) }}">CGU</a>
                 <a href="{{ path('legal_page_show', {'slug': 'confidentialite'}) }}">Confidentialité</a>
                 <a href="{{ path('legal_page_show', {'slug': 'cookies'}) }}">Cookies</a>
+                <a href="#" data-open-cookie-settings>Gérer mes cookies</a>
             </div>
         </div>
     </div>

@@ -10,7 +10,7 @@
 {% block body %}
 
     {# --- HEADER GLOBAL UNIFORMISÉ --- #}
-    <header class="page-header-sport" style="--bg-image: url('{{ asset('images/menu_dropdown/a_propos_de_notre_club/horaires/1.jpg') }}');">
+    <header class="page-header-sport contact-header-bg">
         <div class="header-overlay-gradient"></div>
 
         <div class="header-content">
@@ -78,23 +78,44 @@
                     <form action="{{ path('contact_submit') }}" method="POST" class="elite-form">
                         <div class="form-row">
                             <div class="input-group">
-                                <label>Nom</label>
-                                <input type="text" name="lastName" required placeholder="Ex: Dupont">
+                                <label for="contact-last-name">Nom</label>
+                                <input
+                                    id="contact-last-name"
+                                    type="text"
+                                    name="lastName"
+                                    required
+                                    placeholder="Ex: Dupont"
+                                    autocomplete="family-name"
+                                >
                             </div>
                             <div class="input-group">
-                                <label>Prénom</label>
-                                <input type="text" name="firstName" required placeholder="Ex: Jean">
+                                <label for="contact-first-name">Prénom</label>
+                                <input
+                                    id="contact-first-name"
+                                    type="text"
+                                    name="firstName"
+                                    required
+                                    placeholder="Ex: Jean"
+                                    autocomplete="given-name"
+                                >
                             </div>
                         </div>
 
                         <div class="input-group">
-                            <label>Email</label>
-                            <input type="email" name="email" required placeholder="jean.dupont@mail.com">
+                            <label for="contact-email">Email</label>
+                            <input
+                                id="contact-email"
+                                type="email"
+                                name="email"
+                                required
+                                placeholder="jean.dupont@mail.com"
+                                autocomplete="email"
+                            >
                         </div>
 
                         <div class="input-group">
-                            <label>Sujet</label>
-                            <select name="subject">
+                            <label for="contact-subject">Sujet</label>
+                            <select id="contact-subject" name="subject">
                                 <option value="renseignement">Renseignements généraux</option>
                                 <option value="essai">Séance d'essai</option>
                                 <option value="tarifs">Tarifs & Inscription</option>
@@ -102,8 +123,14 @@
                         </div>
 
                         <div class="input-group">
-                            <label>Message</label>
-                            <textarea name="content" rows="5" required placeholder="Votre message..."></textarea>
+                            <label for="contact-content">Message</label>
+                            <textarea
+                                id="contact-content"
+                                name="content"
+                                rows="5"
+                                required
+                                placeholder="Votre message..."
+                            ></textarea>
                         </div>
 
                         <button type="submit" class="btn-elite-submit">

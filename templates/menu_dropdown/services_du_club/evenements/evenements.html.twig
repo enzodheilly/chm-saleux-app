@@ -5,13 +5,11 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/menu_dropdown/services_du_club/evenements/evenements.css') }}">
-    {# inutile si déjà chargé globalement #}
-    {# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> #}
 {% endblock %}
 
 {% block body %}
 
-    <header class="page-header-sport" style="--bg-image: url('{{ asset('images/menu_dropdown/services_du_club/evenements/1.jpg') }}');">
+        <header class="page-header-sport evenements-page-header">
         <div class="header-overlay-gradient"></div>
 
         <div class="header-content">
