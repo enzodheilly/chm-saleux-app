@@ -6,12 +6,25 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/competitions/feminine.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style nonce="{{ csp_nonce('style') }}">
+
+        {% if competitions|first and competitions|first.image %}
+            .result-header-bg {
+                background-image: url('{{ asset('uploads/competitions/' ~ competitions|first.image) }}');
+            }
+        {% else %}
+            .result-header-bg {
+                background-image: url('{{ asset('images/defaults/competition-placeholder.jpg') }}');
+            }
+        {% endif %}
+    </style>
 {% endblock %}
 
 {% block body %}
 
-<header class="page-header-sport" style="--bg-image: url('{{ asset('images/competitions/1.jpg') }}');">
-    <div class="header-overlay-gradient"></div>
+<header class="page-header-sport feminine-header-bg">   
+ <div class="header-overlay-gradient"></div>
 
     <div class="header-content">
         <div class="page-container">
@@ -71,17 +84,14 @@
 
     {# --- DERNIÈRE COMPÉTITION --- #}
     <section class="page-container section-spacer pt-0 last-result-section">
-        <div class="section-header-compact" style="margin-top: 50px;">
-            <h2 class="section-heading">Dernier <span>Plateau</span></h2>
+<div class="section-header-compact section-header-offset">        
+    <h2 class="section-heading">Dernier <span>Plateau</span></h2>
         </div>
 
         {% set lastCompetition = competitions|first %}
         {% if lastCompetition %}
             <div class="result-card-main">
-                <div class="result-header"
-                     {% if lastCompetition.image %}
-                         style="background-image: url('{{ asset('uploads/competitions/' ~ lastCompetition.image) }}');"
-                     {% endif %}>
+           <div class="result-header result-header-bg">
                     <div class="result-header-overlay"></div>
 
                     <div class="result-meta-data">

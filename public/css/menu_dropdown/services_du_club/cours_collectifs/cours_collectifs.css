@@ -12,7 +12,9 @@
   gap: 4rem;
   align-items: center;
 }
-
+.cours-collectifs-page-header {
+    --bg-image: url('/images/menu_dropdown/services_du_club/cours_collectifs/cours-co.jpg');
+}
 /* IMPORTANT :
    .section-heading (font-size / uppercase / couleur / span orange)
    est géré globalement.

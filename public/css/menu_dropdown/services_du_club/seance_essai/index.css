@@ -9,7 +9,9 @@
   text-align: center;
   padding: 0 20px;
 }
-
+.seance-essai-page-header {
+    --bg-image: url('/images/menu_dropdown/services_du_club/journee_essai/1.jpg');
+}
 /* --- REASSURANCE --- */
 .intro-badge{
   color: var(--primary-color);

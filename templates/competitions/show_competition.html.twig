@@ -7,12 +7,17 @@
     <link rel="stylesheet" href="{{ asset('css/competitions/feminine.css') }}">
     <link rel="stylesheet" href="{{ asset('css/competitions/competition-detail.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style nonce="{{ csp_nonce('style') }}">
+        .competition-detail-header-bg {
+            --bg-image: url('{% if competition.image %}{{ asset('uploads/competitions/' ~ competition.image) }}{% else %}{{ asset('images/defaults/competition-placeholder.jpg') }}{% endif %}');
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
 
-<header class="page-header-sport"
-        style="--bg-image: url('{% if competition.image %}{{ asset('uploads/competitions/' ~ competition.image) }}{% else %}{{ asset('images/defaults/competition-placeholder.jpg') }}{% endif %}');">
+<header class="page-header-sport competition-detail-header-bg">
     <div class="header-overlay-gradient"></div>
 
     <div class="header-content">
@@ -22,7 +27,6 @@
                     <i class="fa-solid fa-chevron-left"></i>
                     <span>Retour aux compétitions</span>
                 </a>
-
             </nav>
 
             <div class="header-main-box">

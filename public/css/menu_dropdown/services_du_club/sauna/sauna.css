@@ -9,7 +9,9 @@
   margin: 0 auto;
   text-align: center;
 }
-
+.sauna-page-header {
+    --bg-image: url('/images/sauna.jpg');
+}
 /* Grid cards */
 .sauna-grid{
   display: grid;

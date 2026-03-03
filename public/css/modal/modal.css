@@ -3,6 +3,7 @@
    - Base / Overlay / Card / Typo / Forms / Buttons
    - OAuth / Register / Login / Verify / Reset / Password rules
    - Responsive + Accessibility
+   - Compatible avec gestion JS via [hidden]
    ========================================================== */
 
 /* =========================
@@ -27,14 +28,12 @@
 
   --radius: 14px;
 
-  /* Responsive tokens */
   --modal-max-w: 420px;
   --modal-pad: clamp(14px, 3vw, 26px);
   --modal-gap: clamp(10px, 1.8vw, 14px);
 
---input-h: clamp(40px, 5vw, 44px);
---btn-h: clamp(42px, 5.5vw, 46px);
-
+  --input-h: clamp(40px, 5vw, 44px);
+  --btn-h: clamp(42px, 5.5vw, 46px);
 
   --title-size: clamp(1.1rem, 2.4vw, 1.35rem);
   --text-size: clamp(.92rem, 1.6vw, 1rem);
@@ -53,7 +52,9 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity .25s ease;
-  z-index: 1000;
+  z-index: 2147483647;
+  isolation: isolate;
+  height: 100dvh;
 }
 
 .modal-overlay.is-open{
@@ -75,7 +76,7 @@
   background: var(--card-bg);
   border-radius: var(--radius);
   border: 1px solid rgba(255,255,255,.35);
-box-shadow: 0 12px 40px rgba(0,0,0,.18);
+  box-shadow: 0 12px 40px rgba(0,0,0,.18);
 
   padding: var(--modal-pad);
   position: relative;
@@ -93,7 +94,7 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
 
 /* Close */
 .modal-close{
-  position:absolute;
+  position: absolute;
   top: 10px;
   right: 10px;
 
@@ -108,11 +109,19 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
   line-height: 1;
   color: #334155;
 }
-.modal-close:hover{ background: rgba(0,0,0,.1); }
+
+.modal-close:hover{
+  background: rgba(0,0,0,.1);
+}
 
 /* Steps */
-.modal-step{ text-align: center; }
-.modal-step[hidden]{ display: none !important; }
+.modal-step{
+  text-align: center;
+}
+
+.modal-step[hidden]{
+  display: none !important;
+}
 
 /* =========================
    3) TYPO
@@ -175,8 +184,13 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
 }
 
 /* Password eye */
-.password-input-wrapper{ position: relative; }
-.password-input-wrapper input{ padding-right: 46px; }
+.password-input-wrapper{
+  position: relative;
+}
+
+.password-input-wrapper input{
+  padding-right: 46px;
+}
 
 .toggle-password{
   position: absolute;
@@ -190,13 +204,20 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
   height: 36px;
   cursor: pointer;
 }
+
 .toggle-password img{
   width: 18px;
   height: 18px;
   opacity: .7;
 }
-.toggle-password:hover img{ opacity: 1; }
-.hide{ display:none; }
+
+.toggle-password:hover img{
+  opacity: 1;
+}
+
+.hide{
+  display: none;
+}
 
 /* =========================
    5) BUTTONS
@@ -219,26 +240,35 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
 
   transition: transform .12s ease, filter .12s ease, box-shadow .12s ease, background .12s ease;
 }
+
 .btn-register:hover{
   background: var(--primary-hover);
   box-shadow: 0 8px 20px rgba(0,91,148,.22);
 }
-.btn-register:active{ transform: scale(.99); }
-.btn-register:disabled{ opacity: .65; cursor: not-allowed; }
+
+.btn-register:active{
+  transform: scale(.99);
+}
+
+.btn-register:disabled{
+  opacity: .65;
+  cursor: not-allowed;
+}
 
 /* Divider */
 .modal-divider{
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
   gap: 12px;
   margin: 14px 0;
   color: var(--muted);
 }
+
 .modal-divider::before,
 .modal-divider::after{
-  content:"";
-  height:1px;
-  flex:1;
+  content: "";
+  height: 1px;
+  flex: 1;
   background: rgba(0,0,0,.15);
 }
 
@@ -253,11 +283,13 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
   gap: 6px;
   flex-wrap: wrap;
 }
+
 .modal-footer a,
 .modal-sep a{
   color: var(--primary);
   text-decoration: none;
 }
+
 .modal-footer a:hover,
 .modal-sep a:hover{
   text-decoration: underline;
@@ -296,6 +328,7 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
 
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
+
 .oauth-btn:hover{
   background: #f2f2f2;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
@@ -325,7 +358,7 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
   justify-content: space-between;
   gap: .6rem;
   margin-bottom: 0.2rem;
-  flex-wrap: wrap; /* important en petit écran */
+  flex-wrap: wrap;
 }
 
 .password-rules-link{
@@ -336,6 +369,7 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
   font-weight: 600;
   transition: color 0.2s ease;
 }
+
 .password-rules-link:hover{
   text-decoration: underline;
   color: #e65500;
@@ -345,7 +379,6 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
    8) MESSAGES / ERREURS
    ========================= */
 .form-error-message{
-  display: none;
   background: #ffecec;
   border: 1px solid #ff9b9b;
   color: #b10000;
@@ -372,7 +405,6 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
   padding: 0.65rem 0.8rem;
   font-size: clamp(.8rem, 1.5vw, .9rem);
   text-align: center;
-  display: none;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
@@ -381,6 +413,7 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
   color: #d93025;
   border: 1px solid #f5b3b3;
 }
+
 .verify-message.success{
   background: #e6ffed;
   color: #187a1c;
@@ -389,10 +422,13 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
 
 @keyframes fadeIn{
   from { opacity: 0; transform: translateY(-5px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.shake{ animation: shake 0.4s ease; }
+.shake{
+  animation: shake 0.4s ease;
+}
+
 @keyframes shake{
   0%, 100% { transform: translateX(0); }
   20%, 60% { transform: translateX(-5px); }
@@ -408,6 +444,7 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
   justify-content: center;
   margin-left: 6px;
 }
+
 .mini-spinner{
   width: 16px;
   height: 16px;
@@ -416,18 +453,19 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
-@keyframes spin{ to { transform: rotate(360deg); } }
+
+@keyframes spin{
+  to { transform: rotate(360deg); }
+}
 
 /* =========================
-   10) VERIFY CODE (6 inputs) — FULL RESPONSIVE
+   10) VERIFY CODE (6 inputs)
    ========================= */
 #modal-step-verify{
-  display: none;
   text-align: center;
   color: #003366;
   padding: clamp(.6rem, 2vw, 1rem) clamp(.6rem, 3vw, 1.2rem);
 }
-#modal-step-verify.is-visible{ display: block; }
 
 .verify-code-inputs{
   display: flex;
@@ -436,8 +474,6 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
   gap: clamp(.25rem, 1.6vw, .55rem);
   margin: 0 auto 1rem auto;
   flex-wrap: nowrap;
-
-  /* évite que ça dépasse sur ultra petit écran */
   max-width: min(100%, 360px);
 }
 
@@ -472,7 +508,6 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
    11) LOGIN (spécifique)
    ========================= */
 #modal-step-login{
-  display: none;
   text-align: center;
   color: #002b4f;
   padding: 0.3rem clamp(.4rem, 2vw, .8rem);
@@ -499,12 +534,14 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
   margin-top: 0.6rem;
   font-size: clamp(.9rem, 1.7vw, 1rem);
 }
+
 #modal-step-login .forgot-password a{
   color: #005b94;
   text-decoration: underline;
   font-weight: 700;
   transition: color 0.2s ease;
 }
+
 #modal-step-login .forgot-password a:hover{
   color: #0071c2;
 }
@@ -514,16 +551,16 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
    ========================= */
 #modal-step-reset-email,
 #modal-step-reset-new{
-  display: none;
   text-align: center;
 }
 
 /* =========================
-   13) PASSWORD CRITERIA MODAL — Anti-débordement (responsive)
+   13) PASSWORD CRITERIA MODAL
    ========================= */
-.password-group{ position: relative; }
+.password-group{
+  position: relative;
+}
 
-/* Sous-modale: centrée par défaut pour éviter l’overflow */
 .password-criteria-modal{
   position: absolute;
   bottom: calc(100% + 10px);
@@ -592,6 +629,7 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
   font-weight: 900;
   font-size: 1rem;
 }
+
 .password-criteria-content li.valid::before{
   content: "✓";
   color: #16a34a;
@@ -612,6 +650,7 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
   transition: background 0.2s ease, transform 0.2s ease;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
 .btn-close-rules:hover{
   background: #08385d;
   transform: translateY(-1px);
@@ -628,13 +667,14 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
 }
 
 /* =========================
-   15) SET PASSWORD MODAL (spécifique)
+   15) SET PASSWORD MODAL
    ========================= */
 .modal-logo{
   display: flex;
   justify-content: center;
   margin-bottom: 0;
 }
+
 .modal-logo img{
   max-width: 70px;
   height: auto;
@@ -666,16 +706,15 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
 /* =========================
    16) RESPONSIVE LAYOUT
    ========================= */
-
-/* Mobile: bottom-sheet feel */
 @media (max-width: 520px){
-  .modal-overlay{ place-items: end center; padding: 10px; }
+  .modal-overlay{
+    place-items: center;
+  }
 
   .modal-card{
-    width: 100%;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    max-height: 92vh;
+    width: min(94vw, var(--modal-max-w, 460px));
+    border-radius: var(--radius, 14px);
+    max-height: min(88dvh, 760px);
     padding: clamp(14px, 4vw, 20px);
   }
 
@@ -685,16 +724,39 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
   }
 }
 
-/* Ultra small phones */
 @media (max-width: 360px){
-  .modal-title{ margin-top: 12px; }
-  .toggle-password{ right: 8px; }
-  .password-input-wrapper input{ padding-right: 44px; }
+  .modal-title{
+    margin-top: 12px;
+  }
+
+  .toggle-password{
+    right: 8px;
+  }
+
+  .password-input-wrapper input{
+    padding-right: 44px;
+  }
 }
 
-/* Low-height screens */
 @media (max-height: 620px){
-  .modal-card{ max-height: 94vh; }
+  .modal-card{
+    max-height: 94vh;
+  }
+}
+
+/* Option bottom-sheet */
+@media (max-width: 520px){
+  .modal-overlay.is-sheet{
+    place-items: end center;
+    padding: 10px;
+  }
+
+  .modal-overlay.is-sheet .modal-card{
+    width: 100%;
+    max-height: 92dvh;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 }
 
 /* =========================
@@ -711,47 +773,102 @@ box-shadow: 0 12px 40px rgba(0,0,0,.18);
   }
 }
 
-/* ==========================================================
-   FIX 1) Toujours au-dessus de la navbar
-   ========================================================== */
-.modal-overlay{
-  z-index: 2147483647; /* au-dessus de tout */
-  isolation: isolate;  /* évite les soucis de stacking context */
-  height: 100dvh;      /* mieux que 100vh sur mobile */
+/* =========================
+   18) CLASSES UTILITAIRES
+   ========================= */
+.register-step-social{
+  margin-top: -20px;
 }
 
-/* Si un parent a transform/filter, position:fixed peut bugger.
-   isolation + z-index énorme résout souvent le problème. */
-
-
-/* ==========================================================
-   FIX 2) Par défaut, centré sur TOUS les écrans
-   (donc plus de bottom-sheet automatique)
-   ========================================================== */
-@media (max-width: 520px){
-  .modal-overlay{
-    place-items: center; /* au lieu de end center */
-  }
-  .modal-card{
-    width: min(94vw, var(--modal-max-w, 460px));
-    border-radius: var(--radius, 14px); /* pas de coins "sheet" */
-    max-height: min(88dvh, 760px);
-  }
+.register-step-email,
+.register-step-social{
+  width: 100%;
 }
 
-/* ==========================================================
-   OPTION : si tu veux parfois un bottom-sheet,
-   tu ajoutes la classe .is-sheet sur .modal-overlay
-   ========================================================== */
-@media (max-width: 520px){
-  .modal-overlay.is-sheet{
-    place-items: end center;
-    padding: 10px;
-  }
-  .modal-overlay.is-sheet .modal-card{
-    width: 100%;
-    max-height: 92dvh;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
+.register-modal-title-main{
+  font-weight: 800;
+  margin: 21px;
+}
+
+.register-modal-title-strong{
+  font-weight: 800;
+  line-height: 2.4;
+}
+
+.register-modal-title-reset{
+  font-weight: 800;
+}
+
+.register-google-text{
+  color: black;
+  font-weight: 700;
+}
+
+.is-hidden{
+  display: none !important;
+}
+
+.is-relative{
+  position: relative;
+}
+
+.inline-form{
+  display: inline;
+}
+
+.text-center{
+  text-align: center;
+}
+
+.eye-icon-register{
+  margin-top: 12px;
+}
+
+.eye-icon-login{
+  margin-top: 13px;
+}
+
+.modal-back-home-link{
+  color: #005b94;
+  text-decoration: none;
+}
+
+.reset-request-btn{
+  margin-right: 53px;
+}
+
+.back-to-login-link{
+  margin-top: 8px;
+}
+
+.reset-password-input{
+  margin-left: 14px;
+}
+
+.reset-eye-icon{
+  margin-right: 10px;
+  margin-top: -10px;
+}
+
+.reset-new-btn{
+  margin-top: 15px;
+}
+
+.reset-footer-spacing{
+  margin-top: 20px;
+}
+
+.reset-back-link{
+  text-decoration: none;
+}
+
+/* =========================
+   19) JS / HIDDEN SUPPORT
+   ========================= */
+[hidden]{
+  display: none !important;
+}
+
+.modal-scroll-lock{
+  overflow: hidden;
 }

@@ -11,7 +11,7 @@
 
 {% block body %}
 
-<header class="page-header-sport" style="--bg-image: url('{{ asset('images/competitions/1.jpg') }}');">
+<header class="page-header-sport feminine-archives-header-bg">
     <div class="header-overlay-gradient"></div>
 
     <div class="header-content">
@@ -20,7 +20,6 @@
                 <a href="{{ path('competitions_feminine') }}" class="back-link-minimal">
                     <i class="fa-solid fa-chevron-left"></i> <span>Retour page équipe féminine</span>
                 </a>
-
             </nav>
 
             <div class="header-main-box">
@@ -44,7 +43,6 @@
                     {{ competitions|length }} compétition{{ competitions|length > 1 ? 's' : '' }} enregistrée{{ competitions|length > 1 ? 's' : '' }}
                 </p>
             </div>
-
         </div>
 
         {% if competitions is not empty %}
@@ -96,10 +94,9 @@
                                 {% endif %}
                             </div>
 
-                            {# Si tu crées plus tard une page détail compétition, remplace le href #}
-                          <a href="{{ path('competition_show', { id: comp.id }) }}" class="card-link">
-    Consulter le plateau <i class="fa-solid fa-arrow-right"></i>
-</a>
+                            <a href="{{ path('competition_show', { id: comp.id }) }}" class="card-link">
+                                Consulter le plateau <i class="fa-solid fa-arrow-right"></i>
+                            </a>
                         </div>
                     </article>
                 {% endfor %}
