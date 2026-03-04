@@ -16,7 +16,7 @@
                 <label for="type-standard">Standard</label>
 
                 <input type="radio" id="type-student" name="pricing-type" value="student">
-                <label for="type-student">Étudiant <span class="discount">-10€</span></label>
+                <label for="type-student">Étudiant <span class="discount">-15€</span></label>
                 
                 <div class="toggle-glider"></div>
             </div>
@@ -33,11 +33,11 @@
                         <h3 class="p-title">{{ plan.name }}</h3>
                         <div class="p-price-box">
                             <span class="p-currency">€</span>
-                            <span class="p-value" 
-                                  data-standard="{{ plan.price }}" 
-                                  data-student="{{ plan.price - 10 }}">
-                                {{ plan.price }}
-                            </span>
+                       <span class="p-value" 
+      data-standard="{{ plan.price }}" 
+      data-student="{{ plan.price > 100 ? 185 : plan.price }}">
+    {{ plan.price }}
+</span>
                             <span class="p-period">/ {{ plan.billingPeriod == 'year' ? 'an' : 'mois' }}</span>
                         </div>
                         <div class="p-monthly-cost">Soit env. <strong>{{ (plan.price / 12)|number_format(1) }}€</strong> / mois</div>

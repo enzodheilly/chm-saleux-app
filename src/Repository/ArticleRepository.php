@@ -15,13 +15,15 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     /**
-     * For homepage: get the latest N articles (sorted by published date).
+     * Derniers articles pour la home.
      */
     public function findLatest(int $limit = 3): array
     {
         $limit = max(1, min($limit, 50));
 
         return $this->createQueryBuilder('a')
+            ->leftJoin('a.category', 'c')
+            ->addSelect('c')
             ->orderBy('a.publishedAt', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
@@ -29,8 +31,7 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get filtered articles by category name, date range and pagination.
-     * Returns ['data' => Article[], 'total' => int]
+     * Retourne ['data' => Article[], 'total' => int]
      */
     public function findFilteredArticles(
         ?string $categoryName,
@@ -40,12 +41,11 @@ class ArticleRepository extends ServiceEntityRepository
         int $limit
     ): array {
         $page = max(1, $page);
-        $limit = max(1, min($limit, 100)); // safety cap
+        $limit = max(1, min($limit, 100));
         $offset = ($page - 1) * $limit;
 
         $qb = $this->baseFilteredQb($categoryName, $dateFrom, $dateTo);
 
-        // Total count (fast)
         $countQb = clone $qb;
         $total = (int) $countQb
             ->select('COUNT(DISTINCT a.id)')
@@ -53,7 +53,6 @@ class ArticleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        // Paginated data
         $data = $qb
             ->setFirstResult($offset)
             ->setMaxResults($limit)
@@ -66,17 +65,14 @@ class ArticleRepository extends ServiceEntityRepository
         ];
     }
 
-    /**
-     * Base QueryBuilder with filters.
-     */
     private function baseFilteredQb(
         ?string $categoryName,
         ?\DateTimeImmutable $dateFrom,
         ?\DateTimeImmutable $dateTo
     ): QueryBuilder {
         $qb = $this->createQueryBuilder('a')
-            ->leftJoin('a.category', 'c')   // ✅ relation
-            ->addSelect('c')                // évite N+1 si tu affiches la catégorie
+            ->leftJoin('a.category', 'c')
+            ->addSelect('c')
             ->orderBy('a.publishedAt', 'DESC');
 
         if ($categoryName) {
@@ -86,11 +82,10 @@ class ArticleRepository extends ServiceEntityRepository
 
         if ($dateFrom) {
             $qb->andWhere('a.publishedAt >= :dateFrom')
-                ->setParameter('dateFrom', $dateFrom);
+                ->setParameter('dateFrom', $dateFrom->setTime(0, 0, 0));
         }
 
         if ($dateTo) {
-            // inclure toute la journée si dateTo est juste une date (00:00:00)
             $qb->andWhere('a.publishedAt <= :dateTo')
                 ->setParameter('dateTo', $dateTo->setTime(23, 59, 59));
         }

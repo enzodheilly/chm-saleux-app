@@ -17,7 +17,9 @@
   box-shadow: 0 18px 40px rgba(0,0,0,0.45);
   max-width: 100%;
 }
-
+.actualites-header-bg {
+  --bg-image: url('/images/competitions/1.jpg');
+}
 .elite-filter-bar{
   display: flex;
   justify-content: space-between;

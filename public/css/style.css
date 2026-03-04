@@ -12,7 +12,7 @@
   /* Backgrounds */
   --dark-bg: #080808;
   --bg-dark: #0f0f11;
-  --bg-section: #111111;
+  --bg-section: #16181d;
   --bg-card: #121212;
   --bg-card-hover: #171717;
   --bg-light-1: #ffffff;
@@ -63,7 +63,7 @@
   --fw-semibold: 600;
   --fw-bold: 700;
   --fw-extrabold: 800;
-  --fw-black: 900;
+  --fw-black: 800;
 
   /* Tailles */
   --fs-hero-title: clamp(2.2rem, 4vw, 3rem);
