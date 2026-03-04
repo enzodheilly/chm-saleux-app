@@ -1,0 +1,54 @@
+{% if articles is not empty %}
+    <div class="news-grid-layout">
+        {% for article in articles %}
+            <article class="news-card-elite">
+                <div class="card-thumb">
+                    <img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}" loading="lazy">
+                    <div class="card-badge">{{ article.category ? article.category.name|capitalize : 'Info' }}</div>
+                </div>
+
+                <div class="card-body">
+                    <span class="card-date">
+                        <i class="fa-regular fa-calendar"></i> {{ article.publishedAt|date('d/m/Y') }}
+                    </span>
+                    <h3>
+                        <a href="{{ path('article_show', {'id': article.id}) }}">{{ article.title }}</a>
+                    </h3>
+                    <p>{{ article.description|striptags|slice(0, 100) ~ '...' }}</p>
+                    <a href="{{ path('article_show', {'id': article.id}) }}" class="link-arrow">
+                        Lire l'article <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+
+    {% if totalPages > 1 %}
+        <div class="pagination-elite mt-5">
+            {% set query = filters %}
+
+            <a href="{{ page > 1 ? path('actualites', query|merge({'page': page - 1})) : '#' }}"
+               class="page-btn {{ page <= 1 ? 'disabled' : '' }}">
+                <i class="fa-solid fa-chevron-left"></i>
+            </a>
+
+            {% for i in 1..totalPages %}
+                <a href="{{ path('actualites', query|merge({'page': i})) }}"
+                   class="page-btn {{ i == page ? 'active' : '' }}">
+                    {{ i }}
+                </a>
+            {% endfor %}
+
+            <a href="{{ page < totalPages ? path('actualites', query|merge({'page': page + 1})) : '#' }}"
+               class="page-btn {{ page >= totalPages ? 'disabled' : '' }}">
+                <i class="fa-solid fa-chevron-right"></i>
+            </a>
+        </div>
+    {% endif %}
+{% else %}
+    <div class="empty-news">
+        <i class="fa-solid fa-newspaper"></i>
+        <h3>Aucun article trouvé</h3>
+        <p>Modifiez vos filtres pour voir d'autres résultats.</p>
+    </div>
+{% endif %}

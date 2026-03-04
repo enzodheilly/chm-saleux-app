@@ -44,9 +44,17 @@
     padding-right: 3%;
     box-sizing: border-box;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     height: 100%;
+}
+
+.info-banner-content {
+    justify-content: space-between;
+}
+
+.nav-content {
+    justify-content: flex-start;
+    gap: 32px;
 }
 
 @media (max-width: 992px) {
@@ -64,7 +72,20 @@
         padding-right: 5%;
     }
 }
+.nav-links-desktop {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    height: 100%;
+    margin-right: auto;
+}
 
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-left: auto;
+}
 .info-track {
     display: flex;
     align-items: center;
@@ -282,7 +303,7 @@
 
 /* Parent du dropdown */
 .has-dropdown {
-    position: relative;
+    position: static;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -304,20 +325,15 @@
 /* Panneau dropdown */
 .nav-hover-panel {
     position: absolute;
-    top: calc(100% + 14px);
+    top: calc(100%);
     left: 50%;
     transform: translateX(-50%) translateY(12px);
 
     width: 960px;
     max-width: min(960px, 90vw);
 
-    background: var(--dropdown-bg) !important;
+    background: var(--dark-bg) !important;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-top: 2px solid rgba(245, 119, 6, 0.9);
-    border-radius: var(--dropdown-radius);
-    box-shadow: var(--shadow-dropdown);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
 
     padding: 30px;
     opacity: 0;

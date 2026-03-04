@@ -3,7 +3,6 @@
    (s'appuie sur la base globale : page-shell / page-container / header / typo)
    ========================================================= */
 
-
 /* blocs alternés si besoin futur */
 .bg-dark-alternate {
   background: var(--dark-bg);
@@ -274,18 +273,37 @@
   vertical-align: middle;
 }
 
-.ath-name-cell strong {
+.ath-name-cell {
+  vertical-align: middle;
+}
+
+.ath-name-inline {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ath-last-name {
   text-transform: uppercase;
-  display: block;
   font-size: 1rem;
+  font-weight: var(--fw-black);
   color: #fff;
   line-height: 1.1;
 }
 
-.ath-name-cell small {
+.ath-first-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.ath-bodyweight {
   color: var(--primary-color);
   font-weight: var(--fw-bold);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
+  white-space: nowrap;
 }
 
 .weight-val {
@@ -412,36 +430,38 @@
 }
 
 .history-more-wrap {
-    display: flex;
-    justify-content: center;
-    margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
 }
 
 .btn-history-more {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 20px;
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    font-weight: 700;
-    color: #fff;
-    background: var(--brand-orange);
-    transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  font-weight: 700;
+  color: #fff;
+  background: var(--brand-orange);
+  transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
 }
 
 .btn-history-more:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(255, 122, 24, 0.35);
-    opacity: 0.95;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(255, 122, 24, 0.35);
+  opacity: 0.95;
 }
 
 .feminine-header-bg {
   --bg-image: url('/images/competitions/1.jpg');
 }
+
 .section-header-offset {
   margin-top: 50px;
 }
+
 /* --- RESPONSIVE --- */
 @media (max-width: 992px) {
   .section-header-row {
@@ -462,6 +482,17 @@
     width: 100%;
     max-width: 260px;
     text-align: left;
+  }
+
+  /* tablette : vraie table avec scroll horizontal */
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 14px;
+  }
+
+  .stats-table {
+    min-width: 760px;
   }
 }
 
@@ -509,9 +540,11 @@
     text-align: center;
   }
 
-  /* Table mobile -> cards */
+  /* Table mobile -> cards lisibles */
   .stats-table {
     min-width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
   }
 
   .stats-table thead {
@@ -521,42 +554,76 @@
   .stats-table,
   .stats-table tbody {
     display: block;
+    width: 100%;
   }
 
-  .stats-table tr {
+  .stats-table .athlete-row {
     display: block;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    padding: 0.65rem 0;
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 14px 0;
+    margin-bottom: 14px;
   }
 
-  .stats-table td {
+  .stats-table .athlete-row td {
     display: flex;
     justify-content: space-between;
-    gap: 14px;
-    padding: 0.45rem 1rem;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 10px 16px;
     border: none;
-    text-align: left !important;
+    text-align: right !important;
   }
 
-  .stats-table td::before {
+  .stats-table .athlete-row td::before {
     content: attr(data-label);
+    display: block;
+    flex: 0 0 42%;
+    text-align: left;
     color: var(--text-muted);
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: var(--fw-bold);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.7px;
   }
 
-  /* comme ton HTML n'a pas data-label, on masque pseudo */
-  .stats-table td::before {
+  .stats-table .athlete-row td > * {
+    text-align: right;
+  }
+
+  .stats-table .athlete-row td.ath-name-cell {
+    display: block;
+    padding: 0 16px 14px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .stats-table .athlete-row td.ath-name-cell::before {
     display: none;
+  }
+
+  .ath-name-cell strong {
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+  }
+
+  .ath-name-cell small {
+    display: inline-block;
+    font-size: 0.78rem;
+  }
+
+  .cat-pill {
+    font-size: 0.78rem;
+    padding: 6px 12px;
   }
 
   .highlight,
   .highlight-accent {
     background: transparent;
     font-size: 1rem;
-    width: auto;
+    padding: 0;
   }
 
   .history-grid {
@@ -581,5 +648,19 @@
 
   .rank-number {
     font-size: 1.8rem;
+  }
+
+  .stats-table .athlete-row td {
+    padding: 9px 14px;
+    gap: 12px;
+  }
+
+  .stats-table .athlete-row td::before {
+    flex-basis: 46%;
+    font-size: 0.68rem;
+  }
+
+  .ath-name-cell strong {
+    font-size: 1.35rem;
   }
 }

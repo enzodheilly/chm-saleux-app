@@ -6,23 +6,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const pricingRadios = document.querySelectorAll('input[name="pricing-type"]');
     const priceValues = document.querySelectorAll('.p-value'); 
 
-    function updatePrices(type) {
-        priceValues.forEach(priceSpan => {
-            const newPrice = type === 'student' 
-                ? priceSpan.getAttribute('data-student') 
-                : priceSpan.getAttribute('data-standard');
+  function updatePrices(type) {
+    priceValues.forEach(priceSpan => {
+        const newPrice = type === 'student'
+            ? priceSpan.getAttribute('data-student')
+            : priceSpan.getAttribute('data-standard');
 
-            priceSpan.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
-            priceSpan.style.opacity = '0';
-            priceSpan.style.transform = 'translateY(-5px)';
+        const currentPrice = priceSpan.textContent.trim();
 
-            setTimeout(() => {
-                priceSpan.textContent = newPrice;
-                priceSpan.style.opacity = '1';
-                priceSpan.style.transform = 'translateY(0)';
-            }, 200); 
-        });
-    }
+        // Si le prix ne change pas, on ne fait rien
+        if (currentPrice === newPrice) {
+            return;
+        }
+
+        priceSpan.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+        priceSpan.style.opacity = '0';
+        priceSpan.style.transform = 'translateY(-5px)';
+
+        setTimeout(() => {
+            priceSpan.textContent = newPrice;
+            priceSpan.style.opacity = '1';
+            priceSpan.style.transform = 'translateY(0)';
+        }, 200);
+    });
+}
 
     pricingRadios.forEach(radio => {
         radio.addEventListener('change', (e) => updatePrices(e.target.value));

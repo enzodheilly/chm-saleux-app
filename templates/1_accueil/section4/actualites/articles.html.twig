@@ -9,8 +9,7 @@
 
 {% block body %}
 
-    {# --- HEADER ELITE (GLOBAL) --- #}
-<header class="page-header-sport" style="--bg-image: url('{{ asset('images/competitions/1.jpg') }}');">
+<header class="page-header-sport actualites-header-bg">
     <div class="header-overlay-gradient"></div>
 
     <div class="header-content">
@@ -30,104 +29,69 @@
     </div>
 </header>
 
-    <main class="news-root page-shell">
+<main class="news-root page-shell">
 
-        {# --- FILTRES --- #}
-        <section class="page-container section-spacer">
-            <h2 class="section-heading">Filtrer <span>les actualités</span></h2>
+    <section class="page-container section-spacer">
+        <h2 class="section-heading">Filtrer <span>les actualités</span></h2>
 
-            <div class="filter-card-wrapper">
-                <form method="get" action="{{ path('actualites', {'page': 1}) }}" class="elite-filter-bar">
-                    <div class="filter-inputs">
-                        <div class="filter-field">
-                            <label><i class="fa-solid fa-tag"></i> Catégorie</label>
-                            <select name="category">
-                                <option value="">Toutes</option>
-                                {% for cat in categories %}
-                                    <option value="{{ cat }}" {% if filters.category is defined and filters.category == cat %}selected{% endif %}>
-                                        {{ cat|capitalize }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        
-                        <div class="filter-field">
-                            <label><i class="fa-solid fa-calendar-days"></i> Période</label>
-                            <div class="date-range">
-                                <input type="date" name="date_from" value="{{ filters.date_from ?? '' }}" placeholder="Du">
-                                <span>au</span>
-                                <input type="date" name="date_to" value="{{ filters.date_to ?? '' }}" placeholder="Au">
-                            </div>
-                        </div>
+        <div class="filter-card-wrapper">
+            <form
+                id="newsFilterForm"
+                method="get"
+                action="{{ path('actualites', {'page': 1}) }}"
+                class="elite-filter-bar"
+            >
+                <div class="filter-inputs">
+                    <div class="filter-field">
+                        <label><i class="fa-solid fa-tag"></i> Catégorie</label>
+                        <select name="category">
+                            <option value="">Toutes</option>
+                            {% for cat in categories %}
+                                <option value="{{ cat.name }}"
+                                    {% if filters.category is defined and filters.category == cat.name %}selected{% endif %}>
+                                    {{ cat.name|capitalize }}
+                                </option>
+                            {% endfor %}
+                        </select>
                     </div>
 
-                    <div class="filter-buttons">
-                        <button type="submit" class="btn-elite-search"><i class="fa-solid fa-magnifying-glass"></i></button>
-                        {% if (filters.category is defined and filters.category) or filters.date_from or filters.date_to %}
-                            <a href="{{ path('actualites') }}" class="btn-elite-reset"><i class="fa-solid fa-rotate-left"></i></a>
-                        {% endif %}
+                    <div class="filter-field">
+                        <label><i class="fa-solid fa-calendar-days"></i> Période</label>
+                        <div class="date-range">
+                            <input type="date" name="date_from" value="{{ filters.date_from ?? '' }}" placeholder="Du">
+                            <span>au</span>
+                            <input type="date" name="date_to" value="{{ filters.date_to ?? '' }}" placeholder="Au">
+                        </div>
                     </div>
-                </form>
-            </div>
-        </section>
-
-        {# --- GRILLE D'ARTICLES --- #}
-        <section class="page-container section-spacer">
-            <h2 class="section-heading">Dernières <span>Actualités</span></h2>
-
-            {% if articles is not empty %}
-                <div class="news-grid-layout">
-                    {% for article in articles %}
-                        <article class="news-card-elite">
-                            <div class="card-thumb">
-                                <img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}" loading="lazy">
-                                <div class="card-badge">{{ article.category ? article.category|capitalize : 'Info' }}</div>
-                            </div>
-                            
-                            <div class="card-body">
-                                <span class="card-date"><i class="fa-regular fa-calendar"></i> {{ article.publishedAt|date('d/m/Y') }}</span>
-                                <h3><a href="{{ path('article_show', {'id': article.id}) }}">{{ article.title }}</a></h3>
-                                <p>{{ article.description|striptags|slice(0, 100) ~ '...' }}</p>
-                                <a href="{{ path('article_show', {'id': article.id}) }}" class="link-arrow">
-                                    Lire l'article <i class="fa-solid fa-arrow-right"></i>
-                                </a>
-                            </div>
-                        </article>
-                    {% endfor %}
                 </div>
 
-                {% if totalPages > 1 %}
-                    <div class="pagination-elite mt-5">
-                        {% set query = filters %}
-                        <a href="{{ page > 1 ? path('actualites', query|merge({'page': page - 1})) : '#' }}"
-                           class="page-btn {{ page <= 1 ? 'disabled' : '' }}">
-                            <i class="fa-solid fa-chevron-left"></i>
-                        </a>
-                        
-                        {% for i in 1..totalPages %}
-                            <a href="{{ path('actualites', query|merge({'page': i})) }}"
-                               class="page-btn {{ i == page ? 'active' : '' }}">{{ i }}</a>
-                        {% endfor %}
+                <div class="filter-buttons">
+                    <button type="submit" class="btn-elite-search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
 
-                        <a href="{{ page < totalPages ? path('actualites', query|merge({'page': page + 1})) : '#' }}"
-                           class="page-btn {{ page >= totalPages ? 'disabled' : '' }}">
-                            <i class="fa-solid fa-chevron-right"></i>
+                    {% if (filters.category is defined and filters.category) or filters.date_from or filters.date_to %}
+                        <a href="{{ path('actualites') }}" class="btn-elite-reset" id="resetFiltersBtn">
+                            <i class="fa-solid fa-rotate-left"></i>
                         </a>
-                    </div>
-                {% endif %}
-
-            {% else %}
-                <div class="empty-news">
-                    <i class="fa-solid fa-newspaper"></i>
-                    <h3>Aucun article trouvé</h3>
-                    <p>Modifiez vos filtres pour voir d'autres résultats.</p>
+                    {% endif %}
                 </div>
-            {% endif %}
-        </section>
+            </form>
+        </div>
+    </section>
 
-    </main>
+    <section class="page-container section-spacer">
+        <h2 class="section-heading">Dernières <span>Actualités</span></h2>
+
+        <div id="newsResults">
+            {% include '1_accueil/section4/actualites/_results.html.twig' %}
+        </div>
+    </section>
+
+</main>
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script src="{{ asset('js/accueil/section4/actualites/articles.js') }}"></script>
 {% endblock %}
