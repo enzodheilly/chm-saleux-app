@@ -128,19 +128,35 @@
                         </thead>
                         <tbody>
                             {% for result in lastCompetition.results %}
-                                <tr class="athlete-row">
-                                    <td>
-                                        <div class="ath-name-cell">
-                                            <strong>{{ result.lastName }}</strong> {{ result.firstName }}
-                                            <small>PC: {{ result.bodyWeight|default('--') }}kg</small>
-                                        </div>
-                                    </td>
-                                    <td><span class="cat-pill">{{ result.category }}</span></td>
-                                    <td class="text-center weight-val">{{ result.snatch }}kg</td>
-                                    <td class="text-center weight-val">{{ result.cleanAndJerk }}kg</td>
-                                    <td class="highlight total-val">{{ result.total }}kg</td>
-                                    <td class="highlight-accent points-val">{{ result.points }}</td>
-                                </tr>
+                     <tr class="athlete-row">
+    <td class="ath-name-cell" data-label="Athlète">
+        <div class="ath-name-inline">
+            <span class="ath-last-name">{{ result.lastName }}</span>
+            <span class="ath-first-name">{{ result.firstName }}</span>
+            <span class="ath-bodyweight">PC: {{ result.bodyWeight|default('--') }}kg</span>
+        </div>
+    </td>
+
+    <td data-label="Catégorie">
+        <span class="cat-pill">{{ result.category }}</span>
+    </td>
+
+    <td class="text-center weight-val" data-label="Arraché">
+        {{ result.snatch }}kg
+    </td>
+
+    <td class="text-center weight-val" data-label="Épaulé-Jeté">
+        {{ result.cleanAndJerk }}kg
+    </td>
+
+    <td class="highlight total-val" data-label="Total">
+        {{ result.total }}kg
+    </td>
+
+    <td class="highlight-accent points-val" data-label="Points">
+        {{ result.points }}
+    </td>
+</tr>
                             {% endfor %}
                         </tbody>
                     </table>
