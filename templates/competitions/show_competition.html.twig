@@ -126,44 +126,48 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for result in competition.results %}
-                                <tr class="athlete-row">
-                                    <td>
-                                        <div class="ath-name-cell">
-                                            <strong>{{ result.lastName }}</strong> {{ result.firstName }}
-                                        </div>
-                                    </td>
+    {% for result in competition.results %}
+        <tr class="athlete-row">
+            <td class="ath-name-cell" data-label="Athlète">
+                <div class="ath-name-inline">
+                    <span class="ath-last-name">{{ result.lastName }}</span>
+                    <span class="ath-first-name">{{ result.firstName }}</span>
+                    <span class="ath-bodyweight">
+                        PC: {{ result.bodyWeight is not null ? result.bodyWeight ~ 'kg' : '--' }}
+                    </span>
+                </div>
+            </td>
 
-                                    <td>
-                                        <span class="cat-pill">{{ result.category ?: '--' }}</span>
-                                    </td>
+            <td data-label="Catégorie">
+                <span class="cat-pill">{{ result.category ?: '--' }}</span>
+            </td>
 
-                                    <td class="text-center weight-val">
-                                        {{ result.bodyWeight is not null ? result.bodyWeight ~ 'kg' : '--' }}
-                                    </td>
+            <td class="text-center weight-val bodyweight-cell" data-label="PC">
+                {{ result.bodyWeight is not null ? result.bodyWeight ~ 'kg' : '--' }}
+            </td>
 
-                                    <td class="text-center weight-val">
-                                        {{ result.snatch is not null ? result.snatch ~ 'kg' : '--' }}
-                                    </td>
+            <td class="text-center weight-val" data-label="Arraché">
+                {{ result.snatch is not null ? result.snatch ~ 'kg' : '--' }}
+            </td>
 
-                                    <td class="text-center weight-val">
-                                        {{ result.cleanAndJerk is not null ? result.cleanAndJerk ~ 'kg' : '--' }}
-                                    </td>
+            <td class="text-center weight-val" data-label="E.J.">
+                {{ result.cleanAndJerk is not null ? result.cleanAndJerk ~ 'kg' : '--' }}
+            </td>
 
-                                    <td class="highlight total-val">
-                                        {{ result.total is not null ? result.total ~ 'kg' : '--' }}
-                                    </td>
+            <td class="highlight total-val" data-label="Total">
+                {{ result.total is not null ? result.total ~ 'kg' : '--' }}
+            </td>
 
-                                    <td class="highlight-accent points-val">
-                                        {{ result.points is not null ? result.points : '--' }}
-                                    </td>
+            <td class="highlight-accent points-val" data-label="Pts">
+                {{ result.points is not null ? result.points : '--' }}
+            </td>
 
-                                    <td class="text-center">
-                                        <span class="ranking-pill">{{ result.rankingLevel ?: '--' }}</span>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
+            <td class="text-center" data-label="Niveau">
+                <span class="ranking-pill">{{ result.rankingLevel ?: '--' }}</span>
+            </td>
+        </tr>
+    {% endfor %}
+</tbody>
                     </table>
                 </div>
             </div>

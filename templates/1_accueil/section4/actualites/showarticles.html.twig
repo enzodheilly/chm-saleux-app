@@ -5,41 +5,51 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/accueil/section4/actualites/showarticles.css') }}">
+
+        <style nonce="{{ csp_nonce('style') }}">
+        {% if article.photo %}
+            .article-hero-bg {
+                background-image: url('{{ asset('uploads/' ~ article.photo) }}');
+            }
+        {% else %}
+            .article-hero-bg {
+                background-image: url('{{ asset('images/defaults/article-placeholder.jpg') }}');
+            }
+        {% endif %}
+    </style>
 {% endblock %}
 
 {% block body %}
 <main class="article-root">
 
     {# --- HEADER DE L'ARTICLE --- #}
-    <header class="article-hero">
-        {% if article.photo %}
-            <div class="hero-bg" style="background-image: url('{{ asset('uploads/' ~ article.photo) }}');"></div>
-        {% endif %}
-        <div class="hero-overlay"></div>
+<header class="article-hero">
+    <div class="hero-bg article-hero-bg"></div>
+    <div class="hero-overlay"></div>
 
-        <div class="container hero-content">
-            <nav class="article-breadcrumb">
-                <a href="{{ path('home') }}">Accueil</a>
-                <i class="fa-solid fa-chevron-right"></i>
-                <a href="{{ path('actualites') }}">Actualités</a>
-            </nav>
+    <div class="article-hero-container hero-content">
+        <nav class="article-breadcrumb">
+            <a href="{{ path('home') }}">Accueil</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{{ path('actualites') }}">Actualités</a>
+        </nav>
 
-            <div class="title-area">
-                {% if article.category %}
-                    <span class="badge-category">{{ article.category|upper }}</span>
-                {% endif %}
-                <h1>{{ article.title }}</h1>
-                <div class="article-meta">
-                    <span class="meta-item"><i class="fa-regular fa-calendar-check"></i> {{ article.publishedAt|date('d/m/Y') }}</span>
-                    <span class="meta-item"><i class="fa-regular fa-clock"></i> 3 min de lecture</span>
-                </div>
+        <div class="title-area">
+            {% if article.category %}
+                <span class="badge-category">{{ article.category|upper }}</span>
+            {% endif %}
+            <h1>{{ article.title }}</h1>
+            <div class="article-meta">
+                <span class="meta-item"><i class="fa-regular fa-calendar-check"></i> {{ article.publishedAt|date('d/m/Y') }}</span>
+                <span class="meta-item"><i class="fa-regular fa-clock"></i> 3 min de lecture</span>
             </div>
         </div>
-    </header>
+    </div>
+</header>
 
     {# --- CONTENU DE L'ARTICLE --- #}
     <section class="article-body-wrapper">
-        <div class="container-narrow">
+        <div class="article-content-container">
 
             <a href="{{ path('actualites') }}" class="back-to-news">
                 <i class="fa-solid fa-arrow-left-long"></i> Retour aux actualités

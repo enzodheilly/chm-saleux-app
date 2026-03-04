@@ -12,4 +12,14 @@ class ArticleCategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ArticleCategory::class);
     }
+
+    public function findUsedCategories(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->innerJoin('c.articles', 'a')
+            ->distinct()
+            ->orderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
