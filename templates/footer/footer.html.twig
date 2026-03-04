@@ -12,9 +12,9 @@
                 </div>
                 <p class="brand-tagline">Repoussez vos limites, vivez votre passion. Le club de force référence à Saleux.</p>
                 <div class="social-links-minimal">
-                    <a href="#" class="social-item"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-item"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-item"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.facebook.com/chmsaleux1/?ref=br_rs" class="social-item"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/chmsaleux/" class="social-item"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@chmsaleux4431" class="social-item"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
 
@@ -22,11 +22,11 @@
                 <h4 class="footer-title">Navigation</h4>
                 <ul class="nav-list">
                     <li><a href="{{ path('home') }}"><i class="fa-solid fa-chevron-right"></i> Accueil</a></li>
-                    <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Le Club</a></li>
-                    <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Nos Tarifs</a></li>
-                    <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Notre École</a></li>
-                    <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Compétitions</a></li>
-                    <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Contact</a></li>
+                    <li><a href="{{ path('app_club') }}"><i class="fa-solid fa-chevron-right"></i> Le Club</a></li>
+                    <li><a href="{{ path('app_pricing') }}"><i class="fa-solid fa-chevron-right"></i> Nos Tarifs</a></li>
+                    <li><a href="{{ path('ecole') }}"><i class="fa-solid fa-chevron-right"></i> Notre École</a></li>
+                    <li><a href="{{ path('competition') }}"><i class="fa-solid fa-chevron-right"></i> Compétitions</a></li>
+                    <li><a href="{{ path('contact') }}"><i class="fa-solid fa-chevron-right"></i> Contact</a></li>
                 </ul>
             </div>
 
@@ -103,7 +103,6 @@
                 <a href="{{ path('legal_page_show', {'slug': 'conditions-utilisation'}) }}">CGU</a>
                 <a href="{{ path('legal_page_show', {'slug': 'confidentialite'}) }}">Confidentialité</a>
                 <a href="{{ path('legal_page_show', {'slug': 'cookies'}) }}">Cookies</a>
-                <a href="#" data-open-cookie-settings>Gérer mes cookies</a>
             </div>
         </div>
     </div>

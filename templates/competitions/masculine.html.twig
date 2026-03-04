@@ -166,24 +166,34 @@
                 <h2 class="section-heading">Archives <span>Saison en cours</span></h2>
             </div>
 
-            <div class="history-grid">
-                {% for comp in competitions %}
-                    {% if not loop.first %}
-                        <article class="history-card">
-                            <div class="card-thumb">
-                                <img src="{{ comp.image ? asset('uploads/competitions/' ~ comp.image) : asset('images/defaults/competition-placeholder.jpg') }}"
-                                     alt="{{ comp.title }}">
-                                <div class="card-date">{{ comp.eventDate|date('d/m') }}</div>
-                            </div>
-                            <div class="card-body">
-                                <h4>{{ comp.title }}</h4>
-                                <p class="card-lieu"><i class="fa-solid fa-location-dot"></i> {{ comp.location }}</p>
-                                <a href="#" class="card-link">Consulter le plateau <i class="fa-solid fa-arrow-right"></i></a>
-                            </div>
-                        </article>
-                    {% endif %}
-                {% endfor %}
+<div class="history-grid">
+    {% for comp in competitions|slice(1, 3) %}
+        <article class="history-card">
+            <div class="card-thumb">
+                <img src="{{ comp.image ? asset('uploads/competitions/' ~ comp.image) : asset('images/defaults/competition-placeholder.jpg') }}"
+                     alt="{{ comp.title }}">
+                <div class="card-date">{{ comp.eventDate|date('d/m') }}</div>
             </div>
+            <div class="card-body">
+                <h4>{{ comp.title }}</h4>
+                <p class="card-lieu"><i class="fa-solid fa-location-dot"></i> {{ comp.location }}</p>
+                <a href="{{ path('competition_show', { id: comp.id }) }}" class="card-link">
+                    Consulter le plateau <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </article>
+    {% endfor %}
+</div>
+
+        {# Bouton voir plus si plus de 4 compétitions au total (1 affichée en "Dernier plateau" + 3 archives) #}
+        {% if competitions|length > 4 %}
+            <div class="history-more-wrap">
+                <a href="{{ path('competition_feminine_archives') }}" class="btn-history-more">
+                    Voir plus de résultats
+                </a>
+            </div>
+        {% endif %}
+        
         </section>
     {% endif %}
 

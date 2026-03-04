@@ -6,9 +6,9 @@ use App\Entity\Article;
 use App\Repository\ArticleRepository;
 use App\Repository\ArticleCategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 
 class ActualitesController extends AbstractController
 {
@@ -22,24 +22,23 @@ class ActualitesController extends AbstractController
         $limit = 18;
         $page = max(1, $page);
 
-        // --- Filters (sanitize) ---
-        $rawCategory = $request->query->getString('category', '');
-        $rawCategory = trim($rawCategory);
+        // --- Filtres ---
+        $rawCategory = trim($request->query->getString('category', ''));
         $rawCategory = $rawCategory !== '' ? $rawCategory : null;
 
         $dateFrom = $this->parseDateOrNull($request->query->getString('date_from', ''));
         $dateTo   = $this->parseDateOrNull($request->query->getString('date_to', ''));
 
-        // Si l'utilisateur inverse les dates, on swap (évite des filtres "impossibles")
+        // Si les dates sont inversées, on les swap
         if ($dateFrom && $dateTo && $dateFrom > $dateTo) {
             [$dateFrom, $dateTo] = [$dateTo, $dateFrom];
         }
 
-        // --- Fetch filtered articles ---
+        // --- Articles filtrés ---
         $result = $articleRepository->findFilteredArticles(
-            $rawCategory,     // filtre par nom (string) OU null
-            $dateFrom,        // DateTimeImmutable|null
-            $dateTo,          // DateTimeImmutable|null
+            $rawCategory,
+            $dateFrom,
+            $dateTo,
             $page,
             $limit
         );
@@ -48,17 +47,15 @@ class ActualitesController extends AbstractController
         $totalArticles = (int) ($result['total'] ?? 0);
         $totalPages = max(1, (int) ceil($totalArticles / $limit));
 
-        // Si quelqu'un tape /actualites/9999 alors qu'il n'y a que 3 pages
         if ($page > $totalPages) {
             $page = $totalPages;
         }
 
-        // --- Fetch all categories (clean) ---
-        $categories = $articleCategoryRepository->findBy([], ['name' => 'ASC']);
+        // --- Toutes les catégories ---
+        $categories = $articleCategoryRepository->findUsedCategories();
 
-        return $this->render('1_accueil/section4/actualites/articles.html.twig', [
+        $viewData = [
             'articles' => $articles,
-            'categories' => $categories,
             'page' => $page,
             'totalPages' => $totalPages,
             'filters' => [
@@ -66,7 +63,17 @@ class ActualitesController extends AbstractController
                 'date_from' => $dateFrom?->format('Y-m-d'),
                 'date_to' => $dateTo?->format('Y-m-d'),
             ],
-        ]);
+        ];
+
+        // Si appel AJAX : on renvoie uniquement le bloc résultats
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('1_accueil/section4/actualites/_results.html.twig', $viewData);
+        }
+
+        // Sinon : page complète
+        return $this->render('1_accueil/section4/actualites/articles.html.twig', array_merge($viewData, [
+            'categories' => $categories,
+        ]));
     }
 
     #[Route('/article/{id}', name: 'article_show')]
@@ -80,12 +87,12 @@ class ActualitesController extends AbstractController
     private function parseDateOrNull(string $value): ?\DateTimeImmutable
     {
         $value = trim($value);
+
         if ($value === '') {
             return null;
         }
 
-        // supporte "YYYY-MM-DD"
-        $date = \DateTimeImmutable::createFromFormat('Y-m-d', $value);
+        $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $value);
 
         return $date ?: null;
     }
