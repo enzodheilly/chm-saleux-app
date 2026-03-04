@@ -139,7 +139,7 @@
   padding-bottom: 2rem;
 }
 
-/* réutilise le style du bouton ghost si présent dans feminine-archives.css */
+/* bouton ghost */
 .btn-history-ghost {
   display: inline-flex;
   align-items: center;
@@ -158,6 +158,25 @@
   transform: translateY(-2px);
   border-color: rgba(255,255,255,0.18);
   background: rgba(255,255,255,0.06);
+}
+
+/* =========================================
+   LIGNE ATHLÈTE
+   ========================================= */
+/* =========================================
+   LIGNE ATHLÈTE
+   (on réutilise le style de feminine.css)
+   ========================================= */
+.ath-bodyweight {
+  display: none;
+}
+
+.feminine-header-bg {
+  --bg-image: url('/images/competitions/1.jpg');
+}
+
+.section-header-offset {
+  margin-top: 50px;
 }
 
 @media (max-width: 992px) {
@@ -190,7 +209,13 @@
     align-items: flex-start;
   }
 
-  /* Table mobile (compatible avec ta base feminine.css) */
+  /* Table mobile -> cards lisibles */
+  .stats-table {
+    min-width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
   .stats-table thead {
     display: none;
   }
@@ -198,32 +223,106 @@
   .stats-table,
   .stats-table tbody {
     display: block;
+    width: 100%;
     min-width: 100%;
   }
 
-  .stats-table tr {
+  .stats-table .athlete-row {
     display: block;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    padding: 0.65rem 0;
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 14px 0;
+    margin-bottom: 14px;
   }
 
-  .stats-table td {
+  .stats-table .athlete-row td {
     display: flex;
     justify-content: space-between;
-    gap: 14px;
-    padding: 0.45rem 1rem;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 10px 16px;
     border: none;
-    text-align: left !important;
+    text-align: right !important;
   }
 
-  .stats-table td::before {
+  .stats-table .athlete-row td::before {
+    content: attr(data-label);
+    display: block;
+    flex: 0 0 42%;
+    text-align: left;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+  }
+
+  .stats-table .athlete-row td > * {
+    text-align: right;
+  }
+
+  .stats-table .athlete-row td.ath-name-cell {
+    display: block;
+    padding: 0 16px 14px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    text-align: right !important;
+  }
+
+  .stats-table .athlete-row td.ath-name-cell::before {
     display: none;
+  }
+
+.stats-table .athlete-row td.ath-name-cell {
+  display: block;
+  padding: 0 16px 14px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.stats-table .athlete-row td.ath-name-cell::before {
+  display: none;
+}
+
+/* on garde le style nom/prénom de feminine.css */
+.stats-table .ath-name-cell .ath-bodyweight {
+  display: inline-block;
+}
+
+/* on masque la colonne PC en mobile car déjà affichée dans le header */
+.stats-table .bodyweight-cell {
+  display: none !important;
+}
+
+  /* on masque la colonne PC en mobile car déjà affichée en haut */
+  .stats-table .bodyweight-cell {
+    display: none !important;
   }
 
   .highlight,
   .highlight-accent {
     background: transparent;
     font-size: 1rem;
+    padding: 0;
     width: auto;
+  }
+
+  .ranking-pill {
+    font-size: 0.78rem;
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .stats-table .athlete-row td {
+    padding: 9px 14px;
+    gap: 12px;
+  }
+
+  .stats-table .athlete-row td::before {
+    flex-basis: 46%;
+    font-size: 0.68rem;
   }
 }
