@@ -357,6 +357,7 @@
   font-size: 1.3rem;
   font-weight: var(--fw-extrabold);
   margin: 0 0 1.4rem;
+  text-transform: uppercase;
   color: var(--text-white);
 }
 
@@ -523,8 +524,9 @@
   }
 
   .btn-cta-red {
-    width: 100%;
+    width: 80%;
     max-width: 420px;
+    font-size: 0.9rem;
     padding: 13px 18px;
   }
 }

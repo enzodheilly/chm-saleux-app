@@ -2,12 +2,20 @@
 
 <div class="calendar-header-minimal">
     <div class="month-selector">
-        <a href="{{ path('competition', prevParams) }}" class="nav-arrow js-calendar-nav" aria-label="Mois précédent">
-            <i class="fa-solid fa-angle-left"></i>
-        </a>
+        {% if canGoPrev %}
+            <a href="{{ path('competition', prevParams) }}" class="nav-arrow js-calendar-nav" aria-label="Mois précédent">
+                <i class="fa-solid fa-angle-left"></i>
+            </a>
+        {% else %}
+            <span class="nav-arrow disabled" aria-disabled="true">
+                <i class="fa-solid fa-angle-left"></i>
+            </span>
+        {% endif %}
+
         <h3 class="current-month-display">
             {{ currentMonthName|format_date(locale='fr', pattern='MMMM yyyy')|capitalize }}
         </h3>
+
         <a href="{{ path('competition', nextParams) }}" class="nav-arrow js-calendar-nav" aria-label="Mois suivant">
             <i class="fa-solid fa-angle-right"></i>
         </a>
@@ -15,19 +23,16 @@
 </div>
 
 <div class="calendar-main-grid">
-    {# En-têtes de jours #}
     {% for dayName in ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'] %}
         <div class="day-header">{{ dayName }}</div>
     {% endfor %}
 
-    {# Cellules vides pour le décalage #}
     {% if startDay > 1 %}
         {% for i in 1..(startDay - 1) %}
             <div class="day-cell-wrapper empty"></div>
         {% endfor %}
     {% endif %}
 
-    {# Boucle des jours réels #}
     {% for day in 1..daysInMonth %}
         {% set dateKey = currentYear ~ "-" ~ (currentMonth|format('%02d')) ~ "-" ~ (day|format('%02d')) %}
         {% set dayEvents = eventsByDate[dateKey] ?? [] %}
@@ -36,7 +41,7 @@
         <div class="day-cell-wrapper {% if hasEvent %}has-event-group{% endif %}">
             <div class="day-content">
                 <span class="day-num">{{ day }}</span>
-                
+
                 {% if hasEvent %}
                     <div class="events-stack">
                         {% for event in dayEvents|slice(0, 1) %}
@@ -45,20 +50,19 @@
                                 <span class="event-name">{{ event.title }}</span>
                             </div>
                         {% endfor %}
-                        
+
                         {% if dayEvents|length > 1 %}
                             <div class="more-indicator">+{{ dayEvents|length - 1 }} match{{ dayEvents|length > 2 ? 'es' : '' }}</div>
                         {% endif %}
                     </div>
                 {% endif %}
             </div>
-            
-            {# Overlay au survol pour les détails (optionnel) #}
+
             {% if hasEvent %}
                 <div class="event-hover-details">
                     {% for event in dayEvents %}
                         <div class="hover-event-item">
-                            <span class="hover-time">{{ event.eventDate|date('H:i') }}</span>
+                            <span class="hover-time">{{ event.date }}</span>
                             <span class="hover-title">{{ event.title }}</span>
                         </div>
                     {% endfor %}
