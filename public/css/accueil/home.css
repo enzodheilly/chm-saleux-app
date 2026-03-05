@@ -78,8 +78,8 @@
   width: 100%;
   max-width: none;
   margin: 0 auto;
-  padding-left: 3%;
-  padding-right: 3%;
+  padding-left: 5%;
+  padding-right: 5%;
   padding-top: 80px;
   box-sizing: border-box;
   height: 100%;
@@ -199,7 +199,7 @@
 .badge-ffhm {
   position: absolute;
   bottom: 80px;
-  left: 3%;
+  left: 5%;
   display: flex;
   align-items: center;
   gap: 15px;
@@ -362,7 +362,78 @@
     padding-bottom: 40px;
   }
 }
+@media (max-width: 768px) {
 
+  /* On masque ce qu’on ne veut pas */
+  .club-subtitle,
+  .hero-inner,
+  .hero-line,
+  .thin-text,
+  .club-date,
+  .user-welcome,
+  .user-subtitle {
+    display: none !important;
+  }
+
+  .hero-section {
+    min-height: 100vh;
+  }
+
+  /* Le contenu prend toute la hauteur */
+  .hero-content {
+    position: relative;
+    height: 100%;
+    min-height: 100vh;
+    padding-top: 0px !important;
+    padding-bottom: 35px !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Titre au milieu */
+  .club-title {
+    display: block !important;
+    font-size: 1.65rem !important;
+    line-height: 1.15 !important;
+    margin: 0 !important;
+    max-width: 26ch;
+    text-align: center;
+  }
+
+  /* Boutons fixés en bas du hero */
+  .hero-buttons {
+    position: absolute;
+    left: 1.25rem;
+    right: 1.25rem;
+    bottom: 35px;
+    width: auto;
+    max-width: 420px;
+    margin: 0 auto !important;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .nous-rejoindre,
+  .btn-en-savoir-plus {
+    width: 100%;
+    text-align: center;
+    padding: 14px 20px;
+  }
+
+  /* Overlay plus propre */
+  .hero-photos::after {
+    background: linear-gradient(
+      to top,
+      rgba(5,5,5,0.88) 0%,
+      rgba(5,5,5,0.38) 50%,
+      rgba(5,5,5,0.10) 100%
+    ) !important;
+  }
+}
 /* =========================
    ACCUEIL — SECTION 2 (PRICING)
    ========================= */
