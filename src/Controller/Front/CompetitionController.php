@@ -42,6 +42,8 @@ class CompetitionController extends AbstractController
 
     private function getCalendarData(EntityManagerInterface $em, ?int $year, ?int $month): array
     {
+        $minDate = new \DateTimeImmutable('2024-01-01');
+
         $now = new \DateTimeImmutable();
         $year = $year ?? (int) $now->format('Y');
         $month = $month ?? (int) $now->format('m');
@@ -50,14 +52,23 @@ class CompetitionController extends AbstractController
 
         $currentMonthDate = new \DateTimeImmutable(sprintf('%04d-%02d-01', $year, $month));
 
+        // Bloque toute navigation avant janvier 2024
+        if ($currentMonthDate < $minDate) {
+            $currentMonthDate = $minDate;
+        }
+
+        // On resynchronise year / month après correction éventuelle
+        $year = (int) $currentMonthDate->format('Y');
+        $month = (int) $currentMonthDate->format('m');
+
         $prevMonth = $currentMonthDate->modify('-1 month');
         $nextMonth = $currentMonthDate->modify('+1 month');
+
+        $canGoPrev = $prevMonth >= $minDate;
 
         $daysInMonth = (int) $currentMonthDate->format('t');
         $startDayOfWeek = (int) $currentMonthDate->format('N'); // 1..7
 
-        // ✅ Perf: tu peux remplacer par une requête filtrée sur le mois,
-        // mais je garde ton findAll pour l’instant.
         $competitions = $em->getRepository(Competition::class)->findAll();
 
         $femaleCompetitions = [];
@@ -76,7 +87,8 @@ class CompetitionController extends AbstractController
                 'id' => $comp->getId(),
                 'title' => $comp->getTitle(),
                 'type' => $comp->getCompetitionType(),
-                'date' => $eventDate->format('d/m/Y'),
+                'eventDate' => $eventDate, // vraie date exploitable dans Twig
+                'date' => $eventDate->format('d/m/Y'), // date déjà formatée pour affichage
                 'location' => $comp->getLocation(),
                 'image' => $comp->getImage() ? '/uploads/competitions/' . $comp->getImage() : null,
                 'teamRanking' => $comp->getTeamRanking(),
@@ -94,7 +106,6 @@ class CompetitionController extends AbstractController
                 ], $comp->getResults()->toArray()),
             ];
 
-            // ✅ support multiple competitions same day
             $eventsByDate[$formattedDate][] = $compData;
 
             if ($comp->getGender() === 'female') {
@@ -115,8 +126,17 @@ class CompetitionController extends AbstractController
             'startDay' => $startDayOfWeek,
             'currentYear' => $year,
             'currentMonth' => $month,
-            'prevParams' => ['year' => $prevMonth->format('Y'), 'month' => $prevMonth->format('m')],
-            'nextParams' => ['year' => $nextMonth->format('Y'), 'month' => $nextMonth->format('m')],
+
+            'canGoPrev' => $canGoPrev,
+
+            'prevParams' => $canGoPrev
+                ? ['year' => $prevMonth->format('Y'), 'month' => $prevMonth->format('m')]
+                : ['year' => $currentMonthDate->format('Y'), 'month' => $currentMonthDate->format('m')],
+
+            'nextParams' => [
+                'year' => $nextMonth->format('Y'),
+                'month' => $nextMonth->format('m'),
+            ],
         ];
     }
 

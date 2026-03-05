@@ -5,7 +5,7 @@
 
 /* --- ROOT spécifique page --- */
 .contact-root {
-  background: var(--dark-bg);
+  background: var(--bg-section);
   color: #fff;
   font-family: "Inter", sans-serif;
   overflow-x: hidden;

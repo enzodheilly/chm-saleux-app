@@ -105,9 +105,9 @@
   --space-13: 120px;
 
   /* Section paddings */
-  --section-padding-y: 100px;
+  --section-padding-y: 70px;
   --section-padding-y-tablet: 80px;
-  --section-padding-y-mobile: 70px;
+  --section-padding-y-mobile: 50px;
 
   /* Containers 
   --container-max: 1200px;
@@ -198,8 +198,8 @@
   width: 100%;
   max-width: none !important;
   margin: 0 auto;
-  padding-left: 3%;
-  padding-right: 3%;
+  padding-left: 10%;
+  padding-right: 10%;
   box-sizing: border-box;
 }
 
@@ -207,8 +207,8 @@
   .page-container,
   .site-container,
   .container {
-    padding-left: 4%;
-    padding-right: 4%;
+    padding-left: 10%;
+    padding-right: 10%;
   }
 }
 
@@ -216,8 +216,8 @@
   .page-container,
   .site-container,
   .container {
-    padding-left: 5%;
-    padding-right: 5%;
+    padding-left: 6%;
+    padding-right: 10%;
   }
 }
 
