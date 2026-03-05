@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const firstCard = track.firstElementChild;
       if (!firstCard) return 285;
 
-      // On récupère gap (flex) ou columnGap (grid) selon le cas
       const style = window.getComputedStyle(track);
       const gap =
         parseFloat(style.gap) ||
@@ -27,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const updateButtonState = () => {
-      // tolérance
       const maxScrollLeft = scroller.scrollWidth - scroller.clientWidth - 5;
 
       const atStart = scroller.scrollLeft <= 0;
@@ -51,45 +49,56 @@ document.addEventListener("DOMContentLoaded", () => {
     scroller.addEventListener("scroll", updateButtonState);
     window.addEventListener("resize", updateButtonState);
 
-    // Init après un “tick” pour être sûr que les widths sont calculées
     requestAnimationFrame(updateButtonState);
   }
 
   // =========================================================
   // 2. GESTION DU CALENDRIER (AJAX)
   // =========================================================
-  document.body.addEventListener('click', function(e) {
-
-    const navBtn = e.target.closest('.js-calendar-nav');
+  document.body.addEventListener("click", function (e) {
+    const navBtn = e.target.closest(".js-calendar-nav");
     if (!navBtn) return;
 
     e.preventDefault();
 
     const url = navBtn.href;
-    const ajaxUrl = url.replace('/competition/', '/ajax/competition/');
-    const container = document.querySelector('#calendar-container');
+    const ajaxUrl = url.replace("/competition/", "/ajax/competition/");
 
-    if (container) {
-      container.style.opacity = '0.5';
-      container.style.pointerEvents = 'none';
+    const container = document.querySelector("#calendar-container");
+    const card = document.querySelector("#calendar-container .calendar-card");
 
-      fetch(ajaxUrl)
-        .then(response => {
-          if (!response.ok) throw new Error("Erreur réseau");
-          return response.text();
-        })
-        .then(html => {
-          container.innerHTML = html;
-          container.style.opacity = '1';
-          container.style.pointerEvents = 'auto';
-          window.history.pushState({}, '', url);
-        })
-        .catch(error => {
-          console.error('Erreur chargement calendrier:', error);
-          container.style.opacity = '1';
-          container.style.pointerEvents = 'auto';
-          window.location.href = url;
-        });
-    }
+    if (!container || !card) return;
+
+    container.style.opacity = "0.5";
+    container.style.pointerEvents = "none";
+
+    fetch(ajaxUrl, {
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Erreur réseau");
+        }
+        return response.text();
+      })
+      .then(html => {
+        // IMPORTANT :
+        // on remplace uniquement le contenu de .calendar-card
+        // pour conserver le wrapper et donc le style CSS
+        card.innerHTML = html;
+
+        container.style.opacity = "1";
+        container.style.pointerEvents = "auto";
+
+        window.history.pushState({}, "", url);
+      })
+      .catch(error => {
+        console.error("Erreur chargement calendrier :", error);
+        container.style.opacity = "1";
+        container.style.pointerEvents = "auto";
+        window.location.href = url;
+      });
   });
 });

@@ -1,65 +1,80 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Scroll Effect
-    const navWrapper = document.querySelector('.nav-main-wrapper');
+  // 1) Scroll Effect
+  const navWrapper = document.querySelector('.nav-main-wrapper');
 
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navWrapper.classList.add('scrolled');
-        } else {
-            navWrapper.classList.remove('scrolled');
-        }
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) navWrapper?.classList.add('scrolled');
+    else navWrapper?.classList.remove('scrolled');
+  });
+
+  // 2) Mobile Menu
+  const hamburger = document.getElementById('mobileMenuTrigger');
+  const overlay = document.getElementById('mobileNavOverlay');
+  const mobileLinks = overlay ? overlay.querySelectorAll('a') : [];
+
+  // 3) Subpages
+  const subpages = overlay ? overlay.querySelectorAll('.mobile-subpage') : [];
+
+  const closeSubpages = () => {
+    if (!overlay) return;
+    overlay.classList.remove('subpage-open');
+    subpages.forEach(p => p.classList.remove('open'));
+  };
+
+  const openMobileMenu = () => {
+    if (!overlay || !hamburger) return;
+    overlay.classList.add('open');
+    hamburger.classList.add('is-active');
+    document.body.classList.add('mobile-menu-open');
+  };
+
+  const closeMobileMenu = () => {
+    if (!overlay || !hamburger) return;
+    overlay.classList.remove('open');
+    hamburger.classList.remove('is-active');
+    document.body.classList.remove('mobile-menu-open');
+    closeSubpages(); // ✅ important
+  };
+
+  if (hamburger && overlay) {
+    hamburger.addEventListener('click', () => {
+      const isOpen = overlay.classList.contains('open');
+      isOpen ? closeMobileMenu() : openMobileMenu();
     });
 
-    // 2. Mobile Menu
-    const hamburger = document.getElementById('mobileMenuTrigger');
-    const overlay = document.getElementById('mobileNavOverlay');
-    const accordions = document.querySelectorAll('.mobile-accordion-btn');
-    const mobileLinks = overlay ? overlay.querySelectorAll('a') : [];
+    // Ferme le menu au clic sur n'importe quel lien
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        closeMobileMenu();
+      });
+    });
 
-    if (hamburger && overlay) {
-        hamburger.addEventListener('click', () => {
-            overlay.classList.toggle('open');
-            hamburger.classList.toggle('is-active');
-            document.body.classList.toggle('mobile-menu-open');
-        });
+    // Gestion subpage (niveau 2)
+    overlay.addEventListener('click', (e) => {
+      // Ouvrir une subpage
+      const trigger = e.target.closest('.mobile-subpage-trigger');
+      if (trigger) {
+        const targetSel = trigger.getAttribute('data-subpage');
+        const target = targetSel ? overlay.querySelector(targetSel) : null;
+        if (!target) return;
 
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                overlay.classList.remove('open');
-                hamburger.classList.remove('is-active');
-                document.body.classList.remove('mobile-menu-open');
-            });
-        });
+        overlay.classList.add('subpage-open');
+        target.classList.add('open');
+        return;
+      }
+
+      // Retour
+      const back = e.target.closest('[data-subpage-back]');
+      if (back) {
+        closeSubpages();
+      }
+    });
+  }
+
+  // Bonus : si on repasse en desktop, on ferme le menu
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 992) {
+      closeMobileMenu();
     }
-
-    // 3. Accordions
-    accordions.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const content = btn.nextElementSibling;
-            const isOpen = content.classList.contains('open');
-
-            accordions.forEach(otherBtn => {
-                const otherContent = otherBtn.nextElementSibling;
-                otherBtn.classList.remove('active');
-                otherContent.classList.remove('open');
-
-                const otherIcon = otherBtn.querySelector('i');
-                if (otherIcon) {
-                    otherIcon.classList.remove('fa-minus');
-                    otherIcon.classList.add('fa-plus');
-                }
-            });
-
-            if (!isOpen) {
-                content.classList.add('open');
-                btn.classList.add('active');
-
-                const icon = btn.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-plus');
-                    icon.classList.add('fa-minus');
-                }
-            }
-        });
-    });
+  });
 });
