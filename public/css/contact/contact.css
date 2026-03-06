@@ -16,7 +16,7 @@
    ========================================================= */
 
 .clinic-contact-section {
-  margin-top: -70px; /* overlap sur le header */
+  margin-top: -25px;
   position: relative;
   z-index: 10;
 }
@@ -101,7 +101,11 @@
 .form-header .section-heading {
   margin-bottom: 10px;
 }
-
+.form-header .section-heading {
+  margin-bottom: 10px;
+  font-size: 2rem;
+  line-height: 1.05;
+}
 .form-header .desc-text-large {
   margin: 0;
   max-width: none;
@@ -124,6 +128,10 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
 }
 
 .contact-form-container .input-group label,
@@ -303,7 +311,7 @@
 
 .map-frame {
   position: relative;
-  height: 440px;
+  height: 388px;
   background: #0d0d0d;
 }
 

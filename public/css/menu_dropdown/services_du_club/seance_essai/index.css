@@ -9,9 +9,11 @@
   text-align: center;
   padding: 0 20px;
 }
+
 .seance-essai-page-header {
-    --bg-image: url('/images/menu_dropdown/services_du_club/journee_essai/1.jpg');
+  --bg-image: url('/images/menu_dropdown/services_du_club/journee_essai/1.jpg');
 }
+
 /* --- REASSURANCE --- */
 .intro-badge{
   color: var(--primary-color);
@@ -24,7 +26,7 @@
 
 .highlight-text{
   -webkit-text-stroke: 1px white;
-  color: transparent;
+  color: white!important;
 }
 
 /* ✅ on ne touche PAS aux h2 globaux (.section-heading) */
@@ -38,12 +40,12 @@
 .reasons-section{
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 20px 60px;
 }
 
 .reasons-grid{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 30px;
 }
 
@@ -58,6 +60,13 @@
 .reason-card:hover{
   transform: translateY(-10px);
   border-color: rgba(255,255,255,0.2);
+}
+
+.reason-card:last-child{
+  grid-column: 1 / -1;
+  max-width: 560px;
+  width: 100%;
+  justify-self: center;
 }
 
 .card-icon{
@@ -276,7 +285,6 @@
     flex-direction: column;
   }
 
-  /* ✅ ajuste uniquement les titres de cette page qui utilisent .section-heading */
   .reassurance-section .section-heading,
   .section-header .section-heading{
     font-size: 2rem;
@@ -284,13 +292,12 @@
 }
 
 @media (max-width: 768px){
-
   .container-narrow{
     padding: 0 14px;
   }
 
   .reasons-section{
-    padding: 0 14px;
+    padding: 0 14px 32px;
   }
 
   .reasons-grid{
@@ -301,6 +308,12 @@
   .reason-card{
     padding: 24px;
     border-radius: 12px;
+  }
+
+  .reason-card:last-child{
+    grid-column: auto;
+    max-width: 100%;
+    justify-self: stretch;
   }
 
   .how-it-works-section{
