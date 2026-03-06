@@ -1,5 +1,4 @@
 <?php
-// src/Entity/ContactMessage.php
 
 namespace App\Entity;
 
@@ -10,6 +9,18 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ContactMessageRepository::class)]
 class ContactMessage
 {
+    public const SUBJECT_CHOICES = [
+        'Renseignements généraux' => 'renseignement',
+        'Séance d\'essai' => 'essai',
+        'Tarifs & inscription' => 'tarifs',
+        'Horaires du club' => 'horaires',
+        'Coaching / accompagnement' => 'coaching',
+        'Compétitions' => 'competitions',
+        'Partenariat' => 'partenariat',
+        'Problème technique' => 'technique',
+        'Autre demande' => 'autre',
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -37,15 +48,12 @@ class ContactMessage
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
-    // ✅ Field for the administrator's response
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $response = null;
 
-    // ✅ Name of the admin who processed the request
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $resolvedBy = null;
 
-    // ✅ Indicates whether the displayed message is an admin response
     #[ORM\Column(type: 'boolean')]
     private bool $isFromAdmin = false;
 
@@ -56,6 +64,11 @@ class ContactMessage
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->isFromAdmin = false;
+    }
+
+    public static function getSubjectChoices(): array
+    {
+        return self::SUBJECT_CHOICES;
     }
 
     public function getId(): ?int

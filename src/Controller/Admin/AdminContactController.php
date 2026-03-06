@@ -4,6 +4,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ContactMessage;
+use App\Entity\User;
 use App\Repository\ContactMessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,6 +24,17 @@ class AdminContactController extends AbstractController
 
         return $this->render('admin/contact/index.html.twig', [
             'messages' => $messages,
+            'subjectLabels' => [
+                'renseignement' => 'Renseignements généraux',
+                'essai' => 'Séance d\'essai',
+                'tarifs' => 'Tarifs & inscription',
+                'horaires' => 'Horaires du club',
+                'coaching' => 'Coaching / accompagnement',
+                'competitions' => 'Compétitions & résultats',
+                'partenariat' => 'Partenariat',
+                'technique' => 'Problème technique',
+                'autre' => 'Autre demande',
+            ],
         ]);
     }
 
@@ -36,15 +48,19 @@ class AdminContactController extends AbstractController
         $token = $request->request->get('_token');
 
         if (!$this->isCsrfTokenValid('reply' . $message->getId(), $token)) {
-            throw $this->createAccessDeniedException('Invalid CSRF token.');
+            throw $this->createAccessDeniedException('Jeton CSRF invalide.');
         }
 
-        $responseText = $request->request->get('response');
+        $responseText = trim((string) $request->request->get('response', ''));
 
-        $user = $this->getUser();
-        $adminName = $user ? $user->getFirstName() : 'Admin';
+        $securityUser = $this->getUser();
+        $user = $securityUser instanceof User ? $securityUser : null;
 
-        if ($responseText) {
+        $adminName = $user && $user->getFirstName()
+            ? $user->getFirstName()
+            : 'Admin';
+
+        if ($responseText !== '') {
             $message->setResponse($responseText);
             $message->setResolvedBy($adminName);
             $message->setIsFromAdmin(true);
@@ -57,18 +73,22 @@ class AdminContactController extends AbstractController
                 $email = (new Email())
                     ->from('support@tonsite.com')
                     ->to($clientEmail)
-                    ->subject('Reply to your contact request')
-                    ->html("
-                        <p>Hello,</p>
-                        <p>Here is our reply:</p>
-                        <p><strong>" . nl2br(htmlspecialchars($responseText)) . "</strong></p>
-                        <p>Best regards,<br>$adminName</p>
-                    ");
+                    ->subject('Réponse à votre demande de contact')
+                    ->html(
+                        '
+                        <p>Bonjour,</p>
+                        <p>Nous avons bien pris en compte votre demande et voici notre réponse :</p>
+                        <p><strong>' . nl2br(htmlspecialchars($responseText, ENT_QUOTES, 'UTF-8')) . '</strong></p>
+                        <p>Cordialement,<br>' . htmlspecialchars($adminName, ENT_QUOTES, 'UTF-8') . '</p>
+                        '
+                    );
 
                 $mailer->send($email);
             }
 
-            $this->addFlash('success', 'Reply saved and email sent to the client.');
+            $this->addFlash('success', 'La réponse a bien été enregistrée et envoyée au client.');
+        } else {
+            $this->addFlash('warning', 'Le champ de réponse est vide.');
         }
 
         return $this->redirectToRoute('admin_contact_index');

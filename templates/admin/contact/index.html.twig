@@ -110,8 +110,8 @@
                             </td>
 
                             <td style="color: var(--text-muted);">
-                                {{ message.subject ?: '—' }}
-                            </td>
+    {{ message.subject ? (subjectLabels[message.subject] ?? message.subject) : '—' }}
+</td>
 
                             <td>
                                 <div class="message-bubble" title="{{ message.content }}">

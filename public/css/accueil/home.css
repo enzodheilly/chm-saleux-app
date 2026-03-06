@@ -893,7 +893,7 @@
 
 .equipment-section .text-highlight{
   color: transparent;
-  -webkit-text-stroke: 1px var(--brand-orange);
+  -webkit-text-stroke: 1px #fff;
 }
 
 .equipment-section .section-desc{
@@ -2270,7 +2270,6 @@
   background: var(--brand-orange);
   color: var(--text-white);
   padding: 12px 25px;
-  border-radius: var(--radius-sm);
   text-decoration: none;
   font-weight: var(--fw-extrabold);
   margin-top: 20px;
