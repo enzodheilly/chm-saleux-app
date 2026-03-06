@@ -16,7 +16,9 @@ class ContactController extends AbstractController
     #[Route('/contact', name: 'contact')]
     public function index(): Response
     {
-        return $this->render('contact/contact.html.twig');
+        return $this->render('contact/contact.html.twig', [
+            'subjectChoices' => ContactMessage::getSubjectChoices(),
+        ]);
     }
 
     #[Route('/contact/submit', name: 'contact_submit', methods: ['POST'])]
@@ -25,22 +27,27 @@ class ContactController extends AbstractController
         EntityManagerInterface $em,
         SystemLoggerService $logger
     ): Response {
-        $lastName  = $request->request->get('lastName');
-        $firstName = $request->request->get('firstName');
-        $email     = $request->request->get('email');
-        $phone     = $request->request->get('phone');
-        $subject   = $request->request->get('subject');
-        $content   = $request->request->get('content');
+        $lastName  = trim((string) $request->request->get('lastName', ''));
+        $firstName = trim((string) $request->request->get('firstName', ''));
+        $email     = trim((string) $request->request->get('email', ''));
+        $phone     = trim((string) $request->request->get('phone', ''));
+        $subject   = trim((string) $request->request->get('subject', ''));
+        $content   = trim((string) $request->request->get('content', ''));
+
+        $allowedSubjects = array_values(ContactMessage::getSubjectChoices());
+
+        if (!in_array($subject, $allowedSubjects, true)) {
+            $subject = null;
+        }
 
         $contact = new ContactMessage();
         $contact->setLastName($lastName);
         $contact->setFirstName($firstName);
         $contact->setEmail($email);
-        $contact->setPhone($phone);
+        $contact->setPhone($phone !== '' ? $phone : null);
         $contact->setSubject($subject);
         $contact->setContent($content);
 
-        // ✅ Link with the logged-in member (if any)
         if ($this->getUser()) {
             $contact->setUser($this->getUser());
         }
@@ -48,7 +55,6 @@ class ContactController extends AbstractController
         $em->persist($contact);
         $em->flush();
 
-        // ✅ System logs
         $logger->add(
             'Contact message',
             sprintf(
@@ -61,7 +67,7 @@ class ContactController extends AbstractController
             )
         );
 
-        $this->addFlash('success', 'Your message has been sent successfully!');
+        $this->addFlash('success', 'Votre message a bien été envoyé.');
 
         return $this->redirectToRoute('contact');
     }

@@ -115,11 +115,12 @@
 
                         <div class="input-group">
                             <label for="contact-subject">Sujet</label>
-                            <select id="contact-subject" name="subject">
-                                <option value="renseignement">Renseignements généraux</option>
-                                <option value="essai">Séance d'essai</option>
-                                <option value="tarifs">Tarifs & Inscription</option>
-                            </select>
+                          <select id="contact-subject" name="subject" required>
+    <option value="">Choisissez un sujet</option>
+    {% for label, value in subjectChoices %}
+        <option value="{{ value }}">{{ label }}</option>
+    {% endfor %}
+</select>
                         </div>
 
                         <div class="input-group">
