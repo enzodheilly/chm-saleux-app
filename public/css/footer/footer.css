@@ -129,6 +129,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    text-decoration: none;
     color: white;
     transition: var(--transition);
     border: 1px solid var(--glass-border);
@@ -187,8 +188,6 @@
     display: flex;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    border-radius: 8px;
-    padding: 5px;
     transition: var(--transition);
 }
 
@@ -210,11 +209,14 @@
     background: var(--accent-color);
     border: none;
     color: white;
-    width: 45px;
-    height: 45px;
-    border-radius: 6px;
+    width: 90px;
+    align-self: stretch;
     cursor: pointer;
     transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
 .btn-submit-icon:hover {
@@ -235,7 +237,7 @@
     border-top: 1px solid var(--glass-border);
     border-bottom: 1px solid var(--glass-border);
     padding: 1.5rem 2rem;
-    background: rgba(255,255,255,0.01);
+    background: #16181d;
 }
 
 .payment-methods {
@@ -255,16 +257,10 @@
 .payment-methods .icons {
     display: flex;
     gap: 15px;
-    filter: grayscale(1) opacity(0.5);
-    transition: 0.5s;
-}
-
-.payment-methods:hover .icons {
-    filter: grayscale(0) opacity(1);
 }
 
 .payment-methods img {
-    height: 25px;
+    height: 40px;
 }
 
 /* Bottom Bar */
