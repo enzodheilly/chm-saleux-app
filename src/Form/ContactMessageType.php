@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\ContactMessage;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -18,7 +19,14 @@ class ContactMessageType extends AbstractType
             ->add('lastName', TextType::class)
             ->add('firstName', TextType::class)
             ->add('email', EmailType::class)
-            ->add('phone', TextType::class, ['required' => false])
+            ->add('phone', TextType::class, [
+                'required' => false,
+            ])
+            ->add('subject', ChoiceType::class, [
+                'choices' => ContactMessage::getSubjectChoices(),
+                'placeholder' => 'Choisissez un sujet',
+                'required' => true,
+            ])
             ->add('content', TextareaType::class);
     }
 

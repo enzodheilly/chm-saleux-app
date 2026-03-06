@@ -1,14 +1,7 @@
 /* ==========================================================
-   ✅ MODAL AUTH — FULL RESPONSIVE (1 seul fichier)
-   - Base / Overlay / Card / Typo / Forms / Buttons
-   - OAuth / Register / Login / Verify / Reset / Password rules
-   - Responsive + Accessibility
-   - Compatible avec gestion JS via [hidden]
+   MODAL AUTH — VERSION DARK PREMIUM CHM (UNIFORMISÉE)
    ========================================================== */
 
-/* =========================
-   0) RESET UTILE
-   ========================= */
 *,
 *::before,
 *::after{
@@ -16,43 +9,48 @@
 }
 
 :root{
-  --modal-bg: rgba(0,0,0,.55);
-  --card-bg: #fff;
+  --modal-overlay-bg: rgba(0, 0, 0, 0.72);
+  --modal-card-bg: linear-gradient(180deg, rgba(20,20,20,0.96) 0%, rgba(10,10,10,0.98) 100%);
+  --modal-card-border: rgba(255,255,255,0.08);
+  --modal-shadow: 0 24px 70px rgba(0,0,0,0.55);
 
-  --primary: #005b94;
-  --primary-hover: #0072c6;
+  --modal-text: #ffffff;
+  --modal-text-muted: rgba(255,255,255,0.68);
+  --modal-input-bg: #151515;
+  --modal-input-border: rgba(255,255,255,0.10);
+  --modal-input-border-focus: rgba(245, 119, 6, 0.55);
 
-  --text: #0f172a;
-  --muted: #6b7280;
-  --border: rgba(0,0,0,.12);
+  --modal-accent: #F57706;
+  --modal-accent-hover: #ff8b24;
+  --modal-accent-soft: rgba(245, 119, 6, 0.14);
 
-  --radius: 14px;
-
+  --modal-radius: 22px;
+  --modal-pad: clamp(18px, 3vw, 28px);
+  --modal-gap: 14px;
   --modal-max-w: 420px;
-  --modal-pad: clamp(14px, 3vw, 26px);
-  --modal-gap: clamp(10px, 1.8vw, 14px);
 
-  --input-h: clamp(40px, 5vw, 44px);
-  --btn-h: clamp(42px, 5.5vw, 46px);
+  --modal-title-size: clamp(1.15rem, 2vw, 1.35rem);
+  --modal-text-size: clamp(.92rem, 1.6vw, 1rem);
 
-  --title-size: clamp(1.1rem, 2.4vw, 1.35rem);
-  --text-size: clamp(.92rem, 1.6vw, 1rem);
+  --input-height: 50px;
+  --btn-height: 46px;
 }
 
 /* =========================
-   1) OVERLAY
+   OVERLAY
    ========================= */
 .modal-overlay{
   display: none;
   position: fixed;
   inset: 0;
+  z-index: 2147483647;
+  padding: clamp(12px, 3vw, 28px);
   place-items: center;
-  padding: clamp(10px, 3vw, 28px);
-  background: var(--modal-bg);
+  background: var(--modal-overlay-bg);
+  backdrop-filter: blur(8px);
   opacity: 0;
   pointer-events: none;
   transition: opacity .25s ease;
-  z-index: 2147483647;
   isolation: isolate;
   height: 100dvh;
 }
@@ -61,90 +59,246 @@
   display: grid;
   opacity: 1;
   pointer-events: auto;
-  backdrop-filter: blur(4px);
 }
 
 /* =========================
-   2) CARD (container)
+   CARD
    ========================= */
 .modal-card{
   width: min(94vw, var(--modal-max-w));
-  max-height: min(86vh, 760px);
-  overflow: auto;
+  max-height: min(88vh, 820px);
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  border: 1px solid rgba(255,255,255,.35);
-  box-shadow: 0 12px 40px rgba(0,0,0,.18);
-
-  padding: var(--modal-pad);
   position: relative;
+  padding: var(--modal-pad);
+  border-radius: var(--modal-radius);
+  background: var(--modal-card-bg);
+  border: 1px solid var(--modal-card-border);
+  box-shadow: var(--modal-shadow);
   text-align: center;
 
-  transform: translateY(12px);
+  transform: translateY(14px) scale(.98);
   opacity: 0;
   transition: transform .25s ease, opacity .25s ease;
 }
 
 .modal-overlay.is-open .modal-card{
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
   opacity: 1;
 }
 
-/* Close */
+.modal-card::-webkit-scrollbar{
+  width: 8px;
+}
+.modal-card::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,0.12);
+  border-radius: 999px;
+}
+.modal-card::-webkit-scrollbar-track{
+  background: transparent;
+}
+
+/* =========================
+   CLOSE BTN
+   ========================= */
 .modal-close{
   position: absolute;
-  top: 10px;
-  right: 10px;
-
-  width: clamp(36px, 7vw, 40px);
-  height: clamp(36px, 7vw, 40px);
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 12px;
-  border: 0;
-  background: rgba(0,0,0,.06);
-  cursor: pointer;
-
-  font-size: 22px;
+  background: rgba(255,255,255,0.04);
+  color: #fff;
+  font-size: 24px;
   line-height: 1;
-  color: #334155;
+  cursor: pointer;
+  transition: background .2s ease, transform .2s ease, border-color .2s ease;
 }
 
 .modal-close:hover{
-  background: rgba(0,0,0,.1);
+  background: rgba(245,119,6,0.12);
+  border-color: rgba(245,119,6,0.35);
+  transform: translateY(-1px);
 }
 
-/* Steps */
-.modal-step{
+/* =========================
+   TYPO
+   ========================= */
+.modal-title{
+  margin: 8px 0 12px;
+  color: #fff;
+  font-size: var(--modal-title-size);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: .3px;
+  text-transform: uppercase;
   text-align: center;
 }
 
-.modal-step[hidden]{
+.modal-subtitle{
+  margin: 0 0 18px;
+  color: var(--modal-text-muted);
+  font-size: var(--modal-text-size);
+  line-height: 1.55;
+  text-align: center;
+}
+
+.register-modal-title-main{
+  margin: 24px auto 14px;
+  font-size: clamp(1.05rem, 2vw, 1.45rem);
+  line-height: 1.08;
+  max-width: 420px;
+  text-align: center;
+}
+
+.register-modal-title-strong,
+.register-modal-title-reset{
+  line-height: 1.08;
+}
+
+/* =========================
+   STEPS
+   ========================= */
+.register-step-email,
+.register-step-social{
+  width: 100%;
+}
+
+.register-step-social{
+  margin-top: 0;
+}
+
+.modal-step[hidden],
+[hidden]{
+  display: none !important;
+}
+
+.is-relative{
+  position: relative;
+}
+
+.is-hidden{
   display: none !important;
 }
 
 /* =========================
-   3) TYPO
+   SOCIAL / OAUTH
    ========================= */
-.modal-title{
-  margin: 8px 0 10px;
-  font-size: var(--title-size);
-  font-weight: 900;
-  text-align: center;
-  color: var(--primary);
-  line-height: 1.15;
+.modal-actions{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 22px 0 18px;
 }
 
-.modal-subtitle{
-  margin: 0 0 16px;
-  color: var(--muted);
-  font-size: var(--text-size);
-  line-height: 1.45;
+.button-wrap-payment{
+  width: 100%;
+}
+
+.btn-payment,
+.oauth-btn{
+  width: 100%;
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: linear-gradient(180deg, #1d1d1d 0%, #111111 100%);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 800;
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 25px rgba(0,0,0,0.22);
+}
+
+.btn-payment:hover,
+.oauth-btn:hover{
+  transform: translateY(-2px);
+  filter: brightness(1.02);
+}
+
+.register-google-text{
+  color: #fff;
+  font-weight: 800;
+}
+
+.button-shadow{
+  display: none;
+}
+
+.button-wrap-payment a.btn-payment span::after{
+  display: none;
+}
+
+.modal-divider{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 14px;
+  color: var(--modal-text-muted);
+  font-size: .92rem;
+}
+
+.modal-divider::before,
+.modal-divider::after{
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.10);
+}
+
+.modal-sep,
+.modal-footer,
+.modal-back{
+  margin-top: 12px;
+  color: var(--modal-text-muted);
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: .95rem;
+  text-align: center;
+}
+
+.modal-sep a,
+.modal-footer a,
+.modal-back a,
+.forgot-password a,
+.link-like-button,
+.password-rules-link{
+  color: var(--modal-accent);
+  text-decoration: none;
+  font-weight: 700;
+  transition: color .2s ease;
+}
+
+.modal-sep a:hover,
+.modal-footer a:hover,
+.modal-back a:hover,
+.forgot-password a:hover,
+.link-like-button:hover,
+.password-rules-link:hover{
+  color: var(--modal-accent-hover);
+  text-decoration: underline;
 }
 
 /* =========================
-   4) FORMS / INPUTS (base)
+   FORMS
    ========================= */
+.email-register-card{
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+  text-align: left;
+  padding: 0;
+}
+
 .email-register-form,
 #login-form,
 #verify-form,
@@ -155,64 +309,104 @@
   text-align: left;
 }
 
-.form-group label{
-  font-weight: 650;
-  font-size: clamp(.88rem, 1.6vw, .96rem);
-  color: #0b1220;
-  margin-bottom: 6px;
+.form-group{
+  margin: 0;
+}
+
+.form-group label,
+.password-label-wrapper label{
   display: block;
+  margin-bottom: 7px;
+  color: rgba(255,255,255,0.78);
+  font-size: .82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .modal-card input[type="text"],
 .modal-card input[type="email"],
-.modal-card input[type="password"]{
+.modal-card input[type="password"],
+.modal-card select{
   width: 100%;
-  height: var(--input-h);
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: #f8fafc;
-  padding: 0 12px;
-  font-size: clamp(.92rem, 1.7vw, .98rem);
+  height: var(--input-height);
+  border-radius: 14px;
+  border: 1px solid var(--modal-input-border);
+  background: var(--modal-input-bg);
+  color: #fff;
+  padding: 0 14px;
   outline: none;
-  transition: box-shadow .15s ease, border-color .15s ease, background .15s ease;
+  font-size: .96rem;
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
 }
 
-.modal-card input:focus{
-  border-color: rgba(0,91,148,.6);
-  background: #fff;
-  box-shadow: 0 0 0 4px rgba(0,91,148,.12);
+.modal-card input::placeholder{
+  color: rgba(255,255,255,0.34);
 }
 
-/* Password eye */
+.modal-card input:focus,
+.modal-card select:focus{
+  border-color: var(--modal-input-border-focus);
+  background: #1a1a1a;
+  box-shadow: 0 0 0 4px rgba(245,119,6,0.12);
+}
+
+/* =========================
+   PASSWORD
+   ========================= */
+.password-group{
+  position: relative;
+}
+
+.password-label-wrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.password-rules-link{
+  font-size: .88rem;
+}
+
 .password-input-wrapper{
   position: relative;
 }
 
 .password-input-wrapper input{
-  padding-right: 46px;
+  padding-right: 48px;
 }
 
 .toggle-password{
   position: absolute;
+  top: 50%;
   right: 10px;
-  top: 35%;
   transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
   cursor: pointer;
 }
 
 .toggle-password img{
   width: 18px;
   height: 18px;
-  opacity: .7;
+  opacity: .78;
+  filter: invert(1);
 }
 
 .toggle-password:hover img{
   opacity: 1;
+}
+
+.eye-icon-register,
+.eye-icon-login,
+.reset-eye-icon{
+  margin: 0;
 }
 
 .hide{
@@ -220,30 +414,100 @@
 }
 
 /* =========================
-   5) BUTTONS
+   CHECKBOX
+   ========================= */
+.checkbox-group{
+  margin-top: 4px;
+}
+
+.checkbox-group label,
+.remember-me label{
+  color: var(--modal-text-muted);
+  font-size: .9rem;
+  line-height: 1.5;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* register cgu */
+#modal-step-email .checkbox-group label,
+.modal-card-set-password .checkbox-group label{
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  align-items: start;
+  column-gap: 12px;
+}
+
+#modal-step-email .checkbox-group input[type="checkbox"],
+.modal-card-set-password .checkbox-group input[type="checkbox"]{
+  margin-top: 4px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--modal-accent);
+}
+
+#modal-step-email .checkbox-group label span{
+  display: inline;
+}
+
+.checkbox-group a{
+  color: var(--modal-accent);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.checkbox-group a:hover{
+  text-decoration: underline;
+}
+
+/* remember me */
+.remember-me{
+  margin: 2px 0 4px;
+  justify-content: flex-start;
+}
+
+.remember-me label{
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.remember-me input[type="checkbox"]{
+  margin-top: 3px;
+  accent-color: var(--modal-accent);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* =========================
+   BUTTONS
    ========================= */
 .btn-register{
-  width: 100%;
-  height: var(--btn-h);
+  width: 78%;
+  margin: 0 auto;
+  min-height: var(--btn-height);
   border-radius: 12px;
-  border: 0;
-  background: var(--primary);
+  border: none;
+  background: linear-gradient(135deg, #F57706 0%, #ff8c1f 100%);
   color: #fff;
   font-weight: 900;
-  letter-spacing: .3px;
+  text-transform: uppercase;
+  letter-spacing: .35px;
   cursor: pointer;
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-
-  transition: transform .12s ease, filter .12s ease, box-shadow .12s ease, background .12s ease;
+  box-shadow: 0 12px 24px rgba(245,119,6,0.18);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  font-size: .92rem;
 }
 
 .btn-register:hover{
-  background: var(--primary-hover);
-  box-shadow: 0 8px 20px rgba(0,91,148,.22);
+  transform: translateY(-2px);
+  filter: brightness(1.03);
 }
 
 .btn-register:active{
@@ -255,169 +519,138 @@
   cursor: not-allowed;
 }
 
-/* Divider */
-.modal-divider{
-  display: flex;
+.btn-text{
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
-  margin: 14px 0;
-  color: var(--muted);
 }
 
-.modal-divider::before,
-.modal-divider::after{
-  content: "";
-  height: 1px;
-  flex: 1;
-  background: rgba(0,0,0,.15);
+/* =========================
+   ERRORS / MESSAGES
+   ========================= */
+.form-error-message,
+.login-error,
+.verify-message.error{
+  background: rgba(255, 74, 74, 0.12);
+  border: 1px solid rgba(255, 74, 74, 0.24);
+  color: #ffb4b4;
+  padding: 12px 14px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: .88rem;
 }
 
-/* Footer links */
-.modal-footer,
-.modal-sep{
-  margin-top: 10px;
-  color: var(--muted);
-  font-weight: 600;
+.verify-message.success{
+  background: rgba(46, 204, 113, 0.10);
+  border: 1px solid rgba(46, 204, 113, 0.22);
+  color: #b8f5cb;
+  padding: 12px 14px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: .88rem;
+}
+
+.verify-message{
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.set-password-error{
+  margin: 0 0 8px;
+}
+
+/* =========================
+   VERIFY CODE
+   ========================= */
+#modal-step-verify,
+#modal-step-login,
+#modal-step-reset-email,
+#modal-step-reset-new{
+  text-align: center;
+  padding: 0;
+  color: #fff;
+}
+
+.verify-code-inputs{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 6px auto 14px;
+  flex-wrap: nowrap;
+  max-width: 100%;
+}
+
+.verify-code-inputs .code-input{
+  width: clamp(40px, 9vw, 48px);
+  height: clamp(48px, 11vw, 58px);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: #151515;
+  color: #fff;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 800;
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.verify-code-inputs .code-input:focus{
+  border-color: rgba(245,119,6,0.55);
+  background: #1a1a1a;
+  box-shadow: 0 0 0 4px rgba(245,119,6,0.12);
+}
+
+.verify-code-inputs .code-input.filled{
+  border-color: rgba(245,119,6,0.55);
+  background: rgba(245,119,6,0.08);
+}
+
+.resend{
+  margin-top: 14px;
+  color: var(--modal-text-muted);
   display: flex;
   justify-content: center;
   gap: 6px;
   flex-wrap: wrap;
 }
 
-.modal-footer a,
-.modal-sep a{
-  color: var(--primary);
-  text-decoration: none;
+.inline-form{
+  display: inline;
 }
 
-.modal-footer a:hover,
-.modal-sep a:hover{
-  text-decoration: underline;
+.link-like-button{
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 /* =========================
-   6) OAUTH
+   TURNSTILE / SPINNER
    ========================= */
-.modal-actions{
+.cf-turnstile{
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1.2rem;
-  font-size: clamp(.82rem, 1.5vw, .9rem);
+  justify-content: center;
+  margin-top: 8px;
+  margin-bottom: 4px;
 }
 
-.oauth-btn{
-  display: flex;
+.btn-spinner{
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-
-  border: 1px solid rgba(0,0,0,.65);
-  border-radius: 10px;
-
-  padding: clamp(.6rem, 2vw, .8rem) 1rem;
-  font-weight: 700;
-  text-decoration: none;
-  color: #111;
-  background: #fff;
-  transition: all 0.25s ease;
-
-  width: 100%;
-  max-width: 100%;
-  margin-inline: auto;
-
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-.oauth-btn:hover{
-  background: #f2f2f2;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
-}
-
-.icon-facebook{
-  width: 20px;
-  height: 20px;
+.mini-spinner{
+  width: 16px;
+  height: 16px;
+  border: 2px solid #fff;
+  border-top-color: rgba(255,255,255,0.32);
   border-radius: 50%;
-  display: block;
+  animation: spin .8s linear infinite;
 }
 
-/* =========================
-   7) REGISTER (spécifique)
-   ========================= */
-.email-register-card{
-  width: 100%;
-  max-width: 420px;
-  margin-inline: auto;
-  text-align: left;
-  padding: 0;
-}
-
-.password-label-wrapper{
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: .6rem;
-  margin-bottom: 0.2rem;
-  flex-wrap: wrap;
-}
-
-.password-rules-link{
-  font-size: clamp(.85rem, 1.6vw, .95rem);
-  color: #ff6600;
-  cursor: pointer;
-  text-align: right;
-  font-weight: 600;
-  transition: color 0.2s ease;
-}
-
-.password-rules-link:hover{
-  text-decoration: underline;
-  color: #e65500;
-}
-
-/* =========================
-   8) MESSAGES / ERREURS
-   ========================= */
-.form-error-message{
-  background: #ffecec;
-  border: 1px solid #ff9b9b;
-  color: #b10000;
-  font-size: clamp(.75rem, 1.4vw, .82rem);
-  padding: 0.5rem 0.65rem;
-  margin-top: 0.6rem;
-  text-align: center;
-  animation: fadeIn 0.3s ease;
-}
-
-.login-error{
-  background: #ffeaea;
-  color: #c62828;
-  border: 1px solid #f5b3b3;
-  padding: 0.65rem;
-  font-size: clamp(.78rem, 1.5vw, .86rem);
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.verify-message{
-  margin-top: 1rem;
-  margin-bottom: 1.1rem;
-  padding: 0.65rem 0.8rem;
-  font-size: clamp(.8rem, 1.5vw, .9rem);
-  text-align: center;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.verify-message.error{
-  background: #ffe6e6;
-  color: #d93025;
-  border: 1px solid #f5b3b3;
-}
-
-.verify-message.success{
-  background: #e6ffed;
-  color: #187a1c;
-  border: 1px solid #a9e6b0;
+@keyframes spin{
+  to { transform: rotate(360deg); }
 }
 
 @keyframes fadeIn{
@@ -426,158 +659,33 @@
 }
 
 .shake{
-  animation: shake 0.4s ease;
+  animation: shake .4s ease;
 }
 
 @keyframes shake{
-  0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-5px); }
-  40%, 80% { transform: translateX(5px); }
+  0%,100%{ transform: translateX(0); }
+  20%,60%{ transform: translateX(-5px); }
+  40%,80%{ transform: translateX(5px); }
 }
 
 /* =========================
-   9) SPINNER
+   PASSWORD RULES MODAL
    ========================= */
-.btn-spinner{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 6px;
-}
-
-.mini-spinner{
-  width: 16px;
-  height: 16px;
-  border: 2px solid #fff;
-  border-top: 2px solid rgba(255,255,255,0.3);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin{
-  to { transform: rotate(360deg); }
-}
-
-/* =========================
-   10) VERIFY CODE (6 inputs)
-   ========================= */
-#modal-step-verify{
-  text-align: center;
-  color: #003366;
-  padding: clamp(.6rem, 2vw, 1rem) clamp(.6rem, 3vw, 1.2rem);
-}
-
-.verify-code-inputs{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: clamp(.25rem, 1.6vw, .55rem);
-  margin: 0 auto 1rem auto;
-  flex-wrap: nowrap;
-  max-width: min(100%, 360px);
-}
-
-.verify-code-inputs .code-input{
-  width: clamp(34px, 9.5vw, 44px);
-  height: clamp(44px, 12vw, 54px);
-  text-align: center;
-
-  font-size: clamp(1.05rem, 4vw, 1.35rem);
-  font-weight: 700;
-  color: #003366;
-
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  background: #fafafa;
-  transition: all 0.2s ease;
-}
-
-.verify-code-inputs .code-input:focus{
-  outline: none;
-  border-color: #005b94;
-  background: #fff;
-  box-shadow: 0 0 6px rgba(0,91,148,0.3);
-}
-
-.verify-code-inputs .code-input.filled{
-  border-color: #005b94;
-  background-color: #eaf4ff;
-}
-
-/* =========================
-   11) LOGIN (spécifique)
-   ========================= */
-#modal-step-login{
-  text-align: center;
-  color: #002b4f;
-  padding: 0.3rem clamp(.4rem, 2vw, .8rem);
-}
-
-.remember-me{
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: clamp(.78rem, 1.5vw, .88rem);
-  color: #333;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-}
-
-.remember-me input[type="checkbox"]{
-  accent-color: #005b94;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-}
-
-#modal-step-login .forgot-password{
-  margin-top: 0.6rem;
-  font-size: clamp(.9rem, 1.7vw, 1rem);
-}
-
-#modal-step-login .forgot-password a{
-  color: #005b94;
-  text-decoration: underline;
-  font-weight: 700;
-  transition: color 0.2s ease;
-}
-
-#modal-step-login .forgot-password a:hover{
-  color: #0071c2;
-}
-
-/* =========================
-   12) RESET STEPS
-   ========================= */
-#modal-step-reset-email,
-#modal-step-reset-new{
-  text-align: center;
-}
-
-/* =========================
-   13) PASSWORD CRITERIA MODAL
-   ========================= */
-.password-group{
-  position: relative;
-}
-
 .password-criteria-modal{
   position: absolute;
-  bottom: calc(100% + 10px);
   left: 50%;
+  bottom: calc(100% + 10px);
   transform: translate(-50%, 12px);
+  width: min(92vw, 440px);
+  background: linear-gradient(180deg, #161616 0%, #0f0f0f 100%);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(0,0,0,.45);
   opacity: 0;
   pointer-events: none;
-
-  width: min(92vw, 440px);
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
+  z-index: 40;
+  transition: transform .25s ease, opacity .25s ease;
   overflow: hidden;
-  z-index: 20;
-
-  transition: transform 0.25s ease, opacity 0.25s ease;
-  box-shadow: 0 14px 34px rgba(0,0,0,.14);
 }
 
 .password-criteria-modal.is-visible{
@@ -587,154 +695,291 @@
 }
 
 .password-criteria-content{
-  padding: 1rem clamp(1rem, 3vw, 1.5rem) .6rem;
+  padding: 18px 18px 14px;
   text-align: left;
 }
 
 .password-criteria-content h2{
-  font-size: clamp(1rem, 2.2vw, 1.1rem);
-  font-weight: 800;
-  margin-bottom: 0.5rem;
-  color: #0f172a;
+  color: #fff;
   text-align: center;
+  font-size: 1.05rem;
+  font-weight: 900;
+  margin-bottom: 8px;
 }
 
 .password-rules-intro{
-  font-size: clamp(.86rem, 1.6vw, .95rem);
-  color: #4b5563;
-  margin-bottom: 0.8rem;
+  color: var(--modal-text-muted);
   text-align: center;
-  line-height: 1.5;
+  font-size: .9rem;
+  line-height: 1.55;
+  margin-bottom: 14px;
 }
 
 .password-criteria-content ul{
   list-style: none;
-  margin: 0.2rem 0 0.7rem;
+  margin: 0;
   padding: 0;
 }
 
 .password-criteria-content li{
-  font-size: clamp(.86rem, 1.6vw, .95rem);
-  margin-bottom: 0.4rem;
+  color: rgba(255,255,255,0.82);
+  font-size: .9rem;
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  line-height: 1.5;
-  color: #1f2937;
+  gap: 10px;
+  line-height: 1.45;
 }
 
 .password-criteria-content li::before{
   content: "✗";
-  color: #dc2626;
+  color: #ff6565;
   font-weight: 900;
-  font-size: 1rem;
 }
 
 .password-criteria-content li.valid::before{
   content: "✓";
-  color: #16a34a;
+  color: #41d67f;
 }
 
 .btn-close-rules{
   display: block;
-  width: min(220px, 100%);
-  margin: 0.8rem auto 0.3rem;
-  background: #004a91;
-  color: #fff;
+  width: 100%;
+  margin-top: 14px;
+  min-height: 46px;
   border: none;
   border-radius: 12px;
-  padding: 0.55rem 1.1rem;
-  font-size: clamp(.86rem, 1.6vw, .95rem);
-  font-weight: 700;
+  background: rgba(245,119,6,0.14);
+  color: #fff;
+  font-weight: 800;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: background .2s ease, transform .2s ease;
 }
 
 .btn-close-rules:hover{
-  background: #08385d;
+  background: rgba(245,119,6,0.22);
   transform: translateY(-1px);
 }
 
 /* =========================
-   14) TURNSTILE
+   SET PASSWORD MODAL
    ========================= */
-.cf-turnstile{
-  display: flex;
-  justify-content: center;
-  margin-top: 12px;
-  margin-bottom: 8px;
-}
-
-/* =========================
-   15) SET PASSWORD MODAL
-   ========================= */
-.modal-logo{
-  display: flex;
-  justify-content: center;
-  margin-bottom: 0;
-}
-
-.modal-logo img{
-  max-width: 70px;
-  height: auto;
-}
-
 .modal-card-set-password{
-  border-radius: 12px;
-  padding: 1.6rem clamp(1.2rem, 4vw, 2rem);
-  max-height: 85vh;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  overflow-y: auto;
   text-align: center;
-  position: relative;
-  transform: translateY(0);
-  opacity: 1;
 }
 
-.set-password-error{
-  margin-top: -5px;
-  margin-bottom: 1rem;
-  font-size: clamp(.8rem, 1.5vw, .9rem);
-  text-align: center;
-  color: #d93025;
+.modal-card-set-password .modal-title{
+  margin-top: 8px;
 }
 
 /* =========================
-   16) RESPONSIVE LAYOUT
+   STEP-SPECIFIC UNIFORMISATION
+   ========================= */
+
+/* register email */
+#modal-step-email .modal-title{
+  text-align: center;
+}
+
+#modal-step-email input[type="text"],
+#modal-step-email input[type="email"],
+#modal-step-email input[type="password"]{
+  height: 50px;
+  border-radius: 14px;
+  font-size: .96rem;
+}
+
+#modal-step-email .modal-footer{
+  margin-top: 10px;
+}
+
+/* login */
+#modal-step-login .email-register-card{
+  max-width: 420px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+#modal-step-login .modal-title{
+  text-align: center;
+}
+
+#modal-step-login input[type="email"],
+#modal-step-login input[type="password"]{
+  height: 50px;
+  border-radius: 14px;
+  background: #151515;
+  border: 1px solid rgba(255,255,255,0.10);
+  padding: 0 14px;
+  font-size: .96rem;
+  color: #fff;
+}
+
+#modal-step-login input[type="email"]::placeholder,
+#modal-step-login input[type="password"]::placeholder{
+  color: rgba(255,255,255,0.34);
+}
+
+#modal-step-login .password-input-wrapper input{
+  padding-right: 48px;
+}
+
+#modal-step-login .toggle-password{
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+}
+
+#modal-step-login .eye-icon-login{
+  margin-top: 0;
+}
+
+#modal-step-login .cf-turnstile{
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+#modal-step-login .forgot-password{
+  margin-top: 12px;
+  margin-bottom: 0;
+  font-size: .95rem;
+  text-align: center;
+}
+
+#modal-step-login .modal-back{
+  margin-top: 8px;
+  font-size: .95rem;
+  text-align: center;
+}
+
+/* reset email */
+#modal-step-reset-email .modal-title{
+  text-align: center;
+}
+
+#modal-step-reset-email .btn-register{
+  width: 78%;
+  margin: 0 auto;
+}
+
+#modal-step-reset-email input[type="email"]{
+  height: 50px;
+  border-radius: 14px;
+  font-size: .96rem;
+}
+
+#modal-step-reset-email .modal-footer{
+  margin-top: 10px;
+}
+
+/* reset new */
+#modal-step-reset-new .modal-title{
+  text-align: center;
+}
+
+#modal-step-reset-new .btn-register{
+  width: 78%;
+  margin: 0 auto;
+}
+
+#modal-step-reset-new input[type="password"]{
+  height: 50px;
+  border-radius: 14px;
+  font-size: .96rem;
+}
+
+#modal-step-reset-new .modal-footer{
+  margin-top: 10px;
+}
+
+.reset-request-btn,
+.reset-new-btn{
+  margin: 0 auto;
+}
+
+.reset-password-input{
+  margin-left: 0;
+}
+
+.reset-footer-spacing{
+  margin-top: 16px;
+}
+
+/* verify */
+#modal-step-verify .modal-title{
+  text-align: center;
+}
+
+#modal-step-verify .btn-register{
+  width: 78%;
+  margin: 0 auto;
+}
+
+/* =========================
+   UTILS
+   ========================= */
+.text-center{
+  text-align: center;
+}
+
+.modal-scroll-lock{
+  overflow: hidden;
+}
+
+/* =========================
+   RESPONSIVE
    ========================= */
 @media (max-width: 520px){
-  .modal-overlay{
-    place-items: center;
-  }
-
   .modal-card{
-    width: min(94vw, var(--modal-max-w, 460px));
-    border-radius: var(--radius, 14px);
-    max-height: min(88dvh, 760px);
-    padding: clamp(14px, 4vw, 20px);
+    width: min(95vw, var(--modal-max-w));
+    padding: 16px;
+    border-radius: 18px;
+    max-height: min(90dvh, 820px);
   }
 
   .modal-close{
-    top: 8px;
-    right: 8px;
+    top: 10px;
+    right: 10px;
+  }
+
+  .register-modal-title-main{
+    margin-top: 24px;
+    font-size: clamp(1.1rem, 5vw, 1.35rem);
+    max-width: 320px;
+  }
+
+  .password-label-wrapper{
+    align-items: flex-start;
+  }
+
+  .btn-register,
+  #modal-step-login .btn-register,
+  #modal-step-email .btn-register,
+  #modal-step-reset-email .btn-register,
+  #modal-step-reset-new .btn-register,
+  #modal-step-verify .btn-register{
+    width: 88%;
   }
 }
 
-@media (max-width: 360px){
-  .modal-title{
-    margin-top: 12px;
+@media (max-width: 380px){
+  .verify-code-inputs{
+    gap: 6px;
   }
 
-  .toggle-password{
-    right: 8px;
+  .verify-code-inputs .code-input{
+    width: 38px;
+    height: 46px;
   }
 
   .password-input-wrapper input{
     padding-right: 44px;
+  }
+
+  .toggle-password{
+    right: 8px;
   }
 }
 
@@ -744,131 +989,13 @@
   }
 }
 
-/* Option bottom-sheet */
-@media (max-width: 520px){
-  .modal-overlay.is-sheet{
-    place-items: end center;
-    padding: 10px;
-  }
-
-  .modal-overlay.is-sheet .modal-card{
-    width: 100%;
-    max-height: 92dvh;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-}
-
-/* =========================
-   17) ACCESSIBILITY
-   ========================= */
 @media (prefers-reduced-motion: reduce){
   .modal-overlay,
   .modal-card,
   .password-criteria-modal,
-  .verify-message,
-  .btn-register{
+  .btn-register,
+  .verify-message{
     transition: none !important;
     animation: none !important;
   }
-}
-
-/* =========================
-   18) CLASSES UTILITAIRES
-   ========================= */
-.register-step-social{
-  margin-top: -20px;
-}
-
-.register-step-email,
-.register-step-social{
-  width: 100%;
-}
-
-.register-modal-title-main{
-  font-weight: 800;
-  margin: 21px;
-}
-
-.register-modal-title-strong{
-  font-weight: 800;
-  line-height: 2.4;
-}
-
-.register-modal-title-reset{
-  font-weight: 800;
-}
-
-.register-google-text{
-  color: black;
-  font-weight: 700;
-}
-
-.is-hidden{
-  display: none !important;
-}
-
-.is-relative{
-  position: relative;
-}
-
-.inline-form{
-  display: inline;
-}
-
-.text-center{
-  text-align: center;
-}
-
-.eye-icon-register{
-  margin-top: 12px;
-}
-
-.eye-icon-login{
-  margin-top: 13px;
-}
-
-.modal-back-home-link{
-  color: #005b94;
-  text-decoration: none;
-}
-
-.reset-request-btn{
-  margin-right: 53px;
-}
-
-.back-to-login-link{
-  margin-top: 8px;
-}
-
-.reset-password-input{
-  margin-left: 14px;
-}
-
-.reset-eye-icon{
-  margin-right: 10px;
-  margin-top: -10px;
-}
-
-.reset-new-btn{
-  margin-top: 15px;
-}
-
-.reset-footer-spacing{
-  margin-top: 20px;
-}
-
-.reset-back-link{
-  text-decoration: none;
-}
-
-/* =========================
-   19) JS / HIDDEN SUPPORT
-   ========================= */
-[hidden]{
-  display: none !important;
-}
-
-.modal-scroll-lock{
-  overflow: hidden;
 }
