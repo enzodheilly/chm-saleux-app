@@ -6,7 +6,7 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/accueil/section4/actualites/showarticles.css') }}">
 
-        <style nonce="{{ csp_nonce('style') }}">
+    <style nonce="{{ csp_nonce('style') }}">
         {% if article.photo %}
             .article-hero-bg {
                 background-image: url('{{ asset('uploads/' ~ article.photo) }}');
@@ -16,6 +16,15 @@
                 background-image: url('{{ asset('images/defaults/article-placeholder.jpg') }}');
             }
         {% endif %}
+
+        /* Correction de la mise en page du texte */
+        .article-main-content {
+            line-height: 1.6;           /* Espacement entre les lignes standard */
+            font-size: 1.1rem;
+            color: #666;             /* Couleur plus douce que le noir pur mais bien lisible */
+            margin-bottom: 3rem;
+            text-align: justify;        /* Optionnel : pour un bloc de texte propre */
+        }
     </style>
 {% endblock %}
 
@@ -23,29 +32,32 @@
 <main class="article-root">
 
     {# --- HEADER DE L'ARTICLE --- #}
-<header class="article-hero">
-    <div class="hero-bg article-hero-bg"></div>
-    <div class="hero-overlay"></div>
+    <header class="article-hero">
+        <div class="hero-bg article-hero-bg"></div>
+        <div class="hero-overlay"></div>
 
-    <div class="article-hero-container hero-content">
-        <nav class="article-breadcrumb">
-            <a href="{{ path('home') }}">Accueil</a>
-            <i class="fa-solid fa-chevron-right"></i>
-            <a href="{{ path('actualites') }}">Actualités</a>
-        </nav>
+        <div class="article-hero-container hero-content">
+            <nav class="article-breadcrumb">
+                <a href="{{ path('home') }}">Accueil</a>
+                <i class="fa-solid fa-chevron-right"></i>
+                <a href="{{ path('actualites') }}">Actualités</a>
+            </nav>
 
-        <div class="title-area">
-            {% if article.category %}
-                <span class="badge-category">{{ article.category|upper }}</span>
-            {% endif %}
-            <h1>{{ article.title }}</h1>
-            <div class="article-meta">
-                <span class="meta-item"><i class="fa-regular fa-calendar-check"></i> {{ article.publishedAt|date('d/m/Y') }}</span>
-                <span class="meta-item"><i class="fa-regular fa-clock"></i> 3 min de lecture</span>
+            <div class="title-area">
+                {# CORRECTION : Accès au nom de la catégorie #}
+                {% if article.category %}
+                    <span class="badge-category">{{ article.category.name|upper }}</span>
+                {% endif %}
+                
+                <h1>{{ article.title }}</h1>
+                
+                <div class="article-meta">
+                    <span class="meta-item"><i class="fa-regular fa-calendar-check"></i> {{ article.publishedAt|date('d/m/Y') }}</span>
+                    <span class="meta-item"><i class="fa-regular fa-clock"></i> 3 min de lecture</span>
+                </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
 
     {# --- CONTENU DE L'ARTICLE --- #}
     <section class="article-body-wrapper">
@@ -55,16 +67,14 @@
                 <i class="fa-solid fa-arrow-left-long"></i> Retour aux actualités
             </a>
 
-            {# Corps de l'article #}
+            {# CORRECTION : nl2br SANS white-space spécial pour éviter les doubles sauts #}
             {% if article.description %}
                 <div class="article-main-content">
-                    {{ article.description|raw }}
+                    {{ article.description|nl2br }}
                 </div>
             {% endif %}
 
-            {# =========================
-               Préparation des URLs de partage
-               ========================= #}
+            {# --- PARTAGE --- #}
             {% set articleUrl = absolute_url(path('article_show', {'id': article.id})) %}
             {% set shareTitle = article.title ~ ' | CHM Saleux' %}
 
@@ -72,32 +82,17 @@
             {% set xShareUrl = 'https://twitter.com/intent/tweet?url=' ~ (articleUrl|url_encode) ~ '&text=' ~ (shareTitle|url_encode) %}
             {% set whatsappShareUrl = 'https://wa.me/?text=' ~ ((shareTitle ~ ' ' ~ articleUrl)|url_encode) %}
 
-            {# Footer d'article #}
             <footer class="article-footer">
                 <div class="share-box">
                     <span>Partager cet article :</span>
                     <div class="share-links">
-                        <a href="{{ facebookShareUrl }}"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           aria-label="Partager sur Facebook"
-                           title="Partager sur Facebook">
+                        <a href="{{ facebookShareUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                             <i class="fa-brands fa-facebook-f"></i>
                         </a>
-
-                        <a href="{{ xShareUrl }}"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           aria-label="Partager sur X"
-                           title="Partager sur X">
+                        <a href="{{ xShareUrl }}" target="_blank" rel="noopener noreferrer" aria-label="X">
                             <i class="fa-brands fa-x-twitter"></i>
                         </a>
-
-                        <a href="{{ whatsappShareUrl }}"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           aria-label="Partager sur WhatsApp"
-                           title="Partager sur WhatsApp">
+                        <a href="{{ whatsappShareUrl }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
                             <i class="fa-brands fa-whatsapp"></i>
                         </a>
                     </div>
