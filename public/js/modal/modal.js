@@ -198,18 +198,6 @@
   openBtns.forEach((b) => b.addEventListener("click", openModal));
   closeBtn?.addEventListener("click", closeModal);
 
-  modal.addEventListener("click", (e) => {
-    if (!card) return;
-    if (!card.contains(e.target)) closeModal();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.classList.contains("is-open")) {
-      e.preventDefault();
-      closeModal();
-    }
-  });
-
   // Focus trap
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Tab") return;

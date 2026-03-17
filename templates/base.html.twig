@@ -46,7 +46,15 @@
         {% include '/navbar/navigation.html.twig' %}
     {% endblock %}
 
-<main class="app-main">        {% block body %}{% endblock %}
+<main class="app-main">   
+        {% for message in app.flashes('warning') %}
+    <script nonce="{{ csp_nonce('script') }}">
+        window.addEventListener("DOMContentLoaded", () => {
+            showToast("{{ message }}");
+        });
+    </script>
+{% endfor %}
+     {% block body %}{% endblock %}
     </main>
 
     {% block footer %}

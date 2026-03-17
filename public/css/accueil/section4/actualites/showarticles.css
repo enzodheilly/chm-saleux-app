@@ -5,7 +5,7 @@
 
 :root {
   --primary-color: #F57706;
-  --dark-bg: #111;
+  --dark-bg: #16181d;
   --bg-card: #121212;
   --text-muted: #a0a0a0;
   --border-soft: rgba(255,255,255,0.08);
@@ -78,7 +78,7 @@
   background-size: cover;
   background-position: center 30%;
   z-index: 1;
-  filter: brightness(0.5) grayscale(20%);
+  filter: brightness(0.8) grayscale(20%);
   transform: scale(1.02);
 }
 
@@ -156,7 +156,7 @@
   margin: 0 0 16px;
   color: #fff;
   text-transform: uppercase;
-  max-width: 980px;
+  max-width: 1200px;
 }
 
 .article-meta {

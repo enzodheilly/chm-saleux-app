@@ -35,7 +35,7 @@
                             <span class="p-currency">€</span>
                        <span class="p-value" 
       data-standard="{{ plan.price }}" 
-      data-student="{{ plan.price > 100 ? 185 : plan.price }}">
+      data-student="{{ (plan.price > 100 ? 185 : plan.price)|number_format(2, '.', '') }}">
     {{ plan.price }}
 </span>
                             <span class="p-period">/ {{ plan.billingPeriod == 'year' ? 'an' : 'mois' }}</span>

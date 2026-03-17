@@ -41,9 +41,10 @@ class Article
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
-        $this->title = $title;
+        // Met automatiquement le titre en majuscules, gestion des accents
+        $this->title = $title ? mb_strtoupper($title, 'UTF-8') : null;
         return $this;
     }
 
