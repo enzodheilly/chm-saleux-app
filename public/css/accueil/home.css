@@ -450,6 +450,11 @@
   margin-bottom: 60px;
 }
 
+.home-pricing-section .p-title{
+  font-size: 1.3rem;
+  font-weight: 900;
+}
+
 .pricing-header-elite .section-title {
   font-size: var(--fs-section-title);
   text-transform: uppercase;
