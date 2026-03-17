@@ -2,53 +2,119 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Code de confirmation</title>
+    <title>Désinscription Newsletter - CHM Saleux</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* Media Query pour mobile */
-        @media only screen and (max-width: 480px) {
-            h2 { font-size: 18px !important; }
-            h1 { font-size: 28px !important; letter-spacing: 3px !important; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .main-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+            text-align: center;
+        }
+        .logo {
+            /* Modifié : Taille augmentée et suppression du noir et blanc */
+            width: 60px; 
+            height: auto;
+            margin-bottom: 25px;
+            opacity: 1; /* Remis à 1 pour les couleurs vives */
+        }
+        .content-box {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+        h1 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #0f172a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+        .email-tag {
+            color: #005b94;
+            font-weight: 600;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            box-sizing: border-box;
+            text-decoration: none;
+            text-align: center;
+        }
+        .btn-confirm {
+            background-color: #0f172a;
+            color: #ffffff !important;
+        }
+        .btn-confirm:hover {
+            background-color: #1e293b;
+        }
+        .btn-home {
+            background-color: #f1f5f9;
+            color: #475569 !important;
+            margin-top: 10px;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 11px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
     </style>
 </head>
-<body style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding:20px; margin:0;">
+<body>
 
-<div style="background: #ffffff; border-radius: 10px; padding: 25px 20px; max-width: 500px; margin:auto; box-shadow:0 4px 12px rgba(0,0,0,0.1); line-height:1.6; text-align:center;">
-
-    <!-- Logos -->
-         <div style="margin-bottom:25px;">
-            <img src="https://raw.githubusercontent.com/enzodheilly/projet-chm/main/public/images/favicon/icon.png
-" 
-                 alt="CHM Saleux Logo" 
-                 style="max-width: 60px; width: 100%; height: auto;">
-        </div>
-
-		<div style="background-color: #005b94; border-radius: 10px 10px 0 0; padding: 15px 20px; margin-bottom: 20px;">
-    <h2 style="color: #ffffff; margin:0; font-size:22px; line-height:1.4;">
-         Désinscription effectuée
-    </h2>
-</div>
-
-    <!-- Bande titre bleu -->
+<div class="main-container">
+    <img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo CHM Saleux" class="logo">
     
-        <p style="margin-bottom:15px;">Bonjour{{ firstName is defined and firstName ? ' ' ~ firstName : '' }},
+    <div class="content-box">
+        {% if success %}
+            <h1>Désabonnement confirmé</h1>
+            <p>L'adresse <span class="email-tag">{{ subscriberEmail }}</span> ne recevra plus nos communications.</p>
+            <a href="{{ path('home') }}" class="btn btn-home">Retour au site</a>
+        {% else %}
+            <h1>Désinscription</h1>
+            <p>Bonjour {{ firstName ? firstName : 'à vous' }}, souhaitez-vous confirmer votre désinscription pour <span class="email-tag">{{ subscriberEmail }}</span> ?</p>
+            
+            <form method="POST">
+                <button type="submit" class="btn btn-confirm">Confirmer la désinscription</button>
+            </form>
+            <a href="{{ path('home') }}" class="btn btn-home">Annuler</a>
+        {% endif %}
+    </div>
 
-</p>
-
-        <p>Votre adresse <strong>{{ subscriberEmail }}</strong> a bien été retirée de notre liste de diffusion.<br>
-        Vous ne recevrez plus de newsletter du CHM Saleux.</p>
-
-    <hr style="border:none; border-top:1px solid #ddd; margin:25px 0;">
-
-    <p style="font-size:13px; color:#666; text-align:center; line-height:1.5;">
-        <strong>CHM SALEUX</strong><br>
-        8 rue Max Dormoy – Complexe multisports de la Grenouillère – 80480 Saleux<br>
-        Siège social : 79 rue Roger Salengro – 80480 Saleux<br>
-        Tél : 03.22.89.72.57 • Email : chm.saleux@orange.fr<br>
-        Agréé Jeunesse et Sports – Association loi 1901<br><br>
-    </p>
-
+    <div class="footer">
+        © {{ "now"|date("Y") }} CHM SALEUX — ASSOCIATION LOI 1901
+    </div>
 </div>
 
 </body>

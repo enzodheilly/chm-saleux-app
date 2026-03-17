@@ -171,11 +171,12 @@ class NewsletterController extends AbstractController
     }
 
     // =======================================================
-    // 🚫 DÉSINSCRIPTION
+    // 🚫 DÉSINSCRIPTION (Page de confirmation + Action)
     // =======================================================
-    #[Route('/newsletter/unsubscribe/{token}', name: 'newsletter_unsubscribe', methods: ['GET'])]
+    #[Route('/newsletter/unsubscribe/{token}', name: 'newsletter_unsubscribe', methods: ['GET', 'POST'])]
     public function unsubscribeByToken(
         string $token,
+        Request $request,
         EntityManagerInterface $em,
         SystemLoggerService $logger
     ): Response {
@@ -187,21 +188,30 @@ class NewsletterController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        // Récupérer le prénom si l'abonné est lié à un utilisateur
+        $email = $subscriber->getEmail();
         $user = $subscriber->getUser();
         $firstName = $user ? $user->getFirstName() : null;
 
-        $email = $subscriber->getEmail();
+        // SI L'UTILISATEUR CLIQUE SUR LE BOUTON (POST)
+        if ($request->isMethod('POST')) {
+            $em->remove($subscriber);
+            $em->flush();
 
-        $em->remove($subscriber);
-        $em->flush();
+            $logger->add('Désinscription newsletter', sprintf('L’adresse %s s’est désinscrite.', $email));
 
-        // ✅ LOG : Désinscription
-        $logger->add('Désinscription newsletter', sprintf('L’adresse %s s’est désinscrite.', $email));
+            // On réaffiche la page mais avec un flag "success"
+            return $this->render('emails/unsubscribed.html.twig', [
+                'subscriberEmail' => $email,
+                'firstName' => $firstName,
+                'success' => true
+            ]);
+        }
 
+        // SI L'UTILISATEUR ARRIVE DEPUIS LE MAIL (GET)
         return $this->render('emails/unsubscribed.html.twig', [
-            'email' => $email,
+            'subscriberEmail' => $email,
             'firstName' => $firstName,
+            'success' => false
         ]);
     }
 }

@@ -11,9 +11,13 @@
 }
 
 .seance-essai-page-header {
-  --bg-image: url('/images/menu_dropdown/services_du_club/journee_essai/1.jpg');
+  --bg-image: url('/images/menu_dropdown/services_du_club/journee_essai/11.jpg');
 }
 
+/* On cible le ::before pour descendre l'image */
+.seance-essai-page-header::before {
+  background-position: center 25% !important; /* Ajuste le pourcentage selon tes besoins */
+}
 /* --- REASSURANCE --- */
 .intro-badge{
   color: var(--primary-color);
