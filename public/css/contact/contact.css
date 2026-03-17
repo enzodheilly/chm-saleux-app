@@ -85,6 +85,19 @@
    FORMULAIRE
    ========================================================= */
 
+   #contact-subject {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    padding-right: 40px; /* espace pour la flèche */
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='gray' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5.5l6.5 6 6.5-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center; /* ← décale la flèche vers la gauche */
+    background-size: 12px;
+}
+
 .contact-form-container {
   background: var(--bg-card);
   padding: 40px;
@@ -143,18 +156,25 @@
   color: var(--text-muted);
 }
 
-.contact-form-container .input-group input,
-.contact-form-container .input-group select,
-.contact-form-container .input-group textarea,
-.elite-form .input-group input,
-.elite-form .input-group select,
-.elite-form .input-group textarea {
-  background: #1a1a1a;
-  border: 1px solid rgba(255,255,255,0.10);
-  padding: 12px 14px;
-  border-radius: 12px;
+/* On cible tous les types d'inputs pour être sûr de ne rien rater */
+.contact-form-container input,
+.contact-form-container select,
+.contact-form-container textarea {
+  display: block;
+  width: 100%;
+  background: #1a1a1a !important; /* Force le fond sombre */
+  border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Bordure visible */
+  padding: 14px;
   color: white;
-  transition: var(--transition);
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+/* On nettoie le groupe qui pourrait masquer les bordures */
+.contact-form-container .input-group {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .contact-form-container .input-group textarea,
@@ -195,6 +215,7 @@
   transform: translateY(-2px);
   box-shadow: 0 12px 22px rgba(245, 119, 6, 0.25);
 }
+
 
 /* =========================================================
    SIDEBAR
@@ -332,7 +353,12 @@
 }
 
 .contact-header-bg {
-  --bg-image: url('/images/menu_dropdown/a_propos_de_notre_club/horaires/1.jpg');
+  --bg-image: url('/images/contact.jpg');
+}
+
+/* On force l'image à descendre pour la page contact */
+.contact-header-bg::before {
+  background-position: center 60% !important;
 }
 
 /* =========================================================

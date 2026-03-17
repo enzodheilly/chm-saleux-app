@@ -25,7 +25,7 @@
   box-shadow: var(--shadow-elevated);
 
   /* overlap premium avec le header (desktop only) */
-  margin-top: -70px;
+  margin-top: -20px;
   position: relative;
   z-index: 10;
 }
@@ -252,7 +252,12 @@
 }
 
 .horaires-header-bg {
-  --bg-image: url('/images/menu_dropdown/a_propos_de_notre_club/horaires/1.jpg');
+  --bg-image: url('/images/menu_dropdown/a_propos_de_notre_club/horaires/11.jpg');
+}
+
+/* On descend l'image de fond ici aussi */
+.horaires-header-bg::before {
+  background-position: center 5% !important; /* Teste entre 70% et 90% selon l'image */
 }
 
 /* =========================================

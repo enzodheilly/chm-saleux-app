@@ -10,20 +10,13 @@ framework:
         enabled: true
         handler_id: null
 
-        # ✅ Anti-XSS : JS ne peut pas lire le cookie
         cookie_httponly: true
-
-        # ✅ Cookie uniquement HTTPS si possible
         cookie_secure: auto
-
-        # ✅ Anti-CSRF (cookies pas envoyés dans la plupart des contextes cross-site)
         cookie_samesite: lax
 
-        # ✅ Session cookie (expire à la fermeture navigateur)
-        cookie_lifetime: 0
-
-        # ✅ TTL côté serveur (inactivité)
-        gc_maxlifetime: 1800
+        # ✅ session 7 jours
+        cookie_lifetime: 604800
+        gc_maxlifetime: 604800
 
     # ============================================================
     # ✅ RATE LIMITERS (si tu utilises framework.rate_limiter)

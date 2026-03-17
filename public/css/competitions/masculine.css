@@ -3,7 +3,6 @@
    (s'appuie sur la base globale : page-shell / page-container / header / typo)
    ========================================================= */
 
-
 .section-header-compact {
   margin-bottom: 1.5rem;
 }
@@ -133,7 +132,7 @@
   border-color: var(--primary-color);
 }
 
-/* --- TABLEAU RÉSULTATS (DASHBOARD) --- */
+/* --- DERNIER RESULTAT / DETAILS COMPET --- */
 .last-result-section {
   padding-top: 0;
 }
@@ -146,14 +145,14 @@
 }
 
 .result-header {
-  height: 240px;
+  height: 220px;
   background-size: cover;
   background-position: center;
   position: relative;
   padding: 2rem;
   display: flex;
   align-items: flex-end;
-  background-color: #151515;
+  background-color: #161616;
 }
 
 .result-header-overlay {
@@ -184,26 +183,27 @@
   font-size: 1.55rem;
   font-weight: var(--fw-black);
   text-transform: uppercase;
-  margin: 0.4rem 0;
+  margin: 0.4rem 0 0.35rem;
   line-height: 1.1;
   color: #fff;
 }
 
 .comp-location {
-  color: var(--text-muted);
   font-size: 0.92rem;
-  display: inline-flex;
+  color: var(--text-muted);
+  display: flex;
   align-items: center;
   gap: 6px;
+  margin: 0;
 }
 
 .team-rank-box {
+  text-align: center;
   background: var(--primary-color);
   padding: 12px 20px;
   border-radius: 10px;
-  text-align: center;
+  min-width: 120px;
   color: #fff;
-  min-width: 130px;
   box-shadow: 0 12px 22px rgba(245,119,6,0.18);
 }
 
@@ -212,8 +212,8 @@
   text-transform: uppercase;
   font-weight: var(--fw-bold);
   display: block;
-  margin-bottom: 2px;
-  letter-spacing: 0.6px;
+  opacity: 0.95;
+  letter-spacing: 0.7px;
 }
 
 .rank-number {
@@ -222,6 +222,7 @@
   line-height: 1;
 }
 
+/* Table résultats */
 .table-container {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -230,18 +231,18 @@
 .stats-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 720px;
+  min-width: 760px;
 }
 
 .stats-table th {
   background: rgba(255,255,255,0.02);
   padding: 16px 18px;
   text-transform: uppercase;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
+  letter-spacing: 1px;
   color: var(--text-muted);
   border-bottom: 1px solid rgba(255,255,255,0.08);
   text-align: left;
-  letter-spacing: 0.8px;
 }
 
 .stats-table .text-center {
@@ -262,23 +263,36 @@
   vertical-align: middle;
 }
 
-.ath-name-cell strong {
+.ath-name-cell {
+  vertical-align: middle;
+}
+
+.ath-mobile-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ath-mobile-name {
   text-transform: uppercase;
-  display: block;
   font-size: 1rem;
+  font-weight: var(--fw-black);
   color: #fff;
   line-height: 1.1;
 }
 
-.ath-name-cell small {
+.ath-mobile-bw {
   color: var(--primary-color);
   font-weight: var(--fw-bold);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
+  white-space: nowrap;
+  text-transform: uppercase;
 }
 
 .weight-val {
-  color: #fff;
   font-weight: var(--fw-bold);
+  color: #fff;
 }
 
 .highlight {
@@ -286,7 +300,7 @@
   font-weight: var(--fw-black);
   text-align: center;
   font-size: 1.05rem;
-  width: 100px;
+  white-space: nowrap;
 }
 
 .highlight-accent {
@@ -294,8 +308,8 @@
   font-weight: var(--fw-black);
   text-align: center;
   font-size: 1.05rem;
-  width: 100px;
   background: rgba(245,119,6,0.05);
+  white-space: nowrap;
 }
 
 .status-pill {
@@ -406,6 +420,7 @@
   text-transform: uppercase;
   text-decoration: none;
 }
+
 .masculine-header-bg {
   --bg-image: url('/images/competitions/2.jpg');
 }
@@ -422,7 +437,7 @@
   justify-content: center;
   gap: 10px;
   padding: 12px 20px;
-  border-radius: var(--border-radius);
+  border-radius: var(--radius-pill);
   text-decoration: none;
   font-weight: 700;
   color: #fff;
@@ -453,6 +468,16 @@
 
   .history-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 14px;
+  }
+
+  .stats-table {
+    min-width: 760px;
   }
 }
 
@@ -498,6 +523,8 @@
 
   .stats-table {
     min-width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
   }
 
   .stats-table thead {
@@ -507,28 +534,77 @@
   .stats-table,
   .stats-table tbody {
     display: block;
+    width: 100%;
   }
 
-  .stats-table tr {
+  .stats-table .athlete-row {
     display: block;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    padding: 0.65rem 0;
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 14px 0;
+    margin-bottom: 14px;
   }
 
-  .stats-table td {
+  .stats-table .athlete-row td {
     display: flex;
     justify-content: space-between;
-    gap: 12px;
-    padding: 0.45rem 1rem;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 10px 16px;
     border: none;
-    text-align: left !important;
+    text-align: right !important;
+  }
+
+  .stats-table .athlete-row td::before {
+    content: attr(data-label);
+    display: block;
+    flex: 0 0 42%;
+    text-align: left;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+  }
+
+  .stats-table .athlete-row td > * {
+    text-align: right;
+  }
+
+  .stats-table .athlete-row td.ath-name-cell {
+    display: block;
+    padding: 0 16px 14px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .stats-table .athlete-row td.ath-name-cell::before {
+    display: none;
+  }
+
+  .ath-mobile-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .ath-mobile-name {
+    font-size: 1rem;
+    text-align: left;
+  }
+
+  .ath-mobile-bw {
+    font-size: 0.78rem;
   }
 
   .highlight,
   .highlight-accent {
     background: transparent;
-    width: auto;
     font-size: 1rem;
+    padding: 0;
   }
 
   .history-grid {
@@ -557,6 +633,24 @@
 
   .rank-number {
     font-size: 1.8rem;
+  }
+
+  .stats-table .athlete-row td {
+    padding: 9px 14px;
+    gap: 12px;
+  }
+
+  .stats-table .athlete-row td::before {
+    flex-basis: 46%;
+    font-size: 0.68rem;
+  }
+
+  .ath-mobile-name {
+    font-size: 0.9rem;
+  }
+
+  .ath-mobile-bw {
+    font-size: 0.74rem;
   }
 }
 

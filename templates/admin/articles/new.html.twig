@@ -181,7 +181,9 @@
         padding: 0;
         list-style: none;
     }
-
+    .input.uppercase {
+    text-transform: uppercase;
+}
     .form-actions {
         display: flex;
         gap: 0.75rem;
@@ -229,7 +231,12 @@
                 <div class="form-grid">
                     <div>
                         <span class="tool-label">Title</span>
-                        {{ form_widget(form.title, {'attr': {'class': 'input', 'placeholder': 'e.g. Club tournament results...'}}) }}
+                        {{ form_widget(form.title, {
+    'attr': {
+        'class': 'input uppercase',
+        'placeholder': 'e.g. Club tournament results...'
+    }
+}) }}
                         <div class="form-error">{{ form_errors(form.title) }}</div>
                     </div>
 
