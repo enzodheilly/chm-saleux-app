@@ -402,7 +402,7 @@ font-weight: 900;
 }
 
 .special-card {
-  background: #ffffff;
+  background: #111;
   padding: 2.5rem;
   border-radius: 12px;
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -410,12 +410,18 @@ font-weight: 900;
 
 .special-card h3 {
   margin: 0 0 8px;
-  color: #111;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 800;
 }
 
 .special-card p {
   margin: 0 0 12px;
-  color: #4b5563;
+  color: #666;
+}
+
+.special-card .text-muted {
+    color: #666!important; 
 }
 
 .icon-box {
@@ -440,7 +446,7 @@ font-weight: 900;
   gap: 16px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   padding: 12px 0;
-  color: #374151;
+  color: #666;
 }
 
 .special-list li strong {
@@ -449,7 +455,7 @@ font-weight: 900;
 
 .table-container-modern {
   overflow-x: auto;
-  background: #ffffff;
+  background: #111;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 12px;
   padding: 2rem;
@@ -465,7 +471,7 @@ font-weight: 900;
   text-align: left;
   text-transform: uppercase;
   font-size: 0.8rem;
-  color: #6b7280;
+  color: #666;
   padding: 1.2rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
@@ -473,7 +479,7 @@ font-weight: 900;
 .pricing-table td {
   padding: 1.2rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  color: #374151;
+  color: #666;
 }
 
 .pricing-table strong {
@@ -610,15 +616,19 @@ font-weight: 900;
    IMAGES
    ========================================= */
 .pricing-header-bg {
-  --bg-image: url('/images/page.jpg');
+ background-image: url('/images/tarifs.jpg');
+   background-position: center 40%;
+     background-size: cover;
 }
 
 .pricing-separator-1 {
-  background-image: url('/images/club4.jpg');
+  background-image: url('/images/club/B3.jpg');
+  background-position: center 10%; /* 50% est le milieu par défaut, 80% descend l'image */
+  background-size: cover;
 }
 
 .pricing-separator-2 {
-  background-image: url('/images/club9.jpg');
+  background-image: url('/images/tarifs3.jpg');
 }
 
 /* =========================================
