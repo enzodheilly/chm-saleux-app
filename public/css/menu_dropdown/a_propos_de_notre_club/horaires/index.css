@@ -237,10 +237,10 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
+  text-transform: uppercase;
   background: var(--primary-color);
   color: var(--text-white);
   padding: 15px 30px;
-  border-radius: var(--radius-pill);
   text-decoration: none;
   font-weight: var(--fw-black);
   transition: var(--transition-base);

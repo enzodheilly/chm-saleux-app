@@ -263,7 +263,9 @@
 }
 
 .partner-page-header {
-    background-image: url('/images/partenariat.jpg');
+    background-image: url('/images/partenaire.jpg');
+    background-position: center 32%; /* Ajuste le 75% pour descendre plus ou moins */
+    background-size: cover;
 }
 
 /* =========================================
