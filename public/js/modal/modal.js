@@ -274,6 +274,15 @@
       showStep("modal-step-login");
     });
 
+    const loginTrigger = document.querySelector('.js-trigger-login');
+    if (loginTrigger) {
+      loginTrigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(); 
+        showStep("modal-step-login");
+      });
+    }
+
     if (sessionStorage.getItem("registerStep") === "verify") {
       openModal();
       showStep("modal-step-verify");

@@ -42,28 +42,22 @@ document.addEventListener('DOMContentLoaded', () => {
       isOpen ? closeMobileMenu() : openMobileMenu();
     });
 
-    // Ferme le menu au clic sur n'importe quel lien
     mobileLinks.forEach(link => {
       link.addEventListener('click', () => {
         closeMobileMenu();
       });
     });
 
-    // Gestion subpage (niveau 2)
     overlay.addEventListener('click', (e) => {
-      // Ouvrir une subpage
       const trigger = e.target.closest('.mobile-subpage-trigger');
       if (trigger) {
         const targetSel = trigger.getAttribute('data-subpage');
         const target = targetSel ? overlay.querySelector(targetSel) : null;
         if (!target) return;
-
         overlay.classList.add('subpage-open');
         target.classList.add('open');
         return;
       }
-
-      // Retour
       const back = e.target.closest('[data-subpage-back]');
       if (back) {
         closeSubpages();
@@ -71,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Bonus : si on repasse en desktop, on ferme le menu
+  // Bonus : si on repasse en desktop, on ferme le menu mobile
   window.addEventListener('resize', () => {
     if (window.innerWidth > 992) {
       closeMobileMenu();
