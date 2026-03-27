@@ -1,246 +1,125 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Gestion des athlètes{% endblock %}
-
-{% block stylesheets %}
-<style>
-    /* =================== HEADER & TOOLS =================== */
-    .page-header {
-        display: flex; justify-content: space-between; align-items: flex-end;
-        margin-bottom: 2rem; padding-bottom: 1rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
-    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
-
-    .toolbar { display: flex; gap: 1rem; }
-
-    .search-input {
-        background: var(--bg-sidebar);
-        border: 1px solid var(--border-color);
-        color: var(--text-main);
-        padding: 0.6rem 1rem;
-        border-radius: 4px;
-        min-width: 280px;
-        font-size: 0.9rem;
-        font-family: inherit;
-        transition: 0.2s;
-    }
-    .search-input:focus { border-color: var(--accent); }
-
-    .btn-create {
-        background: var(--text-main);
-        color: var(--bg-body);
-        padding: 0.6rem 1.2rem;
-        border-radius: 4px;
-        font-weight: 700; font-size: 0.85rem;
-        cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
-        transition: 0.2s; border: none;
-    }
-    .btn-create:hover { opacity: 0.9; }
-
-    /* =================== TABLEAU =================== */
-    .table-wrapper {
-        background: var(--bg-sidebar);
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        overflow: hidden;
-    }
-    
-    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    
-    .admin-table th {
-        background: rgba(255,255,255,0.02);
-        color: var(--text-muted);
-        font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.75rem;
-        text-align: left; padding: 1rem 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    
-    .admin-table td {
-        padding: 1rem 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-        color: var(--text-main); vertical-align: middle;
-    }
-    .admin-table tr:last-child td { border-bottom: none; }
-    .admin-table tr:hover td { background: rgba(255,255,255,0.01); }
-
-    /* Athlete Specifics */
-    .athlete-cell { display: flex; align-items: center; gap: 12px; }
-    
-    .athlete-avatar {
-        width: 36px; height: 36px;
-        border-radius: 50%; /* Rond pour les personnes, c'est mieux */
-        object-fit: cover;
-        background: var(--bg-body);
-        border: 1px solid var(--border-color);
-    }
-    
-    .athlete-initials {
-        width: 36px; height: 36px;
-        border-radius: 50%;
-        background: var(--bg-body);
-        border: 1px solid var(--border-color);
-        color: var(--text-muted);
-        display: flex; align-items: center; justify-content: center;
-        font-weight: 700; font-size: 0.8rem;
-        text-transform: uppercase;
-    }
-
-    .athlete-info { display: flex; flex-direction: column; }
-    .athlete-name { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
-    .athlete-meta { font-size: 0.75rem; color: var(--text-muted); }
-
-    /* Badges Catégorie */
-    .cat-badge {
-        font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-        padding: 3px 8px; border-radius: 4px; letter-spacing: 0.05em;
-        background: rgba(255,255,255,0.05); color: var(--text-muted);
-        border: 1px solid var(--border-color);
-    }
-
-    /* Actions */
-    .actions { display: flex; gap: 15px; justify-content: flex-end; }
-    .act-link { 
-        font-size: 0.75rem; font-weight: 600; text-transform: uppercase; 
-        letter-spacing: 0.05em; cursor: pointer; transition: 0.2s; opacity: 0.7; 
-        background: none; border: none; padding: 0;
-    }
-    .act-link:hover { opacity: 1; text-decoration: underline; }
-    
-    .act-edit { color: var(--text-main); }
-    .act-del { color: var(--danger); }
-
-</style>
+{% block title %}Gestion des athlètes
 {% endblock %}
 
-{% block page_title %}Athlètes{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/admin/athlete/index.css') }}">
+{% endblock %}
 
 {% block body %}
 
-    <div class="page-header">
-        <div>
-            <h1>Athletes Management</h1>
-            <p>List of athlete profiles and categories.</p>
-        </div>
-        <div class="toolbar">
-            <input type="text" id="searchInput" class="search-input" placeholder="Search an athlete...">
-            <button class="btn-create" onclick="location.href='{{ path('admin_athlete_new') }}'">
-                + Add
-            </button>
-        </div>
-    </div>
+	<div class="page-header">
+		<div>
+			<h1>Athletes Management</h1>
+			<p>List of athlete profiles and categories.</p>
+		</div>
+		<div class="toolbar">
+			<input type="text" id="searchInput" class="search-input" placeholder="Search an athlete...">
+			<button class="btn-create" data-href="{{ path('admin_athlete_new') }}">
+				+ Add
+			</button>
+		</div>
+	</div>
 
-    <div class="table-wrapper">
-        <div style="overflow-x: auto;">
-            <table class="admin-table" id="athleteTable">
-                <thead>
-                    <tr>
-                        <th width="80">ID</th>
-                        <th width="35%">Athlete</th>
-                        <th width="15%">Category</th>
-                        <th width="15%">Weight class</th>
-                        <th width="15%">Birth date</th>
-                        <th style="text-align: right;">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for athlete in athletes %}
-                        <tr>
-                            <td><span style="font-family: monospace; color: var(--text-muted);">#{{ athlete.id }}</span></td>
+	<div class="table-wrapper">
+		<div style="overflow-x: auto;">
+			<table class="admin-table" id="athleteTable">
+				<thead>
+					<tr>
+						<th width="80">ID</th>
+						<th width="35%">Athlete</th>
+						<th width="15%">Category</th>
+						<th width="15%">Weight class</th>
+						<th width="15%">Birth date</th>
+						<th style="text-align: right;">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for athlete in athletes %}
+						<tr>
+							<td>
+								<span style="font-family: monospace; color: var(--text-muted);">#{{ athlete.id }}</span>
+							</td>
 
-                            <td>
-                                <div class="athlete-cell">
-                                    {% if athlete.image %}
-                                        <img src="{{ asset('uploads/athletes/' ~ athlete.image) }}"
-                                             alt="{{ athlete.firstName }}"
-                                             class="athlete-avatar">
-                                    {% else %}
-                                        <div class="athlete-initials">
-                                            {{ athlete.firstName|first|upper }}{{ athlete.lastName|first|upper }}
-                                        </div>
-                                    {% endif %}
+							<td>
+								<div class="athlete-cell">
+									{% if athlete.image %}
+										<img src="{{ asset('uploads/athletes/' ~ athlete.image) }}" alt="{{ athlete.firstName }}" class="athlete-avatar">
+									{% else %}
+										<div class="athlete-initials">
+											{{ athlete.firstName|first|upper }}{{ athlete.lastName|first|upper }}
+										</div>
+									{% endif %}
 
-                                    <div class="athlete-info">
-                                        <span class="athlete-name">
-                                            {{ athlete.firstName }} {{ athlete.lastName|upper }}
-                                        </span>
+									<div class="athlete-info">
+										<span class="athlete-name">
+											{{ athlete.firstName }}
+											{{ athlete.lastName|upper }}
+										</span>
 
-                                        <span class="athlete-meta">
-                                            {% if athlete.gender == 'male' %}
-                                                Male
-                                            {% elseif athlete.gender == 'female' %}
-                                                Female
-                                            {% else %}
-                                                —
-                                            {% endif %}
-                                        </span>
-                                    </div>
-                                </div>
-                            </td>
+										<span class="athlete-meta">
+											{% if athlete.gender == 'male' %}
+												Male
+											{% elseif athlete.gender == 'female' %}
+												Female
+											{% else %}
+												—
+											{% endif %}
+										</span>
+									</div>
+								</div>
+							</td>
 
-                            <td>
-                                {% if athlete.category %}
-                                    <span class="cat-badge">{{ athlete.category }}</span>
-                                {% else %}
-                                    <span style="color: var(--text-muted); font-size: 0.8rem;">—</span>
-                                {% endif %}
-                            </td>
+							<td>
+								{% if athlete.category %}
+									<span class="cat-badge">{{ athlete.category }}</span>
+								{% else %}
+									<span style="color: var(--text-muted); font-size: 0.8rem;">—</span>
+								{% endif %}
+							</td>
 
-                            <td>
-                                {% if athlete.weightClass %}
-                                    <span style="font-family: monospace; font-weight: 600;">
-                                        {{ athlete.weightClass }}
-                                    </span>
-                                {% else %}
-                                    <span style="color: var(--text-muted); font-size: 0.8rem;">—</span>
-                                {% endif %}
-                            </td>
+							<td>
+								{% if athlete.weightClass %}
+									<span style="font-family: monospace; font-weight: 600;">
+										{{ athlete.weightClass }}
+									</span>
+								{% else %}
+									<span style="color: var(--text-muted); font-size: 0.8rem;">—</span>
+								{% endif %}
+							</td>
 
-                            <td style="color: var(--text-muted); font-size: 0.85rem;">
-                                {{ athlete.birthDate ? athlete.birthDate|date('d/m/Y') : '—' }}
-                            </td>
+							<td style="color: var(--text-muted); font-size: 0.85rem;">
+								{{ athlete.birthDate ? athlete.birthDate|date('d/m/Y') : '—' }}
+							</td>
 
-                            <td>
-                                <div class="actions">
-                                    <a href="{{ path('admin_athlete_edit', {'id': athlete.id}) }}" class="act-link act-edit">
-                                        Edit
-                                    </a>
+							<td>
+								<div class="actions">
+									<a href="{{ path('admin_athlete_edit', {'id': athlete.id}) }}" class="act-link act-edit">
+										Edit
+									</a>
 
-                                    <form method="post"
-                                          action="{{ path('admin_athlete_delete', {'id': athlete.id}) }}"
-                                          style="display:inline;"
-                                          onsubmit="return confirm('Confirm deletion of {{ athlete.firstName }} {{ athlete.lastName }} ?');">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ athlete.id) }}">
-                                        <button class="act-link act-del">Delete</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="6" style="text-align: center; padding: 3rem; color: var(--text-muted);">
-                                No athletes found.
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+									<form method="post" action="{{ path('admin_athlete_delete', {'id': athlete.id}) }}" style="display:inline;" onsubmit="return confirm('Confirm deletion of {{ athlete.firstName }} {{ athlete.lastName }} ?');">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ athlete.id) }}">
+										<button class="act-link act-del">Delete</button>
+									</form>
+								</div>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+								No athletes found.
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 
 {% endblock %}
 
 {% block javascripts %}
-<script>
-    document.getElementById('searchInput').addEventListener('keyup', function() {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll('#athleteTable tbody tr');
-
-        rows.forEach(row => {
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(filter) ? '' : 'none';
-        });
-    });
-</script>
+	 <script src="{{ asset('js/admin/athlete/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

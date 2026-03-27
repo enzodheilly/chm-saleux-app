@@ -6,8 +6,6 @@
 :root {
   --primary-color: #F57706;
   --dark-bg: #16181d;
-  --bg-card: #121212;
-  --text-muted: #a0a0a0;
   --border-soft: rgba(255,255,255,0.08);
 
   /* ✅ cohérence avec le global */
@@ -208,11 +206,13 @@
 /* =========================================
    5. ARTICLE CONTENT (WYSIWYG friendly)
    ========================================= */
-.article-main-content {
-  font-size: 1.08rem;
-  line-height: 1.85;
-  color: #d0d0d0;
-}
+       .article-main-content {
+            line-height: 1.6;           /* Espacement entre les lignes standard */
+            font-size: 1.1rem;
+            color: #D4D4D4;             /* Couleur plus douce que le noir pur mais bien lisible */
+            margin-bottom: 3rem;
+            text-align: justify;        /* Optionnel : pour un bloc de texte propre */
+        }
 
 /* blocs de texte */
 .article-main-content p {

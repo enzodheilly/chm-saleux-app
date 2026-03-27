@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rejoindre le Club - CHM Saleux
+{% endblock %}
+
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/security/auth_layout.css') }}">
+{% endblock %}
+
+{% block body %}
+	<section
+		class="auth-split-screen">
+
+		{# --- CÔTÉ GAUCHE : FORMULAIRE --- #}
+		<div class="auth-left">
+			<div class="auth-content-wrapper">
+				<div class="auth-header">
+					<a href="{{ path('home') }}" class="auth-logo">
+						<img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo CHM">
+					</a>
+					<h1>BIENVENUE AU CLUB</h1>
+					<p>Choisissez votre mode de connexion pour accéder à votre espace.</p>
+				</div>
+
+				<div class="auth-options">
+					<a href="{{ path('oauth_google_start') }}" class="btn-auth google-btn">
+						<span class="google-icon"></span>
+						Continuer avec Google
+					</a>
+
+					<div class="auth-separator">
+						<span>OU</span>
+					</div>
+
+					<div class="auth-email-actions">
+						<a href="{{ path('app_login') }}" class="btn-auth login-btn">
+							Se connecter
+						</a>
+
+						<div class="register-hint">
+							Pas encore de compte ?
+							<a href="{{ path('app_register') }}">S'inscrire</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="auth-bottom">
+					<a href="{{ path('home') }}" class="back-link">← Retour au site</a>
+				</div>
+			</div>
+		</div>
+
+		{# --- CÔTÉ DROIT : SLIDER STYLE MOBILE --- #}
+		<div class="auth-right">
+
+			<div class="slider-arrows">
+				<div class="arrow prev">❮</div>
+				<div class="arrow next">❯</div>
+			</div>
+
+			<div
+				class="auth-slider">
+				{# Slide 1 #}
+				<div class="slide slide-1 active">
+					<div class="slide-content">
+						<h2>Bouge Ton Corps<br>pour Être en Forme</h2>
+						<p>L'application t'aide à te dépasser et à adopter un mode de vie sain grâce à l'entraînement.</p>
+						<div class="slide-pagination">
+							<span class="dot" data-index="0"></span>
+							<span class="dot" onclick="changeSlide(1)"></span>
+							<span class="dot" onclick="changeSlide(2)"></span>
+						</div>
+					</div>
+				</div>
+
+				{# Slide 2 #}
+				<div class="slide slide-2">
+					<div class="slide-content">
+						<h2>Dépasse Tes Limites<br>Chaque Jour</h2>
+						<p>Accède à des programmes personnalisés en haltérophilie et musculation pour exploser tes perfs.</p>
+						<div class="slide-pagination">
+							<span class="dot" onclick="changeSlide(0)"></span>
+							<span class="dot active" onclick="changeSlide(1)"></span>
+							<span class="dot" onclick="changeSlide(2)"></span>
+						</div>
+					</div>
+				</div>
+
+				{# Slide 3 #}
+				<div class="slide slide-3">
+					<div class="slide-content">
+						<h2>Rejoins La<br>Communauté CHM</h2>
+						<p>Suis ta progression, reste motivé(e) et atteins enfin tes objectifs avec nous.</p>
+						<div class="slide-pagination">
+							<span class="dot" onclick="changeSlide(0)"></span>
+							<span class="dot" onclick="changeSlide(1)"></span>
+							<span class="dot active" onclick="changeSlide(2)"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+{# On ajoute le nonce pour passer la sécurité CSP de ton base.html.twig #}
+	 <script 
+										    src="{{ asset('js/security/auth_slider.js') }}" 
+										    defer 
+										    nonce="{{ csp_nonce('script') }}">
+										</script>
+{% endblock %}

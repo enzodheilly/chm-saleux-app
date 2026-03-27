@@ -1,0 +1,284 @@
+		/* =================== 🔒 GATEKEEPER (2FA) =================== */
+		.gatekeeper-overlay {
+			position: fixed;
+			inset: 0;
+			background: var(--bg-body);
+			z-index: 9999;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.gatekeeper-card {
+			width: 100%;
+			max-width: 420px;
+			text-align: center;
+			padding: 40px;
+		}
+
+		.gatekeeper-input {
+			background: var(--bg-sidebar);
+			border: 1px solid var(--border-color);
+			color: var(--text-main);
+			font-size: 2rem;
+			text-align: center;
+			letter-spacing: 0.5rem;
+			width: 100%;
+			padding: 15px;
+			border-radius: 6px;
+			margin: 20px 0;
+			outline: none;
+			transition: 0.2s;
+		}
+		.gatekeeper-input:focus {
+			border-color: var(--accent);
+		}
+
+		.btn-unlock {
+			background: var(--accent);
+			color: white;
+			width: 100%;
+			padding: 15px;
+			border-radius: 6px;
+			font-weight: 600;
+			font-size: 1rem;
+			transition: 0.2s;
+		}
+		.btn-unlock:hover {
+			background: var(--accent-hover);
+		}
+
+		/* =================== DASHBOARD LAYOUT =================== */
+		.dashboard-header {
+			margin-bottom: 2rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: end;
+		}
+		.dashboard-header h2 {
+			font-size: 1.5rem;
+			font-weight: 700;
+			margin: 0;
+			color: var(--text-main);
+		}
+		.dashboard-header p {
+			color: var(--text-muted);
+			margin: 5px 0 0;
+			font-size: 0.9rem;
+		}
+
+		/* KPIS (Cartes Stats) */
+		.stats-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+			gap: 1.5rem;
+			margin-bottom: 2rem;
+		}
+		.stat-card {
+			background: var(--bg-sidebar);
+			border: 1px solid var(--border-color);
+			padding: 1.5rem;
+			border-radius: 8px;
+		}
+		.stat-label {
+			font-size: 0.75rem;
+			color: var(--text-muted);
+			text-transform: uppercase;
+			font-weight: 600;
+			letter-spacing: 0.05em;
+		}
+		.stat-value {
+			font-size: 2.2rem;
+			font-weight: 700;
+			color: var(--text-main);
+			margin: 10px 0;
+			line-height: 1;
+		}
+		.stat-trend {
+			font-size: 0.85rem;
+			color: var(--text-muted);
+		}
+		.trend-up {
+			color: #34d399;
+		}
+
+		/* CHARTS & TABLES SECTION */
+		.grid-split {
+			display: grid;
+			grid-template-columns: 2fr 1fr;
+			gap: 1.5rem;
+		}
+		@media(max-width: 1100px) {
+			.grid-split {
+				grid-template-columns: 1fr;
+			}
+		}
+
+		.card {
+			background: var(--bg-sidebar);
+			border: 1px solid var(--border-color);
+			border-radius: 8px;
+			overflow: hidden;
+			margin-bottom: 1.5rem;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.card-header {
+			padding: 1.2rem 1.5rem;
+			border-bottom: 1px solid var(--border-color);
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		.card-title {
+			font-size: 0.95rem;
+			font-weight: 600;
+			color: var(--text-main);
+			margin: 0;
+		}
+		.card-body {
+			padding: 1.5rem;
+			flex: 1;
+		}
+		.card-body.no-padding {
+			padding: 0;
+		}
+
+		/* TABLE STYLE */
+		.clean-table {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 0.9rem;
+		}
+		.clean-table th {
+			text-align: left;
+			padding: 1rem 1.5rem;
+			color: var(--text-muted);
+			font-size: 0.75rem;
+			text-transform: uppercase;
+			font-weight: 600;
+			border-bottom: 1px solid var(--border-color);
+		}
+		.clean-table td {
+			padding: 1rem 1.5rem;
+			border-bottom: 1px solid var(--border-color);
+			color: var(--text-main);
+		}
+		.clean-table tr:last-child td {
+			border-bottom: none;
+		}
+
+		/* BADGES */
+		.badge {
+			padding: 4px 8px;
+			border-radius: 4px;
+			font-size: 0.75rem;
+			font-weight: 600;
+		}
+		.badge-success {
+			background: rgba(52, 211, 153, 0.1);
+			color: #34d399;
+		}
+		.badge-danger {
+			background: rgba(248, 113, 113, 0.1);
+			color: #f87171;
+		}
+
+		/* ACTIVITY FEED */
+		.activity-item {
+			padding: 1rem 1.5rem;
+			border-bottom: 1px solid var(--border-color);
+			display: flex;
+			gap: 1rem;
+			align-items: flex-start;
+		}
+		.dot {
+			width: 8px;
+			height: 8px;
+			background: var(--accent);
+			border-radius: 50%;
+			margin-top: 6px;
+		}
+		.activity-text {
+			font-size: 0.9rem;
+			color: var(--text-main);
+			line-height: 1.4;
+		}
+		.activity-date {
+			display: block;
+			font-size: 0.75rem;
+			color: var(--text-muted);
+			margin-top: 4px;
+		}
+
+		.gatekeeper-logo {
+    margin-bottom: 30px;
+    opacity: 0.8;
+}
+
+.gatekeeper-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.gatekeeper-text {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+}
+
+.gatekeeper-qrcode-container {
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.gatekeeper-backlink {
+    display: block;
+    margin-top: 30px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.stat-trend span {
+    color: var(--accent);
+}
+
+.attempt-ip {
+    color: var(--text-muted);
+}
+
+.attempt-email {
+    font-weight: 500;
+}
+
+.activity-empty {
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.activity-date {
+    /* déjà stylé mais explicitement extrait */
+}
+/* Gatekeeper */
+.gatekeeper-logo { margin-bottom: 30px; opacity: 0.8; }
+.gatekeeper-title { font-size: 1.5rem; margin-bottom: 10px; }
+.gatekeeper-subtitle { color: var(--text-muted); margin-bottom: 30px; }
+.gatekeeper-qr { background: white; padding: 10px; border-radius: 8px; display: inline-block; margin-bottom: 20px; }
+.gatekeeper-back { display: block; margin-top: 30px; font-size: 0.85rem; color: var(--text-muted); }
+
+/* KPI */
+.stat-accent { color: var(--accent); }
+
+/* Table */
+.table-scroll { overflow-x: auto; }
+.td-bold { font-weight: 500; }
+.td-muted { color: var(--text-muted); }
+.td-empty { text-align: center; padding: 2rem; color: var(--text-muted); }
+
+/* Activité */
+.activity-empty { padding: 1.5rem; text-align: center; color: var(--text-muted); font-size: 0.9rem; }

@@ -1,283 +1,80 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Nouvel Article{% endblock %}
-{% block page_title %}Nouvel Article{% endblock %}
+{% block title %}Nouvel Article
+{% endblock %}
 
 {% block stylesheets %}
-<style>
-    .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--border-color);
-        gap: 1rem;
-        flex-wrap: wrap;
-    }
-
-    .page-header h1 {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin: 0;
-        color: var(--text-main);
-    }
-
-    .page-header p {
-        margin: 5px 0 0 0;
-        color: var(--text-muted);
-        font-size: 0.9rem;
-    }
-
-    .toolbar {
-        display: flex;
-        gap: 0.75rem;
-        align-items: flex-end;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-    }
-
-    .btn-create {
-        background: var(--text-main);
-        color: var(--bg-body);
-        padding: 0.6rem 1.2rem;
-        border-radius: 4px;
-        font-weight: 700;
-        font-size: 0.85rem;
-        cursor: pointer;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        transition: 0.2s;
-        border: none;
-        text-decoration: none;
-        display: inline-block;
-        white-space: nowrap;
-    }
-
-    .btn-create:hover {
-        opacity: 0.9;
-    }
-
-    .btn-outline {
-        background: transparent;
-        color: var(--text-main);
-        padding: 0.6rem 1.2rem;
-        border-radius: 4px;
-        font-weight: 700;
-        font-size: 0.85rem;
-        cursor: pointer;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        transition: 0.2s;
-        border: 1px solid var(--border-color);
-        text-decoration: none;
-        display: inline-block;
-        white-space: nowrap;
-        opacity: 0.9;
-    }
-
-    .btn-outline:hover {
-        opacity: 1;
-        border-color: var(--text-main);
-    }
-
-    .table-wrapper {
-        background: var(--bg-sidebar);
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-    }
-
-    .card-body {
-        padding: 1.5rem;
-    }
-
-    .form-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1.2rem;
-        max-width: 960px;
-    }
-
-    .form-row-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.2rem;
-    }
-
-    .tool-label {
-        display: block;
-        color: var(--text-muted);
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 0.35rem;
-    }
-
-    .input {
-        background: transparent;
-        border: 1px solid var(--border-color);
-        color: var(--text-main);
-        padding: 0.6rem 1rem;
-        border-radius: 4px;
-        outline: none;
-        font-size: 0.9rem;
-        transition: border-color 0.2s;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .input:focus {
-        border-color: var(--text-main);
-    }
-
-    .input::placeholder {
-        color: var(--text-muted);
-        opacity: 0.6;
-    }
-
-    textarea.input {
-        min-height: 350px;
-        line-height: 1.6;
-        resize: vertical;
-        font-family: inherit;
-    }
-
-    input[type="file"].input {
-        padding: 0.45rem;
-        cursor: pointer;
-    }
-
-    input[type="file"]::file-selector-button {
-        background: var(--bg-body);
-        border: 1px solid var(--border-color);
-        color: var(--text-main);
-        padding: 0.35rem 0.8rem;
-        margin-right: 0.8rem;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: 0.2s;
-    }
-
-    input[type="file"]::file-selector-button:hover {
-        background: rgba(255,255,255,0.05);
-    }
-
-    .form-help {
-        display: block;
-        margin-top: 0.35rem;
-        color: var(--text-muted);
-        font-size: 0.8rem;
-    }
-
-    .form-error {
-        color: var(--danger);
-        font-size: 0.85rem;
-        margin-top: 0.35rem;
-    }
-
-    .form-error ul {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-    .input.uppercase {
-    text-transform: uppercase;
-}
-    .form-actions {
-        display: flex;
-        gap: 0.75rem;
-        align-items: center;
-        flex-wrap: wrap;
-        margin-top: 0.5rem;
-    }
-
-    @media (max-width: 700px) {
-        .page-header {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        .toolbar {
-            justify-content: flex-start;
-            width: 100%;
-        }
-
-        .form-row-2 {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
+	<link rel="stylesheet" href="{{ asset('css/admin/articles/new.css') }}">
 {% endblock %}
 
 {% block body %}
-    <div class="page-header">
-        <div>
-            <h1>Write an article</h1>
-            <p>Create a new news post or blog article.</p>
-        </div>
+	<div class="page-header">
+		<div>
+			<h1>Write an article</h1>
+			<p>Create a new news post or blog article.</p>
+		</div>
 
-        <div class="toolbar">
-            <a href="{{ path('admin_articles_index') }}" class="btn-outline">Back to articles</a>
-        </div>
-    </div>
+		<div class="toolbar">
+			<a href="{{ path('admin_articles_index') }}" class="btn-outline">Back to articles</a>
+		</div>
+	</div>
 
-    <div class="table-wrapper">
-        <div class="card-body">
-            {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+	<div class="table-wrapper">
+		<div class="card-body">
+			{{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
 
-                <div class="form-error">{{ form_errors(form) }}</div>
+			<div class="form-error">{{ form_errors(form) }}</div>
 
-                <div class="form-grid">
-                    <div>
-                        <span class="tool-label">Title</span>
-                        {{ form_widget(form.title, {
+			<div class="form-grid">
+				<div>
+					<span class="tool-label">Title</span>
+					{{ form_widget(form.title, {
     'attr': {
         'class': 'input uppercase',
         'placeholder': 'e.g. Club tournament results...'
     }
 }) }}
-                        <div class="form-error">{{ form_errors(form.title) }}</div>
-                    </div>
+					<div class="form-error">{{ form_errors(form.title) }}</div>
+				</div>
 
-                    <div class="form-row-2">
-                        <div>
-                            <span class="tool-label">Publish date</span>
-                            {{ form_widget(form.publishedAt, {'attr': {'class': 'input'}}) }}
-                            <div class="form-error">{{ form_errors(form.publishedAt) }}</div>
-                        </div>
+				<div class="form-row-2">
+					<div>
+						<span class="tool-label">Publish date</span>
+						{{ form_widget(form.publishedAt, {'attr': {'class': 'input'}}) }}
+						<div class="form-error">{{ form_errors(form.publishedAt) }}</div>
+					</div>
 
-                        {% if form.category is defined %}
-                            <div>
-                                <span class="tool-label">Category</span>
-                                {{ form_widget(form.category, {'attr': {'class': 'input'}}) }}
-                                <div class="form-error">{{ form_errors(form.category) }}</div>
-                            </div>
-                        {% endif %}
-                    </div>
+					{% if form.category is defined %}
+						<div>
+							<span class="tool-label">Category</span>
+							{{ form_widget(form.category, {'attr': {'class': 'input'}}) }}
+							<div class="form-error">{{ form_errors(form.category) }}</div>
+						</div>
+					{% endif %}
+				</div>
 
-                    <div>
-                        <span class="tool-label">Content</span>
-                        {{ form_widget(form.description, {'attr': {'class': 'input', 'placeholder': 'Write your content here...'}}) }}
-                        <div class="form-error">{{ form_errors(form.description) }}</div>
-                    </div>
+				<div>
+					<span class="tool-label">Content</span>
+					{{ form_widget(form.description, {'attr': {'class': 'input', 'placeholder': 'Write your content here...'}}) }}
+					<div class="form-error">{{ form_errors(form.description) }}</div>
+				</div>
 
-                    <div>
-                        <span class="tool-label">Cover image</span>
-                        {{ form_widget(form.photo, {'attr': {'class': 'input'}}) }}
-                        <div class="form-error">{{ form_errors(form.photo) }}</div>
-                        <span class="form-help">
-                            Featured image on the blog (Max 5MB). Formats: JPG, PNG, WEBP.
-                        </span>
-                    </div>
+				<div>
+					<span class="tool-label">Cover image</span>
+					{{ form_widget(form.photo, {'attr': {'class': 'input'}}) }}
+					<div class="form-error">{{ form_errors(form.photo) }}</div>
+					<span class="form-help">
+						Featured image on the blog (Max 5MB). Formats: JPG, PNG, WEBP.
+					</span>
+				</div>
 
-                    <div class="form-actions">
-                        <button type="submit" class="btn-create">Publish article</button>
-                        <a href="{{ path('admin_articles_index') }}" class="btn-outline">Cancel</a>
-                    </div>
-                </div>
+				<div class="form-actions">
+					<button type="submit" class="btn-create">Publish article</button>
+					<a href="{{ path('admin_articles_index') }}" class="btn-outline">Cancel</a>
+				</div>
+			</div>
 
-            {{ form_end(form) }}
-        </div>
-    </div>
+			{{ form_end(form) }}
+		</div>
+	</div>
 {% endblock %}

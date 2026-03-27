@@ -1,125 +1,122 @@
 {# templates/base.html.twig #}
 <!DOCTYPE html>
 <html lang="fr" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{% block title %}CHM Saleux - Club d'Haltérophilie et de Musculation{% endblock %}</title>
+		<title>
+			{% block title %}CHM Saleux - Club d'Haltérophilie et de Musculation
+			{% endblock %}
+		</title>
 
-    <meta name="description" content="{% block description %}Club d'Haltérophilie et de Musculation de Saleux. École d'haltérophilie, formations tous niveaux, compétitions. Plus de 25 ans d'expérience.{% endblock %}">
-    <meta name="keywords" content="haltérophilie, musculation, Saleux, club sportif, compétition, école, entraînement">
-    <meta name="author" content="CHM Saleux">
-    <meta property="og:title" content="{% block og_title %}CHM Saleux - Club d'Haltérophilie et de Musculation{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}Rejoignez le CHM Saleux, club d'excellence en haltérophilie et musculation. École reconnue, entraîneurs diplômés, 25 ans d'expérience.{% endblock %}">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ app.request.uri }}">
+		<meta name="description" content="{% block description %}Club d'Haltérophilie et de Musculation de Saleux. École d'haltérophilie, formations tous niveaux, compétitions. Plus de 25 ans d'expérience.{% endblock %}">
+		<meta name="keywords" content="haltérophilie, musculation, Saleux, club sportif, compétition, école, entraînement">
+		<meta name="author" content="CHM Saleux">
 
-    <link rel="icon" type="image/png" href="{{ asset('images/favicon/icon2.png') }}">
+		<meta property="og:title" content="{% block og_title %}CHM Saleux - Club d'Haltérophilie et de Musculation{% endblock %}">
+		<meta property="og:description" content="{% block og_description %}Rejoignez le CHM Saleux, club d'excellence en haltérophilie et musculation. École reconnue, entraîneurs diplômés, 25 ans d'expérience.{% endblock %}">
+		<meta property="og:type" content="website">
+		<meta
+		property="og:url" content="{{ app.request.uri }}">
 
-    {# Google Fonts : laissé externe pour l’instant #}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+		{# Tokens CSRF globaux #}
+		<meta name="csrf-delete-account" content="{{ csrf_token('delete_account') }}">
+		<meta name="csrf-edit-license" content="{{ csrf_token('edit_license') }}">
+		<meta name="csrf-upload-photo" content="{{ csrf_token('upload_photo') }}">
 
-    {# Vendor local #}
-    <link rel="stylesheet" href="{{ asset('vendor/swiper/swiper-bundle.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/lucide/lucide.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/bootstrap/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/cropper/cropper.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/fullcalendar/index.global.min.css') }}">
+		<link
+		rel="icon" type="image/png" href="{{ asset('images/favicon/icon2.png') }}">
 
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/nav/nav.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/footer/footer.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/modal/modal.css') }}">
-    
+		{# Google Fonts #}
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    {% block stylesheets %}{% endblock %}
+		{% block stylesheets %}
+			{# Vendor CSS #}
+			<link rel="stylesheet" href="{{ asset('vendor/swiper/swiper-bundle.min.css') }}">
+			<link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/all.min.css') }}">
+			<link rel="stylesheet" href="{{ asset('vendor/lucide/lucide.css') }}">
+			<link rel="stylesheet" href="{{ asset('vendor/bootstrap/bootstrap.min.css') }}">
+			<link rel="stylesheet" href="{{ asset('vendor/cropper/cropper.min.css') }}">
+			<link
+			rel="stylesheet" href="{{ asset('vendor/fullcalendar/index.global.min.css') }}">
 
-    <script src="{{ asset('js/app.js') }}" nonce="{{ csp_nonce('script') }}"></script>
-</head>
+			{# Custom CSS #}
+			<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+			<link rel="stylesheet" href="{{ asset('css/nav/nav.css') }}">
+			<link rel="stylesheet" href="{{ asset('css/footer/footer.css') }}">
+		{% endblock %}
 
-<body class="bg-background text-foreground app-body">
-    {% block navbar %}
-        {% include '/navbar/navigation.html.twig' %}
-    {% endblock %}
+		{# App JS #}
+		 <script src="{{ asset('js/app.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+	</head>
 
-<main class="app-main">   
-        {% for message in app.flashes('warning') %}
-    <script nonce="{{ csp_nonce('script') }}">
-        window.addEventListener("DOMContentLoaded", () => {
-            showToast("{{ message }}");
-        });
-    </script>
-{% endfor %}
-     {% block body %}{% endblock %}
-    </main>
+	<body class="bg-background text-foreground app-body">
+		{% block navbar %}
+			{% include 'navbar/navigation.html.twig' %}
+		{% endblock %}
 
-    {% block footer %}
-        {% include '/footer/footer.html.twig' %}
-    {% endblock %}
+		<main class="app-main">
+			{% for message in app.flashes('warning') %}
+				 <script nonce="{{ csp_nonce('script') }}">
+								                    window.addEventListener("DOMContentLoaded", () => {
+								                        showToast("{{ message }}");
+								                    });
+								                </script>
+			{% endfor %}
 
-    {% include 'modal/modal_auth.html.twig' %}
+			{% block body %}{% endblock %}
+		</main>
 
-    <style nonce="{{ csp_nonce('style') }}">
-        .toast-mini {
-            position: fixed;
-            right: 16px;
-            bottom: 16px;
-            background: #111;
-            color: #fff;
-            padding: 10px 14px;
-            border-radius: 10px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-            opacity: 0;
-            transform: translateY(10px);
-            transition: 0.25s;
-            z-index: 3000;
-        }
+		{% block footer %}
+			{% include 'footer/footer.html.twig' %}
+		{% endblock %}
 
-        .toast-mini.show {
-            opacity: 1;
-            transform: none;
-        }
-    </style>
+		<style nonce="{{ csp_nonce('style') }}">
+			.toast-mini {
+				position: fixed;
+				right: 16px;
+				bottom: 16px;
+				background: #111;
+				color: #fff;
+				padding: 10px 14px;
+				border-radius: 10px;
+				box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+				opacity: 0;
+				transform: translateY(10px);
+				transition: 0.25s;
+				z-index: 3000;
+			}
+			.toast-mini.show {
+				opacity: 1;
+				transform: none;
+			}
+		</style>
 
-    <script src="{{ asset('vendor/lucide/lucide.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-    <script src="{{ asset('js/nav/nav.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-    <script src="{{ asset('js/modal/modal.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-    <script src="{{ asset('js/footer/newsletter.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-    <script src="{{ asset('vendor/chartjs/chart.umd.min.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-    <script src="{{ asset('vendor/fullcalendar/index.global.min.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+		{# Vendor JS #}
+		 <script src="{{ asset('vendor/lucide/lucide.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+		 <script src="{{ asset('js/nav/nav.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+		 <script src="{{ asset('js/footer/newsletter.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+		 <script src="{{ asset('vendor/chartjs/chart.umd.min.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+		 <script src="{{ asset('vendor/fullcalendar/index.global.min.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 
-    <script nonce="{{ csp_nonce('script') }}">
-        window.turnstileOnload = function () {
-            document.dispatchEvent(new Event("turnstile:ready"));
-        };
-    </script>
+		{# ✅ CLOUDFLARE TURNSTILE : Chargement unique et propre pour widget invisible ou visible #}
+		 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer nonce="{{ csp_nonce('script') }}"></script>
 
-    {# Turnstile : laissé externe volontairement #}
-    <script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=turnstileOnload"
-        async
-        defer
-        nonce="{{ csp_nonce('script') }}"></script>
-
-    <script nonce="{{ csp_nonce('script') }}">
-        window.showToast = (msg) => {
-            const t = document.createElement('div');
-            t.className = 'toast-mini';
-            t.textContent = msg;
-            document.body.appendChild(t);
-            requestAnimationFrame(() => t.classList.add('show'));
-            setTimeout(() => {
-                t.classList.remove('show');
-                setTimeout(() => t.remove(), 200);
-            }, 2200);
-        };
-    </script>
-
-    {% block javascripts %}{% endblock %}
-
-</body>
-</html>
+		 <script nonce="{{ csp_nonce('script') }}">
+				            window.showToast = (msg) => {
+				                const t = document.createElement('div');
+				                t.className = 'toast-mini';
+				                t.textContent = msg;
+				                document.body.appendChild(t);
+				                requestAnimationFrame(() => t.classList.add('show'));
+				                setTimeout(() => {
+				                    t.classList.remove('show');
+				                    setTimeout(() => t.remove(), 200);
+				                }, 2200);
+				            };
+				        </script>{% block javascripts %}
+	{% endblock %}
+</body></html>
