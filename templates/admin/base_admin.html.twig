@@ -1,446 +1,195 @@
-{# templates/admin/base_admin.html.twig #}
 <!DOCTYPE html>
 <html lang="fr" data-theme="dark">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}Admin Dashboard{% endblock %}</title>
-        <link rel="icon" type="image/png" href="{{ asset('images/favicon/icon2.png') }}">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>
+			{% block title %}Admin Dashboard
+			{% endblock %}
+		</title>
+		<link rel="icon" type="image/png" href="{{ asset('images/favicon/icon2.png') }}">
 
-        {# --- POLICE UNIQUEMENT (Inter) --- #}
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        <style>
-            /* =================== VARIABLES =================== */
-            :root {
-                --sidebar-width: 250px;
-                --header-height: 60px;
-                
-                /* Dark Theme (Default) */
-                --bg-body: #0e0e10;
-                --bg-sidebar: #131315;
-                --border-color: #262629;
-                
-                --text-main: #ededed;
-                --text-muted: #888888;
-                --text-header: #555555;
-                
-                --accent: #ff6600; /* Ton orange */
-                --accent-hover: #ff7b24;
-                --danger: #e54d42;
-                
-                /* Subtilité pour les survols */
-                --hover-bg: rgba(255, 255, 255, 0.03);
-            }
+		<link
+		rel="stylesheet" href="{{ asset('css/admin/base_admin.css') }}">
 
-            [data-theme="light"] {
-                --bg-body: #f5f5f7;
-                --bg-sidebar: #ffffff;
-                --border-color: #e1e1e3;
-                --text-main: #1d1d1f;
-                --text-muted: #6e6e73;
-                --text-header: #86868b;
-                --hover-bg: rgba(0, 0, 0, 0.03);
-            }
+		{# ✅ Block pour que les templates enfants puissent ajouter leurs propres CSS #}
+		{% block stylesheets %}{% endblock %}
+	</head>
 
-            /* =================== BASE =================== */
-            * { box-sizing: border-box; }
-            
-            body {
-                font-family: "Inter", -apple-system, sans-serif;
-                background: var(--bg-body);
-                color: var(--text-main);
-                margin: 0;
-                display: flex;
-                height: 100vh;
-                overflow: hidden;
-                font-size: 13.5px; /* Un peu plus petit pour faire "Pro" */
-                letter-spacing: -0.01em;
-            }
+	<body>
+		<div class="overlay" id="overlay"></div>
 
-            a { text-decoration: none; color: inherit; }
-            button { cursor: pointer; border: none; background: none; font-family: inherit; }
+		<nav class="sidebar" id="sidebar">
+			<div class="sidebar-header">
+				<div class="brand">
+					<img src="{{ asset('images/favicon/icon2.png') }}" alt="CHM">
+					<span>ADMIN</span>PANEL
+				</div>
+			</div>
 
-            /* =================== SIDEBAR (Minimalist) =================== */
-            .sidebar {
-                width: var(--sidebar-width);
-                background: var(--bg-sidebar);
-                border-right: 1px solid var(--border-color);
-                display: flex;
-                flex-direction: column;
-                position: fixed; top: 0; bottom: 0; left: 0;
-                z-index: 50;
-                transition: transform 0.2s ease;
-            }
+			<div class="sidebar-content">
 
-            /* Header Logo */
-            .sidebar-header {
-                height: var(--header-height);
-                display: flex; align-items: center; padding: 0 1.5rem;
-                border-bottom: 1px solid var(--border-color);
-            }
-            .brand {
-                font-weight: 700; font-size: 0.95rem; 
-                display: flex; align-items: center; gap: 10px;
-                color: var(--text-main);
-            }
-            .brand span { color: var(--accent); }
-            .brand img { height: 24px; width: auto; }
+				<div class="nav-item">
+					<a href="{{ path('admin_dashboard') }}" class="nav-link {% if app.request.get('_route') == 'admin_dashboard' %}active{% endif %}">
+						Tableau de bord
+					</a>
+				</div>
 
-            /* Contenu Scrollable */
-            .sidebar-content {
-                flex: 1; overflow-y: auto; padding: 1.5rem 0;
-            }
-            .sidebar-content::-webkit-scrollbar { width: 4px; }
-            .sidebar-content::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+				<div class="nav-group-label">Gestion Membres</div>
 
-            /* Navigation Groups */
-            .nav-group-label {
-                padding: 0 1.5rem; margin-top: 1.5rem; margin-bottom: 0.5rem;
-                font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-                color: var(--text-header); letter-spacing: 0.05em;
-            }
-            
-            /* Links */
-            .nav-item { position: relative; }
-            
-            .nav-link {
-                display: flex; align-items: center; justify-content: space-between;
-                padding: 0.5rem 1.5rem;
-                color: var(--text-muted);
-                font-weight: 500;
-                transition: color 0.15s, background 0.15s;
-                border-left: 2px solid transparent; /* Indicateur actif */
-            }
+				<div class="nav-item" id="menu-users">
+					<div class="nav-link" data-submenu="menu-users">
+						<span>Utilisateurs & Droits</span>
+						<span class="caret"></span>
+					</div>
+					<div class="submenu">
+						<a href="{{ path('admin_users_index') }}">Liste des utilisateurs</a>
+						<a href="{{ path('admin_users_new_admin') }}" class="nav-link-accent">+ Ajouter Admin</a>
+						<a href="{{ path('admin_licence_index') }}">Gestion des Licences</a>
+					</div>
+				</div>
 
-            .nav-link:hover {
-                color: var(--text-main);
-                background: var(--hover-bg);
-            }
+				<div class="nav-group-label">Sport & Abonnements</div>
 
-            .nav-link.active {
-                color: var(--text-main);
-                border-left-color: var(--accent);
-                background: var(--hover-bg);
-                font-weight: 600;
-            }
+				<div class="nav-item">
+					<a href="{{ path('admin_membership_plan_index') }}" class="nav-link">
+						Offres & Abonnements
+					</a>
+				</div>
 
-            /* Indicateur Flèche (CSS pur, pas d'icone) */
-            .caret {
-                width: 6px; height: 6px;
-                border-right: 1.5px solid var(--text-muted);
-                border-bottom: 1.5px solid var(--text-muted);
-                transform: rotate(45deg);
-                transition: transform 0.2s;
-                opacity: 0.6;
-                margin-right: 4px;
-            }
-            .nav-item.open .caret { transform: rotate(-135deg); border-color: var(--text-main); }
-            .nav-item.open .nav-link { color: var(--text-main); }
+				<div class="nav-item" id="menu-sport">
+					<div class="nav-link" data-submenu="menu-sport">
+						<span>Athlètes & Compétitions</span>
+						<span class="caret"></span>
+					</div>
+					<div class="submenu">
+						<a href="{{ path('admin_athlete_index') }}">Liste des Athlètes</a>
+						<a href="{{ path('admin_competition_index') }}">Compétitions</a>
+					</div>
+				</div>
 
-            /* Submenus */
-            .submenu {
-                max-height: 0; overflow: hidden;
-                background: rgba(0,0,0,0.1); /* Légèrement plus sombre */
-                transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
-            }
-            .nav-item.open .submenu { max-height: 400px; transition: max-height 0.3s ease-in-out; }
+				<div class="nav-group-label">Contenu du Site</div>
 
-            .submenu a {
-                display: block; padding: 0.5rem 1.5rem 0.5rem 2.2rem;
-                font-size: 0.85rem; color: var(--text-muted);
-                position: relative;
-            }
-            .submenu a:hover { color: var(--text-main); }
-            .submenu a.active-sub { color: var(--accent); font-weight: 500; }
-            /* Petit point pour l'item actif */
-            .submenu a.active-sub::before {
-                content: ""; position: absolute; left: 1.5rem; top: 50%; transform: translateY(-50%);
-                width: 4px; height: 4px; background: var(--accent); border-radius: 50%;
-            }
+				<div class="nav-item" id="menu-content">
+					<div class="nav-link" data-submenu="menu-content">
+						<span>Pages & Blog</span>
+						<span class="caret"></span>
+					</div>
+					<div class="submenu">
+						<a href="{{ path('admin_legal_pages_index') }}">Pages statiques</a>
+						<a href="{{ path('admin_articles_index') }}">Articles / Blog</a>
+						<a href="{{ path('admin_new_equipment_index') }}">Nouveaux Matériels</a>
+					</div>
+				</div>
 
-            /* Logout */
-            .sidebar-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border-color); }
-            .logout-link {
-                font-size: 0.85rem; color: var(--danger); font-weight: 500; opacity: 0.8;
-            }
-            .logout-link:hover { opacity: 1; text-decoration: underline; }
+				<div class="nav-group-label">Appli Mobile</div>
 
-            /* =================== MAIN CONTENT =================== */
-            .wrapper {
-                flex: 1; margin-left: var(--sidebar-width);
-                display: flex; flex-direction: column;
-                transition: margin-left 0.2s;
-            }
+				<div class="nav-item" id="menu-mobile">
+					<div class="nav-link" data-submenu="menu-mobile">
+						<span>Appli Mobile</span>
+						<span class="caret"></span>
+					</div>
+					<div class="submenu">
+						<a href="{{ path('admin_equipment_index') }}" class="{% if app.request.get('_route') starts with 'admin_equipment' %}active-sub{% endif %}">
+							Équipements
+						</a>
+						<a href="{{ path('admin_exercise_index') }}" class="{% if app.request.get('_route') starts with 'admin_exercise' %}active-sub{% endif %}">
+							Exercices
+						</a>
+						<a href="{{ path('admin_routine_template_index') }}" class="{% if app.request.get('_route') starts with 'admin_routine_template' %}active-sub{% endif %}">
+							Routines
+						</a>
+					</div>
+				</div>
 
-            .top-bar {
-                height: var(--header-height);
-                background: var(--bg-body);
-                border-bottom: 1px solid var(--border-color);
-                display: flex; align-items: center; justify-content: space-between;
-                padding: 0 2rem;
-                position: sticky; top: 0; z-index: 40;
-            }
+				<div class="nav-group-label">Boutique</div>
+				<div class="nav-item">
+					<a href="{{ path('admin_merchandise_index') }}" class="nav-link">
+						Produits & Stock
+					</a>
+				</div>
 
-            .page-title h1 { margin: 0; font-size: 1.1rem; font-weight: 600; }
+				<div class="nav-group-label">Marketing</div>
+				<div class="nav-item" id="menu-com">
+					<div class="nav-link" data-submenu="menu-com">
+						<span>Communication</span>
+						<span class="caret"></span>
+					</div>
+					<div class="submenu">
+						<a href="{{ path('admin_newsletter_index') }}">Newsletter</a>
+						<a href="{{ path('admin_contact_index') }}">Messages reçus</a>
+					</div>
+				</div>
 
-            .content { flex: 1; padding: 2rem; overflow-y: auto; }
+				<div class="nav-group-label">Audit & Sécurité</div>
+				<div class="nav-item" id="menu-security">
+					<div class="nav-link" data-submenu="menu-security">
+						<span>Sécurité Système</span>
+						<span class="caret"></span>
+					</div>
+					<div class="submenu">
+						<a href="{{ path('admin_security_logs') }}">Journal des Logs</a>
+						<a href="{{ path('admin_security_blocklist') }}">Blocage IP (Blacklist)</a>
+					</div>
+				</div>
 
-            /* Alertes */
-            .alert { padding: 0.8rem 1rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem; border: 1px solid transparent; }
-            .alert-success { background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.2); color: #34d399; }
-            .alert-danger { background: rgba(229, 77, 66, 0.1); border-color: rgba(229, 77, 66, 0.2); color: #f87171; }
+				<div class="nav-group-label">Configuration</div>
+				<div class="nav-item" id="menu-config">
+					<div class="nav-link" data-submenu="menu-config">
+						<span>Système</span>
+						<span class="caret"></span>
+					</div>
+					<div class="submenu">
+						<a href="{{ path('admin_stats_index') }}">Statistiques</a>
+						<a href="{{ path('admin_settings_index') }}">Paramètres Généraux</a>
+					</div>
+				</div>
 
-            /* Mobile */
-            .mobile-toggle { display: none; padding: 0.5rem; font-size: 1.2rem; color: var(--text-main); }
-            .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 45; display: none; }
+			</div>
 
-            @media(max-width: 900px) {
-                .sidebar { transform: translateX(-100%); }
-                .sidebar.active { transform: translateX(0); }
-                .wrapper { margin-left: 0; }
-                .mobile-toggle { display: block; }
-                .top-bar { padding: 0 1rem; }
-                .content { padding: 1rem; }
-                .overlay.active { display: block; }
-            }
-        </style>
-        {% block stylesheets %}{% endblock %}
-    </head>
+			<div class="sidebar-footer">
+				<div class="sidebar-footer">
+					<a href="{{ path('app_logout') }}" class="logout-link">
+						Se déconnecter
+					</a>
+				</div>
+			</div>
+		</nav>
 
-    <body>
-        
-        <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+		<main class="wrapper">
+			<header class="top-bar">
+				<button class="mobile-toggle" id="mobile-toggle">☰</button>
+				<div class="page-title">
+					<h1>
+						{% block page_title %}Gestion
+						{% endblock %}
+					</h1>
+				</div>
+				<div class="topbar-right">
+					<button id="theme-toggle">Mode Clair</button>
+				</div>
+			</header>
 
-        <nav class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="brand">
-                    <img src="{{ asset('images/favicon/icon2.png') }}" alt="CHM">
-                    <span>ADMIN</span>PANEL
-                </div>
-            </div>
+			<div class="content">
+				{% for label, messages in app.flashes %}
+					{% for message in messages %}
+						<div class="alert alert-{{ label }}">
+							{{ message }}
+						</div>
+					{% endfor %}
+				{% endfor %}
 
-            <div class="sidebar-content">
-                
-                <div class="nav-item">
-                    <a href="{{ path('admin_dashboard') }}" class="nav-link {% if app.request.get('_route') == 'admin_dashboard' %}active{% endif %}">
-                        Tableau de bord
-                    </a>
-                </div>
+				{% block body %}{% endblock %}
+			</div>
+		</main>
 
-                <div class="nav-group-label">Gestion Membres</div>
-                
-                <div class="nav-item" id="menu-users">
-                    <div class="nav-link" onclick="toggleSubmenu('menu-users')">
-                        <span>Utilisateurs & Droits</span>
-                        <span class="caret"></span>
-                    </div>
-                    <div class="submenu">
-                        <a href="{{ path('admin_users_index') }}">Liste des utilisateurs</a>
-                        <a href="{{ path('admin_users_new_admin') }}" style="color: var(--accent);">+ Ajouter Admin</a>
-                        {# LICENCES DÉPLACÉES ICI #}
-                        <a href="{{ path('admin_licence_index') }}">Gestion des Licences</a>
-                    </div>
-                </div>
+		{# ✅ JS externalisé — plus d'inline #}
+		 <script src="{{ asset('js/admin/base_admin.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 
-                <div class="nav-group-label">Sport & Abonnements</div>
-
-                <div class="nav-item">
-                    <a href="{{ path('admin_membership_plan_index') }}" class="nav-link">
-                        Offres & Abonnements
-                    </a>
-                </div>
-
-                <div class="nav-item" id="menu-sport">
-                    <div class="nav-link" onclick="toggleSubmenu('menu-sport')">
-                        <span>Athlètes & Compétitions</span>
-                        <span class="caret"></span>
-                    </div>
-                    <div class="submenu">
-                        <a href="{{ path('admin_athlete_index') }}">Liste des Athlètes</a>
-                        <a href="{{ path('admin_competition_index') }}">Compétitions</a>
-                    </div>
-                </div>
-
-                <div class="nav-group-label">Contenu du Site</div>
-
-                <div class="nav-item" id="menu-content">
-                    <div class="nav-link" onclick="toggleSubmenu('menu-content')">
-                        <span>Pages & Blog</span>
-                        <span class="caret"></span>
-                    </div>
-                    <div class="submenu">
-                        <a href="{{ path('admin_legal_pages_index') }}">Pages statiques</a>
-                        <a href="{{ path('admin_articles_index') }}">Articles / Blog</a>                        {# MACHINES DÉPLACÉES ICI #}
-                        <a href="{{ path('admin_new_equipment_index') }}">Nouveaux Matériels</a>
-                    </div>
-                </div>
-
-                {# ===================== APPLI MOBILE ===================== #}
-<div class="nav-group-label">Appli Mobile</div>
-
-<div class="nav-item" id="menu-mobile">
-    <div class="nav-link" onclick="toggleSubmenu('menu-mobile')">
-        <span>Appli Mobile</span>
-        <span class="caret"></span>
-    </div>
-
-    <div class="submenu">
-        <a href="{{ path('admin_equipment_index') }}"
-           class="{% if app.request.get('_route') starts with 'admin_equipment' %}active-sub{% endif %}">
-            Équipements
-        </a>
-
-        <a href="{{ path('admin_exercise_index') }}"
-           class="{% if app.request.get('_route') starts with 'admin_exercise' %}active-sub{% endif %}">
-            Exercices
-        </a>
-
-        <a href="{{ path('admin_routine_template_index') }}"
-           class="{% if app.request.get('_route') starts with 'admin_routine_template' %}active-sub{% endif %}">
-            Routines
-        </a>
-    </div>
-</div>
-
-                <div class="nav-group-label">Boutique</div>
-                <div class="nav-item">
-                    <a href="{{ path('admin_merchandise_index') }}" class="nav-link">
-                        Produits & Stock
-                    </a>
-                </div>
-
-                <div class="nav-group-label">Marketing</div>
-                <div class="nav-item" id="menu-com">
-                    <div class="nav-link" onclick="toggleSubmenu('menu-com')">
-                        <span>Communication</span>
-                        <span class="caret"></span>
-                    </div>
-                    <div class="submenu">
-                        <a href="{{ path('admin_newsletter_index') }}">Newsletter</a>
-                        <a href="{{ path('admin_contact_index') }}">Messages reçus</a>
-                    </div>
-                </div>
-
-                <div class="nav-group-label">Audit & Sécurité</div>
-                <div class="nav-item" id="menu-security">
-                    <div class="nav-link" onclick="toggleSubmenu('menu-security')">
-                        <span>Sécurité Système</span>
-                        <span class="caret"></span>
-                    </div>
-                    <div class="submenu">
-                        <a href="{{ path('admin_security_logs') }}">Journal des Logs</a>
-                        <a href="{{ path('admin_security_blocklist') }}">Blocage IP (Blacklist)</a>
-                    </div>
-                </div>
-
-                <div class="nav-group-label">Configuration</div>
-                <div class="nav-item" id="menu-config">
-                    <div class="nav-link" onclick="toggleSubmenu('menu-config')">
-                        <span>Système</span>
-                        <span class="caret"></span>
-                    </div>
-                    <div class="submenu">
-                        <a href="{{ path('admin_stats_index') }}">Statistiques</a>
-                        <a href="{{ path('admin_settings_index') }}">Paramètres Généraux</a>
-                        <a href="{{ path('admin_backups_index') }}">Sauvegardes</a>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="sidebar-footer">
-                <button class="logout-link" onclick="window.location='{{ path('app_logout') }}'">
-                    Se déconnecter
-                </button>
-            </div>
-        </nav>
-
-        <main class="wrapper">
-            <header class="top-bar">
-                <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
-                
-                <div class="page-title">
-                    {# On peut injecter dynamiquement le titre de la page ici via un bloc #}
-                    <h1>{% block page_title %}Gestion{% endblock %}</h1>
-                </div>
-
-                <div style="display:flex; gap: 15px; font-size: 0.85rem; color: var(--text-muted);">
-                   <button onclick="toggleTheme()" id="theme-text">Mode Clair</button>
-                </div>
-            </header>
-
-            <div class="content">
-                {# Alertes / Flash #}
-                {% for label, messages in app.flashes %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ label }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-
-                {% block body %}{% endblock %}
-            </div>
-        </main>
-
-        <script>
-            // --- LOGIQUE MENU ACCORDÉON ---
-            function toggleSubmenu(id) {
-                const item = document.getElementById(id);
-                item.classList.toggle('open');
-                
-                // Sauvegarde
-                if(item.classList.contains('open')) localStorage.setItem('menu_'+id, 'open');
-                else localStorage.removeItem('menu_'+id);
-            }
-
-            // --- RESTAURATION ÉTAT MENU ---
-            document.addEventListener("DOMContentLoaded", function() {
-                // Restaurer les menus ouverts
-                document.querySelectorAll('.nav-item').forEach(item => {
-                    // Si sauvegardé OU si un lien à l'intérieur correspond à l'URL actuelle
-                    if(localStorage.getItem('menu_'+item.id) === 'open' || item.querySelector(`a[href="${window.location.pathname}"]`)) {
-                        item.classList.add('open');
-                        
-                        // Ajouter la classe active au sous-lien spécifique
-                        const activeLink = item.querySelector(`a[href="${window.location.pathname}"]`);
-                        if(activeLink) activeLink.classList.add('active-sub');
-                    }
-                });
-
-                // Init Theme text
-                updateThemeText();
-            });
-
-            // --- MOBILE ---
-            function toggleSidebar() {
-                document.getElementById('sidebar').classList.toggle('active');
-                document.getElementById('overlay').classList.toggle('active');
-            }
-
-            // --- THEME ---
-            const html = document.documentElement;
-            function toggleTheme() {
-                const current = html.getAttribute('data-theme');
-                const newTheme = current === 'light' ? 'dark' : 'light';
-                html.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                updateThemeText();
-            }
-
-            function updateThemeText() {
-                const isLight = html.getAttribute('data-theme') === 'light';
-                document.getElementById('theme-text').textContent = isLight ? "Mode Sombre" : "Mode Clair";
-            }
-            
-            // Check immédiat
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) html.setAttribute('data-theme', savedTheme);
-        </script>
-
-        {% block javascripts %}{% endblock %}
-    </body>
+		{% block javascripts %}{% endblock %}
+	</body>
 </html>

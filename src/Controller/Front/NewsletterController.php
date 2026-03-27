@@ -192,14 +192,19 @@ class NewsletterController extends AbstractController
         $user = $subscriber->getUser();
         $firstName = $user ? $user->getFirstName() : null;
 
-        // SI L'UTILISATEUR CLIQUE SUR LE BOUTON (POST)
         if ($request->isMethod('POST')) {
+
+            // ✅ CSRF
+            if (!$this->isCsrfTokenValid('newsletter_unsubscribe_' . $subscriber->getId(), (string) $request->request->get('_token', ''))) {
+                $this->addFlash('danger', 'Jeton CSRF invalide.');
+                return $this->redirectToRoute('newsletter_unsubscribe', ['token' => $token]);
+            }
+
             $em->remove($subscriber);
             $em->flush();
 
-            $logger->add('Désinscription newsletter', sprintf('L’adresse %s s’est désinscrite.', $email));
+            $logger->add('Désinscription newsletter', sprintf('L\'adresse %s s\'est désinscrite.', $email));
 
-            // On réaffiche la page mais avec un flag "success"
             return $this->render('emails/unsubscribed.html.twig', [
                 'subscriberEmail' => $email,
                 'firstName' => $firstName,
@@ -207,7 +212,6 @@ class NewsletterController extends AbstractController
             ]);
         }
 
-        // SI L'UTILISATEUR ARRIVE DEPUIS LE MAIL (GET)
         return $this->render('emails/unsubscribed.html.twig', [
             'subscriberEmail' => $email,
             'firstName' => $firstName,

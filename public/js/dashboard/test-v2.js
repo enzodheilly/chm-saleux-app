@@ -16,6 +16,11 @@
         uploadPhoto: dashboardRoot?.dataset.routeUploadPhoto || '/profil/photo'
     };
 
+    // ✅ Utilitaire CSRF — lit les meta tags injectées dans base.html.twig
+    function getCsrfToken(name) {
+        return document.querySelector(`meta[name="csrf-${name}"]`)?.content ?? '';
+    }
+
     function showJsFlash(message, type = 'success') {
         const container = document.querySelector('.flash-container');
         if (!container) return;
@@ -157,7 +162,7 @@
             const data = await response.json();
 
             if (!response.ok || !data.success) {
-                showSettingsFeedback('error', data.message || "Impossible de mettre à jour l’e-mail.");
+                showSettingsFeedback('error', data.message || "Impossible de mettre à jour l'e-mail.");
                 return;
             }
 
@@ -177,7 +182,7 @@
             showSettingsFeedback('success', data.message || 'E-mail mis à jour avec succès.');
             showJsFlash(data.message || 'E-mail mis à jour avec succès.', 'success');
         } catch (error) {
-            showSettingsFeedback('error', "Une erreur est survenue lors de la mise à jour de l’e-mail.");
+            showSettingsFeedback('error', "Une erreur est survenue lors de la mise à jour de l'e-mail.");
         }
     }
 
@@ -252,7 +257,10 @@
         fetch(routes.deleteAccount, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password })
+            body: JSON.stringify({
+                password,
+                _token: getCsrfToken('delete-account') // ✅ CSRF ajouté
+            })
         })
             .then((res) => res.json())
             .then((data) => {
@@ -297,6 +305,7 @@
 
         const formData = new FormData();
         formData.append('licenceNumber', num);
+        formData.append('_token', getCsrfToken('edit-license')); // ✅ CSRF ajouté
 
         try {
             const response = await fetch(routes.updateLicence, {
@@ -455,6 +464,7 @@
 
                 const formData = new FormData();
                 formData.append('profileImage', blob, 'avatar.jpg');
+                formData.append('_token', getCsrfToken('upload-photo')); // ✅ CSRF ajouté
 
                 fetch(routes.uploadPhoto, {
                     method: 'POST',
@@ -465,11 +475,11 @@
                         if (data.success) {
                             location.reload();
                         } else {
-                            showJsFlash("Erreur lors de l’envoi de la photo.", 'error');
+                            showJsFlash("Erreur lors de l'envoi de la photo.", 'error');
                         }
                     })
                     .catch(() => {
-                        showJsFlash("Erreur réseau lors de l’envoi de la photo.", 'error');
+                        showJsFlash("Erreur réseau lors de l'envoi de la photo.", 'error');
                     });
             }, 'image/jpeg', 0.85);
         });

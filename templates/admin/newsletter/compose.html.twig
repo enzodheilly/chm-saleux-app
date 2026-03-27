@@ -1,216 +1,362 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Nouvelle campagne newsletter{% endblock %}
+{% block title %}Nouvelle campagne newsletter
+{% endblock %}
 
 {% block stylesheets %}
-<style>
-    /* =================== COMPOSER LAYOUT =================== */
-    .dashboard-container { width: 100%; max-width: 1800px; margin: 0 auto; }
-    
-    .page-header { 
-        margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;
-        display: flex; justify-content: space-between; align-items: flex-end;
-    }
-    .page-header h1 { margin: 0; font-size: 1.5rem; font-weight: 700; color: var(--text-main); }
+	<style>
+		/* =================== COMPOSER LAYOUT =================== */
+		.dashboard-container {
+			width: 100%;
+			max-width: 1800px;
+			margin: 0 auto;
+		}
 
-    /* Grid Split 50/50 ou 60/40 */
-    .compose-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem; height: calc(100vh - 250px); min-height: 700px; }
-    @media(max-width: 1200px) { .compose-grid { grid-template-columns: 1fr; height: auto; } }
+		.page-header {
+			margin-bottom: 2rem;
+			border-bottom: 1px solid var(--border-color);
+			padding-bottom: 1.5rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-end;
+		}
+		.page-header h1 {
+			margin: 0;
+			font-size: 1.5rem;
+			font-weight: 700;
+			color: var(--text-main);
+		}
 
-    /* Panels Style */
-    .panel { background: var(--bg-sidebar); border: 1px solid var(--border-color); border-radius: 6px; padding: 1.5rem; display: flex; flex-direction: column; overflow: hidden; }
-    .panel-title { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 8px; }
+		/* Grid Split 50/50 ou 60/40 */
+		.compose-grid {
+			display: grid;
+			grid-template-columns: 1.2fr 0.8fr;
+			gap: 2rem;
+			height: calc(100vh - 250px);
+			min-height: 700px;
+		}
+		@media(max-width: 1200px) {
+			.compose-grid {
+				grid-template-columns: 1fr;
+				height: auto;
+			}
+		}
 
-    /* Form UI */
-    .form-group { margin-bottom: 1.2rem; }
-    .form-label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem; }
-    
-    .form-input, .form-select {
-        width: 100%; background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main);
-        padding: 0.7rem 1rem; border-radius: 4px; font-size: 0.9rem; transition: 0.2s;
-    }
-    .form-input:focus, .form-select:focus { border-color: var(--accent); outline: none; }
+		/* Panels Style */
+		.panel {
+			background: var(--bg-sidebar);
+			border: 1px solid var(--border-color);
+			border-radius: 6px;
+			padding: 1.5rem;
+			display: flex;
+			flex-direction: column;
+			overflow: hidden;
+		}
+		.panel-title {
+			font-size: 0.75rem;
+			font-weight: 700;
+			color: var(--text-muted);
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			margin-bottom: 1.2rem;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
 
-    /* Editor Toolbar Extensions */
-    .editor-helpers { display: flex; gap: 10px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 4px; margin-bottom: 10px; border: 1px solid var(--border-color); }
+		/* Form UI */
+		.form-group {
+			margin-bottom: 1.2rem;
+		}
+		.form-label {
+			display: block;
+			font-size: 0.8rem;
+			font-weight: 600;
+			color: var(--text-muted);
+			margin-bottom: 0.5rem;
+		}
 
-    /* Real-time Preview */
-    .preview-container { background: #e2e8f0; border-radius: 4px; padding: 40px 20px; flex: 1; overflow-y: auto; display: flex; justify-content: center; }
-    .preview-paper { 
-        background: #fff; color: #1a1a1a; width: 100%; max-width: 600px; min-height: 800px; 
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2); padding: 40px; border-radius: 2px;
-    }
-    
-    /* Buttons */
-    .form-actions { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 1rem; }
-    .btn-test { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.7rem 1.2rem; border-radius: 4px; font-weight: 600; cursor: pointer; }
-    .btn-test:hover { color: var(--text-main); border-color: var(--text-main); }
-    .btn-send { background: var(--accent); color: #fff; padding: 0.7rem 1.5rem; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; }
-    .btn-send:hover { opacity: 0.9; }
+		.form-input,
+		.form-select {
+			width: 100%;
+			background: var(--bg-body);
+			border: 1px solid var(--border-color);
+			color: var(--text-main);
+			padding: 0.7rem 1rem;
+			border-radius: 4px;
+			font-size: 0.9rem;
+			transition: 0.2s;
+		}
+		.form-input:focus,
+		.form-select:focus {
+			border-color: var(--accent);
+			outline: none;
+		}
 
-    /* TinyMCE Dark Override */
-    .tox-tinymce { border: 1px solid var(--border-color) !important; border-radius: 4px !important; }
+		/* Editor Toolbar Extensions */
+		.editor-helpers {
+			display: flex;
+			gap: 10px;
+			background: rgba(255, 255, 255, 0.02);
+			padding: 8px;
+			border-radius: 4px;
+			margin-bottom: 10px;
+			border: 1px solid var(--border-color);
+		}
 
-</style>
+		/* Real-time Preview */
+		.preview-container {
+			background: #e2e8f0;
+			border-radius: 4px;
+			padding: 40px 20px;
+			flex: 1;
+			overflow-y: auto;
+			display: flex;
+			justify-content: center;
+		}
+		.preview-paper {
+			background: #fff;
+			color: #1a1a1a;
+			width: 100%;
+			max-width: 600px;
+			min-height: 800px;
+			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+			padding: 40px;
+			border-radius: 2px;
+		}
+
+		/* Buttons */
+		.form-actions {
+			margin-top: 1.5rem;
+			padding-top: 1.5rem;
+			border-top: 1px solid var(--border-color);
+			display: flex;
+			justify-content: flex-end;
+			gap: 1rem;
+		}
+		.btn-test {
+			background: transparent;
+			border: 1px solid var(--border-color);
+			color: var(--text-muted);
+			padding: 0.7rem 1.2rem;
+			border-radius: 4px;
+			font-weight: 600;
+			cursor: pointer;
+		}
+		.btn-test:hover {
+			color: var(--text-main);
+			border-color: var(--text-main);
+		}
+		.btn-send {
+			background: var(--accent);
+			color: #fff;
+			padding: 0.7rem 1.5rem;
+			border: none;
+			border-radius: 4px;
+			font-weight: 700;
+			cursor: pointer;
+		}
+		.btn-send:hover {
+			opacity: 0.9;
+		}
+
+		/* TinyMCE Dark Override */
+		.tox-tinymce {
+			border: 1px solid var(--border-color) !important;
+			border-radius: 4px !important;
+		}
+	</style>
 {% endblock %}
 
 {% block body %}
-<div class="dashboard-container">
-    
-    <div class="page-header">
-        <div>
-            <h1>Nouvelle Campagne</h1>
-            <p style="color: var(--text-muted); margin-top:5px;">Composez un email professionnel pour vos abonnés.</p>
-        </div>
-        <a href="{{ path('admin_newsletter_history') }}" class="back-link" style="color:var(--text-muted); text-decoration: underline; font-size: 0.85rem;">Consulter l'historique</a>
-    </div>
+	<div class="dashboard-container">
 
-    <form method="POST" id="newsletterForm" class="compose-grid">
-        
-        {# ÉDITEUR #}
-        <div class="panel">
-            <div class="panel-title">✍️ Composition du message</div>
-            
-            <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div class="form-group">
-                    <label class="form-label">Modèle de base</label>
-                    <select id="templateSelect" class="form-select">
-                        <option value="">Document vierge</option>
-                        <option value="basic">Newsletter hebdomadaire</option>
-                        <option value="promo">Annonce Promotionnelle</option>
-                        <option value="announcement">Flash Info Club</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Objet de l'email</label>
-                    <input type="text" id="subject" name="subject" class="form-input" required placeholder="Sujet de votre newsletter...">
-                </div>
-            </div>
+		<div class="page-header">
+			<div>
+				<h1>Nouvelle Campagne</h1>
+				<p style="color: var(--text-muted); margin-top:5px;">Composez un email professionnel pour vos abonnés.</p>
+			</div>
+			<a href="{{ path('admin_newsletter_history') }}" class="back-link" style="color:var(--text-muted); text-decoration: underline; font-size: 0.85rem;">Consulter l'historique</a>
+		</div>
 
-            <div class="form-group" style="flex:1; display:flex; flex-direction:column;">
-                <label class="form-label">Contenu du message</label>
-                
-                <div class="editor-helpers">
-                    <select id="variableSelect" class="form-select" style="width: auto; font-size: 0.75rem; padding: 0.4rem;">
-                        <option value="">💎 Insérer une variable</option>
-                        <option value="{{ '{{ firstname }}' }}">Prénom du membre</option>
-                        <option value="{{ '{{ lastname }}' }}">Nom du membre</option>
-                        <option value="{{ '{{ unsubscribe_url }}' }}">Lien de désinscription</option>
-                    </select>
+		<form method="POST" id="newsletterForm" class="compose-grid">
 
-                    <select id="styleBlockSelect" class="form-select" style="width: auto; font-size: 0.75rem; padding: 0.4rem;">
-                        <option value="">🎨 Blocs visuels</option>
-                        <option value="button">Bouton d'appel à l'action</option>
-                        <option value="quote">Citation stylisée</option>
-                        <option value="divider">Barre de séparation</option>
-                    </select>
-                </div>
+			<input
+			type="hidden" name="_token" value="{{ csrf_token('newsletter_compose') }}">
 
-                <textarea id="content" name="content"></textarea>
-            </div>
 
-            <div class="form-actions">
-                <button type="button" class="btn-test" id="sendTestBtn">Envoyer un aperçu (Test)</button>
-                <button type="submit" class="btn-send">Lancer la Campagne</button>
-            </div>
-        </div>
+			{# ÉDITEUR #}
+			<div class="panel">
+				<div class="panel-title">✍️ Composition du message</div>
 
-        {# APERÇU #}
-        <div class="panel" style="background: var(--bg-body);">
-            <div class="panel-title">📱 Aperçu en temps réel</div>
-            <div class="preview-container">
-                <div id="preview" class="preview-paper">
-                    <div style="text-align: center; color: #cbd5e1; margin-top: 100px;">
-                        <span style="font-size: 3rem; display: block; margin-bottom: 1rem;">📧</span>
-                        Rédigez votre message pour voir l'aperçu...
-                    </div>
-                </div>
-            </div>
-        </div>
+				<div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+					<div class="form-group">
+						<label class="form-label">Modèle de base</label>
+						<select id="templateSelect" class="form-select">
+							<option value="">Document vierge</option>
+							<option value="basic">Newsletter hebdomadaire</option>
+							<option value="promo">Annonce Promotionnelle</option>
+							<option value="announcement">Flash Info Club</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="form-label">Objet de l'email</label>
+						<input type="text" id="subject" name="subject" class="form-input" required placeholder="Sujet de votre newsletter...">
+					</div>
+				</div>
 
-    </form>
-</div>
+				<div class="form-group" style="flex:1; display:flex; flex-direction:column;">
+					<label class="form-label">Contenu du message</label>
 
-{# TINYMCE #}
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+					<div class="editor-helpers">
+						<select id="variableSelect" class="form-select" style="width: auto; font-size: 0.75rem; padding: 0.4rem;">
+							<option value="">💎 Insérer une variable</option>
+							<option value="{{ '{{ firstname }}' }}">Prénom du membre</option>
+							<option value="{{ '{{ lastname }}' }}">Nom du membre</option>
+							<option value="{{ '{{ unsubscribe_url }}' }}">Lien de désinscription</option>
+						</select>
 
-<script>
-function updatePreview() {
-    const subject = document.getElementById('subject').value;
-    const content = tinymce.get('content') ? tinymce.get('content').getContent() : '';
-    
-    const previewHtml = `
-        <div style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; line-height:1.6; color:#1a1a1a;">
-            <div style="padding-bottom:15px; border-bottom:2px solid #f1f5f9; margin-bottom:25px;">
-                <p style="font-size: 11px; color: #94a3b8; text-transform: uppercase; margin: 0 0 5px 0;">Sujet du mail</p>
-                <h2 style="margin:0; color:#0f172a; font-size:22px; font-weight:800;">${subject || 'Sans objet'}</h2>
-            </div>
-            <div class="email-body-content">${content || '<p style="color:#94a3b8">Le corps du message apparaîtra ici...</p>'}</div>
-            <div style="margin-top:40px; padding-top:20px; border-top:1px solid #f1f5f9; text-align:center; font-size:12px; color:#94a3b8;">
-                © {{ "now"|date("Y") }} {{ club_name|default('Votre Club') }}. Tous droits réservés.<br>
-                <a href="#" style="color:#64748b;">Se désabonner</a>
-            </div>
-        </div>
-    `;
-    document.getElementById('preview').innerHTML = previewHtml;
-}
+						<select id="styleBlockSelect" class="form-select" style="width: auto; font-size: 0.75rem; padding: 0.4rem;">
+							<option value="">🎨 Blocs visuels</option>
+							<option value="button">Bouton d'appel à l'action</option>
+							<option value="quote">Citation stylisée</option>
+							<option value="divider">Barre de séparation</option>
+						</select>
+					</div>
 
-document.addEventListener('DOMContentLoaded', () => {
-    tinymce.init({
-        selector: '#content',
-        plugins: 'link lists table code emoticons wordcount preview',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline | alignleft aligncenter alignright | forecolor backcolor | bullist numlist | emoticons | removeformat',
-        menubar: false,
-        height: '100%',
-        skin: 'oxide-dark',
-        content_css: 'dark',
-        promotion: false,
-        branding: false,
-        setup: (editor) => {
-            editor.on('init', () => { editor.getContainer().style.transition = '0.2s'; });
-            editor.on('keyup change blur', updatePreview);
-        }
-    });
+					<textarea id="content" name="content"></textarea>
+				</div>
 
-    document.getElementById('subject').addEventListener('input', updatePreview);
+				<div class="form-actions">
+					<button type="button" class="btn-test" id="sendTestBtn">Envoyer un aperçu (Test)</button>
+					<button type="submit" class="btn-send">Lancer la Campagne</button>
+				</div>
+			</div>
 
-    const templates = {
-        basic: `<p>Bonjour {{ '{{ firstname }}' }},</p><p>Nous sommes ravis de vous partager les actualités de la semaine au club !</p><ul><li><strong>Entraînements :</strong> Les horaires restent inchangés.</li><li><strong>Événement :</strong> N'oubliez pas le tournoi de samedi prochain.</li></ul><p>Sportivement,<br>L'équipe du Club</p>`,
-        promo: `<div style="text-align:center;"><h1 style="color:#ff6600; font-size:28px;">🔥 OFFRE FLASH !</h1><p style="font-size:18px;">Profitez de <strong>-20%</strong> sur tous les équipements de la boutique pendant 48h.</p><br><a href="#" style="background:#ff6600; color:#fff; padding:12px 25px; text-decoration:none; border-radius:6px; font-weight:bold; display:inline-block;">J'en profite maintenant</a></div>`,
-        announcement: `<h2 style="color:#0f172a;">📢 Annonce Importante</h2><p>Le club sera exceptionnellement fermé ce dimanche pour travaux de maintenance. Nous vous prions de nous excuser pour la gêne occasionnée.</p>`
-    };
+			{# APERÇU #}
+			<div class="panel" style="background: var(--bg-body);">
+				<div class="panel-title">📱 Aperçu en temps réel</div>
+				<div class="preview-container">
+					<div id="preview" class="preview-paper">
+						<div style="text-align: center; color: #cbd5e1; margin-top: 100px;">
+							<span style="font-size: 3rem; display: block; margin-bottom: 1rem;">📧</span>
+							Rédigez votre message pour voir l'aperçu...
+						</div>
+					</div>
+				</div>
+			</div>
 
-    document.getElementById('templateSelect').addEventListener('change', (e) => {
-        const val = e.target.value;
-        if(val && templates[val]) {
-            if(confirm('Charger ce modèle ? Cela remplacera votre texte actuel.')) {
-                tinymce.get('content').setContent(templates[val]);
-                updatePreview();
-            }
-        }
-    });
+		</form>
+	</div>
 
-    document.getElementById('variableSelect').addEventListener('change', (e) => {
-        if(e.target.value) {
-            tinymce.get('content').insertContent(`<span style="color:#ff6600; background:rgba(255,102,0,0.1); padding:2px 4px; border-radius:3px;">${e.target.value}</span>`);
-            e.target.value = '';
-            updatePreview();
-        }
-    });
+	{# TINYMCE #}
+ <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
-    document.getElementById('styleBlockSelect').addEventListener('change', (e) => {
-        const val = e.target.value;
-        let html = '';
-        if(val === 'button') html = `<div style="text-align:center; margin:20px 0;"><a href="#" style="background:#ff6600; color:#fff; padding:12px 25px; text-decoration:none; border-radius:6px; font-weight:bold; display:inline-block;">Texte du bouton</a></div>`;
-        if(val === 'quote') html = `<blockquote style="border-left:4px solid #ff6600; padding:10px 20px; margin:20px 0; background:#f8fafc; font-style:italic; color:#475569;">"Votre citation ou témoignage ici..."</blockquote>`;
-        if(val === 'divider') html = `<hr style="border:0; border-top:1px solid #e2e8f0; margin:30px 0;">`;
-        
-        if(html) {
-            tinymce.get('content').insertContent(html);
-            e.target.value = '';
-            updatePreview();
-        }
-    });
-});
-</script>
+	 <script>
+	function updatePreview() {
+	    const subject = document.getElementById('subject').value;
+	    const content = tinymce.get('content') ? tinymce.get('content').getContent() : '';
+	    
+	    const previewHtml = `
+	        <div style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; line-height:1.6; color:#1a1a1a;">
+	            <div style="padding-bottom:15px; border-bottom:2px solid #f1f5f9; margin-bottom:25px;">
+	                <p style="font-size: 11px; color: #94a3b8; text-transform: uppercase; margin: 0 0 5px 0;">Sujet du mail</p>
+	                <h2 style="margin:0; color:#0f172a; font-size:22px; font-weight:800;">${subject || 'Sans objet'}</h2>
+	            </div>
+	            <div class="email-body-content">${content || '<p style="color:#94a3b8">Le corps du message apparaîtra ici...</p>'}</div>
+	            <div style="margin-top:40px; padding-top:20px; border-top:1px solid #f1f5f9; text-align:center; font-size:12px; color:#94a3b8;">
+	                © {{ "now"|date("Y") }} {{ club_name|default('Votre Club') }}. Tous droits réservés.<br>
+	                <a href="#" style="color:#64748b;">Se désabonner</a>
+	            </div>
+	        </div>
+	    `;
+	    document.getElementById('preview').innerHTML = previewHtml;
+	}
+	
+	document.addEventListener('DOMContentLoaded', () => {
+	    tinymce.init({
+	        selector: '#content',
+	        plugins: 'link lists table code emoticons wordcount preview',
+	        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline | alignleft aligncenter alignright | forecolor backcolor | bullist numlist | emoticons | removeformat',
+	        menubar: false,
+	        height: '100%',
+	        skin: 'oxide-dark',
+	        content_css: 'dark',
+	        promotion: false,
+	        branding: false,
+	        setup: (editor) => {
+	            editor.on('init', () => { editor.getContainer().style.transition = '0.2s'; });
+	            editor.on('keyup change blur', updatePreview);
+	        }
+	    });
+	
+	    document.getElementById('subject').addEventListener('input', updatePreview);
+	
+	    const templates = {
+	        basic: `<p>Bonjour {{ '{{ firstname }}' }},</p><p>Nous sommes ravis de vous partager les actualités de la semaine au club !</p><ul><li><strong>Entraînements :</strong> Les horaires restent inchangés.</li><li><strong>Événement :</strong> N'oubliez pas le tournoi de samedi prochain.</li></ul><p>Sportivement,<br>L'équipe du Club</p>`,
+	        promo: `<div style="text-align:center;"><h1 style="color:#ff6600; font-size:28px;">🔥 OFFRE FLASH !</h1><p style="font-size:18px;">Profitez de <strong>-20%</strong> sur tous les équipements de la boutique pendant 48h.</p><br><a href="#" style="background:#ff6600; color:#fff; padding:12px 25px; text-decoration:none; border-radius:6px; font-weight:bold; display:inline-block;">J'en profite maintenant</a></div>`,
+	        announcement: `<h2 style="color:#0f172a;">📢 Annonce Importante</h2><p>Le club sera exceptionnellement fermé ce dimanche pour travaux de maintenance. Nous vous prions de nous excuser pour la gêne occasionnée.</p>`
+	    };
+	
+	    document.getElementById('templateSelect').addEventListener('change', (e) => {
+	        const val = e.target.value;
+	        if (val && templates[val]) {
+	            if (confirm('Charger ce modèle ? Cela remplacera votre texte actuel.')) {
+	                tinymce.get('content').setContent(templates[val]);
+	                updatePreview();
+	            }
+	        }
+	    });
+	
+	    document.getElementById('variableSelect').addEventListener('change', (e) => {
+	        if (e.target.value) {
+	            tinymce.get('content').insertContent(`<span style="color:#ff6600; background:rgba(255,102,0,0.1); padding:2px 4px; border-radius:3px;">${e.target.value}</span>`);
+	            e.target.value = '';
+	            updatePreview();
+	        }
+	    });
+	
+	    document.getElementById('styleBlockSelect').addEventListener('change', (e) => {
+	        const val = e.target.value;
+	        let html = '';
+	        if (val === 'button') html = `<div style="text-align:center; margin:20px 0;"><a href="#" style="background:#ff6600; color:#fff; padding:12px 25px; text-decoration:none; border-radius:6px; font-weight:bold; display:inline-block;">Texte du bouton</a></div>`;
+	        if (val === 'quote') html = `<blockquote style="border-left:4px solid #ff6600; padding:10px 20px; margin:20px 0; background:#f8fafc; font-style:italic; color:#475569;">"Votre citation ou témoignage ici..."</blockquote>`;
+	        if (val === 'divider') html = `<hr style="border:0; border-top:1px solid #e2e8f0; margin:30px 0;">`;
+	        
+	        if (html) {
+	            tinymce.get('content').insertContent(html);
+	            e.target.value = '';
+	            updatePreview();
+	        }
+	    });
+	
+	    // ✅ Bouton test avec CSRF
+	    document.getElementById('sendTestBtn').addEventListener('click', () => {
+	        const subject = document.getElementById('subject').value;
+	        const content = tinymce.get('content') ? tinymce.get('content').getContent() : '';
+	
+	        if (!subject || !content) {
+	            alert('Veuillez renseigner un sujet et un contenu avant d\'envoyer un test.');
+	            return;
+	        }
+	
+	        fetch('', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json',
+	                'X-Requested-With': 'XMLHttpRequest'
+	            },
+	            body: JSON.stringify({
+	                test: true,
+	                subject,
+	                content,
+	                _token: '{{ csrf_token('newsletter_compose') }}' // ✅ CSRF
+	            })
+	        })
+	        .then(res => res.json())
+	        .then(data => alert(data.message))
+	        .catch(() => alert('Erreur réseau.'));
+	    });
+	});
+	</script>
 {% endblock %}

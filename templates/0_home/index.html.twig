@@ -1,39 +1,31 @@
 {# templates/0_home/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil – CHM Saleux{% endblock %}
+{% block title %}Accueil – CHM Saleux
+{% endblock %}
 
 {% block stylesheets %}
-  {{ parent() }}
-  <link rel="stylesheet" href="{{ asset('css/accueil/home.css') }}">
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/accueil/home.css') }}">
 {% endblock %}
 
 {% block body %}
-  {% include '1_accueil/section1/section1.html.twig' %}
-  {% include '1_accueil/section2/section2.html.twig' %}
-  {% include '1_accueil/section8/section8.html.twig' %}
-  {% include '1_accueil/section10/section10.html.twig' %}
-{% include '1_accueil/section3/section3.html.twig' with { newEquipments: newEquipments|default([]) } %}
-  {% include '1_accueil/section5/section5.html.twig' %}
-  {% include '1_accueil/section9/section9.html.twig' %}
-  {% include '1_accueil/section4/section4.html.twig' %}
+	{% include '1_accueil/section1/section1.html.twig' %}
+	{% include '1_accueil/section2/section2.html.twig' %}
+	{% include '1_accueil/section8/section8.html.twig' %}
+	{% include '1_accueil/section10/section10.html.twig' %}
+	{% include '1_accueil/section3/section3.html.twig' with { newEquipments: newEquipments|default([]) } %}
+	{% include '1_accueil/section5/section5.html.twig' %}
+	{% include '1_accueil/section9/section9.html.twig' %}
+	{% include '1_accueil/section4/section4.html.twig' %}
 {% endblock %}
 
 {% block javascripts %}
-  {{ parent() }}
+	{{ parent() }}
+ <script src="{{ asset('js/accueil/section1/section1.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+	 <script src="{{ asset('js/accueil/section2/section2.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+	 <script src="{{ asset('js/accueil/section4/faq.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+	 <script src="{{ asset('js/accueil/section9/section9.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 
-  <script src="{{ asset('js/accueil/section1/section1.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-  <script src="{{ asset('js/accueil/section2/section2.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-  <script src="{{ asset('js/accueil/section4/faq.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-  <script src="{{ asset('js/accueil/section9/section9.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-
-  {% if showSetPasswordModal %}
-    <script nonce="{{ csp_nonce('script') }}">
-      document.addEventListener("DOMContentLoaded", () => {
-        const modal = document.getElementById("setPasswordModal");
-        if (modal) modal.classList.add("is-open");
-      });
-    </script>
-  {% endif %}
+	{# ✅ On a supprimé le script "showSetPasswordModal" ici car c'est désormais une page dédiée #}
 {% endblock %}
-

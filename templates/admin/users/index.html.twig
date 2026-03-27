@@ -1,244 +1,124 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Utilisateurs - Chm Saleux{% endblock %}
-
-{% block stylesheets %}
-<style>
-    /* =================== HEADER & TOOLS =================== */
-    .page-header {
-        display: flex; justify-content: space-between; align-items: flex-end;
-        margin-bottom: 2rem; padding-bottom: 1rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
-    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
-
-    .toolbar { display: flex; gap: 1rem; }
-
-    /* Input Recherche style "Terminal" */
-    .search-input {
-        background: var(--bg-sidebar);
-        border: 1px solid var(--border-color);
-        color: var(--text-main);
-        padding: 0.6rem 1rem;
-        border-radius: 4px;
-        min-width: 280px;
-        font-size: 0.9rem;
-        outline: none;
-        transition: 0.2s;
-    }
-    .search-input:focus { border-color: var(--accent); }
-    .search-input::placeholder { color: var(--text-muted); opacity: 0.7; }
-
-    /* Bouton d'action solide */
-    .btn-action {
-        background: var(--text-main);
-        color: var(--bg-body);
-        padding: 0.6rem 1.2rem;
-        border: none;
-        border-radius: 4px;
-        font-weight: 600; font-size: 0.85rem;
-        cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
-        transition: 0.2s;
-    }
-    .btn-action:hover { opacity: 0.9; }
-
-    /* =================== TABLEAU PRO =================== */
-    .table-wrapper {
-        background: var(--bg-sidebar);
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        overflow: hidden;
-    }
-    
-    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    
-    .admin-table th {
-        background: rgba(255,255,255,0.02);
-        color: var(--text-muted);
-        font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.75rem;
-        text-align: left; padding: 1rem 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    
-    .admin-table td {
-        padding: 1rem 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-        color: var(--text-main); vertical-align: middle;
-    }
-    .admin-table tr:last-child td { border-bottom: none; }
-    .admin-table tr:hover td { background: rgba(255,255,255,0.01); }
-
-    /* User Profile Cell */
-    .user-cell { display: flex; align-items: center; gap: 12px; }
-    .avatar {
-        width: 34px; height: 34px;
-        background: var(--border-color);
-        color: var(--text-main);
-        border-radius: 4px;
-        display: flex; align-items: center; justify-content: center;
-        font-weight: 700; font-size: 0.8rem;
-        text-transform: uppercase;
-    }
-    .user-info { display: flex; flex-direction: column; }
-    .u-name { font-weight: 600; font-size: 0.95rem; display: block; }
-    .u-email { font-size: 0.8rem; color: var(--text-muted); }
-
-    /* Badges & Tags */
-    .role-badge {
-        font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-        padding: 4px 8px; border-radius: 4px; letter-spacing: 0.05em;
-    }
-    .badge-admin { background: rgba(255, 102, 0, 0.15); color: var(--accent); border: 1px solid rgba(255, 102, 0, 0.2); }
-    .badge-user { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); }
-
-    .secu-tag { font-size: 0.7rem; display: flex; align-items: center; gap: 6px; font-weight: 700; }
-    .secu-on { color: #10b981; }
-    .secu-off { color: var(--text-muted); opacity: 0.5; }
-
-    /* Actions */
-    .actions { display: flex; gap: 15px; justify-content: flex-end; align-items: center; }
-    .act-link { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: 0.2s; opacity: 0.7; text-decoration: none; }
-    .act-link:hover { opacity: 1; text-decoration: underline; }
-    
-    .act-edit { color: var(--text-main); }
-    .act-del { color: var(--danger); }
-    .act-reset { color: #f59e0b; }
-
-</style>
+{% block title %}Utilisateurs - Chm Saleux
 {% endblock %}
 
-{% block page_title %}Gestion Utilisateurs{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/admin/users/index.css') }}">
+{% endblock %}
 
 {% block body %}
 
-    {# HEADER #}
-    <div class="page-header">
-        <div>
-            <h1>Annuaire</h1>
-            <p>Supervision des accès et sécurité du panel.</p>
-        </div>
-        <div class="toolbar">
-            <input type="text" id="searchInput" class="search-input" placeholder="Rechercher par nom ou email...">
-            <button class="btn-action" onclick="location.href='{{ path('admin_users_new') }}'">
-                + Créer un compte
-            </button>
-        </div>
-    </div>
+	{# HEADER #}
+	<div class="page-header">
+		<div>
+			<h1>Annuaire</h1>
+			<p>Supervision des accès et sécurité du panel.</p>
+		</div>
+		<div class="toolbar">
+			<input type="text" id="searchInput" class="search-input" placeholder="Rechercher par nom ou email...">
+			<button class="btn-action" data-href="{{ path('admin_users_new') }}">
+				+ Créer un compte
+			</button>
+		</div>
+	</div>
 
-    {# TABLEAU #}
-    <div class="table-wrapper">
-        <div style="overflow-x: auto;">
-            <table class="admin-table" id="userTable">
-                <thead>
-                    <tr>
-                        <th width="80">ID</th>
-                        <th>Utilisateur</th>
-                        <th>Rôle</th>
-                        <th>Sécurité 2FA</th>
-                        <th>Date Inscription</th>
-                        <th style="text-align: right;">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for user in users %}
-                        <tr>
-                            <td><span style="font-family: monospace; color: var(--text-muted);">#{{ user.id }}</span></td>
-                            
-                            <td>
-                                <div class="user-cell">
-                                    <div class="avatar">
-                                        {{ user.firstname|first|upper }}{{ user.lastname|first|upper }}
-                                    </div>
-                                    <div class="user-info">
-                                        <span class="u-name">{{ user.firstname }} {{ user.lastname }}</span>
-                                        <span class="u-email">{{ user.email }}</span>
-                                    </div>
-                                </div>
-                            </td>
+	{# TABLEAU #}
+	<div class="table-wrapper">
+		<div class="table-scroll">
+			<table class="admin-table" id="userTable">
+				<thead>
+					<tr>
+						<th width="80">ID</th>
+						<th>Utilisateur</th>
+						<th>Rôle</th>
+						<th>Sécurité 2FA</th>
+						<th>Date Inscription</th>
+						<th class="th-right">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for user in users %}
+						<tr>
+							<td>
+								<span class="td-mono">#{{ user.id }}</span>
+							</td>
 
-                            <td>
-                                {% if 'ROLE_ADMIN' in user.roles %}
-                                    <span class="role-badge badge-admin">Administrateur</span>
-                                {% else %}
-                                    <span class="role-badge badge-user">Membre</span>
-                                {% endif %}
-                            </td>
+							<td>
+								<div class="user-cell">
+									<div class="avatar">
+										{{ user.firstname|first|upper }}{{ user.lastname|first|upper }}
+									</div>
+									<div class="user-info">
+										<span class="u-name">{{ user.firstname }}
+											{{ user.lastname }}</span>
+										<span class="u-email">{{ user.email }}</span>
+									</div>
+								</div>
+							</td>
 
-                            <td>
-                                {% if user.isTotpConfirmed %}
-                                    <div class="secu-tag secu-on" title="Authentification 2FA configurée">
-                                        <span style="font-size: 1.2rem;">●</span> ACTIF
-                                    </div>
-                                {% else %}
-                                    <div class="secu-tag secu-off">
-                                        <span style="font-size: 1.2rem;">○</span> INACTIF
-                                    </div>
-                                {% endif %}
-                            </td>
+							<td>
+								{% if 'ROLE_ADMIN' in user.roles %}
+									<span class="role-badge badge-admin">Administrateur</span>
+								{% else %}
+									<span class="role-badge badge-user">Membre</span>
+								{% endif %}
+							</td>
 
-                            <td style="color: var(--text-muted); font-size: 0.85rem;">
-                                {{ user.createdAt ? user.createdAt|date('d/m/Y') : '-' }}
-                            </td>
+							<td>
+								{% if user.isTotpConfirmed %}
+									<div class="secu-tag secu-on" title="Authentification 2FA configurée">
+										<span class="secu-dot">●</span>
+										ACTIF
+									</div>
+								{% else %}
+									<div class="secu-tag secu-off">
+										<span class="secu-dot">○</span>
+										INACTIF
+									</div>
+								{% endif %}
+							</td>
 
-                            <td>
-                                <div class="actions">
-                                    {# ACTION : Reset 2FA (Uniquement si actif et pas soi-même) #}
-                                    {% if user.isTotpConfirmed and user.id != app.user.id %}
-                                        <a href="{{ path('admin_security_reset_2fa', {'id': user.id}) }}" 
-                                           class="act-link act-reset"
-                                           onclick="return confirm('Réinitialiser la clé de sécurité de {{ user.firstname }} ? Cette action forcera l\'utilisateur à reconfigurer son application au prochain accès.');">
-                                            Reset 2FA
-                                        </a>
-                                    {% endif %}
+							<td class="td-date">
+								{{ user.createdAt ? user.createdAt|date('d/m/Y') : '-' }}
+							</td>
 
-                                    {# Lien Modifier #}
-                                    <a href="{{ path('admin_users_edit', {'id': user.id}) }}" class="act-link act-edit">
-                                        Éditer
-                                    </a>
-                                    
-                                    {# Lien Supprimer (si ce n'est pas moi-même) #}
-                                    {% if user.id != app.user.id %}
-                                        <a href="{{ path('admin_users_delete', {'id': user.id}) }}" 
-                                           class="act-link act-del"
-                                           onclick="return confirm('Supprimer ce compte définitivement ?');">
-                                            Supprimer
-                                        </a>
-                                    {% endif %}
-                                </div>
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="6" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-                                Aucun membre enregistré dans l'annuaire.
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+							<td>
+								<div
+									class="actions">
+									{# ACTION : Reset 2FA (Uniquement si actif et pas soi-même) #}
+									{% if user.isTotpConfirmed and user.id != app.user.id %}
+										<a href="{{ path('admin_security_reset_2fa', {'id': user.id}) }}" class="act-link act-reset" data-confirm="Réinitialiser la clé de sécurité de {{ user.firstname }} ? Cette action forcera l'utilisateur à reconfigurer son application au prochain accès.">
+											Reset 2FA
+										</a>
+									{% endif %}
+
+									<a href="{{ path('admin_users_edit', {'id': user.id}) }}" class="act-link act-edit">
+										Éditer
+									</a>
+
+									{% if user.id != app.user.id %}
+										<a href="{{ path('admin_users_delete', {'id': user.id}) }}" class="act-link act-del" data-confirm="Supprimer ce compte définitivement ?">
+											Supprimer
+										</a>
+									{% endif %}
+								</div>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6" class="td-empty">
+								Aucun membre enregistré dans l'annuaire.
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 
 {% endblock %}
 
 {% block javascripts %}
-<script>
-    // --- Moteur de recherche Temps Réel ---
-    document.getElementById('searchInput').addEventListener('keyup', function() {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll('#userTable tbody tr');
-
-        rows.forEach(row => {
-            const name = row.querySelector('.u-name')?.textContent.toLowerCase() || '';
-            const email = row.querySelector('.u-email')?.textContent.toLowerCase() || '';
-            
-            if (name.includes(filter) || email.includes(filter)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    });
-</script>
+	 <script src="{{ asset('js/admin/users/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

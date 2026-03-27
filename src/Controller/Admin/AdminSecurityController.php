@@ -69,7 +69,7 @@ class AdminSecurityController extends AbstractController
                     'id' => $user->getId(),
                     'email' => $user->getEmail(),
                     'ip' => $user->getLastLoginIp() ?? '—',
-                    'reason' => 'Trop d’échecs de connexion',
+                    'reason' => 'Trop d\'échecs de connexion',
                     'blockedAt' => $user->getLockedUntil(),
                 ];
             }, $blockedUsers),
@@ -93,7 +93,12 @@ class AdminSecurityController extends AbstractController
         $user->setFailedAttempts(0);
         $em->flush();
 
-        $this->addFlash('success', "✅ L’accès pour <strong>{$user->getEmail()}</strong> a été rétabli.");
+        // ✅ XSS — échappement de l'email
+        $this->addFlash('success', sprintf(
+            "✅ L'accès pour <strong>%s</strong> a été rétabli.",
+            htmlspecialchars($user->getEmail(), ENT_QUOTES, 'UTF-8')
+        ));
+
         return $this->redirectToRoute('admin_security_blocklist');
     }
 
@@ -162,6 +167,13 @@ class AdminSecurityController extends AbstractController
         $qrCodeBase64 = $result->getDataUri();
 
         if ($request->isMethod('POST')) {
+
+            // ✅ CSRF
+            if (!$this->isCsrfTokenValid('setup_2fa', (string) $request->request->get('_token', ''))) {
+                $this->addFlash('danger', 'Jeton CSRF invalide.');
+                return $this->redirectToRoute('admin_security_2fa_setup');
+            }
+
             $authCode = $request->request->get('auth_code');
 
             if ($ga->checkCode($user, $authCode)) {
@@ -204,7 +216,6 @@ class AdminSecurityController extends AbstractController
     #[Route('/setup-2fa/success', name: 'setup_success')]
     public function setupSuccess(Request $request): Response
     {
-        // remove() = affichage une seule fois, comme indiqué dans ton commentaire
         $backupCodes = $request->getSession()->remove('show_backup_codes');
 
         if (!$backupCodes) {
@@ -250,7 +261,11 @@ class AdminSecurityController extends AbstractController
         $em->persist($log);
         $em->flush();
 
-        $this->addFlash('success', "✅ La sécurité 2FA de <strong>{$user->getEmail()}</strong> a été réinitialisée.");
+        // ✅ XSS — échappement de l'email
+        $this->addFlash('success', sprintf(
+            "✅ La sécurité 2FA de <strong>%s</strong> a été réinitialisée.",
+            htmlspecialchars($user->getEmail(), ENT_QUOTES, 'UTF-8')
+        ));
 
         return $this->redirectToRoute('admin_security_blocklist');
     }
@@ -288,7 +303,12 @@ class AdminSecurityController extends AbstractController
         $em->persist($log);
         $em->flush();
 
-        $this->addFlash('success', "🚫 L'adresse IP <strong>$ip</strong> a été bannie.");
+        // ✅ XSS — échappement de l'IP
+        $this->addFlash('success', sprintf(
+            "🚫 L'adresse IP <strong>%s</strong> a été bannie.",
+            htmlspecialchars($ip, ENT_QUOTES, 'UTF-8')
+        ));
+
         return $this->redirectToRoute('admin_security_logs');
     }
 
