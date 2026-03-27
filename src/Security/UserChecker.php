@@ -11,7 +11,7 @@ class UserChecker implements UserCheckerInterface
 {
     public function checkPreAuth(UserInterface $user): void
     {
-        // Rien ici
+        // On peut vérifier ici si le compte est banni par exemple
     }
 
     public function checkPostAuth(UserInterface $user): void
@@ -20,9 +20,10 @@ class UserChecker implements UserCheckerInterface
             return;
         }
 
-        // ✅ Ici on bloque APRES vérif du mot de passe
+        // ✅ Si le mot de passe est bon mais que l'email n'est pas vérifié
         if (!$user->isVerified()) {
-            throw new CustomUserMessageAccountStatusException('EMAIL_NOT_VERIFIED');
+            // Ce message sera récupéré par onAuthenticationFailure dans ton Authenticator
+            throw new CustomUserMessageAccountStatusException('Veuillez vérifier votre compte avant de vous connecter.');
         }
     }
 }

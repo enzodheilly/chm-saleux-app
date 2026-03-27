@@ -3,19 +3,18 @@
 namespace App\Controller\Security;
 
 use App\Entity\User;
+use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Service\SystemLoggerService;
+use App\Service\TurnstileVerifierService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use GuzzleHttp\Client;
 
 class RegistrationController extends AbstractController
 {
@@ -29,124 +28,96 @@ class RegistrationController extends AbstractController
         return true;
     }
 
-    #[Route('/register', name: 'app_register', methods: ['POST'])]
+    #[Route('/register', name: 'app_register', methods: ['GET', 'POST'])]
     public function register(
         Request $request,
         UserPasswordHasherInterface $passwordHasher,
         EntityManagerInterface $entityManager,
         MailerInterface $mailer,
-        SessionInterface $session,
         SystemLoggerService $logger,
-        UserRepository $userRepo
+        UserRepository $userRepo,
+        TurnstileVerifierService $turnstile
     ): Response {
-        try {
-            if ($this->getUser()) {
-                return new JsonResponse(['success' => false, 'errors' => ['Vous êtes déjà connecté.']], 400);
-            }
+        if ($this->getUser()) {
+            return $this->redirectToRoute('home');
+        }
 
-            // ✅ CSRF
-            $csrf = (string) $request->request->get('_token', '');
-            if (!$this->isCsrfTokenValid('register', $csrf)) {
-                return new JsonResponse(['success' => false, 'errors' => ['Session invalide.']], 400);
-            }
+        $user = new User();
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
 
-            // ✅ Turnstile
-            $turnstileResponse = (string) $request->request->get('cf-turnstile-response', '');
-            if ($turnstileResponse === '') {
-                return new JsonResponse(['success' => false, 'errors' => ['Vérification anti-robot manquante.']], 400);
-            }
-
-            $client = new Client();
-            $response = $client->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
-                'form_params' => [
-                    'secret'   => $_ENV['TURNSTILE_SECRET_KEY'] ?? '',
-                    'response' => $turnstileResponse,
-                    'remoteip' => $request->getClientIp(),
-                ],
-                'timeout' => 5,
-            ]);
-
-            $result = json_decode((string) $response->getBody(), true);
-            if (empty($result['success'])) {
-                return new JsonResponse(['success' => false, 'errors' => ['Vérification anti-robot échouée.']], 400);
-            }
-
-            $data = $request->request->all('registration_form');
-            $firstName = trim((string) ($data['firstName'] ?? ''));
-            $lastName  = trim((string) ($data['lastName'] ?? ''));
-            $email     = strtolower(trim((string) ($data['email'] ?? '')));
-            $accepted  = (bool) ($data['acceptedTerms'] ?? false);
-
-            $passArray = $data['password'] ?? [];
-            $password1 = (string) ($passArray['first'] ?? '');
-            $password2 = (string) ($passArray['second'] ?? '');
-
-            $errors = [];
-
-            if (!$accepted) $errors[] = "Vous devez accepter les conditions générales pour continuer.";
-            if ($firstName === '') $errors[] = "Le prénom est obligatoire.";
-            if ($lastName === '') $errors[] = "Le nom est obligatoire.";
-
-            if ($email === '') $errors[] = "L’email est obligatoire.";
-            elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Cette adresse email n’est pas valide.";
-            elseif ($userRepo->findOneBy(['email' => $email])) $errors[] = "Cette adresse email est déjà utilisée.";
-
-            if ($password1 === '' || $password2 === '') $errors[] = "Les deux champs mot de passe sont obligatoires.";
-            elseif ($password1 !== $password2) $errors[] = "Les mots de passe doivent correspondre.";
-            elseif (!$this->isStrongPassword($password1)) $errors[] = "Mot de passe trop faible (12+ caractères, maj, min, chiffre, spécial).";
-
-            if (!empty($errors)) {
-                return new JsonResponse(['success' => false, 'errors' => $errors], 400);
-            }
-
-            $user = new User();
-            $user->setFirstName($firstName);
-            $user->setLastName($lastName);
-            $user->setEmail($email);
-
-            // ✅ persister acceptedTerms
-            $user->setAcceptedTerms(true);
-
-            $user->setPassword($passwordHasher->hashPassword($user, $password1));
-
-            $code = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-            $user->setVerificationCode($code);
-            $user->setVerificationCodeExpiresAt(new \DateTimeImmutable('+15 minutes'));
-            $user->setRoles(['ROLE_USER']);
-            $user->setIsVerified(false);
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            $logger->add('Inscription', sprintf('Nouvel utilisateur inscrit : %s (%s %s)', $email, $firstName, $lastName));
-
-            $session->set('verify_email', $user->getEmail());
-
+        if ($form->isSubmitted()) {
             try {
+                // 1. Validation CSRF
+                if (!$this->isCsrfTokenValid('register', $request->request->get('_token'))) {
+                    $this->addFlash('error', 'Session invalide.');
+                    return $this->render('security/register.html.twig', ['registrationForm' => $form->createView()]);
+                }
+
+                // 2. Validation Turnstile
+                $turnstileResponse = (string) $request->request->get('cf-turnstile-response', '');
+                if (!$turnstile->verify($turnstileResponse, $request->getClientIp())) {
+                    $this->addFlash('error', 'La vérification anti-robot a échoué.');
+                    return $this->render('security/register.html.twig', ['registrationForm' => $form->createView()]);
+                }
+
+                // 3. Récupération des données liées au formulaire
+                $data = $request->request->all('registration_form');
+                $passArray = $data['password'] ?? [];
+                $password1 = (string) ($passArray['first'] ?? '');
+                $password2 = (string) ($passArray['second'] ?? '');
+                $accepted = (bool) ($data['acceptedTerms'] ?? false);
+
+                // 4. Validations manuelles
+                $errors = [];
+                if (!$accepted) $errors[] = "Vous devez accepter les conditions générales.";
+                if ($userRepo->findOneBy(['email' => $user->getEmail()])) {
+                    $errors[] = "Cette adresse email est déjà utilisée.";
+                }
+                if ($password1 !== $password2) {
+                    $errors[] = "Les mots de passe ne correspondent pas.";
+                } elseif (!$this->isStrongPassword($password1)) {
+                    $errors[] = "Le mot de passe doit contenir au moins 12 caractères, une majuscule, un chiffre et un caractère spécial.";
+                }
+
+                if (!empty($errors)) {
+                    foreach ($errors as $error) {
+                        $this->addFlash('error', $error);
+                    }
+                    return $this->render('security/register.html.twig', ['registrationForm' => $form->createView()]);
+                }
+
+                // 5. Création de l'utilisateur
+                $user->setAcceptedTerms(true);
+                $user->setPassword($passwordHasher->hashPassword($user, $password1));
+                $code = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+                $user->setVerificationCode($code);
+                $user->setVerificationCodeExpiresAt(new \DateTimeImmutable('+15 minutes'));
+                $user->setRoles(['ROLE_USER']);
+                $user->setIsVerified(false);
+
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                // 6. Envoi Email
                 $emailMessage = (new Email())
-                    ->from('no-reply@monsite.com')
+                    ->from('no-reply@chm-saleux.fr')
                     ->to($user->getEmail())
                     ->subject('Votre code de vérification - CHM Saleux')
-                    ->html(sprintf(
-                        "<p>Bonjour <strong>%s</strong>,</p>
-                         <p>Merci de vous être inscrit 💪</p>
-                         <p>Voici votre code :</p>
-                         <h2 style='font-size:24px; letter-spacing:4px; color:#005b94;'>%s</h2>
-                         <p>Valable 15 minutes.</p>",
-                        htmlspecialchars((string) $user->getFirstName(), ENT_QUOTES),
-                        $code
-                    ));
+                    ->html("<p>Bonjour {$user->getFirstName()}, voici votre code : <strong>{$code}</strong></p>");
                 $mailer->send($emailMessage);
-                $logger->add('Email vérification', sprintf('Email envoyé à %s', $user->getEmail()));
-            } catch (\Throwable $e) {
-                $logger->add('Erreur email', sprintf('Échec d’envoi à %s : %s', $user->getEmail(), $e->getMessage()));
-            }
 
-            return new JsonResponse(['success' => true, 'message' => 'Compte créé. Un code a été envoyé par e-mail.']);
-        } catch (\Throwable $e) {
-            // ✅ ne pas leak l'erreur au client
-            $logger->add('Erreur inscription', 'Erreur inattendue : ' . $e->getMessage());
-            return new JsonResponse(['success' => false, 'errors' => ['Erreur serveur.']], 500);
+                $request->getSession()->set('verify_email', $user->getEmail());
+                $this->addFlash('success', 'Inscription réussie !');
+                return $this->redirectToRoute('app_verify_code');
+            } catch (\Throwable $e) {
+                $logger->add('Erreur inscription', $e->getMessage());
+                $this->addFlash('error', 'Une erreur serveur est survenue.');
+            }
         }
+
+        return $this->render('security/register.html.twig', [
+            'registrationForm' => $form->createView(),
+        ]);
     }
 }

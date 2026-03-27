@@ -17,7 +17,6 @@ use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Uid\Uuid;
-use Twig\Environment;
 
 class ResetPasswordController extends AbstractController
 {
@@ -31,49 +30,39 @@ class ResetPasswordController extends AbstractController
         return true;
     }
 
-    #[Route('/reset-password', name: 'app_reset_password_request', methods: ['POST'])]
+    /**
+     * ÉTAPE 1 : Demande de réinitialisation (Saisie de l'email)
+     */
+    #[Route('/reset-password', name: 'app_reset_password_request', methods: ['GET', 'POST'])]
     public function request(
         Request $request,
         EntityManagerInterface $em,
         MailerInterface $mailer,
         SystemLoggerService $logger,
-        Environment $twig,
         TurnstileVerifierService $turnstile,
         RateLimiterFactory $reset_requestLimiter
     ): Response {
-        // ✅ CSRF
-        $csrf = (string) $request->request->get('_token', '');
-        if (!$this->isCsrfTokenValid('reset_request', $csrf)) {
-            return $this->json(['success' => false, 'message' => 'Session invalide.'], 400);
+        if ($request->isMethod('GET')) {
+            return $this->render('security/reset_password_request.html.twig');
         }
 
         $ip = (string) $request->getClientIp();
+        $email = strtolower(trim((string)$request->request->get('email', '')));
 
-        // ✅ Rate limit IP (anti-spam)
+        // ✅ Validation CSRF & Turnstile
+        if (
+            !$this->isCsrfTokenValid('reset_request', (string)$request->request->get('_token')) ||
+            !$turnstile->verify((string)$request->request->get('cf-turnstile-response', ''), $ip)
+        ) {
+            $this->addFlash('error', 'Validation de sécurité échouée.');
+            return $this->redirectToRoute('app_reset_password_request');
+        }
+
+        // ✅ Rate limit
         $limit = $reset_requestLimiter->create($ip)->consume(1);
         if (!$limit->isAccepted()) {
-            return $this->json(['success' => false, 'message' => 'Trop de demandes. Réessayez plus tard.'], 429);
-        }
-
-        // ✅ Turnstile (recommandé sur reset)
-        // (Ton Twig doit inclure le widget Turnstile sur l’étape reset email)
-        $turnstileToken = (string) $request->request->get('cf-turnstile-response', '');
-        if (!$turnstile->verify($turnstileToken, $ip)) {
-            // ✅ réponse neutre anti-enumération
-            return $this->json(['success' => true, 'message' => 'Si un compte existe, un email a été envoyé.']);
-        }
-
-        // ✅ support JSON + form-data
-        $email = (string) $request->request->get('email', '');
-        if ($email === '') {
-            $data = json_decode((string) $request->getContent(), true);
-            $email = (string)($data['email'] ?? '');
-        }
-
-        $email = strtolower(trim($email));
-        if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            // ✅ réponse neutre (anti enumeration)
-            return $this->json(['success' => true, 'message' => 'Si un compte existe, un email a été envoyé.']);
+            $this->addFlash('error', 'Trop de demandes. Réessayez plus tard.');
+            return $this->redirectToRoute('app_reset_password_request');
         }
 
         /** @var User|null $user */
@@ -81,141 +70,103 @@ class ResetPasswordController extends AbstractController
 
         if ($user) {
             $now = new \DateTimeImmutable();
-            $lastRequest = $user->getLastResetRequestAt();
 
-            // ✅ Cooldown (par compte)
-            if ($lastRequest && $lastRequest > $now->modify('-60 seconds')) {
-                return $this->json(['success' => false, 'message' => 'Veuillez patienter avant une nouvelle demande.'], 429);
+            // Cooldown de 60s entre deux demandes
+            if ($user->getLastResetRequestAt() && $user->getLastResetRequestAt() > $now->modify('-60 seconds')) {
+                $this->addFlash('error', 'Veuillez patienter avant une nouvelle demande.');
+                return $this->redirectToRoute('app_reset_password_request');
             }
 
             $resetToken = Uuid::v4()->toRfc4122();
             $user->setResetToken($resetToken);
-            $user->setResetTokenExpiresAt($now->modify('+1 hour'));
-            $user->setLastResetRequestAt($now);
+            $user->setResetTokenExpiresAt((new \DateTimeImmutable())->modify('+1 hour'));
+            $user->setLastResetRequestAt(new \DateTimeImmutable());
             $em->flush();
 
-            $logger->add('Sécurité', sprintf(
-                'Demande réinitialisation MDP pour %s (IP: %s)',
-                $email,
-                $ip
-            ));
+            $logger->add('Sécurité', "Demande reset MDP pour $email (IP: $ip)");
 
-            // ✅ URL ABSOLUE
+            // URL absolue pour l'email
             $resetUrl = $this->generateUrl(
-                'app_reset_password',
+                'app_reset_password_confirm',
                 ['token' => $resetToken],
                 UrlGeneratorInterface::ABSOLUTE_URL
             );
 
-            $htmlContent = $twig->render('emails/reset_password.html.twig', [
-                'user' => $user,
-                'resetUrl' => $resetUrl,
-            ]);
-
-            $emailMessage = (new Email())
-                ->from('no-reply@monsite.com')
-                ->to($user->getEmail())
-                ->subject('Réinitialisation de votre mot de passe')
-                ->html($htmlContent);
-
+            // Envoi de l'email
             try {
+                $emailMessage = (new Email())
+                    ->from('no-reply@chm-saleux.fr')
+                    ->to($user->getEmail())
+                    ->subject('Réinitialisation de votre mot de passe')
+                    ->html($this->renderView('emails/reset_password.html.twig', [
+                        'user' => $user,
+                        'resetUrl' => $resetUrl,
+                    ]));
                 $mailer->send($emailMessage);
             } catch (\Throwable $e) {
-                $logger->add('Erreur reset mail', $e->getMessage());
-                // ✅ réponse neutre quand même
+                $logger->add('Erreur email reset', $e->getMessage());
             }
         }
 
-        // ✅ réponse neutre
-        return $this->json(['success' => true, 'message' => 'Si un compte existe, un email a été envoyé.']);
+        // Réponse neutre pour éviter l'énumération d'emails
+        $this->addFlash('success', 'Si un compte existe, un email a été envoyé pour réinitialiser le mot de passe.');
+        return $this->redirectToRoute('app_login');
     }
 
-    #[Route('/reset-password/{token}', name: 'app_reset_password', methods: ['GET'])]
-    public function redirectToModal(string $token): Response
-    {
-        // OK: le token reste dans l’URL car c’est nécessaire pour l’UX actuelle
-        return $this->redirect('/?resetToken=' . urlencode($token));
-    }
-
-    #[Route('/api/reset-password-final', name: 'app_reset_password_final', methods: ['POST'])]
-    public function resetPasswordFinal(
+    /**
+     * ÉTAPE 2 : Saisie du nouveau mot de passe (via le lien de l'email)
+     */
+    #[Route('/reset-password/confirm/{token}', name: 'app_reset_password_confirm', methods: ['GET', 'POST'])]
+    public function reset(
+        string $token,
         Request $request,
         EntityManagerInterface $em,
-        SystemLoggerService $logger,
         PasswordHasherFactoryInterface $passwordHasherFactory,
-        RateLimiterFactory $reset_finalLimiter
+        SystemLoggerService $logger
     ): Response {
-        $ip = (string) $request->getClientIp();
+        /** @var User|null $user */
+        $user = $em->getRepository(User::class)->findOneBy(['resetToken' => $token]);
 
-        // ✅ Rate limit IP (anti brute force token)
-        $limit = $reset_finalLimiter->create($ip)->consume(1);
-        if (!$limit->isAccepted()) {
-            return $this->json(['success' => false, 'message' => 'Trop de tentatives. Réessayez plus tard.'], 429);
+        if (!$user || !$user->getResetTokenExpiresAt() || $user->getResetTokenExpiresAt() < new \DateTimeImmutable()) {
+            $this->addFlash('error', 'Le lien est invalide ou a expiré.');
+            return $this->redirectToRoute('app_login');
         }
 
-        // ✅ CSRF (form-data)
-        $csrf = (string) $request->request->get('_token', '');
-
-        // ✅ support JSON + form-data
-        $token = (string) $request->request->get('token', '');
-        $newPassword = (string) $request->request->get('newPassword', '');
-        $confirmPassword = (string) $request->request->get('confirmPassword', '');
-
-        if ($token === '' && $request->getContent()) {
-            $data = json_decode((string) $request->getContent(), true);
-            $csrf = (string)($data['_token'] ?? $csrf);
-            $token = (string)($data['token'] ?? '');
-            $newPassword = (string)($data['newPassword'] ?? ($data['password'] ?? ''));
-            $confirmPassword = (string)($data['confirmPassword'] ?? '');
+        if ($request->isMethod('GET')) {
+            return $this->render('security/reset_password_confirm.html.twig', ['token' => $token]);
         }
 
-        if (!$this->isCsrfTokenValid('reset_final', $csrf)) {
-            return $this->json(['success' => false, 'message' => 'Session invalide.'], 400);
+        // --- LOGIQUE POST ---
+        if (!$this->isCsrfTokenValid('reset_final', (string)$request->request->get('_token'))) {
+            $this->addFlash('error', 'Session invalide.');
+            return $this->redirectToRoute('app_reset_password_confirm', ['token' => $token]);
         }
 
-        if ($token === '' || $newPassword === '' || $confirmPassword === '') {
-            return $this->json(['success' => false, 'message' => 'Paramètres manquants.'], 400);
-        }
+        $newPassword = (string)$request->request->get('password');
+        $confirmPassword = (string)$request->request->get('confirm_password');
 
         if ($newPassword !== $confirmPassword) {
-            return $this->json(['success' => false, 'message' => 'Les mots de passe ne correspondent pas.'], 400);
+            $this->addFlash('error', 'Les mots de passe ne correspondent pas.');
+            return $this->redirectToRoute('app_reset_password_confirm', ['token' => $token]);
         }
 
         if (!$this->isStrongPassword($newPassword)) {
-            return $this->json(['success' => false, 'message' => 'Mot de passe trop faible (12+ caractères, maj, min, chiffre, spécial).'], 400);
-        }
-
-        /** @var User|null $user */
-        $user = $em->getRepository(User::class)->findOneBy(['resetToken' => $token]);
-        if (
-            !$user ||
-            !$user->getResetTokenExpiresAt() ||
-            $user->getResetTokenExpiresAt() < new \DateTimeImmutable()
-        ) {
-            return $this->json(['success' => false, 'message' => 'Lien invalide ou expiré.'], 400);
+            $this->addFlash('error', 'Le mot de passe est trop faible.');
+            return $this->redirectToRoute('app_reset_password_confirm', ['token' => $token]);
         }
 
         $hasher = $passwordHasherFactory->getPasswordHasher($user);
 
-        // ✅ éviter de remettre le même mot de passe actuel
-        if ($user->getPassword() && $hasher->verify($user->getPassword(), $newPassword)) {
-            return $this->json(['success' => false, 'message' => 'Vous ne pouvez pas réutiliser votre mot de passe actuel.'], 400);
-        }
-
-        // ✅ Vérifie les 5 derniers
-        $lastPasswords = $em->getRepository(PasswordHistory::class)->findBy(
-            ['user' => $user],
-            ['changedAt' => 'DESC'],
-            5
-        );
-
+        // Vérification de l'historique (les 5 derniers)
+        $lastPasswords = $em->getRepository(PasswordHistory::class)->findBy(['user' => $user], ['changedAt' => 'DESC'], 5);
         foreach ($lastPasswords as $history) {
             if ($hasher->verify($history->getPasswordHash(), $newPassword)) {
-                return $this->json(['success' => false, 'message' => 'Ce mot de passe a déjà été utilisé récemment.'], 400);
+                $this->addFlash('error', 'Vous avez déjà utilisé ce mot de passe récemment.');
+                return $this->redirectToRoute('app_reset_password_confirm', ['token' => $token]);
             }
         }
 
-        // ✅ Archive l'ancien
+        // Archive l'ancien mdp
         if ($user->getPassword()) {
             $oldHistory = new PasswordHistory();
             $oldHistory->setUser($user);
@@ -223,22 +174,16 @@ class ResetPasswordController extends AbstractController
             $em->persist($oldHistory);
         }
 
-        // ✅ Nouveau hash
+        // Mise à jour du nouveau MDP
         $user->setPassword($hasher->hash($newPassword));
-
-        // ✅ Nettoyage reset tokens
         $user->setResetToken(null);
         $user->setResetTokenExpiresAt(null);
         $user->setLastResetRequestAt(null);
-
         $em->flush();
 
-        $logger->add('Sécurité', sprintf(
-            'Mot de passe réinitialisé pour %s (IP: %s)',
-            $user->getEmail(),
-            $ip
-        ));
+        $logger->add('Sécurité', "Mot de passe réinitialisé pour {$user->getEmail()}");
 
-        return $this->json(['success' => true]);
+        $this->addFlash('success', 'Votre mot de passe a été modifié. Vous pouvez maintenant vous connecter.');
+        return $this->redirectToRoute('app_login');
     }
 }

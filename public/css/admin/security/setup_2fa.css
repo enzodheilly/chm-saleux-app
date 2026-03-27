@@ -1,0 +1,206 @@
+/* 🛑 NEUTRALISATION DU LAYOUT DE BASE */
+		.sidebar,
+		.top-bar,
+		.mobile-toggle {
+			display: none !important;
+		}
+		.wrapper {
+			display: block !important;
+			margin-left: 0 !important;
+			width: 100% !important;
+			min-height: 100vh !important;
+			background: #0e0e10 !important;
+		}
+		.content {
+			padding: 0 !important;
+			min-height: 100vh !important;
+			display: flex !important;
+			align-items: center !important;
+			justify-content: center !important;
+		}
+		body {
+			margin: 0;
+			padding: 0;
+			overflow-x: hidden;
+			overflow-y: auto;
+			background: #0e0e10;
+		}
+
+		/* ✨ DESIGN DU "SECURITY WALL" */
+		.setup-container {
+			width: 100%;
+			min-height: 100vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background: #0e0e10;
+			padding: 20px;
+		}
+		.setup-card {
+			background: #131315;
+			width: 100%;
+			max-width: 950px;
+			border-radius: 12px;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			overflow: hidden;
+			border: 1px solid #262629;
+			box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+		}
+
+		.setup-info {
+			padding: 50px;
+			background: linear-gradient(135deg, rgba(255, 102, 0, 0.05) 0%, rgba(255, 102, 0, 0) 100%);
+			border-right: 1px solid #262629;
+		}
+		.setup-info h1 {
+			color: #ff6600;
+			font-size: 1.8rem;
+			font-weight: 800;
+			margin-bottom: 20px;
+		}
+		.step-item {
+			display: flex;
+			gap: 20px;
+			margin-bottom: 35px;
+			align-items: flex-start;
+		}
+		.step-number {
+			width: 32px;
+			height: 32px;
+			background: #ff6600;
+			color: #fff;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: 800;
+			flex-shrink: 0;
+		}
+		.step-text h4 {
+			margin: 0 0 8px;
+			color: #ededed;
+			font-size: 1.1rem;
+		}
+		.step-text p {
+			margin: 0;
+			font-size: 0.9rem;
+			color: #888;
+			line-height: 1.6;
+		}
+
+		.setup-action {
+			padding: 50px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+
+		/* Box Image QR */
+		.qr-box {
+			background: #fff;
+			padding: 15px;
+			border-radius: 12px;
+			margin-bottom: 35px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.qr-box img {
+			display: block;
+			width: 200px;
+			height: 200px;
+		}
+
+		/* Lien Mobile Direct */
+		.mobile-link-container {
+			display: none;
+			margin-bottom: 30px;
+			width: 100%;
+			text-align: center;
+		}
+		.btn-mobile-auth {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+			background: #ff6600;
+			color: #fff;
+			padding: 16px 24px;
+			border-radius: 8px;
+			font-weight: 800;
+			text-decoration: none;
+			text-transform: uppercase;
+			font-size: 0.9rem;
+			width: 100%;
+			transition: 0.2s;
+			box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
+		}
+
+		.code-input {
+			background: #0e0e10 !important;
+			border: 2px solid #262629 !important;
+			color: #ff6600 !important;
+			font-size: 32px !important;
+			font-family: 'Courier New', monospace !important;
+			font-weight: 700 !important;
+			text-align: center !important;
+			width: 100%;
+			max-width: 280px;
+			padding: 15px !important;
+			border-radius: 8px !important;
+			margin-bottom: 25px !important;
+			outline: none !important;
+			letter-spacing: 12px !important;
+		}
+		.btn-validate {
+			background: #ededed;
+			color: #0e0e10;
+			border: none;
+			padding: 18px 40px;
+			border-radius: 6px;
+			font-weight: 800;
+			cursor: pointer;
+			width: 100%;
+			text-transform: uppercase;
+		}
+
+		/* =================== RESPONSIVE =================== */
+		@media(max-width: 900px) {
+			.setup-card {
+				grid-template-columns: 1fr;
+				max-width: 500px;
+			}
+			.setup-info {
+				border-right: none;
+				border-bottom: 1px solid #262629;
+				padding: 30px;
+			}
+
+			/* 📱 SUR MOBILE : On cache le QR Code et on affiche le lien */
+			.qr-box {
+				display: none !important;
+			}
+			.mobile-link-container {
+				display: block;
+			}
+
+			.setup-action {
+				padding: 30px;
+			}
+			.code-input {
+				font-size: 26px !important;
+				letter-spacing: 8px !important;
+			}
+		}
+
+				/* Correction de l'affichage du texte selon l'appareil */
+		@media(max-width: 900px) {
+			.hide-mobile {
+				display: none;
+			}
+			.show-mobile {
+				display: block !important;
+			}
+		}

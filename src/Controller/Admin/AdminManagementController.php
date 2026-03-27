@@ -24,22 +24,27 @@ class AdminManagementController extends AbstractController
     ): Response {
 
         if ($request->isMethod('POST')) {
+
+            // ✅ Vérification CSRF
+            $csrfToken = (string) $request->request->get('_token', '');
+            if (!$this->isCsrfTokenValid('new_admin', $csrfToken)) {
+                $this->addFlash('danger', 'Token CSRF invalide.');
+                return $this->redirectToRoute('admin_users_new_admin');
+            }
+
             $emailInput = $request->request->get('email');
             $user = $userRepo->findOneBy(['email' => $emailInput]);
 
             // --- CAS 1 : L'UTILISATEUR EXISTE DÉJÀ (PROMOTION) ---
             if ($user) {
-                // On ajoute simplement le rôle ADMIN
                 $roles = $user->getRoles();
                 if (!in_array('ROLE_ADMIN', $roles)) {
                     $roles[] = 'ROLE_ADMIN';
                     $user->setRoles($roles);
 
-                    // On active la 2FA (génération du secret)
                     if (!$user->getGoogleAuthenticatorSecret()) {
                         $user->setGoogleAuthenticatorSecret($ga->generateSecret());
                     }
-                    // Force le scan du QR Code à la prochaine connexion
                     $user->setIsTotpConfirmed(false);
 
                     $em->flush();
@@ -51,12 +56,10 @@ class AdminManagementController extends AbstractController
 
             // --- CAS 2 : NOUVEL UTILISATEUR (CRÉATION) ---
             else {
-                // On vérifie que les champs obligatoires pour une création sont là
                 if (!$request->request->get('password') || !$request->request->get('firstname')) {
                     $this->addFlash('danger', "Pour un nouvel utilisateur, le nom et le mot de passe sont obligatoires.");
-                    // On renvoie vers le formulaire avec les utilisateurs pour la liste
                     return $this->render('admin/user/new_admin.html.twig', [
-                        'users' => $userRepo->findAll()
+                        'users' => $userRepo->findAll(),
                     ]);
                 }
 
@@ -70,7 +73,7 @@ class AdminManagementController extends AbstractController
                 $user->setPassword($password);
 
                 $user->setGoogleAuthenticatorSecret($ga->generateSecret());
-                $user->setIsTotpConfirmed(false); // Force le scan
+                $user->setIsTotpConfirmed(false);
 
                 $em->persist($user);
                 $em->flush();
@@ -80,9 +83,8 @@ class AdminManagementController extends AbstractController
             return $this->redirectToRoute('admin_users_index');
         }
 
-        // On passe la liste de tous les users pour l'autocomplétion
         return $this->render('admin/user/new_admin.html.twig', [
-            'users' => $userRepo->findAll()
+            'users' => $userRepo->findAll(),
         ]);
     }
 }

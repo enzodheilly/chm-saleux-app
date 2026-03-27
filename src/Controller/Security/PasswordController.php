@@ -2,16 +2,16 @@
 
 namespace App\Controller\Security;
 
-use App\Entity\NewsletterSubscriber;
 use App\Entity\PasswordHistory;
+use App\Entity\User;
+use App\Service\SystemLoggerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\ArticleRepository;
-use App\Service\SystemLoggerService;
 
 class PasswordController extends AbstractController
 {
@@ -31,21 +31,20 @@ class PasswordController extends AbstractController
         UserPasswordHasherInterface $passwordHasher,
         PasswordHasherFactoryInterface $hasherFactory,
         EntityManagerInterface $em,
-        ArticleRepository $articleRepository,
         SystemLoggerService $logger
-    ) {
+    ): Response {
+        /** @var User $user */
         $user = $this->getUser();
 
+        // Sécurité : si pas de user ou pas besoin de mot de passe, on dégage
         if (!$user || !$user->getNeedsPassword()) {
             return $this->redirectToRoute('home');
         }
 
-        $showModal = true;
-
         if ($request->isMethod('POST')) {
             $submittedToken = (string) $request->request->get('_token', '');
             if (!$this->isCsrfTokenValid('set_password', $submittedToken)) {
-                $this->addFlash('error', 'Session invalide. Veuillez réessayer.');
+                $this->addFlash('error', 'Session expirée.');
                 return $this->redirectToRoute('set_password');
             }
 
@@ -53,17 +52,27 @@ class PasswordController extends AbstractController
             $confirmPassword = (string) $request->request->get('confirm_password', '');
             $acceptedTerms = $request->request->getBoolean('acceptedTerms', false);
 
+            $hasErrors = false;
+
             if (!$acceptedTerms) {
                 $this->addFlash('error', 'Vous devez accepter les conditions générales.');
-            } elseif ($password === '' || $confirmPassword === '') {
-                $this->addFlash('error', 'Veuillez remplir tous les champs.');
-            } elseif ($password !== $confirmPassword) {
+                $hasErrors = true;
+            }
+
+            if ($password === '' || $password !== $confirmPassword) {
                 $this->addFlash('error', 'Les mots de passe ne correspondent pas.');
-            } elseif (!$this->isStrongPassword($password)) {
-                $this->addFlash('error', 'Mot de passe trop faible (12+ caractères, majuscule, minuscule, chiffre, spécial).');
-            } else {
+                $hasErrors = true;
+            }
+
+            if (!$this->isStrongPassword($password)) {
+                $this->addFlash('error', 'Mot de passe trop faible.');
+                $hasErrors = true;
+            }
+
+            if (!$hasErrors) {
                 $hasher = $hasherFactory->getPasswordHasher($user);
 
+                // Vérification historique
                 $lastPasswords = $em->getRepository(PasswordHistory::class)->findBy(
                     ['user' => $user],
                     ['changedAt' => 'DESC'],
@@ -77,46 +86,21 @@ class PasswordController extends AbstractController
                     }
                 }
 
-                if ($user->getPassword()) {
-                    $oldHistory = new PasswordHistory();
-                    $oldHistory->setUser($user);
-                    $oldHistory->setPasswordHash($user->getPassword());
-                    $em->persist($oldHistory);
-                }
-
+                // Sauvegarde du nouveau MDP
                 $user->setPassword($passwordHasher->hashPassword($user, $password));
                 $user->setNeedsPassword(false);
                 $user->setAcceptedTerms(true);
 
                 $em->flush();
 
-                $logger->add('Sécurité', sprintf(
-                    'L\'utilisateur %s a configuré son mot de passe initial. (IP: %s)',
-                    $user->getEmail(),
-                    $request->getClientIp()
-                ));
+                $logger->add('Sécurité', sprintf('MDP initial configuré pour %s', $user->getEmail()));
+                $this->addFlash('success', 'Votre mot de passe est configuré !');
 
-                $this->addFlash('success', 'Mot de passe configuré avec succès !');
                 return $this->redirectToRoute('home');
             }
         }
 
-        $articles = $articleRepository->findBy([], ['publishedAt' => 'DESC']);
-
-        $isSubscribed = false;
-        $subscriber = null;
-
-        $subscriber = $em->getRepository(NewsletterSubscriber::class)->findOneBy([
-            'email' => $user->getEmail(),
-            'isConfirmed' => true,
-        ]);
-        $isSubscribed = $subscriber !== null;
-
-        return $this->render('0_home/index.html.twig', [
-            'articles' => $articles,
-            'isSubscribed' => $isSubscribed,
-            'subscriber' => $subscriber,
-            'showSetPasswordModal' => $showModal,
-        ]);
+        // 🚀 Au lieu de rendre '0_home/index.html.twig', on rend une page dédiée
+        return $this->render('security/set_password.html.twig');
     }
 }

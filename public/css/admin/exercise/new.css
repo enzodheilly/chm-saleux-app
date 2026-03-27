@@ -1,0 +1,96 @@
+/* (ton CSS inchangé) */
+    .page-header {
+        display: flex; justify-content: space-between; align-items: flex-end;
+        margin-bottom: 2rem; padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
+    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
+
+    .toolbar { display: flex; gap: 0.75rem; align-items: flex-end; flex-wrap: wrap; justify-content: flex-end; }
+
+    .btn-create {
+        background: var(--text-main);
+        color: var(--bg-body);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700; font-size: 0.85rem;
+        cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
+        transition: 0.2s; border: none; text-decoration: none; display: inline-block;
+        white-space: nowrap;
+    }
+    .btn-create:hover { opacity: 0.9; }
+
+    .btn-outline {
+        background: transparent;
+        color: var(--text-main);
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700; font-size: 0.85rem;
+        cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
+        transition: 0.2s;
+        border: 1px solid var(--border-color);
+        text-decoration: none; display: inline-block;
+        white-space: nowrap;
+        opacity: 0.9;
+    }
+    .btn-outline:hover { opacity: 1; border-color: var(--text-main); }
+
+    .table-wrapper {
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+    }
+    .card-body { padding: 1.5rem; }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        max-width: 700px;
+    }
+
+    .tool-label {
+        display: block;
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.35rem;
+    }
+
+    .input {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 0.6rem 1rem;
+        border-radius: 4px;
+        outline: none;
+        font-size: 0.9rem;
+        transition: border-color 0.2s;
+        width: 100%;
+    }
+    .input:focus { border-color: var(--text-main); }
+    .input::placeholder { color: var(--text-muted); opacity: 0.6; }
+
+    .form-error {
+        color: var(--danger);
+        font-size: 0.85rem;
+        margin-top: 0.35rem;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+    }
+
+    @media(max-width: 700px) {
+        .page-header { align-items: flex-start; flex-direction: column; }
+        .toolbar { justify-content: flex-start; width: 100%; }
+    }

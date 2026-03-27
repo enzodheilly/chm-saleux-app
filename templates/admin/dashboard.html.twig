@@ -1,348 +1,211 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Tableau de bord{% endblock %}
-
-{% block stylesheets %}
-<style>
-    /* =================== 🔒 GATEKEEPER (2FA) =================== */
-    .gatekeeper-overlay {
-        position: fixed; inset: 0;
-        background: var(--bg-body);
-        z-index: 9999;
-        display: flex; align-items: center; justify-content: center;
-    }
-
-    .gatekeeper-card {
-        width: 100%; max-width: 420px;
-        text-align: center;
-        padding: 40px;
-    }
-
-    .gatekeeper-input {
-        background: var(--bg-sidebar);
-        border: 1px solid var(--border-color);
-        color: var(--text-main);
-        font-size: 2rem; text-align: center; letter-spacing: 0.5rem;
-        width: 100%; padding: 15px; border-radius: 6px;
-        margin: 20px 0; outline: none; transition: 0.2s;
-    }
-    .gatekeeper-input:focus { border-color: var(--accent); }
-
-    .btn-unlock {
-        background: var(--accent); color: white;
-        width: 100%; padding: 15px; border-radius: 6px;
-        font-weight: 600; font-size: 1rem;
-        transition: 0.2s;
-    }
-    .btn-unlock:hover { background: var(--accent-hover); }
-
-    /* =================== DASHBOARD LAYOUT =================== */
-    .dashboard-header { margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: end; }
-    .dashboard-header h2 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
-    .dashboard-header p { color: var(--text-muted); margin: 5px 0 0 0; font-size: 0.9rem; }
-
-    /* KPIS (Cartes Stats) */
-    .stats-grid { 
-        display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
-        gap: 1.5rem; margin-bottom: 2rem; 
-    }
-    .stat-card { 
-        background: var(--bg-sidebar); 
-        border: 1px solid var(--border-color); 
-        padding: 1.5rem; border-radius: 8px; 
-    }
-    .stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; }
-    .stat-value { font-size: 2.2rem; font-weight: 700; color: var(--text-main); margin: 10px 0; line-height: 1; }
-    .stat-trend { font-size: 0.85rem; color: var(--text-muted); }
-    .trend-up { color: #34d399; }
-    
-    /* CHARTS & TABLES SECTION */
-    .grid-split { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
-    @media(max-width: 1100px) { .grid-split { grid-template-columns: 1fr; } }
-
-    .card {
-        background: var(--bg-sidebar);
-        border: 1px solid var(--border-color);
-        border-radius: 8px; overflow: hidden;
-        margin-bottom: 1.5rem;
-        display: flex; flex-direction: column;
-    }
-    
-    .card-header {
-        padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border-color);
-        display: flex; justify-content: space-between; align-items: center;
-    }
-    .card-title { font-size: 0.95rem; font-weight: 600; color: var(--text-main); margin: 0; }
-    .card-body { padding: 1.5rem; flex: 1; }
-    .card-body.no-padding { padding: 0; }
-
-    /* TABLE STYLE */
-    .clean-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    .clean-table th { 
-        text-align: left; padding: 1rem 1.5rem; 
-        color: var(--text-muted); font-size: 0.75rem; 
-        text-transform: uppercase; font-weight: 600; 
-        border-bottom: 1px solid var(--border-color);
-    }
-    .clean-table td { 
-        padding: 1rem 1.5rem; 
-        border-bottom: 1px solid var(--border-color); 
-        color: var(--text-main); 
-    }
-    .clean-table tr:last-child td { border-bottom: none; }
-    
-    /* BADGES */
-    .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
-    .badge-success { background: rgba(52, 211, 153, 0.1); color: #34d399; }
-    .badge-danger { background: rgba(248, 113, 113, 0.1); color: #f87171; }
-
-    /* ACTIVITY FEED */
-    .activity-item { 
-        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); 
-        display: flex; gap: 1rem; align-items: flex-start;
-    }
-    .dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; margin-top: 6px; }
-    .activity-text { font-size: 0.9rem; color: var(--text-main); line-height: 1.4; }
-    .activity-date { display: block; font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
-
-</style>
+{% block title %}Tableau de bord
 {% endblock %}
 
-{% block page_title %}Vue d'ensemble{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/admin/dashboard.css') }}">
+{% endblock %}
+
 
 {% block body %}
 
-{# ================================================================= #}
-{# 🔒 LOCK SCREEN (SI QR CODE REQUIS)                               #}
-{# ================================================================= #}
-{% if qrCodeContent is defined and qrCodeContent %}
+	{# ================================================================= #}
+	{# 🔒 LOCK SCREEN (SI QR CODE REQUIS)                               #}
+	{# ================================================================= #}
 
-    <div class="gatekeeper-overlay">
-        <div class="gatekeeper-card">
-            <div style="margin-bottom: 30px;">
-                <img src="{{ asset('images/favicon/icon2.png') }}" width="50" style="opacity: 0.8;">
-            </div>
-            
-            <h1 style="font-size: 1.5rem; margin-bottom: 10px;">Vérification requise</h1>
-            <p style="color: var(--text-muted); margin-bottom: 30px;">
-                Scannez le code QR avec votre application 2FA pour accéder au panel administrateur.
-            </p>
-            
-            <div style="background: white; padding: 10px; border-radius: 8px; display: inline-block; margin-bottom: 20px;">
-                <img src="{{ qr_code_data_uri(qrCodeContent) }}" alt="QR Code" width="180" height="180">
-            </div>
+		{% if qrCodeContent is defined and qrCodeContent %}
 
-            <form method="POST">
-                <input type="text" name="auth_code" class="gatekeeper-input" placeholder="000000" autofocus autocomplete="off" maxlength="6">
-                <button type="submit" class="btn-unlock">Accéder au Dashboard</button>
-            </form>
-            
-            <a href="{{ path('home') }}" style="display:block; margin-top: 30px; font-size: 0.85rem; color: var(--text-muted);">Retour au site</a>
-        </div>
-    </div>
+			<div class="gatekeeper-overlay"> <div class="gatekeeper-card">
 
-{% else %}
+				<div class="gatekeeper-logo">
+					<img src="{{ asset('images/favicon/icon2.png') }}" width="50">
+				</div>
 
-    {# ================================================================= #}
-    {# 📊 DASHBOARD CONTENT                                             #}
-    {# ================================================================= #}
-    
-    <div class="dashboard-header">
-        <div>
-            <h2>Bienvenue, {{ app.user.firstname|default('Admin') }}</h2>
-            <p>Voici ce qui se passe sur votre plateforme aujourd'hui.</p>
-        </div>
-        <div>
-            {# Espace pour un bouton d'action rapide si besoin (ex: Datepicker) #}
-        </div>
-    </div>
+				<h1 class="gatekeeper-title">Vérification requise</h1>
+				<p class="gatekeeper-subtitle">
+					Scannez le code QR avec votre application 2FA pour accéder au panel administrateur.
+				</p>
 
-    {# 1. KPIs #}
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-label">Utilisateurs</div>
-            <div class="stat-value">{{ totalUsers|default(0) }}</div>
-            <div class="stat-trend trend-up">
-                <span style="color: var(--accent);">{{ verifiedUsers|default(0) }}</span> vérifiés
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">Newsletter</div>
-            <div class="stat-value">{{ newsletterSubscribers|default(0) }}</div>
-            <div class="stat-trend trend-up">
-                +{{ newSubscribersToday|default(0) }} aujourd'hui
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">Sécurité</div>
-            <div class="stat-value">{{ successfulAttempts|default(0) }}</div>
-            <div class="stat-trend">Connexions (24h)</div>
-        </div>
-         <div class="stat-card">
-            <div class="stat-label">Athlètes</div>
-            <div class="stat-value">{{ totalAthletes|default(0) }}</div> {# Assure toi de passer cette variable #}
-            <div class="stat-trend">Actifs</div>
-        </div>
-    </div>
+				<div class="gatekeeper-qr">
+					<img src="{{ qr_code_data_uri(qrCodeContent) }}" alt="QR Code" width="180" height="180">
+				</div>
 
-    {# 2. GRAPHIQUES & TABLEAUX #}
-    <div class="grid-split">
-        
-        {# COLONNE GAUCHE (Large) #}
-        <div>
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Trafic & Connexions (7 jours)</h3>
-                </div>
-                <div class="card-body">
-                    <canvas id="loginChart" height="80"></canvas>
-                </div>
-            </div>
+				<form method="POST">
+					<input type="text" name="auth_code" class="gatekeeper-input" placeholder="000000" autofocus autocomplete="off" maxlength="6">
+					<button type="submit" class="btn-unlock">Accéder au Dashboard</button>
+				</form>
 
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Dernières tentatives d'accès</h3>
-                </div>
-                <div class="card-body no-padding">
-                    <div style="overflow-x: auto;">
-                        <table class="clean-table">
-                            <thead>
-                                <tr>
-                                    <th>Utilisateur</th>
-                                    <th>IP</th>
-                                    <th>Date</th>
-                                    <th>Statut</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for attempt in recentAttempts|slice(0, 5) %}
-                                    <tr>
-                                        <td style="font-weight: 500;">{{ attempt.emailAttempt }}</td>
-                                        <td style="color: var(--text-muted);">{{ attempt.ip ?? 'N/A' }}</td>
-                                        <td>{{ attempt.createdAt|date('d/m - H:i') }}</td>
-                                        <td>
-                                            {% if attempt.success %}
-                                                <span class="badge badge-success">Succès</span>
-                                            {% else %}
-                                                <span class="badge badge-danger">Échec</span>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% else %}
-                                    <tr><td colspan="4" style="text-align:center; padding: 2rem; color: var(--text-muted);">Aucune donnée récente.</td></tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+				<a href="{{ path('home') }}" class="gatekeeper-back">
+					Retour au site
+				</a>
 
-        {# COLONNE DROITE (Étroite) #}
-        <div>
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Inscriptions Newsletter</h3>
-                </div>
-                <div class="card-body">
-                    <canvas id="newsletterChart" height="200"></canvas>
-                </div>
-            </div>
+			</div>
+		</div>
 
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Fil d'activité</h3>
-                </div>
-                <div class="card-body no-padding">
-                    {% for item in recentActivity|default([])|slice(0, 5) %}
-                        <div class="activity-item">
-                            <div class="dot"></div>
-                            <div>
-                                <div class="activity-text">{{ item.text|raw }}</div>
-                                <span class="activity-date">{{ item.date|date('d/m à H:i') }}</span>
-                            </div>
-                        </div>
-                    {% else %}
-                        <div style="padding: 1.5rem; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
-                            R.A.S pour le moment.
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
+	{% else %}
 
-    </div>
+		{# ================================================================= #}
+		{# 📊 DASHBOARD CONTENT                                             #}
+		{# ================================================================= #}
 
-{% endif %}
+			<div class="dashboard-header"> <div>
+				<h2>Bienvenue,
+					{{ app.user.firstname|default('Admin') }}</h2>
+				<p>Voici ce qui se passe sur votre plateforme aujourd'hui.</p>
+			</div>
+			<div></div>
+		</div>
+
+		{# 1. KPIs #}
+		<div class="stats-grid">
+
+			<div class="stat-card">
+				<div class="stat-label">Utilisateurs</div>
+				<div class="stat-value">{{ totalUsers|default(0) }}</div>
+				<div class="stat-trend trend-up">
+					<span class="stat-accent">{{ verifiedUsers|default(0) }}</span>
+					vérifiés
+				</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-label">Newsletter</div>
+				<div class="stat-value">{{ newsletterSubscribers|default(0) }}</div>
+				<div class="stat-trend trend-up">
+					+{{ newSubscribersToday|default(0) }}
+					aujourd'hui
+				</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-label">Sécurité</div>
+				<div class="stat-value">{{ successfulAttempts|default(0) }}</div>
+				<div class="stat-trend">Connexions (24h)</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-label">Athlètes</div>
+				<div class="stat-value">{{ totalAthletes|default(0) }}</div>
+				<div class="stat-trend">Actifs</div>
+			</div>
+
+		</div>
+
+		{# 2. GRAPHIQUES & TABLEAUX #}
+		<div
+			class="grid-split">
+
+			{# COLONNE GAUCHE #}
+			<div>
+
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">Trafic & Connexions (7 jours)</h3>
+					</div>
+					<div class="card-body">
+						<canvas id="loginChart" height="80"></canvas>
+					</div>
+				</div>
+
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">Dernières tentatives d'accès</h3>
+					</div>
+					<div class="card-body no-padding">
+						<div class="table-scroll">
+							<table class="clean-table">
+								<thead>
+									<tr>
+										<th>Utilisateur</th>
+										<th>IP</th>
+										<th>Date</th>
+										<th>Statut</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for attempt in recentAttempts|slice(0, 5) %}
+										<tr>
+											<td class="td-bold">{{ attempt.emailAttempt }}</td>
+											<td class="td-muted">{{ attempt.ip ?? 'N/A' }}</td>
+											<td>{{ attempt.createdAt|date('d/m - H:i') }}</td>
+											<td>
+												{% if attempt.success %}
+													<span class="badge badge-success">Succès</span>
+												{% else %}
+													<span class="badge badge-danger">Échec</span>
+												{% endif %}
+											</td>
+										</tr>
+									{% else %}
+										<tr>
+											<td colspan="4" class="td-empty">
+												Aucune donnée récente.
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			{# COLONNE DROITE #}
+			<div>
+
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">Inscriptions Newsletter</h3>
+					</div>
+					<div class="card-body">
+						<canvas id="newsletterChart" height="200"></canvas>
+					</div>
+				</div>
+
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">Fil d'activité</h3>
+					</div>
+					<div class="card-body no-padding">
+
+						{% for item in recentActivity|default([])|slice(0, 5) %}
+							<div class="activity-item">
+								<div class="dot"></div>
+								<div>
+									<div class="activity-text">{{ item.text|raw }}</div>
+									<span class="activity-date">{{ item.date|date('d/m à H:i') }}</span>
+								</div>
+							</div>
+						{% else %}
+							<div class="activity-empty">
+								R.A.S pour le moment.
+							</div>
+						{% endfor %}
+
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	{% endif %}
 
 {% endblock %}
 
 {% block javascripts %}
-{% if not qrCodeContent %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Couleurs dynamiques (basé sur le CSS mais en JS)
-        const accentColor = '#ff6600';
-        const gridColor = '#333333';
-        const textColor = '#888888';
+	{% if not qrCodeContent %} <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="{{ csp_nonce('script') }}"></script>
 
-        // 1. CHART LINE (Connexions)
-        const ctx1 = document.getElementById('loginChart');
-        if (ctx1) {
-            new Chart(ctx1, {
-                type: 'line',
-                data: {
-                    labels: {{ labels7|default(['L','M','M','J','V','S','D'])|json_encode|raw }},
-                    datasets: [{
-                        label: 'Connexions',
-                        data: {{ loginsSuccessByDay|default([0,0,0,0,0,0,0])|json_encode|raw }},
-                        borderColor: accentColor,
-                        backgroundColor: 'rgba(255, 102, 0, 0.05)',
-                        borderWidth: 2,
-                        tension: 0.3,
-                        fill: true,
-                        pointRadius: 0,
-                        pointHoverRadius: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: textColor } },
-                        x: { grid: { display: false }, ticks: { color: textColor } }
-                    }
-                }
-            });
-        }
+		 <script nonce="{{ csp_nonce('script') }}">
+					window.dashboardData = {
+						labels7: {{ labels7|default(['L','M','M','J','V','S','D'])|json_encode|raw }},
+						loginsSuccessByDay: {{ loginsSuccessByDay|default([0,0,0,0,0,0,0])|json_encode|raw }},
+						newSubscribersByDay: {{ newSubscribersByDay|default([0,0,0,0,0,0,0])|json_encode|raw }}
+					};
+				</script>
 
-        // 2. CHART BAR (Newsletter)
-        const ctx2 = document.getElementById('newsletterChart');
-        if (ctx2) {
-            new Chart(ctx2, {
-                type: 'bar',
-                data: {
-                    labels: {{ labels7|default(['L','M','M','J','V','S','D'])|json_encode|raw }},
-                    datasets: [{
-                        label: 'Inscrits',
-                        data: {{ newSubscribersByDay|default([0,0,0,0,0,0,0])|json_encode|raw }},
-                        backgroundColor: '#e5e5e5',
-                        borderRadius: 3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { display: false, beginAtZero: true },
-                        x: { grid: { display: false }, ticks: { color: textColor, font: {size: 10} } }
-                    }
-                }
-            });
-        }
-    });
-</script>
-{% endif %}
+		 <script src="{{ asset('js/admin/dashboard/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
+	{% endif %}
 {% endblock %}

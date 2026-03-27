@@ -1,210 +1,100 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Gestion des articles{% endblock %}
-
-{% block stylesheets %}
-<style>
-    /* =================== HEADER & TOOLS =================== */
-    .page-header {
-        display: flex; justify-content: space-between; align-items: flex-end;
-        margin-bottom: 2rem; padding-bottom: 1rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
-    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
-
-    .toolbar { display: flex; gap: 1rem; }
-
-    .search-input {
-        background: var(--bg-sidebar);
-        border: 1px solid var(--border-color);
-        color: var(--text-main);
-        padding: 0.6rem 1rem;
-        border-radius: 4px;
-        min-width: 280px;
-        font-size: 0.9rem;
-        font-family: inherit;
-        transition: 0.2s;
-    }
-    .search-input:focus { border-color: var(--accent); }
-
-    .btn-create {
-        background: var(--text-main);
-        color: var(--bg-body);
-        padding: 0.6rem 1.2rem;
-        border-radius: 4px;
-        font-weight: 700; font-size: 0.85rem;
-        cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
-        transition: 0.2s; border: none; text-decoration: none; display: inline-block;
-    }
-    .btn-create:hover { opacity: 0.9; }
-
-    /* =================== TABLEAU =================== */
-    .table-wrapper {
-        background: var(--bg-sidebar);
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        overflow: hidden;
-    }
-    
-    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    
-    .admin-table th {
-        background: rgba(255,255,255,0.02);
-        color: var(--text-muted);
-        font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.75rem;
-        text-align: left; padding: 1rem 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    
-    .admin-table td {
-        padding: 1rem 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-        color: var(--text-main); vertical-align: middle;
-    }
-    .admin-table tr:last-child td { border-bottom: none; }
-    .admin-table tr:hover td { background: rgba(255,255,255,0.01); }
-
-    /* Visuels Articles */
-    .article-preview {
-        display: flex; align-items: center; gap: 15px;
-    }
-    .thumb {
-        width: 60px; height: 45px; object-fit: cover; border-radius: 4px; 
-        border: 1px solid var(--border-color); background: var(--bg-body);
-    }
-    .no-thumb {
-        width: 60px; height: 45px; border-radius: 4px; background: var(--bg-body);
-        border: 1px dashed var(--border-color); display: flex; align-items: center; 
-        justify-content: center; font-size: 0.7rem; color: var(--text-muted);
-    }
-    
-    .title-group { display: flex; flex-direction: column; }
-    .title-group strong { font-size: 0.95rem; color: var(--text-main); }
-    .cat-tag { font-size: 0.75rem; color: var(--accent); text-transform: uppercase; font-weight: 600; margin-top: 2px; }
-
-    /* Date de publication */
-    .date-badge {
-        font-family: monospace; font-size: 0.85rem; color: var(--text-muted);
-    }
-
-    /* Actions */
-    .actions { display: flex; gap: 15px; justify-content: flex-end; }
-    .act-link { 
-        font-size: 0.75rem; font-weight: 600; text-transform: uppercase; 
-        letter-spacing: 0.05em; cursor: pointer; transition: 0.2s; opacity: 0.7; 
-        background: none; border: none; padding: 0;
-    }
-    .act-link:hover { opacity: 1; text-decoration: underline; }
-    .act-edit { color: var(--text-main); }
-    .act-del { color: var(--danger); }
-
-</style>
+{% block title %}Gestion des articles
 {% endblock %}
 
-{% block page_title %}Articles & Blog{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/admin/articles/index.css') }}">
+{% endblock %}
 
 {% block body %}
 
-    <div class="page-header">
-        <div>
-            <h1>News</h1>
-            <p>Manage blog posts and club announcements.</p>
-        </div>
-        <div class="toolbar">
-            <input type="text" id="searchInput" class="search-input" placeholder="Filter by title...">
-            <a href="{{ path('admin_articles_new') }}" class="btn-create">
-                + New Article
-            </a>
-        </div>
-    </div>
+	<div class="page-header">
+		<div>
+			<h1>News</h1>
+			<p>Manage blog posts and club announcements.</p>
+		</div>
+		<div class="toolbar">
+			<input type="text" id="searchInput" class="search-input" placeholder="Filter by title...">
+			<a href="{{ path('admin_articles_new') }}" class="btn-create">
+				+ New Article
+			</a>
+		</div>
+	</div>
 
-    <div class="table-wrapper">
-        <div style="overflow-x: auto;">
-            <table class="admin-table" id="articlesTable">
-                <thead>
-                    <tr>
-                        <th width="35%">Article</th>
-                        <th width="35%">Content preview</th>
-                        <th width="15%">Published</th>
-                        <th style="text-align: right;">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for article in articles %}
-                        <tr>
-                            <td>
-                                <div class="article-preview">
-                                    {% if article.photo %}
-                                        <img src="{{ asset('uploads/' ~ article.photo) }}" alt="" class="thumb">
-                                    {% else %}
-                                        <div class="no-thumb">N/A</div>
-                                    {% endif %}
+	<div class="table-wrapper">
+		<div style="overflow-x: auto;">
+			<table class="admin-table" id="articlesTable">
+				<thead>
+					<tr>
+						<th width="35%">Article</th>
+						<th width="35%">Content preview</th>
+						<th width="15%">Published</th>
+						<th style="text-align: right;">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for article in articles %}
+						<tr>
+							<td>
+								<div class="article-preview">
+									{% if article.photo %}
+										<img src="{{ asset('uploads/' ~ article.photo) }}" alt="" class="thumb">
+									{% else %}
+										<div class="no-thumb">N/A</div>
+									{% endif %}
 
-                                    <div class="title-group">
-                                        <strong>{{ article.title }}</strong>
+									<div class="title-group">
+										<strong>{{ article.title }}</strong>
 
-                                        <span class="cat-tag">
-                                            {{ article.category ? article.category.name : 'General' }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </td>
+										<span class="cat-tag">
+											{{ article.category ? article.category.name : 'General' }}
+										</span>
+									</div>
+								</div>
+							</td>
 
-                            <td style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">
-                                {{ article.description ? (article.description|striptags|slice(0, 80) ~ '...') : '—' }}
-                            </td>
+							<td style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">
+								{{ article.description ? (article.description|striptags|slice(0, 80) ~ '...') : '—' }}
+							</td>
 
-                            <td>
-                                <span class="date-badge">
-                                    {% if article.publishedAt %}
-                                        {{ article.publishedAt|date('d/m/Y') }}
-                                    {% else %}
-                                        <span style="color: var(--accent);">Draft</span>
-                                    {% endif %}
-                                </span>
-                            </td>
+							<td>
+								<span class="date-badge">
+									{% if article.publishedAt %}
+										{{ article.publishedAt|date('d/m/Y') }}
+									{% else %}
+										<span style="color: var(--accent);">Draft</span>
+									{% endif %}
+								</span>
+							</td>
 
-                            <td>
-                                <div class="actions">
-                                    <a href="{{ path('admin_articles_edit', {id: article.id}) }}" class="act-link act-edit">
-                                        Edit
-                                    </a>
+							<td>
+								<div class="actions">
+									<a href="{{ path('admin_articles_edit', {id: article.id}) }}" class="act-link act-edit">
+										Edit
+									</a>
 
-                                    <form method="post"
-                                          action="{{ path('admin_articles_delete', {id: article.id}) }}"
-                                          style="display:inline;"
-                                          onsubmit="return confirm('Delete this article permanently?');">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
-                                        <button class="act-link act-del">Delete</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="4" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-                                No articles yet.
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+									<form method="post" action="{{ path('admin_articles_delete', {id: article.id}) }}" style="display:inline;" onsubmit="return confirm('Delete this article permanently?');">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+										<button class="act-link act-del">Delete</button>
+									</form>
+								</div>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="4" style="text-align: center; padding: 4rem; color: var(--text-muted);">
+								No articles yet.
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 
 {% endblock %}
 
 {% block javascripts %}
-<script>
-    document.getElementById('searchInput').addEventListener('keyup', function() {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll('#articlesTable tbody tr');
-
-        rows.forEach(row => {
-            const title = row.querySelector('.title-group strong')?.textContent?.toLowerCase() || '';
-            row.style.display = title.includes(filter) ? '' : 'none';
-        });
-    });
-</script>
+	 <script src="{{ asset('js/admin/articles/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

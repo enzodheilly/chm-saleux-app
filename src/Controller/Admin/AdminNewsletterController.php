@@ -34,10 +34,16 @@ class AdminNewsletterController extends AbstractController
         EntityManagerInterface $em,
         UrlGeneratorInterface $urlGenerator
     ): Response {
-        // --- Envoi AJAX d’un test ---
+        // --- Envoi AJAX d'un test ---
         if ($request->isXmlHttpRequest()) {
             $data = json_decode($request->getContent(), true);
             if (!empty($data['test'])) {
+
+                // ✅ CSRF pour les appels AJAX
+                if (!$this->isCsrfTokenValid('newsletter_compose', $data['_token'] ?? '')) {
+                    return $this->json(['message' => '❌ Jeton CSRF invalide.'], 403);
+                }
+
                 $user = $this->getUser();
                 if (!$user) {
                     return $this->json(['message' => '❌ Vous devez être connecté pour envoyer un test.'], 403);
@@ -52,7 +58,6 @@ class AdminNewsletterController extends AbstractController
                 try {
                     $mailer->send($email);
 
-                    // 🧾 Enregistre la campagne test
                     $campaign = (new NewsletterCampaign())
                         ->setSubject($data['subject'])
                         ->setContent($data['content'])
@@ -66,20 +71,26 @@ class AdminNewsletterController extends AbstractController
 
                     return $this->json(['message' => '✅ Mail de test envoyé à ' . $user->getEmail()]);
                 } catch (\Exception $e) {
-                    return $this->json(['message' => '❌ Erreur lors de l’envoi : ' . $e->getMessage()], 500);
+                    return $this->json(['message' => '❌ Erreur lors de l\'envoi : ' . $e->getMessage()], 500);
                 }
             }
         }
 
         // --- Envoi réel (formulaire classique) ---
         if ($request->isMethod('POST')) {
+
+            // ✅ CSRF pour l'envoi réel
+            if (!$this->isCsrfTokenValid('newsletter_compose', (string) $request->request->get('_token', ''))) {
+                $this->addFlash('danger', 'Jeton CSRF invalide.');
+                return $this->redirectToRoute('admin_newsletter_compose');
+            }
+
             $subject = $request->request->get('subject');
             $content = $request->request->get('content');
 
             $subscribers = $em->getRepository(NewsletterSubscriber::class)->findBy(['isConfirmed' => true]);
             $count = 0;
 
-            // 🧾 Crée d’abord la campagne
             $campaign = (new NewsletterCampaign())
                 ->setSubject($subject)
                 ->setContent($content)
@@ -88,19 +99,17 @@ class AdminNewsletterController extends AbstractController
                 ->setSentAt(new \DateTimeImmutable());
 
             $em->persist($campaign);
-            $em->flush(); // on flush pour avoir un ID utilisable pour le tracking
+            $em->flush();
 
             foreach ($subscribers as $subscriber) {
                 $user = $subscriber->getUser();
 
-                // 🔗 Lien de désinscription
                 $unsubscribeUrl = $urlGenerator->generate(
                     'newsletter_unsubscribe',
                     ['id' => $subscriber->getId()],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 );
 
-                // 🔁 Variables dynamiques
                 $personalizedContent = str_replace(
                     ['{{ firstname }}', '{{ lastname }}', '{{ email }}', '{{ unsubscribe_url }}'],
                     [
@@ -112,7 +121,6 @@ class AdminNewsletterController extends AbstractController
                     $content
                 );
 
-                // 📊 Réécriture des liens avec tracking
                 $personalizedContent = preg_replace_callback(
                     '/<a\s+href="([^"]+)"/i',
                     function ($matches) use ($subscriber, $campaign, $urlGenerator) {
@@ -129,7 +137,6 @@ class AdminNewsletterController extends AbstractController
                     $personalizedContent
                 );
 
-                // 🖼️ Ajoute un pixel invisible pour le suivi des ouvertures
                 $trackingPixel = sprintf(
                     '<img src="%s" width="1" height="1" style="display:none;" alt="" />',
                     $urlGenerator->generate(
@@ -144,7 +151,6 @@ class AdminNewsletterController extends AbstractController
 
                 $personalizedContent .= $trackingPixel;
 
-                // ✉️ Envoi du mail
                 $email = (new Email())
                     ->from('no-reply@monsite.com')
                     ->to($subscriber->getEmail())
@@ -159,7 +165,6 @@ class AdminNewsletterController extends AbstractController
                 }
             }
 
-            // 🧾 Mise à jour finale
             $campaign->setRecipientCount($count);
             $em->flush();
 
@@ -167,13 +172,11 @@ class AdminNewsletterController extends AbstractController
             return $this->redirectToRoute('admin_newsletter_index');
         }
 
-        // --- Affichage du formulaire de composition ---
         return $this->render('admin/newsletter/compose.html.twig', [
             'firstname' => 'Jean',
             'unsubscribe_url' => 'https://monsite.com/newsletter/unsubscribe/12345',
         ]);
     }
-
 
     #[Route('/history', name: 'history')]
     public function history(EntityManagerInterface $em): Response

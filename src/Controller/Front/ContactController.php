@@ -1,6 +1,5 @@
 <?php
 
-// src/Controller/ContactController.php
 namespace App\Controller\Front;
 
 use App\Entity\ContactMessage;
@@ -27,6 +26,12 @@ class ContactController extends AbstractController
         EntityManagerInterface $em,
         SystemLoggerService $logger
     ): Response {
+        // ✅ CSRF
+        if (!$this->isCsrfTokenValid('contact_submit', (string) $request->request->get('_token', ''))) {
+            $this->addFlash('danger', 'Jeton CSRF invalide.');
+            return $this->redirectToRoute('contact');
+        }
+
         $lastName  = trim((string) $request->request->get('lastName', ''));
         $firstName = trim((string) $request->request->get('firstName', ''));
         $email     = trim((string) $request->request->get('email', ''));

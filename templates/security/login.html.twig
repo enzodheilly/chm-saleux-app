@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion - CHM Saleux
+{% endblock %}
+
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/security/auth_layout.css') }}">
+{% endblock %}
+
+{% block body %}
+	<section
+		class="auth-split-screen">
+
+		{# --- CÔTÉ GAUCHE : FORMULAIRE SYMFONY --- #}
+		<div class="auth-left">
+			<div class="auth-content-wrapper">
+				<div class="auth-header">
+					<a href="{{ path('home') }}" class="auth-logo">
+						<img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo CHM">
+					</a>
+					<h1>RAVI DE VOUS REVOIR</h1>
+					<p>Entrez vos identifiants pour accéder à votre espace membre.</p>
+				</div>
+
+				{# Affichage des erreurs de sécurité Symfony #}
+				{% if error %}
+					<div class="alert-error">
+						{{ error.messageKey|trans(error.messageData, 'security') }}
+					</div>
+				{% endif %}
+
+				{% for message in app.flashes('success') %}
+					<div class="alert-success">
+						{{ message }}
+					</div>
+				{% endfor %}
+
+				<form action="{{ path('app_login') }}" method="post" class="auth-form">
+					<div class="form-group">
+						<label for="inputEmail">Email</label>
+						<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" placeholder="votre@email.com" required autofocus>
+					</div>
+
+					<div class="form-group">
+						<label for="inputPassword">Mot de passe</label>
+						<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" placeholder="••••••••" required>
+					</div>
+
+					{# Token CSRF indispensable #}
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+					<div class="turnstile-container">
+						<div class="cf-turnstile" data-sitekey="0x4AAAAAACvankHbbJ6UuueH" data-size="invisible" data-appearance="always"></div>
+					</div>
+
+					<div class="remember-me-container">
+						<label class="remember-me-label">
+							<input type="checkbox" name="_remember_me">
+							Se souvenir de moi
+						</label>
+					</div>
+
+					<div class="form-actions">
+						<button class="btn-auth login-btn" type="submit">
+							Se connecter
+						</button>
+					</div>
+				</form>
+
+				<div class="register-hint">
+					<a href="{{ path('app_reset_password_request') }}" class="forgot-link">Mot de passe oublié ?</a>
+					<p>Pas encore de compte ?
+						<a href="{{ path('app_register') }}">S'inscrire</a>
+					</p>
+				</div>
+
+				<div class="auth-bottom">
+					<a href="{{ path('home') }}" class="back-link">← Retour au site</a>
+				</div>
+			</div>
+		</div>
+
+		{# --- CÔTÉ DROIT : SLIDER (Textes adaptés à la reconnexion) --- #}
+		<div class="auth-right">
+			<div class="slider-arrows">
+				<div class="arrow prev" onclick="prevSlide()">❮</div>
+				<div class="arrow next" onclick="nextSlide()">❯</div>
+			</div>
+
+			<div class="auth-slider">
+				<div class="slide slide-1 active">
+					<div class="slide-content">
+						<h2>Prêt Pour Votre<br>Séance ?</h2>
+						<p>Connectez-vous pour consulter votre programme du jour et enregistrer vos nouvelles performances.</p>
+						<div class="slide-pagination">
+							<span class="dot active" onclick="changeSlide(0)"></span>
+							<span class="dot" onclick="changeSlide(1)"></span>
+							<span class="dot" onclick="changeSlide(2)"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="slide slide-2">
+					<div class="slide-content">
+						<h2>Analysez Vos<br>Progrès</h2>
+						<p>Retrouvez vos graphiques d'évolution et voyez tout le chemin parcouru depuis vos débuts au club.</p>
+						<div class="slide-pagination">
+							<span class="dot" onclick="changeSlide(0)"></span>
+							<span class="dot active" onclick="changeSlide(1)"></span>
+							<span class="dot" onclick="changeSlide(2)"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="slide slide-3">
+					<div class="slide-content">
+						<h2>Le Mental Avant<br>Le Muscle</h2>
+						<p>Chaque connexion est une preuve de votre discipline. Continuez ainsi, la communauté CHM est avec vous.</p>
+						<div class="slide-pagination">
+							<span class="dot" onclick="changeSlide(0)"></span>
+							<span class="dot" onclick="changeSlide(1)"></span>
+							<span class="dot active" onclick="changeSlide(2)"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	 <script src="{{ asset('js/security/auth_slider.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+{% endblock %}

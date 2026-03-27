@@ -1,296 +1,89 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Ajouter un Administrateur{% endblock %}
-{% block page_title %}Ajouter un Administrateur{% endblock %}
-
-{% block stylesheets %}
-<style>
-    .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--border-color);
-        gap: 1rem;
-        flex-wrap: wrap;
-    }
-
-    .page-header h1 {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin: 0;
-        color: var(--text-main);
-    }
-
-    .page-header p {
-        margin: 5px 0 0 0;
-        color: var(--text-muted);
-        font-size: 0.9rem;
-    }
-
-    .toolbar {
-        display: flex;
-        gap: 0.75rem;
-        align-items: flex-end;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-    }
-
-    .btn-create {
-        background: var(--text-main);
-        color: var(--bg-body);
-        padding: 0.6rem 1.2rem;
-        border-radius: 4px;
-        font-weight: 700;
-        font-size: 0.85rem;
-        cursor: pointer;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        transition: 0.2s;
-        border: none;
-        text-decoration: none;
-        display: inline-block;
-        white-space: nowrap;
-    }
-
-    .btn-create:hover {
-        opacity: 0.9;
-    }
-
-    .btn-outline {
-        background: transparent;
-        color: var(--text-main);
-        padding: 0.6rem 1.2rem;
-        border-radius: 4px;
-        font-weight: 700;
-        font-size: 0.85rem;
-        cursor: pointer;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        transition: 0.2s;
-        border: 1px solid var(--border-color);
-        text-decoration: none;
-        display: inline-block;
-        white-space: nowrap;
-        opacity: 0.9;
-    }
-
-    .btn-outline:hover {
-        opacity: 1;
-        border-color: var(--text-main);
-    }
-
-    .table-wrapper {
-        background: var(--bg-sidebar);
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-    }
-
-    .card-body {
-        padding: 1.5rem;
-    }
-
-    .form-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1.2rem;
-        max-width: 760px;
-    }
-
-    .form-row-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.2rem;
-    }
-
-    .tool-label {
-        display: block;
-        color: var(--text-muted);
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 0.35rem;
-    }
-
-    .label-tag {
-        font-weight: 400;
-        text-transform: none;
-        font-size: 0.82em;
-        color: var(--text-muted);
-        opacity: 0.75;
-        margin-left: 4px;
-    }
-
-    .input {
-        background: transparent;
-        border: 1px solid var(--border-color);
-        color: var(--text-main);
-        padding: 0.6rem 1rem;
-        border-radius: 4px;
-        outline: none;
-        font-size: 0.9rem;
-        transition: border-color 0.2s;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .input:focus {
-        border-color: var(--text-main);
-    }
-
-    .input::placeholder {
-        color: var(--text-muted);
-        opacity: 0.6;
-    }
-
-    .info-box {
-        background: rgba(255, 102, 0, 0.05);
-        border: 1px solid rgba(255, 102, 0, 0.18);
-        border-left: 3px solid var(--accent);
-        padding: 1rem 1rem;
-        border-radius: 6px;
-    }
-
-    .info-text {
-        font-size: 0.85rem;
-        color: var(--text-main);
-        line-height: 1.45;
-        margin: 0;
-    }
-
-    .info-text strong {
-        color: var(--accent);
-    }
-
-    .section-separator {
-        border: 0;
-        border-top: 1px dashed var(--border-color);
-        margin: 0.3rem 0;
-        opacity: 0.6;
-    }
-
-    .subsection-title {
-        font-size: 0.78rem;
-        font-weight: 700;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin: 0;
-    }
-
-    .form-help {
-        display: block;
-        margin-top: 0.35rem;
-        color: var(--text-muted);
-        font-size: 0.8rem;
-    }
-
-    .form-actions {
-        display: flex;
-        gap: 0.75rem;
-        align-items: center;
-        flex-wrap: wrap;
-        margin-top: 0.5rem;
-    }
-
-    @media (max-width: 700px) {
-        .page-header {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        .toolbar {
-            justify-content: flex-start;
-            width: 100%;
-        }
-
-        .form-row-2 {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
+{% block title %}Ajouter un Administrateur
 {% endblock %}
 
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/admin/user/new_admin.css') }}">
+{% endblock %}
+
+
 {% block body %}
-    <div class="page-header">
-        <div>
-            <h1>Ajouter un Administrateur</h1>
-            <p>Promouvoir un membre ou créer un accès.</p>
-        </div>
+	<div class="page-header">
+		<div>
+			<h1>Ajouter un Administrateur</h1>
+			<p>Promouvoir un membre ou créer un accès.</p>
+		</div>
 
-        <div class="toolbar">
-            <a href="{{ path('admin_users_index') }}" class="btn-outline">Retour</a>
-        </div>
-    </div>
+		<div class="toolbar">
+			<a href="{{ path('admin_users_index') }}" class="btn-outline">Retour</a>
+		</div>
+	</div>
 
-    <div class="table-wrapper">
-        <div class="card-body">
-            <form method="POST" autocomplete="off">
-                <div class="form-grid">
-                    <div class="info-box">
-                        <p class="info-text">
-                            <strong>Mode hybride :</strong> si vous entrez l’email d’un membre existant, il sera promu administrateur immédiatement.
-                            Sinon, complétez les champs suivants pour créer un nouveau compte.
-                        </p>
-                    </div>
+	<div class="table-wrapper">
+		<div class="card-body">
+			<form method="POST" autocomplete="off">
+				<input type="hidden" name="_token" value="{{ csrf_token('new_admin') }}">
+				<div class="form-grid">
+					<div class="info-box">
+						<p class="info-text">
+							<strong>Mode hybride :</strong>
+							si vous entrez l’email d’un membre existant, il sera promu administrateur immédiatement.
+																												                            Sinon, complétez les champs suivants pour créer un nouveau compte.
+						</p>
+					</div>
 
-                    <div>
-                        <span class="tool-label">Email de l'utilisateur</span>
-                        <input
-                            type="email"
-                            name="email"
-                            list="users_list"
-                            class="input"
-                            placeholder="Rechercher ou saisir un email..."
-                            required
-                            autofocus
-                        >
+					<div>
+						<span class="tool-label">Email de l'utilisateur</span>
+						<input type="email" name="email" list="users_list" class="input" placeholder="Rechercher ou saisir un email..." required autofocus>
 
-                        <datalist id="users_list">
-                            {% for user in users %}
-                                <option value="{{ user.email }}">{{ user.firstName }} {{ user.lastName }}</option>
-                            {% endfor %}
-                        </datalist>
-                    </div>
+						<datalist id="users_list">
+							{% for user in users %}
+								<option value="{{ user.email }}">{{ user.firstName }}
+									{{ user.lastName }}</option>
+							{% endfor %}
+						</datalist>
+					</div>
 
-                    <hr class="section-separator">
+					<hr class="section-separator">
 
-                    <p class="subsection-title">Uniquement si création de compte</p>
+					<p class="subsection-title">Uniquement si création de compte</p>
 
-                    <div class="form-row-2">
-                        <div>
-                            <span class="tool-label">
-                                Prénom <span class="label-tag">(optionnel si existant)</span>
-                            </span>
-                            <input type="text" name="firstname" class="input" placeholder="Ex: Jean">
-                        </div>
+					<div class="form-row-2">
+						<div>
+							<span class="tool-label">
+								Prénom
+								<span class="label-tag">(optionnel si existant)</span>
+							</span>
+							<input type="text" name="firstname" class="input" placeholder="Ex: Jean">
+						</div>
 
-                        <div>
-                            <span class="tool-label">
-                                Nom <span class="label-tag">(optionnel si existant)</span>
-                            </span>
-                            <input type="text" name="lastname" class="input" placeholder="Ex: Dupont">
-                        </div>
-                    </div>
+						<div>
+							<span class="tool-label">
+								Nom
+								<span class="label-tag">(optionnel si existant)</span>
+							</span>
+							<input type="text" name="lastname" class="input" placeholder="Ex: Dupont">
+						</div>
+					</div>
 
-                    <div>
-                        <span class="tool-label">
-                            Mot de passe <span class="label-tag">(optionnel si existant)</span>
-                        </span>
-                        <input type="password" name="password" class="input" autocomplete="new-password">
-                        <span class="form-help">
-                            Laissez vide si l'utilisateur existe déjà. Son mot de passe actuel sera conservé.
-                        </span>
-                    </div>
+					<div>
+						<span class="tool-label">
+							Mot de passe
+							<span class="label-tag">(optionnel si existant)</span>
+						</span>
+						<input type="password" name="password" class="input" autocomplete="new-password">
+						<span class="form-help">
+							Laissez vide si l'utilisateur existe déjà. Son mot de passe actuel sera conservé.
+						</span>
+					</div>
 
-                    <div class="form-actions">
-                        <button type="submit" class="btn-create">Valider & promouvoir</button>
-                        <a href="{{ path('admin_users_index') }}" class="btn-outline">Annuler</a>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+					<div class="form-actions">
+						<button type="submit" class="btn-create">Valider & promouvoir</button>
+						<a href="{{ path('admin_users_index') }}" class="btn-outline">Annuler</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 {% endblock %}

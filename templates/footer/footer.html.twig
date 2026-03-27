@@ -1,109 +1,136 @@
 <footer class="footer-chm">
-    {% if isSubscribed is not defined %}{% set isSubscribed = false %}{% endif %}
-    {% if subscriber is not defined %}{% set subscriber = null %}{% endif %}
+	{% if isSubscribed is not defined %}
+		{% set isSubscribed = false %}
+	{% endif %}
+	{% if subscriber is not defined %}
+		{% set subscriber = null %}
+	{% endif %}
 
-    <div class="footer-top-container">
-        <div class="footer-main-grid">
+	<div class="footer-top-container">
+		<div class="footer-main-grid">
 
-            <div class="footer-col footer-brand">
-                <div class="logo-wrapper">
-                    <img src="{{ asset('images/favicon/icon2.png') }}" alt="CHM Saleux" class="footer-logo">
-                    <span class="logo-text">CHM<span>SALEUX</span></span>
-                </div>
-                <p class="brand-tagline">Repoussez vos limites, vivez votre passion. Le club de force référence à Saleux.</p>
-                <div class="social-links-minimal">
-                    <a href="https://www.facebook.com/chmsaleux1/?ref=br_rs" class="social-item"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.instagram.com/chmsaleux/" class="social-item"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.tiktok.com/@chmsaleux" class="social-item"><i class="fab fa-tiktok"></i></a>
-                </div>
-            </div>
+			<div class="footer-col footer-brand">
+				<div class="logo-wrapper">
+					<img src="{{ asset('images/favicon/icon2.png') }}" alt="CHM Saleux" class="footer-logo">
+					<span class="logo-text">CHM<span>SALEUX</span>
+					</span>
+				</div>
+				<p class="brand-tagline">Repoussez vos limites, vivez votre passion. Le club de force référence à Saleux.</p>
+				<div class="social-links-minimal">
+					<a href="https://www.facebook.com/chmsaleux1/?ref=br_rs" class="social-item">
+						<i class="fab fa-facebook-f"></i>
+					</a>
+					<a href="https://www.instagram.com/chmsaleux/" class="social-item">
+						<i class="fab fa-instagram"></i>
+					</a>
+					<a href="https://www.tiktok.com/@chmsaleux" class="social-item">
+						<i class="fab fa-tiktok"></i>
+					</a>
+				</div>
+			</div>
 
-            <div class="footer-col footer-nav">
-                <h4 class="footer-title">Navigation</h4>
-                <ul class="nav-list">
-                    <li><a href="{{ path('home') }}"><i class="fa-solid fa-chevron-right"></i> Accueil</a></li>
-                    <li><a href="{{ path('app_club') }}"><i class="fa-solid fa-chevron-right"></i> Le Club</a></li>
-                    <li><a href="{{ path('app_pricing') }}"><i class="fa-solid fa-chevron-right"></i> Nos Tarifs</a></li>
-                    <li><a href="{{ path('ecole') }}"><i class="fa-solid fa-chevron-right"></i> Notre École</a></li>
-                    <li><a href="{{ path('competition') }}"><i class="fa-solid fa-chevron-right"></i> Compétitions</a></li>
-                    <li><a href="{{ path('contact') }}"><i class="fa-solid fa-chevron-right"></i> Contact</a></li>
-                </ul>
-            </div>
+			<div class="footer-col footer-nav">
+				<h4 class="footer-title">Navigation</h4>
+				<ul class="nav-list">
+					<li>
+						<a href="{{ path('home') }}">
+							<i class="fa-solid fa-chevron-right"></i>
+							Accueil</a>
+					</li>
+					<li>
+						<a href="{{ path('app_club') }}">
+							<i class="fa-solid fa-chevron-right"></i>
+							Le Club</a>
+					</li>
+					<li>
+						<a href="{{ path('app_pricing') }}">
+							<i class="fa-solid fa-chevron-right"></i>
+							Nos Tarifs</a>
+					</li>
+					<li>
+						<a href="{{ path('ecole') }}">
+							<i class="fa-solid fa-chevron-right"></i>
+							Notre École</a>
+					</li>
+					<li>
+						<a href="{{ path('competition') }}">
+							<i class="fa-solid fa-chevron-right"></i>
+							Compétitions</a>
+					</li>
+					<li>
+						<a href="{{ path('contact') }}">
+							<i class="fa-solid fa-chevron-right"></i>
+							Contact</a>
+					</li>
+				</ul>
+			</div>
 
-            <div class="footer-col footer-newsletter">
-                <h4 class="footer-title">Restez informé</h4>
+			<div class="footer-col footer-newsletter">
+				<h4 class="footer-title">Restez informé</h4>
 
-                {% if app.user and isSubscribed %}
-                    <div class="newsletter-card subscribed">
-                        <div class="icon-circle"><i class="fa-solid fa-check"></i></div>
-                        <p>Vous êtes abonné avec <strong>{{ app.user.email }}</strong></p>
-                        <a href="{{ path('newsletter_unsubscribe', {'token': subscriber.unsubscribeToken}) }}" class="link-muted">Se désabonner</a>
-                    </div>
-                {% else %}
-                    <p class="newsletter-desc">Recevez les actus et événements du club directement par mail.</p>
+				{% if app.user and isSubscribed %}
+					<div class="newsletter-card subscribed">
+						<div class="icon-circle">
+							<i class="fa-solid fa-check"></i>
+						</div>
+						<p>Vous êtes abonné avec
+							<strong>{{ app.user.email }}</strong>
+						</p>
+						<a href="{{ path('newsletter_unsubscribe', {'token': subscriber.unsubscribeToken}) }}" class="link-muted">Se désabonner</a>
+					</div>
+				{% else %}
+					<p class="newsletter-desc">Recevez les actus et événements du club directement par mail.</p>
 
-                    <form id="newsletter-form" class="modern-form" method="POST" action="{{ path('newsletter_subscribe') }}">
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('newsletter') }}">
+					<form id="newsletter-form" class="modern-form" method="POST" action="{{ path('newsletter_subscribe') }}">
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('newsletter') }}">
 
-                        <div class="input-group">
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Votre adresse email"
-                                value="{{ app.user ? app.user.email : '' }}"
-                                autocomplete="email"
-                                required
-                            >
-                        <button type="submit" id="newsletter-submit" class="btn-submit-icon">
-    <i class="fa-solid fa-paper-plane"></i>
-</button>
-                        </div>
+						<div class="input-group">
+							<input type="email" name="email" placeholder="Votre adresse email" value="{{ app.user ? app.user.email : '' }}" autocomplete="email" required>
+							<button type="submit" id="newsletter-submit" class="btn-submit-icon">
+								<i class="fa-solid fa-paper-plane"></i>
+							</button>
+						</div>
 
-                        <div
-                            id="turnstile-newsletter"
-                            class="cf-turnstile"
-                            data-sitekey="{{ turnstile_site_key }}"
-                            data-theme="dark"
-                            data-size="flexible"
-                            data-appearance="interaction-only">
-                        </div>
+						<div id="turnstile-newsletter" class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}" data-theme="dark" data-size="invisible" data-execution="execute"></div>
 
-                        <div id="newsletterSuccess" class="feedback success"></div>
-                        <div id="newsletterError" class="feedback error"></div>
-                    </form>
+						<div id="newsletterSuccess" class="feedback success"></div>
+						<div id="newsletterError" class="feedback error"></div>
+					</form>
 
-               <p class="privacy-note">
-    Recevez les actualités, informations utiles et nouveautés du club directement par email. Vous pourrez vous désabonner à tout moment en un seul clic. Vos données sont traitées avec soin et restent strictement confidentielles. Plus d’informations dans notre
-    <a href="{{ path('legal_page_show', {'slug': 'confidentialite'}) }}">politique de confidentialité</a>.
-</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+					<p class="privacy-note">
+						Recevez les actualités, informations utiles et nouveautés du club directement par email. Vous pourrez vous désabonner à tout moment en un seul clic. Vos données sont traitées avec soin et restent strictement confidentielles. Plus d’informations dans notre
+						<a href="{{ path('legal_page_show', {'slug': 'confidentialite'}) }}">politique de confidentialité</a>.
+					</p>
+				{% endif %}
+			</div>
+		</div>
+	</div>
 
-    <div class="footer-divider">
-        <div class="container-inner">
-            <div class="payment-methods">
-                <span class="label">Paiements sécurisés :</span>
-                <div class="icons">
-                    <img src="{{ asset('images/payments/visa.png') }}" alt="Visa" title="Visa">
-                    <img src="{{ asset('images/payments/mastercard.png') }}" alt="Mastercard" title="Mastercard">
-                    <img src="{{ asset('images/payments/google.png') }}" alt="Google Pay" title="Google Pay">
-                    <img src="{{ asset('images/payments/apple.png') }}" alt="Apple Pay" title="Apple Pay">
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="footer-divider">
+		<div class="container-inner">
+			<div class="payment-methods">
+				<span class="label">Paiements sécurisés :</span>
+				<div class="icons">
+					<img src="{{ asset('images/payments/visa.png') }}" alt="Visa" title="Visa">
+					<img src="{{ asset('images/payments/mastercard.png') }}" alt="Mastercard" title="Mastercard">
+					<img src="{{ asset('images/payments/google.png') }}" alt="Google Pay" title="Google Pay">
+					<img src="{{ asset('images/payments/apple.png') }}" alt="Apple Pay" title="Apple Pay">
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <div class="footer-bottom">
-        <div class="container-inner flex-between">
-            <p class="copyright">&copy; {{ "now"|date("Y") }} <strong>CHM SALEUX</strong>. Tous droits réservés.</p>
-            <div class="footer-legal">
-                <a href="{{ path('legal_page_show', {'slug': 'mentions-legales'}) }}">Mentions</a>
-                <a href="{{ path('legal_page_show', {'slug': 'conditions-utilisation'}) }}">CGU</a>
-                <a href="{{ path('legal_page_show', {'slug': 'confidentialite'}) }}">Confidentialité</a>
-                <a href="{{ path('legal_page_show', {'slug': 'cookies'}) }}">Cookies</a>
-            </div>
-        </div>
-    </div>
+	<div class="footer-bottom">
+		<div class="container-inner flex-between">
+			<p class="copyright">&copy;
+				{{ "now"|date("Y") }}
+				<strong>CHM SALEUX</strong>. Tous droits réservés.</p>
+			<div class="footer-legal">
+				<a href="{{ path('legal_page_show', {'slug': 'mentions-legales'}) }}">Mentions</a>
+				<a href="{{ path('legal_page_show', {'slug': 'conditions-utilisation'}) }}">CGU</a>
+				<a href="{{ path('legal_page_show', {'slug': 'confidentialite'}) }}">Confidentialité</a>
+				<a href="{{ path('legal_page_show', {'slug': 'cookies'}) }}">Cookies</a>
+			</div>
+		</div>
+	</div>
 </footer>

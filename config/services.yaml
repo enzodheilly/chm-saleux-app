@@ -4,6 +4,7 @@ parameters:
     images_directory: "%kernel.project_dir%/public/uploads"
     machines_directory: "%kernel.project_dir%/public/uploads/machines"
     uploads_directory: "%kernel.project_dir%/public/uploads"
+    env(TURNSTILE_SITE_KEY): ""
 
 services:
     _defaults:
@@ -59,3 +60,11 @@ services:
     App\EventListener\SessionExpiredListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+
+    # ============================================================
+    # GEO BLOCKER + VPN BLOCKER
+    # ============================================================
+    App\Security\GeoBlocker:
+        arguments:
+            $allowedCountry: "%env(string:GEO_ALLOWED_COUNTRY)%"
+            $blockVpn: "%env(bool:GEO_BLOCK_VPN)%"
