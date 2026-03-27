@@ -143,18 +143,31 @@ class GoogleAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?RedirectResponse
     {
+        /** @var User $user */
         $user = $token->getUser();
+
         if (!$user instanceof User) {
             return new RedirectResponse($this->router->generate('home'));
         }
 
         $this->logger->add('Connexion', sprintf('Connexion Google OK : %s', $user->getEmail()));
 
-        $redirect = in_array('ROLE_ADMIN', $user->getRoles(), true)
-            ? $this->router->generate('admin_dashboard')
-            : $this->router->generate('home');
+        // ✅ PRIORITÉ 1 : Forcer la création d'un mot de passe si manquant
+        if ($user->getNeedsPassword()) {
+            return new RedirectResponse($this->router->generate('set_password'));
+        }
 
-        return new RedirectResponse($redirect);
+        // ✅ PRIORITÉ 2 : Si c'est un Admin, on vérifie s'il doit passer la 2FA
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+
+            // Si l'utilisateur a déjà configuré son 2FA, on le redirige vers le dashboard
+            // Ton controller Dashboard se chargera d'afficher le Gatekeeper (QR ou Input)
+            // car l'utilisateur est techniquement "connecté" mais pas encore "vérifié 2FA"
+            return new RedirectResponse($this->router->generate('admin_dashboard'));
+        }
+
+        // ✅ PRIORITÉ 3 : Utilisateur standard
+        return new RedirectResponse($this->router->generate('home'));
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?RedirectResponse

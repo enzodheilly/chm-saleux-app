@@ -119,61 +119,51 @@ class DashboardAdherentController extends AbstractController
             return $this->json(['success' => false], 401);
         }
 
+        // ✅ CSRF
+        if (!$this->isCsrfTokenValid('edit_license', (string) $request->request->get('_token', ''))) {
+            return $this->json(['success' => false, 'message' => 'Jeton CSRF invalide.'], 400);
+        }
+
         $licenceNumber = trim((string) $request->request->get('licenceNumber', ''));
         $licence = $this->em->getRepository(Licence::class)->findOneBy(['number' => $licenceNumber]);
 
         if (!$licence) {
-            return $this->json([
-                'success' => false,
-                'message' => 'Numéro de licence invalide',
-            ]);
+            return $this->json(['success' => false, 'message' => 'Numéro de licence invalide']);
         }
 
         if ($licence->isAlreadyAssociated()) {
-            return $this->json([
-                'success' => false,
-                'message' => 'Licence déjà associée à un compte',
-            ]);
+            return $this->json(['success' => false, 'message' => 'Licence déjà associée à un compte']);
         }
 
         $licence->setUser($user);
         $this->em->flush();
 
-        return $this->json([
-            'success' => true,
-            'message' => 'Licence synchronisée ✅',
-        ]);
+        return $this->json(['success' => true, 'message' => 'Licence synchronisée ✅']);
     }
 
     #[Route('/espace-adherent/licence/remove', name: 'adherent_remove_license', methods: ['POST'])]
-    public function removeLicense(): JsonResponse
+    public function removeLicense(Request $request): JsonResponse
     {
         $user = $this->getUser();
         if (!$user instanceof User) {
             return $this->json(['success' => false], 401);
         }
 
-        $licence = $this->getCurrentLicenceForUser($user);
+        // ✅ CSRF
+        if (!$this->isCsrfTokenValid('remove_license', (string) $request->request->get('_token', ''))) {
+            return $this->json(['success' => false, 'message' => 'Jeton CSRF invalide.'], 400);
+        }
 
+        $licence = $this->getCurrentLicenceForUser($user);
         if (!$licence) {
-            return $this->json([
-                'success' => false,
-                'message' => 'Aucune licence associée trouvée.',
-            ]);
+            return $this->json(['success' => false, 'message' => 'Aucune licence associée trouvée.']);
         }
 
         $licence->setUser(null);
         $this->em->flush();
 
-        return $this->json([
-            'success' => true,
-            'message' => 'Licence retirée ✅',
-        ]);
+        return $this->json(['success' => true, 'message' => 'Licence retirée ✅']);
     }
-
-    /* ============================================================
-       🔷 3) Profil & Photo
-       ============================================================ */
 
     #[Route('/profil/photo', name: 'profile_photo', methods: ['POST'])]
     public function uploadProfilePhoto(Request $request): JsonResponse
@@ -185,13 +175,17 @@ class DashboardAdherentController extends AbstractController
             return $this->json(['success' => false], 400);
         }
 
+        // ✅ CSRF
+        if (!$this->isCsrfTokenValid('upload_photo', (string) $request->request->get('_token', ''))) {
+            return $this->json(['success' => false, 'message' => 'Jeton CSRF invalide.'], 400);
+        }
+
         $binary = file_get_contents($file->getPathname());
         $mime = $file->getMimeType();
 
         $user->setProfileImage($binary);
         $user->setProfileImageMime($mime);
         $user->setProfileImageUpdatedAt(new \DateTimeImmutable());
-
         $this->em->flush();
 
         return $this->json([
@@ -199,10 +193,6 @@ class DashboardAdherentController extends AbstractController
             'imageDataUrl' => sprintf('data:%s;base64,%s', $mime, base64_encode($binary)),
         ]);
     }
-
-    /* ============================================================
-       🔷 4) Sécurité & Compte
-       ============================================================ */
 
     #[Route('/compte/change-password', name: 'change_password', methods: ['POST'])]
     public function changePassword(
@@ -214,23 +204,22 @@ class DashboardAdherentController extends AbstractController
             return $this->json(['success' => false], 401);
         }
 
+        // ✅ CSRF
+        if (!$this->isCsrfTokenValid('change_password', (string) $request->request->get('_token', ''))) {
+            return $this->json(['success' => false, 'message' => 'Jeton CSRF invalide.'], 400);
+        }
+
         $currentPassword = (string) $request->request->get('current_password');
         $newPassword = (string) $request->request->get('new_password');
 
         if (!$passwordHasher->isPasswordValid($user, $currentPassword)) {
-            return $this->json([
-                'success' => false,
-                'message' => 'Mot de passe actuel incorrect.',
-            ]);
+            return $this->json(['success' => false, 'message' => 'Mot de passe actuel incorrect.']);
         }
 
         $user->setPassword($passwordHasher->hashPassword($user, $newPassword));
         $this->em->flush();
 
-        return $this->json([
-            'success' => true,
-            'message' => 'Mot de passe modifié avec succès !',
-        ]);
+        return $this->json(['success' => true, 'message' => 'Mot de passe modifié avec succès !']);
     }
 
     #[Route('/profile/delete-account', name: 'profile_delete_account', methods: ['POST'])]
@@ -241,26 +230,23 @@ class DashboardAdherentController extends AbstractController
         Request $request
     ): JsonResponse {
         $user = $this->getUser();
-
         if (!$user instanceof User) {
-            return $this->json([
-                'success' => false,
-                'message' => 'Utilisateur non connecté.',
-            ], 401);
+            return $this->json(['success' => false, 'message' => 'Utilisateur non connecté.'], 401);
         }
 
         $data = json_decode($request->getContent(), true) ?? [];
 
+        // ✅ CSRF — passé dans le body JSON
+        if (!$this->isCsrfTokenValid('delete_account', $data['_token'] ?? '')) {
+            return $this->json(['success' => false, 'message' => 'Jeton CSRF invalide.'], 400);
+        }
+
         if (!$passwordHasher->isPasswordValid($user, $data['password'] ?? '')) {
-            return $this->json([
-                'success' => false,
-                'message' => 'Mot de passe incorrect.',
-            ]);
+            return $this->json(['success' => false, 'message' => 'Mot de passe incorrect.']);
         }
 
         $security->logout(false);
         $session->invalidate();
-
         $this->em->remove($user);
         $this->em->flush();
 
@@ -428,6 +414,15 @@ class DashboardAdherentController extends AbstractController
         }
 
         $data = json_decode($request->getContent(), true) ?? [];
+
+        // ✅ CSRF
+        if (!$this->isCsrfTokenValid('update_settings', $data['_token'] ?? '')) {
+            return $this->json([
+                'success' => false,
+                'message' => 'Jeton CSRF invalide.',
+            ], 400);
+        }
+
         $type = $data['type'] ?? null;
 
         if ($type === 'email') {

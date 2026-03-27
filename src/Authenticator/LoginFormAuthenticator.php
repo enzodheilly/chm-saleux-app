@@ -107,7 +107,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $user = $token->getUser();
         $ip = (string) $request->getClientIp();
 
-        // ✅ reset compteurs
+        // ✅ Reset des compteurs
         $user->setFailedAttempts(0);
         $user->setLockedUntil(null);
         $user->setLastLoginAt(new \DateTimeImmutable());
@@ -116,15 +116,13 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
         $this->logger->add('Connexion', sprintf('Utilisateur %s connecté (IP: %s)', $user->getEmail(), $ip));
 
-        $redirectUrl = in_array('ROLE_ADMIN', $user->getRoles(), true)
+        // Déterminer la route de redirection
+        $targetUrl = in_array('ROLE_ADMIN', $user->getRoles(), true)
             ? $this->router->generate('admin_dashboard')
             : $this->router->generate('home');
 
-        return new JsonResponse([
-            'success' => true,
-            'message' => 'Connexion réussie',
-            'redirect' => $redirectUrl,
-        ]);
+        // 🚀 Redirection RÉELLE (pas de JSON)
+        return new \Symfony\Component\HttpFoundation\RedirectResponse($targetUrl);
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
@@ -135,33 +133,30 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $user = $email !== '' ? $this->userRepository->findOneBy(['email' => $email]) : null;
 
         /**
-         * ✅ Cas: UserChecker a bloqué le compte (ex: non vérifié)
-         * => Ici on renvoie un JSON exploitable pour ouvrir l'étape verify.
+         * ✅ Cas : Compte non vérifié (UserChecker bloquant)
+         * On redirige l'utilisateur vers la page de saisie du code.
          */
         if ($exception instanceof CustomUserMessageAccountStatusException) {
-            $msg = $exception->getMessageKey();
-
             $this->logger->add('Sécurité', sprintf(
-                'Login refusé (status) pour %s (IP: %s) - %s',
+                'Login refusé (non vérifié) pour %s (IP: %s)',
                 $email ?: 'n/a',
-                $ip,
-                $msg
+                $ip
             ));
 
-            // si ton UserChecker renvoie le message "Veuillez vérifier..."
-            return new JsonResponse([
-                'success' => false,
-                'code' => 'NOT_VERIFIED',
-                'message' => 'Compte non vérifié. Entrez le code reçu par e-mail ou renvoyez un nouveau code.',
-                'email' => $email,
-            ], 403);
+            // On redirige vers ta route de vérification (ex: app_verify_code)
+            // On passe l'email en paramètre pour pré-remplir ou retrouver l'utilisateur
+            return new \Symfony\Component\HttpFoundation\RedirectResponse(
+                $this->router->generate('app_verify_code', ['email' => $email])
+            );
         }
 
+        /**
+         * ✅ Gestion des échecs classiques et du Lockout
+         */
         $msg = $exception instanceof CustomUserMessageAuthenticationException
             ? $exception->getMessageKey()
             : 'Identifiants incorrects.';
 
-        // ✅ Lockout uniquement si user existe ET mauvais identifiants
         if ($user && ($msg === 'Identifiants incorrects.' || $msg === 'Adresse e-mail ou mot de passe incorrect.')) {
             $failed = ($user->getFailedAttempts() ?? 0) + 1;
             $user->setFailedAttempts($failed);
@@ -174,7 +169,6 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
                     $ip
                 ));
             }
-
             $this->em->flush();
         }
 
@@ -185,10 +179,12 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
             $msg
         ));
 
-        return new JsonResponse([
-            'success' => false,
-            'message' => $msg,
-        ], 401);
+        /**
+         * ✅ Retour au formulaire de login standard
+         * En appelant le parent, Symfony stocke l'erreur en session pour qu'elle
+         * soit affichée par {{ error.messageKey }} dans ton template Twig.
+         */
+        return parent::onAuthenticationFailure($request, $exception);
     }
 
     protected function getLoginUrl(Request $request): string

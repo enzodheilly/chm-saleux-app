@@ -18,6 +18,7 @@ class GeoBlocker implements EventSubscriberInterface
         private readonly HttpClientInterface $httpClient,
         private readonly CacheInterface $cache,
         private readonly string $allowedCountry = 'FR',
+        private readonly bool $blockVpn = true,
     ) {}
 
     public static function getSubscribedEvents(): array
@@ -34,9 +35,7 @@ class GeoBlocker implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
-        $route = (string) $request->attributes->get('_route', '');
 
-        // ✅ Appliquer seulement aux routes sensibles
         if (!str_starts_with($request->getPathInfo(), '/admin')) {
             return;
         }
@@ -46,42 +45,68 @@ class GeoBlocker implements EventSubscriberInterface
             return;
         }
 
-        // ✅ Optionnel : si déjà connecté admin -> laisse passer
         $user = $this->security->getUser();
         if ($user && in_array('ROLE_ADMIN', method_exists($user, 'getRoles') ? $user->getRoles() : [], true)) {
             return;
         }
 
-        $country = $this->getCountryCodeCached($ip);
+        $ipData = $this->getIpDataCached($ip);
 
-        // ✅ Si on n'a pas pu déterminer le pays -> fail-open (ne bloque pas)
-        if ($country === null) {
+        // Fail-open : si l'API ne répond pas, on laisse passer
+        if ($ipData === null) {
             return;
         }
 
-        if ($country !== $this->allowedCountry) {
-            throw new AccessDeniedHttpException('Accès restreint.');
+        // Blocage par pays
+        if (($ipData['country'] ?? null) !== $this->allowedCountry) {
+            throw new AccessDeniedHttpException('Accès restreint à la France.');
+        }
+
+        // Blocage VPN / Proxy / Tor / Datacenter
+        if ($this->blockVpn && $this->isVpnOrProxy($ipData)) {
+            throw new AccessDeniedHttpException('Accès via VPN ou proxy non autorisé.');
         }
     }
 
-    private function getCountryCodeCached(string $ip): ?string
+    private function isVpnOrProxy(array $ipData): bool
     {
-        return $this->cache->get('geoip_' . md5($ip), function (ItemInterface $item) use ($ip) {
-            $item->expiresAfter(86400); // 24h
+        // ipapi.co retourne ces champs dans le plan payant
+        // vpn, proxy, tor, relay sont des booléens
+        // "hosting" indique un datacenter/cloud (ex: AWS, OVH, Hetzner...)
+        return ($ipData['vpn'] ?? false)
+            || ($ipData['proxy'] ?? false)
+            || ($ipData['tor'] ?? false)
+            || ($ipData['relay'] ?? false)   // iCloud Private Relay, etc.
+            || ($ipData['hosting'] ?? false); // retirer si trop agressif (bloque les serveurs legit)
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    private function getIpDataCached(string $ip): ?array
+    {
+        return $this->cache->get('geoip_v2_' . md5($ip), function (ItemInterface $item) use ($ip): ?array {
+            $item->expiresAfter(86400);
 
             try {
-                // ✅ Provider HTTPS (exemple). Choisis un provider fiable.
-                $response = $this->httpClient->request('GET', 'https://ipapi.co/' . urlencode($ip) . '/country/', [
-                    'timeout' => 1.5,
-                    'headers' => ['Accept' => 'text/plain'],
+                // Endpoint JSON complet (vs /country/ qui ne retourne que le pays)
+                $response = $this->httpClient->request('GET', 'https://ipapi.co/' . urlencode($ip) . '/json/', [
+                    'timeout' => 2.0,
+                    'headers' => ['Accept' => 'application/json'],
                 ]);
 
                 if (200 !== $response->getStatusCode()) {
                     return null;
                 }
 
-                $country = trim($response->getContent(false));
-                return $country !== '' ? $country : null;
+                $data = $response->toArray(false);
+
+                // Erreur applicative retournée par ipapi.co (ex: reserved IP, invalid)
+                if (isset($data['error']) && $data['error'] === true) {
+                    return null;
+                }
+
+                return $data;
             } catch (\Throwable) {
                 return null;
             }

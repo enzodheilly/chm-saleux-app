@@ -1,0 +1,209 @@
+/* =================== HEADER & TOOLS =================== */
+		.page-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-end;
+			margin-bottom: 2rem;
+			padding-bottom: 1rem;
+			border-bottom: 1px solid var(--border-color);
+		}
+		.page-header h1 {
+			font-size: 1.5rem;
+			font-weight: 700;
+			margin: 0;
+			color: var(--text-main);
+		}
+		.page-header p {
+			margin: 5px 0 0;
+			color: var(--text-muted);
+			font-size: 0.9rem;
+		}
+
+		.toolbar {
+			display: flex;
+			gap: 1rem;
+		}
+
+		/* Input Recherche style "Terminal" */
+		.search-input {
+			background: var(--bg-sidebar);
+			border: 1px solid var(--border-color);
+			color: var(--text-main);
+			padding: 0.6rem 1rem;
+			border-radius: 4px;
+			min-width: 280px;
+			font-size: 0.9rem;
+			outline: none;
+			transition: 0.2s;
+		}
+		.search-input:focus {
+			border-color: var(--accent);
+		}
+		.search-input::placeholder {
+			color: var(--text-muted);
+			opacity: 0.7;
+		}
+
+		/* Bouton d'action solide */
+		.btn-action {
+			background: var(--text-main);
+			color: var(--bg-body);
+			padding: 0.6rem 1.2rem;
+			border: none;
+			border-radius: 4px;
+			font-weight: 600;
+			font-size: 0.85rem;
+			cursor: pointer;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			transition: 0.2s;
+		}
+		.btn-action:hover {
+			opacity: 0.9;
+		}
+
+		/* =================== TABLEAU PRO =================== */
+		.table-wrapper {
+			background: var(--bg-sidebar);
+			border: 1px solid var(--border-color);
+			border-radius: 6px;
+			overflow: hidden;
+		}
+
+		.admin-table {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 0.9rem;
+		}
+
+		.admin-table th {
+			background: rgba(255, 255, 255, 0.02);
+			color: var(--text-muted);
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			font-size: 0.75rem;
+			text-align: left;
+			padding: 1rem 1.5rem;
+			border-bottom: 1px solid var(--border-color);
+		}
+
+		.admin-table td {
+			padding: 1rem 1.5rem;
+			border-bottom: 1px solid var(--border-color);
+			color: var(--text-main);
+			vertical-align: middle;
+		}
+		.admin-table tr:last-child td {
+			border-bottom: none;
+		}
+		.admin-table tr:hover td {
+			background: rgba(255, 255, 255, 0.01);
+		}
+
+		/* User Profile Cell */
+		.user-cell {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+		.avatar {
+			width: 34px;
+			height: 34px;
+			background: var(--border-color);
+			color: var(--text-main);
+			border-radius: 4px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: 700;
+			font-size: 0.8rem;
+			text-transform: uppercase;
+		}
+		.user-info {
+			display: flex;
+			flex-direction: column;
+		}
+		.u-name {
+			font-weight: 600;
+			font-size: 0.95rem;
+			display: block;
+		}
+		.u-email {
+			font-size: 0.8rem;
+			color: var(--text-muted);
+		}
+
+		/* Badges & Tags */
+		.role-badge {
+			font-size: 0.7rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			padding: 4px 8px;
+			border-radius: 4px;
+			letter-spacing: 0.05em;
+		}
+		.badge-admin {
+			background: rgba(255, 102, 0, 0.15);
+			color: var(--accent);
+			border: 1px solid rgba(255, 102, 0, 0.2);
+		}
+		.badge-user {
+			background: rgba(255, 255, 255, 0.05);
+			color: var(--text-muted);
+			border: 1px solid var(--border-color);
+		}
+
+		.secu-tag {
+			font-size: 0.7rem;
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			font-weight: 700;
+		}
+		.secu-on {
+			color: #10b981;
+		}
+		.secu-off {
+			color: var(--text-muted);
+			opacity: 0.5;
+		}
+
+		/* Actions */
+		.actions {
+			display: flex;
+			gap: 15px;
+			justify-content: flex-end;
+			align-items: center;
+		}
+		.act-link {
+			font-size: 0.75rem;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			cursor: pointer;
+			transition: 0.2s;
+			opacity: 0.7;
+			text-decoration: none;
+		}
+		.act-link:hover {
+			opacity: 1;
+			text-decoration: underline;
+		}
+
+		.act-edit {
+			color: var(--text-main);
+		}
+		.act-del {
+			color: var(--danger);
+		}
+		.act-reset {
+			color: #f59e0b;
+		}
+
+		.table-scroll { overflow-x: auto; }
+.th-right { text-align: right; }
+.td-mono { font-family: monospace; color: var(--text-muted); }
+.td-date { color: var(--text-muted); font-size: 0.85rem; }
+.td-empty { text-align: center; padding: 4rem; color: var(--text-muted); }
+.secu-dot { font-size: 1.2rem; }

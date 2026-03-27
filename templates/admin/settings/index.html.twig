@@ -1,354 +1,91 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Paramètres du compte{% endblock %}
-{% block page_title %}Paramètres du compte{% endblock %}
+{% block title %}Paramètres du compte
+{% endblock %}
 
 {% block stylesheets %}
-<style>
-    .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--border-color);
-        gap: 1rem;
-        flex-wrap: wrap;
-    }
-
-    .page-header h1 {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin: 0;
-        color: var(--text-main);
-    }
-
-    .page-header p {
-        margin: 5px 0 0 0;
-        color: var(--text-muted);
-        font-size: 0.9rem;
-    }
-
-    .settings-layout {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-        max-width: 900px;
-        margin: 0 auto;
-    }
-
-    .settings-card {
-        background: var(--bg-sidebar);
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        overflow: hidden;
-    }
-
-    .card-body {
-        padding: 1.5rem;
-    }
-
-    .card-title {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: var(--text-main);
-        margin: 0 0 1.5rem 0;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--border-color);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-
-    .card-title::before {
-        content: "";
-        width: 3px;
-        height: 14px;
-        background: var(--accent);
-        border-radius: 2px;
-    }
-
-    .form-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1.2rem;
-    }
-
-    .tool-label {
-        display: block;
-        color: var(--text-muted);
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 0.35rem;
-    }
-
-    .input {
-        background: transparent;
-        border: 1px solid var(--border-color);
-        color: var(--text-main);
-        padding: 0.6rem 1rem;
-        border-radius: 4px;
-        outline: none;
-        font-size: 0.9rem;
-        transition: border-color 0.2s;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .input:focus {
-        border-color: var(--text-main);
-    }
-
-    .input[readonly] {
-        background: rgba(255,255,255,0.02);
-        color: var(--text-muted);
-        border-style: dashed;
-        cursor: default;
-    }
-
-    .data-mono {
-        display: inline-block;
-        font-family: monospace;
-        color: var(--text-main);
-        font-size: 0.9rem;
-        background: var(--bg-body);
-        padding: 0.45rem 0.7rem;
-        border-radius: 4px;
-        border: 1px solid var(--border-color);
-        word-break: break-word;
-    }
-
-    .btn-create {
-        background: var(--text-main);
-        color: var(--bg-body);
-        padding: 0.6rem 1.2rem;
-        border-radius: 4px;
-        font-weight: 700;
-        font-size: 0.85rem;
-        cursor: pointer;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        transition: 0.2s;
-        border: none;
-        text-decoration: none;
-        display: inline-block;
-        white-space: nowrap;
-    }
-
-    .btn-create:hover {
-        opacity: 0.9;
-    }
-
-    .btn-danger-outline {
-        background: transparent;
-        border: 1px solid var(--danger);
-        color: var(--danger);
-        padding: 0.6rem 1.2rem;
-        border-radius: 4px;
-        font-weight: 700;
-        font-size: 0.85rem;
-        cursor: pointer;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        transition: 0.2s;
-    }
-
-    .btn-danger-outline:hover {
-        background: var(--danger);
-        color: #fff;
-    }
-
-    .actions-row {
-        display: flex;
-        justify-content: flex-end;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        margin-top: 0.5rem;
-    }
-
-    .switch-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-        padding: 0.25rem 0;
-    }
-
-    .switch-info h4 {
-        margin: 0;
-        font-size: 0.95rem;
-        color: var(--text-main);
-        font-weight: 600;
-    }
-
-    .switch-info p {
-        margin: 4px 0 0 0;
-        font-size: 0.85rem;
-        color: var(--text-muted);
-        line-height: 1.45;
-    }
-
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 44px;
-        height: 24px;
-        flex-shrink: 0;
-    }
-
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        inset: 0;
-        background-color: var(--bg-body);
-        border: 1px solid var(--border-color);
-        transition: .3s;
-        border-radius: 24px;
-    }
-
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 16px;
-        width: 16px;
-        left: 3px;
-        bottom: 3px;
-        background-color: var(--text-muted);
-        transition: .3s;
-        border-radius: 50%;
-    }
-
-    input:checked + .slider {
-        background-color: var(--accent);
-        border-color: var(--accent);
-    }
-
-    input:checked + .slider:before {
-        transform: translateX(20px);
-        background-color: #fff;
-    }
-
-    .section-divider {
-        margin-top: 1.5rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid var(--border-color);
-    }
-
-    @media (max-width: 700px) {
-        .page-header {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        .switch-row {
-            align-items: flex-start;
-        }
-    }
-</style>
+	<link rel="stylesheet" href="{{ asset('css/admin/settings/index.css') }}">
 {% endblock %}
 
 {% block body %}
-<div class="page-header">
-    <div>
-        <h1>Paramètres</h1>
-        <p>Gérez vos préférences de compte et les options d'affichage.</p>
-    </div>
-</div>
+	<div class="page-header">
+		<div>
+			<h1>Paramètres</h1>
+			<p>Gérez vos préférences de compte et les options d'affichage.</p>
+		</div>
+	</div>
 
-<div class="settings-layout">
+	<div class="settings-layout">
 
-    <div class="settings-card">
-        <div class="card-body">
-            <h3 class="card-title">Informations de profil</h3>
+		<div class="settings-card">
+			<div class="card-body">
+				<h3 class="card-title">Informations de profil</h3>
 
-            <div class="form-grid">
-                <div>
-                    <span class="tool-label">Identité</span>
-                    <input type="text" class="input" value="{{ app.user.firstName }} {{ app.user.lastName }}" readonly>
-                </div>
+				<div class="form-grid">
+					<div>
+						<span class="tool-label">Identité</span>
+						<input type="text" class="input" value="{{ app.user.firstName }} {{ app.user.lastName }}" readonly>
+					</div>
 
-                <div>
-                    <span class="tool-label">Email de connexion</span>
-                    <input type="email" class="input" value="{{ app.user.email }}" readonly>
-                </div>
+					<div>
+						<span class="tool-label">Email de connexion</span>
+						<input type="email" class="input" value="{{ app.user.email }}" readonly>
+					</div>
 
-                <div class="actions-row">
-                    <a href="#" class="btn-create">Modifier le mot de passe</a>
-                </div>
-            </div>
-        </div>
-    </div>
+					<div class="actions-row">
+						<a href="#" class="btn-create">Modifier le mot de passe</a>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <div class="settings-card">
-        <div class="card-body">
-            <h3 class="card-title">Préférences d'affichage</h3>
+		<div class="settings-card">
+			<div class="card-body">
+				<h3 class="card-title">Préférences d'affichage</h3>
 
-            <div class="switch-row">
-                <div class="switch-info">
-                    <h4>Mode sombre</h4>
-                    <p>Réduit la fatigue oculaire dans les environnements peu éclairés.</p>
-                </div>
+				<div class="switch-row">
+					<div class="switch-info">
+						<h4>Mode sombre</h4>
+						<p>Réduit la fatigue oculaire dans les environnements peu éclairés.</p>
+					</div>
 
-                <label class="switch">
-                    <input type="checkbox" id="themeToggleCheckbox">
-                    <span class="slider"></span>
-                </label>
-            </div>
-        </div>
-    </div>
+					<label class="switch">
+						<input type="checkbox" id="themeToggleCheckbox">
+						<span class="slider"></span>
+					</label>
+				</div>
+			</div>
+		</div>
 
-    <div class="settings-card">
-        <div class="card-body">
-            <h3 class="card-title">Historique & sécurité</h3>
+		<div class="settings-card">
+			<div class="card-body">
+				<h3 class="card-title">Historique & sécurité</h3>
 
-            <div class="form-grid">
-                <div>
-                    <span class="tool-label">Dernière activité</span>
-                    <span class="data-mono">
-                        {{ app.user.lastLoginAt ? app.user.lastLoginAt|date('d/m/Y à H:i:s') : 'Session actuelle uniquement' }}
-                    </span>
-                </div>
+				<div class="form-grid">
+					<div>
+						<span class="tool-label">Dernière activité</span>
+						<span class="data-mono">
+							{{ app.user.lastLoginAt ? app.user.lastLoginAt|date('d/m/Y à H:i:s') : 'Session actuelle uniquement' }}
+						</span>
+					</div>
 
-                <div>
-                    <span class="tool-label">Dernière adresse IP enregistrée</span>
-                    <span class="data-mono">{{ app.user.lastLoginIp ?? 'IP non tracée' }}</span>
-                </div>
+					<div>
+						<span class="tool-label">Dernière adresse IP enregistrée</span>
+						<span class="data-mono">{{ app.user.lastLoginIp ?? 'IP non tracée' }}</span>
+					</div>
 
-                <div class="section-divider">
-                    <button class="btn-danger-outline" onclick="alert('Cette action va réinitialiser vos tokens de connexion.');">
-                        Réinitialiser les sessions actives
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+					<div class="section-divider">
+						<button class="btn-danger-outline" onclick="alert('Cette action va réinitialiser vos tokens de connexion.');">
+							Réinitialiser les sessions actives
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-</div>
+	</div>
+{% endblock %}
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const toggle = document.getElementById('themeToggleCheckbox');
-    const htmlElement = document.documentElement;
-
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    htmlElement.setAttribute('data-theme', savedTheme);
-    toggle.checked = (savedTheme === 'dark');
-
-    toggle.addEventListener('change', () => {
-        const theme = toggle.checked ? 'dark' : 'light';
-        htmlElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-    });
-});
-</script>
+{% block javascripts %}
+	 <script src="{{ asset('js/admin/settings/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

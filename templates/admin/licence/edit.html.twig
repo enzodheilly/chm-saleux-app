@@ -1,407 +1,96 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Modifier la licence{% endblock %}
-{% block page_title %}Modifier la licence{% endblock %}
+{% block title %}Modifier la licence
+{% endblock %}
 
 {% block stylesheets %}
-<style>
-    .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--border-color);
-        gap: 1rem;
-        flex-wrap: wrap;
-    }
-
-    .page-header h1 {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin: 0;
-        color: var(--text-main);
-    }
-
-    .page-header p {
-        margin: 5px 0 0 0;
-        color: var(--text-muted);
-        font-size: 0.9rem;
-    }
-
-    .toolbar {
-        display: flex;
-        gap: 0.75rem;
-        align-items: flex-end;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-    }
-
-    .btn-create {
-        background: var(--text-main);
-        color: var(--bg-body);
-        padding: 0.6rem 1.2rem;
-        border-radius: 4px;
-        font-weight: 700;
-        font-size: 0.85rem;
-        cursor: pointer;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        transition: 0.2s;
-        border: none;
-        text-decoration: none;
-        display: inline-block;
-        white-space: nowrap;
-    }
-
-    .btn-create:hover {
-        opacity: 0.9;
-    }
-
-    .btn-outline {
-        background: transparent;
-        color: var(--text-main);
-        padding: 0.6rem 1.2rem;
-        border-radius: 4px;
-        font-weight: 700;
-        font-size: 0.85rem;
-        cursor: pointer;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        transition: 0.2s;
-        border: 1px solid var(--border-color);
-        text-decoration: none;
-        display: inline-block;
-        white-space: nowrap;
-        opacity: 0.9;
-    }
-
-    .btn-outline:hover {
-        opacity: 1;
-        border-color: var(--text-main);
-    }
-
-    .btn-danger-link {
-        background: transparent;
-        color: var(--danger);
-        padding: 0.6rem 0;
-        border-radius: 4px;
-        font-weight: 700;
-        font-size: 0.85rem;
-        cursor: pointer;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        transition: 0.2s;
-        border: none;
-        text-decoration: none;
-        display: inline-block;
-        white-space: nowrap;
-    }
-
-    .btn-danger-link:hover {
-        opacity: 0.85;
-        text-decoration: underline;
-    }
-
-    .table-wrapper {
-        background: var(--bg-sidebar);
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-    }
-
-    .card-body {
-        padding: 1.5rem;
-    }
-
-    .form-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1.2rem;
-        max-width: 900px;
-    }
-
-    .form-row-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.2rem;
-    }
-
-    .tool-label {
-        display: block;
-        color: var(--text-muted);
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 0.35rem;
-    }
-
-    .input {
-        background: transparent;
-        border: 1px solid var(--border-color);
-        color: var(--text-main);
-        padding: 0.6rem 1rem;
-        border-radius: 4px;
-        outline: none;
-        font-size: 0.9rem;
-        transition: border-color 0.2s;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .input:focus {
-        border-color: var(--text-main);
-    }
-
-    .input::placeholder {
-        color: var(--text-muted);
-        opacity: 0.6;
-    }
-
-    .form-error {
-        color: var(--danger);
-        font-size: 0.85rem;
-        margin-top: 0.35rem;
-    }
-
-    .form-error ul {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-
-    .form-actions {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-        margin-top: 0.5rem;
-    }
-
-    .form-actions-right {
-        display: flex;
-        gap: 0.75rem;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    .avantages-preview {
-        margin-top: 0.9rem;
-        padding: 1rem;
-        background: rgba(255, 102, 0, 0.05);
-        border: 1px dashed var(--accent);
-        border-radius: 6px;
-        display: none;
-    }
-
-    .avantages-preview h4 {
-        margin: 0 0 0.8rem 0;
-        font-size: 0.82rem;
-        color: var(--accent);
-        text-transform: uppercase;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-    }
-
-    .avantages-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 0.5rem;
-    }
-
-    .avantages-list li {
-        font-size: 0.85rem;
-        color: var(--text-main);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .avantages-list li::before {
-        content: "✓";
-        color: var(--accent);
-        font-weight: bold;
-    }
-
-    @media (max-width: 700px) {
-        .page-header {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        .toolbar {
-            justify-content: flex-start;
-            width: 100%;
-        }
-
-        .form-row-2 {
-            grid-template-columns: 1fr;
-        }
-
-        .form-actions {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        .form-actions-right {
-            width: 100%;
-        }
-    }
-</style>
+	<link rel="stylesheet" href="{{ asset('css/admin/licence/edit.css') }}">
 {% endblock %}
 
 {% block body %}
-    <div class="page-header">
-        <div>
-            <h1>Modifier la licence</h1>
-            <p>Mise à jour des informations pour la licence #{{ licence.number }}</p>
-        </div>
+	<div class="page-header">
+		<div>
+			<h1>Modifier la licence</h1>
+			<p>Mise à jour des informations pour la licence #{{ licence.number }}</p>
+		</div>
 
-        <div class="toolbar">
-            <a href="{{ path('admin_licence_index') }}" class="btn-outline">Retour</a>
-        </div>
-    </div>
+		<div class="toolbar">
+			<a href="{{ path('admin_licence_index') }}" class="btn-outline">Retour</a>
+		</div>
+	</div>
 
-    <div class="table-wrapper">
-        <div class="card-body">
-            {{ form_start(form) }}
+	<div class="table-wrapper">
+		<div class="card-body">
+			{{ form_start(form) }}
 
-                <div class="form-error">{{ form_errors(form) }}</div>
+			<div class="form-error">{{ form_errors(form) }}</div>
 
-                <div class="form-grid">
-                    <div class="form-row-2">
-                        <div>
-                            <span class="tool-label">Prénom</span>
-                            {{ form_widget(form.firstName, { attr: { class: 'input' } }) }}
-                            <div class="form-error">{{ form_errors(form.firstName) }}</div>
-                        </div>
+			<div class="form-grid">
+				<div class="form-row-2">
+					<div>
+						<span class="tool-label">Prénom</span>
+						{{ form_widget(form.firstName, { attr: { class: 'input' } }) }}
+						<div class="form-error">{{ form_errors(form.firstName) }}</div>
+					</div>
 
-                        <div>
-                            <span class="tool-label">Nom</span>
-                            {{ form_widget(form.lastName, { attr: { class: 'input' } }) }}
-                            <div class="form-error">{{ form_errors(form.lastName) }}</div>
-                        </div>
-                    </div>
+					<div>
+						<span class="tool-label">Nom</span>
+						{{ form_widget(form.lastName, { attr: { class: 'input' } }) }}
+						<div class="form-error">{{ form_errors(form.lastName) }}</div>
+					</div>
+				</div>
 
-                    <div class="form-row-2">
-                        <div>
-                            <span class="tool-label">Email</span>
-                            {{ form_widget(form.email, { attr: { class: 'input' } }) }}
-                            <div class="form-error">{{ form_errors(form.email) }}</div>
-                        </div>
+				<div class="form-row-2">
+					<div>
+						<span class="tool-label">Email</span>
+						{{ form_widget(form.email, { attr: { class: 'input' } }) }}
+						<div class="form-error">{{ form_errors(form.email) }}</div>
+					</div>
 
-                        <div>
-                            <span class="tool-label">Numéro de licence</span>
-                            {{ form_widget(form.number, { attr: { class: 'input' } }) }}
-                            <div class="form-error">{{ form_errors(form.number) }}</div>
-                        </div>
-                    </div>
+					<div>
+						<span class="tool-label">Numéro de licence</span>
+						{{ form_widget(form.number, { attr: { class: 'input' } }) }}
+						<div class="form-error">{{ form_errors(form.number) }}</div>
+					</div>
+				</div>
 
-                    <div class="form-row-2">
-                        <div>
-                            <span class="tool-label">Forfait associé</span>
-                            {{ form_widget(form.membershipPlan, { attr: { class: 'input' } }) }}
-                            <div class="form-error">{{ form_errors(form.membershipPlan) }}</div>
-                            <div id="membership-plan-benefits" class="avantages-preview"></div>
-                        </div>
+				<div class="form-row-2">
+					<div>
+						<span class="tool-label">Forfait associé</span>
+						{{ form_widget(form.membershipPlan, { attr: { class: 'input' } }) }}
+						<div class="form-error">{{ form_errors(form.membershipPlan) }}</div>
+						<div id="membership-plan-benefits" class="avantages-preview"></div>
+					</div>
 
-                        <div>
-                            <span class="tool-label">Date d'expiration</span>
-                            {{ form_widget(form.expiryDate, { attr: { class: 'input' } }) }}
-                            <div class="form-error">{{ form_errors(form.expiryDate) }}</div>
-                        </div>
-                    </div>
+					<div>
+						<span class="tool-label">Date d'expiration</span>
+						{{ form_widget(form.expiryDate, { attr: { class: 'input' } }) }}
+						<div class="form-error">{{ form_errors(form.expiryDate) }}</div>
+					</div>
+				</div>
 
-                    <div class="form-actions">
-                        <button
-                            type="button"
-                            class="btn-danger-link"
-                            onclick="if(confirm('⚠️ Attention : Cette action est irréversible.\n\nVoulez-vous vraiment supprimer la licence {{ licence.number }} ?')) document.getElementById('delete-form').submit();"
-                        >
-                            Supprimer cette licence
-                        </button>
+				<div class="form-actions">
+					<button type="button" class="btn-danger-link" onclick="if(confirm('⚠️ Attention : Cette action est irréversible.\n\nVoulez-vous vraiment supprimer la licence {{ licence.number }} ?')) document.getElementById('delete-form').submit();">
+						Supprimer cette licence
+					</button>
 
-                        <div class="form-actions-right">
-                            <a href="{{ path('admin_licence_index') }}" class="btn-outline">Annuler</a>
-                            <button type="submit" class="btn-create">Mettre à jour</button>
-                        </div>
-                    </div>
-                </div>
+					<div class="form-actions-right">
+						<a href="{{ path('admin_licence_index') }}" class="btn-outline">Annuler</a>
+						<button type="submit" class="btn-create">Mettre à jour</button>
+					</div>
+				</div>
+			</div>
 
-            {{ form_end(form) }}
-        </div>
-    </div>
+			{{ form_end(form) }}
+		</div>
+	</div>
 
-    <form id="delete-form" method="post" action="{{ path('admin_licence_delete', {id: licence.id}) }}" style="display: none;">
-        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ licence.id) }}">
-    </form>
+	<form id="delete-form" method="post" action="{{ path('admin_licence_delete', {id: licence.id}) }}" style="display: none;">
+		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ licence.id) }}">
+	</form>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const selectMembershipPlan = document.querySelector('#licence_membershipPlan');
-        const benefitsBox = document.getElementById('membership-plan-benefits');
+{% endblock %}
 
-        if (!selectMembershipPlan || !benefitsBox) return;
-
-        async function loadBenefits() {
-            const id = selectMembershipPlan.value;
-
-            if (!id) {
-                benefitsBox.style.display = 'none';
-                benefitsBox.innerHTML = '';
-                return;
-            }
-
-            try {
-                const urlTemplate = "{{ path('admin_licence_membership_plan_benefits', {'id': '__ID__'}) }}";
-                const url = urlTemplate.replace('__ID__', id);
-
-                const resp = await fetch(url, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                });
-
-                if (!resp.ok) {
-                    throw new Error('Réponse HTTP ' + resp.status);
-                }
-
-                const data = await resp.json();
-
-                if (data.benefits && data.benefits.length > 0) {
-                    const cleanList = data.benefits.map(item => {
-                        if (typeof item !== 'string') return item;
-                        const parts = item.split('|');
-                        return parts.length > 1 ? parts[1].trim() : item;
-                    });
-
-                    benefitsBox.innerHTML = `
-                        <h4>Inclus dans ${data.name} :</h4>
-                        <ul class="avantages-list">
-                            ${cleanList.map(item => `<li>${item}</li>`).join('')}
-                        </ul>
-                    `;
-                    benefitsBox.style.display = 'block';
-                } else {
-                    benefitsBox.style.display = 'none';
-                    benefitsBox.innerHTML = '';
-                }
-            } catch (e) {
-                console.error('Erreur chargement benefits', e);
-                benefitsBox.style.display = 'none';
-                benefitsBox.innerHTML = '';
-            }
-        }
-
-        selectMembershipPlan.addEventListener('change', loadBenefits);
-
-        if (selectMembershipPlan.value) {
-            loadBenefits();
-        }
-    });
-    </script>
+{% block javascripts %}
+	 <script src="{{ asset('js/admin/licence/new.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

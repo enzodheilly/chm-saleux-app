@@ -31,6 +31,13 @@ class AdminCompetitionController extends AbstractController
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         if ($request->isMethod('POST')) {
+
+            // ✅ CSRF
+            if (!$this->isCsrfTokenValid('competition_new', (string) $request->request->get('_token', ''))) {
+                $this->addFlash('danger', 'Jeton CSRF invalide.');
+                return $this->redirectToRoute('admin_competition_new');
+            }
+
             $data = $request->request->all();
             /** @var UploadedFile|null $file */
             $file = $request->files->get('image');
@@ -115,6 +122,13 @@ class AdminCompetitionController extends AbstractController
     public function edit(Competition $competition, Request $request, EntityManagerInterface $em): Response
     {
         if ($request->isMethod('POST')) {
+
+            // ✅ CSRF
+            if (!$this->isCsrfTokenValid('competition_edit_' . $competition->getId(), (string) $request->request->get('_token', ''))) {
+                $this->addFlash('danger', 'Jeton CSRF invalide.');
+                return $this->redirectToRoute('admin_competition_edit', ['id' => $competition->getId()]);
+            }
+
             $data = $request->request->all();
             /** @var UploadedFile|null $file */
             $file = $request->files->get('image');

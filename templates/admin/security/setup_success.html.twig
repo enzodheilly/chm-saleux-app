@@ -1,126 +1,33 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Codes de Secours - Sécurité{% endblock %}
+{% block title %}Codes de Secours - Sécurité
+{% endblock %}
 
 {% block stylesheets %}
-<style>
-    /* Reset & Désactivation totale du Scroll */
-html, body { 
-        height: 100vh !important;
-        width: 100vw !important;
-        overflow: hidden !important;
-        position: fixed !important; /* Empêche le rebond sur mobile */
-        margin: 0;
-        padding: 0;
-    }
-    body { background: #09090b !important; }
-
-    /* Nettoyage de l'interface admin par défaut */
-    .sidebar, .top-bar, .mobile-toggle, .alert { display: none !important; }
-    .wrapper { 
-        margin: 0 !important; 
-        padding: 0 !important;
-        width: 100% !important; 
-        height: 100vh !important; 
-        overflow: hidden !important;
-    }
-
-    /* Conteneur principal */
-    .viewport {
-        display: flex; align-items: center; justify-content: center;
-        width: 100%; height: 100vh;
-        padding: 20px;
-        background: radial-gradient(circle at center, #111113 0%, #09090b 100%);
-        box-sizing: border-box;
-    }
-
-    /* Carte format compact */
-    .backup-card {
-        background: #121214;
-        border: 1px solid #262629;
-        border-radius: 12px;
-        padding: 30px 24px;
-        width: 100%;
-        max-width: 400px; 
-        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        text-align: center;
-        animation: fadeIn 0.4s ease-out;
-    }
-
-    .check-icon { color: #10b981; font-size: 1.8rem; margin-bottom: 12px; }
-    h1 { color: #fff; font-size: 1.4rem; font-weight: 700; margin: 0 0 8px 0; }
-    .subtitle { color: #71717a; font-size: 0.85rem; margin-bottom: 20px; }
-
-    /* Alerte latérale */
-    .alert-box {
-        background: rgba(245, 158, 11, 0.05);
-        border-left: 3px solid #f59e0b;
-        padding: 10px 15px;
-        border-radius: 4px;
-        margin-bottom: 20px;
-        text-align: left;
-    }
-    .alert-box p { color: #fbbf24; font-size: 0.78rem; margin: 0; line-height: 1.4; font-weight: 500; }
-
-    /* Grille de codes */
-    .codes-container {
-        background: #000;
-        border: 1px solid #262629;
-        border-radius: 8px;
-        padding: 18px;
-        margin-bottom: 20px;
-        display: grid; gap: 8px;
-    }
-    .code-row {
-        font-family: 'Monaco', 'Consolas', monospace;
-        font-size: 1.1rem; color: #fff;
-        letter-spacing: 2px; font-weight: 600;
-        background: rgba(255,255,255,0.03);
-        padding: 6px; border-radius: 4px;
-    }
-
-    /* Actions */
-    .btn-print {
-        background: #ededed; color: #000;
-        border: none; padding: 12px; border-radius: 6px;
-        width: 100%; font-weight: 700; font-size: 0.85rem;
-        cursor: pointer; transition: 0.2s;
-    }
-    .btn-print:hover { background: #fff; transform: translateY(-1px); }
-    .btn-back { display: block; margin-top: 20px; color: #71717a; text-decoration: none; font-size: 0.8rem; }
-    .btn-back:hover { color: #fff; text-decoration: underline; }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 480px) {
-        .backup-card { padding: 20px 16px; }
-        .code-row { font-size: 1rem; }
-    }
-</style>
+	<link rel="stylesheet" href="{{ asset('css/admin/security/setup_success.css') }}">
 {% endblock %}
 
 {% block body %}
-<div class="viewport">
-    <div class="backup-card">
-        <div class="check-icon"><i class="fas fa-check-circle"></i></div>
-        <h1>Accès sécurisé</h1>
-        <p class="subtitle">La double authentification est active.</p>
+	<div class="viewport">
+		<div class="backup-card">
+			<div class="check-icon">
+				<i class="fas fa-check-circle"></i>
+			</div>
+			<h1>Accès sécurisé</h1>
+			<p class="subtitle">La double authentification est active.</p>
 
-        <div class="alert-box">
-            <p>Sauvegardez ces codes dans un endroit sûr. Ils ne seront plus affichés après cette étape.</p>
-        </div>
+			<div class="alert-box">
+				<p>Sauvegardez ces codes dans un endroit sûr. Ils ne seront plus affichés après cette étape.</p>
+			</div>
 
-        <div class="codes-container">
-            {% for code in backupCodes %}
-                <div class="code-row">{{ code }}</div>
-            {% endfor %}
-        </div>
+			<div class="codes-container">
+				{% for code in backupCodes %}
+					<div class="code-row">{{ code }}</div>
+				{% endfor %}
+			</div>
 
-        <button onclick="window.print()" class="btn-print">IMPRIMER LES CODES</button>
-        <a href="{{ path('admin_dashboard') }}" class="btn-back">Continuer vers le Dashboard →</a>
-    </div>
-</div>
+			<button onclick="window.print()" class="btn-print">IMPRIMER LES CODES</button>
+			<a href="{{ path('admin_dashboard') }}" class="btn-back">Continuer vers le Dashboard →</a>
+		</div>
+	</div>
 {% endblock %}
