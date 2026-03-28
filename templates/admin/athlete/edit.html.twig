@@ -13,10 +13,9 @@
 			<h1>Modifier le profil</h1>
 			<p>
 				Mise à jour de :
-				<span style="font-weight:700; color:var(--text-main);">
-					{{ athlete.firstName }}
-					{{ athlete.lastName }}
-				</span>
+				<span class="athlete-name-highlight">{{ athlete.firstName }}
+					{{ athlete.lastName }}</span>
+
 			</p>
 		</div>
 
@@ -92,7 +91,7 @@
 				</div>
 
 				<div class="form-actions">
-					<button type="button" class="btn-danger-link" onclick="if(confirm('⚠️ Attention : Voulez-vous vraiment supprimer cet athlète de la base de données ?')) document.getElementById('delete-form').submit();">
+					<button type="button" class="btn-danger-link" data-confirm="⚠️ Attention : Voulez-vous vraiment supprimer cet athlète de la base de données ?" data-submit="delete-form">
 						Supprimer le profil
 					</button>
 
@@ -107,7 +106,11 @@
 		</div>
 	</div>
 
-	<form id="delete-form" method="post" action="{{ path('admin_athlete_delete', {'id': athlete.id}) }}" style="display:none;">
+	<form id="delete-form" method="post" action="{{ path('admin_athlete_delete', {'id': athlete.id}) }}" class="form-hidden">
 		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ athlete.id) }}">
 	</form>
+{% endblock %}
+
+{% block javascripts %}
+	 <script src="{{ asset('js/admin/athlete/edit.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

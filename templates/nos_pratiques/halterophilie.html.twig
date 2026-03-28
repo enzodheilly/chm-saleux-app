@@ -1,143 +1,170 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Plateau Haltérophilie - CHM Saleux{% endblock %}
+{% block title %}Plateau Haltérophilie - CHM Saleux
+{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/nos_pratiques/halterophilie.css') }}">
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/nos_pratiques/halterophilie.css') }}">
 {% endblock %}
 
 {% block body %}
 
-<header class="page-header-sport" style="--bg-image: url('{{ asset('images/nos_pratiques/halterophilie/1.jpg') }}');">
-    <div class="header-overlay-gradient"></div>
+	<header class="page-header-sport" data-bg="{{ asset('images/nos_pratiques/halterophilie/1.jpg') }}">
+		<div class="header-overlay-gradient"></div>
 
-    <div class="header-content">
-        <div class="page-container">
-            <nav class="breadcrumb-nav">
-                <a href="{{ path('home') }}" class="back-link-minimal">
-                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                </a>
-            </nav>
+		<div class="header-content">
+			<div class="page-container">
+				<nav class="breadcrumb-nav">
+					<a href="{{ path('home') }}" class="back-link-minimal">
+						<i class="fa-solid fa-chevron-left"></i>
+						<span>Retour à l'accueil</span>
+					</a>
+				</nav>
 
-            <div class="header-main-box">
-                <div class="badge-accent">Performance Olympique</div>
-                <h1>Espace <span class="text-outline">Haltérophilie</span></h1>
-                <p class="lead">Un plateau technique de 800m², conçu pour l'excellence et sécurisé pour l'apprentissage.</p>
-            </div>
-        </div>
-    </div>
-</header>
+				<div class="header-main-box">
+					<div class="badge-accent">Performance Olympique</div>
+					<h1>Espace
+						<span class="text-outline">Haltérophilie</span>
+					</h1>
+					<p class="lead">Un plateau technique de 800m², conçu pour l'excellence et sécurisé pour l'apprentissage.</p>
+				</div>
+			</div>
+		</div>
+	</header>
 
-<main class="page-shell elite-main">
+	<main
+		class="page-shell elite-main">
 
-    {# --- SECTION 1 : PODIUMS --- #}
-    <section class="feature-section">
-        <div class="page-container grid-2">
-            <div class="text-side">
-                <span class="side-badge">Zone 01</span>
+		{# --- SECTION 1 : PODIUMS --- #}
+		<section class="feature-section">
+			<div class="page-container grid-2">
+				<div class="text-side">
+					<span class="side-badge">Zone 01</span>
 
-                <h2 class="section-heading section-heading-xl">
-                    Podiums & <span>Plateformes</span>
-                </h2>
+					<h2 class="section-heading section-heading-xl">
+						Podiums &
+						<span>Plateformes</span>
+					</h2>
 
-                <p>Le cœur de la pratique. Nos plateformes spécifiques permettent de chuter sous la barre en toute confiance et d'amortir les charges lourdes sans vibration parasite.</p>
+					<p>Le cœur de la pratique. Nos plateformes spécifiques permettent de chuter sous la barre en toute confiance et d'amortir les charges lourdes sans vibration parasite.</p>
 
-                <div class="specs-mini-grid">
-                    <div class="spec-item">
-                        <i class="fa-solid fa-layer-group"></i>
-                        <div><strong>Structure</strong><small>Plateaux IWF</small></div>
-                    </div>
-                    <div class="spec-item">
-                        <i class="fa-solid fa-shield-halved"></i>
-                        <div><strong>Sécurité</strong><small>Drop Zone 100%</small></div>
-                    </div>
-                </div>
-            </div>
+					<div class="specs-mini-grid">
+						<div class="spec-item">
+							<i class="fa-solid fa-layer-group"></i>
+							<div>
+								<strong>Structure</strong>
+								<small>Plateaux IWF</small>
+							</div>
+						</div>
+						<div class="spec-item">
+							<i class="fa-solid fa-shield-halved"></i>
+							<div>
+								<strong>Sécurité</strong>
+								<small>Drop Zone 100%</small>
+							</div>
+						</div>
+					</div>
+				</div>
 
-            <div class="visual-side">
-                <div class="img-frame-elite">
-                    <img src="{{ asset('images/halterophilie/podiums.jpg') }}" alt="Plateaux d'haltérophilie">
-                </div>
-                <div class="frame-glow"></div>
-            </div>
-        </div>
-    </section>
+				<div class="visual-side">
+					<div class="img-frame-elite">
+						<img src="{{ asset('images/halterophilie/podiums.jpg') }}" alt="Plateaux d'haltérophilie">
+					</div>
+					<div class="frame-glow"></div>
+				</div>
+			</div>
+		</section>
 
-    {# --- SECTION 2 : MATÉRIEL --- #}
-    <section class="feature-section alt-bg">
-        <div class="page-container grid-2 reversed">
-            <div class="text-side">
-                <span class="side-badge">Zone 02</span>
+		{# --- SECTION 2 : MATÉRIEL --- #}
+		<section class="feature-section alt-bg">
+			<div class="page-container grid-2 reversed">
+				<div class="text-side">
+					<span class="side-badge">Zone 02</span>
 
-                <h2 class="section-heading section-heading-xl">
-                    Barres & <span>Disques</span>
-                </h2>
+					<h2 class="section-heading section-heading-xl">
+						Barres &
+						<span>Disques</span>
+					</h2>
 
-                <p>La qualité du roulement et la précision du calibrage sont essentielles. Nous mettons à disposition du matériel de compétition et d'entraînement pour tous les niveaux.</p>
+					<p>La qualité du roulement et la précision du calibrage sont essentielles. Nous mettons à disposition du matériel de compétition et d'entraînement pour tous les niveaux.</p>
 
-                <ul class="elite-check-list">
-                    <li><i class="fa-solid fa-circle-check"></i> Barres Hommes (20kg) & Femmes (15kg)</li>
-                    <li><i class="fa-solid fa-circle-check"></i> Disques Bumper & Compétition (calibrés)</li>
-                    <li><i class="fa-solid fa-circle-check"></i> Barres d'initiation en aluminium</li>
-                </ul>
-            </div>
+					<ul class="elite-check-list">
+						<li>
+							<i class="fa-solid fa-circle-check"></i>
+							Barres Hommes (20kg) & Femmes (15kg)</li>
+						<li>
+							<i class="fa-solid fa-circle-check"></i>
+							Disques Bumper & Compétition (calibrés)</li>
+						<li>
+							<i class="fa-solid fa-circle-check"></i>
+							Barres d'initiation en aluminium</li>
+					</ul>
+				</div>
 
-            <div class="visual-side">
-                <div class="img-frame-elite">
-                    <img src="{{ asset('images/halterophilie/barres.jpg') }}" alt="Barres et disques">
-                </div>
-                <div class="frame-glow primary"></div>
-            </div>
-        </div>
-    </section>
+				<div class="visual-side">
+					<div class="img-frame-elite">
+						<img src="{{ asset('images/halterophilie/barres.jpg') }}" alt="Barres et disques">
+					</div>
+					<div class="frame-glow primary"></div>
+				</div>
+			</div>
+		</section>
 
-    {# --- SECTION 3 : ACCESSOIRES --- #}
-    <section class="feature-section">
-        <div class="page-container grid-2">
-            <div class="text-side">
-                <span class="side-badge">Zone 03</span>
+		{# --- SECTION 3 : ACCESSOIRES --- #}
+		<section class="feature-section">
+			<div class="page-container grid-2">
+				<div class="text-side">
+					<span class="side-badge">Zone 03</span>
 
-                <h2 class="section-heading section-heading-xl">
-                    Assistance & <span>Renforcement</span>
-                </h2>
+					<h2 class="section-heading section-heading-xl">
+						Assistance &
+						<span>Renforcement</span>
+					</h2>
 
-                <p>Travaillez vos points faibles avec des outils dédiés. Notre parc d'accessoires permet une programmation complète.</p>
+					<p>Travaillez vos points faibles avec des outils dédiés. Notre parc d'accessoires permet une programmation complète.</p>
 
-                <div class="tag-cloud">
-                    <span>Blocks d'arraché</span>
-                    <span>Racks à squat</span>
-                    <span>Magnésie</span>
-                    <span>Élastiques</span>
-                    <span>Pull-up Bars</span>
-                </div>
-            </div>
+					<div class="tag-cloud">
+						<span>Blocks d'arraché</span>
+						<span>Racks à squat</span>
+						<span>Magnésie</span>
+						<span>Élastiques</span>
+						<span>Pull-up Bars</span>
+					</div>
+				</div>
 
-            <div class="visual-side">
-                <div class="img-frame-elite">
-                    <img src="{{ asset('images/halterophilie/accessoires.jpg') }}" alt="Accessoires de renforcement">
-                </div>
-            </div>
-        </div>
-    </section>
+				<div class="visual-side">
+					<div class="img-frame-elite">
+						<img src="{{ asset('images/halterophilie/accessoires.jpg') }}" alt="Accessoires de renforcement">
+					</div>
+				</div>
+			</div>
+		</section>
 
-    {# --- CTA --- #}
-    <section class="elite-cta">
-        <div class="page-container">
-            <div class="cta-box">
-                <div class="cta-content">
-                    <h2 class="section-heading section-heading-xl cta-title">
-                        Rejoignez le <span>Collectif</span>
-                    </h2>
-                    <p>Venez tester notre plateau lors d'une séance d'essai encadrée.</p>
-                </div>
+		{# --- CTA --- #}
+		<section class="elite-cta">
+			<div class="page-container">
+				<div class="cta-box">
+					<div class="cta-content">
+						<h2 class="section-heading section-heading-xl cta-title">
+							Rejoignez le
+							<span>Collectif</span>
+						</h2>
+						<p>Venez tester notre plateau lors d'une séance d'essai encadrée.</p>
+					</div>
 
-                <a href="{{ path('contact') }}" class="btn-elite-big">
-                    Réserver ma séance <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-    </section>
+					<a href="{{ path('contact') }}" class="btn-elite-big">
+						Réserver ma séance
+						<i class="fa-solid fa-arrow-right"></i>
+					</a>
+				</div>
+			</div>
+		</section>
 
-</main>
+	</main>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	 <script src="{{ asset('js/nos_pratiques/halterophilie.js') }}"></script>
 {% endblock %}

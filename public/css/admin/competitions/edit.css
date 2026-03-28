@@ -278,3 +278,15 @@
 			color: var(--text-muted);
 			margin-top: 6px;
 		}
+
+		.data-hidden { display: none; }
+.mt-form { margin-top: 1.5rem; }
+.form-label-accent { color: var(--accent); }
+.th-accent { color: var(--accent); }
+.input-readonly { opacity: 0.7; }
+.td-center { text-align: center; }
+.form-hidden { display: none; }
+
+.athlete-select-bold { font-weight: 600; }
+.input-readonly { opacity: 0.7; }
+.td-center { text-align: center; }

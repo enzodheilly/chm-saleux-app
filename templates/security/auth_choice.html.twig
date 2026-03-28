@@ -58,8 +58,8 @@
 		<div class="auth-right">
 
 			<div class="slider-arrows">
-				<div class="arrow prev">❮</div>
-				<div class="arrow next">❯</div>
+				<div class="arrow prev" id="btn-prev">❮</div>
+				<div class="arrow next" id="btn-next">❯</div>
 			</div>
 
 			<div
@@ -70,9 +70,9 @@
 						<h2>Bouge Ton Corps<br>pour Être en Forme</h2>
 						<p>L'application t'aide à te dépasser et à adopter un mode de vie sain grâce à l'entraînement.</p>
 						<div class="slide-pagination">
-							<span class="dot" data-index="0"></span>
-							<span class="dot" onclick="changeSlide(1)"></span>
-							<span class="dot" onclick="changeSlide(2)"></span>
+							<span class="dot active" data-slide="0"></span>
+							<span class="dot" data-slide="1"></span>
+							<span class="dot" data-slide="2"></span>
 						</div>
 					</div>
 				</div>
@@ -83,9 +83,9 @@
 						<h2>Dépasse Tes Limites<br>Chaque Jour</h2>
 						<p>Accède à des programmes personnalisés en haltérophilie et musculation pour exploser tes perfs.</p>
 						<div class="slide-pagination">
-							<span class="dot" onclick="changeSlide(0)"></span>
-							<span class="dot active" onclick="changeSlide(1)"></span>
-							<span class="dot" onclick="changeSlide(2)"></span>
+							<span class="dot active" data-slide="0"></span>
+							<span class="dot" data-slide="1"></span>
+							<span class="dot" data-slide="2"></span>
 						</div>
 					</div>
 				</div>
@@ -96,9 +96,9 @@
 						<h2>Rejoins La<br>Communauté CHM</h2>
 						<p>Suis ta progression, reste motivé(e) et atteins enfin tes objectifs avec nous.</p>
 						<div class="slide-pagination">
-							<span class="dot" onclick="changeSlide(0)"></span>
-							<span class="dot" onclick="changeSlide(1)"></span>
-							<span class="dot active" onclick="changeSlide(2)"></span>
+							<span class="dot active" data-slide="0"></span>
+							<span class="dot" data-slide="1"></span>
+							<span class="dot" data-slide="2"></span>
 						</div>
 					</div>
 				</div>
@@ -111,8 +111,8 @@
 	{{ parent() }}
 {# On ajoute le nonce pour passer la sécurité CSP de ton base.html.twig #}
 	 <script 
-										    src="{{ asset('js/security/auth_slider.js') }}" 
-										    defer 
-										    nonce="{{ csp_nonce('script') }}">
-										</script>
+														    src="{{ asset('js/security/auth_slider.js') }}" 
+														    defer 
+														    nonce="{{ csp_nonce('script') }}">
+														</script>
 {% endblock %}

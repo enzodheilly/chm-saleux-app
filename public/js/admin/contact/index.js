@@ -1,9 +1,11 @@
-				    // Filtre de recherche dynamique
-					    document.getElementById('searchMessages').addEventListener('keyup', function() {
-					        const val = this.value.toLowerCase();
-					        const rows = document.querySelectorAll('#messagesTable tbody tr');
-					        rows.forEach(row => {
-					            const text = row.textContent.toLowerCase();
-					            row.style.display = text.includes(val) ? '' : 'none';
-					        });
-					    });
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('searchMessages');
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function () {
+            const filter = this.value.toLowerCase();
+            document.querySelectorAll('#messagesTable tbody tr').forEach(function (row) {
+                row.style.display = row.textContent.toLowerCase().includes(filter) ? '' : 'none';
+            });
+        });
+    }
+});

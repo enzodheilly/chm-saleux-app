@@ -245,3 +245,6 @@
             width: 100%;
         }
     }
+
+    .athlete-name-highlight { font-weight: 700; color: var(--text-main); }
+.form-hidden { display: none; }

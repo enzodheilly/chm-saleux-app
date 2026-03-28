@@ -13,9 +13,8 @@
 			<h1>Modifier l'article</h1>
 			<p>
 				Modification de :
-				<span style="font-weight:700; color:var(--text-main);">
-					{{ article.title }}
-				</span>
+				<span class="article-title-highlight">{{ article.title }}</span>
+
 			</p>
 		</div>
 
@@ -79,7 +78,7 @@
 				</div>
 
 				<div class="form-actions">
-					<button type="button" class="btn-danger-link" onclick="if(confirm('⚠️ Supprimer définitivement cet article ? Cette action est irréversible.')) document.getElementById('delete-form').submit();">
+					<button type="button" class="btn-danger-link" data-confirm="⚠️ Supprimer définitivement cet article ? Cette action est irréversible." data-submit="delete-form">
 						Supprimer l'article
 					</button>
 
@@ -94,7 +93,11 @@
 		</div>
 	</div>
 
-	<form id="delete-form" method="post" action="{{ path('admin_articles_delete', {id: article.id}) }}" style="display:none;">
+	<form id="delete-form" method="post" action="{{ path('admin_articles_delete', {id: article.id}) }}" class="form-hidden">
 		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
 	</form>
+{% endblock %}
+
+{% block javascripts %}
+	 <script src="{{ asset('js/admin/articles/edit.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

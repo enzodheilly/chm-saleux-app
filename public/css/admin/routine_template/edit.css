@@ -79,3 +79,13 @@
     }
     .act-link:hover { opacity: 1; text-decoration: underline; }
     .act-del { color: var(--danger); }
+
+    .text-main { color: var(--text-main); }
+.form-actions-end { display: flex; justify-content: flex-end; padding-top: 1.5rem; border-top: 1px solid var(--border-color); margin-top: 1rem; }
+.no-border { border: none; margin-bottom: 1rem; }
+.table-scroll { overflow-x: auto; }
+.th-right { text-align: right; }
+.td-muted { color: var(--text-muted); }
+.tpl-name { display: block; color: var(--text-main); }
+.actions-end { display: flex; justify-content: flex-end; }
+.td-empty { text-align: center; padding: 4rem; color: var(--text-muted); }

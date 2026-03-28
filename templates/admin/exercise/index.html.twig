@@ -18,7 +18,7 @@
 		<div
 			class="toolbar">
 			{# Recherche #}
-			<div style="min-width: 260px;">
+			<div class="search-wrapper">
 				<span class="tool-label">Rechercher</span>
 				<input type="text" id="searchExercise" class="input" placeholder="Rechercher un exercice...">
 			</div>
@@ -31,20 +31,20 @@
 	{# Flash messages #}
 	{% for label, messages in app.flashes %}
 		{% for message in messages %}
-			<div style="margin-bottom: 1rem; padding: 0.9rem 1rem; border-radius: 6px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.02); color: var(--text-main);">
+			<div class="flash-message">
 				{{ message }}
 			</div>
 		{% endfor %}
 	{% endfor %}
 
 	<div class="table-wrapper">
-		<div style="overflow-x: auto;">
+		<div class="table-scroll">
 			<table class="admin-table" id="exerciseTable">
 				<thead>
 					<tr>
 						<th width="120">ID</th>
 						<th>Exercice</th>
-						<th style="text-align: right;">Actions</th>
+						<th class="th-right">Actions</th>
 					</tr>
 				</thead>
 
@@ -64,8 +64,7 @@
 									<a href="{{ path('admin_exercise_edit', {id: exercise.id}) }}" class="act-link act-edit">
 										Modifier
 									</a>
-
-									<form method="post" action="{{ path('admin_exercise_delete', {id: exercise.id}) }}" onsubmit="return confirm('Supprimer définitivement l\\'exercice « {{ exercise.name }} » ?');" style="display:inline;">
+									<form method="post" action="{{ path('admin_exercise_delete', {id: exercise.id}) }}" class="form-inline" data-confirm="Supprimer définitivement l'exercice « {{ exercise.name }} » ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete_exercise_' ~ exercise.id) }}">
 										<button class="act-link act-del" type="submit">Supprimer</button>
 									</form>
@@ -74,9 +73,8 @@
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="3" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-								Aucun exercice enregistré.
-							</td>
+							<td colspan="3" class="td-empty">Aucun exercice enregistré.</td>
+
 						</tr>
 					{% endfor %}
 				</tbody>

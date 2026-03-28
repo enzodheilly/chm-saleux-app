@@ -31,7 +31,7 @@
 						<th>Type</th>
 						<th>Validité</th>
 						<th>Statut</th>
-						<th style="text-align: right;">Actions</th>
+						<th class="th-right">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -39,7 +39,7 @@
 						{% set isExpired = licence.expiryDate < date() %}
 
 						<tr>
-							<td style="color: var(--text-muted); font-family: monospace;">#{{ licence.id }}</td>
+							<td class="td-mono">#{{ licence.id }}</td>
 
 							<td>
 								<span class="licence-number">{{ licence.number }}</span>
@@ -71,7 +71,7 @@
 								<div class="actions-cell">
 									<a href="{{ path('admin_licence_edit', {id: licence.id}) }}" class="action-link link-edit">Modifier</a>
 
-									<form method="post" action="{{ path('admin_licence_delete', {id: licence.id}) }}" onsubmit="return confirm('Supprimer définitivement la licence {{ licence.number }} ?');" style="display:inline;">
+									<form method="post" action="{{ path('admin_licence_delete', {id: licence.id}) }}" class="form-inline" data-confirm="Supprimer définitivement la licence {{ licence.number }} ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ licence.id) }}">
 										<button type="submit" class="action-link link-delete">Supprimer</button>
 									</form>

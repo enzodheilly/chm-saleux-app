@@ -26,8 +26,12 @@
 				{% endfor %}
 			</div>
 
-			<button onclick="window.print()" class="btn-print">IMPRIMER LES CODES</button>
+			<button class="btn-print" id="btn-print">IMPRIMER LES CODES</button>
 			<a href="{{ path('admin_dashboard') }}" class="btn-back">Continuer vers le Dashboard →</a>
 		</div>
 	</div>
+{% endblock %}
+
+{% block javascripts %}
+	 <script src="{{ asset('js/admin/security/setup_success.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

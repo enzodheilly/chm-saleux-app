@@ -22,14 +22,14 @@
 		</div>
 
 		<div class="table-wrapper">
-			<div style="overflow-x: auto;">
+			<div class="table-scroll">
 				<table class="admin-table" id="itemTable">
 					<thead>
 						<tr>
 							<th width="35%">Item</th>
 							<th width="35%">Description</th>
 							<th width="15%">Price</th>
-							<th style="text-align: right;">Actions</th>
+							<th class="th-right">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -50,7 +50,7 @@
 									</div>
 								</td>
 
-								<td style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">
+								<td class="td-preview">
 									{{ item.description|length > 80 ? item.description|slice(0, 80) ~ '...' : item.description }}
 								</td>
 
@@ -63,7 +63,7 @@
 									<div class="actions">
 										<a href="{{ path('admin_merchandise_edit', {id: item.id}) }}" class="act-link act-edit">Edit</a>
 
-										<form method="post" action="{{ path('admin_merchandise_delete', {id: item.id}) }}" style="display:inline;" onsubmit="return confirm('Delete this item from the catalogue?');">
+										<form method="post" action="{{ path('admin_merchandise_delete', {id: item.id}) }}" class="form-inline" data-confirm="Delete this item from the catalogue?">
 											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
 											<button class="act-link act-del">Delete</button>
 										</form>
@@ -72,9 +72,8 @@
 							</tr>
 						{% else %}
 							<tr>
-								<td colspan="4" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-									No items are currently available in the shop.
-								</td>
+								<td colspan="4" class="td-empty">No items are currently available in the shop.</td>
+
 							</tr>
 						{% endfor %}
 					</tbody>

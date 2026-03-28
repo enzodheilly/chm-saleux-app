@@ -23,7 +23,7 @@
 	</div>
 
 	<div class="table-wrapper">
-		<div style="overflow-x: auto;">
+		<div class="table-scroll">
 			<table class="admin-table" id="offersTable">
 				<thead>
 					<tr>
@@ -31,7 +31,7 @@
 						<th width="15%">Prix</th>
 						<th width="15%">Fréquence</th>
 						<th width="30%">Avantages (Aperçu)</th>
-						<th style="text-align: right;">Actions</th>
+						<th class="th-right">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -72,14 +72,13 @@
 									{% endfor %}
 
 									{% if plan.benefits|length > 3 %}
-										<li style="font-style: italic; color: var(--text-muted);">
-											+{{ plan.benefits|length - 3 }}
-											autres...
-										</li>
+										<li class="li-more">+{{ plan.benefits|length - 3 }}
+											autres...</li>
+
 									{% endif %}
 
 									{% if plan.benefits|length == 0 %}
-										<li style="color: var(--text-muted); font-style: italic;">Aucun avantage listé</li>
+										<li class="li-empty">Aucun avantage listé</li>
 									{% endif %}
 								</ul>
 							</td>
@@ -89,8 +88,7 @@
 									<a href="{{ path('admin_membership_plan_edit', {'id': plan.id}) }}" class="act-link act-edit">
 										Modifier
 									</a>
-
-									<form method="post" action="{{ path('admin_membership_plan_delete', {'id': plan.id}) }}" style="display:inline;" onsubmit="return confirm('Supprimer définitivement l\'offre {{ plan.name }} ?');">
+									<form method="post" action="{{ path('admin_membership_plan_delete', {'id': plan.id}) }}" class="form-inline" data-confirm="Supprimer définitivement l'offre {{ plan.name }} ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ plan.id) }}">
 										<button class="act-link act-del">Supprimer</button>
 									</form>
@@ -99,9 +97,7 @@
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-muted);">
-								Aucune offre d'abonnement n'a été créée pour le moment.
-							</td>
+							<td colspan="5" class="td-empty">Aucune offre d'abonnement n'a été créée pour le moment.</td>
 						</tr>
 					{% endfor %}
 				</tbody>

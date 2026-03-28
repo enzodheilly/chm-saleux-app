@@ -24,7 +24,7 @@
 	</div>
 
 	<div class="table-wrapper">
-		<div style="overflow-x: auto;">
+		<div class="table-scroll">
 			<table class="admin-table" id="pagesTable">
 				<thead>
 					<tr>
@@ -32,25 +32,25 @@
 						<th width="35%">Titre de la page</th>
 						<th width="25%">Chemin (URL)</th>
 						<th width="20%">Dernière modif.</th>
-						<th style="text-align: right;">Actions</th>
+						<th class="th-right">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for page in pages %}
 						<tr>
 							<td>
-								<span style="font-family: monospace; color: var(--text-muted);">#{{ page.id }}</span>
+								<span class="td-mono">#{{ page.id }}</span>
 							</td>
 
 							<td>
-								<strong style="font-weight: 600; color: var(--text-main);">{{ page.title }}</strong>
+								<strong class="td-bold">{{ page.title }}</strong>
 							</td>
 
 							<td>
 								<span class="slug-code">/legal/{{ page.slug }}</span>
 							</td>
 
-							<td style="color: var(--text-muted); font-size: 0.85rem;">
+							<td class="td-date">
 								{{ page.updatedAt ? page.updatedAt|date('d/m/Y à H:i') : 'Non modifiée' }}
 							</td>
 
@@ -60,7 +60,7 @@
 										Modifier
 									</a>
 
-									<form method="post" action="{{ path('admin_legal_pages_delete', { id: page.id }) }}" style="display:inline;" onsubmit="return confirm('⚠️ Attention : Supprimer cette page peut créer des erreurs 404 sur votre site.\n\nConfirmer la suppression ?');">
+									<form method="post" action="{{ path('admin_legal_pages_delete', { id: page.id }) }}" class="form-inline" data-confirm="⚠️ Attention : Supprimer cette page peut créer des erreurs 404 sur votre site. Confirmer la suppression ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ page.id) }}">
 										<button class="act-link act-del">Supprimer</button>
 									</form>
@@ -69,9 +69,8 @@
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="5" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-								Aucune page légale n'a été trouvée.
-							</td>
+							<td colspan="5" class="td-empty">Aucune page légale n'a été trouvée.</td>
+
 						</tr>
 					{% endfor %}
 				</tbody>

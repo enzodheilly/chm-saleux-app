@@ -104,3 +104,13 @@
     
     .act-edit { color: var(--text-main); }
     .act-del { color: var(--danger); }
+
+    .table-scroll { overflow-x: auto; }
+.th-right { text-align: right; }
+.td-mono { font-family: monospace; color: var(--text-muted); }
+.td-bold { font-weight: 600; color: var(--text-main); }
+.td-muted { color: var(--text-muted); }
+.td-small { font-size: 0.8rem; }
+.td-date { color: var(--text-muted); font-size: 0.85rem; }
+.td-empty { text-align: center; padding: 3rem; color: var(--text-muted); }
+.form-inline { display: inline; }

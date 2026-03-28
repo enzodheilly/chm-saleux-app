@@ -255,3 +255,6 @@
             width: 100%;
         }
     }
+
+    .equipment-name-highlight { font-weight: 700; color: var(--text-main); }
+.form-hidden { display: none; }
