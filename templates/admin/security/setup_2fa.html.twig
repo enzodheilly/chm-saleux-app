@@ -12,7 +12,7 @@
 		<div class="setup-card">
 			<div class="setup-info">
 				<h1>Sécurisez votre accès</h1>
-				<p style="color: #888; margin-bottom: 35px;">L'activation du 2FA garantit que vous seul pouvez accéder à l'administration du Chm Saleux.</p>
+				<p class="setup-subtitle">L'activation du 2FA garantit que vous seul pouvez accéder à l'administration du Chm Saleux.</p>
 
 				<div class="step-item">
 					<div class="step-number">1</div>
@@ -29,7 +29,7 @@
 					<div class="step-text">
 						<h4>Liaison du compte</h4>
 						<p class="hide-mobile">Scannez le code QR ci-contre avec votre application.</p>
-						<p class="show-mobile" style="display:none;">Appuyez sur le bouton orange ci-dessous pour ajouter automatiquement le compte.</p>
+						<p class="show-mobile hide">Appuyez sur le bouton orange ci-dessous pour ajouter automatiquement le compte.</p>
 					</div>
 				</div>
 
@@ -51,14 +51,13 @@
 					<a href="{{ qrContent }}" class="btn-mobile-auth">
 						Lier mon application
 					</a>
-					<p style="color: #555; font-size: 0.8rem; margin-top: 10px;">
-						Cliquez ici pour ouvrir Google Authenticator
-					</p>
+					<p class="mobile-hint">Cliquez ici pour ouvrir Google Authenticator</p>
+
 				</div>
 
-				<form method="POST" style="width: 100%; text-align: center;">
+				<form method="POST" class="verify-form">
 					<input type="hidden" name="_token" value="{{ csrf_token('setup_2fa') }}">
-					<div style="color: #888; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; margin-bottom: 15px;">Code de vérification</div>
+					<div class="code-label">Code de vérification</div>
 					<input type="text" name="auth_code" class="code-input" id="2fa_code" placeholder="000000" maxlength="6" inputmode="numeric" required>
 					<button type="submit" class="btn-validate">Confirmer et Entrer</button>
 				</form>

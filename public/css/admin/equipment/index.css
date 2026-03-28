@@ -67,3 +67,9 @@
         .page-header { align-items: flex-start; flex-direction: column; }
         .actions { justify-content: flex-start; }
     }
+
+    .table-scroll { overflow-x: auto; }
+.th-right { text-align: right; }
+.td-brand { color: var(--text-muted); font-family: monospace; font-size: 0.85rem; }
+.td-empty { text-align: center; padding: 4rem; color: var(--text-muted); }
+.form-inline { display: inline; }

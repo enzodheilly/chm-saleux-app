@@ -12,7 +12,7 @@
 		<div>
 			<h1>Modifier l'offre</h1>
 			<p>Édition de :
-				<span style="font-weight: 700; color: var(--text-main);">{{ plan.name }}</span>
+				<span class="plan-name-highlight">{{ plan.name }}</span>
 			</p>
 		</div>
 
@@ -83,7 +83,7 @@
 				</label>
 
 				<div class="form-actions">
-					<button type="button" class="btn-danger-link" onclick="if(confirm('Attention : Supprimer cette offre peut affecter l\\'affichage du site.\\n\\nÊtes-vous sûr ?')) document.getElementById('delete-form').submit();">
+					<button type="button" class="btn-danger-link" data-confirm="Attention : Supprimer cette offre peut affecter l'affichage du site. Êtes-vous sûr ?" data-submit="delete-form">
 						Supprimer l'offre
 					</button>
 

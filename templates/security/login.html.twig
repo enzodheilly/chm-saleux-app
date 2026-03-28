@@ -87,8 +87,8 @@
 		{# --- CÔTÉ DROIT : SLIDER (Textes adaptés à la reconnexion) --- #}
 		<div class="auth-right">
 			<div class="slider-arrows">
-				<div class="arrow prev" onclick="prevSlide()">❮</div>
-				<div class="arrow next" onclick="nextSlide()">❯</div>
+				<div class="arrow prev" id="btn-prev">❮</div>
+				<div class="arrow next" id="btn-next">❯</div>
 			</div>
 
 			<div class="auth-slider">
@@ -97,9 +97,9 @@
 						<h2>Prêt Pour Votre<br>Séance ?</h2>
 						<p>Connectez-vous pour consulter votre programme du jour et enregistrer vos nouvelles performances.</p>
 						<div class="slide-pagination">
-							<span class="dot active" onclick="changeSlide(0)"></span>
-							<span class="dot" onclick="changeSlide(1)"></span>
-							<span class="dot" onclick="changeSlide(2)"></span>
+							<span class="dot active" data-slide="0"></span>
+							<span class="dot" data-slide="1"></span>
+							<span class="dot" data-slide="2"></span>
 						</div>
 					</div>
 				</div>
@@ -109,9 +109,9 @@
 						<h2>Analysez Vos<br>Progrès</h2>
 						<p>Retrouvez vos graphiques d'évolution et voyez tout le chemin parcouru depuis vos débuts au club.</p>
 						<div class="slide-pagination">
-							<span class="dot" onclick="changeSlide(0)"></span>
-							<span class="dot active" onclick="changeSlide(1)"></span>
-							<span class="dot" onclick="changeSlide(2)"></span>
+							<span class="dot active" data-slide="0"></span>
+							<span class="dot" data-slide="1"></span>
+							<span class="dot" data-slide="2"></span>
 						</div>
 					</div>
 				</div>
@@ -121,9 +121,9 @@
 						<h2>Le Mental Avant<br>Le Muscle</h2>
 						<p>Chaque connexion est une preuve de votre discipline. Continuez ainsi, la communauté CHM est avec vous.</p>
 						<div class="slide-pagination">
-							<span class="dot" onclick="changeSlide(0)"></span>
-							<span class="dot" onclick="changeSlide(1)"></span>
-							<span class="dot active" onclick="changeSlide(2)"></span>
+							<span class="dot active" data-slide="0"></span>
+							<span class="dot" data-slide="1"></span>
+							<span class="dot" data-slide="2"></span>
 						</div>
 					</div>
 				</div>

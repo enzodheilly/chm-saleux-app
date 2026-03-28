@@ -238,3 +238,8 @@
 		.btn-save:hover {
 			opacity: 0.9;
 		}
+
+		.data-hidden { display: none; }
+.mt-form { margin-top: 1.5rem; }
+.form-label-accent { color: var(--accent); }
+.th-accent { color: var(--accent); }

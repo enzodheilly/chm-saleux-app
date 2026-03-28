@@ -246,6 +246,7 @@
   background-color: var(--dark-bg);
   margin-bottom: 0;
   overflow: hidden;
+  background-image: var(--bg-image);
 }
 
 .page-header-sport::before {

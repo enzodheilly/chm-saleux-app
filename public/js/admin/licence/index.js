@@ -1,11 +1,24 @@
-	    document.getElementById('searchLicence').addEventListener('keyup', function() {
-			        const val = this.value.toLowerCase();
-			        const rows = document.querySelectorAll('#licenceTable tbody tr');
-			
-			        rows.forEach(row => {
-			            const number = row.querySelector('.licence-number')?.textContent.toLowerCase() || '';
-			            const text = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase() || '';
-			
-			            row.style.display = (number.includes(val) || text.includes(val)) ? '' : 'none';
-			        });
-			    });
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Recherche
+    const searchInput = document.getElementById('searchLicence');
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function () {
+            const filter = this.value.toLowerCase();
+            document.querySelectorAll('#licenceTable tbody tr').forEach(function (row) {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? '' : 'none';
+            });
+        });
+    }
+
+    // Confirmation suppression
+    document.querySelectorAll('form[data-confirm]').forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+            if (!confirm(this.dataset.confirm)) {
+                e.preventDefault();
+            }
+        });
+    });
+
+});

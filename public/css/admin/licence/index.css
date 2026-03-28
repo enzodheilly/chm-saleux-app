@@ -224,3 +224,7 @@
             justify-content: flex-start;
         }
     }
+
+    .th-right { text-align: right; }
+.td-mono { color: var(--text-muted); font-family: monospace; }
+.form-inline { display: inline; }

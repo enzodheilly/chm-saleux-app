@@ -111,3 +111,10 @@
         .toolbar { justify-content: flex-start; width: 100%; }
         .input { min-width: 100%; }
     }
+
+    .search-wrapper { min-width: 260px; }
+.flash-message { margin-bottom: 1rem; padding: 0.9rem 1rem; border-radius: 6px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.02); color: var(--text-main); }
+.table-scroll { overflow-x: auto; }
+.th-right { text-align: right; }
+.td-empty { text-align: center; padding: 4rem; color: var(--text-muted); }
+.form-inline { display: inline; }
