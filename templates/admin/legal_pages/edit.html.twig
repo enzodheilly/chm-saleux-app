@@ -52,7 +52,7 @@
 				</div>
 
 				<div class="form-actions">
-					<button type="button" class="btn-danger-link" onclick="if(confirm('⚠️ Supprimer cette page définitivement ? Les liens vers /legal/{{ page.slug }} ne fonctionneront plus.')) document.getElementById('delete-page-form').submit();">
+					<button type="button" class="btn-danger-link" data-confirm="⚠️ Supprimer cette page définitivement ? Les liens vers /legal/{{ page.slug }} ne fonctionneront plus." data-submit="delete-page-form">
 						Supprimer la page
 					</button>
 
@@ -67,7 +67,7 @@
 		</div>
 	</div>
 
-	<form id="delete-page-form" method="post" action="{{ path('admin_legal_pages_delete', { id: page.id }) }}" style="display: none;">
+	<form id="delete-page-form" method="post" action="{{ path('admin_legal_pages_delete', { id: page.id }) }}" class="form-hidden">
 		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ page.id) }}">
 	</form>
 {% endblock %}

@@ -21,7 +21,7 @@
 		</div>
 
 		<div class="table-wrapper">
-			<div style="overflow-x: auto;">
+			<div class="table-scroll">
 				<table class="admin-table" id="messagesTable">
 					<thead>
 						<tr>
@@ -30,7 +30,7 @@
 							<th width="140">Contact</th>
 							<th width="180">Sujet</th>
 							<th>Message reçu</th>
-							<th style="text-align: right;">Traitement / Réponse</th>
+							<th class="th-right">Traitement / Réponse</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -38,7 +38,7 @@
 							<tr>
 								<td class="date-text">
 									{{ message.createdAt|date('d/m/Y') }}<br>
-									<span style="opacity: 0.5;">{{ message.createdAt|date('H:i') }}</span>
+									<span class="td-time">{{ message.createdAt|date('H:i') }}</span>
 								</td>
 
 								<td>
@@ -49,11 +49,11 @@
 									</div>
 								</td>
 
-								<td style="color: var(--text-muted); font-family: monospace; font-size: 0.85rem;">
+								<td class="td-contact">
 									{{ message.phone ?: '—' }}
 								</td>
 
-								<td style="color: var(--text-muted);">
+								<td class="td-muted">
 									{{ message.subject ? (subjectLabels[message.subject] ?? message.subject) : '—' }}
 								</td>
 
@@ -63,10 +63,10 @@
 									</div>
 								</td>
 
-								<td style="text-align: right;">
+								<td class="td-right">
 									{% if message.resolvedBy %}
 										<div class="status-resolved">
-											<span style="font-size: 1.2rem;">✓</span>
+											<span class="resolved-check">✓</span>
 											Résolu par
 											{{ message.resolvedBy }}
 										</div>
@@ -81,7 +81,7 @@
 							</tr>
 						{% else %}
 							<tr>
-								<td colspan="6" style="text-align: center; padding: 5rem; color: var(--text-muted);">
+								<td colspan="6" class="td-empty">
 									Aucun message n'a été reçu via le formulaire.
 								</td>
 							</tr>

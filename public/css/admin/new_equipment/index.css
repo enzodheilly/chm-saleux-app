@@ -72,3 +72,9 @@
     .act-link:hover { opacity: 1; text-decoration: underline; }
     .act-edit { color: var(--text-main); }
     .act-del { color: var(--danger); }
+
+    .table-scroll { overflow-x: auto; }
+.th-right { text-align: right; }
+.td-date-mono { color: var(--text-muted); font-family: monospace; font-size: 0.85rem; }
+.td-empty { text-align: center; padding: 4rem; color: var(--text-muted); }
+.form-inline { display: inline; }

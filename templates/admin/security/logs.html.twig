@@ -20,31 +20,31 @@
 				<p>Authentifications, activités système et alertes de sécurité en temps réel.</p>
 			</div>
 			<div>
-				<a href="{{ path('admin_security_purge_logs') }}" class="btn-danger-outline" onclick="return confirm('⚠️ Action irréversible : Purger l\'historique ?');">
+				<a href="{{ path('admin_security_purge_logs') }}" class="btn-danger-outline" data-confirm="⚠️ Action irréversible : Purger l'historique ?">
 					Purger les journaux
 				</a>
 			</div>
 		</div>
 
-		<div class="content-card" style="margin-bottom: 2rem; padding: 1.5rem;">
-			<h3 style="margin: 0 0 1.2rem 0; font-size: 0.9rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;">
+		<div class="content-card content-card-mb">
+			<h3 class="targets-title">
 				🚨 Comptes les plus visés (Échecs)
 			</h3>
-			<div style="display: flex; gap: 1.2rem; flex-wrap: wrap;">
+			<div class="targets-list">
 				{% for target in topTargets|default([]) %}
 					{% set targetUser = target.user is defined ? target.user : (target[0] is defined ? target[0] : null) %}
 					<div class="target-card">
-						<div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; font-weight: 700;">Utilisateur cible</div>
-						<div style="font-weight: 700; color: var(--text-main); font-size: 0.9rem; word-break: break-all;">
+						<div class="target-label">Utilisateur cible</div>
+						<div class="target-email">
 							{{ targetUser ? targetUser.email : 'Utilisateur inconnu' }}
 						</div>
-						<div style="margin-top: 10px; font-size: 1.3rem; font-weight: 800; color: var(--danger);">
+						<div class="target-attempts">
 							{{ target.attempts }}
-							<span style="font-size: 0.75rem; font-weight: 500; opacity: 0.8;">échecs</span>
+							<span class="target-attempts-label">échecs</span>
 						</div>
 					</div>
 				{% else %}
-					<div style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; padding: 1rem;">
+					<div class="targets-empty">
 						Aucune activité suspecte détectée sur les comptes utilisateurs.
 					</div>
 				{% endfor %}
@@ -59,7 +59,7 @@
 				<button class="filter-btn" data-filter="session">Alertes</button>
 			</div>
 
-			<div style="display: flex; gap: 12px; align-items: center;">
+			<div class="toolbar-right">
 				<a href="{{ path('admin_security_export_csv') }}" class="btn-export">
 					📥 Exporter CSV
 				</a>
@@ -78,7 +78,7 @@
 							<th width="120">Appareil</th>
 							<th>Message / Événement</th>
 							<th width="100">Statut</th>
-							<th width="60" style="text-align: right;">Action</th>
+							<th width="60" class="th-right">Action</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -86,13 +86,14 @@
 							{% set rowStatus = (log.type == 'erreur') ? 'failed' : (log.type == 'Session' ? 'session' : 'success') %}
 
 							<tr class="log-row {% if log.type == 'Session' %}log-warning-row{% endif %}" data-status="{{ rowStatus }}">
-								<td class="date-cell" style="color: var(--text-muted); font-family: monospace; font-size: 0.8rem;">
+
+								<td class="date-cell td-mono-sm">
 									{{ log.createdAt|date('d/m/Y') }}<br>
-									<span style="opacity: 0.6;">{{ log.createdAt|date('H:i:s') }}</span>
+									<span class="td-time">{{ log.createdAt|date('H:i:s') }}</span>
 								</td>
 
 								<td>
-									<strong style="color: var(--text-main);">
+									<strong class="td-main">
 										{{ log.user ? log.user.email : 'Système' }}
 									</strong>
 								</td>
@@ -102,14 +103,14 @@
 									<span class="geo-info" id="geo-{{ loop.index }}">Recherche...</span>
 								</td>
 
-								<td style="font-size: 0.8rem; color: var(--text-muted);">
+								<td class="td-device">
 									{% if log.userAgent %}
 										{% if 'Mobi' in log.userAgent %}📱 Mobile
 											{% elseif 'Windows' in log.userAgent %}💻 PC
 											{% elseif 'Macintosh' in log.userAgent %}🖥️ Mac
 											{% else %}🌐 Web
 										{% endif %}
-										<div style="font-size: 0.7rem; opacity: 0.5; margin-top: 3px;" title="{{ log.userAgent }}">
+										<div class="td-useragent" title="{{ log.userAgent }}">
 											{{ log.userAgent|slice(0, 20) }}...
 										</div>
 										{% else %}—
@@ -117,14 +118,14 @@
 								</td>
 
 								<td>
-									<div style="display: flex; align-items: center; gap: 8px;">
+									<div class="log-message">
 										{% if log.type == 'Session' %}
-											<span style="color:#f59e0b">⚠️</span>
+											<span class="log-warning-icon">⚠️</span>
 										{% endif %}
 										<span>{{ log.message ?? '—' }}</span>
 									</div>
 
-									<div style="margin-top: 6px; display: flex; gap: 6px;">
+									<div class="log-badges">
 										{% set hour = log.createdAt|date('H') %}
 										{% if hour < 7 or hour > 21 %}
 											<span class="badge-nocturne">🌙 Nocturne ({{ hour }}h)</span>
@@ -143,19 +144,19 @@
 									{% endif %}
 								</td>
 
-								<td style="text-align: right;">
+								<td class="td-right">
 									{% if log.ip and log.ip not in ['127.0.0.1', '::1', '—'] %}
-										<a href="{{ path('admin_security_ban_ip', {'ip': log.ip}) }}" class="btn-ban" onclick="return confirm('🚫 Bannir l\'IP {{ log.ip|e('js') }} ?');" title="Bannir l'IP">
+										<a href="{{ path('admin_security_ban_ip', {'ip': log.ip}) }}" class="btn-ban" data-confirm="🚫 Bannir l'IP {{ log.ip }} ?" title="Bannir l'IP">
 											🚫
 										</a>
 									{% else %}
-										<span style="opacity: 0.2;">—</span>
+										<span class="td-dash">—</span>
 									{% endif %}
 								</td>
 							</tr>
 						{% else %}
 							<tr>
-								<td colspan="7" style="text-align: center; padding: 5rem; color: var(--text-muted);">
+								<td colspan="7" class="td-empty">
 									Aucun log de sécurité enregistré.
 								</td>
 							</tr>
@@ -163,7 +164,7 @@
 					</tbody>
 				</table>
 			</div>
-			<div id="noResults" style="display:none; text-align:center; padding:3rem; color:var(--text-muted); font-style: italic;">
+			<div id="noResults" class="no-results hidden">
 				Aucune correspondance trouvée pour ces critères.
 			</div>
 		</div>

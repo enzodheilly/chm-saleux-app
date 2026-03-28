@@ -89,3 +89,16 @@ toggleButtons.forEach(button => {
     });
 });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.getElementById('btn-prev')?.addEventListener('click', prevSlide);
+    document.getElementById('btn-next')?.addEventListener('click', nextSlide);
+
+    document.querySelectorAll('.dot[data-slide]').forEach(function (dot) {
+        dot.addEventListener('click', function () {
+            changeSlide(parseInt(this.dataset.slide));
+        });
+    });
+
+});

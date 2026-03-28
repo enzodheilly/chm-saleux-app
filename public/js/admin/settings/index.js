@@ -1,14 +1,24 @@
-			document.addEventListener('DOMContentLoaded', () => {
-			    const toggle = document.getElementById('themeToggleCheckbox');
-			    const htmlElement = document.documentElement;
-			
-			    const savedTheme = localStorage.getItem('theme') || 'dark';
-			    htmlElement.setAttribute('data-theme', savedTheme);
-			    toggle.checked = (savedTheme === 'dark');
-			
-			    toggle.addEventListener('change', () => {
-			        const theme = toggle.checked ? 'dark' : 'light';
-			        htmlElement.setAttribute('data-theme', theme);
-			        localStorage.setItem('theme', theme);
-			    });
-			});
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Toggle thème
+    const checkbox = document.getElementById('themeToggleCheckbox');
+    const html = document.documentElement;
+
+    if (checkbox) {
+        checkbox.checked = html.getAttribute('data-theme') === 'light';
+        checkbox.addEventListener('change', function () {
+            const newTheme = this.checked ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    }
+
+    // Reset sessions
+    const btnReset = document.getElementById('btn-reset-sessions');
+    if (btnReset) {
+        btnReset.addEventListener('click', function () {
+            alert('Cette action va réinitialiser vos tokens de connexion.');
+        });
+    }
+
+});

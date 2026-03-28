@@ -1,0 +1,160 @@
+/* =================== COMPOSER LAYOUT =================== */
+		.dashboard-container {
+			width: 100%;
+			max-width: 1800px;
+			margin: 0 auto;
+		}
+
+		.page-header {
+			margin-bottom: 2rem;
+			border-bottom: 1px solid var(--border-color);
+			padding-bottom: 1.5rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-end;
+		}
+		.page-header h1 {
+			margin: 0;
+			font-size: 1.5rem;
+			font-weight: 700;
+			color: var(--text-main);
+		}
+
+		/* Grid Split 50/50 ou 60/40 */
+		.compose-grid {
+			display: grid;
+			grid-template-columns: 1.2fr 0.8fr;
+			gap: 2rem;
+			height: calc(100vh - 250px);
+			min-height: 700px;
+		}
+		@media(max-width: 1200px) {
+			.compose-grid {
+				grid-template-columns: 1fr;
+				height: auto;
+			}
+		}
+
+		/* Panels Style */
+		.panel {
+			background: var(--bg-sidebar);
+			border: 1px solid var(--border-color);
+			border-radius: 6px;
+			padding: 1.5rem;
+			display: flex;
+			flex-direction: column;
+			overflow: hidden;
+		}
+		.panel-title {
+			font-size: 0.75rem;
+			font-weight: 700;
+			color: var(--text-muted);
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			margin-bottom: 1.2rem;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
+
+		/* Form UI */
+		.form-group {
+			margin-bottom: 1.2rem;
+		}
+		.form-label {
+			display: block;
+			font-size: 0.8rem;
+			font-weight: 600;
+			color: var(--text-muted);
+			margin-bottom: 0.5rem;
+		}
+
+		.form-input,
+		.form-select {
+			width: 100%;
+			background: var(--bg-body);
+			border: 1px solid var(--border-color);
+			color: var(--text-main);
+			padding: 0.7rem 1rem;
+			border-radius: 4px;
+			font-size: 0.9rem;
+			transition: 0.2s;
+		}
+		.form-input:focus,
+		.form-select:focus {
+			border-color: var(--accent);
+			outline: none;
+		}
+
+		/* Editor Toolbar Extensions */
+		.editor-helpers {
+			display: flex;
+			gap: 10px;
+			background: rgba(255, 255, 255, 0.02);
+			padding: 8px;
+			border-radius: 4px;
+			margin-bottom: 10px;
+			border: 1px solid var(--border-color);
+		}
+
+		/* Real-time Preview */
+		.preview-container {
+			background: #e2e8f0;
+			border-radius: 4px;
+			padding: 40px 20px;
+			flex: 1;
+			overflow-y: auto;
+			display: flex;
+			justify-content: center;
+		}
+		.preview-paper {
+			background: #fff;
+			color: #1a1a1a;
+			width: 100%;
+			max-width: 600px;
+			min-height: 800px;
+			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+			padding: 40px;
+			border-radius: 2px;
+		}
+
+		/* Buttons */
+		.form-actions {
+			margin-top: 1.5rem;
+			padding-top: 1.5rem;
+			border-top: 1px solid var(--border-color);
+			display: flex;
+			justify-content: flex-end;
+			gap: 1rem;
+		}
+		.btn-test {
+			background: transparent;
+			border: 1px solid var(--border-color);
+			color: var(--text-muted);
+			padding: 0.7rem 1.2rem;
+			border-radius: 4px;
+			font-weight: 600;
+			cursor: pointer;
+		}
+		.btn-test:hover {
+			color: var(--text-main);
+			border-color: var(--text-main);
+		}
+		.btn-send {
+			background: var(--accent);
+			color: #fff;
+			padding: 0.7rem 1.5rem;
+			border: none;
+			border-radius: 4px;
+			font-weight: 700;
+			cursor: pointer;
+		}
+		.btn-send:hover {
+			opacity: 0.9;
+		}
+
+		/* TinyMCE Dark Override */
+		.tox-tinymce {
+			border: 1px solid var(--border-color) !important;
+			border-radius: 4px !important;
+		}

@@ -89,3 +89,14 @@
     .act-link:hover { opacity: 1; text-decoration: underline; }
     .act-edit { color: var(--text-main); }
     .act-del { color: var(--danger); }
+
+    .table-scroll { overflow-x: auto; }
+.th-right { text-align: right; }
+.td-mono { font-family: monospace; color: var(--text-muted); }
+.td-bold { font-weight: 500; }
+.td-muted { color: var(--text-muted); }
+.td-small { font-size: 0.85rem; }
+.td-empty { text-align: center; padding: 4rem; color: var(--text-muted); }
+.tpl-name { display: block; color: var(--text-main); }
+.tpl-count { font-size: 0.8rem; color: var(--text-muted); }
+.form-inline { display: inline; }

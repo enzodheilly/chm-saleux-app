@@ -23,13 +23,13 @@
 	</div>
 
 	<div class="table-wrapper">
-		<div style="overflow-x: auto;">
+		<div class="table-scroll">
 			<table class="admin-table">
 				<thead>
 					<tr>
 						<th width="55%">Équipement</th>
 						<th width="25%">Marque</th>
-						<th style="text-align: right;">Actions</th>
+						<th class="th-right">Actions</th>
 					</tr>
 				</thead>
 
@@ -42,7 +42,7 @@
 								</div>
 							</td>
 
-							<td style="color: var(--text-muted); font-family: monospace; font-size: 0.85rem;">
+							<td class="td-brand">
 								{{ equipment.brand ?? '-' }}
 							</td>
 
@@ -51,8 +51,7 @@
 									<a href="{{ path('admin_equipment_edit', {id: equipment.id}) }}" class="act-link act-edit">
 										Modifier
 									</a>
-
-									<form method="post" action="{{ path('admin_equipment_delete', {id: equipment.id}) }}" onsubmit="return confirm('Supprimer cet équipement ?');" style="display:inline;">
+									<form method="post" action="{{ path('admin_equipment_delete', {id: equipment.id}) }}" class="form-inline" data-confirm="Supprimer cet équipement ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete_equipment_' ~ equipment.id) }}">
 										<button class="act-link act-del">Supprimer</button>
 									</form>
@@ -61,13 +60,16 @@
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="3" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-								Aucun équipement n'a été ajouté pour le moment.
-							</td>
+							<td colspan="3" class="td-empty">Aucun équipement n'a été ajouté pour le moment.</td>
+
 						</tr>
 					{% endfor %}
 				</tbody>
 			</table>
 		</div>
 	</div>
+{% endblock %}
+
+{% block javascripts %}
+	 <script src="{{ asset('js/admin/equipment/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

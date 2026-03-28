@@ -23,7 +23,7 @@
 	</div>
 
 	<div class="table-wrapper">
-		<div style="overflow-x: auto;">
+		<div class="table-scroll">
 			<table class="admin-table" id="athleteTable">
 				<thead>
 					<tr>
@@ -32,14 +32,14 @@
 						<th width="15%">Category</th>
 						<th width="15%">Weight class</th>
 						<th width="15%">Birth date</th>
-						<th style="text-align: right;">Actions</th>
+						<th class="th-right">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for athlete in athletes %}
 						<tr>
 							<td>
-								<span style="font-family: monospace; color: var(--text-muted);">#{{ athlete.id }}</span>
+								<span class="td-mono">#{{ athlete.id }}</span>
 							</td>
 
 							<td>
@@ -57,14 +57,10 @@
 											{{ athlete.firstName }}
 											{{ athlete.lastName|upper }}
 										</span>
-
 										<span class="athlete-meta">
-											{% if athlete.gender == 'male' %}
-												Male
-											{% elseif athlete.gender == 'female' %}
-												Female
-											{% else %}
-												—
+											{% if athlete.gender == 'male' %}Male
+												{% elseif athlete.gender == 'female' %}Female
+												{% else %}—
 											{% endif %}
 										</span>
 									</div>
@@ -75,21 +71,19 @@
 								{% if athlete.category %}
 									<span class="cat-badge">{{ athlete.category }}</span>
 								{% else %}
-									<span style="color: var(--text-muted); font-size: 0.8rem;">—</span>
+									<span class="td-muted td-small">—</span>
 								{% endif %}
 							</td>
 
 							<td>
 								{% if athlete.weightClass %}
-									<span style="font-family: monospace; font-weight: 600;">
-										{{ athlete.weightClass }}
-									</span>
+									<span class="td-mono td-bold">{{ athlete.weightClass }}</span>
 								{% else %}
-									<span style="color: var(--text-muted); font-size: 0.8rem;">—</span>
+									<span class="td-muted td-small">—</span>
 								{% endif %}
 							</td>
 
-							<td style="color: var(--text-muted); font-size: 0.85rem;">
+							<td class="td-date">
 								{{ athlete.birthDate ? athlete.birthDate|date('d/m/Y') : '—' }}
 							</td>
 
@@ -99,7 +93,7 @@
 										Edit
 									</a>
 
-									<form method="post" action="{{ path('admin_athlete_delete', {'id': athlete.id}) }}" style="display:inline;" onsubmit="return confirm('Confirm deletion of {{ athlete.firstName }} {{ athlete.lastName }} ?');">
+									<form method="post" action="{{ path('admin_athlete_delete', {'id': athlete.id}) }}" class="form-inline" data-confirm="Confirm deletion of {{ athlete.firstName }} {{ athlete.lastName }} ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ athlete.id) }}">
 										<button class="act-link act-del">Delete</button>
 									</form>
@@ -108,9 +102,7 @@
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="6" style="text-align: center; padding: 3rem; color: var(--text-muted);">
-								No athletes found.
-							</td>
+							<td colspan="6" class="td-empty">No athletes found.</td>
 						</tr>
 					{% endfor %}
 				</tbody>

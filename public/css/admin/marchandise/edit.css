@@ -272,3 +272,6 @@
             width: 100%;
         }
     }
+
+    .item-title-highlight { font-weight: 700; color: var(--text-main); }
+.form-hidden { display: none; }

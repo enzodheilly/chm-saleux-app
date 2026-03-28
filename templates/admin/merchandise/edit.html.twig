@@ -12,7 +12,7 @@
 		<div>
 			<h1>Edit item</h1>
 			<p>Updating:
-				<span style="font-weight: 700; color: var(--text-main);">{{ item.title }}</span>
+				<span class="item-title-highlight">{{ item.title }}</span>
 			</p>
 		</div>
 
@@ -63,7 +63,7 @@
 							</div>
 						{% endif %}
 
-						<div class="img-box" id="new-preview-box" style="display:none;">
+						<div class="img-box form-hidden" id="new-preview-box">
 							<span>New</span>
 							<div class="preview-frame">
 								<img id="image-preview" alt="New">
@@ -73,7 +73,7 @@
 				</div>
 
 				<div class="form-actions">
-					<button type="button" class="btn-danger-link" onclick="if(confirm('⚠️ Permanently delete this item from the catalogue?')) document.getElementById('delete-form').submit();">
+					<button type="button" class="btn-danger-link" data-confirm="⚠️ Permanently delete this item from the catalogue?" data-submit="delete-form">
 						Delete item
 					</button>
 
@@ -88,7 +88,7 @@
 		</div>
 	</div>
 
-	<form id="delete-form" method="post" action="{{ path('admin_merchandise_delete', {id: item.id}) }}" style="display: none;">
+	<form id="delete-form" method="post" action="{{ path('admin_merchandise_delete', {id: item.id}) }}" class="form-hidden">
 		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
 	</form>
 {% endblock %}

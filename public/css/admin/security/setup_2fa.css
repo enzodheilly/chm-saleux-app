@@ -204,3 +204,9 @@
 				display: block !important;
 			}
 		}
+
+		.setup-subtitle { color: #888; margin-bottom: 35px; }
+.hide { display: none; }
+.mobile-hint { color: #555; font-size: 0.8rem; margin-top: 10px; }
+.verify-form { width: 100%; text-align: center; }
+.code-label { color: #888; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; margin-bottom: 15px; }

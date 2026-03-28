@@ -40,7 +40,7 @@
 		</div>
 
 		<div class="table-wrapper">
-			<div style="overflow-x: auto;">
+			<div class="table-scroll">
 				<table class="admin-table" id="tplTable">
 					<thead>
 						<tr>
@@ -51,38 +51,37 @@
 							<th>Groupe</th>
 							<th>Durée</th>
 							<th>Statut</th>
-							<th style="text-align:right;">Actions</th>
+							<th class="th-right">Actions</th>
 						</tr>
 					</thead>
+
 					<tbody>
 						{% for tpl in templates %}
 							<tr data-goal="{{ tpl.goal }}" data-level="{{ tpl.level }}">
 								<td>
-									<span style="font-family: monospace; color: var(--text-muted);">#{{ tpl.id }}</span>
+									<span class="td-mono">#{{ tpl.id }}</span>
 								</td>
 
 								<td>
-									<strong style="display: block; color: var(--text-main);">{{ tpl.name }}</strong>
-									<span style="font-size: 0.8rem; color: var(--text-muted);">{{ tpl.templateExercises|length }}
+									<strong class="tpl-name">{{ tpl.name }}</strong>
+									<span class="tpl-count">{{ tpl.templateExercises|length }}
 										exercice(s)</span>
 								</td>
 
 								<td>
-									<span class="tag-accent">
-										{{ tpl.goal|replace({'_':' '})|capitalize }}
-									</span>
+									<span class="tag-accent">{{ tpl.goal|replace({'_':' '})|capitalize }}</span>
 								</td>
 
 								<td>
-									<span style="font-weight: 500;">{{ tpl.level|capitalize }}</span>
+									<span class="td-bold">{{ tpl.level|capitalize }}</span>
 								</td>
 
 								<td>
-									<span style="color: var(--text-muted);">{{ tpl.muscleGroup }}</span>
+									<span class="td-muted">{{ tpl.muscleGroup }}</span>
 								</td>
 
 								<td>
-									<span style="font-size: 0.85rem;">{{ tpl.estimatedDurationMin ? tpl.estimatedDurationMin ~ ' min' : '—' }}</span>
+									<span class="td-small">{{ tpl.estimatedDurationMin ? tpl.estimatedDurationMin ~ ' min' : '—' }}</span>
 								</td>
 
 								<td>
@@ -97,7 +96,7 @@
 									<div class="actions">
 										<a href="{{ path('admin_routine_template_edit', {id: tpl.id}) }}" class="act-link act-edit">Modifier</a>
 
-										<form method="post" action="{{ path('admin_routine_template_delete', {id: tpl.id}) }}" onsubmit="return confirm('Supprimer définitivement le template « {{ tpl.name }} » ?');" style="display:inline;">
+										<form method="post" action="{{ path('admin_routine_template_delete', {id: tpl.id}) }}" class="form-inline" data-confirm="Supprimer définitivement le template « {{ tpl.name }} » ?">
 											<input type="hidden" name="_token" value="{{ csrf_token('delete_template_' ~ tpl.id) }}">
 											<button class="act-link act-del">Supprimer</button>
 										</form>
@@ -106,17 +105,15 @@
 							</tr>
 						{% else %}
 							<tr>
-								<td colspan="8" style="text-align:center; padding:4rem; color: var(--text-muted);">
-									Aucun template enregistré.
-								</td>
+								<td colspan="8" class="td-empty">Aucun template enregistré.</td>
 							</tr>
 						{% endfor %}
 					</tbody>
 				</table>
 			</div>
 		</div>
-	</div>
 
+	</div>
 {% endblock %}
 
 {% block javascripts %}
