@@ -12,7 +12,7 @@
 		<div>
 			<h1>Modifier la machine</h1>
 			<p>Mise à jour de :
-				<span style="font-weight: 700; color: var(--text-main);">{{ equipment.name }}</span>
+				<span class="equipment-name-highlight">{{ equipment.name }}</span>
 			</p>
 		</div>
 
@@ -34,16 +34,6 @@
 					<div class="form-error">{{ form_errors(form.name) }}</div>
 				</div>
 
-				{#
-																								                {% if form.description is defined %}
-																								                    <div>
-																								                        <span class="tool-label">Description</span>
-																								                        {{ form_widget(form.description, {'attr': {'class': 'input', 'rows': 4}}) }}
-																								                        <div class="form-error">{{ form_errors(form.description) }}</div>
-																								                    </div>
-																								                {% endif %}
-																								                #}
-
 				<div>
 					<span class="tool-label">Photo (laisser vide pour conserver)</span>
 					{{ form_widget(form.image, {'attr': {'class': 'input'}}) }}
@@ -57,7 +47,7 @@
 							</div>
 						</div>
 
-						<div class="img-item" id="new-preview-item" style="display:none;">
+						<div class="img-item form-hidden" id="new-preview-item">
 							<span class="img-label">Nouvelle</span>
 							<div class="preview-frame new-frame">
 								<img id="image-preview" src="" alt="Nouvel aperçu">
@@ -67,7 +57,7 @@
 				</div>
 
 				<div class="form-actions">
-					<button type="button" class="btn-danger-link" onclick="if(confirm('⚠️ Supprimer cet équipement définitivement ?')) document.getElementById('delete-equipment-form').submit();">
+					<button type="button" class="btn-danger-link" data-confirm="⚠️ Supprimer cet équipement définitivement ?" data-submit="delete-equipment-form">
 						Supprimer la machine
 					</button>
 
@@ -82,7 +72,7 @@
 		</div>
 	</div>
 
-	<form id="delete-equipment-form" method="post" action="{{ path('admin_new_equipment_delete', {id: equipment.id}) }}" style="display: none;">
+	<form id="delete-equipment-form" method="post" action="{{ path('admin_new_equipment_delete', {id: equipment.id}) }}" class="form-hidden">
 		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ equipment.id) }}">
 	</form>
 {% endblock %}

@@ -26,30 +26,30 @@
 		</div>
 
 		<div class="table-wrapper">
-			<div style="overflow-x: auto;">
+			<div class="table-scroll">
 				<table class="admin-table" id="subsTable">
 					<thead>
 						<tr>
 							<th width="80">#</th>
 							<th width="40%">Adresse Email</th>
 							<th width="30%">Date d'inscription</th>
-							<th style="text-align: right;">Statut</th>
+							<th class="th-right">Statut</th>
 						</tr>
 					</thead>
 					<tbody>
 						{% for s in subscribers %}
 							<tr>
 								<td>
-									<span style="color: var(--text-muted); font-family: monospace;">{{ loop.index|format("%02d") }}</span>
+									<span class="td-mono">{{ loop.index|format("%02d") }}</span>
 								</td>
 								<td>
 									<a href="mailto:{{ s.email }}" class="email-link">{{ s.email }}</a>
 								</td>
-								<td style="color: var(--text-muted); font-size: 0.85rem;">
+								<td class="td-date">
 									{{ s.subscribedAt|date('d/m/Y') }}
-									<span style="opacity: 0.5; margin-left: 5px;">{{ s.subscribedAt|date('H:i') }}</span>
+									<span class="td-time">{{ s.subscribedAt|date('H:i') }}</span>
 								</td>
-								<td style="text-align: right;">
+								<td class="td-right">
 									{% if s.isConfirmed %}
 										<span class="badge badge-confirmed">Actif / Confirmé</span>
 									{% else %}
@@ -59,9 +59,8 @@
 							</tr>
 						{% else %}
 							<tr>
-								<td colspan="4" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-									Aucun abonné n'est enregistré pour le moment.
-								</td>
+								<td colspan="4" class="td-empty">Aucun abonné n'est enregistré pour le moment.</td>
+
 							</tr>
 						{% endfor %}
 					</tbody>

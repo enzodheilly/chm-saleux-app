@@ -93,3 +93,10 @@
     
     .act-edit { color: var(--text-main); }
     .act-del { color: var(--danger); }
+.table-scroll { overflow-x: auto; }
+
+.th-right { text-align: right; }
+.li-more { font-style: italic; color: var(--text-muted); }
+.li-empty { color: var(--text-muted); font-style: italic; }
+.form-inline { display: inline; }
+.td-empty { text-align: center; padding: 3rem; color: var(--text-muted); }

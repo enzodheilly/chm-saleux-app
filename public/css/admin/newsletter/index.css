@@ -43,3 +43,11 @@
         background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2);
         padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-weight: 600; font-size: 0.9rem;
     }
+
+    .table-scroll { overflow-x: auto; }
+.th-right { text-align: right; }
+.td-mono { color: var(--text-muted); font-family: monospace; }
+.td-date { color: var(--text-muted); font-size: 0.85rem; }
+.td-time { opacity: 0.5; margin-left: 5px; }
+.td-right { text-align: right; }
+.td-empty { text-align: center; padding: 4rem; color: var(--text-muted); }

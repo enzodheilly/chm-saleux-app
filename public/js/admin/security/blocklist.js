@@ -1,12 +1,21 @@
-		    // Filtre instantané
-			    document.getElementById('searchBlock').addEventListener('keyup', function() {
-			        const val = this.value.toLowerCase();
-			        const rows = document.querySelectorAll('#blockTable tbody tr');
-			        let count = 0;
-			        
-			        rows.forEach(row => {
-			            const isMatch = row.textContent.toLowerCase().includes(val);
-			            row.style.display = isMatch ? '' : 'none';
-			            if(isMatch) count++;
-			        });
-			    });
+document.addEventListener('DOMContentLoaded', function () {
+
+    const searchInput = document.getElementById('searchBlock');
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function () {
+            const filter = this.value.toLowerCase();
+            document.querySelectorAll('#blockTable tbody tr').forEach(function (row) {
+                row.style.display = row.textContent.toLowerCase().includes(filter) ? '' : 'none';
+            });
+        });
+    }
+
+    document.querySelectorAll('[data-confirm]').forEach(function (el) {
+        el.addEventListener('click', function (e) {
+            if (!confirm(this.dataset.confirm)) {
+                e.preventDefault();
+            }
+        });
+    });
+
+});

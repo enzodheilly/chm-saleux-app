@@ -23,14 +23,14 @@
 	</div>
 
 	<div class="table-wrapper">
-		<div style="overflow-x: auto;">
+		<div class="table-scroll">
 			<table class="admin-table" id="articlesTable">
 				<thead>
 					<tr>
 						<th width="35%">Article</th>
 						<th width="35%">Content preview</th>
 						<th width="15%">Published</th>
-						<th style="text-align: right;">Actions</th>
+						<th class="th-right">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -54,7 +54,7 @@
 								</div>
 							</td>
 
-							<td style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">
+							<td class="td-preview">
 								{{ article.description ? (article.description|striptags|slice(0, 80) ~ '...') : '—' }}
 							</td>
 
@@ -63,7 +63,7 @@
 									{% if article.publishedAt %}
 										{{ article.publishedAt|date('d/m/Y') }}
 									{% else %}
-										<span style="color: var(--accent);">Draft</span>
+										<span class="draft-tag">Draft</span>
 									{% endif %}
 								</span>
 							</td>
@@ -74,7 +74,7 @@
 										Edit
 									</a>
 
-									<form method="post" action="{{ path('admin_articles_delete', {id: article.id}) }}" style="display:inline;" onsubmit="return confirm('Delete this article permanently?');">
+									<form method="post" action="{{ path('admin_articles_delete', {id: article.id}) }}" class="form-inline" data-confirm="Delete this article permanently?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
 										<button class="act-link act-del">Delete</button>
 									</form>
@@ -83,9 +83,8 @@
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="4" style="text-align: center; padding: 4rem; color: var(--text-muted);">
-								No articles yet.
-							</td>
+							<td colspan="4" class="td-empty">No articles yet.</td>
+
 						</tr>
 					{% endfor %}
 				</tbody>

@@ -71,7 +71,7 @@
 					</div>
 				</div>
 
-				<label class="toggle-card" onclick="document.getElementById('{{ form.isPopular.vars.id }}').click()">
+				<label class="toggle-card" for="{{ form.isPopular.vars.id }}">
 					{{ form_widget(form.isPopular, {'attr': {'class': 'toggle-input'}}) }}
 					<div>
 						<span class="toggle-title">Mettre en avant cette offre</span>

@@ -1,0 +1,207 @@
+		/* =================== ANALYTICS DASHBOARD =================== */
+		.dashboard-container {
+			width: 100%;
+			max-width: 1600px;
+			margin: 0 auto;
+		}
+
+		/* Header & Filters */
+		.page-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-end;
+			margin-bottom: 2rem;
+			padding-bottom: 1.5rem;
+			border-bottom: 1px solid var(--border-color);
+		}
+		.page-header h1 {
+			font-size: 1.5rem;
+			font-weight: 700;
+			margin: 0;
+			color: var(--text-main);
+		}
+		.page-header p {
+			margin: 5px 0 0;
+			color: var(--text-muted);
+			font-size: 0.9rem;
+		}
+
+		/* Stats Grid Modern */
+		.stats-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+			gap: 1.5rem;
+			margin-bottom: 2rem;
+		}
+		.stat-card {
+			background: var(--bg-sidebar);
+			border: 1px solid var(--border-color);
+			border-radius: 6px;
+			padding: 1.5rem;
+			display: flex;
+			flex-direction: column;
+		}
+		.stat-label {
+			font-size: 0.75rem;
+			font-weight: 700;
+			color: var(--text-muted);
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			margin-bottom: 0.8rem;
+		}
+		.stat-value {
+			font-size: 1.8rem;
+			font-weight: 700;
+			color: var(--text-main);
+			font-family: monospace;
+		}
+
+		/* Charts */
+		.chart-card {
+			background: var(--bg-sidebar);
+			border: 1px solid var(--border-color);
+			border-radius: 6px;
+			padding: 1.5rem;
+			margin-bottom: 2rem;
+		}
+		.chart-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 1.5rem;
+		}
+		.chart-title {
+			font-size: 0.95rem;
+			font-weight: 600;
+			color: var(--text-main);
+		}
+
+		.filter-select {
+			background: var(--bg-body);
+			border: 1px solid var(--border-color);
+			color: var(--text-main);
+			padding: 0.5rem 1rem;
+			border-radius: 4px;
+			font-size: 0.85rem;
+			outline: none;
+			cursor: pointer;
+		}
+
+		/* Table & Progress */
+		.table-wrapper {
+			background: var(--bg-sidebar);
+			border: 1px solid var(--border-color);
+			border-radius: 6px;
+			overflow: hidden;
+		}
+		.admin-table {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 0.9rem;
+		}
+		.admin-table th {
+			background: rgba(255, 255, 255, 0.02);
+			color: var(--text-muted);
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			font-size: 0.75rem;
+			text-align: left;
+			padding: 1rem 1.5rem;
+			border-bottom: 1px solid var(--border-color);
+		}
+		.admin-table td {
+			padding: 1rem 1.5rem;
+			border-bottom: 1px solid var(--border-color);
+			color: var(--text-main);
+			vertical-align: middle;
+		}
+
+		.progress-container {
+			width: 100px;
+			height: 6px;
+			background: var(--bg-body);
+			border-radius: 10px;
+			overflow: hidden;
+			margin-bottom: 4px;
+		}
+		.progress-bar {
+			height: 100%;
+			border-radius: 10px;
+			transition: width 0.6s ease;
+		}
+		.bar-open {
+			background: #22c55e;
+			box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+		}
+		.bar-click {
+			background: #3b82f6;
+			box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+		}
+		.rate-text {
+			font-size: 0.75rem;
+			font-family: monospace;
+			color: var(--text-muted);
+		}
+
+		/* Modal Preview (Light mode for email content) */
+		.modal {
+			display: none;
+			position: fixed;
+			inset: 0;
+			background: rgba(0, 0, 0, 0.85);
+			z-index: 1000;
+			justify-content: center;
+			align-items: center; backdrop-filter: blur(4px);
+		}
+		.modal-content {
+			background: #fff;
+			width: 95%;
+			max-width: 800px;
+			height: 85vh;
+			border-radius: 8px;
+			position: relative;
+			color: #1a1a1a;
+			display: flex;
+			flex-direction: column;
+			overflow: hidden;
+		}
+		.modal-header {
+			padding: 1.5rem;
+			border-bottom: 1px solid #eee;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			background: #f9f9f9;
+		}
+		.modal-body {
+			flex: 1;
+			padding: 2rem;
+			overflow-y: auto;
+			background: #fff;
+		}
+		.modal-close {
+			font-size: 2rem;
+			cursor: pointer;
+			color: #999;
+			line-height: 1;
+		}
+		.modal-close:hover {
+			color: #333;
+		}
+
+		.btn-preview {
+			background: var(--bg-body);
+			border: 1px solid var(--border-color);
+			color: var(--text-muted);
+			padding: 0.5rem 0.8rem;
+			border-radius: 4px;
+			font-size: 0.75rem;
+			font-weight: 600;
+			cursor: pointer;
+			text-transform: uppercase;
+		}
+		.btn-preview:hover {
+			border-color: var(--accent);
+			color: var(--accent);
+		}

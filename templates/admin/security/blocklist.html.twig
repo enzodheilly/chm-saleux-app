@@ -29,8 +29,8 @@
 
 		<div class="toolbar-container">
 			<input type="text" id="searchBlock" class="search-input" placeholder="Chercher un email ou une adresse IP...">
-			<div style="font-size: 0.85rem; color: var(--text-muted);">
-				<strong style="color: var(--danger);">{{ blockedIps|length }}</strong>
+			<div class="entries-count">
+				<strong class="entries-count-number">{{ blockedIps|length }}</strong>
 				entrées actives
 			</div>
 		</div>
@@ -44,16 +44,16 @@
 							<th width="180">Dernière IP</th>
 							<th>Motif</th>
 							<th width="200">Échéance</th>
-							<th style="text-align: right;">Opération</th>
+							<th class="th-right">Opération</th>
 						</tr>
 					</thead>
 					<tbody>
 						{% for row in blockedIps|default([]) %}
 							<tr>
 								<td>
-									<div style="display: flex; flex-direction: column;">
-										<strong style="font-size: 0.95rem;">{{ row.email }}</strong>
-										<span style="font-size: 0.75rem; color: var(--text-muted);">ID Utilisateur: #{{ row.id }}</span>
+									<div class="identity-cell">
+										<strong class="identity-email">{{ row.email }}</strong>
+										<span class="identity-id">ID Utilisateur: #{{ row.id }}</span>
 									</div>
 								</td>
 
@@ -62,9 +62,9 @@
 								</td>
 
 								<td>
-									<div style="display: flex; align-items: center; gap: 8px;">
+									<div class="reason-cell">
 										<span class="badge-blocked">Verrouillé</span>
-										<span style="font-size: 0.85rem; color: var(--text-muted); opacity: 0.8;">{{ row.reason }}</span>
+										<span class="reason-text">{{ row.reason }}</span>
 									</div>
 								</td>
 
@@ -75,16 +75,16 @@
 									</div>
 								</td>
 
-								<td style="text-align: right;">
-									<a href="{{ path('admin_security_unlock_user', {id: row.id}) }}" class="btn-unlock" onclick="return confirm('🔓 Rétablir l\'accès pour {{ row.email }} ?');">
+								<td class="td-right">
+									<a href="{{ path('admin_security_unlock_user', {id: row.id}) }}" class="btn-unlock" data-confirm="🔓 Rétablir l'accès pour {{ row.email }} ?">
 										Débloquer
 									</a>
 								</td>
 							</tr>
 						{% else %}
 							<tr>
-								<td colspan="5" style="text-align: center; padding: 5rem; color: var(--text-muted);">
-									<div style="font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.3;">🛡️</div>
+								<td colspan="5" class="td-empty">
+									<div class="empty-icon">🛡️</div>
 									<p>Aucune restriction active. Le système est totalement ouvert.</p>
 								</td>
 							</tr>

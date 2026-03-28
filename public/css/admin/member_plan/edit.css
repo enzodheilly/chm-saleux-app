@@ -282,3 +282,5 @@
             width: 100%;
         }
     }
+
+    .plan-name-highlight { font-weight: 700; color: var(--text-main); }

@@ -28,105 +28,104 @@
 						<th width="30%">Competition</th>
 						<th width="20%">Details</th>
 						<th width="25%">Results (Top 3)</th>
-						<th style="text-align: right;">Actions</th>
+						<th class="th-right">Actions</th>
 					</tr>
 				</thead>
-				<tbody>
-					{% for comp in competitions %}
-						<tr>
-							<td>
-								{% if comp.image %}
-									<img src="{{ asset('uploads/competitions/' ~ comp.image) }}" alt="Visual" class="comp-visual">
-								{% else %}
-									<div class="comp-visual">No Image</div>
-								{% endif %}
-							</td>
-
-							<td>
-								<div class="comp-info">
-									<h3>{{ comp.title }}</h3>
-									<div class="comp-meta">
-										<span class="comp-date">
-											{{ comp.eventDate ? comp.eventDate|date("d.m.Y") : '—' }}
-										</span>
-										<span>{{ comp.competitionType|default('Standard') }}</span>
-									</div>
-								</div>
-							</td>
-
-							<td>
-								<div class="details-list">
-									<div>
-										<strong>Location:</strong>
-										{{ comp.location|default('—') }}</div>
-
-									<div>
-										<strong>Team:</strong>
-										{% if comp.gender == 'male' %}
-											Men
-										{% elseif comp.gender == 'female' %}
-											Women
-										{% else %}
-											—
-										{% endif %}
-									</div>
-
-									{% if comp.teamRanking %}
-										<div style="color: var(--accent); margin-top: 2px;">
-											<strong>Ranking:</strong>
-											{{ comp.teamRanking }}
-										</div>
-									{% endif %}
-								</div>
-							</td>
-
-							<td>
-								{% if comp.results is not empty %}
-									<ul class="results-mini">
-										{% for result in comp.results|slice(0, 3) %}
-											<li>
-												{{ result.firstName }}
-												{{ result.lastName|slice(0,1) }}.
-												<span>(Total:
-													{{ result.total }})</span>
-											</li>
-										{% endfor %}
-
-										{% if comp.results|length > 3 %}
-											<li style="border:none; padding-left:0;" class="empty-note">
-												+
-												{{ comp.results|length - 3 }}
-												more...
-											</li>
-										{% endif %}
-									</ul>
-								{% else %}
-									<span class="empty-note">No results linked</span>
-								{% endif %}
-							</td>
-
-							<td>
-								<div class="actions">
-									<a href="{{ path('admin_competition_edit', {id: comp.id}) }}" class="act-link act-edit">
-										Edit
-									</a>
-
-									<form method="post" action="{{ path('admin_competition_delete', {id: comp.id}) }}" style="display:inline;" onsubmit="return confirm('Confirm deletion of {{ comp.title|e('js') }}?');">
-										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comp.id) }}">
-										<button type="submit" class="act-link act-del">Delete</button>
-									</form>
-								</div>
-							</td>
-						</tr>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for comp in competitions %}
+			<tr>
+				<td>
+					{% if comp.image %}
+						<img src="{{ asset('uploads/competitions/' ~ comp.image) }}" alt="Visual" class="comp-visual">
 					{% else %}
-						<tr>
-							<td colspan="5" class="empty-state">
-								No competitions found.
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
-{% endblock %}
+						<div class="comp-visual">No Image</div>
+					{% endif %}
+				</td>
+
+				<td>
+					<div class="comp-info">
+						<h3>{{ comp.title }}</h3>
+						<div class="comp-meta">
+							<span class="comp-date">
+								{{ comp.eventDate ? comp.eventDate|date("d.m.Y") : '—' }}
+							</span>
+							<span>{{ comp.competitionType|default('Standard') }}</span>
+						</div>
+					</div>
+				</td>
+
+				<td>
+					<div class="details-list">
+						<div>
+							<strong>Location:</strong>
+							{{ comp.location|default('—') }}</div>
+
+						<div>
+							<strong>Team:</strong>
+							{% if comp.gender == 'male' %}
+								Men
+							{% elseif comp.gender == 'female' %}
+								Women
+							{% else %}
+								—
+							{% endif %}
+						</div>
+
+						{% if comp.teamRanking %}
+							<div class="ranking-highlight">
+								<strong>Ranking:</strong>
+								{{ comp.teamRanking }}
+							</div>
+						{% endif %}
+					</div>
+				</td>
+
+				<td>
+					{% if comp.results is not empty %}
+						<ul class="results-mini">
+							{% for result in comp.results|slice(0, 3) %}
+								<li>
+									{{ result.firstName }}
+									{{ result.lastName|slice(0,1) }}.
+									<span>(Total:
+										{{ result.total }})</span>
+								</li>
+							{% endfor %}
+
+							{% if comp.results|length > 3 %}
+								<li class="li-more">+
+									{{ comp.results|length - 3 }}
+									more...</li>
+
+							{% endif %}
+						</ul>
+					{% else %}
+						<span class="empty-note">No results linked</span>
+					{% endif %}
+				</td>
+
+				<td>
+					<div class="actions">
+						<a href="{{ path('admin_competition_edit', {id: comp.id}) }}" class="act-link act-edit">
+							Edit
+						</a>
+
+						<form method="post" action="{{ path('admin_competition_delete', {id: comp.id}) }}" class="form-inline" data-confirm="Confirm deletion of {{ comp.title|e('js') }}?">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comp.id) }}">
+							<button type="submit" class="act-link act-del">Delete</button>
+						</form>
+					</div>
+				</td>
+			</tr>
+		{% else %}
+			<tr>
+				<td colspan="5" class="empty-state">
+					No competitions found.
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table></div></div>{% endblock %}{% block javascripts %} <script src="{{ asset('js/admin/competitions/list.js') }}" nonce="{{ csp_nonce('script') }}"></script>{% endblock %}

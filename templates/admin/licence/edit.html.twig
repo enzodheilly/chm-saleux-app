@@ -70,7 +70,7 @@
 				</div>
 
 				<div class="form-actions">
-					<button type="button" class="btn-danger-link" onclick="if(confirm('⚠️ Attention : Cette action est irréversible.\n\nVoulez-vous vraiment supprimer la licence {{ licence.number }} ?')) document.getElementById('delete-form').submit();">
+					<button type="button" class="btn-danger-link" data-confirm="⚠️ Attention : Cette action est irréversible. Voulez-vous vraiment supprimer la licence {{ licence.number }} ?" data-submit="delete-form">
 						Supprimer cette licence
 					</button>
 
@@ -85,12 +85,16 @@
 		</div>
 	</div>
 
-	<form id="delete-form" method="post" action="{{ path('admin_licence_delete', {id: licence.id}) }}" style="display: none;">
+	<form id="delete-form" method="post" action="{{ path('admin_licence_delete', {id: licence.id}) }}" class="form-hidden">
 		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ licence.id) }}">
 	</form>
 
 {% endblock %}
 
-{% block javascripts %}
-	 <script src="{{ asset('js/admin/licence/new.js') }}" nonce="{{ csp_nonce('script') }}"></script>
+{% block javascripts %} <script nonce="{{ csp_nonce('script') }}">
+	        window.licenceData = {
+	            benefitsUrl: "{{ path('admin_licence_membership_plan_benefits', {'id': '__ID__'}) }}"
+	        };
+	    </script>
+	 <script src="{{ asset('js/admin/licence/edit.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

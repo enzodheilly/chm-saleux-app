@@ -60,17 +60,17 @@
 				<span class="label">Visibilité</span>
 				<div class="checkbox-wrapper">
 					{{ form_widget(form.isPublished) }}
-					<span class="info-secondary" style="color: var(--text-main)">Publier ce template (visible par les utilisateurs)</span>
+					<span class="info-secondary text-main">Publier ce template (visible par les utilisateurs)</span>
 				</div>
 			</div>
 
-			<div style="display:flex; justify-content:flex-end; padding-top: 1.5rem; border-top: 1px solid var(--border-color); margin-top: 1rem;">
+			<div class="form-actions-end">
 				<button class="btn-create" type="submit">Enregistrer les modifications</button>
 			</div>
 			{{ form_end(form, {'render_rest': false}) }}
 		</div>
 
-		<div class="page-header" style="border:none; margin-bottom: 1rem;">
+		<div class="page-header no-border">
 			<div>
 				<h1>Exercices inclus</h1>
 				<p>Gérez l'ordre et la configuration des mouvements.</p>
@@ -78,7 +78,7 @@
 		</div>
 
 		<div class="table-wrapper">
-			<div style="overflow-x: auto;">
+			<div class="table-scroll">
 				<table class="admin-table">
 					<thead>
 						<tr>
@@ -88,15 +88,15 @@
 							<th>Reps</th>
 							<th>Repos</th>
 							<th>RIR</th>
-							<th style="text-align:right;">Actions</th>
+							<th class="th-right">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
 						{% for item in items %}
 							<tr>
-								<td class="mono" style="color: var(--text-muted)">#{{ item.position }}</td>
+								<td class="mono td-muted">#{{ item.position }}</td>
 								<td>
-									<strong style="display:block; color: var(--text-main)">{{ item.exercise.name }}</strong>
+									<strong class="tpl-name">{{ item.exercise.name }}</strong>
 									<span class="info-secondary">{{ item.exercise.muscleGroup }}</span>
 								</td>
 								<td>
@@ -112,8 +112,8 @@
 									<span class="mono">{{ item.rir ?? '—' }}</span>
 								</td>
 								<td>
-									<div style="display:flex; justify-content: flex-end;">
-										<form method="post" action="{{ path('admin_routine_template_exercise_delete', {id: item.id}) }}" onsubmit="return confirm('Retirer cet exercice ?');">
+									<div class="actions-end">
+										<form method="post" action="{{ path('admin_routine_template_exercise_delete', {id: item.id}) }}" data-confirm="Retirer cet exercice ?">
 											<input type="hidden" name="_token" value="{{ csrf_token('delete_tpl_item_' ~ item.id) }}">
 											<button class="act-link act-del">Supprimer</button>
 										</form>
@@ -122,9 +122,7 @@
 							</tr>
 						{% else %}
 							<tr>
-								<td colspan="7" style="text-align:center; padding: 4rem; color: var(--text-muted);">
-									Aucun exercice dans ce template.
-								</td>
+								<td colspan="7" class="td-empty">Aucun exercice dans ce template.</td>
 							</tr>
 						{% endfor %}
 					</tbody>
@@ -132,4 +130,8 @@
 			</div>
 		</div>
 	</div>
+{% endblock %}
+
+{% block javascripts %}
+	 <script src="{{ asset('js/admin/routine_template/edit.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

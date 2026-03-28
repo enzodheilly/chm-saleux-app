@@ -260,3 +260,6 @@
             width: 100%;
         }
     }
+
+    .article-title-highlight { font-weight: 700; color: var(--text-main); }
+.form-hidden { display: none; }

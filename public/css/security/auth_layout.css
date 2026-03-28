@@ -334,3 +334,7 @@
 .hide {
     display: none !important;
 }
+
+.flash-error { color: #ff4444; background: rgba(255,68,68,0.1); padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.85rem; border: 1px solid rgba(255,68,68,0.2); width: 100%; text-align: center; }
+.flash-success { color: #00ff7f; background: rgba(0,255,127,0.1); padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.85rem; border: 1px solid rgba(0,255,127,0.2); width: 100%; text-align: center; }
+.cf-turnstile-centered { margin-bottom: 15px; display: flex; justify-content: center; }

@@ -270,3 +270,8 @@
             justify-content: center;
         }
     }
+
+    .th-right { text-align: right; }
+.ranking-highlight { color: var(--accent); margin-top: 2px; }
+.li-more { border: none; padding-left: 0; }
+.form-inline { display: inline; }

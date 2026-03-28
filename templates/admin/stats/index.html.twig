@@ -15,7 +15,7 @@
 				<h1>Statistiques d'activité</h1>
 				<p>Indicateurs clés de performance et croissance du club.</p>
 			</div>
-			<div style="font-size: 0.8rem; color: var(--text-muted);">
+			<div class="last-update">
 				Dernière mise à jour :
 				{{ "now"|date("d/m/Y H:i") }}
 			</div>
@@ -41,13 +41,13 @@
 		<div class="charts-row">
 			<div class="chart-card">
 				<h3 class="chart-title">Inscriptions (7 derniers jours)</h3>
-				<div style="height: 300px;">
+				<div class="chart-container">
 					<canvas id="usersChart"></canvas>
 				</div>
 			</div>
 			<div class="chart-card">
 				<h3 class="chart-title">Activité éditoriale</h3>
-				<div style="height: 300px;">
+				<div class="chart-container">
 					<canvas id="articlesChart"></canvas>
 				</div>
 			</div>
@@ -60,12 +60,12 @@
 {% block javascripts %} <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="{{ csp_nonce('script') }}"></script>
 
 	 <script nonce="{{ csp_nonce('script') }}">
-	        window.statsData = {
-	            labels: {{ labels|json_encode|raw }},
-	            userRegistrations: {{ userRegistrations|json_encode|raw }},
-	            articlesPublished: {{ articlesPublished|json_encode|raw }}
-	        };
-	    </script>
+				        window.statsData = {
+				            labels: {{ labels|json_encode|raw }},
+				            userRegistrations: {{ userRegistrations|json_encode|raw }},
+				            articlesPublished: {{ articlesPublished|json_encode|raw }}
+				        };
+				    </script>
 
 	 <script src="{{ asset('js/admin/stats/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

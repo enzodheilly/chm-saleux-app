@@ -227,3 +227,5 @@
             width: 100%;
         }
     }
+
+    .form-hidden { display: none; }
