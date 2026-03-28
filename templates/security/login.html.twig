@@ -40,6 +40,7 @@
 				{% endfor %}
 
 				<form action="{{ path('app_login') }}" method="post" class="auth-form">
+
 					<div class="form-group">
 						<label for="inputEmail">Email</label>
 						<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" placeholder="votre@email.com" required autofocus>
@@ -47,10 +48,17 @@
 
 					<div class="form-group">
 						<label for="inputPassword">Mot de passe</label>
-						<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" placeholder="••••••••" required>
+
+						<div class="password-input-wrapper">
+							<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" placeholder="••••••••" required>
+
+							<span class="toggle-password" data-target="inputPassword">
+								<img src="{{ asset('images/eye/eye-open.png') }}" alt="Afficher" class="eye-icon eye-open">
+								<img src="{{ asset('images/eye/eye-closed.png') }}" alt="Cacher" class="eye-icon eye-closed hide">
+							</span>
+						</div>
 					</div>
 
-					{# Token CSRF indispensable #}
 					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 					<div class="turnstile-container">
@@ -66,9 +74,10 @@
 
 					<div class="form-actions">
 						<button class="btn-auth login-btn" type="submit">
-							Se connecter
+							<span>Se connecter</span>
 						</button>
 					</div>
+
 				</form>
 
 				<div class="register-hint">

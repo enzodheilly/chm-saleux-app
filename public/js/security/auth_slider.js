@@ -102,3 +102,22 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll("form").forEach(form => {
+
+        form.addEventListener("submit", function () {
+
+            const btn = form.querySelector(".btn-auth[type='submit']");
+            if (!btn) return;
+
+            // Ajoute le spinner
+            btn.classList.add("loading");
+
+            // Optionnel : empêche double-clic
+            btn.disabled = true;
+        });
+    });
+
+});
