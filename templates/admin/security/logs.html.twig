@@ -32,11 +32,10 @@
 			</h3>
 			<div class="targets-list">
 				{% for target in topTargets|default([]) %}
-					{% set targetUser = target.user is defined ? target.user : (target[0] is defined ? target[0] : null) %}
 					<div class="target-card">
 						<div class="target-label">Utilisateur cible</div>
 						<div class="target-email">
-							{{ targetUser ? targetUser.email : 'Utilisateur inconnu' }}
+							{{ target.email ?? 'Utilisateur inconnu' }}
 						</div>
 						<div class="target-attempts">
 							{{ target.attempts }}
