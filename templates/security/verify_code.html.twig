@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Réinitialisation - CHM Saleux
+{% block title %}Vérification du compte - CHM Saleux
 {% endblock %}
 
 {% block navbar %}{% endblock %}
@@ -22,11 +22,11 @@
 					<a href="{{ path('home') }}" class="auth-logo">
 						<img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo CHM">
 					</a>
-					<h1>RÉINITIALISATION</h1>
-					<p>Saisissez votre adresse email pour recevoir un lien de récupération.</p>
+					<h1>VÉRIFICATION</h1>
+					<p>Un code à 6 chiffres a été envoyé à votre adresse email. Vérifiez également vos spams.</p>
 				</div>
 
-				{# Gestion des messages Flash (Erreurs et Succès) #}
+				{# Flash messages #}
 				{% for label, messages in app.flashes %}
 					{% for message in messages %}
 						<div class="alert-{{ label }} flash-{{ label }}">
@@ -35,33 +35,35 @@
 					{% endfor %}
 				{% endfor %}
 
-				<form
-					action="{{ path('app_reset_password_request') }}" method="post" class="auth-form">
-					{# ✅ JETON CSRF REQUIS PAR TON CONTROLLER #}
-					<input type="hidden" name="_token" value="{{ csrf_token('reset_request') }}">
+				<form action="{{ path('app_verify_code') }}" method="post" class="auth-form">
+					<input type="hidden" name="_token" value="{{ csrf_token('verify_code') }}">
 
 					<div class="form-group">
-						<label for="reset_email">Votre Email</label>
-						<input type="email" name="email" id="reset_email" class="form-control" placeholder="votre@email.com" required autocomplete="email" autofocus>
-					</div>
-
-					<div class="turnstile-container">
-						<div class="cf-turnstile" data-sitekey="0x4AAAAAACvankHbbJ6UuueH" data-size="invisible" data-appearance="always"></div>
+						<label for="code">Code de vérification</label>
+						<div class="code-inputs">
+							<input type="text" maxlength="1" class="code-box form-control" autofocus autocomplete="off" inputmode="numeric">
+							<input type="text" maxlength="1" class="code-box form-control" autocomplete="off" inputmode="numeric">
+							<input type="text" maxlength="1" class="code-box form-control" autocomplete="off" inputmode="numeric">
+							<input type="text" maxlength="1" class="code-box form-control" autocomplete="off" inputmode="numeric">
+							<input type="text" maxlength="1" class="code-box form-control" autocomplete="off" inputmode="numeric">
+							<input type="text" maxlength="1" class="code-box form-control" autocomplete="off" inputmode="numeric">
+						</div>
+						<input type="hidden" id="code" name="code">
 					</div>
 
 					<button type="submit" class="btn-auth login-btn">
-						<span class="btn-text">Envoyer le lien</span>
+						<span class="btn-text">Vérifier mon compte</span>
 					</button>
 				</form>
 
 				<div class="register-hint">
-					<p>Vous vous en souvenez ?
-						<a href="{{ path('app_login') }}">Se connecter</a>
-					</p>
-				</div>
-
-				<div class="auth-bottom">
-					<a href="{{ path('home') }}" class="back-link">← Retour au site</a>
+					<p>Vous n'avez pas reçu le code ?</p>
+					<form action="{{ path('app_resend_code') }}" method="post" id="resend-form">
+						<input type="hidden" name="_token" value="{{ csrf_token('resend_code') }}">
+						<button type="submit" class="btn-resend" id="btn-resend">
+							<span class="btn-text">Renvoyer le code</span>
+						</button>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -76,8 +78,8 @@
 			<div class="auth-slider">
 				<div class="slide slide-1 active">
 					<div class="slide-content">
-						<h2>Ne Perdez Pas<br>Le Rythme</h2>
-						<p>Une petite absence arrive à tout le monde. Récupérez vos accès et reprenez l'entraînement.</p>
+						<h2>Dernière<br>Étape</h2>
+						<p>Confirmez votre adresse email pour activer votre compte et accéder au club.</p>
 						<div class="slide-pagination">
 							<span class="dot active" data-slide="0"></span>
 							<span class="dot" data-slide="1"></span>
@@ -88,8 +90,8 @@
 
 				<div class="slide slide-2">
 					<div class="slide-content">
-						<h2>Sécurité<br>Maximale</h2>
-						<p>Nous protégeons vos données. Changez votre mot de passe régulièrement pour plus de sûreté.</p>
+						<h2>Vérifiez<br>Vos Spams</h2>
+						<p>Si vous ne trouvez pas l'email, pensez à vérifier votre dossier spam ou courrier indésirable.</p>
 						<div class="slide-pagination">
 							<span class="dot" data-slide="0"></span>
 							<span class="dot active" data-slide="1"></span>
@@ -101,7 +103,7 @@
 				<div class="slide slide-3">
 					<div class="slide-content">
 						<h2>Besoin d'aide ?</h2>
-						<p>Vérifiez vos spams si l'email n'arrive pas, ou contactez le staff du CHM Saleux.</p>
+						<p>Le staff du CHM Saleux est à votre disposition pour toute question.</p>
 						<div class="slide-pagination">
 							<span class="dot" data-slide="0"></span>
 							<span class="dot" data-slide="1"></span>
@@ -111,6 +113,7 @@
 				</div>
 			</div>
 		</div>
+
 	</section>
 {% endblock %}
 
