@@ -17,11 +17,15 @@ class PasswordController extends AbstractController
 {
     private function isStrongPassword(string $password): bool
     {
-        if (mb_strlen($password) < 12) return false;
-        if (!preg_match('/[A-Z]/', $password)) return false;
-        if (!preg_match('/[a-z]/', $password)) return false;
-        if (!preg_match('/\d/', $password)) return false;
-        if (!preg_match('/[^A-Za-z0-9]/', $password)) return false;
+        // Longueur minimum
+        if (mb_strlen($password) < 10) return false;
+
+        // Bloquer les mots de passe trop courants
+        $blacklist = ['password', 'azerty', '123456', 'motdepasse', 'chmsaleux'];
+        foreach ($blacklist as $banned) {
+            if (str_contains(strtolower($password), $banned)) return false;
+        }
+
         return true;
     }
 
@@ -50,7 +54,7 @@ class PasswordController extends AbstractController
 
             $password = (string) $request->request->get('password', '');
             $confirmPassword = (string) $request->request->get('confirm_password', '');
-            $acceptedTerms = $request->request->getBoolean('acceptedTerms', false);
+            $acceptedTerms = $request->request->getBoolean('accepted_terms', false);
 
             $hasErrors = false;
 
@@ -65,7 +69,7 @@ class PasswordController extends AbstractController
             }
 
             if (!$this->isStrongPassword($password)) {
-                $this->addFlash('error', 'Mot de passe trop faible.');
+                $this->addFlash('error', 'Votre mot de passe doit contenir au moins 10 caractères.');
                 $hasErrors = true;
             }
 

@@ -18,7 +18,7 @@ framework:
         resend_code:
             policy: "fixed_window"
             limit: 3
-            interval: "30 minutes"
+            interval: "3 minutes"
 
         reset_request:
             policy: "fixed_window"
