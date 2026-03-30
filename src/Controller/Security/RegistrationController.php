@@ -20,11 +20,13 @@ class RegistrationController extends AbstractController
 {
     private function isStrongPassword(string $password): bool
     {
-        if (mb_strlen($password) < 12) return false;
-        if (!preg_match('/[A-Z]/', $password)) return false;
-        if (!preg_match('/[a-z]/', $password)) return false;
-        if (!preg_match('/\d/', $password)) return false;
-        if (!preg_match('/[^A-Za-z0-9]/', $password)) return false;
+        if (mb_strlen($password) < 10) return false;
+
+        $blacklist = ['password', 'azerty', '123456', 'motdepasse', 'chmsaleux'];
+        foreach ($blacklist as $banned) {
+            if (str_contains(strtolower($password), $banned)) return false;
+        }
+
         return true;
     }
 
@@ -77,7 +79,7 @@ class RegistrationController extends AbstractController
                 if ($password1 !== $password2) {
                     $errors[] = "Les mots de passe ne correspondent pas.";
                 } elseif (!$this->isStrongPassword($password1)) {
-                    $errors[] = "Le mot de passe doit contenir au moins 12 caractères, une majuscule, un chiffre et un caractère spécial.";
+                    $errors[] = "Votre mot de passe doit contenir au moins 10 caractères.";
                 }
 
                 if (!empty($errors)) {
@@ -108,7 +110,6 @@ class RegistrationController extends AbstractController
                 $mailer->send($emailMessage);
 
                 $request->getSession()->set('verify_email', $user->getEmail());
-                $this->addFlash('success', 'Inscription réussie !');
                 return $this->redirectToRoute('app_verify_code');
             } catch (\Throwable $e) {
                 $logger->add('Erreur inscription', $e->getMessage());

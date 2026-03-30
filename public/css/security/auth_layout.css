@@ -374,6 +374,69 @@
     margin-top: 5px;
 }
 
+.code-inputs {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.code-box {
+    width: 48px;
+    height: 56px;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 0;
+}
+
+.btn-resend {
+    background: none;
+    border: 1px solid #333;
+    color: #888;
+    border-radius: 8px;
+    padding: 9px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+    position: relative;        /* ← ajout */
+    display: flex;             /* ← ajout */
+    align-items: center;       /* ← ajout */
+    justify-content: center;   /* ← ajout */
+}
+
+.btn-resend:hover {
+    border-color: #ff8c00;
+    color: #ff8c00;
+}
+
+.btn-auth.loading,
+.btn-resend.loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.btn-auth.loading::after,
+.btn-resend.loading::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 3px solid transparent;
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+.btn-auth.loading span,
+.btn-resend.loading span {
+    opacity: 0;
+}
+
 /* --------------------------------------------------------------------------
    SPINNER SUR BOUTONS (loading)
 -------------------------------------------------------------------------- */

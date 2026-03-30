@@ -56,7 +56,7 @@
 					<div class="form-group">
 						<label for="reg_pass1">Mot de passe</label>
 						<div class="password-input-wrapper">
-							<input type="password" name="registration_form[password][first]" id="reg_pass1" class="form-control" placeholder="••••••••••••" required>
+							<input type="password" name="registration_form[password][first]" id="reg_pass1" class="form-control" placeholder="••••••••••••" required minlength="10">
 							<span class="toggle-password" data-target="reg_pass1">
 								<img src="{{ asset('images/eye/eye-open.png') }}" alt="Afficher" class="eye-icon eye-open">
 								<img src="{{ asset('images/eye/eye-closed.png') }}" alt="Cacher" class="eye-icon eye-closed hide">
@@ -67,7 +67,7 @@
 					<div class="form-group">
 						<label for="reg_pass2">Confirmer le mot de passe</label>
 						<div class="password-input-wrapper">
-							<input type="password" name="registration_form[password][second]" id="reg_pass2" class="form-control" placeholder="••••••••••••" required>
+							<input type="password" name="registration_form[password][second]" id="reg_pass2" class="form-control" placeholder="••••••••••••" required minlength="10">
 							<span class="toggle-password" data-target="reg_pass2">
 								<img src="{{ asset('images/eye/eye-open.png') }}" alt="Afficher" class="eye-icon eye-open">
 								<img src="{{ asset('images/eye/eye-closed.png') }}" alt="Cacher" class="eye-icon eye-closed hide">
@@ -77,18 +77,20 @@
 
 					<div class="form-group checkbox-group">
 						<input type="checkbox" name="registration_form[acceptedTerms]" id="reg_terms" {% if registrationForm.acceptedTerms.vars.checked %} checked {% endif %} required>
-						<label for="reg_terms">J’accepte les conditions générales d’utilisation</label>
+						<label for="reg_terms">
+							J'ai lu et j'accepte les
+							<a href="{{ path('legal_page_show', {'slug': 'conditions-utilisation'}) }}" target="_blank" style="color: #1a56db;">conditions générales d'utilisation</a>
+							et les
+							<a href="{{ path('legal_page_show', {'slug': 'mentions-legales'}) }}" target="_blank" style="color: #1a56db;">mentions légales</a>
+						</label>
 					</div>
-
-					{# Token CSRF indispensable #}
-					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 					<div class="turnstile-container">
 						<div class="cf-turnstile" data-sitekey="0x4AAAAAACvankHbbJ6UuueH" data-size="invisible" data-appearance="always"></div>
 					</div>
 
 					<button type="submit" class="btn-auth login-btn">
-						Créer mon compte
+						<span class="btn-text">Créer mon compte</span>
 					</button>
 				</form>
 
@@ -129,8 +131,8 @@
 						<h2>Suivi Précis Et<br>Programmes Experts</h2>
 						<p>Accédez instantanément à des outils de suivi de performance et des plans d'entraînement conçus par nos coachs certifiés.</p>
 						<div class="slide-pagination">
-							<span class="dot active" data-slide="0"></span>
-							<span class="dot" data-slide="1"></span>
+							<span class="dot" data-slide="0"></span>
+							<span class="dot active" data-slide="1"></span>
 							<span class="dot" data-slide="2"></span>
 						</div>
 					</div>
@@ -141,9 +143,9 @@
 						<h2>Une Communauté<br>Pour Vous Propulser</h2>
 						<p>Rejoignez des centaines de passionnés. Partagez, progressez et restez motivé(e) grâce à l'esprit d'équipe du CHM Saleux.</p>
 						<div class="slide-pagination">
-							<span class="dot active" data-slide="0"></span>
+							<span class="dot" data-slide="0"></span>
 							<span class="dot" data-slide="1"></span>
-							<span class="dot" data-slide="2"></span>
+							<span class="dot active" data-slide="2"></span>
 						</div>
 					</div>
 				</div>
