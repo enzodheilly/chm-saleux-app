@@ -1,122 +1,206 @@
 /* =========================================================
-   COMPETITION DETAIL — PAGE SPECIFIQUE
-   (complète feminine.css)
+   COMPETITION DETAIL — PAGE SPÉCIFIQUE (CHM SALEUX)
    ========================================================= */
 
 .competition-detail-root {
-  padding-bottom: 1.5rem;
+  padding-bottom: 3rem;
 }
 
-.detail-breadcrumbs {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+/* 1. ESPACEMENT ET TITRE (Blindage contre les doublons) */
+.section-header-compact.centered {
+  text-align: center;
+  padding-top: 110px; /* Espace pour descendre sous le header oblique */
+  padding-bottom: 20px;
+  position: relative;
+  z-index: 5;
 }
 
-.detail-breadcrumbs .crumb-sep {
-  color: rgba(255,255,255,0.35);
-  font-weight: 700;
+.section-header-compact.centered .section-heading {
+  display: inline-block; /* Nécessaire pour centrer la barre par rapport au texte */
+  font-size: var(--fs-section-title);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+  letter-spacing: -0.5px;
+  position: relative;
+  padding-bottom: 15px;
+  border: none !important; /* Supprime une éventuelle bordure parasite */
 }
 
-.detail-breadcrumbs .is-secondary {
-  opacity: 0.9;
+/* On tue TOUTES les décorations héritées de feminine.css ou autres */
+.section-header-compact.centered .section-heading::before,
+.section-header-compact.centered .section-heading::after {
+    content: none !important;
+    display: none !important;
 }
 
+/* On recrée la barre orange UNIQUE, centrée mathématiquement */
+.section-header-compact.centered .section-heading span {
+  color: var(--brand-orange);
+}
+
+/* 2. INFOS LEAD (Dans le header) */
 .detail-lead {
   display: flex;
   flex-wrap: wrap;
   gap: 14px 20px;
   align-items: center;
+  margin-top: 0.8rem;
 }
 
 .detail-lead span {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.95rem;
 }
 
-.detail-top-grid {
-  display: grid;
-  grid-template-columns: 1.5fr 0.8fr;
-  gap: 1.25rem;
+.detail-lead i {
+  color: var(--brand-orange);
+}
+
+/* 3. STATS BAND (La barre grise avec icônes) */
+.detail-stats-band {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-soft);
+  border-bottom: 1px solid var(--border-soft);
+  position: relative;
+  z-index: 10;
+  margin-top: 30px; 
+}
+
+.stats-band-grid {
+  display: flex;
   align-items: stretch;
 }
 
-.detail-info-card {
-  background: var(--bg-card);
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.08);
-  padding: 1.1rem;
-}
-
-.detail-rank-card {
-  background: linear-gradient(180deg, rgba(245,119,6,0.12), rgba(245,119,6,0.04));
-  border: 1px solid rgba(245,119,6,0.18);
-  border-radius: 16px;
-  padding: 1.1rem;
+.stat-band-item {
+  flex: 1;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 180px;
-  box-shadow: var(--shadow-accent);
+  align-items: center;
+  gap: 14px;
+  padding: 22px 24px;
+  border-right: 1px solid var(--border-soft);
+  transition: background 0.2s ease;
 }
 
-.detail-rank-card .rank-label {
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  color: rgba(255,255,255,0.8);
-  font-weight: var(--fw-bold);
+.stat-band-item:last-child {
+  border-right: none;
 }
 
-.detail-rank-card .rank-number {
-  font-size: 3rem;
-  line-height: 1;
+.stat-band-item:hover {
+  background: rgba(255,255,255,0.02);
+}
+
+.stat-band-item--accent {
+  background: rgba(245, 119, 6, 0.06);
+  border-color: rgba(245, 119, 6, 0.15);
+}
+
+.stat-band-item--accent:hover {
+  background: rgba(245, 119, 6, 0.10);
+}
+
+.stat-band-item > i {
+  font-size: 1.4rem;
+  color: var(--brand-orange);
+  flex-shrink: 0;
+}
+
+.stat-band-item--accent > i {
+  font-size: 1.6rem;
+}
+
+.stat-band-value {
+  display: block;
+  font-size: 1.05rem;
   font-weight: var(--fw-black);
   color: #fff;
-  margin: 0.4rem 0 0.3rem;
+  line-height: 1.2;
 }
 
-.detail-rank-card .rank-caption {
-  margin: 0;
-  color: rgba(255,255,255,0.75);
-  font-size: 0.9rem;
+.stat-band-item--accent .stat-band-value {
+  font-size: 1.5rem;
+  color: var(--brand-orange);
 }
 
-.detail-meta-list {
-  display: grid;
-  gap: 0.65rem;
+.stat-band-value sup {
+  font-size: 0.65em;
+  color: var(--brand-orange);
 }
 
-.detail-meta-item {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: center;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.05);
-}
-
-.detail-meta-item .meta-label {
+.stat-band-label {
+  display: block;
+  font-size: 0.72rem;
   color: var(--text-muted);
-  font-size: 0.74rem;
-  font-weight: var(--fw-bold);
   text-transform: uppercase;
   letter-spacing: 0.6px;
+  font-weight: var(--fw-bold);
+  margin-top: 2px;
 }
 
-.detail-meta-item .meta-value {
-  color: #fff;
-  font-size: 0.9rem;
-  font-weight: var(--fw-semibold);
-  text-align: right;
+/* 4. DESCRIPTION BOX */
+.detail-description-section {
+  padding-top: 3rem;
+  padding-bottom: 0;
 }
 
-.detail-result-card {
-  border-radius: 16px;
+.detail-description-box {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-left: 4px solid var(--brand-orange);
+  border-radius: var(--radius-lg);
+  padding: 1.8rem 2rem;
+}
+
+.detail-description-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  background: rgba(245, 119, 6, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand-orange);
+  font-size: 1.1rem;
+}
+
+.detail-description-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--brand-orange);
+  font-weight: var(--fw-bold);
+  margin: 0 0 0.6rem;
+}
+
+.detail-description-text {
+  color: var(--text-muted-2);
+  font-size: 0.98rem;
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* 5. TABLEAU RÉSULTATS */
+.detail-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+  padding-top: 1rem;
+}
+
+.detail-table-wrapper {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-soft);
+  overflow: hidden;
 }
 
 .ranking-pill {
@@ -124,7 +208,7 @@
   align-items: center;
   justify-content: center;
   min-width: 58px;
-  padding: 6px 10px;
+  padding: 5px 10px;
   border-radius: 999px;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
@@ -133,100 +217,62 @@
   font-weight: var(--fw-bold);
 }
 
+/* 6. BOUTON RETOUR */
 .detail-bottom-actions {
   display: flex;
   justify-content: center;
-  padding-bottom: 2rem;
+  padding: 3rem 0;
 }
 
-/* bouton ghost */
 .btn-history-ghost {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 16px;
+  padding: 13px 22px;
   border-radius: var(--radius-md);
   text-decoration: none;
   font-weight: var(--fw-bold);
   color: #fff;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.09);
-  transition: var(--transition-base);
+  transition: 0.3s ease;
 }
 
 .btn-history-ghost:hover {
   transform: translateY(-2px);
-  border-color: rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.06);
+  border-color: var(--brand-orange);
+  color: var(--brand-orange);
+  background: rgba(245,119,6,0.05);
 }
 
 /* =========================================
-   LIGNE ATHLÈTE
+   RESPONSIVE
    ========================================= */
-/* =========================================
-   LIGNE ATHLÈTE
-   (on réutilise le style de feminine.css)
-   ========================================= */
-.ath-bodyweight {
-  display: none;
-}
-
-.feminine-header-bg {
-  --bg-image: url('/images/competitions/1.jpg');
-}
-
-.section-header-offset {
-  margin-top: 50px;
-}
-
 @media (max-width: 992px) {
-  .detail-top-grid {
-    grid-template-columns: 1fr;
+  .stats-band-grid {
+    flex-wrap: wrap;
   }
-
-  .detail-rank-card {
-    min-height: auto;
+  .stat-band-item {
+    flex: 0 0 50%;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .stat-band-item:nth-child(even) {
+    border-right: none;
   }
 }
 
 @media (max-width: 768px) {
-  .detail-meta-item {
-    flex-direction: column;
-    align-items: flex-start;
+  .section-header-compact.centered {
+    padding-top: 60px;
+  }
+  
+  .section-header-compact.centered .section-heading {
+    font-size: 1.7rem;
   }
 
-  .detail-meta-item .meta-value {
-    text-align: left;
-  }
-
-  .detail-rank-card .rank-number {
-    font-size: 2.4rem;
-  }
-
-  .detail-lead {
-    gap: 10px;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  /* Table mobile -> cards lisibles */
-  .stats-table {
-    min-width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-  }
-
-  .stats-table thead {
-    display: none;
-  }
-
-  .stats-table,
-  .stats-table tbody {
-    display: block;
-    width: 100%;
-    min-width: 100%;
-  }
-
+  .stats-table thead { display: none; }
+  .stats-table, .stats-table tbody { display: block; width: 100%; }
+  
   .stats-table .athlete-row {
     display: block;
     background: var(--bg-card);
@@ -240,8 +286,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 16px;
-    width: 100%;
     padding: 10px 16px;
     border: none;
     text-align: right !important;
@@ -249,80 +293,26 @@
 
   .stats-table .athlete-row td::before {
     content: attr(data-label);
-    display: block;
-    flex: 0 0 42%;
+    flex: 0 0 45%;
     text-align: left;
     color: var(--text-muted);
-    font-size: 0.72rem;
-    font-weight: var(--fw-bold);
+    font-size: 0.7rem;
+    font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 0.7px;
-  }
-
-  .stats-table .athlete-row td > * {
-    text-align: right;
-  }
-
-  .stats-table .athlete-row td.ath-name-cell {
-    display: block;
-    padding: 0 16px 14px;
-    margin-bottom: 8px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    text-align: right !important;
-  }
-
-  .stats-table .athlete-row td.ath-name-cell::before {
-    display: none;
-  }
-
-.stats-table .athlete-row td.ath-name-cell {
-  display: block;
-  padding: 0 16px 14px;
-  margin-bottom: 8px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-}
-
-.stats-table .athlete-row td.ath-name-cell::before {
-  display: none;
-}
-
-/* on garde le style nom/prénom de feminine.css */
-.stats-table .ath-name-cell .ath-bodyweight {
-  display: inline-block;
-}
-
-/* on masque la colonne PC en mobile car déjà affichée dans le header */
-.stats-table .bodyweight-cell {
-  display: none !important;
-}
-
-  /* on masque la colonne PC en mobile car déjà affichée en haut */
-  .stats-table .bodyweight-cell {
-    display: none !important;
-  }
-
-  .highlight,
-  .highlight-accent {
-    background: transparent;
-    font-size: 1rem;
-    padding: 0;
-    width: auto;
-  }
-
-  .ranking-pill {
-    font-size: 0.78rem;
-    padding: 6px 12px;
   }
 }
 
-@media (max-width: 420px) {
-  .stats-table .athlete-row td {
-    padding: 9px 14px;
-    gap: 12px;
+@media (max-width: 600px) {
+  .stat-band-item {
+    flex: 0 0 100%;
+    border-right: none;
   }
-
-  .stats-table .athlete-row td::before {
-    flex-basis: 46%;
-    font-size: 0.68rem;
+  .detail-lead {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .detail-description-box {
+    flex-direction: column;
+    padding: 1.4rem;
   }
 }

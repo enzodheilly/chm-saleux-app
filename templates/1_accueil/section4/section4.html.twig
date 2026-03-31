@@ -1,78 +1,84 @@
 {# --- SECTION : DERNIÈRES ACTUALITÉS --- #}
 <section class="home-news-section">
-    <div class="container">
-        
-        <div class="section-header-elite">
-            <div class="header-text">
-                <h2 class="section-title">Dernières <span class="text-outline">Actualités</span></h2>
-            </div>
-            <a href="{{ path('actualites') }}" class="btn-link-all">
-                Voir tout le journal <i class="fa-solid fa-arrow-right"></i>
-            </a>
-        </div>
+	<div class="container">
 
-        <div class="news-grid-home">
-            {% for article in articles|slice(0, 3) %}
-                <article class="news-card-minimal">
-                    <a href="{{ path('article_show', { id: article.id }) }}" class="card-anchor">
-                        <div class="card-img-container">
-                            {% if article.photo %}
-                                <img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}" loading="lazy">
-                            {% else %}
-                                <img src="{{ asset('images/default-article.png') }}" alt="CHM Saleux">
-                            {% endif %}
-                            <div class="img-overlay">
-                                <span class="read-label">Lire l'article</span>
-                            </div>
-                        </div>
+		<div class="section-header-elite">
+			<div class="header-text">
+				<h2 class="section-title">Dernières
+					<span class="text-outline">Actualités</span>
+				</h2>
+			</div>
+			<a href="{{ path('actualites') }}" class="btn-link-all">
+				Voir tout le journal
+				<i class="fa-solid fa-arrow-right"></i>
+			</a>
+		</div>
 
-                        <div class="card-info">
-                            <span class="info-date">{{ article.publishedAt|date('d/m/Y') }}</span>
-                            <h3 class="info-title">
-                                {{ article.title|length > 45 ? article.title|slice(0, 45) ~ '...' : article.title }}
-                            </h3>
-                            <p class="info-excerpt">
-                                {{ article.description|striptags|length > 90 ? article.description|striptags|slice(0, 90) ~ '...' : article.description }}
-                            </p>
-                            <span class="info-more">Continuer <i class="fa-solid fa-chevron-right"></i></span>
-                        </div>
-                    </a>
-                </article>
-            {% else %}
-                <div class="empty-news-minimal">
-                    <p>De nouvelles actualités arrivent bientôt !</p>
-                </div>
-            {% endfor %}
-        </div>
+		<div class="news-grid-home">
+			{% for article in articles|slice(0, 3) %}
+				<article class="news-card-minimal">
+					<a href="{{ path('article_show', { id: article.id }) }}" class="card-anchor">
+						<div class="card-img-container">
+							{% if article.photo %}
+								<img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}" loading="lazy">
+							{% else %}
+								<img src="{{ asset('images/default-article.png') }}" alt="CHM Saleux">
+							{% endif %}
 
-    </div>
+							<div class="card-overlay">
+								<span class="info-date">{{ article.publishedAt|date('d/m/Y') }}</span>
+								<h3 class="info-title">
+									{{ article.title|length > 55 ? article.title|slice(0, 55) ~ '...' : article.title }}
+								</h3>
+								<p class="info-excerpt">
+									{{ article.description|striptags|length > 80 ? article.description|striptags|slice(0, 80) ~ '...' : article.description }}
+								</p>
+								<span class="info-more">Lire l'article
+									<i class="fa-solid fa-chevron-right"></i>
+								</span>
+							</div>
+						</div>
+					</a>
+				</article>
+			{% else %}
+				<div class="empty-news-minimal">
+					<p>De nouvelles actualités arrivent bientôt !</p>
+				</div>
+			{% endfor %}
+		</div>
+
+	</div>
 </section>
 
 {# --- SECTION : FAQ & AIDE --- #}
 <section class="home-faq-section">
-    <div class="container">
-        
-        <div class="faq-grid-layout">
-            
-            {# Colonne Gauche : Intro #}
-            <aside class="faq-intro-box">
-                <div class="sticky-content">
-                    <h2 class="faq-main-title">Questions <span class="text-outline">Fréquentes</span></h2>
-                    <p class="faq-main-desc">Vous hésitez encore ? Voici les réponses aux questions les plus posées par nos nouveaux adhérents.</p>
-                    
-                    <div class="faq-contact-card">
-                        <h4>Encore un doute ?</h4>
-                        <p>Nos coachs vous répondent directement par message.</p>
-                        <a href="{{ path('contact') }}" class="btn-elite-contact">
-                            Nous contacter <i class="fa-solid fa-paper-plane"></i>
-                        </a>
-                    </div>
-                </div>
-            </aside>
+	<div class="container">
 
-            {# Colonne Droite : Accordéons #}
-            <div class="faq-accordion-list">
-                {% set faqItems = [
+		<div
+			class="faq-grid-layout">
+
+			{# Colonne Gauche : Intro #}
+			<aside class="faq-intro-box">
+				<div class="sticky-content">
+					<h2 class="faq-main-title">Questions
+						<span class="text-outline">Fréquentes</span>
+					</h2>
+					<p class="faq-main-desc">Vous hésitez encore ? Voici les réponses aux questions les plus posées par nos nouveaux adhérents.</p>
+
+					<div class="faq-contact-card">
+						<h4>Encore un doute ?</h4>
+						<p>Nos coachs vous répondent directement par message.</p>
+						<a href="{{ path('contact') }}" class="btn-elite-contact">
+							Nous contacter
+							<i class="fa-solid fa-paper-plane"></i>
+						</a>
+					</div>
+				</div>
+			</aside>
+
+			{# Colonne Droite : Accordéons #}
+			<div class="faq-accordion-list">
+				{% set faqItems = [
                     {
                         q: "Quels types d'abonnements proposez-vous ?",
                         a: "Nous proposons des formules adaptées : <strong>Compétition</strong> (Haltérophilie Jeunes & Adultes) et <strong>Loisir</strong> (Musculation & Haltérophilie santé)."
@@ -91,26 +97,30 @@
                     }
                 ] %}
 
-                {% for item in faqItems %}
-                    <div class="faq-elite-item">
-                        <button class="faq-elite-trigger" type="button" aria-expanded="false">
-                            <span class="q-text">{{ item.q }}</span>
-                            <span class="q-icon"><i class="fa-solid fa-plus"></i></span>
-                        </button>
-                        <div class="faq-elite-content">
-                            <div class="inner-text">
-                                {{ item.a|raw }}
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+				{% for item in faqItems %}
+					<div class="faq-elite-item">
+						<button class="faq-elite-trigger" type="button" aria-expanded="false">
+							<span class="q-text">{{ item.q }}</span>
+							<span class="q-icon">
+								<i class="fa-solid fa-plus"></i>
+							</span>
+						</button>
+						<div class="faq-elite-content">
+							<div class="inner-text">
+								{{ item.a|raw }}
+							</div>
+						</div>
+					</div>
+				{% endfor %}
 
-                <div class="faq-footer-link">
-                    <a href="{{ path('faq') }}">Consulter la FAQ complète <i class="fa-solid fa-arrow-right-long"></i></a>
-                </div>
-            </div>
+				<div class="faq-footer-link">
+					<a href="{{ path('faq') }}">Consulter la FAQ complète
+						<i class="fa-solid fa-arrow-right-long"></i>
+					</a>
+				</div>
+			</div>
 
-        </div>
+		</div>
 
-    </div>
+	</div>
 </section>
