@@ -195,6 +195,17 @@ class CompetitionController extends AbstractController
         ]);
     }
 
+    #[Route('/competition/masculine/archives', name: 'competition_masculine_archives')]
+    public function masculineArchives(EntityManagerInterface $em): Response
+    {
+        $competitions = $em->getRepository(Competition::class)
+            ->findBy(['gender' => 'male'], ['eventDate' => 'DESC']);
+
+        return $this->render('competitions/masculine_archives.html.twig', [
+            'competitions' => $competitions,
+        ]);
+    }
+
     #[Route('/competition/details/{id}', name: 'competition_show', requirements: ['id' => '\d+'])]
     public function showCompetition(Competition $competition): Response
     {

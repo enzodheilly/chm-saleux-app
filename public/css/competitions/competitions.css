@@ -272,8 +272,9 @@
   z-index: 3;
 }
 .competition-header-bg {
-  --bg-image: url('/images/90.jpg');
+  --bg-image: url('/images/menu_dropdown/services_du_club/journee_essai/11.jpg');
 }
+
 /* =========================================
    4. RESPONSIVE
    ========================================= */

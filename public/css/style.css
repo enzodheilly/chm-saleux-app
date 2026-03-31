@@ -197,8 +197,8 @@
   width: 100%;
   max-width: none !important;
   margin: 0 auto;
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-left: 6.5%;
+  padding-right: 6.5%;
   box-sizing: border-box;
 }
 
@@ -232,70 +232,90 @@
     padding: 2.6rem 0 0;
   }
 }
-/* =========================================================
-   HEADER GLOBAL — PAGES INTERNES
-   ========================================================= */
 
 .page-header-sport {
   position: relative;
   padding-top: var(--nav-height, 60px);
-  height: 60vh;
-  min-height: 450px;
+  height: 75vh;
+  min-height: 520px;
   display: flex;
   align-items: center;
   background-color: var(--dark-bg);
-  margin-bottom: 0;
   overflow: hidden;
-  background-image: var(--bg-image);
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+  margin-bottom: -84px;
+  position: sticky;
+  top: 0; /* Ou la hauteur de ta nav, ex: 60px */
+  z-index: 100; /* Pour passer au-dessus du contenu qui défile */
 }
 
+/* Image clippée à droite avec marge */
 .page-header-sport::before {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 2%;
+  width: 50%;
+  height: 100%;
   background-image: var(--bg-image);
   background-size: cover;
-  background-position: center 25%;
+  background-position: center;
   z-index: 1;
-  filter: grayscale(10%) brightness(0.5);
-  transform: scale(1);
+  clip-path: polygon(22% 0%, 100% 0%, 100% 100%, 0% 100%);
+  border-radius: 0 0 0 8px;
 }
 
-.header-overlay-gradient {
+/* Fondu bord gauche de l'image */
+.page-header-sport::after {
+  content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 2%;
+  width: 50%;
+  height: 100%;
   z-index: 2;
+  clip-path: polygon(22% 0%, 100% 0%, 100% 100%, 0% 100%);
   background: linear-gradient(
-    to bottom,
-    rgba(8, 8, 8, 0.18) 0%,
-    rgba(8, 8, 8, 0.35) 35%,
-    rgba(8, 8, 8, 0.62) 70%,
-    rgba(8, 8, 8, 0.88) 100%
+    to right,
+    rgba(15, 15, 15, 0.92) 0%,
+    rgba(15, 15, 15, 0.15) 35%,
+    rgba(15, 15, 15, 0) 100%
   );
 }
 
+.header-overlay-gradient {
+  display: none;
+}
+
+/* Contenu calé à gauche comme Basic-Fit */
 .header-content {
   position: relative;
   z-index: 3;
   width: 100%;
-  top: 25px;
+  top: -50px;
+  padding: 0;
+}
+
+.header-main-box {
+  max-width: 52%;
+  padding-left: 0;
 }
 
 .badge-accent {
-  background: var(--primary-color);
-  color: var(--text-white);
-  padding: 6px 14px;
+  background: var(--brand-orange);
+  color: #ffffff;
+  padding: 5px 12px;
   font-weight: var(--fw-extrabold);
   font-size: var(--fs-overline);
   text-transform: uppercase;
   letter-spacing: var(--ls-wide);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   display: inline-block;
   border-radius: var(--radius-pill);
 }
 
 .back-link-minimal {
-  color: var(--primary-color);
+  color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
   font-weight: var(--fw-bold);
   text-transform: uppercase;
@@ -303,41 +323,63 @@
   letter-spacing: 2px;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 3rem;
+  gap: 8px;
+  margin-bottom: 2rem;
   transition: var(--transition-base);
 }
-.back-link-minimal:hover { color: var(--text-white); }
+.back-link-minimal:hover { color: #ffffff; }
 
 .header-main-box h1 {
-  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  font-size: clamp(2rem, 2.9vw, 3.8rem);
   font-weight: var(--fw-black);
   text-transform: uppercase;
-  line-height: 1;
-  margin: 0 0 1.5rem 0;
-  color: var(--title-color);
+  line-height: 1.0;
+  margin: 0 0 1.2rem 0;
+  color: #ffffff;
 }
 
 .text-outline {
-  -webkit-text-stroke: 1px var(--text-white);
+  -webkit-text-stroke: 2px #ffffff;
   color: transparent;
 }
 
 .header-main-box .lead {
-  font-size: 1.1rem;
-  color: var(--subtitle-color);
-  max-width: 650px;
-  line-height: var(--lh-body);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 520px;
+  line-height: 1.65;
+  margin-bottom: 0;
 }
 
-/* Responsive header global */
+/* Responsive */
 @media (max-width: 992px) {
   .page-header-sport {
     height: auto !important;
     min-height: 400px !important;
+    clip-path: polygon(0 0, 100% 0, 100% 94%, 0 100%);
+    margin-bottom: -45px;
+  }
+
+  .page-header-sport::before {
+    right: 0;
+    width: 100%;
+    clip-path: none;
+    filter: brightness(0.4);
+  }
+
+  .page-header-sport::after {
+    right: 0;
+    width: 100%;
+    clip-path: none;
+    background: linear-gradient(
+      to bottom,
+      rgba(8, 8, 8, 0.1) 0%,
+      rgba(8, 8, 8, 0.78) 100%
+    );
   }
 
   .header-content { top: 0 !important; }
+  .header-main-box { max-width: 100%; }
 
   .page-header-sport .page-container {
     padding-left: 18px !important;
@@ -345,15 +387,19 @@
   }
 
   .header-main-box h1 {
-    font-size: 2.41rem !important;
+    font-size: 2rem !important;
     line-height: 1.1;
   }
+
+  .header-main-box .lead { max-width: 100%; }
 }
 
 @media (max-width: 768px) {
-  .header-main-box .lead {
-    font-size: 1rem;
+  .page-header-sport {
+    clip-path: polygon(0 0, 100% 0, 100% 96%, 0 100%);
+    margin-bottom: -35px;
   }
+  .header-main-box .lead { font-size: 0.88rem; }
 }
 
 /* =========================================================
