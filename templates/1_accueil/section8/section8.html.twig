@@ -1,40 +1,76 @@
 {# --- SECTION : ESPACES D'ENTRAÎNEMENT --- #}
 <section class="home-cinematic-section">
-    <div class="container-header reveal">
-        <h2 class="cinematic-title">
-            NOS ESPACES <span class="text-outline">D'ENTRAÎNEMENT</span>
-        </h2>
-        <p class="cinematic-subtitle">Deux zones, deux ambiances, une seule performance.</p>
-    </div>
 
-    <div class="cinematic-container">
+	<div class="container-header reveal">
+		<div class="container-header-left">
+			<div class="cinematic-eyebrow">
+				<span class="cinematic-eyebrow-dot"></span>
+				Espaces d'entraînement
+			</div>
+			<h2 class="cinematic-title">
+				Nos espaces<br>
+				<span class="text-outline">d'entraînement</span>
+			</h2>
+			<p class="cinematic-subtitle">Deux zones, deux ambiances, une seule performance.</p>
+		</div>
+		<div class="cinematic-hint">
+			<span class="cinematic-hint-line"></span>
+			Survolez pour explorer
+		</div>
+	</div>
 
-        <a href="{{ path('pratique_haltérophilie') }}" class="cinematic-panel reveal-left d-1" aria-label="Espace Haltérophilie">
-<div class="panel-bg panel-bg-haltero"></div>
+	<div class="cinematic-container">
 
-            <div class="panel-content">
-                <div class="panel-header">
-                    <span class="panel-number">01</span>
-                    <span class="panel-badge">Compétition & Technique</span>
-                </div>
-                <h3>HALTÉROPHILIE</h3>
-                <p class="panel-desc">Dominez les plateaux olympiques avec un matériel haut de gamme et un coaching expert.</p>
-                <span class="btn-discover">Explorer l'espace <i class="fa-solid fa-arrow-right"></i></span>
-            </div>
-        </a>
+		<a href="{{ path('pratique_haltérophilie') }}" class="cinematic-panel reveal-left d-1" aria-label="Espace Haltérophilie">
 
-        <a href="{{ path('pratique_musculation') }}" class="cinematic-panel reveal-right d-2" aria-label="Espace Musculation">
-<div class="panel-bg panel-bg-muscu"></div>
-            <div class="panel-content">
-                <div class="panel-header">
-                    <span class="panel-number">02</span>
-                    <span class="panel-badge">Force & Volume</span>
-                </div>
-                <h3>MUSCULATION</h3>
-                <p class="panel-desc">Progressez sur des machines guidées et des poids libres dans un espace dédié à la performance.</p>
-                <span class="btn-discover">Explorer l'espace <i class="fa-solid fa-arrow-right"></i></span>
-            </div>
-        </a>
+			<div class="panel-bg panel-bg-haltero"></div>
+			<div class="panel-overlay"></div>
+			<div class="panel-accent"></div>
+			<span class="panel-index">01 / 02</span>
 
-    </div>
+			<div class="panel-content">
+				<div class="panel-header">
+					<span class="panel-number">01</span>
+					<span class="panel-badge">Compétition &amp; Technique</span>
+				</div>
+				<h3>Haltérophilie</h3>
+				<p class="panel-desc">
+					Dominez les plateaux olympiques avec un matériel haut de gamme
+					                    et un coaching expert dédié à la performance.
+				</p>
+				<span class="btn-discover">
+					Explorer l'espace
+					<i class="fa-solid fa-arrow-right"></i>
+				</span>
+			</div>
+
+		</a>
+
+		<a href="{{ path('pratique_musculation') }}" class="cinematic-panel reveal-right d-2" aria-label="Espace Musculation">
+
+			<div class="panel-bg panel-bg-muscu"></div>
+			<div class="panel-overlay"></div>
+			<div class="panel-accent"></div>
+			<span class="panel-index">02 / 02</span>
+
+			<div class="panel-content">
+				<div class="panel-header">
+					<span class="panel-number">02</span>
+					<span class="panel-badge">Force &amp; Volume</span>
+				</div>
+				<h3>Musculation</h3>
+				<p class="panel-desc">
+					Progressez sur des machines guidées et des poids libres
+					                    dans un espace entièrement dédié à la performance.
+				</p>
+				<span class="btn-discover">
+					Explorer l'espace
+					<i class="fa-solid fa-arrow-right"></i>
+				</span>
+			</div>
+
+		</a>
+
+	</div>
+
 </section>

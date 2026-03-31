@@ -1,5 +1,4 @@
 <?php
-// src/Controller/Admin/AdminCompetitionController.php
 
 namespace App\Controller\Admin;
 
@@ -21,7 +20,6 @@ class AdminCompetitionController extends AbstractController
     public function index(CompetitionRepository $repo): Response
     {
         $competitions = $repo->findBy([], ['eventDate' => 'DESC']);
-
         return $this->render('admin/competitions/list.html.twig', [
             'competitions' => $competitions,
         ]);
@@ -32,7 +30,6 @@ class AdminCompetitionController extends AbstractController
     {
         if ($request->isMethod('POST')) {
 
-            // ✅ CSRF
             if (!$this->isCsrfTokenValid('competition_new', (string) $request->request->get('_token', ''))) {
                 $this->addFlash('danger', 'Jeton CSRF invalide.');
                 return $this->redirectToRoute('admin_competition_new');
@@ -43,14 +40,13 @@ class AdminCompetitionController extends AbstractController
             $file = $request->files->get('image');
 
             $competition = new Competition();
-
             $competition->setTitle((string) ($data['title'] ?? ''));
             $competition->setCompetitionType($this->nullify($data['competitionType'] ?? null));
             $competition->setLocation((string) ($data['location'] ?? ''));
+            $competition->setDescription($this->nullify($data['description'] ?? null));
 
             $gender = $data['gender'] ?? null;
             $competition->setGender($gender === '' ? null : $gender);
-
             $competition->setTeamRanking($this->nullify($data['teamRanking'] ?? null));
 
             try {
@@ -64,7 +60,7 @@ class AdminCompetitionController extends AbstractController
             if ($file instanceof UploadedFile) {
                 $newFilename = $this->uploadCompetitionImage($file);
                 if ($newFilename === null) {
-                    $this->addFlash('error', 'Image upload failed (invalid file or server error).');
+                    $this->addFlash('error', 'Image upload failed.');
                     return $this->redirectToRoute('admin_competition_new');
                 }
                 $competition->setImage($newFilename);
@@ -74,30 +70,22 @@ class AdminCompetitionController extends AbstractController
             if (is_array($results)) {
                 foreach ($results as $row) {
                     if (!is_array($row)) continue;
-
                     $lastName = $this->nullify($row['lastName'] ?? null);
                     $firstName = $this->nullify($row['firstName'] ?? null);
-
                     if ($lastName === null && $firstName === null) continue;
 
                     $result = new CompetitionResult();
                     $result->setLastName($lastName ?? '');
                     $result->setFirstName($firstName ?? '');
-
                     $result->setCategory($this->nullify($row['category'] ?? null));
                     $result->setWeightClass($this->nullify($row['weightClass'] ?? null));
-
                     $result->setSnatch((float) ($row['snatch'] ?? 0));
                     $result->setCleanAndJerk((float) ($row['cleanAndJerk'] ?? 0));
-
                     $points = $row['points'] ?? null;
                     $result->setPoints($points === '' || $points === null ? null : (float) $points);
-
                     $bw = $row['bodyWeight'] ?? null;
                     $result->setBodyWeight($bw === '' || $bw === null ? null : (float) $bw);
-
                     $result->setRankingLevel($this->nullify($row['rankingLevel'] ?? null));
-
                     $result->setCompetition($competition);
                     $em->persist($result);
                 }
@@ -111,7 +99,6 @@ class AdminCompetitionController extends AbstractController
         }
 
         $athletesJson = $this->buildAthletesJson($em);
-
         return $this->render('admin/competitions/new.html.twig', [
             'title' => 'New competition',
             'athletesJson' => json_encode($athletesJson),
@@ -123,7 +110,6 @@ class AdminCompetitionController extends AbstractController
     {
         if ($request->isMethod('POST')) {
 
-            // ✅ CSRF
             if (!$this->isCsrfTokenValid('competition_edit_' . $competition->getId(), (string) $request->request->get('_token', ''))) {
                 $this->addFlash('danger', 'Jeton CSRF invalide.');
                 return $this->redirectToRoute('admin_competition_edit', ['id' => $competition->getId()]);
@@ -136,10 +122,10 @@ class AdminCompetitionController extends AbstractController
             $competition->setTitle((string) ($data['title'] ?? ''));
             $competition->setCompetitionType($this->nullify($data['competitionType'] ?? null));
             $competition->setLocation((string) ($data['location'] ?? ''));
+            $competition->setDescription($this->nullify($data['description'] ?? null));
 
             $gender = $data['gender'] ?? null;
             $competition->setGender($gender === '' ? null : $gender);
-
             $competition->setTeamRanking($this->nullify($data['teamRanking'] ?? null));
 
             try {
@@ -153,15 +139,13 @@ class AdminCompetitionController extends AbstractController
             if ($file instanceof UploadedFile) {
                 $newFilename = $this->uploadCompetitionImage($file);
                 if ($newFilename === null) {
-                    $this->addFlash('error', 'Image upload failed (invalid file or server error).');
+                    $this->addFlash('error', 'Image upload failed.');
                     return $this->redirectToRoute('admin_competition_edit', ['id' => $competition->getId()]);
                 }
-
                 $old = $competition->getImage();
                 if ($old) {
                     $this->deleteCompetitionImageIfExists($old);
                 }
-
                 $competition->setImage($newFilename);
             }
 
@@ -173,30 +157,22 @@ class AdminCompetitionController extends AbstractController
             if (is_array($results)) {
                 foreach ($results as $row) {
                     if (!is_array($row)) continue;
-
                     $lastName = $this->nullify($row['lastName'] ?? null);
                     $firstName = $this->nullify($row['firstName'] ?? null);
-
                     if ($lastName === null && $firstName === null) continue;
 
                     $result = new CompetitionResult();
                     $result->setLastName($lastName ?? '');
                     $result->setFirstName($firstName ?? '');
-
                     $result->setCategory($this->nullify($row['category'] ?? null));
                     $result->setWeightClass($this->nullify($row['weightClass'] ?? null));
-
                     $result->setSnatch((float) ($row['snatch'] ?? 0));
                     $result->setCleanAndJerk((float) ($row['cleanAndJerk'] ?? 0));
-
                     $points = $row['points'] ?? null;
                     $result->setPoints($points === '' || $points === null ? null : (float) $points);
-
                     $bw = $row['bodyWeight'] ?? null;
                     $result->setBodyWeight($bw === '' || $bw === null ? null : (float) $bw);
-
                     $result->setRankingLevel($this->nullify($row['rankingLevel'] ?? null));
-
                     $result->setCompetition($competition);
                     $em->persist($result);
                 }
@@ -208,7 +184,6 @@ class AdminCompetitionController extends AbstractController
         }
 
         $athletesJson = $this->buildAthletesJson($em);
-
         return $this->render('admin/competitions/edit.html.twig', [
             'competition' => $competition,
             'athletesJson' => json_encode($athletesJson),
@@ -222,18 +197,12 @@ class AdminCompetitionController extends AbstractController
             if ($competition->getImage()) {
                 $this->deleteCompetitionImageIfExists($competition->getImage());
             }
-
             $em->remove($competition);
             $em->flush();
             $this->addFlash('success', 'Competition deleted.');
         }
-
         return $this->redirectToRoute('admin_competition_index');
     }
-
-    // =========================================================
-    // Helpers
-    // =========================================================
 
     private function nullify(mixed $value): ?string
     {
@@ -245,7 +214,6 @@ class AdminCompetitionController extends AbstractController
     {
         /** @var Athlete[] $athletes */
         $athletes = $em->getRepository(Athlete::class)->findBy([], ['lastName' => 'ASC']);
-
         $athletesData = [];
         foreach ($athletes as $athlete) {
             $athletesData[] = [
@@ -257,7 +225,6 @@ class AdminCompetitionController extends AbstractController
                 'weightClass' => $athlete->getWeightClass() ?? '',
             ];
         }
-
         return $athletesData;
     }
 
@@ -265,23 +232,18 @@ class AdminCompetitionController extends AbstractController
     {
         $allowedExt = ['jpg', 'jpeg', 'png', 'webp'];
         $ext = strtolower((string) $file->guessExtension());
-        if (!in_array($ext, $allowedExt, true)) {
-            return null;
-        }
+        if (!in_array($ext, $allowedExt, true)) return null;
 
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = transliterator_transliterate(
             'Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()',
             $originalFilename
         );
-
         $newFilename = ($safeFilename ?: 'competition') . '-' . bin2hex(random_bytes(6)) . '.' . $ext;
-
         $uploadDir = rtrim((string) $this->getParameter('upload_dir'), '/') . '/competitions';
         if (!is_dir($uploadDir)) {
             @mkdir($uploadDir, 0775, true);
         }
-
         try {
             $file->move($uploadDir, $newFilename);
             return $newFilename;
@@ -294,7 +256,6 @@ class AdminCompetitionController extends AbstractController
     {
         $filename = basename($filename);
         $path = rtrim((string) $this->getParameter('upload_dir'), '/') . '/competitions/' . $filename;
-
         if (is_file($path)) {
             @unlink($path);
         }
