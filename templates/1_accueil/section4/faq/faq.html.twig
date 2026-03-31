@@ -1,120 +1,151 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Foire Aux Questions — CHM Saleux{% endblock %}
+{% block title %}Foire Aux Questions — CHM Saleux
+{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/accueil/section4/faq/faq.css') }}">
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/accueil/section4/faq/faq.css') }}">
 {% endblock %}
 
 {% block body %}
 
-    <header class="page-header-sport faq-header-bg">
-        <div class="header-overlay-gradient"></div>
+	<header class="page-header-sport faq-header-bg">
+		<div class="header-overlay-gradient"></div>
 
-        <div class="header-content">
-            <div class="page-container">
-                <nav class="breadcrumb-nav">
-                    <a href="{{ path('home') }}" class="back-link-minimal">
-                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                    </a>
-                </nav>
+		<div class="header-content">
+			<div class="page-container">
+				<nav class="breadcrumb-nav">
+					<a href="{{ path('home') }}" class="back-link-minimal">
+						<i class="fa-solid fa-chevron-left"></i>
+						<span>Retour à l'accueil</span>
+					</a>
+				</nav>
 
-                <div class="header-main-box">
-                    <div class="badge-accent">Centre d'aide</div>
-                    <h1>Questions <span class="text-outline">Fréquentes</span></h1>
-                    <p class="lead">
-                        Abonnements, entraînements, équipements... Trouvez toutes les réponses pour bien débuter au club.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </header>
+				<div class="header-main-box">
+					<div class="badge-accent">Centre d'aide</div>
+					<h1>Questions
+						<span class="text-outline">Fréquentes</span>
+					</h1>
+					<p class="lead">
+						Abonnements, entraînements, équipements... Trouvez toutes les réponses pour bien débuter au club.
+					</p>
+				</div>
+			</div>
+		</div>
+	</header>
 
-    <main class="page-shell faq-root">
+	<main class="page-shell faq-root">
 
-        {# --- FILTRES DE NAVIGATION --- #}
-        <section class="page-container faq-nav-wrapper">
-            <div class="faq-filters-scroll">
-                <button class="filter-btn active" data-target="questions">Général</button>
-                <button class="filter-btn" data-target="abonnement">Abonnement</button>
-                <button class="filter-btn" data-target="entrainement">Entraînement</button>
-                <button class="filter-btn" data-target="installations">Installations</button>
-                <button class="filter-btn" data-target="competition">Compétition</button>
-                <button class="filter-btn" data-target="autres">Divers</button>
-            </div>
-        </section>
+		<section class="page-container">
+			<div class="section-header-compact centered">
+				<h2 class="section-heading">
+					Centre
+					<span>d'aide</span>
+				</h2>
+				<p class="detail-description-text">
+					Une question ? Parcourez nos catégories pour trouver rapidement toutes les réponses à vos interrogations.
+				</p>
+			</div>
+		</section>
 
-        {# --- CONTENU FAQ --- #}
-        <section class="page-container section-spacer">
-            <div class="faq-container">
+		{# --- FILTRES DE NAVIGATION --- #}
+		<section class="page-container faq-nav-wrapper">
+			<div class="faq-filters-scroll">
+				<button class="filter-btn active" data-target="questions">Général</button>
+				<button class="filter-btn" data-target="abonnement">Abonnement</button>
+				<button class="filter-btn" data-target="entrainement">Entraînement</button>
+				<button class="filter-btn" data-target="installations">Installations</button>
+				<button class="filter-btn" data-target="competition">Compétition</button>
+				<button class="filter-btn" data-target="autres">Divers</button>
+			</div>
+		</section>
 
-                {# GROUPE : GÉNÉRAL #}
-                <div class="faq-group active" id="questions">
-                    <h2 class="section-heading group-title">Questions <span>Fréquentes</span></h2>
+		{# --- CONTENU FAQ --- #}
+		<section class="page-container section-spacer">
+			<div
+				class="faq-container">
 
-                    <div class="accordion-elite">
-                        <div class="accordion-item">
-                            <div class="accordion-header">
-                                <span>Faut-il une expérience avant de s’inscrire ?</span>
-                                <i class="fa-solid fa-plus"></i>
-                            </div>
-                            <div class="accordion-body">
-                                <p>Pas du tout ! Le CHM Saleux accueille les débutants comme les confirmés. Nos coachs sont là pour vous apprendre les bases et vous accompagner selon votre niveau.</p>
-                            </div>
-                        </div>
+				{# GROUPE : GÉNÉRAL #}
+				<div class="faq-group active" id="questions">
+					<h2 class="section-heading group-title">Questions
+						<span>Fréquentes</span>
+					</h2>
 
-                        <div class="accordion-item">
-                            <div class="accordion-header">
-                                <span>Puis-je faire une séance d’essai ?</span>
-                                <i class="fa-solid fa-plus"></i>
-                            </div>
-                            <div class="accordion-body">
-                                <p>Oui, une séance d’essai gratuite est disponible. C’est idéal pour découvrir le club, tester le matériel et sentir l’ambiance avant de vous engager.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+					<div class="accordion-elite">
+						<div class="accordion-item">
+							<div class="accordion-header">
+								<span>Faut-il une expérience avant de s’inscrire ?</span>
+								<i class="fa-solid fa-plus"></i>
+							</div>
+							<div class="accordion-body">
+								<p>Pas du tout ! Le CHM Saleux accueille les débutants comme les confirmés. Nos coachs sont là pour vous apprendre les bases et vous accompagner selon votre niveau.</p>
+							</div>
+						</div>
 
-                {# GROUPE : ABONNEMENT #}
-                <div class="faq-group faq-group-hidden" id="abonnement">
-                    <h2 class="section-heading group-title">Mon <span>Abonnement</span></h2>
+						<div class="accordion-item">
+							<div class="accordion-header">
+								<span>Puis-je faire une séance d’essai ?</span>
+								<i class="fa-solid fa-plus"></i>
+							</div>
+							<div class="accordion-body">
+								<p>Oui, une séance d’essai gratuite est disponible. C’est idéal pour découvrir le club, tester le matériel et sentir l’ambiance avant de vous engager.</p>
+							</div>
+						</div>
+					</div>
+				</div>
 
-                    <div class="accordion-elite">
-                        <div class="accordion-item">
-                            <div class="accordion-header">
-                                <span>Quels abonnements proposez-vous ?</span>
-                                <i class="fa-solid fa-plus"></i>
-                            </div>
-                            <div class="accordion-body">
-                                <p>Nous proposons deux formules principales : Loisir (Musculation & Haltérophilie santé) et Compétition (pour les athlètes licenciés).</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+				{# GROUPE : ABONNEMENT #}
+				<div class="faq-group faq-group-hidden" id="abonnement">
+					<h2 class="section-heading group-title">Mon
+						<span>Abonnement</span>
+					</h2>
 
-                {# ... autres groupes #}
-            </div>
-        </section>
+					<div class="accordion-elite">
+						<div class="accordion-item">
+							<div class="accordion-header">
+								<span>Quels abonnements proposez-vous ?</span>
+								<i class="fa-solid fa-plus"></i>
+							</div>
+							<div class="accordion-body">
+								<p>Nous proposons deux formules principales : Loisir (Musculation & Haltérophilie santé) et Compétition (pour les athlètes licenciés).</p>
+							</div>
+						</div>
+					</div>
+				</div>
 
-        {# --- BARRE DE CONTACT --- #}
-        <section class="bg-dark-alternate section-spacer">
-            <div class="page-container text-center">
-                <h2 class="section-heading centered faq-contact-title">Toujours <span>une question ?</span></h2>
+				{# ... autres groupes #}
+			</div>
+		</section>
 
-                <div class="contact-bar-elite mt-5">
-                    <a href="{{ path('contact') }}" class="contact-circle" title="Email"><i class="fa-solid fa-envelope"></i></a>
-                    <a href="https://chat.whatsapp.com/..." class="contact-circle whatsapp" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-                    <a href="https://instagram.com/chmsaleux" class="contact-circle instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="https://facebook.com/chmsaleux1" class="contact-circle facebook" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                </div>
-            </div>
-        </section>
+		{# --- BARRE DE CONTACT --- #}
+		<section class="bg-dark-alternate section-spacer">
+			<div class="page-container text-center">
+				<h2 class="section-heading centered faq-contact-title">Toujours
+					<span>une question ?</span>
+				</h2>
 
-    </main>
+				<div class="contact-bar-elite mt-5">
+					<a href="{{ path('contact') }}" class="contact-circle" title="Email">
+						<i class="fa-solid fa-envelope"></i>
+					</a>
+					<a href="https://chat.whatsapp.com/..." class="contact-circle whatsapp" title="WhatsApp">
+						<i class="fa-brands fa-whatsapp"></i>
+					</a>
+					<a href="https://instagram.com/chmsaleux" class="contact-circle instagram" title="Instagram">
+						<i class="fa-brands fa-instagram"></i>
+					</a>
+					<a href="https://facebook.com/chmsaleux1" class="contact-circle facebook" title="Facebook">
+						<i class="fa-brands fa-facebook-f"></i>
+					</a>
+				</div>
+			</div>
+		</section>
+
+	</main>
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('js/accueil/section4/faq/faq.js') }}"></script>
+	{{ parent() }}
+	 <script src="{{ asset('js/accueil/section4/faq/faq.js') }}"></script>
 {% endblock %}

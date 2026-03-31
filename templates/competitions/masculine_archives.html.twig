@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Archives — Équipe Féminine | CHM Saleux
+{% block title %}Archives — Équipe Masculine | CHM Saleux
 {% endblock %}
 
 {% block stylesheets %}
@@ -12,25 +12,23 @@
 
 {% block body %}
 
-	<header class="page-header-sport feminine-archives-header-bg">
-		<div class="header-overlay-gradient"></div>
-
+	<header class="page-header-sport masculine-archives-header-bg">
 		<div class="header-content">
 			<div class="page-container">
 				<nav class="breadcrumb-nav archives-breadcrumbs">
-					<a href="{{ path('competitions_feminine') }}" class="back-link-minimal">
+					<a href="{{ path('competitions_masculine') }}" class="back-link-minimal">
 						<i class="fa-solid fa-chevron-left"></i>
-						<span>Retour page équipe féminine</span>
+						<span>Retour page équipe masculine</span>
 					</a>
 				</nav>
 
 				<div class="header-main-box">
 					<div class="badge-accent">Historique complet</div>
 					<h1>Archives
-						<span class="text-outline">Féminines</span>
+						<span class="text-outline">Masculines</span>
 					</h1>
 					<p class="lead">
-						Retrouvez l’ensemble des plateaux de l’équipe féminine, classés du plus récent au plus ancien.
+						Retrouvez l'ensemble des plateaux de l'équipe masculine, classés du plus récent au plus ancien.
 					</p>
 				</div>
 			</div>
@@ -113,7 +111,7 @@
 				</div>
 			{% else %}
 				<div class="empty-dashboard">
-					<p>Aucune archive disponible pour l’équipe féminine pour le moment.</p>
+					<p>Aucune archive disponible pour l'équipe masculine pour le moment.</p>
 				</div>
 			{% endif %}
 		</section>

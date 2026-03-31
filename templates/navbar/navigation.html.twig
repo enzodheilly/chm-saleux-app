@@ -6,8 +6,8 @@
 		<div class="info-banner-content">
 			<div class="info-track">
 				<div class="info-item">
-					<img src="{{ asset('images/nav/test.png') }}" alt="FFHM">
-					<strong>CLUB AFFILIÉ FFHM</strong>
+					<i class="fa-solid fa-scale-balanced"></i>
+					<span>ASSOCIATION LOI 1901</span>
 				</div>
 
 				<div class="info-item">
@@ -35,7 +35,7 @@
 						<i class="fa-solid fa-power-off"></i>
 						DÉCONNEXION</a>
 				{% else %}
-					<a href="{{ path('app_auth_choice') }}" class="top-link">
+					<a href="{{ path('app_login') }}" class="top-link">
 						<i class="fa-solid fa-user"></i>
 						ESPACE ADHÉRENT</a>
 				{% endif %}
@@ -157,7 +157,7 @@
 						<span>Se déconnecter</span>
 					</a>
 				{% else %}
-					<a href="{{ path('app_auth_choice') }}" class="mobile-footer-link-clean">
+					<a href="{{ path('app_login') }}" class="mobile-footer-link-clean">
 						<i class="fa-regular fa-user"></i>
 						<span>Espace adhérent</span>
 					</a>

@@ -616,9 +616,7 @@ font-weight: 900;
    IMAGES
    ========================================= */
 .pricing-header-bg {
- background-image: url('/images/tarifs.jpg');
-   background-position: center 40%;
-     background-size: cover;
+  --bg-image: url('/images/ecole.jpg');
 }
 
 .pricing-separator-1 {

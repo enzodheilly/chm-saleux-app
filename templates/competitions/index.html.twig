@@ -1,105 +1,119 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Compétitions & Résultats — CHM Saleux{% endblock %}
+{% block title %}Compétitions & Résultats — CHM Saleux
+{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/competitions/competitions.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/competitions/competitions.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 {% endblock %}
 
 {% block body %}
 
-<header class="page-header-sport competition-header-bg">   
- <div class="header-overlay-gradient"></div>
+	<header class="page-header-sport competition-header-bg">
+		<div class="header-overlay-gradient"></div>
 
-    <div class="header-content">
-        <div class="page-container">
-            <nav class="breadcrumb-nav">
-                <a href="{{ path('home') }}" class="back-link-minimal">
-                    <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                </a>
-            </nav>
+		<div class="header-content">
+			<div class="page-container">
+				<nav class="breadcrumb-nav">
+					<a href="{{ path('home') }}" class="back-link-minimal">
+						<i class="fa-solid fa-chevron-left"></i>
+						<span>Retour à l'accueil</span>
+					</a>
+				</nav>
 
-            <div class="header-main-box">
-                <div class="badge-accent">Saison 2025 / 2026</div>
-                <h1>Compétitions & <span class="text-outline">Résultats</span></h1>
-                <p class="lead">Retrouvez les événements du club et découvrez nos équipes.</p>
-            </div>
-        </div>
-    </div>
-</header>
+				<div class="header-main-box">
+					<div class="badge-accent">Saison 2025 / 2026</div>
+					<h1>Compétitions &
+						<span class="text-outline">Résultats</span>
+					</h1>
+					<p class="lead">Retrouvez les événements du club et découvrez nos équipes.</p>
+				</div>
+			</div>
+		</div>
+	</header>
 
-<main class="page-shell competitions-root">
+	<main
+		class="page-shell competitions-root">
 
-    {# --- SECTION AGENDA --- #}
-    <section class="page-container section-spacer calendar-section" data-aos="fade-up">
-        <div class="section-header-competition">
-            <h2 class="section-heading">
-                Agenda <span>Sportif</span>
-            </h2>
-            <p class="section-subtext">Retrouvez les dates clés des prochaines échéances gérées par le club.</p>
-        </div>
+		{# --- SECTION AGENDA --- #}
+		<section class="page-container section-spacer calendar-section" data-aos="fade-up">
+			<div class="section-header-competition centered">
+				<h2 class="section-heading">
+					Agenda
+					<span>Sportif</span>
+				</h2>
+				<p class="section-subtext">Retrouvez les dates clés des prochaines échéances gérées par le club.</p>
+			</div>
 
-        <div id="calendar-container" class="calendar-wrapper">
-            <div class="calendar-card">
-                {% include 'competitions/_calendar_grid.html.twig' %}
-            </div>
-        </div>
-    </section>
+			<div id="calendar-container" class="calendar-wrapper">
+				<div class="calendar-card">
+					{% include 'competitions/_calendar_grid.html.twig' %}
+				</div>
+			</div>
+		</section>
 
-    {# --- SECTION ÉQUIPES --- #}
-    <section class="bg-dark-alternate">
-        <div class="page-container section-spacer teams-section">
-            <div class="section-header-competition">
-                <h2 class="section-heading">
-                    Nos <span>Équipes</span>
-                </h2>
-                <p class="section-subtext">Sélectionnez une catégorie pour accéder aux records et classements.</p>
-            </div>
+		{# --- SECTION ÉQUIPES --- #}
+		<section class="bg-dark-alternate">
+			<div class="page-container section-spacer teams-section">
+				<div class="section-header-competition">
+					<h2 class="section-heading">
+						Nos
+						<span>Équipes</span>
+					</h2>
+					<p class="section-subtext">Sélectionnez une catégorie pour accéder aux records et classements.</p>
+				</div>
 
-            <div class="teams-grid">
-                {# Carte Féminine #}
-                <a href="{{ path('competitions_feminine') }}" class="team-card" aria-label="Voir l'équipe féminine">
-                    <div class="card-img-box">
-                        <img src="{{ asset('images/female-team.jpg') }}" alt="Équipe Féminine CHM Saleux" loading="lazy">
-                        <div class="card-overlay"></div>
-                        <div class="pille">Féminin</div>
-                    </div>
+				<div
+					class="teams-grid">
+					{# Carte Féminine #}
+					<a href="{{ path('competitions_feminine') }}" class="team-card" aria-label="Voir l'équipe féminine">
+						<div class="card-img-box">
+							<img src="{{ asset('images/female-team.jpg') }}" alt="Équipe Féminine CHM Saleux" loading="lazy">
+							<div class="card-overlay"></div>
+							<div class="pille">Féminin</div>
+						</div>
 
-                    <div class="card-info">
-                        <h3>Équipe <strong>Féminine</strong></h3>
-                        <p>Calendriers de matchs, résultats individuels et performances collectives.</p>
-                        <span class="card-footer-link">
-                            Explorer <i class="fa-solid fa-arrow-right-long"></i>
-                        </span>
-                    </div>
-                </a>
+						<div class="card-info">
+							<h3>Équipe
+								<strong>Féminine</strong>
+							</h3>
+							<p>Calendriers de matchs, résultats individuels et performances collectives.</p>
+							<span class="card-footer-link">
+								Explorer
+								<i class="fa-solid fa-arrow-right-long"></i>
+							</span>
+						</div>
+					</a>
 
-                {# Carte Masculine #}
-                <a href="{{ path('competitions_masculine') }}" class="team-card" aria-label="Voir l'équipe masculine">
-                    <div class="card-img-box">
-                        <img src="{{ asset('images/male-team.jpg') }}" alt="Équipe Masculine CHM Saleux" loading="lazy">
-                        <div class="card-overlay"></div>
-                        <div class="pille">Masculin</div>
-                    </div>
+					{# Carte Masculine #}
+					<a href="{{ path('competitions_masculine') }}" class="team-card" aria-label="Voir l'équipe masculine">
+						<div class="card-img-box">
+							<img src="{{ asset('images/male-team.jpg') }}" alt="Équipe Masculine CHM Saleux" loading="lazy">
+							<div class="card-overlay"></div>
+							<div class="pille">Masculin</div>
+						</div>
 
-                    <div class="card-info">
-                        <h3>Équipe <strong>Masculine</strong></h3>
-                        <p>Suivi des records, calendrier des plateaux et effectifs de la saison.</p>
-                        <span class="card-footer-link">
-                            Explorer <i class="fa-solid fa-arrow-right-long"></i>
-                        </span>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
+						<div class="card-info">
+							<h3>Équipe
+								<strong>Masculine</strong>
+							</h3>
+							<p>Suivi des records, calendrier des plateaux et effectifs de la saison.</p>
+							<span class="card-footer-link">
+								Explorer
+								<i class="fa-solid fa-arrow-right-long"></i>
+							</span>
+						</div>
+					</a>
+				</div>
+			</div>
+		</section>
 
-</main>
+	</main>
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('js/competitions/competitions.js') }}" defer></script>
+	{{ parent() }}
+	 <script src="{{ asset('js/competitions/competitions.js') }}" defer></script>
 {% endblock %}

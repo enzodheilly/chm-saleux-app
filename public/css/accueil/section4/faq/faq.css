@@ -1,18 +1,84 @@
 /* =========================================================
    FAQ — PAGE SPECIFIQUE
-   (header / page-shell / page-container / typo globale gérés globalement)
    ========================================================= */
+
+/* =========================================
+   BLOC TITRE : CENTRE D'AIDE (FAQ)
+   ========================================= */
+
+.section-header-compact.centered {
+    text-align: center;
+    padding-top: var(--space-12); 
+    padding-bottom: var(--space-2);
+    position: relative;
+    z-index: 5;
+}
+
+/* Suppression de toute barre héritée sur le conteneur */
+.section-header-compact.centered::before,
+.section-header-compact.centered::after {
+    content: none !important;
+}
+
+.section-header-compact.centered .section-heading {
+    display: inline-block;
+    font-size: var(--fs-section-title); 
+    font-weight: var(--fw-black);
+    text-transform: uppercase;
+    color: var(--text-white);
+    margin: 0;
+    letter-spacing: var(--ls-tight);
+    position: relative;
+    padding-bottom: var(--space-4);
+    border: none !important;
+}
+
+/* La SEULE barre orange autorisée (sous le titre) */
+.section-header-compact.centered .section-heading::after {
+    content: "" !important;
+    display: block !important;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--brand-orange);
+    border-radius: var(--radius-sm);
+}
+
+.section-header-compact.centered .section-heading span {
+    color: var(--brand-orange);
+}
+
+/* Sous-texte : Suppression de la barre orange parasite ici */
+.section-header-compact.centered .detail-description-text {
+    margin-top: var(--space-3);
+    color: var(--text-muted-2);
+    font-size: var(--fs-body-sm);
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: var(--lh-body);
+    position: relative;
+}
+
+.section-header-compact.centered .detail-description-text::after,
+.section-header-compact.centered .detail-description-text::before {
+    content: none !important;
+    display: none !important;
+}
 
 /* =========================================
    FILTERS NAV
    ========================================= */
-.faq-nav-wrapper{
-  margin-top: -40px;
+.faq-nav-wrapper {
+  margin-top: var(--space-8); /* Espace équilibré au lieu de 120px */
   position: relative;
   z-index: 10;
 }
 
-.faq-filters-scroll{
+.faq-filters-scroll {
   display: flex;
   gap: 10px;
   overflow-x: auto;
@@ -22,10 +88,11 @@
   border: 1px solid rgba(255,255,255,0.06);
   backdrop-filter: blur(10px);
   scrollbar-width: none;
+  justify-content: center; /* Centre les filtres si possible */
 }
-.faq-filters-scroll::-webkit-scrollbar{ display:none; }
+.faq-filters-scroll::-webkit-scrollbar { display:none; }
 
-.filter-btn{
+.filter-btn {
   background: var(--bg-card);
   border: 1px solid rgba(255,255,255,0.08);
   color: var(--text-white, #fff);
@@ -39,51 +106,42 @@
   letter-spacing: 1px;
 }
 
-.filter-btn:hover{
+.filter-btn:hover {
   transform: translateY(-1px);
   border-color: rgba(245,119,6,0.35);
 }
 
-.filter-btn.active{
+.filter-btn.active {
   background: var(--primary-color);
   border-color: var(--primary-color);
   color: #fff;
 }
 
 /* =========================================
-   TITRES DE GROUPES (connectés à .section-heading global)
-   HTML conseillé : <h2 class="section-heading group-title">...</h2>
-   ========================================= */
-.group-title{
-  margin-top: 2.2rem;
-  margin-bottom: 22px;
-}
-
-/* si tu veux garder un style un peu plus serré uniquement pour FAQ */
-.faq-group:first-child .group-title{
-  margin-top: 0.5rem;
-}
-
-/* =========================================
    ACCORDION
    ========================================= */
-.faq-container{
+.faq-container {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.faq-group{
-  width: 100%;
+.faq-group { width: 100%; }
+
+.group-title {
+  margin-top: 2.2rem;
+  margin-bottom: 22px;
 }
 
-.accordion-elite{
+.faq-group:first-child .group-title { margin-top: 0.5rem; }
+
+.accordion-elite {
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
-.accordion-item{
+.accordion-item {
   background: var(--bg-card);
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 16px;
@@ -91,12 +149,12 @@
   transition: var(--transition-base, .3s ease);
 }
 
-.accordion-item:hover{
+.accordion-item:hover {
   border-color: rgba(245,119,6,0.20);
   transform: translateY(-2px);
 }
 
-.accordion-header{
+.accordion-header {
   padding: 18px 22px;
   cursor: pointer;
   display: flex;
@@ -109,14 +167,13 @@
   color: var(--text-white, #fff);
 }
 
-.accordion-header i{
+.accordion-header i {
   font-size: .95rem;
   color: var(--primary-color);
   transition: var(--transition-base, .3s ease);
-  flex: 0 0 auto;
 }
 
-.accordion-body{
+.accordion-body {
   max-height: 0;
   padding: 0 22px;
   overflow: hidden;
@@ -124,26 +181,24 @@
   background: rgba(255,255,255,0.02);
 }
 
-.accordion-body p{
+.accordion-body p {
   margin: 0;
-  color: var(--subtitle-color, var(--text-muted));
+  color: var(--text-muted);
   line-height: 1.7;
   padding-top: 14px;
 }
 
-.accordion-item.open .accordion-body{
+.accordion-item.open .accordion-body {
   max-height: 520px;
   padding: 0 22px 20px;
 }
 
-.accordion-item.open .accordion-header i{
-  transform: rotate(45deg);
-}
+.accordion-item.open .accordion-header i { transform: rotate(45deg); }
 
 /* =========================================
    CONTACT BAR
    ========================================= */
-.contact-bar-elite{
+.contact-bar-elite {
   display: flex;
   justify-content: center;
   gap: 14px;
@@ -152,7 +207,7 @@
   border-top: 1px solid rgba(255,255,255,0.06);
 }
 
-.contact-circle{
+.contact-circle {
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -167,76 +222,28 @@
   text-decoration: none;
 }
 
-.contact-circle:hover{
+.contact-circle:hover {
   transform: translateY(-3px);
-  border-color: rgba(245,119,6,0.45);
   color: var(--primary-color);
+  border-color: var(--brand-orange);
 }
 
-.whatsapp:hover{ color:#25D366; border-color:#25D366; }
-.instagram:hover{ color:#E1306C; border-color:#E1306C; }
-.facebook:hover{ color:#1877F2; border-color:#1877F2; }
-
+/* =========================================
+   CONFIG & RESPONSIVE
+   ========================================= */
 .faq-header-bg {
   --bg-image: url('/images/menu_dropdown/a_propos_de_notre_club/horaires/1.jpg');
 }
 
-.faq-group-hidden {
-  display: none;
+.faq-group-hidden { display: none; }
+
+@media (max-width: 992px) {
+  .faq-nav-wrapper { margin-top: 20px; }
+  .faq-filters-scroll { justify-content: flex-start; }
 }
 
-.faq-contact-title {
-  margin-top: 50px;
-}
-
-/* =========================================
-   RESPONSIVE (spécifique FAQ seulement)
-   ========================================= */
-@media (max-width: 992px){
-  .faq-nav-wrapper{
-    margin-top: -28px;
-  }
-}
-
-@media (max-width: 768px){
-  .group-title{
-    margin-top: 1.4rem;
-    margin-bottom: 16px;
-  }
-
-  .accordion-header{
-    font-size: 1rem;
-    padding: 15px 18px;
-  }
-
-  .accordion-body{
-    padding: 0 18px;
-  }
-
-  .accordion-item.open .accordion-body{
-    padding: 0 18px 18px;
-  }
-}
-
-@media (max-width: 480px){
-  .faq-filters-scroll{
-    padding: 10px;
-    gap: 8px;
-    border-radius: 14px;
-  }
-
-  .filter-btn{
-    padding: 10px 14px;
-    font-size: .8rem;
-  }
-
-  .contact-bar-elite{
-    gap: 10px;
-  }
-
-  .contact-circle{
-    width: 52px;
-    height: 52px;
-    font-size: 1.25rem;
-  }
+@media (max-width: 768px) {
+  .section-header-compact.centered { padding-top: var(--space-10); }
+  .group-title { margin-top: 1.4rem; margin-bottom: 16px; }
+  .accordion-header { font-size: 1rem; padding: 15px 18px; }
 }
