@@ -244,9 +244,6 @@
   overflow: hidden;
   clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
   margin-bottom: -84px;
-  position: sticky;
-  top: 0; /* Ou la hauteur de ta nav, ex: 60px */
-  z-index: 100; /* Pour passer au-dessus du contenu qui défile */
 }
 
 /* Image clippée à droite avec marge */
@@ -258,8 +255,7 @@
   width: 50%;
   height: 100%;
   background-image: var(--bg-image);
-  background-size: cover;
-  background-position: center;
+  background-size: var(--bg-size, cover);  background-position: var(--bg-position, center);
   z-index: 1;
   clip-path: polygon(22% 0%, 100% 0%, 100% 100%, 0% 100%);
   border-radius: 0 0 0 8px;

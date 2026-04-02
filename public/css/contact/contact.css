@@ -11,63 +11,33 @@
   overflow-x: hidden;
 }
 
-/* =========================================================
-   QUICK CONTACT BAR
-   ========================================================= */
-
-.clinic-contact-section {
-  margin-top: -25px;
-  position: relative;
-  z-index: 10;
+/* --- AJOUT : TITRE DE SECTION (Agenda Style) --- */
+.section-header-competition {
+  padding-top: 80px; /* Espace pour décoller du header */
+  margin-bottom: 5px;
 }
 
-.clinic-contact-bar {
-  display: flex;
-  justify-content: space-around;
-  gap: 24px;
-  background: var(--bg-card);
-  padding: 26px;
-  border-radius: 20px;
-  border: 1px solid var(--border-soft);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+.section-header-competition.centered {
+  text-align: center;
 }
 
-.clinic-contact-item {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  min-width: 0;
-}
-
-.clinic-contact-icon {
-  color: var(--primary-color);
-  font-size: 1.45rem;
-  flex: 0 0 auto;
-}
-
-.clinic-contact-text {
-  min-width: 0;
-}
-
-.clinic-contact-label {
-  display: block;
-  font-size: 0.85rem;
+.section-header-competition .section-heading {
+  font-size: 2.5rem;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #fff;
+  margin-bottom: 12px;
+  line-height: 1.1;
 }
 
-.clinic-contact-value {
-  display: block;
+.section-header-competition .section-heading span {
+  color: var(--primary-color);
+}
+
+.section-header-competition .section-subtext {
   color: var(--text-muted);
-  font-size: 0.92rem;
-  line-height: 1.45;
-  word-break: break-word;
-}
-
-.clinic-contact-item a {
-  color: inherit;
-  text-decoration: none;
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
 /* =========================================================
@@ -86,12 +56,7 @@
    ========================================================= */
 
    #contact-subject {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-
-    padding-right: 40px; /* espace pour la flèche */
-
+    padding-right: 60px; /* espace pour la flèche */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='gray' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5.5l6.5 6 6.5-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center; /* ← décale la flèche vers la gauche */
@@ -361,11 +326,41 @@
   background-position: center 60% !important;
 }
 
+/* Style Flash */
+.alert-flash {
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+.flash-success { background: rgba(40, 167, 69, 0.15); border: 1px solid #28a745; color: #4ade80; }
+.flash-danger { background: rgba(220, 53, 69, 0.15); border: 1px solid #dc3545; color: #f87171; }
+
+/* Cache le spinner par défaut */
+.btn-modern .spinner {
+    display: none;
+}
+
+/* Optionnel : Ajuste l'alignement pour que le texte et le spinner soient bien centrés */
+.btn-modern {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
 /* =========================================================
    RESPONSIVE
    ========================================================= */
 
 @media (max-width: 992px) {
+  .section-header-competition {
+    padding-top: 40px;
+  }
+
   .clinic-contact-section {
     margin-top: 0;
   }
@@ -440,5 +435,39 @@
 
   .form-header .section-heading {
     font-size: 1.55rem;
+  }
+}
+
+/* --- DÉCORATION GAUCHE (image dots) --- */
+.deco-left-wrap {
+  position: relative;
+  width: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.deco-left-img {
+  position: absolute;
+  left: -25px;
+  top: -20px; /* remonte légèrement pour chevaucher le séparateur */
+  width: clamp(120px, 14vw, 200px);
+  height: auto;
+  opacity: 0.55;
+  user-select: none;
+  /* Optionnel : légère teinte orange pour matcher --primary-color */
+  filter: drop-shadow(0 0 8px rgba(245, 119, 6, 0.18));
+}
+
+@media (max-width: 1100px) {
+  .deco-left-img {
+    width: clamp(80px, 10vw, 130px);
+    opacity: 0.35;
+  }
+}
+
+@media (max-width: 768px) {
+  .deco-left-img {
+    display: none; /* Masqué sur mobile pour ne pas gêner le contenu */
   }
 }
