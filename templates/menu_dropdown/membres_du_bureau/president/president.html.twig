@@ -1,81 +1,92 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Le Mot du Président — CHM Saleux{% endblock %}
+{% block title %}Le Mot du Président — CHM Saleux
+{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/menu_dropdown/membres_du_bureau/president/president.css') }}">
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/menu_dropdown/membres_du_bureau/president/president.css') }}">
 {% endblock %}
 
 {% block body %}
 
-    <header class="page-header-sport president-page-header">
-        <div class="header-overlay-gradient"></div>
+	<header class="page-header-sport president-page-header">
+		<div class="header-overlay-gradient"></div>
 
-        <div class="header-content">
-            <div class="page-container">
-                <nav class="breadcrumb-nav">
-                    <a href="{{ path('home') }}" class="back-link-minimal">
-                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                    </a>
-                </nav>
+		<div class="header-content">
+			<div class="page-container">
+				<nav class="breadcrumb-nav">
+					<a href="{{ path('home') }}" class="back-link-minimal">
+						<i class="fa-solid fa-chevron-left"></i>
+						<span>Retour à l'accueil</span>
+					</a>
+				</nav>
 
-                <div class="header-main-box">
-                    <div class="badge-accent">Direction & Engagement</div>
-                    <h1>Le Mot <span class="text-outline">du Président</span></h1>
-                    <p class="lead">
-                        Découvrez la vision et l'engagement de celui qui pilote le club avec passion et bénévolat depuis plus de 10 ans.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </header>
+				<div class="header-main-box">
+					<div class="badge-accent">Direction & Engagement</div>
+					<h1>Le Mot
+						<span class="text-outline">du Président</span>
+					</h1>
+					<p class="lead">
+						Découvrez la vision et l'engagement de celui qui pilote le club avec passion et bénévolat depuis plus de 10 ans.
+					</p>
+				</div>
+			</div>
+		</div>
+	</header>
 
-    <main class="president-root page-shell">
+	{# IMAGE DÉCORATIVE GAUCHE #}
+	<div class="deco-left-wrap">
+		<img src="{{ asset('images/decorations/dots-tree.png') }}" alt="" class="deco-left-img" aria-hidden="true">
+	</div>
 
-        <section class="page-container section-spacer">
-            <div class="profile-card-elite">
-                <div class="profile-grid">
+	<main class="president-root page-shell">
 
-                    <div class="profile-image-side">
-                        <div class="image-container">
-                            <img src="{{ asset('images/menu_dropdown/membres_du_bureau/president/president.jpg') }}" alt="Florian ROHAUT">
-                            <div class="experience-badge">
-                                <span class="exp-label">Président depuis</span>
-                                <span class="exp-year">2015</span>
-                            </div>
-                        </div>
-                    </div>
+		<section class="page-container section-spacer">
+			<div class="profile-card-elite">
+				<div class="profile-grid">
 
-                    <div class="profile-text-side">
-                        <span class="role-tag">Bénévole & Passionné</span>
-                        <h2>Florian <span>ROHAUT</span></h2>
+					<div class="profile-image-side">
+						<div class="image-container">
+							<img src="{{ asset('images/menu_dropdown/membres_du_bureau/president/president.jpg') }}" alt="Florian ROHAUT">
+							<div class="experience-badge">
+								<span class="exp-label">Président depuis</span>
+								<span class="exp-year">2015</span>
+							</div>
+						</div>
+					</div>
 
-                        <div class="bio-content">
-                            <p>
-                                Passionné de sport et profondément attaché aux valeurs associatives, Florian ROHAUT veille au quotidien au bon fonctionnement du club et à la qualité des activités proposées à nos adhérents.
-                            </p>
-                            <p>
-                                Sous sa présidence, le CHM Saleux a su évoluer tout en préservant son ADN : un mélange unique de performance sportive et de convivialité familiale.
-                            </p>
-                        </div>
+					<div class="profile-text-side">
+						<span class="role-tag">Bénévole & Passionné</span>
+						<h2>Florian
+							<span>ROHAUT</span>
+						</h2>
 
-                        <blockquote class="elite-quote">
-                            <i class="fa-solid fa-quote-left quote-icon"></i>
-                            <p>
-                                "Je mets mon énergie au service du collectif. Mon objectif est simple : favoriser la convivialité, encourager le dépassement de soi et garantir le bien-être de chacun au sein du club."
-                            </p>
-                        </blockquote>
+						<div class="bio-content">
+							<p>
+								Passionné de sport et profondément attaché aux valeurs associatives, Florian ROHAUT veille au quotidien au bon fonctionnement du club et à la qualité des activités proposées à nos adhérents.
+							</p>
+							<p>
+								Sous sa présidence, le CHM Saleux a su évoluer tout en préservant son ADN : un mélange unique de performance sportive et de convivialité familiale.
+							</p>
+						</div>
 
-                        <div class="signature-box">
-                            <div class="sig-line"></div>
-                            <span class="sig-name">Florian Rohaut</span>
-                        </div>
-                    </div>
+						<blockquote class="elite-quote">
+							<i class="fa-solid fa-quote-left quote-icon"></i>
+							<p>
+								"Je mets mon énergie au service du collectif. Mon objectif est simple : favoriser la convivialité, encourager le dépassement de soi et garantir le bien-être de chacun au sein du club."
+							</p>
+						</blockquote>
 
-                </div>
-            </div>
-        </section>
+						<div class="signature-box">
+							<div class="sig-line"></div>
+							<span class="sig-name">Florian Rohaut</span>
+						</div>
+					</div>
 
-    </main>
+				</div>
+			</div>
+		</section>
+
+	</main>
 {% endblock %}

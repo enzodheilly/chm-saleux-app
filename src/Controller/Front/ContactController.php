@@ -26,12 +26,20 @@ class ContactController extends AbstractController
         EntityManagerInterface $em,
         SystemLoggerService $logger
     ): Response {
-        // ✅ CSRF
+        // 1. Validation CSRF
         if (!$this->isCsrfTokenValid('contact_submit', (string) $request->request->get('_token', ''))) {
             $this->addFlash('danger', 'Jeton CSRF invalide.');
             return $this->redirectToRoute('contact');
         }
 
+        // 2. Validation Cloudflare Turnstile
+        $turnstileResponse = $request->request->get('cf-turnstile-response');
+        if (!$turnstileResponse) {
+            $this->addFlash('danger', 'La vérification anti-robot a échoué. Veuillez réessayer.');
+            return $this->redirectToRoute('contact');
+        }
+
+        // 3. Récupération des données
         $lastName  = trim((string) $request->request->get('lastName', ''));
         $firstName = trim((string) $request->request->get('firstName', ''));
         $email     = trim((string) $request->request->get('email', ''));
@@ -40,11 +48,11 @@ class ContactController extends AbstractController
         $content   = trim((string) $request->request->get('content', ''));
 
         $allowedSubjects = array_values(ContactMessage::getSubjectChoices());
-
         if (!in_array($subject, $allowedSubjects, true)) {
             $subject = null;
         }
 
+        // 4. Création de l'entité
         $contact = new ContactMessage();
         $contact->setLastName($lastName);
         $contact->setFirstName($firstName);
@@ -60,16 +68,10 @@ class ContactController extends AbstractController
         $em->persist($contact);
         $em->flush();
 
+        // 5. Log & Flash
         $logger->add(
             'Contact message',
-            sprintf(
-                'New message received from %s %s (%s). Subject: %s. Member: %s',
-                $firstName,
-                $lastName,
-                $email,
-                $subject ?: 'N/A',
-                $this->getUser() ? 'YES' : 'NO (Visitor)'
-            )
+            sprintf('New message from %s %s (%s). Subject: %s.', $firstName, $lastName, $email, $subject ?: 'N/A')
         );
 
         $this->addFlash('success', 'Votre message a bien été envoyé.');

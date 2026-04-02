@@ -1,51 +1,112 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ page.title }} — CHM Saleux{% endblock %}
+{% block title %}
+	{{ page.title }}
+	- CHM Saleux
+{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/footer/pages/generic_page.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/footer/pages/generic_page.css') }}">
 {% endblock %}
 
 {% block body %}
-    {# Progress bar ultra-fine #}
-    <div class="reading-progress-container">
-        <div id="readingProgress" class="reading-progress-bar"></div>
-    </div>
+	{# Barre de progression de lecture #}
+	<div class="reading-progress-container">
+		<div id="readingProgress" class="reading-progress-bar"></div>
+	</div>
 
-    <header class="page-header-sport generic-page-header-bg">
-        <div class="header-overlay-gradient"></div>
+	{# HEADER DYNAMIQUE #}
+	<header class="page-header-sport generic-page-header-bg">
+		<div class="header-overlay-gradient"></div>
 
-        <div class="header-content">
-            <div class="page-container">
-                <nav class="breadcrumb-nav">
-                    <a href="{{ path('home') }}" class="back-link-minimal">
-                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                    </a>
-                </nav>
+		<div class="header-content">
+			<div class="page-container">
+				<nav class="breadcrumb-nav">
+					<a href="{{ path('home') }}" class="back-link-minimal">
+						<i class="fa-solid fa-arrow-left-long"></i>
+						<span>Retour</span>
+					</a>
+				</nav>
 
-                <div class="header-main-box">
-                    <div class="badge-accent">Document Officiel</div>
-                    <h1>{{ page.title }}</h1>
+				<div class="header-main-box">
+					<div class="badge-accent">
+						<i class="fa-solid fa-shield-halved"></i>
+						Informations Officielles
+					</div>
+					<h1>{{ page.title|upper }}</h1>
 
-                    <div class="header-meta">
-                        <span><i class="fa-regular fa-calendar"></i> {{ page.updatedAt ? page.updatedAt|date('d.m.Y') : "now"|date('d.m.Y') }}</span>
-                        <span class="separator">|</span>
-                        <span><i class="fa-regular fa-clock"></i> {{ (page.content|striptags|split(' ')|length / 200)|round(0, 'ceil') }} min de lecture</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+					<div class="header-meta">
+						<div class="meta-item">
+							<i class="fa-regular fa-calendar-check"></i>
+							<span>Mis à jour le
+								{{ page.updatedAt ? page.updatedAt|date('d/m/Y') : "now"|date('d/m/Y') }}</span>
+						</div>
+						<span class="meta-separator">•</span>
+						<div class="meta-item">
+							<i class="fa-regular fa-clock"></i>
+							<span>Lecture :
+								{{ (page.content|striptags|split(' ')|length / 200)|round(0, 'ceil') }}
+								min</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
 
-    <main class="page-shell generic-page-root">
-        <section class="page-container">
-            <div class="article-container">
-                <article class="pro-content">
-                    {{ page.content|raw }}
-                </article>
-            </div>
-        </section>
-    </main>
+	{# IMAGE DÉCORATIVE GAUCHE #}
+	<div class="deco-left-wrap">
+		<img src="{{ asset('images/decorations/dots-tree.png') }}" alt="" class="deco-left-img" aria-hidden="true">
+	</div>
+
+	{# SECTION DE TRANSITION VISUELLE #}
+	<div class="header-content-separator">
+		<div class="separator-pattern"></div>
+	</div>
+
+	<main class="page-shell generic-page-root">
+		<section class="page-container section-spacer">
+			<div
+				class="article-layout">
+
+				{# CORPS DE L'ARTICLE #}
+				<div class="article-container">
+					<article
+						class="pro-content">
+						{# On peut ajouter une petite introduction stylisée si besoin #}
+						<div class="content-wrapper">
+							{{ page.content|raw }}
+						</div>
+					</article>
+				</div>
+
+				{# SIDEBAR DE RÉASSURANCE (Optionnelle mais pro) #}
+				<aside class="article-sidebar">
+					<div class="sidebar-card">
+						<h4>Besoin d'aide ?</h4>
+						<p>Une question sur ce document ou nos services ?</p>
+						<a href="{{ path('contact') }}" class="sidebar-link">
+							Nous contacter
+							<i class="fa-solid fa-chevron-right"></i>
+						</a>
+					</div>
+				</aside>
+
+			</div>
+		</section>
+	</main>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	 <script>
+									        // Gestion de la barre de progression
+									        window.onscroll = function() {
+									            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+									            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+									            let scrolled = (winScroll / height) * 100;
+									            document.getElementById("readingProgress").style.width = scrolled + "%";
+									        };
+									    </script>
 {% endblock %}
