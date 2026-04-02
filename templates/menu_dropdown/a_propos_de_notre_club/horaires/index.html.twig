@@ -1,157 +1,140 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Horaires d'entraînement — CHM Saleux{% endblock %}
+{% block title %}Horaires d'entraînement — CHM Saleux
+{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/menu_dropdown/a_propos_de_notre_club/horaires/index.css') }}">
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/menu_dropdown/a_propos_de_notre_club/horaires/index.css') }}">
 {% endblock %}
 
 {% block body %}
 
-    {# --- HEADER ELITE (GLOBAL) --- #}
-    <header class="page-header-sport horaires-header-bg">
-        <div class="header-overlay-gradient"></div>
+	{# --- HEADER ELITE (GLOBAL) --- #}
+	<header class="page-header-sport horaires-header-bg">
+		<div class="header-overlay-gradient"></div>
 
-        <div class="header-content">
-            <div class="page-container">
-                <nav class="breadcrumb-nav">
-                    <a href="{{ path('home') }}" class="back-link-minimal">
-                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                    </a>
-                </nav>
+		<div class="header-content">
+			<div class="page-container">
+				<nav class="breadcrumb-nav">
+					<a href="{{ path('home') }}" class="back-link-minimal">
+						<i class="fa-solid fa-chevron-left"></i>
+						<span>Retour à l'accueil</span>
+					</a>
+				</nav>
 
-                <div class="header-main-box">
-                    <div class="badge-accent">Planning Hebdomadaire</div>
-                    <h1>Nos <span class="text-outline">Créneaux</span></h1>
-                    <p class="lead">Des horaires adaptés pour vous entraîner matin et soir, encadrés par nos bénévoles passionnés.</p>
-                </div>
-            </div>
-        </div>
-    </header>
+				<div class="header-main-box">
+					<div class="badge-accent">Planning Hebdomadaire</div>
+					<h1>Nos
+						<span class="text-outline">Créneaux</span>
+					</h1>
+					<p class="lead">Des horaires adaptés pour vous entraîner matin et soir, encadrés par nos bénévoles passionnés.</p>
+				</div>
+			</div>
+		</div>
+	</header>
 
-    <main class="horaires-root page-shell">
+	{# IMAGE DÉCORATIVE GAUCHE #}
+	<div class="deco-left-wrap">
+		<img src="{{ asset('images/decorations/dots-tree.png') }}" alt="" class="deco-left-img" aria-hidden="true">
+	</div>
 
-        {# --- QUICKBAR INFO --- #}
-        <section class="page-container">
-            <div class="quick-info-bar">
-                <div class="info-item">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <div>
-                        <strong>Adresse</strong>
-                        <span>Complexe sportif, Saleux</span>
-                    </div>
-                </div>
+	<main
+		class="horaires-root page-shell">
 
-                <div class="info-item">
-                    <i class="fa-solid fa-phone"></i>
-                    <div>
-                        <strong>Contact</strong>
-                        <span><a href="tel:0322897257">03.22.89.72.57</a></span>
-                    </div>
-                </div>
+		{# --- PLANNING SECTION --- #}
+		<section class="page-container section-spacer">
+			<div class="schedule-grid">
 
-                <div class="info-item">
-                    <i class="fa-solid fa-bell"></i>
-                    <div>
-                        <strong>Alertes</strong>
-                        <span>Groupe WhatsApp</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+				<div class="schedule-card active-day">
+					<div class="card-glow"></div>
+					<div class="card-head">
+						<h3>Lun • Mer • Ven</h3>
+						<span class="day-tag">Créneaux Longs</span>
+					</div>
+					<div class="card-times">
+						<div class="time-slot">
+							<span class="slot-label">Matin</span>
+							<span class="slot-hour">10:00 — 12:00</span>
+						</div>
+						<div class="time-separator"></div>
+						<div class="time-slot">
+							<span class="slot-label">Après-midi</span>
+							<span class="slot-hour">16:00 — 20:00</span>
+						</div>
+					</div>
+					<div class="card-foot">
+						<p>* Ven : Fermeture possible 18h45 (Compétition)</p>
+					</div>
+				</div>
 
-        {# --- PLANNING SECTION --- #}
-        <section class="page-container section-spacer">
-            <div class="schedule-grid">
+				<div class="schedule-card active-day">
+					<div class="card-head">
+						<h3>Mar • Jeu</h3>
+						<span class="day-tag">Créneaux Soir</span>
+					</div>
+					<div class="card-times">
+						<div class="time-slot">
+							<span class="slot-label">Matin</span>
+							<span class="slot-hour">10:00 — 12:00</span>
+						</div>
+						<div class="time-separator"></div>
+						<div class="time-slot">
+							<span class="slot-label">Après-midi</span>
+							<span class="slot-hour">16:00 — 19:30</span>
+						</div>
+					</div>
+				</div>
 
-                <div class="schedule-card active-day">
-                    <div class="card-glow"></div>
-                    <div class="card-head">
-                        <h3>Lun • Mer • Ven</h3>
-                        <span class="day-tag">Créneaux Longs</span>
-                    </div>
-                    <div class="card-times">
-                        <div class="time-slot">
-                            <span class="slot-label">Matin</span>
-                            <span class="slot-hour">10:00 — 12:00</span>
-                        </div>
-                        <div class="time-separator"></div>
-                        <div class="time-slot">
-                            <span class="slot-label">Après-midi</span>
-                            <span class="slot-hour">16:00 — 20:00</span>
-                        </div>
-                    </div>
-                    <div class="card-foot">
-                        <p>* Ven : Fermeture possible 18h45 (Compétition)</p>
-                    </div>
-                </div>
+				<div class="schedule-card closed-day">
+					<div class="card-head">
+						<h3>Sam • Dim</h3>
+						<span class="day-tag closed">Fermé</span>
+					</div>
+					<div class="closed-content">
+						<i class="fa-solid fa-calendar-xmark"></i>
+						<p>Repos ou Compétitions extérieures</p>
+					</div>
+				</div>
 
-                <div class="schedule-card active-day">
-                    <div class="card-head">
-                        <h3>Mar • Jeu</h3>
-                        <span class="day-tag">Créneaux Soir</span>
-                    </div>
-                    <div class="card-times">
-                        <div class="time-slot">
-                            <span class="slot-label">Matin</span>
-                            <span class="slot-hour">10:00 — 12:00</span>
-                        </div>
-                        <div class="time-separator"></div>
-                        <div class="time-slot">
-                            <span class="slot-label">Après-midi</span>
-                            <span class="slot-hour">16:00 — 19:30</span>
-                        </div>
-                    </div>
-                </div>
+			</div>
+		</section>
 
-                <div class="schedule-card closed-day">
-                    <div class="card-head">
-                        <h3>Sam • Dim</h3>
-                        <span class="day-tag closed">Fermé</span>
-                    </div>
-                    <div class="closed-content">
-                        <i class="fa-solid fa-calendar-xmark"></i>
-                        <p>Repos ou Compétitions extérieures</p>
-                    </div>
-                </div>
+		{# --- INFOS PRATIQUES --- #}
+		<section class="bg-dark-alternate section-spacer">
+			<div class="page-container">
+				<h2 class="section-heading centered horaires-section-title">Infos
+					<span>Pratiques</span>
+				</h2>
 
-            </div>
-        </section>
+				<div class="info-blocks-grid">
+					<div class="info-mini-card">
+						<i class="fa-solid fa-handshake-angle"></i>
+						<h4>Gestion Bénévole</h4>
+						<p>Le club vit grâce à nos bénévoles. Les horaires peuvent varier selon leurs impératifs.</p>
+					</div>
 
-        {# --- INFOS PRATIQUES --- #}
-        <section class="bg-dark-alternate section-spacer">
-            <div class="page-container">
-                <h2 class="section-heading centered horaires-section-title">Infos <span>Pratiques</span></h2>
+					<div class="info-mini-card">
+						<i class="fa-solid fa-trophy"></i>
+						<h4>Compétitions</h4>
+						<p>Le vendredi soir précédant une compétition à domicile, la salle ferme à 18h45 pour l'installation du plateau.</p>
+					</div>
 
-                <div class="info-blocks-grid">
-                    <div class="info-mini-card">
-                        <i class="fa-solid fa-handshake-angle"></i>
-                        <h4>Gestion Bénévole</h4>
-                        <p>Le club vit grâce à nos bénévoles. Les horaires peuvent varier selon leurs impératifs.</p>
-                    </div>
+					<div class="info-mini-card">
+						<i class="fa-solid fa-mobile-screen-button"></i>
+						<h4>WhatsApp</h4>
+						<p>Rejoignez le groupe pour être informé en temps réel des fermetures exceptionnelles.</p>
+					</div>
+				</div>
 
-                    <div class="info-mini-card">
-                        <i class="fa-solid fa-trophy"></i>
-                        <h4>Compétitions</h4>
-                        <p>Le vendredi soir précédant une compétition à domicile, la salle ferme à 18h45 pour l'installation du plateau.</p>
-                    </div>
+				<div class="call-to-action-horaires">
+					<p>Un doute sur l'ouverture ?</p>
+					<a href="https://chat.whatsapp.com/TON_LIEN_GROUPE" class="btn-phone" target="_blank">
+						Rejoins le groupe WhatsApp
+					</a>
+				</div>
+			</div>
+		</section>
 
-                    <div class="info-mini-card">
-                        <i class="fa-solid fa-mobile-screen-button"></i>
-                        <h4>WhatsApp</h4>
-                        <p>Rejoignez le groupe pour être informé en temps réel des fermetures exceptionnelles.</p>
-                    </div>
-                </div>
-
-              <div class="call-to-action-horaires">
-    <p>Un doute sur l'ouverture ?</p>
-    <a href="https://chat.whatsapp.com/TON_LIEN_GROUPE" class="btn-phone" target="_blank">
-        Rejoins le groupe WhatsApp
-    </a>
-</div>
-            </div>
-        </section>
-
-    </main>
+	</main>
 {% endblock %}

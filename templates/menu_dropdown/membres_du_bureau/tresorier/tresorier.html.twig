@@ -1,83 +1,94 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Trésorier - CHM Saleux{% endblock %}
+{% block title %}Trésorier - CHM Saleux
+{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/menu_dropdown/membres_du_bureau/tresorier/tresorier.css') }}">
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/menu_dropdown/membres_du_bureau/tresorier/tresorier.css') }}">
 {% endblock %}
 
 {% block body %}
 
-    <header class="page-header-sport tresorier-page-header">
-        <div class="header-overlay-gradient"></div>
+	<header class="page-header-sport tresorier-page-header">
+		<div class="header-overlay-gradient"></div>
 
-        <div class="header-content">
-            <div class="page-container">
-                <nav class="breadcrumb-nav">
-                    <a href="{{ path('home') }}" class="back-link-minimal">
-                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                    </a>
-                </nav>
+		<div class="header-content">
+			<div class="page-container">
+				<nav class="breadcrumb-nav">
+					<a href="{{ path('home') }}" class="back-link-minimal">
+						<i class="fa-solid fa-chevron-left"></i>
+						<span>Retour à l'accueil</span>
+					</a>
+				</nav>
 
-                <div class="header-main-box">
-                    <div class="badge-accent">Gestion & Finances</div>
-                    <h1>Le <span class="text-outline">Trésorier</span></h1>
-                    <p class="lead">Découvrez celle qui veille à l'équilibre financier et à la pérennité économique de notre association.</p>
-                </div>
-            </div>
-        </div>
-    </header>
+				<div class="header-main-box">
+					<div class="badge-accent">Gestion & Finances</div>
+					<h1>Le
+						<span class="text-outline">Trésorier</span>
+					</h1>
+					<p class="lead">Découvrez celle qui veille à l'équilibre financier et à la pérennité économique de notre association.</p>
+				</div>
+			</div>
+		</div>
+	</header>
 
-    <main class="tresorier-root page-shell">
-        <section class="page-container section-spacer">
-            <div class="profile-card-elite">
-                <div class="profile-grid">
-                    
-                    <div class="profile-image-side">
-                        <div class="image-container">
-                            <img src="{{ asset('images/menu_dropdown/membres_du_bureau/tresorier/tresorier.jpg') }}" alt="Aurore Bertrand">
-                            <div class="experience-badge">
-                                <span class="exp-label">En poste depuis</span>
-                                <span class="exp-year">2025</span>
-                            </div>
-                        </div>
-                    </div>
+	{# IMAGE DÉCORATIVE GAUCHE #}
+	<div class="deco-left-wrap">
+		<img src="{{ asset('images/decorations/dots-tree.png') }}" alt="" class="deco-left-img" aria-hidden="true">
+	</div>
 
-                    <div class="profile-text-side">
-                        <span class="role-tag">Trésorière du Club</span>
-                        <h2>Aurore <span>BERTRAND</span></h2>
-                        
-                        <div class="bio-content">
-                            <p>
-                                Aurore Bertrand assure la gestion financière du CHM Saleux. Elle occupe un rôle clé en garantissant la transparence des comptes et le respect des budgets.
-                            </p>
-                            <p>
-                                Son organisation permet au club d'investir sereinement dans du nouveau matériel et de financer les déplacements en compétition.
-                            </p>
-                        </div>
+	<main class="tresorier-root page-shell">
+		<section class="page-container section-spacer">
+			<div class="profile-card-elite">
+				<div class="profile-grid">
 
-                        <div class="key-points-grid">
-                            <div class="point-item-elite">
-                                <i class="fa-solid fa-chart-line"></i>
-                                <div>
-                                    <strong>Gestion Rigoureuse</strong>
-                                    <p>Suivi précis des recettes et dépenses.</p>
-                                </div>
-                            </div>
+					<div class="profile-image-side">
+						<div class="image-container">
+							<img src="{{ asset('images/menu_dropdown/membres_du_bureau/tresorier/tresorier.jpg') }}" alt="Aurore Bertrand">
+							<div class="experience-badge">
+								<span class="exp-label">En poste depuis</span>
+								<span class="exp-year">2025</span>
+							</div>
+						</div>
+					</div>
 
-                            <div class="point-item-elite">
-                                <i class="fa-solid fa-shield-check"></i>
-                                <div>
-                                    <strong>Transparence</strong>
-                                    <p>Des comptes clairs pour les adhérents.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+					<div class="profile-text-side">
+						<span class="role-tag">Trésorière du Club</span>
+						<h2>Aurore
+							<span>BERTRAND</span>
+						</h2>
 
-                </div>
-            </div>
-        </section>
-    </main>
+						<div class="bio-content">
+							<p>
+								Aurore Bertrand assure la gestion financière du CHM Saleux. Elle occupe un rôle clé en garantissant la transparence des comptes et le respect des budgets.
+							</p>
+							<p>
+								Son organisation permet au club d'investir sereinement dans du nouveau matériel et de financer les déplacements en compétition.
+							</p>
+						</div>
+
+						<div class="key-points-grid">
+							<div class="point-item-elite">
+								<i class="fa-solid fa-chart-line"></i>
+								<div>
+									<strong>Gestion Rigoureuse</strong>
+									<p>Suivi précis des recettes et dépenses.</p>
+								</div>
+							</div>
+
+							<div class="point-item-elite">
+								<i class="fa-solid fa-shield-check"></i>
+								<div>
+									<strong>Transparence</strong>
+									<p>Des comptes clairs pour les adhérents.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+	</main>
 {% endblock %}
