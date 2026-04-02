@@ -1,170 +1,183 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Musculation & Remise en forme - CHM Saleux{% endblock %}
+{% block title %}Musculation & Remise en forme - CHM Saleux
+{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/menu_dropdown/services_du_club/musculation/index.css') }}">
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/menu_dropdown/services_du_club/musculation/index.css') }}">
 {% endblock %}
 
 {% block body %}
 
-    <header class="page-header-sport musculation-page-header">
-        <div class="header-overlay-gradient"></div>
+	<header class="page-header-sport musculation-page-header">
+		<div class="header-overlay-gradient"></div>
 
-        <div class="header-content">
-            <div class="page-container">
-                <nav class="breadcrumb-nav">
-                    <a href="{{ path('home') }}" class="back-link-minimal">
-                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                    </a>
-                </nav>
+		<div class="header-content">
+			<div class="page-container">
+				<nav class="breadcrumb-nav">
+					<a href="{{ path('home') }}" class="back-link-minimal">
+						<i class="fa-solid fa-chevron-left"></i>
+						<span>Retour à l'accueil</span>
+					</a>
+				</nav>
 
-                <div class="header-main-box">
-                    <div class="badge-accent">Santé & Performance</div>
-                    <h1>La Musculation</h1>
-                    <p class="lead">
-                        Bien plus que soulever des poids. Sculptez votre corps, renforcez votre santé et améliorez votre quotidien.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </header>
+				<div class="header-main-box">
+					<div class="badge-accent">Santé & Performance</div>
+					<h1>La Musculation</h1>
+					<p class="lead">
+						Bien plus que soulever des poids. Sculptez votre corps, renforcez votre santé et améliorez votre quotidien.
+					</p>
+				</div>
+			</div>
+		</div>
+	</header>
 
-    <main class="musculation-root page-shell">
-        <div class="main-container">
+	{# IMAGE DÉCORATIVE GAUCHE #}
+	<div class="deco-left-wrap">
+		<img src="{{ asset('images/decorations/dots-tree.png') }}" alt="" class="deco-left-img" aria-hidden="true">
+	</div>
 
-            <section id="intro" class="split-section">
-                <div class="split-content">
-                    <h2 class="section-heading">Une discipline pour tous</h2>
-                    <p class="lead-text">
-                        Lutter contre la sédentarité et réapprendre à bouger.
-                    </p>
-                    <p>
-                        Notre mode de vie moderne (voiture, écran, ascenseur) affaiblit notre corps.
-                        La musculation est la réponse la plus efficace pour contrer ces effets.
-                        Que ce soit au poids du corps ou avec charges, elle permet de travailler
-                        l'endurance, la force et la tonicité.
-                    </p>
-                    <p>
-                        Au CHM Saleux, nous accueillons tous les pratiquants, quel que soit leur âge
-                        ou leur niveau, pour une pratique adaptée et sécurisée.
-                    </p>
-                </div>
-                <div class="split-image">
-                    <div class="image-frame">
-                        <img src="{{ asset('images/menu_dropdown/services_du_club/musculation/1.jpg') }}" alt="Salle de musculation">
-                    </div>
-                </div>
-            </section>
+	<main class="musculation-root page-shell">
+		<div class="main-container">
 
-            <section class="split-section reversed">
-                <div class="split-image">
-                    <div class="image-frame">
-                        <img src="{{ asset('images/menu_dropdown/services_du_club/musculation/2.jpg') }}" alt="Bien-être et santé">
-                    </div>
-                </div>
-                <div class="split-content">
-                    <h2 class="section-heading">Capital Santé & Mental</h2>
-                    <p>
-                        Nos programmes combinent renforcement et cardio pour une condition physique globale.
-                        Mais les bienfaits vont bien au-delà des muscles :
-                    </p>
+			<section id="intro" class="split-section">
+				<div class="split-content">
+					<h2 class="section-heading">Une discipline pour tous</h2>
+					<p class="lead-text">
+						Lutter contre la sédentarité et réapprendre à bouger.
+					</p>
+					<p>
+						Notre mode de vie moderne (voiture, écran, ascenseur) affaiblit notre corps.
+						                        La musculation est la réponse la plus efficace pour contrer ces effets.
+						                        Que ce soit au poids du corps ou avec charges, elle permet de travailler
+						                        l'endurance, la force et la tonicité.
+					</p>
+					<p>
+						Au CHM Saleux, nous accueillons tous les pratiquants, quel que soit leur âge
+						                        ou leur niveau, pour une pratique adaptée et sécurisée.
+					</p>
+				</div>
+				<div class="split-image">
+					<div class="image-frame">
+						<img src="{{ asset('images/menu_dropdown/services_du_club/musculation/1.jpg') }}" alt="Salle de musculation">
+					</div>
+				</div>
+			</section>
 
-                    <div class="benefits-grid">
-                        <div class="benefit-item">
-                            <span class="benefit-icon">🧠</span>
-                            <div>
-                                <strong>Anti-Stress</strong>
-                                <p>Libération d'endorphines, le tranquillisant naturel.</p>
-                            </div>
-                        </div>
-                        <div class="benefit-item">
-                            <span class="benefit-icon">💤</span>
-                            <div>
-                                <strong>Sommeil</strong>
-                                <p>Lutte contre l'insomnie et améliore la récupération.</p>
-                            </div>
-                        </div>
-                        <div class="benefit-item">
-                            <span class="benefit-icon">🦁</span>
-                            <div>
-                                <strong>Confiance</strong>
-                                <p>Se sentir fort dans son corps renforce l'estime de soi.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+			<section class="split-section reversed">
+				<div class="split-image">
+					<div class="image-frame">
+						<img src="{{ asset('images/menu_dropdown/services_du_club/musculation/2.jpg') }}" alt="Bien-être et santé">
+					</div>
+				</div>
+				<div class="split-content">
+					<h2 class="section-heading">Capital Santé & Mental</h2>
+					<p>
+						Nos programmes combinent renforcement et cardio pour une condition physique globale.
+						                        Mais les bienfaits vont bien au-delà des muscles :
+					</p>
 
-            <section class="split-section">
-                <div class="split-content">
-                    <h2 class="section-heading">Silhouette & Forme</h2>
-                    <p>
-                        Contrairement au simple cardio, la musculation cible précisément les zones à tonifier
-                        (fessiers, dos, abdominaux) et augmente le métabolisme de base, vous aidant à brûler
-                        des calories même au repos.
-                    </p>
+					<div class="benefits-grid">
+						<div class="benefit-item">
+							<span class="benefit-icon">🧠</span>
+							<div>
+								<strong>Anti-Stress</strong>
+								<p>Libération d'endorphines, le tranquillisant naturel.</p>
+							</div>
+						</div>
+						<div class="benefit-item">
+							<span class="benefit-icon">💤</span>
+							<div>
+								<strong>Sommeil</strong>
+								<p>Lutte contre l'insomnie et améliore la récupération.</p>
+							</div>
+						</div>
+						<div class="benefit-item">
+							<span class="benefit-icon">🦁</span>
+							<div>
+								<strong>Confiance</strong>
+								<p>Se sentir fort dans son corps renforce l'estime de soi.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
 
-                    <div class="info-box">
-                        <h3>👩 Pour les Femmes</h3>
-                        <p>
-                            Rassurez-vous : pas de "gros muscles" sans entraînement extrême !
-                            La musculation vous apportera une silhouette <strong>dessinée, fine et tonique</strong>.
-                        </p>
-                    </div>
+			<section class="split-section">
+				<div class="split-content">
+					<h2 class="section-heading">Silhouette & Forme</h2>
+					<p>
+						Contrairement au simple cardio, la musculation cible précisément les zones à tonifier
+						                        (fessiers, dos, abdominaux) et augmente le métabolisme de base, vous aidant à brûler
+						                        des calories même au repos.
+					</p>
 
-                    <div class="info-box">
-                        <h3>👨 Pour les Hommes</h3>
-                        <p>
-                            Développez un dos puissant, des épaules larges et une musculature athlétique
-                            grâce à des programmes d'hypertrophie adaptés.
-                        </p>
-                    </div>
-                </div>
+					<div class="info-box">
+						<h3>👩 Pour les Femmes</h3>
+						<p>
+							Rassurez-vous : pas de "gros muscles" sans entraînement extrême !
+							                            La musculation vous apportera une silhouette
+							<strong>dessinée, fine et tonique</strong>.
+						</p>
+					</div>
 
-                <div class="split-image">
-                    <div class="image-frame">
-                        <img src="{{ asset('images/menu_dropdown/services_du_club/musculation/3.jpg') }}" alt="Silhouette sportive">
-                    </div>
-                </div>
-            </section>
+					<div class="info-box">
+						<h3>👨 Pour les Hommes</h3>
+						<p>
+							Développez un dos puissant, des épaules larges et une musculature athlétique
+							                            grâce à des programmes d'hypertrophie adaptés.
+						</p>
+					</div>
+				</div>
 
-            <section class="full-width-section">
-                <div class="container-narrow">
-                    <h2 class="section-heading centered">Préparation Physique Générale</h2>
-                    <p class="intro-centered">
-                        La musculation est la mère de tous les sports. Améliorez vos performances
-                        dans votre discipline de prédilection grâce à nos techniques issues de l'haltérophilie.
-                    </p>
+				<div class="split-image">
+					<div class="image-frame">
+						<img src="{{ asset('images/menu_dropdown/services_du_club/musculation/3.jpg') }}" alt="Silhouette sportive">
+					</div>
+				</div>
+			</section>
 
-                    <div class="sports-grid">
-                        <article class="sport-card">
-                            <h3>🏃 Athlétisme & Rugby</h3>
-                            <p>Travaillez l'<strong>explosivité</strong> et la puissance des membres inférieurs grâce aux squats et aux mouvements d'épaulé.</p>
-                        </article>
+			<section class="full-width-section">
+				<div class="container-narrow">
+					<h2 class="section-heading centered">Préparation Physique Générale</h2>
+					<p class="intro-centered">
+						La musculation est la mère de tous les sports. Améliorez vos performances
+						                        dans votre discipline de prédilection grâce à nos techniques issues de l'haltérophilie.
+					</p>
 
-                        <article class="sport-card">
-                            <h3>🏀 Sports de lancer</h3>
-                            <p>Améliorez la <strong>force de projection</strong> et la détente verticale avec les techniques de jeté.</p>
-                        </article>
+					<div class="sports-grid">
+						<article class="sport-card">
+							<h3>🏃 Athlétisme & Rugby</h3>
+							<p>Travaillez l'<strong>explosivité</strong>
+								et la puissance des membres inférieurs grâce aux squats et aux mouvements d'épaulé.</p>
+						</article>
 
-                        <article class="sport-card">
-                            <h3>🤼 Sports de combat</h3>
-                            <p>Développez une <strong>force globale</strong> et un gainage à toute épreuve pour dominer l'adversaire.</p>
-                        </article>
-                    </div>
+						<article class="sport-card">
+							<h3>🏀 Sports de lancer</h3>
+							<p>Améliorez la
+								<strong>force de projection</strong>
+								et la détente verticale avec les techniques de jeté.</p>
+						</article>
 
-                    <div class="ffhm-note">
-                        <p>
-                            <strong>Le Savoir-Faire Fédéral :</strong>
-                            La FFHM forme les cadres de nombreuses fédérations (Rugby, Aviron, Moto...)
-                            car nos méthodes sont reconnues comme la référence absolue en matière de développement de la force.
-                        </p>
-                    </div>
-                </div>
-            </section>
+						<article class="sport-card">
+							<h3>🤼 Sports de combat</h3>
+							<p>Développez une
+								<strong>force globale</strong>
+								et un gainage à toute épreuve pour dominer l'adversaire.</p>
+						</article>
+					</div>
 
-        </div>
-    </main>
+					<div class="ffhm-note">
+						<p>
+							<strong>Le Savoir-Faire Fédéral :</strong>
+							La FFHM forme les cadres de nombreuses fédérations (Rugby, Aviron, Moto...)
+							                            car nos méthodes sont reconnues comme la référence absolue en matière de développement de la force.
+						</p>
+					</div>
+				</div>
+			</section>
+
+		</div>
+	</main>
 {% endblock %}

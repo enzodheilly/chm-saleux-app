@@ -1,73 +1,90 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Membre du Bureau - CHM Saleux{% endblock %}
+{% block title %}Membre du Bureau - CHM Saleux
+{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/menu_dropdown/membres_du_bureau/membre_bureau/membre_bureau.css') }}">
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/menu_dropdown/membres_du_bureau/membre_bureau/membre_bureau.css') }}">
 {% endblock %}
 
 {% block body %}
 
-    <header class="page-header-sport membre-bureau-page-header">
-        <div class="header-overlay-gradient"></div>
+	<header class="page-header-sport membre-bureau-page-header">
+		<div class="header-overlay-gradient"></div>
 
-        <div class="header-content">
-            <div class="page-container">
-                <nav class="breadcrumb-nav">
-                    <a href="{{ path('home') }}" class="back-link-minimal">
-                        <i class="fa-solid fa-chevron-left"></i> <span>Retour à l'accueil</span>
-                    </a>
-                </nav>
+		<div class="header-content">
+			<div class="page-container">
+				<nav class="breadcrumb-nav">
+					<a href="{{ path('home') }}" class="back-link-minimal">
+						<i class="fa-solid fa-chevron-left"></i>
+						<span>Retour à l'accueil</span>
+					</a>
+				</nav>
 
-                <div class="header-main-box">
-                    <div class="badge-accent">Bénévolat & Action</div>
-                    <h1>Membre <span class="text-outline">du Bureau</span></h1>
-                    <p class="lead">
-                        Découvrez les acteurs de terrain qui œuvrent chaque jour pour faire vivre l'association et maintenir notre esprit convivial.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </header>
+				<div class="header-main-box">
+					<div class="badge-accent">Bénévolat & Action</div>
+					<h1>Membre
+						<span class="text-outline">du Bureau</span>
+					</h1>
+					<p class="lead">
+						Découvrez les acteurs de terrain qui œuvrent chaque jour pour faire vivre l'association et maintenir notre esprit convivial.
+					</p>
+				</div>
+			</div>
+		</div>
+	</header>
 
-    <main class="membre-bureau-root page-shell">
-        <section class="page-container section-spacer">
-            <div class="profile-card-elite">
-                <div class="profile-grid">
-                    
-                    <div class="profile-image-side">
-                        <div class="image-container">
-                            <img src="{{ asset('images/menu_dropdown/membres_du_bureau/membre_bureau/1.png') }}" alt="Marianne Boulanger-Bailleux">
-                            <div class="experience-badge">
-                                <span class="exp-label">Statut</span>
-                                <span class="exp-year">Membre Actif</span>
-                            </div>
-                        </div>
-                    </div>
+	{# IMAGE DÉCORATIVE GAUCHE #}
+	<div class="deco-left-wrap">
+		<img src="{{ asset('images/decorations/dots-tree.png') }}" alt="" class="deco-left-img" aria-hidden="true">
+	</div>
 
-                    <div class="profile-text-side">
-                        <span class="role-tag">Engagement Associatif</span>
-                        <h2>Marianne <span>BOULANGER-BAILLEUX</span></h2>
-                        
-                        <div class="bio-content">
-                            <p>
-                                Marianne est une figure active du bureau. Engagée et disponible, elle participe à la gestion opérationnelle du club et contribue à la réussite des événements qui rythment notre saison.
-                            </p>
-                            <p>
-                                Son rôle est essentiel pour maintenir le lien entre les adhérents et l'équipe dirigeante, veillant à ce que l'esprit d'entraide soit toujours au rendez-vous.
-                            </p>
-                        </div>
+	<main class="membre-bureau-root page-shell">
+		<section class="page-container section-spacer">
+			<div class="profile-card-elite">
+				<div class="profile-grid">
 
-                        <div class="missions-flex">
-                            <div class="mission-tag-elite"><i class="fa-solid fa-hands-holding-circle"></i> Lien Social</div>
-                            <div class="mission-tag-elite"><i class="fa-solid fa-calendar-check"></i> Organisation</div>
-                            <div class="mission-tag-elite"><i class="fa-solid fa-ear-listen"></i> Écoute</div>
-                        </div>
-                    </div>
+					<div class="profile-image-side">
+						<div class="image-container">
+							<img src="{{ asset('images/menu_dropdown/membres_du_bureau/membre_bureau/1.png') }}" alt="Marianne Boulanger-Bailleux">
+							<div class="experience-badge">
+								<span class="exp-label">Statut</span>
+								<span class="exp-year">Membre Actif</span>
+							</div>
+						</div>
+					</div>
 
-                </div>
-            </div>
-        </section>
-    </main>
+					<div class="profile-text-side">
+						<span class="role-tag">Engagement Associatif</span>
+						<h2>Marianne
+							<span>BOULANGER-BAILLEUX</span>
+						</h2>
+
+						<div class="bio-content">
+							<p>
+								Marianne est une figure active du bureau. Engagée et disponible, elle participe à la gestion opérationnelle du club et contribue à la réussite des événements qui rythment notre saison.
+							</p>
+							<p>
+								Son rôle est essentiel pour maintenir le lien entre les adhérents et l'équipe dirigeante, veillant à ce que l'esprit d'entraide soit toujours au rendez-vous.
+							</p>
+						</div>
+
+						<div class="missions-flex">
+							<div class="mission-tag-elite">
+								<i class="fa-solid fa-hands-holding-circle"></i>
+								Lien Social</div>
+							<div class="mission-tag-elite">
+								<i class="fa-solid fa-calendar-check"></i>
+								Organisation</div>
+							<div class="mission-tag-elite">
+								<i class="fa-solid fa-ear-listen"></i>
+								Écoute</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+	</main>
 {% endblock %}
