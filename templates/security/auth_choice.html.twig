@@ -49,7 +49,7 @@
 				</div>
 
 				<div class="auth-bottom">
-					<a href="{{ path('home') }}" class="back-link">← Retour au site</a>
+					<a href="{{ path('home') }}" class="back-link">← Accueil</a>
 				</div>
 			</div>
 		</div>
@@ -111,8 +111,8 @@
 	{{ parent() }}
 {# On ajoute le nonce pour passer la sécurité CSP de ton base.html.twig #}
 	 <script 
-																    src="{{ asset('js/security/auth_slider.js') }}" 
-																    defer 
-																    nonce="{{ csp_nonce('script') }}">
-																</script>
+																	    src="{{ asset('js/security/auth_slider.js') }}" 
+																	    defer 
+																	    nonce="{{ csp_nonce('script') }}">
+																	</script>
 {% endblock %}

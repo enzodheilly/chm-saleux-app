@@ -20,7 +20,7 @@
 				<nav class="breadcrumb-nav">
 					<a href="{{ path('home') }}" class="back-link-minimal">
 						<i class="fa-solid fa-chevron-left"></i>
-						<span>Retour à l'accueil</span>
+						<span>Accueil</span>
 					</a>
 				</nav>
 
@@ -74,7 +74,7 @@
 				<div
 					class="teams-grid">
 					{# Carte Féminine #}
-					<a href="{{ path('competitions_feminine') }}" class="team-card" aria-label="Voir l'équipe féminine">
+					<a href="{{ path('competitions_team', { 'gender': 'feminine' }) }}" class="team-card" aria-label="Voir l'équipe féminine">
 						<div class="card-img-box">
 							<img src="{{ asset('images/competitions/1.jpg') }}" alt="Équipe Féminine CHM Saleux" loading="lazy">
 							<div class="card-overlay"></div>
@@ -94,7 +94,7 @@
 					</a>
 
 					{# Carte Masculine #}
-					<a href="{{ path('competitions_masculine') }}" class="team-card" aria-label="Voir l'équipe masculine">
+					<a href="{{ path('competitions_team', { 'gender': 'masculine' }) }}" class="team-card" aria-label="Voir l'équipe masculine">
 						<div class="card-img-box">
 							<img src="{{ asset('images/competitions/male-team.jpg') }}" alt="Équipe Masculine CHM Saleux" loading="lazy">
 							<div class="card-overlay"></div>
@@ -115,7 +115,6 @@
 				</div>
 			</div>
 		</section>
-
 	</main>
 {% endblock %}
 
