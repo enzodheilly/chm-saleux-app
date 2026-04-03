@@ -1,16 +1,14 @@
 /* =========================================================
-   COMPETITIONS FEMININE — PAGE SPECIFIQUE
+   COMPETITIONS TEAM — PAGE SPECIFIQUE
    (s'appuie sur la base globale : page-shell / page-container / header / typo)
    ========================================================= */
 
-/* blocs alternés si besoin futur */
 .bg-dark-alternate {
   background: var(--dark-bg);
   border-top: 1px solid var(--border-soft);
   border-bottom: 1px solid var(--border-soft);
 }
 
-/* Helpers */
 .section-header-compact {
   margin-bottom: 1.5rem;
 }
@@ -116,7 +114,6 @@
   font-size: 0.88rem;
 }
 
-/* Boutons navigation */
 .slider-nav {
   display: flex;
   gap: 10px;
@@ -232,7 +229,6 @@
   line-height: 1;
 }
 
-/* Table résultats */
 .table-container {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -335,6 +331,25 @@
   font-size: 1.05rem;
   background: rgba(245,119,6,0.05);
   white-space: nowrap;
+}
+
+.status-pill {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.status-pill.success {
+  background: rgba(0, 255, 136, 0.12);
+  color: #00d97e;
+}
+
+.status-pill.error {
+  background: rgba(245, 119, 6, 0.12);
+  color: var(--primary-color);
 }
 
 /* --- EMPTY --- */
@@ -444,7 +459,7 @@
   text-decoration: none;
   font-weight: 700;
   color: #fff;
-  background: var(--brand-orange);
+  background: var(--primary-color);
   transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
 }
 
@@ -454,8 +469,13 @@
   opacity: 0.95;
 }
 
+/* --- HEADERS --- */
 .feminine-header-bg {
   --bg-image: url('/images/competitions/1.jpg');
+}
+
+.masculine-header-bg {
+  --bg-image: url('/images/competitions/male-team.jpg');
 }
 
 .section-header-offset {
@@ -484,7 +504,6 @@
     text-align: left;
   }
 
-  /* tablette : vraie table avec scroll horizontal */
   .table-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -540,7 +559,6 @@
     text-align: center;
   }
 
-  /* Table mobile -> cards lisibles */
   .stats-table {
     min-width: 100%;
     border-collapse: separate;
@@ -604,21 +622,6 @@
     display: none;
   }
 
-  .ath-name-cell strong {
-    font-size: 1.6rem;
-    margin-bottom: 4px;
-  }
-
-  .ath-name-cell small {
-    display: inline-block;
-    font-size: 0.78rem;
-  }
-
-  .cat-pill {
-    font-size: 0.78rem;
-    padding: 6px 12px;
-  }
-
   .highlight,
   .highlight-accent {
     background: transparent;
@@ -659,8 +662,12 @@
     flex-basis: 46%;
     font-size: 0.68rem;
   }
+}
 
-  .ath-name-cell strong {
-    font-size: 1.35rem;
-  }
+/* --- ACCESSIBILITÉ --- */
+.nav-circle:focus,
+.back-link-minimal:focus,
+.history-card:focus-within {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 4px;
 }

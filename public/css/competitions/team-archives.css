@@ -1,0 +1,156 @@
+/* =========================================================
+   CARTES D'ARCHIVES — LOOK & GRILLE
+   ========================================================= */
+
+/* --- 1. ADAPTATION DYNAMIQUE DE L'IMAGE --- */
+.feminine-archives-header-bg { --bg-image: url('/images/competitions/1.jpg'); }
+.masculine-archives-header-bg { --bg-image: url('/images/competitions/male-team.jpg'); }
+
+/* --- 2. LA GRILLE --- */
+.history-grid-archives {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* --- 3. LA CARTE (Look complet) --- */
+.history-card-archives {
+  background: var(--bg-card, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--border-soft, rgba(255, 255, 255, 0.08));
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.history-card-archives:hover {
+  transform: translateY(-8px);
+  border-color: var(--primary-color);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* La vignette image */
+.card-thumb {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.7);
+  transition: transform 0.5s ease;
+}
+
+.history-card-archives:hover .card-thumb img {
+  transform: scale(1.06);
+  filter: brightness(0.85);
+}
+
+/* Le badge 1er / 2e */
+.card-ranking-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--primary-color);
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  z-index: 2;
+}
+
+/* --- 4. CONTENU DE LA CARTE --- */
+.history-card-archives .card-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.history-card-archives h4 {
+  color: #fff;
+  font-size: 1.25rem;
+  margin-bottom: 0.4rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.card-lieu {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 1rem;
+}
+
+/* Liste des infos (Date, Athlètes, etc.) */
+.archive-meta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.archive-meta-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.meta-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.meta-value {
+  font-size: 0.85rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+.meta-rank {
+  color: var(--primary-color);
+  font-weight: 800;
+}
+
+/* Lien de bas de carte */
+.card-link {
+  margin-top: auto;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-link:hover {
+  text-decoration: underline;
+}
+
+/* --- 5. RESPONSIVE --- */
+@media (max-width: 992px) {
+  .history-grid-archives { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .history-grid-archives { grid-template-columns: 1fr; }
+  .card-thumb { height: 180px; }
+}
