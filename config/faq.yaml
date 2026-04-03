@@ -1,0 +1,114 @@
+parameters:
+    faq:
+        - question: "Faut-il une expérience avant de s'inscrire ?"
+          reponse: "Pas du tout ! Le CHM Saleux accueille les débutants comme les confirmés. Nos coachs sont là pour vous apprendre les bases."
+          categorie: "questions"
+
+        - question: "Y a-t-il un âge minimum pour s'inscrire ?"
+          reponse: "Pour l'haltérophilie, l'accès commence dès la catégorie Benjamin (8 ans), où l'accent est mis sur la technique et la coordination. Pour la musculation en autonomie, nous accueillons les jeunes à partir de 15 ans avec une autorisation parentale et un accompagnement initial par nos coachs pour garantir une pratique sécurisée."
+          categorie: "questions"
+
+        - question: "Puis-je faire une séance d'essai ?"
+          reponse: "Oui, une séance d'essai gratuite est disponible. C'est idéal pour découvrir le club avant de vous engager."
+          categorie: "questions"
+
+        - question: "Quels sont les horaires d'ouverture ?"
+          reponse: "Le club vous accueille : 
+          • Lun, Mer, Ven : 10h00—12h00 et 16h00—20h00. 
+          • Mar, Jeu : 10h00—12h00 et 16h00—19h30. 
+          • Sam, Dim : Fermé. 
+          Note : Le vendredi, une fermeture anticipée à 18h45 est possible uniquement en cas de compétition à domicile. Ces fermetures exceptionnelles sont annoncées à l'avance sur le tableau à l'accueil et sur le groupe WhatsApp du club."
+          categorie: "questions"
+
+        - question: "Y a-t-il un parking à proximité de la salle ?"
+          reponse: "Oui, tout à fait ! Un grand parking gratuit est situé juste devant la salle (Complexe multisports de la Grenouillère). Vous pourrez vous garer facilement et sans frais, quelle que soit l'heure de votre entraînement."
+          categorie: "questions"
+
+        - question: "Le club dispose-t-il d'un sauna ?"
+          reponse: "Oui ! Le CHM Saleux met à disposition un sauna pour favoriser votre récupération musculaire et vous détendre après l'effort, sous réserve de respecter les consignes d'hygiène."
+          categorie: "questions"
+
+        - question: "Quels abonnements proposez-vous ?"
+          reponse: "Nous proposons trois formules annuelles adaptées à votre profil : 1. Jeune (70€) : apprentissage et sécurité. 2. Compétition (90€) : licence officielle et compétitions incluses. 3. Loisir & Muscu (200€) : accès complet, cardio et cours collectifs. Note : les étudiants bénéficient d'une remise de 15€ !"
+          categorie: "abonnement"
+
+        - question: "L'accès au sauna est-il inclus dans tous les forfaits ?"
+          reponse: "L'accès au sauna est inclus pour les formules Compétition et Loisir & Muscu. Pour les adhérents en formule Jeune, l'accent est mis sur l'encadrement sportif et l'apprentissage technique."
+          categorie: "abonnement"
+
+        - question: "Est-il possible de payer son abonnement en plusieurs fois ?"
+          reponse: "Oui ! Le CHM Saleux propose le paiement en 3 fois sans frais pour faciliter votre inscription. N'hésitez pas à demander les modalités lors de votre passage à l'accueil."
+          categorie: "abonnement"
+
+        - question: "Le tarif de l'adhésion est-il le même si je m'inscris en cours d'année ?"
+          reponse: "Non, au CHM Saleux, nos tarifs sont dégressifs selon votre mois d'arrivée ! Par exemple, pour un tarif plein de 200€ en septembre, l'adhésion passe à 150€ en mars et seulement 80€ en juin. Cela vous permet de rejoindre le club à tout moment de la saison à un prix juste et adapté."
+          categorie: "abonnement"
+
+        - question: "Proposez-vous des tarifs préférentiels pour les familles ou les compétiteurs ?"
+          reponse: "Absolument ! Le CHM Saleux est un club familial : nous offrons des réductions dès la 2ème licence au sein d'un même foyer (-10% à -20%). Pour la compétition, les tarifs sont adaptés par catégorie d'âge (50€ pour les Benjamins, 75€ pour les Cadets/Juniors). Bonus : la licence Benjamin est gratuite si l'un des parents est déjà inscrit au club !"
+          categorie: "abonnement"
+
+        - question: "Quels sont les moyens de paiement acceptés pour ma licence ?"
+          reponse: "Le CHM Saleux accepte de nombreux modes de règlement : carte bancaire (via notre terminal SumUp), chèques (possibilité de payer en 3 fois sans frais) et espèces. Nous acceptons également la Carte Génération HDF ainsi que la Carte Universitaire. Pour bénéficier de la réduction 'Étudiant' de 15€, n'oubliez pas de présenter votre justificatif lors de l'inscription !"
+          categorie: "abonnement"
+
+        - question: "Quel matériel dois-je apporter pour mon entraînement ?"
+          reponse: "Pour pratiquer dans de bonnes conditions, prévoyez un sac de sport avec : une tenue de sport confortable, une paire de chaussures propres (réservées à la salle), une serviette pour protéger les bancs et une bouteille d'eau ou une gourde pour rester hydraté. Pour le sauna, n'oubliez pas une serviette supplémentaire !"
+          categorie: "entrainement"
+
+        - question: "Quelles parties du corps puis-je travailler au club ?"
+          reponse: "Absolument toutes ! Nos équipements permettent un entraînement complet : le haut du corps (pectoraux, dos, bras, épaules), le bas du corps (cuisses, fessiers, mollets), ainsi que les abdominaux. Nous disposons également d'un espace cardio pour travailler votre endurance et votre souffle."
+          categorie: "entrainement"
+
+        - question: "Quelles sont les bonnes pratiques à respecter dans la salle ?"
+          reponse: "Le respect et la convivialité sont les clés du CHM Saleux ! Nous demandons à chacun de décharger et de ranger son matériel (poids, barres, haltères) après chaque utilisation. L'usage d'une serviette sur les bancs est obligatoire, et nous vous remercions de nettoyer les machines après votre passage pour le confort de tous."
+          categorie: "entrainement"
+
+        - question: "Proposez-vous des cours collectifs et quels sont les horaires ?"
+          reponse: "Oui ! Nous organisons des cours collectifs deux fois par semaine, le mardi et le jeudi de 18h à 19h. Ces séances variées abordent différents thèmes comme le renforcement musculaire, le cardio ou l'initiation technique. C'est l'occasion idéale pour s'entraîner dans une ambiance dynamique et motivante !"
+          categorie: "entrainement"
+
+        - question: "De quels types d'équipements dispose le club ?"
+          reponse: "Le CHM Saleux propose des installations complètes : un plateau d'haltérophilie avec barres et poids olympiques, un espace musculation (poids libres et machines guidées) pour tous les groupes musculaires, ainsi qu'un coin cardio (vélos, rameurs). Tout le matériel est entretenu pour votre sécurité."
+          categorie: "installations"
+
+        - question: "Quelle est la qualité du matériel utilisé au CHM Saleux ?"
+          reponse: "La sécurité et la performance sont nos priorités. Nos équipements sont régulièrement renouvelés pour respecter scrupuleusement les normes de la FFHM. Que ce soit sur le plateau d'haltérophilie ou dans l'espace musculation, vous bénéficiez d'un matériel de niveau professionnel, entretenu et certifié."
+          categorie: "installations"
+
+        - question: "Quels jours ont lieu les compétitions d'haltérophilie ?"
+          reponse: "Le CHM Saleux participe activement au championnat ! Les compétitions se déroulent généralement le week-end, soit le samedi après-midi, soit le dimanche. C'est l'occasion idéale pour venir encourager nos athlètes ou relever vous-même le défi de la barre !"
+          categorie: "competition"
+
+        - question: "Comment puis-je participer aux compétitions d'haltérophilie ?"
+          reponse: "Pour représenter le CHM Saleux en compétition, vous devez impérativement souscrire à une licence 'Compétition' lors de votre inscription. Cette licence inclut votre assurance et votre homologation auprès de la FFHM. Parlez-en à nos coachs : ils évalueront votre niveau et vous prépareront pour vos premiers pas sur le plateau !"
+          categorie: "competition"
+
+        - question: "Comment soutenir le CHM Saleux ou devenir partenaire ?"
+          reponse: "Le club est une association qui vit grâce à votre aide ! Vous pouvez nous soutenir par des dons financiers ou de matériel (équipements sportifs, lots pour les compétitions). En tant que partenaire, vous bénéficiez d'une visibilité sur nos supports de communication et lors de nos événements le week-end. Contactez-nous pour construire un projet ensemble !"
+          categorie: "autres"
+
+        - question: "Quels sont les équipements sanitaires disponibles ?"
+          reponse: "Le club dispose de deux vestiaires séparés (hommes et femmes) comprenant chacun des douches et des toilettes. Nous disposons également de toilettes accessibles aux personnes à mobilité réduite (PMR). Notez que nous n'avons pas de casiers fermés, vos affaires restent donc sous votre surveillance dans les vestiaires."
+          categorie: "autres"
+
+        - question: "Quelle est la vie au club en dehors des entraînements ?"
+          reponse: "Le CHM Saleux est un club familial et animé ! Nous organisons régulièrement des événements pour nos adhérents tout au long de l'année : célébrations pour Pâques, fêtes de Noël, repas de club et journées de cohésion. C'est l'occasion parfaite pour se retrouver et partager des moments conviviaux en dehors des plateaux !"
+          categorie: "autres"
+
+        - question: "Comment rester informé des actualités et événements du club ?"
+          reponse: "Pour ne rien manquer, consultez régulièrement notre site web et suivez-nous sur Instagram ! Une fois inscrit, vous pourrez également rejoindre notre groupe WhatsApp réservé aux adhérents. C'est le meilleur moyen de recevoir en direct les infos sur les entraînements, les compétitions et la vie du club."
+          categorie: "autres"
+
+        - question: "Comment devenir bénévole pour le club ?"
+          reponse: "Nous sommes toujours ravis d'accueillir de nouvelles bonnes volontés ! Que ce soit pour aider à l'organisation des compétitions le week-end, tenir la buvette, aider à l'installation du matériel ou partager vos compétences, parlez-en directement aux membres du bureau ou envoyez-nous un message. Votre aide est précieuse pour faire grandir le CHM Saleux !"
+          categorie: "autres"
+
+        - question: "Comment puis-je contacter le club directement ?"
+          reponse: "Pour toute question, vous pouvez nous joindre par téléphone au 03.22.89.72.57 ou par e-mail à l'adresse chmsaleux@orange.fr. Vous pouvez également utiliser le formulaire de contact disponible sur notre site web. Nous nous ferons un plaisir de vous renseigner !"
+          categorie: "autres"
+
+        - question: "Proposez-vous des équipements aux couleurs du club ?"
+          reponse: "Oui ! Nous proposons à la vente des gourdes et des serviettes à l'effigie du CHM Saleux directement au club. De plus, nous organisons chaque année une commande groupée de t-shirts personnalisés. Portez fièrement nos couleurs à l'entraînement comme en compétition !"
+          categorie: "divers"
+

@@ -63,9 +63,6 @@
 
 /* 3. STATS BAND (La barre grise avec icônes) */
 .detail-stats-band {
-  background: var(--bg-card);
-  border-top: 1px solid var(--border-soft);
-  border-bottom: 1px solid var(--border-soft);
   position: relative;
   z-index: 10;
   margin-top: 30px; 
@@ -314,5 +311,39 @@
   .detail-description-box {
     flex-direction: column;
     padding: 1.4rem;
+  }
+}
+
+/* --- DÉCORATION GAUCHE (image dots) --- */
+.deco-left-wrap {
+  position: relative;
+  width: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.deco-left-img {
+  position: absolute;
+  left: -25px;
+  top: -20px; /* remonte légèrement pour chevaucher le séparateur */
+  width: clamp(120px, 14vw, 200px);
+  height: auto;
+  opacity: 0.55;
+  user-select: none;
+  /* Optionnel : légère teinte orange pour matcher --primary-color */
+  filter: drop-shadow(0 0 8px rgba(245, 119, 6, 0.18));
+}
+
+@media (max-width: 1100px) {
+  .deco-left-img {
+    width: clamp(80px, 10vw, 130px);
+    opacity: 0.35;
+  }
+}
+
+@media (max-width: 768px) {
+  .deco-left-img {
+    display: none; /* Masqué sur mobile pour ne pas gêner le contenu */
   }
 }
