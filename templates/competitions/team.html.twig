@@ -1,30 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Équipe Masculine — Résultats & Performances
+{% set isFeminine = gender == 'feminine' %}
+
+{% block title %}
+	{{ isFeminine ? 'Équipe Féminine' : 'Équipe Masculine' }}
+	— CHM Saleux
 {% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('css/competitions/masculine.css') }}">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-	<style nonce="{{ csp_nonce('style') }}">
-		{% set lastCompetitionStyle = competitions|first %}
-		{% if lastCompetitionStyle and lastCompetitionStyle.image %}
-			.masculine-result-header-bg {
-				background-image: url('{{ asset('uploads/competitions/' ~ lastCompetitionStyle.image) }}');
-			}
-		{% else %}
-			.masculine-result-header-bg {
-				background-image: url('{{ asset('images/defaults/competition-placeholder.jpg') }}');
-			}
-		{% endif %}
-	</style>
+	<link rel="stylesheet" href="{{ asset('css/competitions/team.css') }}">
 {% endblock %}
 
 {% block body %}
 
-	<header class="page-header-sport masculine-header-bg">
+	<header class="page-header-sport {{ isFeminine ? 'feminine-header-bg' : 'masculine-header-bg' }}">
 		<div class="header-overlay-gradient"></div>
 
 		<div class="header-content">
@@ -32,14 +22,14 @@
 				<nav class="breadcrumb-nav">
 					<a href="{{ path('competition_root') }}" class="back-link-minimal">
 						<i class="fa-solid fa-chevron-left"></i>
-						<span>Retour aux compétitions</span>
+						<span>Compétitions</span>
 					</a>
 				</nav>
 
 				<div class="header-main-box">
 					<div class="badge-accent">Saison 2025 / 2026</div>
 					<h1>Équipe
-						<span class="text-outline">Masculine</span>
+						<span class="text-outline">{{ isFeminine ? 'Féminine' : 'Masculine' }}</span>
 					</h1>
 					<p class="lead">Performance, puissance & progression. Suivez le parcours de nos athlètes.</p>
 				</div>
@@ -74,12 +64,10 @@
 							<div class="athlete-img-wrapper">
 								<img src="{{ athlete.image ? asset('uploads/athletes/' ~ athlete.image) : asset('images/defaults/athlete-placeholder.jpg') }}" alt="{{ athlete.firstName }} {{ athlete.lastName }}" loading="lazy">
 								<div class="athlete-overlay"></div>
-
 								{% if athlete.category %}
 									<div class="athlete-cat-tag">{{ athlete.category }}</div>
 								{% endif %}
 							</div>
-
 							<div class="athlete-info">
 								<span class="last-name">{{ athlete.lastName }}</span>
 								<span class="first-name">{{ athlete.firstName }}</span>
@@ -90,18 +78,18 @@
 			</div>
 		</section>
 
-		{# --- DERNIERS RÉSULTATS --- #}
+		{# --- DERNIER RÉSULTAT --- #}
 		<section class="page-container section-spacer pt-0 last-result-section">
 			<div class="section-header-compact">
-				<h2 class="section-heading">Dernier Plateau
-					<span>Résultats officiels</span>
+				<h2 class="section-heading">Dernier
+					<span>Plateau</span>
 				</h2>
 			</div>
 
 			{% set lastCompetition = competitions|first %}
 			{% if lastCompetition %}
 				<div class="result-card-main">
-					<div class="result-header masculine-result-header-bg">
+					<div class="result-header" style="background-image: url('{{ lastCompetition.image ? asset('uploads/competitions/' ~ lastCompetition.image) : asset('images/defaults/competition-placeholder.jpg') }}')">
 						<div class="result-header-overlay"></div>
 
 						<div class="result-meta-data">
@@ -110,9 +98,7 @@
 									<i class="fa-regular fa-calendar"></i>
 									{{ lastCompetition.eventDate|date('d F Y') }}
 								</span>
-
 								<h3>{{ lastCompetition.title }}</h3>
-
 								<div class="comp-location">
 									<i class="fa-solid fa-location-dot"></i>
 									{{ lastCompetition.location }}
@@ -121,7 +107,8 @@
 
 							{% if lastCompetition.teamRanking %}
 								<div class="team-rank-box">
-									<span class="rank-label">Classement Club</span>
+									<span class="rank-label">Classement
+										{{ isFeminine ? 'Équipe' : 'Club' }}</span>
 									<span class="rank-number">
 										{{ lastCompetition.teamRanking }}<sup>{{ lastCompetition.teamRanking == 1 ? 'er' : 'e' }}</sup>
 									</span>
@@ -135,52 +122,50 @@
 							<thead>
 								<tr>
 									<th>Athlète</th>
+									{% if isFeminine %}
+										<th>Cat.</th>
+									{% endif %}
 									<th class="text-center">Arraché</th>
 									<th class="text-center">E.J.</th>
 									<th class="highlight">Total</th>
-									<th class="highlight-accent">Points</th>
-									<th>Statut</th>
+									<th class="highlight-accent">{{ isFeminine ? 'Pts' : 'Points' }}</th>
+									{% if not isFeminine %}
+										<th>Statut</th>
+									{% endif %}
 								</tr>
 							</thead>
-
 							<tbody>
 								{% for result in lastCompetition.results %}
 									<tr class="athlete-row">
 										<td class="ath-name-cell" data-label="Athlète">
-											<div class="ath-mobile-head">
-												<span class="ath-mobile-name">{{ result.lastName }}
-													{{ result.firstName }}</span>
-												<span class="ath-mobile-bw">PC:
+											<div class="ath-name-inline">
+												<span class="ath-last-name">{{ result.lastName }}</span>
+												<span class="ath-first-name">{{ result.firstName }}</span>
+												<span class="ath-bodyweight">PC:
 													{{ result.bodyWeight|default('--') }}kg</span>
 											</div>
 										</td>
 
-										<td class="text-center weight-val" data-label="Arraché">
-											{{ result.snatch }}
-											kg
-										</td>
+										{% if isFeminine %}
+											<td data-label="Catégorie">
+												<span class="cat-pill">{{ result.category }}</span>
+											</td>
+										{% endif %}
 
-										<td class="text-center weight-val" data-label="E.J.">
-											{{ result.cleanAndJerk }}
-											kg
-										</td>
+										<td class="text-center weight-val" data-label="Arraché">{{ result.snatch }}kg</td>
+										<td class="text-center weight-val" data-label="E.J.">{{ result.cleanAndJerk }}kg</td>
+										<td class="highlight total-val" data-label="Total">{{ result.total }}kg</td>
+										<td class="highlight-accent points-val" data-label="Points">{{ result.points }}</td>
 
-										<td class="highlight total-val" data-label="Total">
-											{{ result.total }}
-											kg
-										</td>
-
-										<td class="highlight-accent points-val" data-label="Points">
-											{{ result.points }}
-										</td>
-
-										<td data-label="Statut">
-											{% if result.rankingLevel %}
-												<span class="status-pill success">Classé</span>
-											{% else %}
-												<span class="status-pill error">Non classé</span>
-											{% endif %}
-										</td>
+										{% if not isFeminine %}
+											<td data-label="Statut">
+												{% if result.rankingLevel %}
+													<span class="status-pill success">Classé</span>
+												{% else %}
+													<span class="status-pill error">Non classé</span>
+												{% endif %}
+											</td>
+										{% endif %}
 									</tr>
 								{% else %}
 									<tr class="athlete-row">
@@ -195,12 +180,12 @@
 				</div>
 			{% else %}
 				<div class="empty-dashboard">
-					<p>La saison n’a pas encore commencé.</p>
+					<p>La saison n'a pas encore commencé.</p>
 				</div>
 			{% endif %}
 		</section>
 
-		{# --- ARCHIVES DE LA SAISON --- #}
+		{# --- ARCHIVES --- #}
 		{% if competitions|length > 1 %}
 			<section class="page-container section-spacer pt-0 section-history">
 				<div class="section-header-compact">
@@ -216,14 +201,12 @@
 								<img src="{{ comp.image ? asset('uploads/competitions/' ~ comp.image) : asset('images/defaults/competition-placeholder.jpg') }}" alt="{{ comp.title }}">
 								<div class="card-date">{{ comp.eventDate|date('d/m') }}</div>
 							</div>
-
 							<div class="card-body">
 								<h4>{{ comp.title }}</h4>
 								<p class="card-lieu">
 									<i class="fa-solid fa-location-dot"></i>
 									{{ comp.location }}
 								</p>
-
 								<a href="{{ path('competition_show', { id: comp.id }) }}" class="card-link">
 									Consulter le plateau
 									<i class="fa-solid fa-arrow-right"></i>
@@ -234,10 +217,8 @@
 				</div>
 
 				{% if competitions|length > 4 %}
-					<div
-						class="history-more-wrap">
-						{# Vérifie bien le nom réel de ta route masculine #}
-						<a href="{{ path('competition_masculine_archives') }}" class="btn-history-more">
+					<div class="history-more-wrap">
+						<a href="{{ path('competition_team_archives', { gender: gender }) }}" class="btn-history-more">
 							Voir plus de résultats
 						</a>
 					</div>

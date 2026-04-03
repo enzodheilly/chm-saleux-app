@@ -1,41 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Archives — Équipe Féminine | CHM Saleux
+{# On définit des variables pour adapter le contenu selon le genre #}
+{% set isFeminine = gender == 'feminine' %}
+{% set teamLabel = isFeminine ? 'Féminine' : 'Masculine' %}
+{% set headerClass = isFeminine ? 'feminine-archives-header-bg' : 'masculine-archives-header-bg' %}
+
+{% block title %}Archives — Équipe
+	{{ teamLabel }}
+	| CHM Saleux
 {% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('css/competitions/feminine.css') }}">
-	<link rel="stylesheet" href="{{ asset('css/competitions/feminine-archives.css') }}">
+	{# Tes CSS actuels fonctionnent très bien avec cette structure #}
+	<link rel="stylesheet" href="{{ asset('css/competitions/team-archives.css') }}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 {% endblock %}
 
 {% block body %}
 
-	<header class="page-header-sport feminine-archives-header-bg">
+	<header class="page-header-sport {{ headerClass }}">
 		<div class="header-overlay-gradient"></div>
 
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav archives-breadcrumbs">
-					<a href="{{ path('competitions_feminine') }}" class="back-link-minimal">
+				<nav
+					class="breadcrumb-nav archives-breadcrumbs">
+					{# Retour dynamique vers la page de l'équipe correspondante #}
+					<a href="{{ path('competitions_team', { gender: gender }) }}" class="back-link-minimal">
 						<i class="fa-solid fa-chevron-left"></i>
-						<span>Retour page équipe féminine</span>
+						<span>Équipe
+							{{ teamLabel|lower }}</span>
 					</a>
 				</nav>
 
 				<div class="header-main-box">
 					<div class="badge-accent">Historique complet</div>
 					<h1>Archives
-						<span class="text-outline">Féminines</span>
+						<span class="text-outline">{{ teamLabel }}s</span>
 					</h1>
 					<p class="lead">
-						Retrouvez l’ensemble des plateaux de l’équipe féminine, classés du plus récent au plus ancien.
+						Retrouvez l’ensemble des plateaux de l’équipe
+						{{ teamLabel|lower }}, classés du plus récent au plus ancien.
 					</p>
 				</div>
 			</div>
 		</div>
 	</header>
+
+	{# IMAGE DÉCORATIVE GAUCHE #}
+	<div class="deco-left-wrap">
+		<img src="{{ asset('images/decorations/dots-tree.png') }}" alt="" class="deco-left-img" aria-hidden="true">
+	</div>
 
 	<main class="page-shell dashboard-root archives-page-root">
 
@@ -63,7 +79,7 @@
 
 								{% if comp.teamRanking %}
 									<div class="card-ranking-badge">
-										{{ comp.teamRanking }}<sup>er</sup>
+										{{ comp.teamRanking }}{{ comp.teamRanking == 1 ? 'er' : 'e' }}
 									</div>
 								{% endif %}
 							</div>
@@ -96,8 +112,8 @@
 										<div class="archive-meta-item">
 											<span class="meta-label">Classement</span>
 											<span class="meta-value meta-rank">
-												{{ comp.teamRanking }}<sup>er</sup>
-												équipe
+												{{ comp.teamRanking }}{{ comp.teamRanking == 1 ? 'er' : 'e' }}
+												{{ isFeminine ? 'équipe' : 'club' }}
 											</span>
 										</div>
 									{% endif %}
@@ -113,14 +129,12 @@
 				</div>
 			{% else %}
 				<div class="empty-dashboard">
-					<p>Aucune archive disponible pour l’équipe féminine pour le moment.</p>
+					<p>Aucune archive disponible pour l’équipe
+						{{ teamLabel|lower }}
+						pour le moment.</p>
 				</div>
 			{% endif %}
 		</section>
 
 	</main>
-{% endblock %}
-
-{% block javascripts %}
-	{{ parent() }}
 {% endblock %}
