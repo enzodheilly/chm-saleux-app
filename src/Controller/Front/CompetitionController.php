@@ -52,12 +52,10 @@ class CompetitionController extends AbstractController
 
         $currentMonthDate = new \DateTimeImmutable(sprintf('%04d-%02d-01', $year, $month));
 
-        // Bloque toute navigation avant janvier 2024
         if ($currentMonthDate < $minDate) {
             $currentMonthDate = $minDate;
         }
 
-        // On resynchronise year / month après correction éventuelle
         $year = (int) $currentMonthDate->format('Y');
         $month = (int) $currentMonthDate->format('m');
 
@@ -67,7 +65,7 @@ class CompetitionController extends AbstractController
         $canGoPrev = $prevMonth >= $minDate;
 
         $daysInMonth = (int) $currentMonthDate->format('t');
-        $startDayOfWeek = (int) $currentMonthDate->format('N'); // 1..7
+        $startDayOfWeek = (int) $currentMonthDate->format('N');
 
         $competitions = $em->getRepository(Competition::class)->findAll();
 
@@ -87,8 +85,8 @@ class CompetitionController extends AbstractController
                 'id' => $comp->getId(),
                 'title' => $comp->getTitle(),
                 'type' => $comp->getCompetitionType(),
-                'eventDate' => $eventDate, // vraie date exploitable dans Twig
-                'date' => $eventDate->format('d/m/Y'), // date déjà formatée pour affichage
+                'eventDate' => $eventDate,
+                'date' => $eventDate->format('d/m/Y'),
                 'location' => $comp->getLocation(),
                 'image' => $comp->getImage() ? '/uploads/competitions/' . $comp->getImage() : null,
                 'teamRanking' => $comp->getTeamRanking(),
@@ -140,39 +138,35 @@ class CompetitionController extends AbstractController
         ];
     }
 
-    #[Route('/competition/feminine', name: 'competitions_feminine')]
-    public function feminine(EntityManagerInterface $em): Response
+    #[Route('/competition/equipe/{gender}', name: 'competitions_team', requirements: ['gender' => 'feminine|masculine'])]
+    public function team(EntityManagerInterface $em, string $gender): Response
     {
+        $genderDb = $gender === 'feminine' ? 'female' : 'male';
+
         $competitions = $em->getRepository(Competition::class)
-            ->findBy(['gender' => 'female'], ['eventDate' => 'DESC']);
+            ->findBy(['gender' => $genderDb], ['eventDate' => 'DESC']);
 
         $athletes = $em->getRepository(Athlete::class)
-            ->findBy(['gender' => 'female']);
+            ->findBy(['gender' => $genderDb]);
 
-        $classement = $athletes;
-
-        return $this->render('competitions/feminine.html.twig', [
+        return $this->render('competitions/team.html.twig', [
             'competitions' => $competitions,
             'athletes' => $athletes,
-            'classement' => $classement,
+            'gender' => $gender,
         ]);
     }
 
-    #[Route('/competition/masculine', name: 'competitions_masculine')]
-    public function masculine(EntityManagerInterface $em): Response
+    #[Route('/competition/equipe/{gender}/archives', name: 'competition_team_archives', requirements: ['gender' => 'feminine|masculine'])]
+    public function teamArchives(EntityManagerInterface $em, string $gender): Response
     {
+        $genderDb = $gender === 'feminine' ? 'female' : 'male';
+
         $competitions = $em->getRepository(Competition::class)
-            ->findBy(['gender' => 'male'], ['eventDate' => 'DESC']);
+            ->findBy(['gender' => $genderDb], ['eventDate' => 'DESC']);
 
-        $athletes = $em->getRepository(Athlete::class)
-            ->findBy(['gender' => 'male']);
-
-        $classement = $athletes;
-
-        return $this->render('competitions/masculine.html.twig', [
+        return $this->render('competitions/team_archives.html.twig', [
             'competitions' => $competitions,
-            'athletes' => $athletes,
-            'classement' => $classement,
+            'gender' => $gender,
         ]);
     }
 
@@ -181,28 +175,6 @@ class CompetitionController extends AbstractController
     {
         return $this->render('competitions/show.html.twig', [
             'athlete' => $athlete,
-        ]);
-    }
-
-    #[Route('/competition/feminine/archives', name: 'competition_feminine_archives')]
-    public function feminineArchives(EntityManagerInterface $em): Response
-    {
-        $competitions = $em->getRepository(Competition::class)
-            ->findBy(['gender' => 'female'], ['eventDate' => 'DESC']);
-
-        return $this->render('competitions/feminine_archives.html.twig', [
-            'competitions' => $competitions,
-        ]);
-    }
-
-    #[Route('/competition/masculine/archives', name: 'competition_masculine_archives')]
-    public function masculineArchives(EntityManagerInterface $em): Response
-    {
-        $competitions = $em->getRepository(Competition::class)
-            ->findBy(['gender' => 'male'], ['eventDate' => 'DESC']);
-
-        return $this->render('competitions/masculine_archives.html.twig', [
-            'competitions' => $competitions,
         ]);
     }
 
