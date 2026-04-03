@@ -6,6 +6,11 @@
 /* =========================================
    LAYOUT & INFOS
    ========================================= */
+.intro-block {
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
 .split-layout{
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -20,10 +25,11 @@
    est géré globalement.
    Ici on garde seulement la mise en page du titre custom.
 */
-.title-with-bar{
+.title-with-bar {
   display: flex;
-  align-items: center;
-  gap: 15px;
+  text-align: center;
+  flex-direction: column;
+  gap: 0;
 }
 
 .center-bar{
@@ -46,6 +52,7 @@
   color: var(--text-muted);
   line-height: 1.7;
   font-size: 1.05rem;
+  text-align: center;
 }
 
 /* --- Key facts --- */
