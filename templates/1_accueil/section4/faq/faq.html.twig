@@ -76,27 +76,18 @@
 					<h2 class="section-heading group-title">Questions
 						<span>Fréquentes</span>
 					</h2>
-
 					<div class="accordion-elite">
-						<div class="accordion-item">
-							<div class="accordion-header">
-								<span>Faut-il une expérience avant de s’inscrire ?</span>
-								<i class="fa-solid fa-plus"></i>
+						{% for faq in faqs | filter(f => f.categorie == 'questions') %}
+							<div class="accordion-item">
+								<div class="accordion-header">
+									<span>{{ faq.question }}</span>
+									<i class="fa-solid fa-plus"></i>
+								</div>
+								<div class="accordion-body">
+									<p>{{ faq.reponse }}</p>
+								</div>
 							</div>
-							<div class="accordion-body">
-								<p>Pas du tout ! Le CHM Saleux accueille les débutants comme les confirmés. Nos coachs sont là pour vous apprendre les bases et vous accompagner selon votre niveau.</p>
-							</div>
-						</div>
-
-						<div class="accordion-item">
-							<div class="accordion-header">
-								<span>Puis-je faire une séance d’essai ?</span>
-								<i class="fa-solid fa-plus"></i>
-							</div>
-							<div class="accordion-body">
-								<p>Oui, une séance d’essai gratuite est disponible. C’est idéal pour découvrir le club, tester le matériel et sentir l’ambiance avant de vous engager.</p>
-							</div>
-						</div>
+						{% endfor %}
 					</div>
 				</div>
 
@@ -105,21 +96,101 @@
 					<h2 class="section-heading group-title">Mon
 						<span>Abonnement</span>
 					</h2>
-
 					<div class="accordion-elite">
-						<div class="accordion-item">
-							<div class="accordion-header">
-								<span>Quels abonnements proposez-vous ?</span>
-								<i class="fa-solid fa-plus"></i>
+						{% for faq in faqs | filter(f => f.categorie == 'abonnement') %}
+							<div class="accordion-item">
+								<div class="accordion-header">
+									<span>{{ faq.question }}</span>
+									<i class="fa-solid fa-plus"></i>
+								</div>
+								<div class="accordion-body">
+									<p>{{ faq.reponse }}</p>
+								</div>
 							</div>
-							<div class="accordion-body">
-								<p>Nous proposons deux formules principales : Loisir (Musculation & Haltérophilie santé) et Compétition (pour les athlètes licenciés).</p>
-							</div>
-						</div>
+						{% endfor %}
 					</div>
 				</div>
 
-				{# ... autres groupes #}
+				{# GROUPE : ENTRAÎNEMENT #}
+				<div class="faq-group faq-group-hidden" id="entrainement">
+					<h2 class="section-heading group-title">Mon
+						<span>Entraînement</span>
+					</h2>
+					<div class="accordion-elite">
+						{% for faq in faqs | filter(f => f.categorie == 'entrainement') %}
+							<div class="accordion-item">
+								<div class="accordion-header">
+									<span>{{ faq.question }}</span>
+									<i class="fa-solid fa-plus"></i>
+								</div>
+								<div class="accordion-body">
+									<p>{{ faq.reponse }}</p>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+
+				{# GROUPE : INSTALLATIONS #}
+				<div class="faq-group faq-group-hidden" id="installations">
+					<h2 class="section-heading group-title">Nos
+						<span>Installations</span>
+					</h2>
+					<div class="accordion-elite">
+						{% for faq in faqs | filter(f => f.categorie == 'installations') %}
+							<div class="accordion-item">
+								<div class="accordion-header">
+									<span>{{ faq.question }}</span>
+									<i class="fa-solid fa-plus"></i>
+								</div>
+								<div class="accordion-body">
+									<p>{{ faq.reponse }}</p>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+
+				{# GROUPE : COMPÉTITION #}
+				<div class="faq-group faq-group-hidden" id="competition">
+					<h2 class="section-heading group-title">La
+						<span>Compétition</span>
+					</h2>
+					<div class="accordion-elite">
+						{% for faq in faqs | filter(f => f.categorie == 'competition') %}
+							<div class="accordion-item">
+								<div class="accordion-header">
+									<span>{{ faq.question }}</span>
+									<i class="fa-solid fa-plus"></i>
+								</div>
+								<div class="accordion-body">
+									<p>{{ faq.reponse }}</p>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+
+				{# GROUPE : DIVERS #}
+				<div class="faq-group faq-group-hidden" id="autres">
+					<h2 class="section-heading group-title">Questions
+						<span>Diverses</span>
+					</h2>
+					<div class="accordion-elite">
+						{% for faq in faqs | filter(f => f.categorie == 'autres') %}
+							<div class="accordion-item">
+								<div class="accordion-header">
+									<span>{{ faq.question }}</span>
+									<i class="fa-solid fa-plus"></i>
+								</div>
+								<div class="accordion-body">
+									<p>{{ faq.reponse }}</p>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+
 			</div>
 		</section>
 

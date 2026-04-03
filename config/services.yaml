@@ -1,3 +1,6 @@
+imports:
+    - { resource: "faq.yaml" }
+
 parameters:
     upload_dir: "%kernel.project_dir%/public/uploads"
     competitions_upload_dir: "%kernel.project_dir%/public/uploads/competitions"
@@ -13,6 +16,7 @@ services:
         bind:
             $projectDir: "%kernel.project_dir%"
             $geminiApiKey: "%env(GEMINI_API_KEY)%"
+            $faqs: "%faq%"
 
             $registerLimiter: "@limiter.register"
             $loginLimiter: "@limiter.login"

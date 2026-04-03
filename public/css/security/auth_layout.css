@@ -212,6 +212,21 @@
     justify-content: flex-start; /* Aligné à gauche comme les champs pour plus d'ordre */
 }
 
+/* On ajoute .checkbox-group label à la règle */
+.privacy-note, 
+.checkbox-group label {
+    font-size: 0.75rem;
+    color: #555;
+    display: block; /* Important pour que le margin-top fonctionne sur un label */
+}
+
+/* On applique la couleur des liens */
+.privacy-note a,
+.checkbox-group label a { 
+    color: var(--text-muted); 
+    text-decoration: underline; /* Optionnel : pour garder l'aspect lien */
+}
+
 /* --- SÉPARATEUR & ALERTES --- */
 .auth-separator {
     text-align: center;
