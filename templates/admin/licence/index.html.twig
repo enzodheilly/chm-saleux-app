@@ -45,7 +45,7 @@
 								<div class="identity-cell">
 									<span class="sender-name">{{ licence.firstName }}
 										{{ licence.lastName|upper }}</span>
-									<span class="td-mono-sm sender-email">{{ licence.email }}</span>
+									<span class="td-mono-sm sender-email">{{ licence.email|pseudonymize_email }}</span>
 								</div>
 							</td>
 							<td>

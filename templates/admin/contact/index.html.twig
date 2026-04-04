@@ -38,8 +38,7 @@
 								<div class="identity-cell">
 									<span class="sender-name">{{ message.firstName }}
 										{{ message.lastName|upper }}</span>
-									<span class="td-mono-sm sender-email">{{ message.email }}</span>
-									<span class="td-mono-sm sender-phone">{{ message.phone ?: '' }}</span>
+									<span class="td-mono-sm sender-email">{{ message.email|pseudonymize_email }}</span>
 								</div>
 							</td>
 

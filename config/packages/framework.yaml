@@ -9,11 +9,9 @@ framework:
     session:
         enabled: true
         handler_id: null
-
         cookie_httponly: true
         cookie_secure: auto
         cookie_samesite: lax
-
         # ✅ session 7 jours
         cookie_lifetime: 604800
         gc_maxlifetime: 604800

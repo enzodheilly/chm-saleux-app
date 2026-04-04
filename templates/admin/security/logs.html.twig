@@ -23,7 +23,7 @@
 		{% for target in topTargets|default([]) %}
 			<div class="target-card">
 				<div class="td-mono-sm card-label">CIBLE PRIORITAIRE</div>
-				<div class="target-email">{{ target.email ?? 'Inconnu' }}</div>
+				<div class="target-email">{{ (target.email ?? 'Inconnu')|pseudonymize_email }}</div>
 				<div class="badge badge-danger">{{ target.attempts }}
 					ÉCHECS</div>
 			</div>
@@ -64,7 +64,7 @@
 								<span class="time-dimmed">{{ log.createdAt|date('H:i:s') }}</span>
 							</td>
 							<td>
-								<strong>{{ log.user ? log.user.email : 'SYSTÈME' }}</strong>
+								<strong>{{ log.user ? log.user.email|pseudonymize_email : 'SYSTÈME' }}</strong>
 							</td>
 							<td>
 								<span class="td-mono ip-accent">{{ log.ip|default('—') }}</span>
@@ -102,4 +102,8 @@
 			</table>
 		</div>
 	</div>
+{% endblock %}
+
+{% block javascripts %}
+	 <script src="{{ asset('js/admin/security/logs.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

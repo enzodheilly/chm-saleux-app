@@ -17,7 +17,7 @@
 				Édition du compte
 				<span class="user-id-badge">#{{ user.id }}</span>
 				:
-				<span class="user-email-highlight">{{ user.email }}</span>
+				<span class="user-email-highlight">{{ user.email|pseudonymize_email }}</span>
 			</p>
 		</div>
 		<div class="toolbar">

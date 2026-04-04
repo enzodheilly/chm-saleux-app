@@ -4,6 +4,7 @@ namespace App\Controller\Front;
 
 use App\Entity\ContactMessage;
 use App\Service\SystemLoggerService;
+use App\Service\TurnstileVerifierService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +25,8 @@ class ContactController extends AbstractController
     public function submit(
         Request $request,
         EntityManagerInterface $em,
-        SystemLoggerService $logger
+        SystemLoggerService $logger,
+        TurnstileVerifierService $turnstile
     ): Response {
         // 1. Validation CSRF
         if (!$this->isCsrfTokenValid('contact_submit', (string) $request->request->get('_token', ''))) {
@@ -32,9 +34,9 @@ class ContactController extends AbstractController
             return $this->redirectToRoute('contact');
         }
 
-        // 2. Validation Cloudflare Turnstile
+        // 2. Validation Cloudflare Turnstile (côté serveur)
         $turnstileResponse = $request->request->get('cf-turnstile-response');
-        if (!$turnstileResponse) {
+        if (!$turnstile->verify($turnstileResponse, $request->getClientIp())) {
             $this->addFlash('danger', 'La vérification anti-robot a échoué. Veuillez réessayer.');
             return $this->redirectToRoute('contact');
         }
@@ -75,7 +77,6 @@ class ContactController extends AbstractController
         );
 
         $this->addFlash('success', 'Votre message a bien été envoyé.');
-
         return $this->redirectToRoute('contact');
     }
 }

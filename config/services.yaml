@@ -72,3 +72,11 @@ services:
         arguments:
             $allowedCountry: "%env(string:GEO_ALLOWED_COUNTRY)%"
             $blockVpn: "%env(bool:GEO_BLOCK_VPN)%"
+
+    # ============================================================
+    # SECURITY LOG SUBSCRIBER
+    # ============================================================
+    App\EventSubscriber\SecurityLogSubscriber:
+        arguments:
+            $adminEmail: "%env(ADMIN_ALERT_EMAIL)%"
+            $adminSiteUrl: "%env(ADMIN_SITE_URL)%"

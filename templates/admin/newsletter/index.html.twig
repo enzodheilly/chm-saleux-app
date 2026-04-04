@@ -34,7 +34,7 @@
 							<td>
 								{# La classe link-accent remplace le style inline #}
 								<a href="mailto:{{ s.email }}" class="link-accent">
-									{{ s.email }}
+									{{ s.email|pseudonymize_email }}
 								</a>
 							</td>
 							<td class="td-mono-sm">

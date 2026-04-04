@@ -7,7 +7,7 @@ framework:
 
         login:
             policy: "sliding_window"
-            limit: 20
+            limit: 10
             interval: "10 minutes"
 
         verify_code:
