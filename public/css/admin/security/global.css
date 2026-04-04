@@ -1,0 +1,205 @@
+/* =================== STRUCTURE GLOBALE =================== */
+.dashboard-container {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* =================== EN-TÊTE (PAGE HEADER) =================== */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1.5rem;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
+}
+
+.page-header p {
+    margin: 5px 0 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* =================== BARRE D'OUTILS & FILTRES =================== */
+.toolbar-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    background: var(--bg-sidebar);
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+.search-bar, .search-input {
+    background: var(--bg-body);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    outline: none;
+    min-width: 300px;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+}
+
+.search-bar:focus, .search-input:focus {
+    border-color: var(--accent);
+}
+
+.filter-group {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* =================== BOUTONS & ACTIONS =================== */
+.btn-unlock, .btn-danger-outline, .btn-export, .filter-btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid transparent;
+}
+
+.btn-unlock { background: #22c55e; color: #fff; border: none; }
+.btn-unlock:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.btn-danger-outline {
+    background: transparent;
+    color: var(--danger);
+    border-color: var(--danger);
+}
+.btn-danger-outline:hover { background: var(--danger); color: #fff; }
+
+.btn-export {
+    background: var(--bg-body);
+    color: var(--text-main);
+    border-color: var(--border-color);
+}
+.btn-export:hover { border-color: var(--accent); color: var(--accent); }
+
+.filter-btn {
+    border-radius: 20px;
+    font-size: 0.75rem;
+    background: var(--bg-body);
+    border-color: var(--border-color);
+    color: var(--text-muted);
+}
+.filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* =================== TABLEAUX & CARTES =================== */
+.table-wrapper, .content-card {
+    background: var(--bg-sidebar);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.admin-table, .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.admin-table th, .table th {
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-muted);
+    font-weight: 600;
+    text-align: left;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+}
+
+.admin-table td, .table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-main);
+    vertical-align: middle;
+}
+
+.admin-table tr:hover td, .table tr:hover td {
+    background: rgba(255, 255, 255, 0.01);
+}
+
+/* =================== BADGES & INDICATEURS UI =================== */
+.ip-address, .ip-tag {
+    font-family: monospace;
+    color: var(--accent);
+    background: rgba(255, 102, 0, 0.05);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-blocked, .log-failed {
+    color: var(--danger);
+    background: rgba(229, 77, 66, 0.1);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 800;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    border: 1px solid rgba(229, 77, 66, 0.2);
+}
+
+.badge-nocturne, .badge-weekend {
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.65rem;
+    font-weight: 700;
+}
+.badge-nocturne { background: rgba(99, 102, 241, 0.1); color: #6366f1; border: 1px solid rgba(99, 102, 241, 0.2); }
+.badge-weekend { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
+
+/* =================== STATS & TARGET CARDS =================== */
+.targets-list { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+
+.target-card {
+    background: var(--bg-body);
+    padding: 1.2rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--danger);
+    flex: 1;
+    min-width: 250px;
+}
+
+.target-attempts { font-size: 1.5rem; font-weight: 800; color: var(--danger); margin-top: 8px; }
+
+/* =================== UTILITAIRES & CELLULES SPÉCIFIQUES =================== */
+.th-right, .td-right { text-align: right; }
+.identity-cell { display: flex; flex-direction: column; }
+.time-info { font-size: 0.8rem; color: var(--text-muted); display: flex; flex-direction: column; }
+.time-info strong { color: var(--text-main); }
+.td-mono-sm { font-family: monospace; font-size: 0.8rem; color: var(--text-muted); }
+
+.td-empty { text-align: center; padding: 5rem; color: var(--text-muted); }
+.empty-icon { font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.3; }
+
+.hidden { display: none; }

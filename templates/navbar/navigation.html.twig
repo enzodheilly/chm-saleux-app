@@ -7,12 +7,12 @@
 			<div class="info-track">
 				<div class="info-item">
 					<i class="fa-solid fa-scale-balanced"></i>
-					<span>ASSOCIATION LOI 1901</span>
+					<span>Association loi 1901</span>
 				</div>
 
 				<div class="info-item">
 					<i class="fa-solid fa-location-dot"></i>
-					<span>SALEUX – COMPLEXE SPORTIF</span>
+					<span>Saleux - Complexe sportif</span>
 				</div>
 
 				<div class="info-item">
@@ -22,22 +22,22 @@
 
 				<div class="info-item">
 					<i class="fa-solid fa-handshake"></i>
-					<a href="{{ path('app_partenaire') }}">DEVENIR PARTENAIRE</a>
+					<a href="{{ path('app_partenaire') }}">Devenir Partenaire</a>
 				</div>
 			</div>
 
 			<div class="info-actions">
 				<a href="{{ path('faq') }}" class="top-link">
 					<i class="fa-solid fa-circle-question"></i>
-					AIDE</a>
+					Centre d'aide</a>
 				{% if app.user %}
 					<a href="{{ path('app_logout') }}" class="top-link">
 						<i class="fa-solid fa-power-off"></i>
-						DÉCONNEXION</a>
+						Déconnexion</a>
 				{% else %}
 					<a href="{{ path('app_login') }}" class="top-link">
 						<i class="fa-solid fa-user"></i>
-						ESPACE ADHÉRENT</a>
+						Espace adhérent</a>
 				{% endif %}
 			</div>
 		</div>
@@ -143,7 +143,6 @@
 				<a href="{{ path('app_pricing') }}">Tarifs</a>
 				<a href="{{ path('ecole') }}">Notre École</a>
 				<a href="{{ path('competition') }}">Compétitions & Résultats</a>
-				<a href="{{ path('faq') }}">Aide</a>
 			</div>
 
 			<div class="mobile-footer-nav mobile-footer-nav-redesign">
@@ -165,7 +164,7 @@
 
 				<a href="{{ path('faq') }}" class="mobile-footer-link-clean">
 					<i class="fa-regular fa-circle-question"></i>
-					<span>Service client</span>
+					<span>Centre d'aide</span>
 				</a>
 			</div>
 
