@@ -44,7 +44,7 @@
 									<div class="title-stack">
 										<strong>{{ user.firstname }}
 											{{ user.lastname|upper }}</strong>
-										<span class="td-mono-sm">{{ user.email }}</span>
+										<span class="td-mono-sm">{{ user.email|pseudonymize_email }}</span>
 									</div>
 								</div>
 							</td>

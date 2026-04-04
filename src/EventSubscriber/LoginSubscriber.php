@@ -15,7 +15,7 @@ class LoginSubscriber implements EventSubscriberInterface
     {
         return [
             LoginSuccessEvent::class => 'onLoginSuccess',
-            LogoutEvent::class => 'onLogout',
+            LogoutEvent::class       => 'onLogout',
         ];
     }
 
@@ -23,9 +23,10 @@ class LoginSubscriber implements EventSubscriberInterface
     {
         $user = $event->getUser();
         if (method_exists($user, 'getUserIdentifier')) {
+            $pseudo = $this->logger->pseudonymizeEmail($user->getUserIdentifier());
             $this->logger->add(
                 'Connexion réussie',
-                sprintf('L’utilisateur %s s’est connecté avec succès.', $user->getUserIdentifier())
+                sprintf('L\'utilisateur %s s\'est connecté avec succès.', $pseudo)
             );
         }
     }
@@ -34,9 +35,10 @@ class LoginSubscriber implements EventSubscriberInterface
     {
         $user = $event->getToken()?->getUser();
         if ($user && method_exists($user, 'getUserIdentifier')) {
+            $pseudo = $this->logger->pseudonymizeEmail($user->getUserIdentifier());
             $this->logger->add(
                 'Déconnexion',
-                sprintf('L’utilisateur %s s’est déconnecté.', $user->getUserIdentifier())
+                sprintf('L\'utilisateur %s s\'est déconnecté.', $pseudo)
             );
         }
     }

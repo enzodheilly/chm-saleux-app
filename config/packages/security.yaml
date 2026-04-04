@@ -109,6 +109,8 @@ security:
         - { path: ^/set-password, roles: ROLE_USER }
         - { path: ^/dashboard, roles: ROLE_USER }
         - { path: ^/profile, roles: ROLE_USER }
+
+        # 2FA obligatoire pour les admins — ordre important !
         - { path: ^/admin, roles: ROLE_ADMIN }
 
     role_hierarchy:

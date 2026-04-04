@@ -427,3 +427,8 @@
         font-size: 1.8rem;
     }
 }
+.no-results {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+}

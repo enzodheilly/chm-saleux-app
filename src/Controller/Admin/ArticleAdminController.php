@@ -14,10 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/articles', name: 'admin_articles_')]
 class ArticleAdminController extends AbstractController
 {
+    private const ALLOWED_MIMES = ['image/jpeg', 'image/png', 'image/webp'];
+    private const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 Mo
+
     #[Route('/', name: 'index')]
     public function index(ArticleRepository $articleRepo): Response
     {
-        // 🔹 On trie par date de publication
         $articles = $articleRepo->findBy([], ['publishedAt' => 'DESC']);
 
         return $this->render('admin/articles/index.html.twig', [
@@ -34,9 +36,18 @@ class ArticleAdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Upload de l'image
             $photoFile = $form->get('photo')->getData();
             if ($photoFile) {
+                if (!in_array($photoFile->getMimeType(), self::ALLOWED_MIMES)) {
+                    $this->addFlash('error', 'Format non autorisé (JPEG, PNG, WebP uniquement).');
+                    return $this->redirectToRoute('admin_articles_new');
+                }
+
+                if ($photoFile->getSize() > self::MAX_FILE_SIZE) {
+                    $this->addFlash('error', 'Fichier trop volumineux (max 2 Mo).');
+                    return $this->redirectToRoute('admin_articles_new');
+                }
+
                 $newFilename = uniqid() . '.' . $photoFile->guessExtension();
                 $photoFile->move($this->getParameter('uploads_directory'), $newFilename);
                 $article->setPhoto($newFilename);
@@ -59,7 +70,6 @@ class ArticleAdminController extends AbstractController
     #[Route('/{id}/delete', name: 'delete', methods: ['POST'])]
     public function delete(Request $request, Article $article, EntityManagerInterface $em): Response
     {
-        // ✅ Vérifier le token CSRF pour sécurité
         if ($this->isCsrfTokenValid('delete' . $article->getId(), $request->request->get('_token'))) {
             $em->remove($article);
             $em->flush();
@@ -79,9 +89,18 @@ class ArticleAdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Upload de l'image si besoin
             $photoFile = $form->get('photo')->getData();
             if ($photoFile) {
+                if (!in_array($photoFile->getMimeType(), self::ALLOWED_MIMES)) {
+                    $this->addFlash('error', 'Format non autorisé (JPEG, PNG, WebP uniquement).');
+                    return $this->redirectToRoute('admin_articles_edit', ['id' => $article->getId()]);
+                }
+
+                if ($photoFile->getSize() > self::MAX_FILE_SIZE) {
+                    $this->addFlash('error', 'Fichier trop volumineux (max 2 Mo).');
+                    return $this->redirectToRoute('admin_articles_edit', ['id' => $article->getId()]);
+                }
+
                 $newFilename = uniqid() . '.' . $photoFile->guessExtension();
                 $photoFile->move($this->getParameter('uploads_directory'), $newFilename);
                 $article->setPhoto($newFilename);
@@ -94,7 +113,7 @@ class ArticleAdminController extends AbstractController
         }
 
         return $this->render('admin/articles/edit.html.twig', [
-            'title' => 'Modifier l’article',
+            'title' => 'Modifier l\'article',
             'form' => $form->createView(),
             'article' => $article
         ]);

@@ -437,3 +437,12 @@
     font-size: 1.55rem;
   }
 }
+
+.turnstile-wrapper {
+    margin: 20px 0;
+}
+
+.spinner {
+    display: none;
+    margin-left: 10px;
+}

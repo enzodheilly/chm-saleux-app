@@ -14,8 +14,29 @@ class SystemLoggerService
         private EntityManagerInterface $em,
         private Security $security,
         private RequestStack $requestStack,
-        private UserRepository $userRepository // Pour retrouver l'objet User si besoin
+        private UserRepository $userRepository
     ) {}
+
+    /**
+     * Pseudonymise un email pour les logs.
+     * Ex: enzodheilly@gmail.com → e***@g***.com
+     */
+    public function pseudonymizeEmail(?string $email): ?string
+    {
+        if (!$email || !str_contains($email, '@')) {
+            return $email;
+        }
+
+        [$local, $domain] = explode('@', $email, 2);
+
+        $localPseudo = substr($local, 0, 1) . '***';
+
+        $domainParts = explode('.', $domain);
+        $tld = array_pop($domainParts);
+        $domainPseudo = substr(implode('.', $domainParts), 0, 1) . '***.' . $tld;
+
+        return $localPseudo . '@' . $domainPseudo;
+    }
 
     public function add(string $type, string $message, ?string $contextEmail = null): void
     {
@@ -24,32 +45,26 @@ class SystemLoggerService
             ->setMessage($message)
             ->setCreatedAt(new \DateTimeImmutable());
 
-        // 1. On gère l'utilisateur
         $currentUser = $this->security->getUser();
 
         if ($contextEmail) {
-            // On remplit ton champ spécifique emailAttempt
-            $log->setEmailAttempt($contextEmail);
+            $log->setEmailAttempt($this->pseudonymizeEmail($contextEmail));
 
-            // Optionnel : On essaie de lier l'objet User si l'email existe en BDD
             $userEntity = $this->userRepository->findOneBy(['email' => $contextEmail]);
             if ($userEntity) {
                 $log->setUser($userEntity);
             }
         } elseif ($currentUser instanceof \App\Entity\User) {
-            // Si quelqu'est connecté, on lie l'objet User
             $log->setUser($currentUser);
-            $log->setEmailAttempt($currentUser->getUserIdentifier());
+            $log->setEmailAttempt($this->pseudonymizeEmail($currentUser->getUserIdentifier()));
         }
 
-        // 2. Capture technique (IP, Browser, OS via UserAgent)
         $request = $this->requestStack->getCurrentRequest();
         if ($request) {
             $ua = $request->headers->get('User-Agent');
             $log->setIp($request->getClientIp());
             $log->setUserAgent($ua);
 
-            // On remplit tes champs os et browser
             if ($ua) {
                 if (str_contains($ua, 'Windows')) $log->setOs('Windows');
                 elseif (str_contains($ua, 'iPhone')) $log->setOs('iOS');

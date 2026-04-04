@@ -12,13 +12,11 @@ use Symfony\Component\Mime\Email;
 #[AsEntityListener(event: Events::postPersist, method: 'postPersist', entity: SecurityLog::class)]
 class SecurityLogSubscriber
 {
-    private MailerInterface $mailer;
-    private string $adminEmail = 'votre-email@admin.com'; // 📧 À MODIFIER
-
-    public function __construct(MailerInterface $mailer)
-    {
-        $this->mailer = $mailer;
-    }
+    public function __construct(
+        private readonly MailerInterface $mailer,
+        private readonly string $adminEmail,
+        private readonly string $adminSiteUrl
+    ) {}
 
     public function postPersist(SecurityLog $log, LifecycleEventArgs $event): void
     {
@@ -39,7 +37,7 @@ class SecurityLogSubscriber
                         <li><strong>IP :</strong> {$log->getIp()}</li>
                         <li><strong>Heure :</strong> {$log->getCreatedAt()->format('d/m/Y H:i:s')}</li>
                     </ul>
-                    <p><a href='https://votre-site.com/admin/security/logs'>Consulter les journaux</a></p>
+                    <p><a href='{$this->adminSiteUrl}/admin/security/logs'>Consulter les journaux</a></p>
                 ");
 
             $this->mailer->send($email);

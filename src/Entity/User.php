@@ -528,14 +528,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
 
     public function isBackupCode(string $code): bool
     {
-        return in_array($code, $this->backupCodes, true);
+        foreach ($this->backupCodes as $hashedCode) {
+            if (password_verify($code, $hashedCode)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function invalidateBackupCode(string $code): void
     {
-        if (($key = array_search($code, $this->backupCodes, true)) !== false) {
-            unset($this->backupCodes[$key]);
-            $this->backupCodes = array_values($this->backupCodes);
+        foreach ($this->backupCodes as $key => $hashedCode) {
+            if (password_verify($code, $hashedCode)) {
+                unset($this->backupCodes[$key]);
+                $this->backupCodes = array_values($this->backupCodes);
+                return;
+            }
         }
     }
 

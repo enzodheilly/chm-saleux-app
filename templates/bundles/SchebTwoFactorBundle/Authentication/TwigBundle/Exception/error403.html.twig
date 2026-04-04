@@ -1,31 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accès restreint - CHM{% endblock %}
+{% block title %}Accès restreint - CHM
+{% endblock %}
 
 {% block body %}
-<div style="max-width: 600px; margin: 100px auto; text-align: center; font-family: sans-serif;">
-    <div style="font-size: 80px; margin-bottom: 20px;">🇫🇷</div>
-    <h1 style="color: #1e293b; font-size: 2rem; font-weight: 800;">Accès Limité à la France</h1>
-    
-    <p style="color: #64748b; font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;">
-        Désolé, pour des raisons de sécurité, le site de notre association n'est pas accessible depuis votre position géographique actuelle.
-    </p>
+	<div style="max-width: 600px; margin: 100px auto; text-align: center; font-family: sans-serif;">
+		<div style="font-size: 80px; margin-bottom: 20px;">🇫🇷</div>
+		<h1 style="color: #1e293b; font-size: 2rem; font-weight: 800;">Accès Limité à la France</h1>
 
-    <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; text-align: left;">
-        <h3 style="margin-top: 0; font-size: 0.9rem; color: #475569;">Pourquoi ce message ?</h3>
-        <ul style="font-size: 0.85rem; color: #64748b; padding-left: 20px;">
-            <li>Vous utilisez peut-être un VPN ou un Proxy situé à l'étranger.</li>
-            <li>Vous êtes actuellement en voyage en dehors du territoire français.</li>
-            <li>Nous appliquons une politique de restriction pour prévenir les cyberattaques internationales.</li>
-        </ul>
-    </div>
+		<p style="color: #64748b; font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;">
+			Désolé, pour des raisons de sécurité, le site de notre association n'est pas accessible depuis votre position géographique actuelle.
+		</p>
 
-    <p style="margin-top: 30px; font-size: 0.9rem; color: #94a3b8;">
-        Si vous êtes un membre du club et que vous pensez qu'il s'agit d'une erreur, contactez l'administrateur.
-    </p>
-    
-    <a href="/" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background: #2563eb; color: white; text-decoration: none; border-radius: 5px; font-weight: 600;">
-        Retour à l'accueil
-    </a>
-</div>
+		<div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; text-align: left;">
+			<h3 style="margin-top: 0; font-size: 0.9rem; color: #475569;">Pourquoi ce message ?</h3>
+			<ul style="font-size: 0.85rem; color: #64748b; padding-left: 20px;">
+				<li>Vous utilisez peut-être un VPN ou un Proxy situé à l'étranger.</li>
+				<li>Vous êtes actuellement en voyage en dehors du territoire français.</li>
+				<li>Nous appliquons une politique de restriction pour prévenir les cyberattaques internationales.</li>
+			</ul>
+		</div>
+
+		<p style="margin-top: 30px; font-size: 0.9rem; color: #94a3b8;">
+			Si vous êtes un membre du club et que vous pensez qu'il s'agit d'une erreur, contactez l'administrateur.
+		</p>
+
+		<a href="/" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background: #2563eb; color: white; text-decoration: none; border-radius: 5px; font-weight: 600;">
+			Retour à l'accueil
+		</a>
+	</div>
 {% endblock %}

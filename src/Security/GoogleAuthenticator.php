@@ -36,7 +36,6 @@ class GoogleAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        // ✅ Rate limit par IP sur le callback
         $ip = (string) ($request->getClientIp() ?? '0.0.0.0');
         $limit = $this->googleOauthCheckLimiter->create($ip)->consume(1);
 
@@ -51,7 +50,6 @@ class GoogleAuthenticator extends AbstractAuthenticator
             /** @var GoogleUser $googleUser */
             $googleUser = $client->fetchUserFromToken($accessToken);
 
-            // ✅ Email obligatoire
             $rawEmail = (string) $googleUser->getEmail();
             $email = strtolower(trim($rawEmail));
 
@@ -68,32 +66,22 @@ class GoogleAuthenticator extends AbstractAuthenticator
                     /** @var \App\Repository\UserRepository $repo */
                     $repo = $this->em->getRepository(User::class);
 
-                    // ✅ recherche insensible à la casse
                     $user = $repo->createQueryBuilder('u')
                         ->where('LOWER(u.email) = :email')
                         ->setParameter('email', $email)
                         ->getQuery()
                         ->getOneOrNullResult();
 
-                    // ==========================
-                    // ✅ USER EXISTANT
-                    // ==========================
+                    $pseudo = $this->logger->pseudonymizeEmail($email);
+
                     if ($user instanceof User) {
-                        // complète seulement si vide
                         if (!$user->getFirstName() && $firstName) $user->setFirstName($firstName);
                         if (!$user->getLastName() && $lastName)  $user->setLastName($lastName);
 
-                        // Si Google OK → on peut valider le compte
                         if (!$user->isVerified()) {
                             $user->setIsVerified(true);
                         }
 
-                        /**
-                         * ✅ IMPORTANT :
-                         * - si le compte vient d'une inscription EMAIL (password != null),
-                         *   il ne doit JAMAIS rester avec needsPassword = true.
-                         * - si le compte vient de Google et n'a pas encore de password, needsPassword reste true.
-                         */
                         if ($user->getPassword() !== null) {
                             $user->setNeedsPassword(false);
                         }
@@ -102,38 +90,30 @@ class GoogleAuthenticator extends AbstractAuthenticator
 
                         $this->logger->add(
                             'Connexion',
-                            sprintf('OAuth Google OK (user existant): %s (IP: %s)', $email, $ip)
+                            sprintf('OAuth Google OK (user existant): %s (IP: %s)', $pseudo, $ip)
                         );
 
                         return $user;
                     }
 
-                    // ==========================
-                    // ✅ NOUVEL USER VIA GOOGLE
-                    // ==========================
                     $user = new User();
                     $user->setEmail($email);
                     $user->setFirstName($firstName ?: null);
                     $user->setLastName($lastName ?: null);
                     $user->setRoles(['ROLE_USER']);
                     $user->setIsVerified(true);
-
-                    // ✅ LE FIX : pas de password tant qu'il ne l'a pas choisi
                     $user->setPassword(null);
-
-                    // ✅ Ce flag déclenche ton setPasswordModal (uniquement Google)
                     $user->setNeedsPassword(true);
 
                     $this->em->persist($user);
                     $this->em->flush();
 
-                    $this->logger->add('Inscription', sprintf('Nouvel utilisateur via Google : %s (IP: %s)', $email, $ip));
+                    $this->logger->add('Inscription', sprintf('Nouvel utilisateur via Google : %s (IP: %s)', $pseudo, $ip));
 
                     return $user;
                 })
             );
         } catch (CustomUserMessageAuthenticationException $e) {
-            // message déjà safe
             throw $e;
         } catch (\Throwable $e) {
             $this->logger->add('Erreur Connexion', 'OAuth Google: exception: ' . $e->getMessage());
@@ -150,23 +130,17 @@ class GoogleAuthenticator extends AbstractAuthenticator
             return new RedirectResponse($this->router->generate('home'));
         }
 
-        $this->logger->add('Connexion', sprintf('Connexion Google OK : %s', $user->getEmail()));
+        $pseudo = $this->logger->pseudonymizeEmail($user->getEmail());
+        $this->logger->add('Connexion', sprintf('Connexion Google OK : %s', $pseudo));
 
-        // ✅ PRIORITÉ 1 : Forcer la création d'un mot de passe si manquant
         if ($user->getNeedsPassword()) {
             return new RedirectResponse($this->router->generate('set_password'));
         }
 
-        // ✅ PRIORITÉ 2 : Si c'est un Admin, on vérifie s'il doit passer la 2FA
         if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
-
-            // Si l'utilisateur a déjà configuré son 2FA, on le redirige vers le dashboard
-            // Ton controller Dashboard se chargera d'afficher le Gatekeeper (QR ou Input)
-            // car l'utilisateur est techniquement "connecté" mais pas encore "vérifié 2FA"
             return new RedirectResponse($this->router->generate('admin_dashboard'));
         }
 
-        // ✅ PRIORITÉ 3 : Utilisateur standard
         return new RedirectResponse($this->router->generate('home'));
     }
 

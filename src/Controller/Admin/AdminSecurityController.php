@@ -179,12 +179,18 @@ class AdminSecurityController extends AbstractController
             if ($ga->checkCode($user, $authCode)) {
                 $user->setIsTotpConfirmed(true);
 
-                $backupCodes = [];
+                // Générer les codes en clair (affichage unique à l'admin)
+                $plainCodes = [];
                 for ($i = 0; $i < 5; $i++) {
-                    $backupCodes[] = strtoupper(bin2hex(random_bytes(2)) . '-' . bin2hex(random_bytes(2)));
+                    $plainCodes[] = strtoupper(bin2hex(random_bytes(2)) . '-' . bin2hex(random_bytes(2)));
                 }
 
-                $user->setBackupCodes($backupCodes);
+                // Hacher les codes avant stockage en BDD
+                $hashedCodes = array_map(
+                    fn(string $code) => password_hash($code, PASSWORD_BCRYPT),
+                    $plainCodes
+                );
+                $user->setBackupCodes($hashedCodes);
 
                 $log = new SecurityLog();
                 $log->setType('connexion');
@@ -197,7 +203,8 @@ class AdminSecurityController extends AbstractController
                 $em->persist($log);
                 $em->flush();
 
-                $request->getSession()->set('show_backup_codes', $backupCodes);
+                // On passe les codes EN CLAIR en session pour affichage unique
+                $request->getSession()->set('show_backup_codes', $plainCodes);
 
                 $this->addFlash('success', 'Sécurité activée ! Notez bien vos codes de secours.');
 

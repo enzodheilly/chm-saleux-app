@@ -36,7 +36,7 @@
 						<tr>
 							<td>
 								<div class="title-stack">
-									<strong>{{ row.email }}</strong>
+									<strong>{{ row.email|pseudonymize_email }}</strong>
 									<span class="td-mono-sm">ID Utilisateur: #{{ row.id }}</span>
 								</div>
 							</td>
@@ -74,4 +74,8 @@
 			</table>
 		</div>
 	</div>
+{% endblock %}
+
+{% block javascripts %}
+	 <script src="{{ asset('js/admin/security/blocklist.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

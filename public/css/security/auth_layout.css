@@ -481,3 +481,7 @@
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
 }
+
+.link-legal {
+    color: #1a56db;
+}

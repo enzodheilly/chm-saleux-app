@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Repository\SecurityLogRepository;
 use App\Repository\NewsletterSubscriberRepository;
@@ -18,12 +19,14 @@ class AdminDashboardController extends AbstractController
         NewsletterSubscriberRepository $subsRepo
     ): Response {
 
-        /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
         // 🔒 REDIRECTION DE SÉCURITÉ
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('app_login');
+        }
+
         // Si l'admin n'a pas confirmé son 2FA, on l'éjecte vers la page dédiée.
-        // Le Dashboard ne s'occupe plus de gérer le QR code lui-même.
         if (!$user->isTotpConfirmed()) {
             return $this->redirectToRoute('admin_security_2fa_setup');
         }
@@ -57,8 +60,8 @@ class AdminDashboardController extends AbstractController
         // Activité simulée
         $recentActivity = [
             ['text' => 'Nouvel utilisateur <b>inscrit</b>', 'date' => new \DateTimeImmutable('-2 hours')],
-            ['text' => 'Envoi d’une newsletter test', 'date' => new \DateTimeImmutable('-1 day')],
-            ['text' => 'Suppression d’un ancien log', 'date' => new \DateTimeImmutable('-3 days')],
+            ['text' => 'Envoi d\'une newsletter test', 'date' => new \DateTimeImmutable('-1 day')],
+            ['text' => 'Suppression d\'un ancien log', 'date' => new \DateTimeImmutable('-3 days')],
         ];
 
         return $this->render('admin/dashboard.html.twig', [

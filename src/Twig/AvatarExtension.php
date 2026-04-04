@@ -11,6 +11,7 @@ class AvatarExtension extends AbstractExtension
     {
         return [
             new TwigFilter('avatar_initials', [$this, 'generateAvatar']),
+            new TwigFilter('pseudonymize_email', [$this, 'pseudonymizeEmail']),
         ];
     }
 
@@ -34,5 +35,29 @@ class AvatarExtension extends AbstractExtension
             . '</svg>';
 
         return 'data:image/svg+xml;base64,' . base64_encode($svg);
+    }
+
+    public function pseudonymizeEmail(?string $email): ?string
+    {
+        if (!$email || !str_contains($email, '@')) {
+            return $email;
+        }
+
+        [$local, $domain] = explode('@', $email, 2);
+
+        // Récupère le dernier chiffre présent dans la partie locale
+        $lastDigit = '';
+        preg_match_all('/\d/', $local, $matches);
+        if (!empty($matches[0])) {
+            $lastDigit = end($matches[0]);
+        }
+
+        $localPseudo = substr($local, 0, 1) . '***' . $lastDigit;
+
+        $domainParts = explode('.', $domain);
+        $tld = array_pop($domainParts);
+        $domainPseudo = substr(implode('.', $domainParts), 0, 1) . '***.' . $tld;
+
+        return $localPseudo . '@' . $domainPseudo;
     }
 }
