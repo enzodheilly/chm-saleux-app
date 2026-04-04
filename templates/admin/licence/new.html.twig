@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/licence/new.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/admin/licence/global.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -83,9 +83,9 @@
 {% endblock %}
 
 {% block javascripts %} <script nonce="{{ csp_nonce('script') }}">
-	        window.licenceData = {
-	            benefitsUrl: "{{ path('admin_licence_membership_plan_benefits', {'id': '__ID__'}) }}"
-	        };
-	    </script>
+		        window.licenceData = {
+		            benefitsUrl: "{{ path('admin_licence_membership_plan_benefits', {'id': '__ID__'}) }}"
+		        };
+		    </script>
 	 <script src="{{ asset('js/admin/licence/new.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}
