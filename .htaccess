@@ -1,0 +1,25 @@
+# ======================================
+# Security headers pour Symfony + CSP
+# ======================================
+
+<IfModule mod_headers.c>
+    Header unset X-Powered-By
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    Header always set X-Frame-Options "DENY"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "no-referrer, strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), fullscreen=(self)"
+    Header always set X-Robots-Tag "noindex, nofollow"
+
+    # Content Security Policy par défaut (sera surchargée par Nelmio si nonce actif)
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://maps.googleapis.com https://maps.gstatic.com https://www.google.com 'unsafe-inline'; style-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net 'unsafe-inline'; font-src 'self' data: https://cdnjs.cloudflare.com; img-src 'self' data: blob: https://chart.googleapis.com https://cdn.jsdelivr.net https://maps.gstatic.com https://maps.googleapis.com https://www.google.com https://flagcdn.com; connect-src 'self' https://cdn.jsdelivr.net https://www.gstatic.com https://maps.googleapis.com https://www.google.com https://ipapi.co; frame-src https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self'; child-src 'self'; manifest-src 'self';"
+</IfModule>
+
+# ======================================
+# HTTPS redirection (si nécessaire)
+# ======================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>

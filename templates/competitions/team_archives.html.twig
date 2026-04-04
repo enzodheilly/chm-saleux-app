@@ -73,7 +73,7 @@
 					{% for comp in competitions %}
 						<article class="history-card history-card-archives">
 							<div class="card-thumb">
-								<img src="{{ comp.image ? asset('uploads/competitions/' ~ comp.image) : asset('images/defaults/competition-placeholder.jpg') }}" alt="{{ comp.title }}">
+								<img src="{{ comp.image ? asset('uploads/competitions/' ~ comp.image) : asset('images/defaults/competition-placeholder.jpg') }}" alt="{{ comp.title }}" loading="lazy">
 								<div class="card-date">{{ comp.eventDate ? comp.eventDate|date('d/m/Y') : '--/--/----' }}</div>
 
 								{% if comp.teamRanking %}

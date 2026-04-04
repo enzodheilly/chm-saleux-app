@@ -278,8 +278,8 @@
 
 .page-header-sport {
   position: relative;
-  padding-top: var(--nav-height, 60px);
   height: 75vh;
+  margin-top: -117px;
   min-height: 520px;
   display: flex;
   align-items: center;
@@ -331,7 +331,7 @@
   position: relative;
   z-index: 3;
   width: 100%;
-  top: -50px;
+  top: 0;
   padding: 0;
 }
 
@@ -393,8 +393,10 @@
 /* Responsive */
 @media (max-width: 992px) {
   .page-header-sport {
+    /* Maintient l'image sous la nav en responsive */
+    margin-top: -117px; 
     height: auto !important;
-    min-height: 400px !important;
+    min-height: 450px !important;
     clip-path: polygon(0 0, 100% 0, 100% 94%, 0 100%);
     margin-bottom: -45px;
   }
@@ -417,7 +419,12 @@
     );
   }
 
-  .header-content { top: 0 !important; }
+  .header-content { 
+    /* On redescend le texte pour compenser la remontée du header */
+    padding-top: 130px !important;
+    top: 0 !important; 
+  }
+  
   .header-main-box { max-width: 100%; }
 
   .page-header-sport .page-container {
@@ -426,7 +433,7 @@
   }
 
   .header-main-box h1 {
-    font-size: 2rem !important;
+    font-size: 2.2rem !important; /* Un peu plus grand pour l'impact */
     line-height: 1.1;
   }
 
@@ -435,12 +442,27 @@
 
 @media (max-width: 768px) {
   .page-header-sport {
+    /* On garde la même marge car la nav mobile fait souvent la même taille */
+    margin-top: -117px; 
+    min-height: 400px !important;
     clip-path: polygon(0 0, 100% 0, 100% 96%, 0 100%);
     margin-bottom: -35px;
   }
-  .header-main-box .lead { font-size: 0.88rem; }
-}
+  
+  .header-content {
+    /* Ajustement précis pour le mobile */
+    padding-top: 110px !important;
+  }
 
+  .header-main-box h1 {
+    font-size: 1.8rem !important;
+  }
+
+  .header-main-box .lead { 
+    font-size: 0.95rem; 
+    line-height: 1.5;
+  }
+}
 
 /* --- DÉCORATION GAUCHE (image dots) --- */
 .deco-left-wrap {
@@ -453,7 +475,7 @@
 
 .deco-left-img {
   position: absolute;
-  left: -25px;
+  left: -33px;
   top: -20px; /* remonte légèrement pour chevaucher le séparateur */
   width: clamp(120px, 14vw, 200px);
   height: auto;
@@ -554,10 +576,27 @@
 html, body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
 }
 
 body{
   padding-top: calc(var(--info-h) + var(--nav-h));
 }
 
+.toast-mini {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    background: #111;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: 0.25s;
+    z-index: 3000;
+}
+.toast-mini.show {
+    opacity: 1;
+    transform: none;
+}

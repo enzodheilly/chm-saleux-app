@@ -24,13 +24,23 @@
 /* CONTENEUR PRINCIPAL */
 .hero-section {
   position: relative;
-  height: 100vh;
-  min-height: var(--hero-min-height);
+  
+  /* 1. On remonte pour boucher le trou sous la top-bar */
+  margin-top: -42px; 
+
+  /* 2. On ajuste le calcul : 
+     On veut 100vh - la barre principale (77px), 
+     mais on NE soustrait PLUS la topbar (40px) puisqu'on glisse dessous.
+  */
+  height: calc(100vh - 77px); 
+  
+  /* 3. Sécurité et propreté */
+  min-height: 600px;
   width: 100%;
   overflow: hidden;
-  margin: 0;
-  padding: 0;
   background-color: var(--dark-bg);
+  display: block;
+  padding-top: 0 !important;
 }
 
 /* IMAGE DE FOND */
@@ -41,14 +51,17 @@
   width: 100%;
   height: 100%;
   z-index: 0;
+  
 }
 
 .hero-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    display: block;    /* Supprime l'espace vertical résiduel des éléments inline */
+    position: absolute;
+    top: 0;            /* Force le collage en haut du conteneur .hero-photos */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* Desktop par défaut */
@@ -80,7 +93,7 @@
   margin: 0 auto;
   padding-left: 5%;
   padding-right: 5%;
-  padding-top: 80px;
+  padding-top: 0;
   box-sizing: border-box;
   height: 100%;
   display: flex;
