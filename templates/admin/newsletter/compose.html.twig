@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/vendor/quill.snow.css') }}" nonce="{{ csp_nonce('style') }}">
 	<link rel="stylesheet" href="{{ asset('css/admin/newsletter/compose.css') }}">
 {% endblock %}
 
@@ -20,8 +21,9 @@
 
 		<form method="POST" id="newsletterForm" class="compose-grid">
 
+			<input type="hidden" name="_token" value="{{ csrf_token('newsletter_compose') }}">
 			<input
-			type="hidden" name="_token" value="{{ csrf_token('newsletter_compose') }}">
+			type="hidden" name="content" id="content-hidden">
 
 			{# ÉDITEUR #}
 			<div class="panel">
@@ -62,12 +64,13 @@
 						</select>
 					</div>
 
-					<textarea id="content" name="content"></textarea>
+					{# Conteneur Quill — remplace le <textarea> #}
+					<div id="quill-editor" style="flex:1; min-height: 300px;"></div>
 				</div>
 
 				<div class="form-actions">
 					<button type="button" class="btn-test" id="sendTestBtn">Envoyer un aperçu (Test)</button>
-					<button type="submit" class="btn-send">Lancer la Campagne</button>
+					<button type="submit" class="btn-send" id="submitBtn">Lancer la Campagne</button>
 				</div>
 			</div>
 
@@ -89,15 +92,14 @@
 
 {% endblock %}
 
-{% block javascripts %}{# Passe le CSRF token et les données dynamiques Twig vers le JS #}
-	 <script nonce="{{ csp_nonce('script') }}">
-				window.composeData = {
-					csrfToken: '{{ csrf_token('newsletter_compose') }}',
-					year: '{{ "now"|date("Y") }}',
-					clubName: '{{ club_name|default('Votre Club') }}'
-				};
-			</script>
+{% block javascripts %} <script nonce="{{ csp_nonce('script') }}">
+			window.composeData = {
+				csrfToken: '{{ csrf_token('newsletter_compose') }}',
+				year: '{{ "now"|date("Y") }}',
+				clubName: '{{ club_name|default('Votre Club') }}'
+			};
+		</script>
 
-	 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin" nonce="{{ csp_nonce('script') }}"></script>
+	 <script src="{{ asset('js/vendor/quill.min.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 	 <script src="{{ asset('js/admin/newsletter/compose.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

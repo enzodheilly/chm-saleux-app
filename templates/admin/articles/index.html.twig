@@ -3,12 +3,7 @@
 {% block title %}Gestion des articles
 {% endblock %}
 
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/articles/index.css') }}">
-{% endblock %}
-
 {% block body %}
-
 	<div class="page-header">
 		<div>
 			<h1>News</h1>
@@ -16,9 +11,7 @@
 		</div>
 		<div class="toolbar">
 			<input type="text" id="searchInput" class="search-input" placeholder="Filter by title...">
-			<a href="{{ path('admin_articles_new') }}" class="btn-create">
-				+ New Article
-			</a>
+			<a href="{{ path('admin_articles_new') }}" class="btn-create">+ New Article</a>
 		</div>
 	</div>
 
@@ -29,7 +22,7 @@
 					<tr>
 						<th width="35%">Article</th>
 						<th width="35%">Content preview</th>
-						<th width="15%">Published</th>
+						<th width="15%">Status</th>
 						<th class="th-right">Actions</th>
 					</tr>
 				</thead>
@@ -37,44 +30,42 @@
 					{% for article in articles %}
 						<tr>
 							<td>
-								<div class="article-preview">
+								<div class="product-info">
 									{% if article.photo %}
-										<img src="{{ asset('uploads/' ~ article.photo) }}" alt="" class="thumb">
+										<img src="{{ asset('uploads/' ~ article.photo) }}" alt="" class="product-img">
 									{% else %}
-										<div class="no-thumb">N/A</div>
+										{# Classe placeholder remplace le style inline #}
+										<div class="product-img img-placeholder">N/A</div>
 									{% endif %}
 
-									<div class="title-group">
+									<div class="title-stack">
 										<strong>{{ article.title }}</strong>
-
-										<span class="cat-tag">
+										<span class="td-mono-sm category-tag">
 											{{ article.category ? article.category.name : 'General' }}
 										</span>
 									</div>
 								</div>
 							</td>
 
-							<td class="td-preview">
+							<td class="td-muted">
 								{{ article.description ? (article.description|striptags|slice(0, 80) ~ '...') : '—' }}
 							</td>
 
 							<td>
-								<span class="date-badge">
-									{% if article.publishedAt %}
-										{{ article.publishedAt|date('d/m/Y') }}
-									{% else %}
-										<span class="draft-tag">Draft</span>
-									{% endif %}
-								</span>
+								{% if article.publishedAt %}
+									<span class="badge badge-active">Published</span>
+									<div class="td-mono-sm date-sub">{{ article.publishedAt|date('d/m/Y') }}</div>
+								{% else %}
+									<span class="badge badge-draft">Draft</span>
+								{% endif %}
 							</td>
 
 							<td>
 								<div class="actions">
-									<a href="{{ path('admin_articles_edit', {id: article.id}) }}" class="act-link act-edit">
-										Edit
-									</a>
+									<a href="{{ path('admin_articles_edit', {id: article.id}) }}" class="act-link">Edit</a>
 
-									<form method="post" action="{{ path('admin_articles_delete', {id: article.id}) }}" class="form-inline" data-confirm="Delete this article permanently?">
+									{# MODIFICATION : Passage au moteur V20 JS #}
+									<form method="post" action="{{ path('admin_articles_delete', {id: article.id}) }}" class="js-confirm-form" data-confirm="📰 Delete the article '{{ article.title }}'? This action will remove it from the public news feed.">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
 										<button class="act-link act-del">Delete</button>
 									</form>
@@ -84,16 +75,10 @@
 					{% else %}
 						<tr>
 							<td colspan="4" class="td-empty">No articles yet.</td>
-
 						</tr>
 					{% endfor %}
 				</tbody>
 			</table>
 		</div>
 	</div>
-
-{% endblock %}
-
-{% block javascripts %}
-	 <script src="{{ asset('js/admin/articles/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

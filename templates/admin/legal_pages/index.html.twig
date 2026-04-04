@@ -4,22 +4,15 @@
 	{{ title }}
 {% endblock %}
 
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/legal_pages/index.css') }}">
-{% endblock %}
-
 {% block body %}
-
 	<div class="page-header">
 		<div>
 			<h1>Pages légales</h1>
-			<p>Gestion des contenus permanents (CGU, Cookies, Confidentialité, Mentions légales...).</p>
+			<p>Gestion des contenus permanents (CGU, Cookies, Confidentialité...).</p>
 		</div>
 		<div class="toolbar">
 			<input type="text" id="searchInput" class="search-input" placeholder="Filtrer les pages...">
-			<a href="{{ path('admin_legal_pages_new') }}" class="btn-create">
-				+ Créer une page
-			</a>
+			<a href="{{ path('admin_legal_pages_new') }}" class="btn-create">+ Créer une page</a>
 		</div>
 	</div>
 
@@ -41,26 +34,24 @@
 							<td>
 								<span class="td-mono">#{{ page.id }}</span>
 							</td>
-
 							<td>
-								<strong class="td-bold">{{ page.title }}</strong>
+								<div class="title-stack">
+									<strong>{{ page.title }}</strong>
+								</div>
 							</td>
-
 							<td>
-								<span class="slug-code">/legal/{{ page.slug }}</span>
+								{# La classe url-slug remplace le style inline #}
+								<code class="td-mono-sm url-slug">/legal/{{ page.slug }}</code>
 							</td>
-
-							<td class="td-date">
+							<td class="td-mono-sm">
 								{{ page.updatedAt ? page.updatedAt|date('d/m/Y à H:i') : 'Non modifiée' }}
 							</td>
-
 							<td>
 								<div class="actions">
-									<a href="{{ path('admin_legal_pages_edit', { id: page.id }) }}" class="act-link act-edit">
-										Modifier
-									</a>
+									<a href="{{ path('admin_legal_pages_edit', { id: page.id }) }}" class="act-link">Modifier</a>
 
-									<form method="post" action="{{ path('admin_legal_pages_delete', { id: page.id }) }}" class="form-inline" data-confirm="⚠️ Attention : Supprimer cette page peut créer des erreurs 404 sur votre site. Confirmer la suppression ?">
+									{# MODIFICATION : Message d'alerte renforcé dans le data-confirm #}
+									<form method="post" action="{{ path('admin_legal_pages_delete', { id: page.id }) }}" class="js-confirm-form" data-confirm="⚖️ ATTENTION : Vous allez supprimer la page légale '{{ page.title }}'. Cela peut créer des erreurs 404 sur vos liens de pied de page. Confirmer ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ page.id) }}">
 										<button class="act-link act-del">Supprimer</button>
 									</form>
@@ -69,17 +60,11 @@
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="5" class="td-empty">Aucune page légale n'a été trouvée.</td>
-
+							<td colspan="5" class="td-empty">Aucune page légale trouvée.</td>
 						</tr>
 					{% endfor %}
 				</tbody>
 			</table>
 		</div>
 	</div>
-
-{% endblock %}
-
-{% block javascripts %}
-	 <script src="{{ asset('js/admin/legal_pages/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

@@ -3,22 +3,15 @@
 {% block title %}Abonnements & Offres
 {% endblock %}
 
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/member_plan/index.css') }}">
-{% endblock %}
-
 {% block body %}
-
 	<div class="page-header">
 		<div>
 			<h1>Abonnements</h1>
 			<p>Configuration des offres commerciales visibles sur le site.</p>
 		</div>
 		<div class="toolbar">
-			<input type="text" id="searchInput" class="search-input" placeholder="Filtrer les offres...">
-			<button class="btn-create" data-href="{{ path('admin_membership_plan_new') }}">
-				+ Nouvelle Offre
-			</button>
+			<input type="text" id="searchInput" class="search-input" placeholder="Filtrer...">
+			<a href="{{ path('admin_membership_plan_new') }}" class="btn-create">+ Nouvelle Offre</a>
 		</div>
 	</div>
 
@@ -30,7 +23,7 @@
 						<th width="25%">Nom de l'offre</th>
 						<th width="15%">Prix</th>
 						<th width="15%">Fréquence</th>
-						<th width="30%">Avantages (Aperçu)</th>
+						<th width="30%">Avantages</th>
 						<th class="th-right">Actions</th>
 					</tr>
 				</thead>
@@ -38,57 +31,45 @@
 					{% for plan in plans %}
 						<tr>
 							<td>
-								<span class="offer-name">{{ plan.name }}</span>
-								{% if plan.isPopular %}
-									<span class="offer-badge">Populaire</span>
-								{% endif %}
+								<div class="title-stack">
+									<strong>{{ plan.name }}</strong>
+									{% if plan.isPopular %}
+										{# Classe badge-popular remplace le style inline #}
+										<span class="badge badge-popular">POPULAIRE</span>
+									{% endif %}
+								</div>
 							</td>
-
 							<td>
-								<span class="price-tag">{{ plan.price }}
+								{# Classe price-tag remplace le style inline #}
+								<span class="td-mono price-tag">{{ plan.price }}
 									€</span>
 							</td>
-
 							<td>
-								<span class="freq-tag">
+								{# On réutilise badge-neutral #}
+								<span class="badge badge-neutral">
 									{% set period = plan.billingPeriod %}
-									{% if period == 'year' %}Annuel
-										{% elseif period == 'month' %}Mensuel
-										{% elseif period == 'quarter' %}Trimestriel
-										{% elseif period == 'semester' %}Semestriel
-										{% elseif period == 'one_time' %}Séance unique
-									{% else %}
-										{{ period }}
-									{% endif %}
+									{{ period == 'year' ? 'Annuel' : (period == 'month' ? 'Mensuel' : (period == 'one_time' ? 'Unique' : period)) }}
 								</span>
 							</td>
-
 							<td>
-								<ul
-									class="features-list">
-									{# Show max 3 benefits for table preview #}
-									{% for benefit in plan.benefits|slice(0, 3) %}
-										<li>{{ benefit }}</li>
+								{# Classe benefits-list remplace le style inline #}
+								<div class="time-info benefits-list">
+									{% for benefit in plan.benefits|slice(0, 2) %}
+										<span class="benefit-item">•
+											{{ benefit }}</span>
 									{% endfor %}
-
-									{% if plan.benefits|length > 3 %}
-										<li class="li-more">+{{ plan.benefits|length - 3 }}
-											autres...</li>
-
+									{% if plan.benefits|length > 2 %}
+										<span class="more-count">+{{ plan.benefits|length - 2 }}
+											autres...</span>
 									{% endif %}
-
-									{% if plan.benefits|length == 0 %}
-										<li class="li-empty">Aucun avantage listé</li>
-									{% endif %}
-								</ul>
+								</div>
 							</td>
-
 							<td>
 								<div class="actions">
-									<a href="{{ path('admin_membership_plan_edit', {'id': plan.id}) }}" class="act-link act-edit">
-										Modifier
-									</a>
-									<form method="post" action="{{ path('admin_membership_plan_delete', {'id': plan.id}) }}" class="form-inline" data-confirm="Supprimer définitivement l'offre {{ plan.name }} ?">
+									<a href="{{ path('admin_membership_plan_edit', {'id': plan.id}) }}" class="act-link">Modifier</a>
+
+									{# MODIFICATION : Passage en V20 JS avec message contextuel #}
+									<form method="post" action="{{ path('admin_membership_plan_delete', {'id': plan.id}) }}" class="js-confirm-form" data-confirm="⚠️ ATTENTION : Vous allez supprimer l'offre '{{ plan.name }}'. Cela n'annulera pas les contrats en cours, mais l'offre disparaîtra du site public. Confirmer ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ plan.id) }}">
 										<button class="act-link act-del">Supprimer</button>
 									</form>
@@ -97,16 +78,11 @@
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="5" class="td-empty">Aucune offre d'abonnement n'a été créée pour le moment.</td>
+							<td colspan="5" class="td-empty">Aucune offre créée.</td>
 						</tr>
 					{% endfor %}
 				</tbody>
 			</table>
 		</div>
 	</div>
-
-{% endblock %}
-
-{% block javascripts %}
-	 <script src="{{ asset('js/admin/member_plan/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

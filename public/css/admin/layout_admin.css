@@ -1,0 +1,843 @@
+/* ==========================================================================
+   ADMIN MASTER FRAMEWORK - V19 (FULL COMPILATION & FIX LISTES)
+   ========================================================================== */
+
+:root {
+    --accent: #ff6600;
+    --bg-body: #0f111a;
+    --bg-sidebar: #161922;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --text-main: #ffffff;
+    --text-muted: #a0aec0;
+    --danger: #ef4444;
+    --success: #22c55e;
+}
+
+/* --- 1. STRUCTURE GLOBALE --- */
+.wrapper { flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--bg-body); color: var(--text-main); }
+.content { padding: 2rem; width: 100%; max-width: 1600px; margin: 0 auto; box-sizing: border-box; }
+.dashboard-container { width: 100%; margin: 0 auto; }
+
+/* --- 2. EN-TÊTE & TOOLBAR --- */
+.page-header { 
+    display: flex; justify-content: space-between; align-items: flex-end; 
+    margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); gap: 1.5rem; flex-wrap: wrap; 
+}
+.page-header h1 { font-size: 1.6rem; font-weight: 700; margin: 0; }
+.page-header p { margin: 5px 0 0; color: var(--text-muted); font-size: 0.9rem; }
+
+.toolbar, .toolbar-container { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: flex-end; align-items: center; margin-bottom: 1.5rem; }
+.toolbar-container { background: var(--bg-sidebar); padding: 1rem; border: 1px solid var(--border-color); border-radius: 6px; justify-content: space-between; }
+
+.search-input, .search-bar {
+    background: var(--bg-sidebar); border: 1px solid var(--border-color); color: var(--text-main);
+    padding: 0.6rem 1rem; border-radius: 4px; min-width: 300px; font-size: 0.9rem; outline: none;
+}
+
+/* --- 3. TABLEAUX & LISTES (RESTITUTION COMPLÈTE) --- */
+.table-wrapper { background: var(--bg-sidebar); border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; margin-bottom: 2rem; }
+.table-scroll { overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; }
+.admin-table, .table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+
+.admin-table th, .table th { 
+    background: rgba(255, 255, 255, 0.02); color: var(--text-muted); font-weight: 600; 
+    text-align: left; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); 
+    text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; 
+}
+.admin-table td, .table td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+.admin-table tr:hover td, .table tr:hover td { background: rgba(255, 255, 255, 0.01); }
+
+/* Spécificités Colonnes */
+.td-right, .th-right { text-align: right; }
+.td-mono, .td-mono-sm, .ref-code, .ip-address { font-family: monospace; color: var(--text-muted); font-size: 0.85rem; }
+.td-empty { text-align: center; padding: 5rem; color: var(--text-muted); }
+
+/* Product/User Info Stack */
+.product-info, .identity-cell { display: flex; align-items: center; gap: 15px; }
+.title-stack { display: flex; flex-direction: column; }
+.title-stack strong { font-size: 0.95rem; color: var(--text-main); }
+.product-img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border-color); background: var(--bg-body); }
+
+/* --- 4. ACTIONS (BOUTONS & LIENS) --- */
+.actions { display: flex; gap: 15px; justify-content: flex-end; align-items: center; }
+.act-link { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; cursor: pointer; text-decoration: none; color: var(--text-main); opacity: 0.7; }
+.act-link:hover { opacity: 1; text-decoration: underline; }
+.act-del, .act-danger { color: var(--danger) !important; }
+
+/* Boutons de Formulaire */
+.btn-create, .btn-save, .btn-update, .btn-validate { background: var(--text-main); color: var(--bg-body); padding: 0.6rem 1.2rem; border-radius: 4px; font-weight: 700; font-size: 0.8rem; border: none; cursor: pointer; text-transform: uppercase; }
+.btn-outline, .btn-exit, .btn-export { background: transparent; color: var(--text-main); border: 1px solid var(--border-color); padding: 0.6rem 1.2rem; border-radius: 4px; font-weight: 700; text-transform: uppercase; cursor: pointer; text-decoration: none; }
+.btn-danger-outline, .btn-danger-link { background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 0.6rem 1.2rem; border-radius: 4px; font-weight: 700; text-transform: uppercase; cursor: pointer; text-decoration: none; }
+.btn-danger-outline:hover { background: var(--danger); color: #fff; }
+
+/* --- 5. FORMULAIRES & RÉGLAGES --- */
+.card-body { padding: 1.5rem; }
+.form-grid { display: grid; gap: 1.2rem; }
+.form-row-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 1.2rem; }
+.input, .reply-textarea { background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.7rem 1rem; border-radius: 4px; outline: none; font-size: 0.9rem; width: 100%; box-sizing: border-box; }
+.input:focus { border-color: var(--accent); }
+.tool-label { display: block; color: var(--text-muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-bottom: 0.4rem; }
+
+/* --- 6. BADGES UI --- */
+.badge { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; display: inline-block; border: 1px solid transparent; }
+.badge-confirmed, .badge-active, .status-resolved { color: var(--success); background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.2); }
+.badge-pending { color: #f59e0b; background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.2); }
+.badge-blocked, .badge-danger { color: var(--danger); background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); }
+
+/* --- 7. SWITCHES --- */
+.switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+.slider { position: absolute; cursor: pointer; inset: 0; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 24px; transition: 0.3s; }
+.slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background: var(--text-muted); border-radius: 50%; transition: 0.3s; }
+input:checked + .slider { background: var(--accent); border-color: var(--accent); }
+input:checked + .slider:before { transform: translateX(20px); background: #fff; }
+
+/* --- 8. RESPONSIVE --- */
+@media (max-width: 900px) {
+    .page-header { flex-direction: column; align-items: flex-start; }
+    .toolbar, .toolbar-container { flex-direction: column; align-items: stretch; width: 100%; }
+    .form-row-2 { grid-template-columns: 1fr; }
+    .btn-create, .btn-outline, .btn-danger-outline { width: 100%; text-align: center; }
+}
+
+/* --- SECTION PARAMÈTRES (SETTINGS) --- */
+
+/* Conteneur principal limité en largeur pour la lisibilité */
+.settings-layout {
+    max-width: 850px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Remplace le gap inline */
+}
+
+/* Carte de réglage individuelle */
+.settings-card {
+    background: var(--bg-sidebar);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 1.5rem;
+}
+
+/* Variante pour le switch (Thème) */
+.settings-card.flex-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Titres des sections de réglages */
+.settings-card-title {
+    color: var(--accent);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.8rem;
+}
+
+/* Infos de sécurité (Dernière activité / IP) */
+.security-info-grid {
+    display: flex;
+    gap: 3rem; /* Espace entre les deux stacks */
+    margin-bottom: 1.5rem;
+}
+
+/* Label spécifique pour les réglages */
+.switch-info h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text-main);
+}
+
+.switch-info p {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* État visuel des champs en lecture seule */
+.input-readonly {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-style: dashed !important;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Séparateur pour les actions sensibles (Reset sessions) */
+.section-divider {
+    border-top: 1px solid var(--border-color);
+    padding-top: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+/* --- LE SWITCH (VÉRIFICATION) --- */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: var(--bg-body);
+    border: 1px solid var(--border-color);
+    transition: .3s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--text-muted);
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+    background-color: white;
+}
+
+/* --- CLASSES COMPLEMENTAIRES NEWS (CSP FRIENDLY) --- */
+
+/* Placeholder pour les images manquantes */
+.img-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+/* Tag de catégorie sous le titre */
+.category-tag {
+    color: var(--accent);
+    opacity: 0.8;
+}
+
+/* Badge pour les brouillons (Draft) */
+.badge-draft {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Date sous le badge de publication */
+.date-sub {
+    margin-top: 4px;
+    opacity: 0.5;
+    font-size: 0.75rem;
+}
+
+/* Correction mineure pour le striptags/preview */
+.td-muted {
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* --- CLASSES COMPLEMENTAIRES ATHLETES (CSP FRIENDLY) --- */
+
+/* Avatar circulaire pour athlètes et utilisateurs */
+.avatar-circle {
+    border-radius: 50% !important;
+    object-fit: cover;
+}
+
+/* Placeholder avec initiales */
+.avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* Tag de genre */
+.gender-tag {
+    opacity: 0.6;
+    font-style: italic;
+}
+
+/* Badge neutre pour catégories */
+.badge-neutral {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+}
+
+/* Mise en avant du poids */
+.weight-tag {
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* --- CLASSES COMPLEMENTAIRES COMPETITIONS --- */
+
+/* Placeholder spécifique petit format */
+.img-placeholder-sm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    font-size: 0.6rem;
+    color: var(--text-muted);
+}
+
+/* Alignement des lignes d'info (Lieu, Team) */
+.info-row {
+    display: block;
+    font-size: 0.85rem;
+    margin-bottom: 2px;
+}
+
+/* Mise en évidence du rang de l'équipe */
+.rank-highlight {
+    display: block;
+    color: var(--accent);
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+/* Ligne de résultat individuel */
+.result-line {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Texte "plus de résultats" */
+.more-count {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+    font-style: italic;
+}
+
+/* Texte si aucun résultat */
+.no-results-text {
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+/* --- CLASSES COMPLEMENTAIRES MESSAGES --- */
+
+/* Cellule Expéditeur */
+.identity-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sender-name {
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.sender-email {
+    color: var(--accent);
+    opacity: 0.8;
+}
+
+.sender-phone {
+    opacity: 0.6;
+}
+
+/* Sujet du message */
+.subject-cell {
+    font-size: 0.8rem;
+}
+
+/* Bulle de prévisualisation du message */
+.message-bubble {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 8px 12px;
+    border-radius: 4px;
+    border-left: 2px solid var(--border-color);
+    font-style: italic;
+    font-size: 0.85rem;
+    max-width: 400px;
+}
+
+/* Formulaire de réponse rapide */
+.reply-form {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    align-items: stretch;
+}
+
+.reply-textarea {
+    min-height: 40px;
+    max-height: 80px;
+    resize: vertical;
+    width: 200px;
+    font-size: 0.8rem;
+}
+
+.btn-reply {
+    padding: 0 15px; /* Équivalent au padding 12px d'origine mais plus harmonisé */
+    height: auto;
+}
+
+/* Date & Time */
+.date-bold {
+    color: var(--text-main);
+}
+
+.td-time {
+    opacity: 0.5;
+    font-size: 0.75rem;
+}
+
+/* --- CLASSES COMPLEMENTAIRES ÉQUIPEMENT --- */
+
+/* ID de la machine sous le nom */
+.equipment-id {
+    opacity: 0.5;
+    font-size: 0.75rem;
+}
+
+/* On s'assure que badge-neutral est bien présent (rappel) */
+.badge-neutral {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+}
+
+/* --- CLASSES COMPLEMENTAIRES EXERCICES --- */
+
+.exercise-name {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    display: block;
+}
+
+/* On s'assure que la colonne ID reste bien sobre */
+.td-mono {
+    opacity: 0.6;
+}
+
+/* --- CLASSES COMPLEMENTAIRES PAGES LEGALES --- */
+
+/* Style pour les slugs d'URL dans les tableaux */
+.url-slug {
+    color: var(--accent);
+    background: rgba(255, 102, 0, 0.05); /* Un léger fond pour rappeler le code */
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+/* On s'assure que le strong dans title-stack est bien blanc */
+.title-stack strong {
+    color: var(--text-main);
+}
+
+/* --- CLASSES COMPLEMENTAIRES LICENCES --- */
+
+/* Mise en avant du numéro de licence */
+.licence-number {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+/* On s'assure que le badge-danger (expiré) est bien visible */
+.badge-danger {
+    color: var(--danger);
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Réutilisation des styles d'identité pour le titulaire */
+.identity-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* --- CLASSES COMPLEMENTAIRES ABONNEMENTS --- */
+
+/* Badge Populaire (Mis en avant) */
+.badge-popular {
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.6rem;
+    margin-top: 4px;
+    padding: 2px 6px;
+    border: none;
+}
+
+/* Affichage du prix */
+.price-tag {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--success);
+}
+
+/* Liste des avantages */
+.benefits-list {
+    font-size: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.benefit-item {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* On s'assure que more-count est bien défini pour cette page aussi */
+.more-count {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 2px;
+}
+
+/* --- CLASSES COMPLEMENTAIRES BOUTIQUE --- */
+
+/* Placeholder pour image de produit manquante */
+.placeholder-na {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    border: 1px dashed var(--border-color);
+}
+
+/* Style de la description courte */
+.description-cell {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    max-width: 300px;
+}
+
+/* Badge de prix spécifique (si pas déjà défini) */
+.price-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--success);
+}
+
+/* Référence produit sous le titre */
+.td-mono-sm {
+    opacity: 0.5;
+}
+
+/* --- CLASSES COMPLEMENTAIRES EQUIPEMENTS --- */
+
+/* Placeholder si pas d'image (déjà défini précédemment) */
+.placeholder-na {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    border: 1px dashed var(--border-color);
+}
+
+/* On s'assure que la date d'acquisition en mono est bien sobre */
+.td-mono-sm {
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}
+
+/* --- CLASSES COMPLEMENTAIRES NEWSLETTER --- */
+
+/* Lien email accentué */
+.link-accent {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: opacity 0.2s;
+}
+
+.link-accent:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+/* Colonne indexation (#) */
+.index-col {
+    opacity: 0.5;
+}
+
+/* Heure d'inscription discrète */
+.time-dimmed {
+    opacity: 0.5;
+    margin-left: 4px;
+}
+
+/* Badge en attente (Pending) */
+.badge-pending {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    border-color: transparent;
+    opacity: 0.7;
+}
+
+/* --- CLASSES COMPLEMENTAIRES ROUTINES --- */
+
+/* Selects dans la toolbar */
+.toolbar-select {
+    min-width: 150px;
+    cursor: pointer;
+}
+
+/* Infos secondaires sous le nom du template */
+.sub-info {
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+/* Badge contouré (Outline) pour les objectifs */
+.badge-outline-accent {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+}
+
+/* Texte du niveau */
+.level-text {
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* Badge Brouillon (Draft) - Harmonisé avec Newsletter/Licences */
+.badge-draft {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    border: 1px solid transparent;
+    opacity: 0.5;
+}
+
+/* --- CLASSES COMPLEMENTAIRES SÉCURITÉ --- */
+
+/* Blocklist */
+.security-summary { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.stats-highlight { color: var(--accent); font-weight: 700; }
+.ip-accent { color: var(--accent); }
+.reason-text { font-size: 0.8rem; margin-left: 10px; }
+.expiry-date { color: var(--text-main); }
+
+.btn-unlock { 
+    background: var(--success); 
+    color: #fff; 
+    font-size: 0.7rem; 
+    padding: 6px 12px; 
+    border-radius: 4px; 
+    text-decoration: none;
+    font-weight: 700;
+}
+
+/* Journal des Logs */
+.security-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+    gap: 1rem; 
+    margin-bottom: 2rem; 
+}
+
+.target-card { 
+    background: var(--bg-sidebar);
+    padding: 1.2rem; 
+    border-left: 3px solid var(--danger); 
+    border-radius: 4px;
+}
+
+.card-label { opacity: 0.6; margin-bottom: 5px; }
+.target-email { font-weight: 700; color: var(--text-main); margin-bottom: 10px; }
+
+.flex-between { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+.btn-tab { padding: 5px 15px; font-size: 0.7rem; background: var(--bg-sidebar); border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer; border-radius: 4px; text-decoration: none; }
+.btn-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+.row-session { background: rgba(255, 102, 0, 0.03); }
+.device-tag { font-size: 0.75rem; }
+.log-message { font-size: 0.85rem; }
+.fs-large { font-size: 1.1rem; }
+
+.badge-nocturnal { 
+    background: rgba(139, 92, 246, 0.1); 
+    color: #a78bfa; 
+    font-size: 0.6rem; 
+    border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+/* --- SYSTEME DE FORMULAIRE (MASTER V20) --- */
+
+.card-body {
+    padding: 2rem;
+}
+
+.form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 800px;
+}
+
+/* Box d'information (Mode hybride) */
+.info-box {
+    background: rgba(255, 102, 0, 0.05);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+}
+
+.info-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text-main);
+    margin: 0;
+}
+
+/* Séparateurs et Titres de section */
+.section-separator {
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin: 1rem 0;
+}
+
+.subsection-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: -0.5rem;
+}
+
+/* Groupes et Labels */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.label-tag-muted {
+    font-size: 0.75rem;
+    font-weight: 400;
+    opacity: 0.5;
+    margin-left: 5px;
+}
+
+.form-help {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 4px;
+}
+
+/* Layout multi-colonnes */
+.form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+/* Actions en bas de formulaire */
+.form-actions-footer {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .form-row-2 { grid-template-columns: 1fr; }
+}
+
+/* --- CLASSES COMPLEMENTAIRES ANNUAIRE --- */
+
+/* Avatar avec initiales */
+.user-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 800;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+/* Status 2FA */
+.badge-2fa-on {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+    border: 1px solid var(--success);
+    font-size: 0.65rem;
+}
+
+.badge-2fa-off {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    border: 1px solid transparent;
+    opacity: 0.4;
+    font-size: 0.65rem;
+}
+
+/* Actions spécifiques */
+.act-warn {
+    color: var(--accent) !important;
+}
+
+.inline-form {
+    display: inline;
+}
+
+/* Rappel pour badge-neutral si non défini */
+.badge-neutral {
+    opacity: 0.6;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Utilitaire de couleur global */
+.text-accent {
+    color: var(--accent);
+}
+
+/* Optionnel : pour les IP, on peut forcer un peu de gras */
+.td-mono.text-accent {
+    font-weight: 700;
+}

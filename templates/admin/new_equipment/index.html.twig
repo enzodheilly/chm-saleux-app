@@ -3,21 +3,14 @@
 {% block title %}Gestion des machines
 {% endblock %}
 
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/new_equipment/index.css') }}">
-{% endblock %}
-
 {% block body %}
-
 	<div class="page-header">
 		<div>
 			<h1>Machines & Équipements</h1>
 			<p>Gérez le catalogue de matériel disponible au club.</p>
 		</div>
 		<div class="toolbar">
-			<a href="{{ path('admin_new_equipment_new') }}" class="btn-create">
-				+ Ajouter un équipement
-			</a>
+			<a href="{{ path('admin_new_equipment_new') }}" class="btn-create">+ Ajouter un équipement</a>
 		</div>
 	</div>
 
@@ -26,7 +19,7 @@
 			<table class="admin-table">
 				<thead>
 					<tr>
-						<th width="40%">Équipement</th>
+						<th width="45%">Équipement</th>
 						<th width="30%">Date d'acquisition</th>
 						<th class="th-right">Actions</th>
 					</tr>
@@ -35,25 +28,30 @@
 					{% for equipment in newEquipments %}
 						<tr>
 							<td>
-								<div class="machine-info">
+								<div class="product-info">
 									{% if equipment.image %}
-										<img src="{{ asset('uploads/machines/' ~ equipment.image) }}" alt="{{ equipment.name }}" class="machine-img">
+										<img src="{{ asset('uploads/machines/' ~ equipment.image) }}" alt="" class="product-img">
 									{% else %}
-										<div class="no-img">Aucun</div>
+										{# Classe placeholder-na pour remplacer le style inline #}
+										<div class="product-img placeholder-na">AUCUN</div>
 									{% endif %}
-									<span class="machine-name">{{ equipment.name }}</span>
+									<div class="title-stack">
+										<strong>{{ equipment.name }}</strong>
+										<span class="td-mono-sm">ID #{{ equipment.id }}</span>
+									</div>
 								</div>
 							</td>
 
-							<td class="td-date-mono">
+							<td class="td-mono-sm">
 								{{ equipment.createdAt|date('d/m/Y') }}
 							</td>
 
 							<td>
 								<div class="actions">
-									<a href="{{ path('admin_new_equipment_edit', {id: equipment.id}) }}" class="act-link act-edit">Modifier</a>
+									<a href="{{ path('admin_new_equipment_edit', {id: equipment.id}) }}" class="act-link">Modifier</a>
 
-									<form method="post" action="{{ path('admin_new_equipment_delete', {id: equipment.id}) }}" class="form-inline" data-confirm="Supprimer cet équipement de l'inventaire ?">
+									{# MODIFICATION : Remplacement du onsubmit par js-confirm-form #}
+									<form method="post" action="{{ path('admin_new_equipment_delete', {id: equipment.id}) }}" class="js-confirm-form" data-confirm="⚙️ Confirmer la suppression de l'équipement : {{ equipment.name }} ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ equipment.id) }}">
 										<button class="act-link act-del">Supprimer</button>
 									</form>
@@ -62,17 +60,11 @@
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="3" class="td-empty">Aucun équipement n'a été ajouté pour le moment.</td>
-
+							<td colspan="3" class="td-empty">Aucun équipement enregistré.</td>
 						</tr>
 					{% endfor %}
 				</tbody>
 			</table>
 		</div>
 	</div>
-
-{% endblock %}
-
-{% block javascripts %}
-	 <script src="{{ asset('js/admin/new_equipment/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

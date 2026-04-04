@@ -2,14 +2,41 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    const year     = window.composeData.year;
-    const clubName = window.composeData.clubName;
+    const year      = window.composeData.year;
+    const clubName  = window.composeData.clubName;
     const csrfToken = window.composeData.csrfToken;
+
+    // --- Init Quill ---
+    const quill = new Quill('#quill-editor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline'],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'align': [] }],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                ['link'],
+                ['clean']
+            ]
+        },
+        placeholder: 'Rédigez votre message ici...'
+    });
+
+    // --- Sync contenu Quill → champ hidden avant soumission ---
+    document.getElementById('newsletterForm').addEventListener('formdata', function (e) {
+        e.formData.set('content', quill.root.innerHTML);
+    });
+
+    // Fallback pour les navigateurs sans l'event formdata
+    document.getElementById('submitBtn').addEventListener('click', function () {
+        document.getElementById('content-hidden').value = quill.root.innerHTML;
+    });
 
     // --- Preview temps réel ---
     function updatePreview() {
         const subject = document.getElementById('subject').value;
-        const content = tinymce.get('content') ? tinymce.get('content').getContent() : '';
+        const content = quill.root.innerHTML;
 
         document.getElementById('preview').innerHTML =
             '<div style="font-family: \'Segoe UI\', Helvetica, Arial, sans-serif; line-height:1.6; color:#1a1a1a;">' +
@@ -25,25 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
             '</div>';
     }
 
-    // --- TinyMCE ---
-    tinymce.init({
-        selector: '#content',
-        plugins: 'link lists table code emoticons wordcount preview',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline | alignleft aligncenter alignright | forecolor backcolor | bullist numlist | emoticons | removeformat',
-        menubar: false,
-        height: '100%',
-        skin: 'oxide-dark',
-        content_css: 'dark',
-        promotion: false,
-        branding: false,
-        setup: function (editor) {
-            editor.on('init', function () {
-                editor.getContainer().style.transition = '0.2s';
-            });
-            editor.on('keyup change blur', updatePreview);
-        }
-    });
-
+    quill.on('text-change', updatePreview);
     document.getElementById('subject').addEventListener('input', updatePreview);
 
     // --- Templates ---
@@ -57,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const val = e.target.value;
         if (val && templates[val]) {
             if (confirm('Charger ce modèle ? Cela remplacera votre texte actuel.')) {
-                tinymce.get('content').setContent(templates[val]);
+                quill.root.innerHTML = templates[val];
                 updatePreview();
             }
         }
@@ -66,9 +75,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- Variables ---
     document.getElementById('variableSelect').addEventListener('change', function (e) {
         if (e.target.value) {
-            tinymce.get('content').insertContent(
-                '<span style="color:#ff6600; background:rgba(255,102,0,0.1); padding:2px 4px; border-radius:3px;">' + e.target.value + '</span>'
-            );
+            const range = quill.getSelection(true);
+            quill.insertEmbed(range.index, 'text',  e.target.value);
+            quill.formatText(range.index, e.target.value.length, {
+                color: '#ff6600',
+                background: 'rgba(255,102,0,0.1)'
+            });
+            quill.setSelection(range.index + e.target.value.length);
             e.target.value = '';
             updatePreview();
         }
@@ -78,12 +91,13 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('styleBlockSelect').addEventListener('change', function (e) {
         const val = e.target.value;
         let html = '';
-        if (val === 'button') html = '<div style="text-align:center; margin:20px 0;"><a href="#" style="background:#ff6600; color:#fff; padding:12px 25px; text-decoration:none; border-radius:6px; font-weight:bold; display:inline-block;">Texte du bouton</a></div>';
-        if (val === 'quote')  html = '<blockquote style="border-left:4px solid #ff6600; padding:10px 20px; margin:20px 0; background:#f8fafc; font-style:italic; color:#475569;">"Votre citation ou témoignage ici..."</blockquote>';
+        if (val === 'button')  html = '<div style="text-align:center; margin:20px 0;"><a href="#" style="background:#ff6600; color:#fff; padding:12px 25px; text-decoration:none; border-radius:6px; font-weight:bold; display:inline-block;">Texte du bouton</a></div>';
+        if (val === 'quote')   html = '<blockquote style="border-left:4px solid #ff6600; padding:10px 20px; margin:20px 0; background:#f8fafc; font-style:italic; color:#475569;">"Votre citation ou témoignage ici..."</blockquote>';
         if (val === 'divider') html = '<hr style="border:0; border-top:1px solid #e2e8f0; margin:30px 0;">';
 
         if (html) {
-            tinymce.get('content').insertContent(html);
+            const range = quill.getSelection(true);
+            quill.clipboard.dangerouslyPasteHTML(range.index, html);
             e.target.value = '';
             updatePreview();
         }
@@ -92,9 +106,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- Bouton test ---
     document.getElementById('sendTestBtn').addEventListener('click', function () {
         const subject = document.getElementById('subject').value;
-        const content = tinymce.get('content') ? tinymce.get('content').getContent() : '';
+        const content = quill.root.innerHTML;
 
-        if (!subject || !content) {
+        if (!subject || !content || content === '<p><br></p>') {
             alert('Veuillez renseigner un sujet et un contenu avant d\'envoyer un test.');
             return;
         }
