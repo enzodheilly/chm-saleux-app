@@ -228,11 +228,12 @@ body.mobile-menu-open {
    3. NAVBAR PRINCIPALE
    ========================================= */
 .nav-fixed {
-    position: absolute;
-    top: 0;
+    position: -webkit-sticky; /* Pour Safari */
+    position: sticky;         /* L'élément reste dans le flux mais se bloque au scroll */
+    top: 0;                   /* Se bloque à 0 pixel du haut de l'écran */
     left: 0;
     width: 100%;
-    z-index: 1000;
+    z-index: 1000;            /* Reste au dessus du contenu du site */
 }
 
 .nav-main-wrapper {
