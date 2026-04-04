@@ -116,7 +116,6 @@ body.mobile-menu-open {
 .info-item strong {
     color: #ffffff;
     font-weight: 800;
-    text-transform: uppercase;
 }
 
 .info-item img {
@@ -148,7 +147,6 @@ body.mobile-menu-open {
 .top-link {
     color: #b0b0b0;
     text-decoration: none;
-    text-transform: uppercase;
     font-weight: 700;
     font-size: 0.7rem !important;
     display: flex;
@@ -260,10 +258,9 @@ body.mobile-menu-open {
 .nav-item {
     color: #ffffff !important;
     text-decoration: none;
-    text-transform: uppercase;
     font-family: 'Inter', sans-serif;
     font-weight: 800;
-    font-size: 0.85rem;
+    font-size: 1rem;
     letter-spacing: 1px;
     height: 100%;
     display: flex;
