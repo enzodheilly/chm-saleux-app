@@ -3,119 +3,102 @@
 {% block title %}Routines (templates)
 {% endblock %}
 
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/routine_template/index.css') }}">
-{% endblock %}
-
 {% block body %}
-	<div class="dashboard-container">
-
-		<div class="page-header">
-			<div>
-				<h1>Routines (templates)</h1>
-				<p>Créez des séances prêtes à l'emploi selon objectif / niveau.</p>
-			</div>
-
-			<div class="toolbar">
-				<input type="text" id="searchTpl" class="search-input" placeholder="Rechercher un template..."/>
-
-				<select id="filterGoal" class="select-input">
-					<option value="">Objectif (tous)</option>
-					<option value="prise_de_masse">Prise de masse</option>
-					<option value="perte_de_poids">Perte de poids</option>
-					<option value="renfo">Renforcement</option>
-				</select>
-
-				<select id="filterLevel" class="select-input">
-					<option value="">Niveau (tous)</option>
-					<option value="debutant">Débutant</option>
-					<option value="intermediaire">Intermédiaire</option>
-					<option value="avance">Avancé</option>
-				</select>
-
-				<a href="{{ path('admin_routine_template_new') }}" class="btn-create">
-					Créer un template
-				</a>
-			</div>
+	<div class="page-header">
+		<div>
+			<h1>Routines (templates)</h1>
+			<p>Créez des séances prêtes à l'emploi selon objectif / niveau.</p>
 		</div>
+		<div class="toolbar">
+			<input
+			type="text" id="searchTpl" class="search-input" placeholder="Rechercher...">
 
-		<div class="table-wrapper">
-			<div class="table-scroll">
-				<table class="admin-table" id="tplTable">
-					<thead>
-						<tr>
-							<th width="60">ID</th>
-							<th>Nom du template</th>
-							<th>Objectif</th>
-							<th>Niveau</th>
-							<th>Groupe</th>
-							<th>Durée</th>
-							<th>Statut</th>
-							<th class="th-right">Actions</th>
-						</tr>
-					</thead>
+			{# Classes toolbar-select remplacent le style inline #}
+			<select id="filterGoal" class="search-input toolbar-select">
+				<option value="">Objectif (tous)</option>
+				<option value="prise_de_masse">Prise de masse</option>
+				<option value="perte_de_poids">Perte de poids</option>
+				<option value="renfo">Renforcement</option>
+			</select>
 
-					<tbody>
-						{% for tpl in templates %}
-							<tr data-goal="{{ tpl.goal }}" data-level="{{ tpl.level }}">
-								<td>
-									<span class="td-mono">#{{ tpl.id }}</span>
-								</td>
+			<select id="filterLevel" class="search-input toolbar-select">
+				<option value="">Niveau (tous)</option>
+				<option value="debutant">Débutant</option>
+				<option value="intermediaire">Intermédiaire</option>
+				<option value="avance">Avancé</option>
+			</select>
 
-								<td>
-									<strong class="tpl-name">{{ tpl.name }}</strong>
-									<span class="tpl-count">{{ tpl.templateExercises|length }}
-										exercice(s)</span>
-								</td>
-
-								<td>
-									<span class="tag-accent">{{ tpl.goal|replace({'_':' '})|capitalize }}</span>
-								</td>
-
-								<td>
-									<span class="td-bold">{{ tpl.level|capitalize }}</span>
-								</td>
-
-								<td>
-									<span class="td-muted">{{ tpl.muscleGroup }}</span>
-								</td>
-
-								<td>
-									<span class="td-small">{{ tpl.estimatedDurationMin ? tpl.estimatedDurationMin ~ ' min' : '—' }}</span>
-								</td>
-
-								<td>
-									{% if tpl.isPublished %}
-										<span class="status-badge status-published">Publié</span>
-									{% else %}
-										<span class="status-badge status-draft">Brouillon</span>
-									{% endif %}
-								</td>
-
-								<td>
-									<div class="actions">
-										<a href="{{ path('admin_routine_template_edit', {id: tpl.id}) }}" class="act-link act-edit">Modifier</a>
-
-										<form method="post" action="{{ path('admin_routine_template_delete', {id: tpl.id}) }}" class="form-inline" data-confirm="Supprimer définitivement le template « {{ tpl.name }} » ?">
-											<input type="hidden" name="_token" value="{{ csrf_token('delete_template_' ~ tpl.id) }}">
-											<button class="act-link act-del">Supprimer</button>
-										</form>
-									</div>
-								</td>
-							</tr>
-						{% else %}
-							<tr>
-								<td colspan="8" class="td-empty">Aucun template enregistré.</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
+			<a href="{{ path('admin_routine_template_new') }}" class="btn-create">Créer</a>
 		</div>
-
 	</div>
-{% endblock %}
 
-{% block javascripts %}
-	 <script src="{{ asset('js/admin/routine_template/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
+	<div class="table-wrapper">
+		<div class="table-scroll">
+			<table class="admin-table" id="tplTable">
+				<thead>
+					<tr>
+						<th width="80">ID</th>
+						<th>Template</th>
+						<th>Objectif</th>
+						<th>Niveau</th>
+						<th>Durée</th>
+						<th>Statut</th>
+						<th class="th-right">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for tpl in templates %}
+						<tr data-goal="{{ tpl.goal }}" data-level="{{ tpl.level }}">
+							<td>
+								<span class="td-mono index-col">#{{ tpl.id }}</span>
+							</td>
+							<td>
+								<div class="title-stack">
+									<strong>{{ tpl.name }}</strong>
+									<span class="td-muted sub-info">
+										{{ tpl.templateExercises|length }}
+										exercice(s) •
+										{{ tpl.muscleGroup }}
+									</span>
+								</div>
+							</td>
+							<td>
+								{# Classe badge-outline remplace le style inline #}
+								<span class="badge badge-outline-accent">
+									{{ tpl.goal|replace({'_':' '})|capitalize }}
+								</span>
+							</td>
+							<td>
+								<span class="td-bold level-text">{{ tpl.level|capitalize }}</span>
+							</td>
+							<td class="td-mono-sm">{{ tpl.estimatedDurationMin ? tpl.estimatedDurationMin ~ ' min' : '—' }}</td>
+							<td>
+								{% if tpl.isPublished %}
+									<span class="badge badge-active">Publié</span>
+								{% else %}
+									{# On réutilise badge-pending ou badge-draft #}
+									<span class="badge badge-draft">Brouillon</span>
+								{% endif %}
+							</td>
+							<td>
+								<div class="actions">
+									<a href="{{ path('admin_routine_template_edit', {id: tpl.id}) }}" class="act-link">Modifier</a>
+
+									{# MODIFICATION : Remplacement du confirm inline par le moteur V20 #}
+									<form method="post" action="{{ path('admin_routine_template_delete', {id: tpl.id}) }}" class="js-confirm-form" data-confirm="🗑️ Supprimer le template '{{ tpl.name }}' ? Cette action est irréversible.">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete_template_' ~ tpl.id) }}">
+										<button class="act-link act-del">Supprimer</button>
+									</form>
+								</div>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="7" class="td-empty">Aucun template enregistré.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 {% endblock %}

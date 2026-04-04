@@ -3,27 +3,18 @@
 {% block title %}Utilisateurs - Chm Saleux
 {% endblock %}
 
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/users/index.css') }}">
-{% endblock %}
-
 {% block body %}
-
-	{# HEADER #}
 	<div class="page-header">
 		<div>
 			<h1>Annuaire</h1>
 			<p>Supervision des accès et sécurité du panel.</p>
 		</div>
 		<div class="toolbar">
-			<input type="text" id="searchInput" class="search-input" placeholder="Rechercher par nom ou email...">
-			<button class="btn-action" data-href="{{ path('admin_users_new') }}">
-				+ Créer un compte
-			</button>
+			<input type="text" id="searchInput" class="search-input" placeholder="Nom ou email...">
+			<a href="{{ path('admin_users_new') }}" class="btn-create">+ Créer un compte</a>
 		</div>
 	</div>
 
-	{# TABLEAU #}
 	<div class="table-wrapper">
 		<div class="table-scroll">
 			<table class="admin-table" id="userTable">
@@ -33,7 +24,7 @@
 						<th>Utilisateur</th>
 						<th>Rôle</th>
 						<th>Sécurité 2FA</th>
-						<th>Date Inscription</th>
+						<th>Inscription</th>
 						<th class="th-right">Actions</th>
 					</tr>
 				</thead>
@@ -43,72 +34,53 @@
 							<td>
 								<span class="td-mono">#{{ user.id }}</span>
 							</td>
-
 							<td>
-								<div class="user-cell">
-									<div class="avatar">
+								<div
+									class="product-info">
+									{# La classe user-avatar remplace le style inline #}
+									<div class="user-avatar">
 										{{ user.firstname|first|upper }}{{ user.lastname|first|upper }}
 									</div>
-									<div class="user-info">
-										<span class="u-name">{{ user.firstname }}
-											{{ user.lastname }}</span>
-										<span class="u-email">{{ user.email }}</span>
+									<div class="title-stack">
+										<strong>{{ user.firstname }}
+											{{ user.lastname|upper }}</strong>
+										<span class="td-mono-sm">{{ user.email }}</span>
 									</div>
 								</div>
 							</td>
-
 							<td>
 								{% if 'ROLE_ADMIN' in user.roles %}
-									<span class="role-badge badge-admin">Administrateur</span>
+									<span class="badge badge-active">Administrateur</span>
 								{% else %}
-									<span class="role-badge badge-user">Membre</span>
+									<span class="badge badge-neutral">Membre</span>
 								{% endif %}
 							</td>
-
 							<td>
 								{% if user.isTotpConfirmed %}
-									<div class="secu-tag secu-on" title="Authentification 2FA configurée">
-										<span class="secu-dot">●</span>
-										ACTIF
-									</div>
+									<span class="badge badge-2fa-on">● 2FA ACTIF</span>
 								{% else %}
-									<div class="secu-tag secu-off">
-										<span class="secu-dot">○</span>
-										INACTIF
-									</div>
+									<span class="badge badge-2fa-off">○ 2FA INACTIF</span>
 								{% endif %}
 							</td>
-
-							<td class="td-date">
-								{{ user.createdAt ? user.createdAt|date('d/m/Y') : '-' }}
-							</td>
-
+							<td class="td-mono-sm">{{ user.createdAt ? user.createdAt|date('d/m/Y') : '-' }}</td>
 							<td>
-								<div
-									class="actions">
-									{# ACTION : Reset 2FA (Uniquement si actif et pas soi-même) #}
+								<div class="actions">
 									{% if user.isTotpConfirmed and user.id != app.user.id %}
-										<a href="{{ path('admin_security_reset_2fa', {'id': user.id}) }}" class="act-link act-reset" data-confirm="Réinitialiser la clé de sécurité de {{ user.firstname }} ? Cette action forcera l'utilisateur à reconfigurer son application au prochain accès.">
+										{# MODIFICATION : Lien Reset 2FA #}
+										<a href="{{ path('admin_security_reset_2fa', {'id': user.id}) }}" class="act-link act-warn js-confirm-link" data-confirm="🔐 Réinitialiser le 2FA pour {{ user.firstname }} ? Cela l'obligera à scanner un nouveau QR code.">
 											Reset 2FA
 										</a>
 									{% endif %}
 
-									<a href="{{ path('admin_users_edit', {'id': user.id}) }}" class="act-link act-edit">
-										Éditer
-									</a>
+									<a href="{{ path('admin_users_edit', {'id': user.id}) }}" class="act-link">Éditer</a>
 
 									{% if user.id != app.user.id %}
-										<a href="{{ path('admin_users_delete', {'id': user.id}) }}" class="act-link act-del" data-confirm="Supprimer ce compte définitivement ?">
-											Supprimer
-										</a>
+										{# MODIFICATION : Formulaire de suppression #}
+										<form method="post" action="{{ path('admin_users_delete', {'id': user.id}) }}" class="inline-form js-confirm-form" data-confirm="🚫 Supprimer définitivement le compte de {{ user.firstname }} {{ user.lastname|upper }} ?">
+											<button class="act-link act-del">Supprimer</button>
+										</form>
 									{% endif %}
 								</div>
-							</td>
-						</tr>
-					{% else %}
-						<tr>
-							<td colspan="6" class="td-empty">
-								Aucun membre enregistré dans l'annuaire.
 							</td>
 						</tr>
 					{% endfor %}
@@ -116,9 +88,4 @@
 			</table>
 		</div>
 	</div>
-
-{% endblock %}
-
-{% block javascripts %}
-	 <script src="{{ asset('js/admin/users/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

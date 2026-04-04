@@ -3,174 +3,103 @@
 {% block title %}Journal des connexions
 {% endblock %}
 
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/security/global.css') }}">
-{% endblock %}
-
 {% block body %}
-	<div class="dashboard-container">
-
-		{% for message in app.flashes('success') %}
-			<div class="alert alert-success">{{ message|raw }}</div>
-		{% endfor %}
-
-		<div class="page-header">
-			<div>
-				<h1>Journal des connexions</h1>
-				<p>Authentifications, activités système et alertes de sécurité en temps réel.</p>
-			</div>
-			<div>
-				<a href="{{ path('admin_security_purge_logs') }}" class="btn-danger-outline" data-confirm="⚠️ Action irréversible : Purger l'historique ?">
-					Purger les journaux
-				</a>
-			</div>
+	<div class="page-header">
+		<div>
+			<h1>Journal des connexions</h1>
+			<p>Activités système et alertes de sécurité en temps réel.</p>
 		</div>
-
-		<div class="content-card content-card-mb">
-			<h3 class="targets-title">
-				🚨 Comptes les plus visés (Échecs)
-			</h3>
-			<div class="targets-list">
-				{% for target in topTargets|default([]) %}
-					<div class="target-card">
-						<div class="target-label">Utilisateur cible</div>
-						<div class="target-email">
-							{{ target.email ?? 'Utilisateur inconnu' }}
-						</div>
-						<div class="target-attempts">
-							{{ target.attempts }}
-							<span class="target-attempts-label">échecs</span>
-						</div>
-					</div>
-				{% else %}
-					<div class="targets-empty">
-						Aucune activité suspecte détectée sur les comptes utilisateurs.
-					</div>
-				{% endfor %}
-			</div>
-		</div>
-
-		<div class="toolbar-container">
-			<div class="filter-group">
-				<button class="filter-btn active" data-filter="all">Tous</button>
-				<button class="filter-btn" data-filter="success">Succès</button>
-				<button class="filter-btn" data-filter="failed">Échecs</button>
-				<button class="filter-btn" data-filter="session">Alertes</button>
-			</div>
-
-			<div class="toolbar-right">
-				<a href="{{ path('admin_security_export_csv') }}" class="btn-export">
-					📥 Exporter CSV
-				</a>
-				<input type="text" id="searchLogs" class="search-bar" placeholder="Chercher un utilisateur, une IP...">
-			</div>
-		</div>
-
-		<div class="content-card">
-			<div class="table-responsive">
-				<table class="table" id="logsTable">
-					<thead>
-						<tr>
-							<th width="80">Date</th>
-							<th width="180">Utilisateur</th>
-							<th width="200">Localisation (IP)</th>
-							<th width="120">Appareil</th>
-							<th>Message / Événement</th>
-							<th width="100">Statut</th>
-							<th width="60" class="th-right">Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for log in logs|default([]) %}
-							{% set rowStatus = (log.type == 'erreur') ? 'failed' : (log.type == 'Session' ? 'session' : 'success') %}
-
-							<tr class="log-row {% if log.type == 'Session' %}log-warning-row{% endif %}" data-status="{{ rowStatus }}">
-
-								<td class="date-cell td-mono-sm">
-									{{ log.createdAt|date('d/m/Y') }}<br>
-									<span class="td-time">{{ log.createdAt|date('H:i:s') }}</span>
-								</td>
-
-								<td>
-									<strong class="td-main">
-										{{ log.user ? log.user.email : 'Système' }}
-									</strong>
-								</td>
-
-								<td>
-									<span class="ip-address ip-lookup" data-ip="{{ log.ip|default('') }}">{{ log.ip|default('—') }}</span>
-									<span class="geo-info" id="geo-{{ loop.index }}">Recherche...</span>
-								</td>
-
-								<td class="td-device">
-									{% if log.userAgent %}
-										{% if 'Mobi' in log.userAgent %}📱 Mobile
-											{% elseif 'Windows' in log.userAgent %}💻 PC
-											{% elseif 'Macintosh' in log.userAgent %}🖥️ Mac
-											{% else %}🌐 Web
-										{% endif %}
-										<div class="td-useragent" title="{{ log.userAgent }}">
-											{{ log.userAgent|slice(0, 20) }}...
-										</div>
-										{% else %}—
-									{% endif %}
-								</td>
-
-								<td>
-									<div class="log-message">
-										{% if log.type == 'Session' %}
-											<span class="log-warning-icon">⚠️</span>
-										{% endif %}
-										<span>{{ log.message ?? '—' }}</span>
-									</div>
-
-									<div class="log-badges">
-										{% set hour = log.createdAt|date('H') %}
-										{% if hour < 7 or hour > 21 %}
-											<span class="badge-nocturne">🌙 Nocturne ({{ hour }}h)</span>
-										{% endif %}
-										{% if log.createdAt|date('N') >= 6 %}
-											<span class="badge-weekend">🗓️ Week-end</span>
-										{% endif %}
-									</div>
-								</td>
-
-								<td>
-									{% if log.type == 'erreur' %}
-										<span class="log-failed">BLOQUÉ</span>
-									{% else %}
-										<span class="log-success">AUTORISÉ</span>
-									{% endif %}
-								</td>
-
-								<td class="td-right">
-									{% if log.ip and log.ip not in ['127.0.0.1', '::1', '—'] %}
-										<a href="{{ path('admin_security_ban_ip', {'ip': log.ip}) }}" class="btn-ban" data-confirm="🚫 Bannir l'IP {{ log.ip }} ?" title="Bannir l'IP">
-											🚫
-										</a>
-									{% else %}
-										<span class="td-dash">—</span>
-									{% endif %}
-								</td>
-							</tr>
-						{% else %}
-							<tr>
-								<td colspan="7" class="td-empty">
-									Aucun log de sécurité enregistré.
-								</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
-			<div id="noResults" class="no-results hidden">
-				Aucune correspondance trouvée pour ces critères.
-			</div>
+		<div
+			class="toolbar">
+			{# MODIFICATION 1 : Le bouton Purger #}
+			<a href="{{ path('admin_security_purge_logs') }}" class="btn-danger-outline js-confirm-link" data-confirm="⚠️ Purger tout l'historique ? Cette action est irréversible.">
+				Purger les journaux
+			</a>
 		</div>
 	</div>
 
-{% endblock %}
+	{# Grille de surveillance (Top Targets) #}
+	<div class="security-grid">
+		{% for target in topTargets|default([]) %}
+			<div class="target-card">
+				<div class="td-mono-sm card-label">CIBLE PRIORITAIRE</div>
+				<div class="target-email">{{ target.email ?? 'Inconnu' }}</div>
+				<div class="badge badge-danger">{{ target.attempts }}
+					ÉCHECS</div>
+			</div>
+		{% endfor %}
+	</div>
 
-{% block javascripts %}
-	 <script src="{{ asset('js/admin/security/logs.js') }}" nonce="{{ csp_nonce('script') }}"></script>
+	<div class="toolbar-container flex-between">
+		<div class="actions group-left">
+			<button class="btn-tab active">TOUS</button>
+			<button class="btn-tab">SUCCÈS</button>
+			<button class="btn-tab">ÉCHECS</button>
+		</div>
+		<div class="toolbar-right">
+			<a href="{{ path('admin_security_export_csv') }}" class="btn-tab">📥 EXPORTER</a>
+			<input type="text" id="searchLogs" class="search-input" placeholder="Chercher IP ou Email...">
+		</div>
+	</div>
+
+	<div class="table-wrapper">
+		<div class="table-scroll">
+			<table class="admin-table" id="logsTable">
+				<thead>
+					<tr>
+						<th width="120">Date</th>
+						<th width="200">Utilisateur</th>
+						<th width="180">IP / Géo</th>
+						<th width="120">Appareil</th>
+						<th>Message</th>
+						<th width="100">Statut</th>
+						<th class="th-right">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for log in logs|default([]) %}
+						<tr class="{{ log.type == 'Session' ? 'row-session' : '' }}">
+							<td class="td-mono-sm">
+								<strong>{{ log.createdAt|date('d/m/Y') }}</strong><br>
+								<span class="time-dimmed">{{ log.createdAt|date('H:i:s') }}</span>
+							</td>
+							<td>
+								<strong>{{ log.user ? log.user.email : 'SYSTÈME' }}</strong>
+							</td>
+							<td>
+								<span class="td-mono ip-accent">{{ log.ip|default('—') }}</span>
+							</td>
+							<td>
+								<span class="td-muted device-tag">
+									{% if 'Mobi' in log.userAgent %}📱 Mobile
+										{% elseif 'Windows' in log.userAgent %}💻 PC
+										{% else %}🌐 Web
+									{% endif %}
+								</span>
+							</td>
+							<td>
+								<div class="time-info">
+									<span class="log-message">{{ log.message }}</span>
+									{% if log.createdAt|date('H') < 7 or log.createdAt|date('H') > 21 %}
+										<span class="badge badge-nocturnal">🌙 NOCTURNE</span>
+									{% endif %}
+								</div>
+							</td>
+							<td>
+								<span class="badge {{ log.type == 'erreur' ? 'badge-danger' : 'badge-active' }}">
+									{{ log.type == 'erreur' ? 'BLOQUÉ' : 'OK' }}
+								</span>
+							</td>
+							<td class="td-right">
+								{% if log.ip and log.ip not in ['127.0.0.1', '::1', '—'] %}
+									{# MODIFICATION 2 : Le lien de bannissement #}
+									<a href="{{ path('admin_security_ban_ip', {'ip': log.ip}) }}" class="act-link act-del fs-large js-confirm-link" data-confirm="🚫 Bannir définitivement l'adresse IP {{ log.ip }} ?" title="Bannir">🚫</a>
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 {% endblock %}

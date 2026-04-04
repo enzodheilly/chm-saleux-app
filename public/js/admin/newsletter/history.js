@@ -5,22 +5,35 @@ document.addEventListener('DOMContentLoaded', function () {
     const campaigns = window.newsletterData.campaigns;
     const rawData   = window.newsletterData.rawData;
 
+    // --- Sanitiseur léger — supprime scripts et handlers inline ---
+    function sanitizeHTML(html) {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        tmp.querySelectorAll('script, iframe, object, embed').forEach(function (el) { el.remove(); });
+        tmp.querySelectorAll('*').forEach(function (el) {
+            Array.from(el.attributes).forEach(function (attr) {
+                if (attr.name.startsWith('on')) el.removeAttribute(attr.name);
+            });
+        });
+        return tmp.innerHTML;
+    }
+
     // --- Progress bars (remplace style="width:X%") ---
     document.querySelectorAll('.progress-bar[data-width]').forEach(function (bar) {
         bar.style.width = bar.dataset.width + '%';
     });
 
     // --- Modal ---
-    const modal       = document.getElementById('previewModal');
-    const modalBody   = document.getElementById('modalBody');
+    const modal        = document.getElementById('previewModal');
+    const modalBody    = document.getElementById('modalBody');
     const modalSubject = document.getElementById('modalSubject');
-    const closeModal  = document.getElementById('closeModal');
+    const closeModal   = document.getElementById('closeModal');
 
     function showPreview(id) {
         const camp = campaigns.find(function (c) { return c.id === parseInt(id); });
         if (!camp) return;
         modalSubject.textContent = camp.subject;
-        modalBody.innerHTML = camp.content;
+        modalBody.innerHTML = sanitizeHTML(camp.content);
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }

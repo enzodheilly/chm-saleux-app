@@ -3,97 +3,78 @@
 {% block title %}Messages reçus
 {% endblock %}
 
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/contact/index.css') }}">
-{% endblock %}
-
 {% block body %}
-	<div class="dashboard-container">
-
-		<div class="page-header">
-			<div>
-				<h1>Messages de contact</h1>
-				<p>Interagissez avec les visiteurs et membres du club.</p>
-			</div>
-			<div class="toolbar">
-				<input type="text" id="searchMessages" class="search-input" placeholder="Rechercher un expéditeur...">
-			</div>
+	<div class="page-header">
+		<div>
+			<h1>Messages de contact</h1>
+			<p>Interagissez avec les visiteurs et membres du club.</p>
 		</div>
-
-		<div class="table-wrapper">
-			<div class="table-scroll">
-				<table class="admin-table" id="messagesTable">
-					<thead>
-						<tr>
-							<th width="120">Date</th>
-							<th width="220">Expéditeur</th>
-							<th width="140">Contact</th>
-							<th width="180">Sujet</th>
-							<th>Message reçu</th>
-							<th class="th-right">Traitement / Réponse</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for message in messages %}
-							<tr>
-								<td class="date-text">
-									{{ message.createdAt|date('d/m/Y') }}<br>
-									<span class="td-time">{{ message.createdAt|date('H:i') }}</span>
-								</td>
-
-								<td>
-									<div class="sender-info">
-										<span class="sender-name">{{ message.firstName }}
-											{{ message.lastName|upper }}</span>
-										<span class="sender-email">{{ message.email }}</span>
-									</div>
-								</td>
-
-								<td class="td-contact">
-									{{ message.phone ?: '—' }}
-								</td>
-
-								<td class="td-muted">
-									{{ message.subject ? (subjectLabels[message.subject] ?? message.subject) : '—' }}
-								</td>
-
-								<td>
-									<div class="message-bubble" title="{{ message.content }}">
-										"{{ message.content|length > 100 ? message.content|slice(0, 100) ~ '...' : message.content }}"
-									</div>
-								</td>
-
-								<td class="td-right">
-									{% if message.resolvedBy %}
-										<div class="status-resolved">
-											<span class="resolved-check">✓</span>
-											Résolu par
-											{{ message.resolvedBy }}
-										</div>
-									{% else %}
-										<form action="{{ path('admin_contact_reply', {id: message.id}) }}" method="POST" class="reply-form">
-											<input type="hidden" name="_token" value="{{ csrf_token('reply' ~ message.id) }}">
-											<textarea name="response" class="reply-textarea" placeholder="Rédiger une réponse rapide..." required></textarea>
-											<button type="submit" class="btn-validate">Répondre</button>
-										</form>
-									{% endif %}
-								</td>
-							</tr>
-						{% else %}
-							<tr>
-								<td colspan="6" class="td-empty">
-									Aucun message n'a été reçu via le formulaire.
-								</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
+		<div class="toolbar">
+			<input type="text" id="searchMessages" class="search-input" placeholder="Rechercher un expéditeur...">
 		</div>
 	</div>
 
-{% endblock %}
+	<div class="table-wrapper">
+		<div class="table-scroll">
+			<table class="admin-table" id="messagesTable">
+				<thead>
+					<tr>
+						<th width="120">Date</th>
+						<th width="200">Expéditeur</th>
+						<th width="140">Sujet</th>
+						<th>Message reçu</th>
+						<th class="th-right">Traitement / Réponse</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for message in messages %}
+						<tr>
+							<td class="td-mono-sm">
+								<strong class="date-bold">{{ message.createdAt|date('d/m/Y') }}</strong><br>
+								<span class="td-time">{{ message.createdAt|date('H:i') }}</span>
+							</td>
 
-{% block javascripts %}
-	 <script src="{{ asset('js/admin/contact/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
+							<td>
+								<div class="identity-cell">
+									<span class="sender-name">{{ message.firstName }}
+										{{ message.lastName|upper }}</span>
+									<span class="td-mono-sm sender-email">{{ message.email }}</span>
+									<span class="td-mono-sm sender-phone">{{ message.phone ?: '' }}</span>
+								</div>
+							</td>
+
+							<td class="td-muted subject-cell">
+								{{ message.subject ? (subjectLabels[message.subject] ?? message.subject) : '—' }}
+							</td>
+
+							<td>
+								<div class="message-bubble" title="{{ message.content }}">
+									{{ message.content|length > 80 ? message.content|slice(0, 80) ~ '...' : message.content }}
+								</div>
+							</td>
+
+							<td class="td-right">
+								{% if message.resolvedBy %}
+									<div class="status-resolved">
+										<span class="badge badge-active">✓ Résolu par
+											{{ message.resolvedBy }}</span>
+									</div>
+								{% else %}
+									<form action="{{ path('admin_contact_reply', {id: message.id}) }}" method="POST" class="reply-form">
+										<input type="hidden" name="_token" value="{{ csrf_token('reply' ~ message.id) }}">
+										<textarea name="response" class="reply-textarea" placeholder="Réponse rapide..." required></textarea>
+										<button type="submit" class="btn-validate btn-reply">OK</button>
+									</form>
+								{% endif %}
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="5" class="td-empty">Aucun message reçu.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 {% endblock %}

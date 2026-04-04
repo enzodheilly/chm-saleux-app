@@ -3,17 +3,12 @@
 {% block title %}Gestion des compétitions
 {% endblock %}
 
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/competitions/list.css') }}">
-{% endblock %}
-
 {% block body %}
 	<div class="page-header">
 		<div>
 			<h1>Events</h1>
 			<p>Manage competitions and club results.</p>
 		</div>
-
 		<div class="toolbar">
 			<a href="{{ path('admin_competition_new') }}" class="btn-create">+ New competition</a>
 		</div>
@@ -24,108 +19,92 @@
 			<table class="admin-table">
 				<thead>
 					<tr>
-						<th width="120">Visual</th>
-						<th width="30%">Competition</th>
+						<th width="100">Visual</th>
+						<th width="25%">Competition</th>
 						<th width="20%">Details</th>
-						<th width="25%">Results (Top 3)</th>
+						<th width="25%">Top Results</th>
 						<th class="th-right">Actions</th>
 					</tr>
 				</thead>
-			</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for comp in competitions %}
-			<tr>
-				<td>
-					{% if comp.image %}
-						<img src="{{ asset('uploads/competitions/' ~ comp.image) }}" alt="Visual" class="comp-visual">
+				<tbody>
+					{% for comp in competitions %}
+						<tr>
+							<td>
+								{% if comp.image %}
+									<img src="{{ asset('uploads/competitions/' ~ comp.image) }}" alt="" class="product-img">
+								{% else %}
+									<div class="product-img img-placeholder-sm">NO IMG</div>
+								{% endif %}
+							</td>
+
+							<td>
+								<div class="product-info">
+									<div class="title-stack">
+										<strong>{{ comp.title }}</strong>
+										<span class="td-mono-sm">
+											{{ comp.eventDate ? comp.eventDate|date("d.m.Y") : '—' }}
+											•
+											{{ comp.competitionType|default('Standard') }}
+										</span>
+									</div>
+								</div>
+							</td>
+
+							<td>
+								<div class="time-info">
+									<span class="info-row">
+										<strong>Loc:</strong>
+										{{ comp.location|default('—') }}</span>
+									<span class="info-row">
+										<strong>Team:</strong>
+										{{ comp.gender == 'male' ? 'Men' : (comp.gender == 'female' ? 'Women' : '—') }}</span>
+									{% if comp.teamRanking %}
+										<span class="rank-highlight">Rank:
+											{{ comp.teamRanking }}</span>
+									{% endif %}
+								</div>
+							</td>
+
+							<td>
+								{% if comp.results is not empty %}
+									<div class="time-info">
+										{% for result in comp.results|slice(0, 2) %}
+											<span class="td-mono-sm result-line">
+												•
+												{{ result.firstName }}
+												{{ result.lastName|slice(0,1) }}. ({{ result.total }})
+											</span>
+										{% endfor %}
+										{% if comp.results|length > 2 %}
+											<span class="more-count">+
+												{{ comp.results|length - 2 }}
+												more...</span>
+										{% endif %}
+									</div>
+								{% else %}
+									<span class="no-results-text">No results</span>
+								{% endif %}
+							</td>
+
+							<td>
+								<div class="actions">
+									<a href="{{ path('admin_competition_edit', {id: comp.id}) }}" class="act-link">Edit</a>
+
+									{# MODIFICATION : Passage en js-confirm-form #}
+									<form method="post" action="{{ path('admin_competition_delete', {id: comp.id}) }}" class="js-confirm-form" data-confirm="⚠️ Delete the competition '{{ comp.title }}'? All results associated will be deleted.">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comp.id) }}">
+										<button type="submit" class="act-link act-del">Delete</button>
+									</form>
+								</div>
+							</td>
+						</tr>
 					{% else %}
-						<div class="comp-visual">No Image</div>
-					{% endif %}
-				</td>
-
-				<td>
-					<div class="comp-info">
-						<h3>{{ comp.title }}</h3>
-						<div class="comp-meta">
-							<span class="comp-date">
-								{{ comp.eventDate ? comp.eventDate|date("d.m.Y") : '—' }}
-							</span>
-							<span>{{ comp.competitionType|default('Standard') }}</span>
-						</div>
-					</div>
-				</td>
-
-				<td>
-					<div class="details-list">
-						<div>
-							<strong>Location:</strong>
-							{{ comp.location|default('—') }}</div>
-
-						<div>
-							<strong>Team:</strong>
-							{% if comp.gender == 'male' %}
-								Men
-							{% elseif comp.gender == 'female' %}
-								Women
-							{% else %}
-								—
-							{% endif %}
-						</div>
-
-						{% if comp.teamRanking %}
-							<div class="ranking-highlight">
-								<strong>Ranking:</strong>
-								{{ comp.teamRanking }}
-							</div>
-						{% endif %}
-					</div>
-				</td>
-
-				<td>
-					{% if comp.results is not empty %}
-						<ul class="results-mini">
-							{% for result in comp.results|slice(0, 3) %}
-								<li>
-									{{ result.firstName }}
-									{{ result.lastName|slice(0,1) }}.
-									<span>(Total:
-										{{ result.total }})</span>
-								</li>
-							{% endfor %}
-
-							{% if comp.results|length > 3 %}
-								<li class="li-more">+
-									{{ comp.results|length - 3 }}
-									more...</li>
-
-							{% endif %}
-						</ul>
-					{% else %}
-						<span class="empty-note">No results linked</span>
-					{% endif %}
-				</td>
-
-				<td>
-					<div class="actions">
-						<a href="{{ path('admin_competition_edit', {id: comp.id}) }}" class="act-link act-edit">
-							Edit
-						</a>
-
-						<form method="post" action="{{ path('admin_competition_delete', {id: comp.id}) }}" class="form-inline" data-confirm="Confirm deletion of {{ comp.title|e('js') }}?">
-							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comp.id) }}">
-							<button type="submit" class="act-link act-del">Delete</button>
-						</form>
-					</div>
-				</td>
-			</tr>
-		{% else %}
-			<tr>
-				<td colspan="5" class="empty-state">
-					No competitions found.
-				</td>
-			</tr>
-		{% endfor %}
-	</tbody>
-</table></div></div>{% endblock %}{% block javascripts %} <script src="{{ asset('js/admin/competitions/list.js') }}" nonce="{{ csp_nonce('script') }}"></script>{% endblock %}
+						<tr>
+							<td colspan="5" class="td-empty">No competitions found.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

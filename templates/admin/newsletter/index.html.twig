@@ -3,74 +3,60 @@
 {% block title %}Abonnés newsletter
 {% endblock %}
 
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/newsletter/index.css') }}">
-{% endblock %}
-
 {% block body %}
-	<div class="dashboard-container">
-
-		{% for message in app.flashes('success') %}
-			<div class="flash-success">✅
-				{{ message }}</div>
-		{% endfor %}
-
-		<div class="page-header">
-			<div>
-				<h1>Abonnés Newsletter</h1>
-				<p>Audience actuelle et liste de diffusion.</p>
-			</div>
-			<div class="toolbar">
-				<input type="text" id="searchSubs" class="search-input" placeholder="Rechercher par email...">
-			</div>
+	<div class="page-header">
+		<div>
+			<h1>Abonnés Newsletter</h1>
+			<p>Audience actuelle et liste de diffusion.</p>
 		</div>
-
-		<div class="table-wrapper">
-			<div class="table-scroll">
-				<table class="admin-table" id="subsTable">
-					<thead>
-						<tr>
-							<th width="80">#</th>
-							<th width="40%">Adresse Email</th>
-							<th width="30%">Date d'inscription</th>
-							<th class="th-right">Statut</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for s in subscribers %}
-							<tr>
-								<td>
-									<span class="td-mono">{{ loop.index|format("%02d") }}</span>
-								</td>
-								<td>
-									<a href="mailto:{{ s.email }}" class="email-link">{{ s.email }}</a>
-								</td>
-								<td class="td-date">
-									{{ s.subscribedAt|date('d/m/Y') }}
-									<span class="td-time">{{ s.subscribedAt|date('H:i') }}</span>
-								</td>
-								<td class="td-right">
-									{% if s.isConfirmed %}
-										<span class="badge badge-confirmed">Actif / Confirmé</span>
-									{% else %}
-										<span class="badge badge-pending">Validation en attente</span>
-									{% endif %}
-								</td>
-							</tr>
-						{% else %}
-							<tr>
-								<td colspan="4" class="td-empty">Aucun abonné n'est enregistré pour le moment.</td>
-
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
+		<div class="toolbar">
+			<input type="text" id="searchSubs" class="search-input" placeholder="Rechercher par email...">
 		</div>
 	</div>
 
-{% endblock %}
-
-{% block javascripts %}
-	 <script src="{{ asset('js/admin/newsletter/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
+	<div class="table-wrapper">
+		<div class="table-scroll">
+			<table class="admin-table" id="subsTable">
+				<thead>
+					<tr>
+						<th width="80">#</th>
+						<th>Adresse Email</th>
+						<th>Date d'inscription</th>
+						<th class="th-right">Statut</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for s in subscribers %}
+						<tr>
+							<td>
+								<span class="td-mono index-col">{{ loop.index|format("%02d") }}</span>
+							</td>
+							<td>
+								{# La classe link-accent remplace le style inline #}
+								<a href="mailto:{{ s.email }}" class="link-accent">
+									{{ s.email }}
+								</a>
+							</td>
+							<td class="td-mono-sm">
+								{{ s.subscribedAt|date('d/m/Y') }}
+								<span class="time-dimmed">{{ s.subscribedAt|date('H:i') }}</span>
+							</td>
+							<td class="td-right">
+								{% if s.isConfirmed %}
+									<span class="badge badge-active">Confirmé</span>
+								{% else %}
+									{# On utilise badge-neutral pour l'attente #}
+									<span class="badge badge-pending">En attente</span>
+								{% endif %}
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="4" class="td-empty">Aucun abonné enregistré.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 {% endblock %}

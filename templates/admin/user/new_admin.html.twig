@@ -3,10 +3,7 @@
 {% block title %}Ajouter un Administrateur
 {% endblock %}
 
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/user/new_admin.css') }}">
-{% endblock %}
-
+{# Le bloc stylesheets est supprimé pour utiliser le Master CSS centralisé #}
 
 {% block body %}
 	<div class="page-header">
@@ -22,19 +19,20 @@
 
 	<div class="table-wrapper">
 		<div class="card-body">
-			<form method="POST" autocomplete="off">
+			<form method="POST" autocomplete="off" class="admin-form">
 				<input type="hidden" name="_token" value="{{ csrf_token('new_admin') }}">
+
 				<div class="form-grid">
 					<div class="info-box">
 						<p class="info-text">
 							<strong>Mode hybride :</strong>
-							si vous entrez l’email d’un membre existant, il sera promu administrateur immédiatement.
-																												                            Sinon, complétez les champs suivants pour créer un nouveau compte.
+							Si vous entrez l’email d’un membre existant, il sera promu administrateur immédiatement.
+							                            Sinon, complétez les champs suivants pour créer un nouveau compte.
 						</p>
 					</div>
 
-					<div>
-						<span class="tool-label">Email de l'utilisateur</span>
+					<div class="form-group">
+						<label class="tool-label">Email de l'utilisateur</label>
 						<input type="email" name="email" list="users_list" class="input" placeholder="Rechercher ou saisir un email..." required autofocus>
 
 						<datalist id="users_list">
@@ -50,35 +48,35 @@
 					<p class="subsection-title">Uniquement si création de compte</p>
 
 					<div class="form-row-2">
-						<div>
-							<span class="tool-label">
+						<div class="form-group">
+							<label class="tool-label">
 								Prénom
-								<span class="label-tag">(optionnel si existant)</span>
-							</span>
+								<span class="label-tag-muted">(optionnel si existant)</span>
+							</label>
 							<input type="text" name="firstname" class="input" placeholder="Ex: Jean">
 						</div>
 
-						<div>
-							<span class="tool-label">
+						<div class="form-group">
+							<label class="tool-label">
 								Nom
-								<span class="label-tag">(optionnel si existant)</span>
-							</span>
+								<span class="label-tag-muted">(optionnel si existant)</span>
+							</label>
 							<input type="text" name="lastname" class="input" placeholder="Ex: Dupont">
 						</div>
 					</div>
 
-					<div>
-						<span class="tool-label">
+					<div class="form-group">
+						<label class="tool-label">
 							Mot de passe
-							<span class="label-tag">(optionnel si existant)</span>
-						</span>
+							<span class="label-tag-muted">(optionnel si existant)</span>
+						</label>
 						<input type="password" name="password" class="input" autocomplete="new-password">
 						<span class="form-help">
 							Laissez vide si l'utilisateur existe déjà. Son mot de passe actuel sera conservé.
 						</span>
 					</div>
 
-					<div class="form-actions">
+					<div class="form-actions-footer">
 						<button type="submit" class="btn-create">Valider & promouvoir</button>
 						<a href="{{ path('admin_users_index') }}" class="btn-outline">Annuler</a>
 					</div>
