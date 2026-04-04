@@ -1,11 +1,6 @@
-{# templates/admin/exercise/index.html.twig #}
 {% extends 'admin/base_admin.html.twig' %}
 
 {% block title %}Gestion des exercices
-{% endblock %}
-
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/exercise/index.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -14,28 +9,11 @@
 			<h1>Exercices</h1>
 			<p>Gérez la liste des exercices disponibles.</p>
 		</div>
-
-		<div
-			class="toolbar">
-			{# Recherche #}
-			<div class="search-wrapper">
-				<span class="tool-label">Rechercher</span>
-				<input type="text" id="searchExercise" class="input" placeholder="Rechercher un exercice...">
-			</div>
-
-			{# Bouton créer (si tu as une route /new) #}
+		<div class="toolbar">
+			<input type="text" id="searchExercise" class="search-input" placeholder="Rechercher un exercice...">
 			<a href="{{ path('admin_exercise_new') }}" class="btn-create">+ Ajouter</a>
 		</div>
 	</div>
-
-	{# Flash messages #}
-	{% for label, messages in app.flashes %}
-		{% for message in messages %}
-			<div class="flash-message">
-				{{ message }}
-			</div>
-		{% endfor %}
-	{% endfor %}
 
 	<div class="table-wrapper">
 		<div class="table-scroll">
@@ -47,26 +25,28 @@
 						<th class="th-right">Actions</th>
 					</tr>
 				</thead>
-
 				<tbody>
 					{% for exercise in exercises %}
 						<tr>
-							<td class="mono">#{{ exercise.id }}</td>
-
 							<td>
-								<div class="exercise-info">
-									<span class="exercise-name">{{ exercise.name }}</span>
+								<span class="td-mono">#{{ exercise.id }}</span>
+							</td>
+							<td>
+								<div class="product-info">
+									<div class="title-stack">
+										<strong class="exercise-name">{{ exercise.name }}</strong>
+										{# Espace réservé pour une future catégorie (ex: Jambes, Dos...) #}
+									</div>
 								</div>
 							</td>
-
 							<td>
 								<div class="actions">
-									<a href="{{ path('admin_exercise_edit', {id: exercise.id}) }}" class="act-link act-edit">
-										Modifier
-									</a>
-									<form method="post" action="{{ path('admin_exercise_delete', {id: exercise.id}) }}" class="form-inline" data-confirm="Supprimer définitivement l'exercice « {{ exercise.name }} » ?">
+									<a href="{{ path('admin_exercise_edit', {id: exercise.id}) }}" class="act-link">Modifier</a>
+
+									{# MODIFICATION : Suppression du onsubmit inline #}
+									<form method="post" action="{{ path('admin_exercise_delete', {id: exercise.id}) }}" class="js-confirm-form" data-confirm="❓ Supprimer l'exercice '{{ exercise.name }}' ? Cela pourrait affecter les routines qui l'utilisent.">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete_exercise_' ~ exercise.id) }}">
-										<button class="act-link act-del" type="submit">Supprimer</button>
+										<button class="act-link act-del">Supprimer</button>
 									</form>
 								</div>
 							</td>
@@ -74,16 +54,10 @@
 					{% else %}
 						<tr>
 							<td colspan="3" class="td-empty">Aucun exercice enregistré.</td>
-
 						</tr>
 					{% endfor %}
 				</tbody>
 			</table>
 		</div>
 	</div>
-
-{% endblock %}
-
-{% block javascripts %}
-	 <script src="{{ asset('js/admin/exercise/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

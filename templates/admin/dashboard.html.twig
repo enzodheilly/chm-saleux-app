@@ -196,15 +196,15 @@
 {% endblock %}
 
 {% block javascripts %}
-	{% if not qrCodeContent %} <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="{{ csp_nonce('script') }}"></script>
+	{% if not qrCodeContent %} <script src="{{ asset('js/vendor/chart.min.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 
 		 <script nonce="{{ csp_nonce('script') }}">
-					window.dashboardData = {
-						labels7: {{ labels7|default(['L','M','M','J','V','S','D'])|json_encode|raw }},
-						loginsSuccessByDay: {{ loginsSuccessByDay|default([0,0,0,0,0,0,0])|json_encode|raw }},
-						newSubscribersByDay: {{ newSubscribersByDay|default([0,0,0,0,0,0,0])|json_encode|raw }}
-					};
-				</script>
+							window.dashboardData = {
+								labels7: {{ labels7|default(['L','M','M','J','V','S','D'])|json_encode|raw }},
+								loginsSuccessByDay: {{ loginsSuccessByDay|default([0,0,0,0,0,0,0])|json_encode|raw }},
+								newSubscribersByDay: {{ newSubscribersByDay|default([0,0,0,0,0,0,0])|json_encode|raw }}
+							};
+						</script>
 
 		 <script src="{{ asset('js/admin/dashboard/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 	{% endif %}

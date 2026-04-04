@@ -1,116 +1,34 @@
-/* =================== HEADER & TOOLS =================== */
-    .page-header {
-        display: flex; justify-content: space-between; align-items: flex-end;
-        margin-bottom: 2rem; padding-bottom: 1rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    .page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--text-main); }
-    .page-header p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; }
+/* admin/athletes/index.css */
 
-    .toolbar { display: flex; gap: 1rem; }
+.athlete-cell { display: flex; align-items: center; gap: 12px; }
 
-    .search-input {
-        background: var(--bg-sidebar);
-        border: 1px solid var(--border-color);
-        color: var(--text-main);
-        padding: 0.6rem 1rem;
-        border-radius: 4px;
-        min-width: 280px;
-        font-size: 0.9rem;
-        font-family: inherit;
-        transition: 0.2s;
-    }
-    .search-input:focus { border-color: var(--accent); }
+.athlete-avatar, .athlete-initials {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    object-fit: cover;
+    background: var(--bg-body);
+    flex-shrink: 0;
+}
 
-    .btn-create {
-        background: var(--text-main);
-        color: var(--bg-body);
-        padding: 0.6rem 1.2rem;
-        border-radius: 4px;
-        font-weight: 700; font-size: 0.85rem;
-        cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
-        transition: 0.2s; border: none;
-    }
-    .btn-create:hover { opacity: 0.9; }
+.athlete-initials {
+    color: var(--text-muted);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.8rem; text-transform: uppercase;
+}
 
-    /* =================== TABLEAU =================== */
-    .table-wrapper {
-        background: var(--bg-sidebar);
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        overflow: hidden;
-    }
-    
-    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    
-    .admin-table th {
-        background: rgba(255,255,255,0.02);
-        color: var(--text-muted);
-        font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.75rem;
-        text-align: left; padding: 1rem 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    
-    .admin-table td {
-        padding: 1rem 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-        color: var(--text-main); vertical-align: middle;
-    }
-    .admin-table tr:last-child td { border-bottom: none; }
-    .admin-table tr:hover td { background: rgba(255,255,255,0.01); }
+.athlete-info { display: flex; flex-direction: column; }
+.athlete-name { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
+.athlete-meta { font-size: 0.75rem; color: var(--text-muted); }
 
-    /* Athlete Specifics */
-    .athlete-cell { display: flex; align-items: center; gap: 12px; }
-    
-    .athlete-avatar {
-        width: 36px; height: 36px;
-        border-radius: 50%; /* Rond pour les personnes, c'est mieux */
-        object-fit: cover;
-        background: var(--bg-body);
-        border: 1px solid var(--border-color);
-    }
-    
-    .athlete-initials {
-        width: 36px; height: 36px;
-        border-radius: 50%;
-        background: var(--bg-body);
-        border: 1px solid var(--border-color);
-        color: var(--text-muted);
-        display: flex; align-items: center; justify-content: center;
-        font-weight: 700; font-size: 0.8rem;
-        text-transform: uppercase;
-    }
+/* Badges Catégorie (Benjamin, Senior, etc.) */
+.cat-badge {
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 4px; letter-spacing: 0.05em;
+    background: rgba(255,255,255,0.05); color: var(--text-muted);
+    border: 1px solid var(--border-color);
+}
 
-    .athlete-info { display: flex; flex-direction: column; }
-    .athlete-name { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
-    .athlete-meta { font-size: 0.75rem; color: var(--text-muted); }
-
-    /* Badges Catégorie */
-    .cat-badge {
-        font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-        padding: 3px 8px; border-radius: 4px; letter-spacing: 0.05em;
-        background: rgba(255,255,255,0.05); color: var(--text-muted);
-        border: 1px solid var(--border-color);
-    }
-
-    /* Actions */
-    .actions { display: flex; gap: 15px; justify-content: flex-end; }
-    .act-link { 
-        font-size: 0.75rem; font-weight: 600; text-transform: uppercase; 
-        letter-spacing: 0.05em; cursor: pointer; transition: 0.2s; opacity: 0.7; 
-        background: none; border: none; padding: 0;
-    }
-    .act-link:hover { opacity: 1; text-decoration: underline; }
-    
-    .act-edit { color: var(--text-main); }
-    .act-del { color: var(--danger); }
-
-    .table-scroll { overflow-x: auto; }
-.th-right { text-align: right; }
-.td-mono { font-family: monospace; color: var(--text-muted); }
 .td-bold { font-weight: 600; color: var(--text-main); }
 .td-muted { color: var(--text-muted); }
 .td-small { font-size: 0.8rem; }
-.td-date { color: var(--text-muted); font-size: 0.85rem; }
-.td-empty { text-align: center; padding: 3rem; color: var(--text-muted); }
-.form-inline { display: inline; }

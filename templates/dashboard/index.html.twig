@@ -20,698 +20,702 @@
 {% set licenceTypeLabel = licence ? licence.type : 'Loisir' %}
 {% set lastSession = sessions|first %}
 {% set firstName = app.user.firstname|default('Adhérent') %}
-{% set profileImage = app.user.profileImageDataUrl ? app.user.profileImageDataUrl : 'https://ui-avatars.com/api/?name=' ~ app.user.firstname ~ '+' ~ app.user.lastname ~ '&background=F57706&color=fff&size=256' %}
+{% set profileImage = app.user.profileImageDataUrl ? app.user.profileImageDataUrl : app.user|avatar_initials %}
 {% set bannerRightImage = asset('images/dashboard/banner-athlete-right.png') %}
 
-{% block title %}Espace Membre - CHM SALEUX{% endblock %}
+{% block title %}Espace Membre - CHM SALEUX
+{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
+	{{ parent() }}
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
-    <link rel="stylesheet" href="{{ asset('css/dashboard/test-v2.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/dashboard/test-v2.css') }}">
 {% endblock %}
 
 {% block body %}
-    <div class="flash-container">
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="flash-message flash-{{ label }}">
-                    <i class="fa-solid {% if label == 'success' %}fa-circle-check{% elseif label == 'error' or label == 'danger' %}fa-circle-xmark{% else %}fa-circle-info{% endif %}"></i>
-                    <span class="flash-message-text">{{ message }}</span>
-                    <button type="button" class="flash-close" aria-label="Fermer">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-            {% endfor %}
-        {% endfor %}
-    </div>
-
-    <div id="mobileOverlay" class="mobile-overlay"></div>
-
-    <div
-        class="app-shell"
-        id="memberDashboard"
-        data-route-update-email="{{ path('adherent_settings_update_email') }}"
-        data-route-update-password="{{ path('adherent_settings_update_password') }}"
-        data-route-update-licence="{{ path('adherent_edit_license') }}"
-        data-route-delete-account="{{ path('profile_delete_account') }}"
-        data-route-upload-photo="{{ path('profile_photo') }}"
-        data-sessions='{{ sessions|json_encode|e("html_attr") }}'
-    >
-        <nav class="sidebar" id="sidebar">
-            <div class="sidebar-top">
-                <a href="{{ path('home') }}" class="brand-badge" title="Retour au site">
-                    <img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo CHM SALEUX">
-                </a>
-
-                <div class="sidebar-nav">
-                    <div class="nav-item active" data-target="home" title="Vue d'ensemble">
-                        <i class="fa-solid fa-grip"></i>
-                        <span class="nav-tooltip">Vue d'ensemble</span>
-                    </div>
-
-                    <div class="nav-item" data-target="progress" title="Mes progrès">
-                        <i class="fa-solid fa-chart-simple"></i>
-                        <span class="nav-tooltip">Mes progrès</span>
-                    </div>
-
-                    <div class="nav-item" data-target="history" title="Historique">
-                        <i class="fa-solid fa-clock-rotate-left"></i>
-                        <span class="nav-tooltip">Historique</span>
-                    </div>
-
-                    <div class="nav-item" data-target="licence" title="Ma licence">
-                        <i class="fa-solid fa-id-card"></i>
-                        <span class="nav-tooltip">Ma licence</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sidebar-bottom">
-                <a href="{{ path('home') }}" class="sidebar-link" title="Retour au site">
-                    <i class="fa-solid fa-arrow-left"></i>
-                </a>
-
-                <div class="sidebar-profile">
-                    <img id="avatar-preview" src="{{ profileImage }}" alt="Photo de profil">
-                </div>
-            </div>
-        </nav>
-
-        <main class="main-content">
-            <header class="topbar">
-                <div class="topbar-left">
-                    <button class="menu-toggle" id="sidebarToggle" type="button">
-                        <i class="fa-solid fa-bars"></i>
-                    </button>
-
-                    <div class="topbar-title-wrap">
-                        <small>Espace membre CHM Saleux</small>
-                        <h2 class="page-title">Dashboard adhérent</h2>
-                    </div>
-                </div>
-
-                <div class="topbar-actions">
-                    <label class="search-pill" aria-label="Rechercher">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" placeholder="Rechercher une séance, une info...">
-                    </label>
-
-                    <button class="topbar-icon topbar-icon--notification" title="Notifications" type="button">
-                        <i class="fa-regular fa-bell"></i>
-                        {% if notifications|default([])|length > 0 %}
-                            <span class="topbar-notification-dot"></span>
-                        {% endif %}
-                    </button>
-
-                    <a href="{{ path('contact') }}" class="topbar-cta">
-                        <i class="fa-solid fa-paper-plane"></i>
-                        Contact
-                    </a>
-
-                    <button class="topbar-icon" id="openSettingsDrawer" title="Paramètres" type="button">
-                        <i class="fa-solid fa-gear"></i>
-                    </button>
-                </div>
-            </header>
-
-            <div class="content-scroll">
-                <div class="content-inner">
-                    <div class="hero-top">
-                        <div class="welcome-block">
-                            <div class="eyebrow">Suivez votre progression ici</div>
-                            <h1 class="welcome-title">Bon retour, <span class="accent">{{ firstName }}</span> !</h1>
-                            <p class="welcome-text">
-                                Retrouvez votre licence, vos statistiques d'entraînement et l’historique synchronisé avec l’application mobile dans une interface plus premium, plus sportive et plus claire.
-                            </p>
-                        </div>
-
-                        <div class="top-kcal-box">
-                            <div>
-                                <div class="metric-mini-label">Temps d'entraînement total</div>
-                                <div class="metric-mini-value">
-                                    {% if totalHours > 0 %}
-                                        {{ totalHours }}h {{ totalMinutes }}m
-                                    {% else %}
-                                        {{ totalMinutes }}m
-                                    {% endif %}
-                                </div>
-                                <div class="metric-mini-sub">Période : {{ progress.rangeLabel|default('30 jours') }}</div>
-                            </div>
-
-                            <div class="topbar-icon top-kcal-box-icon">
-                                <i class="fa-solid fa-stopwatch"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <section id="tab-home" class="section-view active">
-                        <div class="home-banner-wrap">
-                            <div class="glass-card banner-card">
-                                <div class="banner-content">
-                                    <div class="banner-chip">
-                                        <i class="fa-solid fa-bolt"></i>
-                                        Performance • Discipline • Régularité
-                                    </div>
-
-                                    <h2 class="banner-title">
-                                        Allez plus loin : <span class="strong">chaque séance</span> construit votre progression.
-                                    </h2>
-
-                                    <p class="banner-text">
-                                        Centralisez vos statistiques, votre licence et vos dernières séances dans un dashboard conçu pour mettre en valeur votre progression et votre engagement au sein du club.
-                                    </p>
-
-                                    <div class="banner-inline-stats">
-                                        <div class="banner-inline-stat">
-                                            <span>Licence</span>
-                                            <strong>{{ licenceStatusLabel }}</strong>
-                                        </div>
-
-                                        <div class="banner-inline-stat">
-                                            <span>Répétitions</span>
-                                            <strong id="homeTotalReps">0</strong>
-                                        </div>
-
-                                        <div class="banner-inline-stat">
-                                            <span>Dernière activité</span>
-                                            <strong>{{ lastSession and lastSession.performed_at is defined and lastSession.performed_at ? lastSession.performed_at|date('d/m/Y') : 'Aucune' }}</strong>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="banner-visual">
-                                    <img src="{{ bannerRightImage }}" alt="Athlète CHM" class="banner-athlete">
-                                </div>
-                            </div>
-                        </div>
-
-                        <input type="file" id="avatar-upload" class="input-file-hidden" accept="image/png, image/jpeg">
-
-                        <div class="dashboard-grid">
-                            <div class="glass-card card-padding weekly-progress-card">
-                                <div class="card-head weekly-head">
-                                    <div class="card-head-left">
-                                        <div class="card-icon"></div>
-                                        <div class="dashboard-card-heading">
-                                            <span class="dashboard-card-kicker">Suivi performance</span>
-                                            <h3 class="dashboard-card-title">Progression hebdomadaire</h3>
-                                            <span class="dashboard-card-title-line"></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="weekly-tabs home-metric-tabs" id="homeMetricTabs">
-                                    <button class="weekly-tab active" type="button" data-metric="volume">Volume</button>
-                                    <button class="weekly-tab" type="button" data-metric="duration">Durée</button>
-                                    <button class="weekly-tab" type="button" data-metric="reps">Reps</button>
-                                </div>
-
-                                {% if sessions|length > 0 %}
-                                    <div class="refined-chart" id="homeWeeklyChart"></div>
-
-                                    <div class="refined-weekly-stats">
-                                        <div class="weekly-stat-box">
-                                            <div class="weekly-stat-label">Total affiché</div>
-                                            <div class="weekly-stat-value" id="homeMetricTotal">{{ totalVolumeKg|number_format(0, ',', ' ') }} kg</div>
-                                        </div>
-
-                                        <div class="weekly-stat-box">
-                                            <div class="weekly-stat-label">Meilleure journée</div>
-                                            <div class="weekly-stat-value" id="homeBestDay">—</div>
-                                        </div>
-                                    </div>
-                                {% else %}
-                                    <div class="empty-state">Aucune donnée disponible pour la progression hebdomadaire.</div>
-                                {% endif %}
-                            </div>
-
-                            <div class="right-stack">
-                                <div class="glass-card card-padding last-sessions-card">
-                                    <div class="card-head">
-                                        <div class="card-head-left">
-                                            <div class="card-icon"></div>
-                                            <div class="dashboard-card-heading">
-                                                <span class="dashboard-card-kicker">Activité récente</span>
-                                                <h3 class="dashboard-card-title">Vos dernières séances</h3>
-                                                <span class="dashboard-card-title-line"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {% if sessions|length > 0 %}
-                                        <div class="today-list">
-                                            {% for s in sessions|slice(0, 3) %}
-                                                {% set durSec = s.duration_seconds|default(0) %}
-                                                {% set durH = durSec // 3600 %}
-                                                {% set durM = (durSec % 3600) // 60 %}
-
-                                                <div class="today-item">
-                                                    <div class="today-icon">
-                                                        <i class="fa-solid fa-dumbbell"></i>
-                                                    </div>
-
-                                                    <div>
-                                                        <h4 class="today-title">{{ s.routine_name|default('Séance libre') }}</h4>
-                                                        <div class="today-meta">
-                                                            {{ s.performed_at|default(null) ? 'Le ' ~ s.performed_at|date('d/m/Y à H:i') : 'Date non renseignée' }}
-                                                        </div>
-
-                                                        <div class="today-stats">
-                                                            <div class="today-stat">
-                                                                <strong>
-                                                                    {% if durH > 0 %}
-                                                                        {{ durH }}h {{ durM }}m
-                                                                    {% else %}
-                                                                        {{ durM }}m
-                                                                    {% endif %}
-                                                                </strong>
-                                                                <span>Durée</span>
-                                                            </div>
-
-                                                            <div class="today-stat">
-                                                                <strong>{{ s.total_volume|default(0)|number_format(0, ',', ' ') }} kg</strong>
-                                                                <span>Volume</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {% if s.is_from_planning|default(false) %}
-                                                        <div class="today-badge">Planning</div>
-                                                    {% else %}
-                                                        <div class="today-badge">Libre</div>
-                                                    {% endif %}
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        <div class="empty-state">Aucune séance récente à afficher.</div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section id="tab-progress" class="section-view">
-                        <div class="section-head">
-                            <h3>Mes progrès</h3>
-
-                            <div class="progress-range-menu" id="progressRangeTabs">
-                                <button type="button" class="progress-range-trigger" id="progressRangeTrigger">
-                                    <i class="fa-solid fa-sliders"></i>
-                                    <span class="progress-range-label">30 derniers jours</span>
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </button>
-
-                                <div class="progress-range-dropdown" id="progressRangeDropdown">
-                                    <button type="button" class="progress-range-option active" data-range="30">30 derniers jours</button>
-                                    <button type="button" class="progress-range-option" data-range="90">3 derniers mois</button>
-                                    <button type="button" class="progress-range-option" data-range="365">Cette année</button>
-                                    <button type="button" class="progress-range-option" data-range="0">All time</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        {% if sessions|length > 0 %}
-                            <div class="glass-card card-padding progress-detailed-card">
-                                <div class="progress-topbar">
-                                    <div class="card-head-left">
-                                        <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
-                                        <div>
-                                            <h3 class="card-title">Progression globale</h3>
-                                            <div class="card-subtitle">Vue détaillée de votre activité avec filtres de période</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="progress-filters">
-                                        <div class="weekly-tabs progress-metric-tabs" id="progressMetricTabs">
-                                            <button class="weekly-tab active" type="button" data-metric="volume">Volume</button>
-                                            <button class="weekly-tab" type="button" data-metric="duration">Durée</button>
-                                            <button class="weekly-tab" type="button" data-metric="reps">Reps</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="refined-chart progress-detailed-chart" id="progressDetailedChart"></div>
-
-                                <div class="progress-summary-grid">
-                                    <div class="progress-summary-box">
-                                        <div class="weekly-stat-label">Total période</div>
-                                        <div class="weekly-stat-value" id="progressTotalValue">—</div>
-                                    </div>
-
-                                    <div class="progress-summary-box">
-                                        <div class="weekly-stat-label">Temps cumulé</div>
-                                        <div class="weekly-stat-value" id="progressDurationValue">—</div>
-                                    </div>
-
-                                    <div class="progress-summary-box">
-                                        <div class="weekly-stat-label">Répétitions</div>
-                                        <div class="weekly-stat-value" id="progressRepsValue">—</div>
-                                    </div>
-
-                                    <div class="progress-summary-box">
-                                        <div class="weekly-stat-label">Jours actifs</div>
-                                        <div class="weekly-stat-value" id="progressActiveDaysValue">—</div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% else %}
-                            <div class="empty-state">Aucune donnée disponible pour afficher vos progrès.</div>
-                        {% endif %}
-                    </section>
-
-                    <section id="tab-history" class="section-view">
-                        <div class="section-head">
-                            <h3>Historique complet des séances</h3>
-                            <div class="section-pill">
-                                <i class="fa-solid fa-database"></i>
-                                {{ sessions|length }} enregistrements
-                            </div>
-                        </div>
-
-                        <div class="glass-card card-padding">
-                            {% if sessions|length > 0 %}
-                                <div class="history-wrap">
-                                    <table class="history-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Séance</th>
-                                                <th>Volume</th>
-                                                <th>Durée</th>
-                                                <th>Origine</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for s in sessions %}
-                                                {% set durSec = s.duration_seconds|default(0) %}
-                                                {% set durH = durSec // 3600 %}
-                                                {% set durM = (durSec % 3600) // 60 %}
-                                                <tr>
-                                                    <td>{{ s.performed_at|default(null) ? s.performed_at|date('d/m/Y') : '—' }}</td>
-                                                    <td>{{ s.routine_name|default('Séance') }}</td>
-                                                    <td>{{ s.total_volume|default(0)|number_format(0, ',', ' ') }} kg</td>
-                                                    <td>
-                                                        {% if durH > 0 %}
-                                                            {{ durH }}h {{ durM }}m
-                                                        {% else %}
-                                                            {{ durM }}m
-                                                        {% endif %}
-                                                    </td>
-                                                    <td>
-                                                        {% if s.is_from_planning|default(false) %}
-                                                            Planning
-                                                        {% else %}
-                                                            Libre
-                                                        {% endif %}
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            {% else %}
-                                <div class="empty-state">Aucun historique disponible.</div>
-                            {% endif %}
-                        </div>
-                    </section>
-
-                    <section id="tab-licence" class="section-view">
-                        <div class="section-head">
-                            <h3>Votre licence officielle</h3>
-                            <div class="section-pill">
-                                <i class="fa-solid fa-shield-halved"></i>
-                                Saison 2025 / 2026
-                            </div>
-                        </div>
-
-                        <div class="licence-shell">
-                            <div class="glass-card licence-card-premium">
-                                <div class="licence-topbar">
-                                    <div class="licence-brand-block">
-                                        <div class="licence-brand-logo">
-                                            <img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo">
-                                        </div>
-                                        <div>
-                                            <div class="licence-brand-label">Club affilié</div>
-                                            <div class="licence-brand-name">CHM SALEUX</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="licence-status-badge {{ licenceActive ? 'is-active' : 'is-inactive' }}">
-                                        <i class="fa-solid {{ licenceActive ? 'fa-circle-check' : 'fa-triangle-exclamation' }}"></i>
-                                        {{ licenceActive ? 'Licence active' : 'Licence inactive' }}
-                                    </div>
-                                </div>
-
-                                <div class="licence-hero">
-                                    <div class="licence-member-block">
-                                        <div class="licence-member-label">Nom de l’adhérent</div>
-                                        <div class="licence-member-name">{{ app.user.firstname }} {{ app.user.lastname }}</div>
-                                        <div class="licence-member-sub">{{ app.user.email }}</div>
-                                    </div>
-
-                                    <div class="licence-number-box">
-                                        <span>N° licence</span>
-                                        <strong>{{ licenceNumberLabel }}</strong>
-                                    </div>
-                                </div>
-
-                                <div class="licence-grid">
-                                    <div class="licence-field">
-                                        <div class="licence-field-label">Club</div>
-                                        <div class="licence-field-value">CHM SALEUX</div>
-                                    </div>
-                                    <div class="licence-field">
-                                        <div class="licence-field-label">Saison</div>
-                                        <div class="licence-field-value">2025 / 2026</div>
-                                    </div>
-                                    <div class="licence-field">
-                                        <div class="licence-field-label">Type de licence</div>
-                                        <div class="licence-field-value">{{ licenceTypeLabel }}</div>
-                                    </div>
-                                    <div class="licence-field">
-                                        <div class="licence-field-label">Statut</div>
-                                        <div class="licence-field-value">{{ licenceStatusLabel }}</div>
-                                    </div>
-                                    <div class="licence-field">
-                                        <div class="licence-field-label">Cotisation</div>
-                                        <div class="licence-field-value">{{ admin.feesStatus|default('—') }}</div>
-                                    </div>
-                                    <div class="licence-field">
-                                        <div class="licence-field-label">Échéance cotisation</div>
-                                        <div class="licence-field-value">{{ admin.feesDue|default('—') }}</div>
-                                    </div>
-                                    <div class="licence-field">
-                                        <div class="licence-field-label">Certificat médical</div>
-                                        <div class="licence-field-value">{{ admin.medicalStatus|default('—') }}</div>
-                                    </div>
-                                    <div class="licence-field">
-                                        <div class="licence-field-label">Expiration certificat</div>
-                                        <div class="licence-field-value">{{ admin.medicalExpiry|default('—') }}</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="licence-side-improved">
-                                <div class="glass-card licence-side-card">
-                                    <div class="licence-side-icon">
-                                        <i class="fa-solid fa-file-pdf"></i>
-                                    </div>
-                                    <h4>Justificatif adhérent</h4>
-                                    <p>Téléchargez votre justificatif pour mutuelle, CE ou dossier administratif.</p>
-                                    <a href="#" class="btn-primary btn-full-width">
-                                        <i class="fa-solid fa-download"></i>
-                                        Télécharger
-                                    </a>
-                                </div>
-
-                                <div class="glass-card licence-side-card">
-                                    <h4>Informations utiles</h4>
-                                    <div class="licence-info-list">
-                                        <div class="licence-info-row">
-                                            <span>Type</span>
-                                            <strong>{{ licenceTypeLabel }}</strong>
-                                        </div>
-                                        <div class="licence-info-row">
-                                            <span>Statut</span>
-                                            <strong>{{ licenceStatusLabel }}</strong>
-                                        </div>
-                                        <div class="licence-info-row">
-                                            <span>Certificat</span>
-                                            <strong>{{ admin.medicalStatus|default('—') }}</strong>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <div id="settingsOverlay" class="settings-overlay"></div>
-
-    <aside id="settingsDrawer" class="settings-drawer" aria-hidden="true">
-        <div class="settings-drawer-header">
-            <div class="settings-drawer-header-group">
-                <i class="fa-solid fa-gear settings-drawer-header-icon"></i>
-                <div>
-                    <strong class="settings-drawer-header-title">Paramètres du compte</strong>
-                    <span class="settings-drawer-header-subtitle">Sécurité et informations de connexion</span>
-                </div>
-            </div>
-
-            <button class="topbar-icon topbar-icon--drawer-close" id="closeSettingsDrawer" title="Fermer" type="button">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-
-        <div class="settings-drawer-content">
-            <div id="settingsFeedback" class="settings-feedback is-hidden"></div>
-
-            <div class="settings-pro-card">
-                <div class="settings-pro-head">
-                    <div>
-                        <div class="settings-pro-eyebrow">Compte</div>
-                        <h4>Informations actuelles</h4>
-                    </div>
-                </div>
-
-                <div class="settings-info-grid">
-                    <div class="settings-info-box">
-                        <span class="settings-info-label">Nom</span>
-                        <strong>{{ app.user.firstname }} {{ app.user.lastname }}</strong>
-                    </div>
-                    <div class="settings-info-box">
-                        <span class="settings-info-label">E-mail</span>
-                        <strong id="currentEmailDisplay">{{ app.user.email }}</strong>
-                    </div>
-                </div>
-            </div>
-
-            <div class="settings-pro-card">
-                <div class="settings-pro-head">
-                    <div>
-                        <div class="settings-pro-eyebrow">Connexion</div>
-                        <h4>Modifier mon e-mail</h4>
-                    </div>
-                    <button class="btn-outline" type="button" data-toggle-form="email">Modifier</button>
-                </div>
-
-                <div id="form-email" class="settings-form-pro is-hidden">
-                    <div class="settings-form-grid">
-                        <div class="settings-field">
-                            <label for="input-email">Nouvel e-mail</label>
-                            <input type="email" id="input-email" class="settings-input" placeholder="nouvel@email.com">
-                        </div>
-                        <div class="settings-field">
-                            <label for="input-email-password">Mot de passe actuel</label>
-                            <input type="password" id="input-email-password" class="settings-input" placeholder="Votre mot de passe actuel">
-                        </div>
-                    </div>
-
-                    <input type="hidden" id="email-csrf" value="{{ csrf_token('update_email') }}">
-
-                    <div class="settings-actions-row">
-                        <button class="btn-primary" type="button" id="saveEmailBtn">
-                            <i class="fa-solid fa-floppy-disk"></i>
-                            Enregistrer l’e-mail
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="settings-pro-card">
-                <div class="settings-pro-head">
-                    <div>
-                        <div class="settings-pro-eyebrow">Sécurité</div>
-                        <h4>Changer mon mot de passe</h4>
-                    </div>
-                    <button class="btn-outline" type="button" data-toggle-form="password">Modifier</button>
-                </div>
-
-                <div id="form-password" class="settings-form-pro is-hidden">
-                    <div class="settings-form-grid">
-                        <div class="settings-field">
-                            <label for="old-pass">Mot de passe actuel</label>
-                            <input type="password" id="old-pass" class="settings-input" placeholder="Mot de passe actuel">
-                        </div>
-                        <div class="settings-field">
-                            <label for="new-pass">Nouveau mot de passe</label>
-                            <input type="password" id="new-pass" class="settings-input" placeholder="Minimum 8 caractères">
-                        </div>
-                        <div class="settings-field settings-field-full">
-                            <label for="confirm-pass">Confirmer le nouveau mot de passe</label>
-                            <input type="password" id="confirm-pass" class="settings-input" placeholder="Confirmez le nouveau mot de passe">
-                        </div>
-                    </div>
-
-                    <input type="hidden" id="password-csrf" value="{{ csrf_token('update_password') }}">
-
-                    <div class="settings-actions-row">
-                        <button class="btn-primary" type="button" id="savePasswordBtn">
-                            <i class="fa-solid fa-shield-halved"></i>
-                            Mettre à jour le mot de passe
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="settings-pro-card settings-pro-card-muted">
-                <div class="settings-pro-head">
-                    <div>
-                        <div class="settings-pro-eyebrow">Apparence</div>
-                        <h4>Thème du dashboard</h4>
-                    </div>
-                </div>
-
-                <div class="settings-static-row">
-                    <div>
-                        <div class="settings-static-row-title">Thème sombre CHM</div>
-                        <div class="settings-static-row-subtitle">Design basé sur les couleurs globales orange / bleu / noir du site</div>
-                    </div>
-
-                    <div class="settings-dark-pill">
-                        <i class="fa-solid fa-moon"></i>
-                        Actif
-                    </div>
-                </div>
-            </div>
-
-            <div class="danger-box">
-                <div>
-                    <h4 class="danger-box-title">Zone danger</h4>
-                    <p class="danger-box-text">La suppression du compte est irréversible.</p>
-                </div>
-                <button type="button" id="deleteAccountBtn" class="danger-btn">Supprimer</button>
-            </div>
-        </div>
-    </aside>
-
-    <div id="cropperModal" class="cropper-modal-overlay">
-        <div class="cropper-modal-card">
-            <h3 class="cropper-modal-title">Ajuster la photo</h3>
-            <div class="cropper-modal-frame">
-                <img id="cropperImage" src="" class="cropper-modal-image">
-            </div>
-            <div class="cropper-modal-actions">
-                <button id="cancelCropBtn" class="btn-outline" type="button">Annuler</button>
-                <button id="cropAndSaveBtn" class="btn-primary" type="button">Enregistrer</button>
-            </div>
-        </div>
-    </div>
+	<div class="flash-container">
+		{% for label, messages in app.flashes %}
+			{% for message in messages %}
+				<div class="flash-message flash-{{ label }}">
+					<i class="fa-solid {% if label == 'success' %}fa-circle-check{% elseif label == 'error' or label == 'danger' %}fa-circle-xmark{% else %}fa-circle-info{% endif %}"></i>
+					<span class="flash-message-text">{{ message }}</span>
+					<button type="button" class="flash-close" aria-label="Fermer">
+						<i class="fa-solid fa-xmark"></i>
+					</button>
+				</div>
+			{% endfor %}
+		{% endfor %}
+	</div>
+
+	<div id="mobileOverlay" class="mobile-overlay"></div>
+
+	<div class="app-shell" id="memberDashboard" data-route-update-email="{{ path('adherent_settings_update_email') }}" data-route-update-password="{{ path('adherent_settings_update_password') }}" data-route-update-licence="{{ path('adherent_edit_license') }}" data-route-delete-account="{{ path('profile_delete_account') }}" data-route-upload-photo="{{ path('profile_photo') }}" data-sessions='{{ sessions|json_encode|e("html_attr") }}'>
+		<nav class="sidebar" id="sidebar">
+			<div class="sidebar-top">
+				<a href="{{ path('home') }}" class="brand-badge" title="Retour au site">
+					<img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo CHM SALEUX">
+				</a>
+
+				<div class="sidebar-nav">
+					<div class="nav-item active" data-target="home" title="Vue d'ensemble">
+						<i class="fa-solid fa-grip"></i>
+						<span class="nav-tooltip">Vue d'ensemble</span>
+					</div>
+
+					<div class="nav-item" data-target="progress" title="Mes progrès">
+						<i class="fa-solid fa-chart-simple"></i>
+						<span class="nav-tooltip">Mes progrès</span>
+					</div>
+
+					<div class="nav-item" data-target="history" title="Historique">
+						<i class="fa-solid fa-clock-rotate-left"></i>
+						<span class="nav-tooltip">Historique</span>
+					</div>
+
+					<div class="nav-item" data-target="licence" title="Ma licence">
+						<i class="fa-solid fa-id-card"></i>
+						<span class="nav-tooltip">Ma licence</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="sidebar-bottom">
+				<a href="{{ path('home') }}" class="sidebar-link" title="Retour au site">
+					<i class="fa-solid fa-arrow-left"></i>
+				</a>
+
+				<div class="sidebar-profile">
+					<img id="avatar-preview" src="{{ profileImage }}" alt="Photo de profil">
+				</div>
+			</div>
+		</nav>
+
+		<main class="main-content">
+			<header class="topbar">
+				<div class="topbar-left">
+					<button class="menu-toggle" id="sidebarToggle" type="button">
+						<i class="fa-solid fa-bars"></i>
+					</button>
+
+					<div class="topbar-title-wrap">
+						<small>Espace membre CHM Saleux</small>
+						<h2 class="page-title">Dashboard adhérent</h2>
+					</div>
+				</div>
+
+				<div class="topbar-actions">
+					<label class="search-pill" aria-label="Rechercher">
+						<i class="fa-solid fa-magnifying-glass"></i>
+						<input type="text" placeholder="Rechercher une séance, une info...">
+					</label>
+
+					<button class="topbar-icon topbar-icon--notification" title="Notifications" type="button">
+						<i class="fa-regular fa-bell"></i>
+						{% if notifications|default([])|length > 0 %}
+							<span class="topbar-notification-dot"></span>
+						{% endif %}
+					</button>
+
+					<a href="{{ path('contact') }}" class="topbar-cta">
+						<i class="fa-solid fa-paper-plane"></i>
+						Contact
+					</a>
+
+					<button class="topbar-icon" id="openSettingsDrawer" title="Paramètres" type="button">
+						<i class="fa-solid fa-gear"></i>
+					</button>
+				</div>
+			</header>
+
+			<div class="content-scroll">
+				<div class="content-inner">
+					<div class="hero-top">
+						<div class="welcome-block">
+							<div class="eyebrow">Suivez votre progression ici</div>
+							<h1 class="welcome-title">Bon retour,
+								<span class="accent">{{ firstName }}</span>
+								!</h1>
+							<p class="welcome-text">
+								Retrouvez votre licence, vos statistiques d'entraînement et l’historique synchronisé avec l’application mobile dans une interface plus premium, plus sportive et plus claire.
+							</p>
+						</div>
+
+						<div class="top-kcal-box">
+							<div>
+								<div class="metric-mini-label">Temps d'entraînement total</div>
+								<div class="metric-mini-value">
+									{% if totalHours > 0 %}
+										{{ totalHours }}h
+										{{ totalMinutes }}m
+									{% else %}
+										{{ totalMinutes }}m
+									{% endif %}
+								</div>
+								<div class="metric-mini-sub">Période :
+									{{ progress.rangeLabel|default('30 jours') }}</div>
+							</div>
+
+							<div class="topbar-icon top-kcal-box-icon">
+								<i class="fa-solid fa-stopwatch"></i>
+							</div>
+						</div>
+					</div>
+
+					<section id="tab-home" class="section-view active">
+						<div class="home-banner-wrap">
+							<div class="glass-card banner-card">
+								<div class="banner-content">
+									<div class="banner-chip">
+										<i class="fa-solid fa-bolt"></i>
+										Performance • Discipline • Régularité
+									</div>
+
+									<h2 class="banner-title">
+										Allez plus loin :
+										<span class="strong">chaque séance</span>
+										construit votre progression.
+									</h2>
+
+									<p class="banner-text">
+										Centralisez vos statistiques, votre licence et vos dernières séances dans un dashboard conçu pour mettre en valeur votre progression et votre engagement au sein du club.
+									</p>
+
+									<div class="banner-inline-stats">
+										<div class="banner-inline-stat">
+											<span>Licence</span>
+											<strong>{{ licenceStatusLabel }}</strong>
+										</div>
+
+										<div class="banner-inline-stat">
+											<span>Répétitions</span>
+											<strong id="homeTotalReps">0</strong>
+										</div>
+
+										<div class="banner-inline-stat">
+											<span>Dernière activité</span>
+											<strong>{{ lastSession and lastSession.performed_at is defined and lastSession.performed_at ? lastSession.performed_at|date('d/m/Y') : 'Aucune' }}</strong>
+										</div>
+									</div>
+								</div>
+
+								<div class="banner-visual">
+									<img src="{{ bannerRightImage }}" alt="Athlète CHM" class="banner-athlete">
+								</div>
+							</div>
+						</div>
+
+						<input type="file" id="avatar-upload" class="input-file-hidden" accept="image/png, image/jpeg">
+
+						<div class="dashboard-grid">
+							<div class="glass-card card-padding weekly-progress-card">
+								<div class="card-head weekly-head">
+									<div class="card-head-left">
+										<div class="card-icon"></div>
+										<div class="dashboard-card-heading">
+											<span class="dashboard-card-kicker">Suivi performance</span>
+											<h3 class="dashboard-card-title">Progression hebdomadaire</h3>
+											<span class="dashboard-card-title-line"></span>
+										</div>
+									</div>
+								</div>
+
+								<div class="weekly-tabs home-metric-tabs" id="homeMetricTabs">
+									<button class="weekly-tab active" type="button" data-metric="volume">Volume</button>
+									<button class="weekly-tab" type="button" data-metric="duration">Durée</button>
+									<button class="weekly-tab" type="button" data-metric="reps">Reps</button>
+								</div>
+
+								{% if sessions|length > 0 %}
+									<div class="refined-chart" id="homeWeeklyChart"></div>
+
+									<div class="refined-weekly-stats">
+										<div class="weekly-stat-box">
+											<div class="weekly-stat-label">Total affiché</div>
+											<div class="weekly-stat-value" id="homeMetricTotal">{{ totalVolumeKg|number_format(0, ',', ' ') }}
+												kg</div>
+										</div>
+
+										<div class="weekly-stat-box">
+											<div class="weekly-stat-label">Meilleure journée</div>
+											<div class="weekly-stat-value" id="homeBestDay">—</div>
+										</div>
+									</div>
+								{% else %}
+									<div class="empty-state">Aucune donnée disponible pour la progression hebdomadaire.</div>
+								{% endif %}
+							</div>
+
+							<div class="right-stack">
+								<div class="glass-card card-padding last-sessions-card">
+									<div class="card-head">
+										<div class="card-head-left">
+											<div class="card-icon"></div>
+											<div class="dashboard-card-heading">
+												<span class="dashboard-card-kicker">Activité récente</span>
+												<h3 class="dashboard-card-title">Vos dernières séances</h3>
+												<span class="dashboard-card-title-line"></span>
+											</div>
+										</div>
+									</div>
+
+									{% if sessions|length > 0 %}
+										<div class="today-list">
+											{% for s in sessions|slice(0, 3) %}
+												{% set durSec = s.duration_seconds|default(0) %}
+												{% set durH = durSec // 3600 %}
+												{% set durM = (durSec % 3600) // 60 %}
+
+												<div class="today-item">
+													<div class="today-icon">
+														<i class="fa-solid fa-dumbbell"></i>
+													</div>
+
+													<div>
+														<h4 class="today-title">{{ s.routine_name|default('Séance libre') }}</h4>
+														<div class="today-meta">
+															{{ s.performed_at|default(null) ? 'Le ' ~ s.performed_at|date('d/m/Y à H:i') : 'Date non renseignée' }}
+														</div>
+
+														<div class="today-stats">
+															<div class="today-stat">
+																<strong>
+																	{% if durH > 0 %}
+																		{{ durH }}h
+																		{{ durM }}m
+																	{% else %}
+																		{{ durM }}m
+																	{% endif %}
+																</strong>
+																<span>Durée</span>
+															</div>
+
+															<div class="today-stat">
+																<strong>{{ s.total_volume|default(0)|number_format(0, ',', ' ') }}
+																	kg</strong>
+																<span>Volume</span>
+															</div>
+														</div>
+													</div>
+
+													{% if s.is_from_planning|default(false) %}
+														<div class="today-badge">Planning</div>
+													{% else %}
+														<div class="today-badge">Libre</div>
+													{% endif %}
+												</div>
+											{% endfor %}
+										</div>
+									{% else %}
+										<div class="empty-state">Aucune séance récente à afficher.</div>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section id="tab-progress" class="section-view">
+						<div class="section-head">
+							<h3>Mes progrès</h3>
+
+							<div class="progress-range-menu" id="progressRangeTabs">
+								<button type="button" class="progress-range-trigger" id="progressRangeTrigger">
+									<i class="fa-solid fa-sliders"></i>
+									<span class="progress-range-label">30 derniers jours</span>
+									<i class="fa-solid fa-chevron-down"></i>
+								</button>
+
+								<div class="progress-range-dropdown" id="progressRangeDropdown">
+									<button type="button" class="progress-range-option active" data-range="30">30 derniers jours</button>
+									<button type="button" class="progress-range-option" data-range="90">3 derniers mois</button>
+									<button type="button" class="progress-range-option" data-range="365">Cette année</button>
+									<button type="button" class="progress-range-option" data-range="0">All time</button>
+								</div>
+							</div>
+						</div>
+
+						{% if sessions|length > 0 %}
+							<div class="glass-card card-padding progress-detailed-card">
+								<div class="progress-topbar">
+									<div class="card-head-left">
+										<div class="card-icon">
+											<i class="fa-solid fa-chart-line"></i>
+										</div>
+										<div>
+											<h3 class="card-title">Progression globale</h3>
+											<div class="card-subtitle">Vue détaillée de votre activité avec filtres de période</div>
+										</div>
+									</div>
+
+									<div class="progress-filters">
+										<div class="weekly-tabs progress-metric-tabs" id="progressMetricTabs">
+											<button class="weekly-tab active" type="button" data-metric="volume">Volume</button>
+											<button class="weekly-tab" type="button" data-metric="duration">Durée</button>
+											<button class="weekly-tab" type="button" data-metric="reps">Reps</button>
+										</div>
+									</div>
+								</div>
+
+								<div class="refined-chart progress-detailed-chart" id="progressDetailedChart"></div>
+
+								<div class="progress-summary-grid">
+									<div class="progress-summary-box">
+										<div class="weekly-stat-label">Total période</div>
+										<div class="weekly-stat-value" id="progressTotalValue">—</div>
+									</div>
+
+									<div class="progress-summary-box">
+										<div class="weekly-stat-label">Temps cumulé</div>
+										<div class="weekly-stat-value" id="progressDurationValue">—</div>
+									</div>
+
+									<div class="progress-summary-box">
+										<div class="weekly-stat-label">Répétitions</div>
+										<div class="weekly-stat-value" id="progressRepsValue">—</div>
+									</div>
+
+									<div class="progress-summary-box">
+										<div class="weekly-stat-label">Jours actifs</div>
+										<div class="weekly-stat-value" id="progressActiveDaysValue">—</div>
+									</div>
+								</div>
+							</div>
+						{% else %}
+							<div class="empty-state">Aucune donnée disponible pour afficher vos progrès.</div>
+						{% endif %}
+					</section>
+
+					<section id="tab-history" class="section-view">
+						<div class="section-head">
+							<h3>Historique complet des séances</h3>
+							<div class="section-pill">
+								<i class="fa-solid fa-database"></i>
+								{{ sessions|length }}
+								enregistrements
+							</div>
+						</div>
+
+						<div class="glass-card card-padding">
+							{% if sessions|length > 0 %}
+								<div class="history-wrap">
+									<table class="history-table">
+										<thead>
+											<tr>
+												<th>Date</th>
+												<th>Séance</th>
+												<th>Volume</th>
+												<th>Durée</th>
+												<th>Origine</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for s in sessions %}
+												{% set durSec = s.duration_seconds|default(0) %}
+												{% set durH = durSec // 3600 %}
+												{% set durM = (durSec % 3600) // 60 %}
+												<tr>
+													<td>{{ s.performed_at|default(null) ? s.performed_at|date('d/m/Y') : '—' }}</td>
+													<td>{{ s.routine_name|default('Séance') }}</td>
+													<td>{{ s.total_volume|default(0)|number_format(0, ',', ' ') }}
+														kg</td>
+													<td>
+														{% if durH > 0 %}
+															{{ durH }}h
+															{{ durM }}m
+														{% else %}
+															{{ durM }}m
+														{% endif %}
+													</td>
+													<td>
+														{% if s.is_from_planning|default(false) %}
+															Planning
+														{% else %}
+															Libre
+														{% endif %}
+													</td>
+												</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							{% else %}
+								<div class="empty-state">Aucun historique disponible.</div>
+							{% endif %}
+						</div>
+					</section>
+
+					<section id="tab-licence" class="section-view">
+						<div class="section-head">
+							<h3>Votre licence officielle</h3>
+							<div class="section-pill">
+								<i class="fa-solid fa-shield-halved"></i>
+								Saison 2025 / 2026
+							</div>
+						</div>
+
+						<div class="licence-shell">
+							<div class="glass-card licence-card-premium">
+								<div class="licence-topbar">
+									<div class="licence-brand-block">
+										<div class="licence-brand-logo">
+											<img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo">
+										</div>
+										<div>
+											<div class="licence-brand-label">Club affilié</div>
+											<div class="licence-brand-name">CHM SALEUX</div>
+										</div>
+									</div>
+
+									<div class="licence-status-badge {{ licenceActive ? 'is-active' : 'is-inactive' }}">
+										<i class="fa-solid {{ licenceActive ? 'fa-circle-check' : 'fa-triangle-exclamation' }}"></i>
+										{{ licenceActive ? 'Licence active' : 'Licence inactive' }}
+									</div>
+								</div>
+
+								<div class="licence-hero">
+									<div class="licence-member-block">
+										<div class="licence-member-label">Nom de l’adhérent</div>
+										<div class="licence-member-name">{{ app.user.firstname }}
+											{{ app.user.lastname }}</div>
+										<div class="licence-member-sub">{{ app.user.email }}</div>
+									</div>
+
+									<div class="licence-number-box">
+										<span>N° licence</span>
+										<strong>{{ licenceNumberLabel }}</strong>
+									</div>
+								</div>
+
+								<div class="licence-grid">
+									<div class="licence-field">
+										<div class="licence-field-label">Club</div>
+										<div class="licence-field-value">CHM SALEUX</div>
+									</div>
+									<div class="licence-field">
+										<div class="licence-field-label">Saison</div>
+										<div class="licence-field-value">2025 / 2026</div>
+									</div>
+									<div class="licence-field">
+										<div class="licence-field-label">Type de licence</div>
+										<div class="licence-field-value">{{ licenceTypeLabel }}</div>
+									</div>
+									<div class="licence-field">
+										<div class="licence-field-label">Statut</div>
+										<div class="licence-field-value">{{ licenceStatusLabel }}</div>
+									</div>
+									<div class="licence-field">
+										<div class="licence-field-label">Cotisation</div>
+										<div class="licence-field-value">{{ admin.feesStatus|default('—') }}</div>
+									</div>
+									<div class="licence-field">
+										<div class="licence-field-label">Échéance cotisation</div>
+										<div class="licence-field-value">{{ admin.feesDue|default('—') }}</div>
+									</div>
+									<div class="licence-field">
+										<div class="licence-field-label">Certificat médical</div>
+										<div class="licence-field-value">{{ admin.medicalStatus|default('—') }}</div>
+									</div>
+									<div class="licence-field">
+										<div class="licence-field-label">Expiration certificat</div>
+										<div class="licence-field-value">{{ admin.medicalExpiry|default('—') }}</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="licence-side-improved">
+								<div class="glass-card licence-side-card">
+									<div class="licence-side-icon">
+										<i class="fa-solid fa-file-pdf"></i>
+									</div>
+									<h4>Justificatif adhérent</h4>
+									<p>Téléchargez votre justificatif pour mutuelle, CE ou dossier administratif.</p>
+									<a href="#" class="btn-primary btn-full-width">
+										<i class="fa-solid fa-download"></i>
+										Télécharger
+									</a>
+								</div>
+
+								<div class="glass-card licence-side-card">
+									<h4>Informations utiles</h4>
+									<div class="licence-info-list">
+										<div class="licence-info-row">
+											<span>Type</span>
+											<strong>{{ licenceTypeLabel }}</strong>
+										</div>
+										<div class="licence-info-row">
+											<span>Statut</span>
+											<strong>{{ licenceStatusLabel }}</strong>
+										</div>
+										<div class="licence-info-row">
+											<span>Certificat</span>
+											<strong>{{ admin.medicalStatus|default('—') }}</strong>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<div id="settingsOverlay" class="settings-overlay"></div>
+
+	<aside id="settingsDrawer" class="settings-drawer" aria-hidden="true">
+		<div class="settings-drawer-header">
+			<div class="settings-drawer-header-group">
+				<i class="fa-solid fa-gear settings-drawer-header-icon"></i>
+				<div>
+					<strong class="settings-drawer-header-title">Paramètres du compte</strong>
+					<span class="settings-drawer-header-subtitle">Sécurité et informations de connexion</span>
+				</div>
+			</div>
+
+			<button class="topbar-icon topbar-icon--drawer-close" id="closeSettingsDrawer" title="Fermer" type="button">
+				<i class="fa-solid fa-xmark"></i>
+			</button>
+		</div>
+
+		<div class="settings-drawer-content">
+			<div id="settingsFeedback" class="settings-feedback is-hidden"></div>
+
+			<div class="settings-pro-card">
+				<div class="settings-pro-head">
+					<div>
+						<div class="settings-pro-eyebrow">Compte</div>
+						<h4>Informations actuelles</h4>
+					</div>
+				</div>
+
+				<div class="settings-info-grid">
+					<div class="settings-info-box">
+						<span class="settings-info-label">Nom</span>
+						<strong>{{ app.user.firstname }}
+							{{ app.user.lastname }}</strong>
+					</div>
+					<div class="settings-info-box">
+						<span class="settings-info-label">E-mail</span>
+						<strong id="currentEmailDisplay">{{ app.user.email }}</strong>
+					</div>
+				</div>
+			</div>
+
+			<div class="settings-pro-card">
+				<div class="settings-pro-head">
+					<div>
+						<div class="settings-pro-eyebrow">Connexion</div>
+						<h4>Modifier mon e-mail</h4>
+					</div>
+					<button class="btn-outline" type="button" data-toggle-form="email">Modifier</button>
+				</div>
+
+				<div id="form-email" class="settings-form-pro is-hidden">
+					<div class="settings-form-grid">
+						<div class="settings-field">
+							<label for="input-email">Nouvel e-mail</label>
+							<input type="email" id="input-email" class="settings-input" placeholder="nouvel@email.com">
+						</div>
+						<div class="settings-field">
+							<label for="input-email-password">Mot de passe actuel</label>
+							<input type="password" id="input-email-password" class="settings-input" placeholder="Votre mot de passe actuel">
+						</div>
+					</div>
+
+					<input type="hidden" id="email-csrf" value="{{ csrf_token('update_email') }}">
+
+					<div class="settings-actions-row">
+						<button class="btn-primary" type="button" id="saveEmailBtn">
+							<i class="fa-solid fa-floppy-disk"></i>
+							Enregistrer l’e-mail
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="settings-pro-card">
+				<div class="settings-pro-head">
+					<div>
+						<div class="settings-pro-eyebrow">Sécurité</div>
+						<h4>Changer mon mot de passe</h4>
+					</div>
+					<button class="btn-outline" type="button" data-toggle-form="password">Modifier</button>
+				</div>
+
+				<div id="form-password" class="settings-form-pro is-hidden">
+					<div class="settings-form-grid">
+						<div class="settings-field">
+							<label for="old-pass">Mot de passe actuel</label>
+							<input type="password" id="old-pass" class="settings-input" placeholder="Mot de passe actuel">
+						</div>
+						<div class="settings-field">
+							<label for="new-pass">Nouveau mot de passe</label>
+							<input type="password" id="new-pass" class="settings-input" placeholder="Minimum 8 caractères">
+						</div>
+						<div class="settings-field settings-field-full">
+							<label for="confirm-pass">Confirmer le nouveau mot de passe</label>
+							<input type="password" id="confirm-pass" class="settings-input" placeholder="Confirmez le nouveau mot de passe">
+						</div>
+					</div>
+
+					<input type="hidden" id="password-csrf" value="{{ csrf_token('update_password') }}">
+
+					<div class="settings-actions-row">
+						<button class="btn-primary" type="button" id="savePasswordBtn">
+							<i class="fa-solid fa-shield-halved"></i>
+							Mettre à jour le mot de passe
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="settings-pro-card settings-pro-card-muted">
+				<div class="settings-pro-head">
+					<div>
+						<div class="settings-pro-eyebrow">Apparence</div>
+						<h4>Thème du dashboard</h4>
+					</div>
+				</div>
+
+				<div class="settings-static-row">
+					<div>
+						<div class="settings-static-row-title">Thème sombre CHM</div>
+						<div class="settings-static-row-subtitle">Design basé sur les couleurs globales orange / bleu / noir du site</div>
+					</div>
+
+					<div class="settings-dark-pill">
+						<i class="fa-solid fa-moon"></i>
+						Actif
+					</div>
+				</div>
+			</div>
+
+			<div class="danger-box">
+				<div>
+					<h4 class="danger-box-title">Zone danger</h4>
+					<p class="danger-box-text">La suppression du compte est irréversible.</p>
+				</div>
+				<button type="button" id="deleteAccountBtn" class="danger-btn">Supprimer</button>
+			</div>
+		</div>
+	</aside>
+
+	<div id="cropperModal" class="cropper-modal-overlay">
+		<div class="cropper-modal-card">
+			<h3 class="cropper-modal-title">Ajuster la photo</h3>
+			<div class="cropper-modal-frame">
+				<img id="cropperImage" src="" class="cropper-modal-image">
+			</div>
+			<div class="cropper-modal-actions">
+				<button id="cancelCropBtn" class="btn-outline" type="button">Annuler</button>
+				<button id="cropAndSaveBtn" class="btn-primary" type="button">Enregistrer</button>
+			</div>
+		</div>
+	</div>
 
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
+	{{ parent() }}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-    <script src="{{ asset('js/dashboard/test-v2.js') }}"></script>
+	 <script src="{{ asset('js/dashboard/test-v2.js') }}"></script>
 {% endblock %}

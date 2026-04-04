@@ -3,19 +3,14 @@
 {% block title %}Gestion des licences
 {% endblock %}
 
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/licence/index.css') }}">
-{% endblock %}
-
 {% block body %}
 	<div class="page-header">
 		<div>
 			<h1>Licences</h1>
-			<p>Suivi des licences sportives et dates d'expiration</p>
+			<p>Suivi des licences sportives et dates d'expiration.</p>
 		</div>
-
 		<div class="toolbar">
-			<input type="text" id="searchLicence" class="search-input" placeholder="Nom, email ou numéro...">
+			<input type="text" id="searchLicence" class="search-input" placeholder="Nom ou numéro...">
 			<a href="{{ path('admin_licence_new') }}" class="btn-create">Créer une licence</a>
 		</div>
 	</div>
@@ -36,62 +31,54 @@
 				</thead>
 				<tbody>
 					{% for licence in licences %}
+						{# Logique Twig conservée, mais styles déportés #}
 						{% set isExpired = licence.expiryDate < date() %}
-
 						<tr>
-							<td class="td-mono">#{{ licence.id }}</td>
-
 							<td>
-								<span class="licence-number">{{ licence.number }}</span>
+								<span class="td-mono">#{{ licence.id }}</span>
 							</td>
-
 							<td>
-								<span class="info-primary">{{ licence.firstName }}
-									{{ licence.lastName }}</span>
-								<span class="info-secondary">{{ licence.email }}</span>
+								{# La classe licence-number remplace le style inline #}
+								<span class="td-mono licence-number">{{ licence.number }}</span>
 							</td>
-
 							<td>
-								<span class="badge badge-type">{{ licence.type|capitalize }}</span>
+								<div class="identity-cell">
+									<span class="sender-name">{{ licence.firstName }}
+										{{ licence.lastName|upper }}</span>
+									<span class="td-mono-sm sender-email">{{ licence.email }}</span>
+								</div>
 							</td>
-
 							<td>
-								<span class="info-primary">{{ licence.expiryDate ? licence.expiryDate|date('d/m/Y') : '—' }}</span>
+								{# On réutilise badge-neutral #}
+								<span class="badge badge-neutral">{{ licence.type|capitalize }}</span>
 							</td>
-
+							<td class="td-mono-sm">{{ licence.expiryDate ? licence.expiryDate|date('d/m/Y') : '—' }}</td>
 							<td>
 								{% if isExpired %}
-									<span class="badge badge-expired">Expirée</span>
+									<span class="badge badge-danger">Expirée</span>
 								{% else %}
 									<span class="badge badge-active">Active</span>
 								{% endif %}
 							</td>
-
 							<td>
-								<div class="actions-cell">
-									<a href="{{ path('admin_licence_edit', {id: licence.id}) }}" class="action-link link-edit">Modifier</a>
+								<div class="actions">
+									<a href="{{ path('admin_licence_edit', {id: licence.id}) }}" class="act-link">Modifier</a>
 
-									<form method="post" action="{{ path('admin_licence_delete', {id: licence.id}) }}" class="form-inline" data-confirm="Supprimer définitivement la licence {{ licence.number }} ?">
+									{# MODIFICATION : Suppression du JS inline #}
+									<form method="post" action="{{ path('admin_licence_delete', {id: licence.id}) }}" class="js-confirm-form" data-confirm="🪪 Supprimer la licence n°{{ licence.number }} appartenant à {{ licence.firstName }} {{ licence.lastName|upper }} ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ licence.id) }}">
-										<button type="submit" class="action-link link-delete">Supprimer</button>
+										<button type="submit" class="act-link act-del">Supprimer</button>
 									</form>
 								</div>
 							</td>
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="7" class="empty-state">
-								Aucune licence enregistrée.
-							</td>
+							<td colspan="7" class="td-empty">Aucune licence enregistrée.</td>
 						</tr>
 					{% endfor %}
 				</tbody>
 			</table>
 		</div>
 	</div>
-
-{% endblock %}
-
-{% block javascripts %}
-	 <script src="{{ asset('js/admin/licence/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

@@ -1,11 +1,6 @@
-{# templates/admin/equipment/index.html.twig #}
 {% extends 'admin/base_admin.html.twig' %}
 
 {% block title %}Gestion des machines
-{% endblock %}
-
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/equipment/index.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -14,11 +9,8 @@
 			<h1>Machines & Équipements</h1>
 			<p>Gérez le catalogue de matériel disponible.</p>
 		</div>
-
 		<div class="toolbar">
-			<a href="{{ path('admin_equipment_new') }}" class="btn-create">
-				+ Ajouter une machine
-			</a>
+			<a href="{{ path('admin_equipment_new') }}" class="btn-create">+ Ajouter une machine</a>
 		</div>
 	</div>
 
@@ -32,26 +24,29 @@
 						<th class="th-right">Actions</th>
 					</tr>
 				</thead>
-
 				<tbody>
 					{% for equipment in equipments %}
 						<tr>
 							<td>
-								<div class="machine-info">
-									<span class="machine-name">{{ equipment.name }}</span>
+								<div class="product-info">
+									<div class="title-stack">
+										<strong>{{ equipment.name }}</strong>
+										<span class="td-mono-sm equipment-id">ID: #{{ equipment.id }}</span>
+									</div>
 								</div>
 							</td>
-
-							<td class="td-brand">
-								{{ equipment.brand ?? '-' }}
+							<td>
+								{# Utilisation de la classe badge-neutral créée pour les athlètes #}
+								<span class="badge badge-neutral">
+									{{ equipment.brand|default('—') }}
+								</span>
 							</td>
-
 							<td>
 								<div class="actions">
-									<a href="{{ path('admin_equipment_edit', {id: equipment.id}) }}" class="act-link act-edit">
-										Modifier
-									</a>
-									<form method="post" action="{{ path('admin_equipment_delete', {id: equipment.id}) }}" class="form-inline" data-confirm="Supprimer cet équipement ?">
+									<a href="{{ path('admin_equipment_edit', {id: equipment.id}) }}" class="act-link">Modifier</a>
+
+									{# MODIFICATION : Passage en V20 JS #}
+									<form method="post" action="{{ path('admin_equipment_delete', {id: equipment.id}) }}" class="js-confirm-form" data-confirm="🏋️‍♂️ Supprimer la machine '{{ equipment.name }}' {% if equipment.brand %}({{ equipment.brand }}){% endif %} ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete_equipment_' ~ equipment.id) }}">
 										<button class="act-link act-del">Supprimer</button>
 									</form>
@@ -60,16 +55,11 @@
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="3" class="td-empty">Aucun équipement n'a été ajouté pour le moment.</td>
-
+							<td colspan="3" class="td-empty">Aucun équipement enregistré.</td>
 						</tr>
 					{% endfor %}
 				</tbody>
 			</table>
 		</div>
 	</div>
-{% endblock %}
-
-{% block javascripts %}
-	 <script src="{{ asset('js/admin/equipment/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

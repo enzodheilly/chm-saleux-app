@@ -25,13 +25,7 @@
 		<meta name="csrf-edit-license" content="{{ csrf_token('edit_license') }}">
 		<meta name="csrf-upload-photo" content="{{ csrf_token('upload_photo') }}">
 
-		<link
-		rel="icon" type="image/png" href="{{ asset('images/favicon/icon2.png') }}">
-
-		{# Google Fonts #}
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+		<link rel="icon" type="image/png" href="{{ asset('images/favicon/icon2.png') }}">
 
 		{% block stylesheets %}
 			{# Vendor CSS #}
@@ -61,10 +55,10 @@
 		<main class="app-main">
 			{% for message in app.flashes('warning') %}
 				 <script nonce="{{ csp_nonce('script') }}">
-								                    window.addEventListener("DOMContentLoaded", () => {
-								                        showToast("{{ message }}");
-								                    });
-								                </script>
+												                    window.addEventListener("DOMContentLoaded", () => {
+												                        showToast("{{ message }}");
+												                    });
+												                </script>
 			{% endfor %}
 
 			{% block body %}{% endblock %}
@@ -106,17 +100,17 @@
 		 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer nonce="{{ csp_nonce('script') }}"></script>
 
 		 <script nonce="{{ csp_nonce('script') }}">
-				            window.showToast = (msg) => {
-				                const t = document.createElement('div');
-				                t.className = 'toast-mini';
-				                t.textContent = msg;
-				                document.body.appendChild(t);
-				                requestAnimationFrame(() => t.classList.add('show'));
-				                setTimeout(() => {
-				                    t.classList.remove('show');
-				                    setTimeout(() => t.remove(), 200);
-				                }, 2200);
-				            };
-				        </script>{% block javascripts %}
+						            window.showToast = (msg) => {
+						                const t = document.createElement('div');
+						                t.className = 'toast-mini';
+						                t.textContent = msg;
+						                document.body.appendChild(t);
+						                requestAnimationFrame(() => t.classList.add('show'));
+						                setTimeout(() => {
+						                    t.classList.remove('show');
+						                    setTimeout(() => t.remove(), 200);
+						                }, 2200);
+						            };
+						        </script>{% block javascripts %}
 	{% endblock %}
 </body></html>

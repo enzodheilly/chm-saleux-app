@@ -3,100 +3,75 @@
 {% block title %}Blocklist & Sécurité
 {% endblock %}
 
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/security/global.css') }}">
-{% endblock %}
-
 {% block body %}
-	<div
-		class="dashboard-container">
-
-		{# --- FLASH MESSAGES --- #}
-		{% for label, messages in app.flashes %}
-			{% for message in messages %}
-				<div class="alert alert-{{ label == 'error' ? 'danger' : label }}">
-					{{ message|raw }}
-				</div>
-			{% endfor %}
-		{% endfor %}
-
-		<div class="page-header">
-			<div>
-				<h1>Restriction & Bannissements</h1>
-				<p>Comptes et adresses IP dont l'accès a été révoqué par le système ou un administrateur.</p>
-			</div>
-		</div>
-
-		<div class="toolbar-container">
-			<input type="text" id="searchBlock" class="search-input" placeholder="Chercher un email ou une adresse IP...">
-			<div class="entries-count">
-				<strong class="entries-count-number">{{ blockedIps|length }}</strong>
-				entrées actives
-			</div>
-		</div>
-
-		<div class="table-wrapper">
-			<div class="table-responsive">
-				<table class="admin-table" id="blockTable">
-					<thead>
-						<tr>
-							<th>Identité / Email</th>
-							<th width="180">Dernière IP</th>
-							<th>Motif</th>
-							<th width="200">Échéance</th>
-							<th class="th-right">Opération</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for row in blockedIps|default([]) %}
-							<tr>
-								<td>
-									<div class="identity-cell">
-										<strong class="identity-email">{{ row.email }}</strong>
-										<span class="identity-id">ID Utilisateur: #{{ row.id }}</span>
-									</div>
-								</td>
-
-								<td>
-									<span class="ip-tag">{{ row.ip }}</span>
-								</td>
-
-								<td>
-									<div class="reason-cell">
-										<span class="badge-blocked">Verrouillé</span>
-										<span class="reason-text">{{ row.reason }}</span>
-									</div>
-								</td>
-
-								<td>
-									<div class="time-info">
-										<span>Expire le :</span>
-										<strong>{{ row.blockedAt ? row.blockedAt|date('d/m/Y à H:i') : 'Permanent' }}</strong>
-									</div>
-								</td>
-
-								<td class="td-right">
-									<a href="{{ path('admin_security_unlock_user', {id: row.id}) }}" class="btn-unlock" data-confirm="🔓 Rétablir l'accès pour {{ row.email }} ?">
-										Débloquer
-									</a>
-								</td>
-							</tr>
-						{% else %}
-							<tr>
-								<td colspan="5" class="td-empty">
-									<div class="empty-icon">🛡️</div>
-									<p>Aucune restriction active. Le système est totalement ouvert.</p>
-								</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
+	<div class="page-header">
+		<div>
+			<h1>Restriction & Bannissements</h1>
+			<p>Comptes et adresses IP dont l'accès a été révoqué.</p>
 		</div>
 	</div>
 
-{% endblock %}
+	<div class="toolbar-container security-summary">
+		<input type="text" id="searchBlock" class="search-input" placeholder="Chercher un email ou une IP...">
+		<div class="td-mono stats-highlight">
+			{{ blockedIps|length }}
+			ENTRÉES ACTIVES
+		</div>
+	</div>
 
-{% block javascripts %}
-	 <script src="{{ asset('js/admin/security/blocklist.js') }}" nonce="{{ csp_nonce('script') }}"></script>
+	<div class="table-wrapper">
+		<div class="table-scroll">
+			<table class="admin-table" id="blockTable">
+				<thead>
+					<tr>
+						<th>Identité / Email</th>
+						<th width="180">Dernière IP</th>
+						<th>Motif</th>
+						<th width="220">Échéance</th>
+						<th class="th-right">Opération</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for row in blockedIps|default([]) %}
+						<tr>
+							<td>
+								<div class="title-stack">
+									<strong>{{ row.email }}</strong>
+									<span class="td-mono-sm">ID Utilisateur: #{{ row.id }}</span>
+								</div>
+							</td>
+							<td>
+								<span class="td-mono ip-accent">{{ row.ip }}</span>
+							</td>
+							<td>
+								<div class="product-info">
+									<span class="badge badge-danger">VERROUILLÉ</span>
+									<span class="td-muted reason-text">{{ row.reason }}</span>
+								</div>
+							</td>
+							<td class="td-mono-sm">
+								<div class="time-info">
+									<span>Expire le :</span>
+									<strong class="expiry-date">{{ row.blockedAt ? row.blockedAt|date('d/m/Y à H:i') : 'PERMANENT' }}</strong>
+								</div>
+							</td>
+							<td>
+								<div
+									class="actions">
+									{# MODIFICATION ICI : class ajoutée + data-confirm #}
+									<a href="{{ path('admin_security_unlock_user', {id: row.id}) }}" class="btn-unlock js-confirm-link" data-confirm="🔓 Débloquer cet accès ?">
+										DÉBLOQUER
+									</a>
+								</div>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="5" class="td-empty">🛡️ Aucune restriction active.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 {% endblock %}

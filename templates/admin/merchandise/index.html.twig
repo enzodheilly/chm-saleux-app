@@ -3,87 +3,76 @@
 {% block title %}Gestion des produits
 {% endblock %}
 
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/marchandise/index.css') }}">
-{% endblock %}
-
 {% block body %}
-	<div class="dashboard-container">
-
-		<div class="page-header">
-			<div>
-				<h1>Shop Catalogue</h1>
-				<p>Manage the club shop items, prices, and visuals.</p>
-			</div>
-			<div class="toolbar">
-				<input type="text" id="searchItem" class="search-input" placeholder="Search an item...">
-				<a href="{{ path('admin_merchandise_new') }}" class="btn-create">+ New item</a>
-			</div>
+	<div class="page-header">
+		<div>
+			<h1>Shop Catalogue</h1>
+			<p>Manage the club shop items, prices, and visuals.</p>
 		</div>
-
-		<div class="table-wrapper">
-			<div class="table-scroll">
-				<table class="admin-table" id="itemTable">
-					<thead>
-						<tr>
-							<th width="35%">Item</th>
-							<th width="35%">Description</th>
-							<th width="15%">Price</th>
-							<th class="th-right">Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for item in items %}
-							<tr>
-								<td>
-									<div class="product-info">
-										{% if item.image %}
-											<img src="{{ asset('uploads/' ~ item.image) }}" alt="{{ item.title }}" class="product-img">
-										{% else %}
-											<div class="no-img">N/A</div>
-										{% endif %}
-
-										<div class="title-stack">
-											<strong>{{ item.title }}</strong>
-											<span class="ref-code">REF-{{ item.id|format("%05d") }}</span>
-										</div>
-									</div>
-								</td>
-
-								<td class="td-preview">
-									{{ item.description|length > 80 ? item.description|slice(0, 80) ~ '...' : item.description }}
-								</td>
-
-								<td>
-									<span class="price-badge">{{ item.price|number_format(2, '.', ' ') }}
-										€</span>
-								</td>
-
-								<td>
-									<div class="actions">
-										<a href="{{ path('admin_merchandise_edit', {id: item.id}) }}" class="act-link act-edit">Edit</a>
-
-										<form method="post" action="{{ path('admin_merchandise_delete', {id: item.id}) }}" class="form-inline" data-confirm="Delete this item from the catalogue?">
-											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
-											<button class="act-link act-del">Delete</button>
-										</form>
-									</div>
-								</td>
-							</tr>
-						{% else %}
-							<tr>
-								<td colspan="4" class="td-empty">No items are currently available in the shop.</td>
-
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
+		<div class="toolbar">
+			<input type="text" id="searchItem" class="search-input" placeholder="Search an item...">
+			<a href="{{ path('admin_merchandise_new') }}" class="btn-create">+ New item</a>
 		</div>
 	</div>
 
-{% endblock %}
+	<div class="table-wrapper">
+		<div class="table-scroll">
+			<table class="admin-table" id="itemTable">
+				<thead>
+					<tr>
+						<th width="35%">Item</th>
+						<th width="35%">Description</th>
+						<th width="15%">Price</th>
+						<th class="th-right">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in items %}
+						<tr>
+							<td>
+								<div class="product-info">
+									{% if item.image %}
+										<img src="{{ asset('uploads/' ~ item.image) }}" alt="" class="product-img">
+									{% else %}
+										{# Classe placeholder-na remplace le style inline #}
+										<div class="product-img placeholder-na">N/A</div>
+									{% endif %}
 
-{% block javascripts %}
-	 <script src="{{ asset('js/admin/marchandise/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
+									<div class="title-stack">
+										<strong>{{ item.title }}</strong>
+										<span class="td-mono-sm">REF-{{ item.id|format("%05d") }}</span>
+									</div>
+								</div>
+							</td>
+
+							<td class="td-muted description-cell">
+								{{ item.description|length > 80 ? item.description|slice(0, 80) ~ '...' : item.description }}
+							</td>
+
+							<td>
+								<span class="price-badge">{{ item.price|number_format(2, '.', ' ') }}
+									€</span>
+							</td>
+
+							<td>
+								<div class="actions">
+									<a href="{{ path('admin_merchandise_edit', {id: item.id}) }}" class="act-link">Edit</a>
+
+									{# MODIFICATION : Remplacement du onsubmit par js-confirm-form #}
+									<form method="post" action="{{ path('admin_merchandise_delete', {id: item.id}) }}" class="js-confirm-form" data-confirm="🛒 Delete '{{ item.title }}' from the shop catalogue? This item will no longer be available for purchase.">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+										<button class="act-link act-del">Delete</button>
+									</form>
+								</div>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="4" class="td-empty">No items found.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 {% endblock %}
