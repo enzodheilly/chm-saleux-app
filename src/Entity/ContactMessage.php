@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ContactMessageRepository;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ContactMessageRepository::class)]
@@ -31,21 +32,33 @@ class ContactMessage
     private ?User $user = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "Le nom est obligatoire.")]
+    #[Assert\Length(max: 100)]
+    #[Assert\Regex(pattern: "/^[\p{L}\s\-']+$/u", message: "Le nom contient des caractères invalides.")]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "Le prénom est obligatoire.")]
+    #[Assert\Length(max: 100)]
+    #[Assert\Regex(pattern: "/^[\p{L}\s\-']+$/u", message: "Le prénom contient des caractères invalides.")]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 150)]
+    #[Assert\NotBlank(message: "L'email est obligatoire.")]
+    #[Assert\Email(message: "L'email '{{ value }}' n'est pas valide.")]
+    #[Assert\Length(max: 150)]
     private ?string $email = null;
 
     #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\Regex(pattern: "/^[0-9\s\+\-\(\)]{7,20}$/", message: "Le numéro de téléphone n'est pas valide.")]
     private ?string $phone = null;
 
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $subject = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: "Le message est obligatoire.")]
+    #[Assert\Length(min: 10, max: 2000, minMessage: "Le message doit contenir au moins {{ limit }} caractères.", maxMessage: "Le message ne peut pas dépasser {{ limit }} caractères.")]
     private ?string $content = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

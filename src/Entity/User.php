@@ -6,6 +6,9 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use Symfony\Component\Validator\Constraints as Assert;
 use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
 use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -19,6 +22,16 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['email'], message: 'Cette adresse email est déjà utilisée.')]
 #[ApiResource(
+    operations: [
+        new Get(
+            security: "is_granted('ROLE_USER') and object == user",
+            securityMessage: "Accès refusé."
+        ),
+        new Patch(
+            security: "is_granted('ROLE_USER') and object == user",
+            securityMessage: "Accès refusé."
+        ),
+    ],
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:write']],
 )]
@@ -32,14 +45,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
 
     #[ORM\Column(type: "string", length: 180, unique: true)]
     #[Groups(['user:read', 'user:write'])]
+    #[Assert\NotBlank(message: "L'email est obligatoire.")]
+    #[Assert\Email(message: "L'adresse email '{{ value }}' n'est pas valide.")]
+    #[Assert\Length(max: 180, maxMessage: "L'email ne peut pas dépasser {{ limit }} caractères.")]
     private string $email;
 
     #[ORM\Column(type: "string", length: 50, nullable: true)]
     #[Groups(['user:read', 'user:write'])]
+    #[Assert\Length(max: 50, maxMessage: "Le prénom ne peut pas dépasser {{ limit }} caractères.")]
+    #[Assert\Regex(pattern: "/^[\p{L}\s\-']+$/u", message: "Le prénom contient des caractères invalides.")]
     private ?string $firstName = null;
 
     #[ORM\Column(type: "string", length: 50, nullable: true)]
     #[Groups(['user:read', 'user:write'])]
+    #[Assert\Length(max: 50, maxMessage: "Le nom ne peut pas dépasser {{ limit }} caractères.")]
+    #[Assert\Regex(pattern: "/^[\p{L}\s\-']+$/u", message: "Le nom contient des caractères invalides.")]
     private ?string $lastName = null;
 
     #[ORM\Column(type: "json")]

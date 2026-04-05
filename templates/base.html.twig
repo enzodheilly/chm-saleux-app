@@ -17,8 +17,24 @@
 		<meta property="og:title" content="{% block og_title %}CHM Saleux - Club d'Haltérophilie et de Musculation{% endblock %}">
 		<meta property="og:description" content="{% block og_description %}Rejoignez le CHM Saleux, club d'excellence en haltérophilie et musculation. École reconnue, entraîneurs diplômés, 25 ans d'expérience.{% endblock %}">
 		<meta property="og:type" content="website">
+		<meta property="og:url" content="{{ app.request.uri }}">
+		<meta property="og:image" content="{% block og_image %}{{ app.request.schemeAndHttpHost ~ asset('images/club/club2.webp') }}{% endblock %}">
+		<meta property="og:image:width" content="1200">
+		<meta property="og:image:height" content="630">
+		<meta property="og:locale" content="fr_FR">
 		<meta
-		property="og:url" content="{{ app.request.uri }}">
+		property="og:site_name" content="CHM Saleux">
+
+		{# Twitter Card #}
+		<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:title" content="{% block twitter_title %}CHM Saleux - Club d'Haltérophilie et de Musculation{% endblock %}">
+		<meta name="twitter:description" content="{% block twitter_description %}Rejoignez le CHM Saleux, club d'excellence en haltérophilie et musculation.{% endblock %}">
+		<meta
+		name="twitter:image" content="{% block twitter_image %}{{ app.request.schemeAndHttpHost ~ asset('images/club/club2.webp') }}{% endblock %}">
+
+		{# Canonical #}
+		<link
+		rel="canonical" href="{{ app.request.uri }}">
 
 		{# Tokens CSRF globaux #}
 		<meta name="csrf-delete-account" content="{{ csrf_token('delete_account') }}">
@@ -26,16 +42,19 @@
 		<meta name="csrf-upload-photo" content="{{ csrf_token('upload_photo') }}">
 
 		<link rel="icon" type="image/png" href="{{ asset('images/favicon/icon2.png') }}">
+		<link rel="manifest" href="{{ asset('manifest.json') }}">
+		<meta
+		name="theme-color" content="#F57706">
+
+		{# Preload ressources critiques #}
+		<link rel="preload" href="{{ asset('css/style.css') }}" as="style">
+		<link rel="preload" href="{{ asset('fonts/inter/inter-v20-latin-regular.woff2') }}" as="font" type="font/woff2" crossorigin>
+		<link rel="preload" href="{{ asset('js/app.js') }}" as="script">
 
 		{% block stylesheets %}
 			{# Vendor CSS #}
-			<link rel="stylesheet" href="{{ asset('vendor/swiper/swiper-bundle.min.css') }}">
-			<link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/all.min.css') }}">
-			<link rel="stylesheet" href="{{ asset('vendor/lucide/lucide.css') }}">
-			<link rel="stylesheet" href="{{ asset('vendor/bootstrap/bootstrap.min.css') }}">
-			<link rel="stylesheet" href="{{ asset('vendor/cropper/cropper.min.css') }}">
 			<link
-			rel="stylesheet" href="{{ asset('vendor/fullcalendar/index.global.min.css') }}">
+			rel="stylesheet" href="{{ asset('vendor/fontawesome/css/all.min.css') }}">
 
 			{# Custom CSS #}
 			<link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -55,10 +74,10 @@
 		<main class="app-main">
 			{% for message in app.flashes('warning') %}
 				 <script nonce="{{ csp_nonce('script') }}">
-												                    window.addEventListener("DOMContentLoaded", () => {
-												                        showToast("{{ message }}");
-												                    });
-												                </script>
+																								                    window.addEventListener("DOMContentLoaded", () => {
+																								                        showToast("{{ message }}");
+																								                    });
+																								                </script>
 			{% endfor %}
 
 			{% block body %}{% endblock %}
@@ -68,49 +87,25 @@
 			{% include 'footer/footer.html.twig' %}
 		{% endblock %}
 
-		<style nonce="{{ csp_nonce('style') }}">
-			.toast-mini {
-				position: fixed;
-				right: 16px;
-				bottom: 16px;
-				background: #111;
-				color: #fff;
-				padding: 10px 14px;
-				border-radius: 10px;
-				box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-				opacity: 0;
-				transform: translateY(10px);
-				transition: 0.25s;
-				z-index: 3000;
-			}
-			.toast-mini.show {
-				opacity: 1;
-				transform: none;
-			}
-		</style>
-
 		{# Vendor JS #}
-		 <script src="{{ asset('vendor/lucide/lucide.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 		 <script src="{{ asset('js/nav/nav.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 		 <script src="{{ asset('js/footer/newsletter.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-		 <script src="{{ asset('vendor/chartjs/chart.umd.min.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-		 <script src="{{ asset('vendor/fullcalendar/index.global.min.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 
-		{# ✅ CLOUDFLARE TURNSTILE : Chargement unique et propre pour widget invisible ou visible #}
+		{# Cloudflare Turnstile #}
 		 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer nonce="{{ csp_nonce('script') }}"></script>
 
 		 <script nonce="{{ csp_nonce('script') }}">
-						            window.showToast = (msg) => {
-						                const t = document.createElement('div');
-						                t.className = 'toast-mini';
-						                t.textContent = msg;
-						                document.body.appendChild(t);
-						                requestAnimationFrame(() => t.classList.add('show'));
-						                setTimeout(() => {
-						                    t.classList.remove('show');
-						                    setTimeout(() => t.remove(), 200);
-						                }, 2200);
-						            };
-						        </script>{% block javascripts %}
+												            window.showToast = (msg) => {
+												                const t = document.createElement('div');
+												                t.className = 'toast-mini';
+												                t.textContent = msg;
+												                document.body.appendChild(t);
+												                requestAnimationFrame(() => t.classList.add('show'));
+												                setTimeout(() => {
+												                    t.classList.remove('show');
+												                    setTimeout(() => t.remove(), 200);
+												                }, 2200);
+												            };
+												        </script>{% block javascripts %}
 	{% endblock %}
 </body></html>

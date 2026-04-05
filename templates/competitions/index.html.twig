@@ -3,6 +3,12 @@
 {% block title %}Compétitions & Résultats — CHM Saleux
 {% endblock %}
 
+{% block og_title %}Compétitions & Résultats — CHM Saleux
+{% endblock %}
+
+{% block og_description %}Suivez les résultats et performances de nos équipes masculine et féminine en compétition d'haltérophilie.
+{% endblock %}
+
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('css/competitions/competitions.css') }}">
@@ -95,7 +101,10 @@
 					{# Carte Masculine #}
 					<a href="{{ path('competitions_team', { 'gender': 'masculine' }) }}" class="team-card" aria-label="Voir l'équipe masculine">
 						<div class="card-img-box">
-							<img src="{{ asset('images/competitions/male-team.jpg') }}" alt="Équipe Masculine CHM Saleux" loading="lazy">
+							<picture>
+								<source srcset="{{ asset('images/competitions/male-team.webp') }}" type="image/webp">
+								<img src="{{ asset('images/competitions/male-team.jpg') }}" alt="Équipe Masculine CHM Saleux" loading="lazy">
+							</picture>
 							<div class="card-overlay"></div>
 							<div class="pille">Masculin</div>
 						</div>

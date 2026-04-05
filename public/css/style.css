@@ -41,6 +41,30 @@
     font-display: swap;
 }
 
+/* ✅ Police globale */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* ✅ Focus visible — accessibilité clavier */
+:focus-visible {
+    outline: 2px solid #F57706;
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* Supprime l'outline par défaut uniquement pour la souris */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
 /* =========================================================
    ROOT — DESIGN TOKENS (GLOBAL)
    ========================================================= */

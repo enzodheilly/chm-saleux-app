@@ -126,6 +126,9 @@
             "./config/packages/nelmio_security.yaml"
         ]
     },
+    "presta/sitemap-bundle": {
+        "version": "v4.3.0"
+    },
     "scheb/2fa-bundle": {
         "version": "7.13",
         "recipe": {

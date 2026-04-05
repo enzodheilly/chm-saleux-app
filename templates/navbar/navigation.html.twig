@@ -48,7 +48,7 @@
 		<div class="nav-content">
 
 			<a href="{{ path('home') }}" class="nav-brand">
-				<img src="{{ asset('images/favicon/icon2.png') }}" alt="CHM Saleux">
+				<img src="{{ asset('images/favicon/icon2.png') }}" alt="CHM Saleux" width="40" height="40">
 				<span class="brand-text">CHM
 					<span class="text-red">SALEUX</span>
 				</span>
@@ -118,7 +118,7 @@
 					</a>
 				{% endif %}
 
-				<button class="hamburger-btn" id="mobileMenuTrigger">
+				<button class="hamburger-btn" id="mobileMenuTrigger" aria-label="Ouvrir le menu">
 					<span></span>
 					<span></span>
 					<span></span>
@@ -135,7 +135,7 @@
 				<a href="{{ path('home') }}">Accueil</a>
 
 				{# ✅ ouvre une page interne (subpage) au lieu d'un accordéon #}
-				<button type="button" class="mobile-subpage-trigger" data-subpage="#mobileSubpageClub">
+				<button type="button" class="mobile-subpage-trigger" data-subpage="#mobileSubpageClub" aria-label="Voir le club">
 					Club & Membres du Bureau
 					<i class="fa-solid fa-arrow-right"></i>
 				</button>
@@ -170,7 +170,7 @@
 
 			{# --- SUBPAGE : Club & Membres du Bureau --- #}
 			<div class="mobile-subpage" id="mobileSubpageClub">
-				<button type="button" class="mobile-subpage-back" data-subpage-back>
+				<button type="button" class="mobile-subpage-back" data-subpage-back aria-label="Retour">
 					<i class="fa-solid fa-arrow-left"></i>
 					Retour
 				</button>

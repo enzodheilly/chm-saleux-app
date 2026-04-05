@@ -1,0 +1,43 @@
+{
+    "name": "CHM Saleux - Club d'Haltérophilie et de Musculation",
+    "short_name": "CHM Saleux",
+    "description": "Club d'Haltérophilie et de Musculation de Saleux. École d'haltérophilie, formations tous niveaux, compétitions.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0f1117",
+    "theme_color": "#F57706",
+    "lang": "fr",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/images/favicon/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/images/favicon/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Horaires",
+            "url": "/horaires",
+            "description": "Voir les horaires d'entraînement"
+        },
+        {
+            "name": "Compétitions",
+            "url": "/competitions",
+            "description": "Voir les compétitions et résultats"
+        },
+        {
+            "name": "Mon Espace",
+            "url": "/dashboard",
+            "description": "Accéder à mon espace membre"
+        }
+    ],
+    "categories": ["sports", "fitness", "health"]
+}
