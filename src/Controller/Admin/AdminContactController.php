@@ -1,5 +1,4 @@
 <?php
-// src/Controller/Admin/AdminContactController.php
 
 namespace App\Controller\Admin;
 
@@ -26,14 +25,14 @@ class AdminContactController extends AbstractController
             'messages' => $messages,
             'subjectLabels' => [
                 'renseignement' => 'Renseignements généraux',
-                'essai' => 'Séance d\'essai',
-                'tarifs' => 'Tarifs & inscription',
-                'horaires' => 'Horaires du club',
-                'coaching' => 'Coaching / accompagnement',
-                'competitions' => 'Compétitions & résultats',
-                'partenariat' => 'Partenariat',
-                'technique' => 'Problème technique',
-                'autre' => 'Autre demande',
+                'essai'         => 'Séance d\'essai',
+                'tarifs'        => 'Tarifs & inscription',
+                'horaires'      => 'Horaires du club',
+                'coaching'      => 'Coaching / accompagnement',
+                'competitions'  => 'Compétitions & résultats',
+                'partenariat'   => 'Partenariat',
+                'technique'     => 'Problème technique',
+                'autre'         => 'Autre demande',
             ],
         ]);
     }
@@ -71,17 +70,13 @@ class AdminContactController extends AbstractController
 
             if ($clientEmail) {
                 $email = (new Email())
-                    ->from('support@tonsite.com')
+                    ->from('no-reply@chm-saleux.fr')
                     ->to($clientEmail)
                     ->subject('Réponse à votre demande de contact')
-                    ->html(
-                        '
-                        <p>Bonjour,</p>
-                        <p>Nous avons bien pris en compte votre demande et voici notre réponse :</p>
-                        <p><strong>' . nl2br(htmlspecialchars($responseText, ENT_QUOTES, 'UTF-8')) . '</strong></p>
-                        <p>Cordialement,<br>' . htmlspecialchars($adminName, ENT_QUOTES, 'UTF-8') . '</p>
-                        '
-                    );
+                    ->html($this->renderView('emails/contact_response.html.twig', [
+                        'responseText' => $responseText,
+                        'adminName'    => $adminName,
+                    ]));
 
                 $mailer->send($email);
             }

@@ -101,12 +101,15 @@ class RegistrationController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
-                // 6. Envoi Email
+                // 6. Envoi Email avec template Twig
                 $emailMessage = (new Email())
                     ->from('no-reply@chm-saleux.fr')
                     ->to($user->getEmail())
                     ->subject('Votre code de vérification - CHM Saleux')
-                    ->html("<p>Bonjour {$user->getFirstName()}, voici votre code : <strong>{$code}</strong></p>");
+                    ->html($this->renderView('emails/verify_code.html.twig', [
+                        'firstName' => $user->getFirstName(),
+                        'code' => $code,
+                    ]));
                 $mailer->send($emailMessage);
 
                 $request->getSession()->set('verify_email', $user->getEmail());

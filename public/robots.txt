@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Bloquer les zones privées
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /login
+Disallow: /register
+Disallow: /reset-password
+Disallow: /verify-code
+Disallow: /set-password
+Disallow: /2fa/
+Disallow: /oauth/
+
+# Bloquer les fichiers techniques
+Disallow: /_profiler/
+Disallow: /_wdt/
+Disallow: /_error/
+
+# Sitemap
+Sitemap: https://www.chm-saleux.fr/sitemap.xml

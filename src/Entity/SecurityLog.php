@@ -7,6 +7,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SecurityLogRepository::class)]
+#[ORM\Index(columns: ['created_at'], name: 'idx_security_log_created_at')]
+#[ORM\Index(columns: ['type'], name: 'idx_security_log_type')]
+#[ORM\Index(columns: ['ip'], name: 'idx_security_log_ip')]
 class SecurityLog
 {
     #[ORM\Id]
@@ -43,21 +46,19 @@ class SecurityLog
     private ?string $message = null;
 
     #[ORM\Column(length: 100, nullable: true)]
-    private ?string $os = null; // Ex: Windows 11, Android 14, iOS 18
+    private ?string $os = null;
 
     #[ORM\Column(length: 100, nullable: true)]
-    private ?string $browser = null; // Ex: Chrome 130, Firefox 118
+    private ?string $browser = null;
 
-    // 👇 LA NOUVELLE OPTION AJOUTÉE ICI 👇
     #[ORM\Column(length: 20, nullable: true)]
-    private ?string $method = null; // Ex: GET, POST
+    private ?string $method = null;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
     }
 
-    // ✅ Getters / Setters d'origine
     public function getId(): ?int
     {
         return $this->id;
@@ -178,7 +179,6 @@ class SecurityLog
         return $this->success;
     }
 
-    // ✅ NOUVEAU GETTER / SETTER POUR METHOD
     public function getMethod(): ?string
     {
         return $this->method;

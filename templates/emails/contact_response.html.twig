@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réponse à votre demande - CHM Saleux</title>
+    <style>
+        body { margin: 0; padding: 0; background-color: #f1f5f9; font-family: Inter, Arial, sans-serif; }
+        .wrapper { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .header { background: #0f1117; padding: 32px; text-align: center; }
+        .header img { width: 56px; height: 56px; }
+        .header h1 { color: #F57706; font-size: 1.4rem; margin: 12px 0 0; }
+        .body { padding: 40px 32px; }
+        .body p { color: #374151; font-size: 1rem; line-height: 1.6; margin: 0 0 16px; }
+        .response-box { background: #f8fafc; border-left: 4px solid #F57706; border-radius: 0 8px 8px 0; padding: 20px 24px; margin: 24px 0; }
+        .response-box p { color: #1e293b; margin: 0; white-space: pre-line; }
+        .signature { color: #64748b; font-size: 0.9rem; }
+        .footer { background: #f8fafc; padding: 20px 32px; text-align: center; border-top: 1px solid #e2e8f0; }
+        .footer p { color: #94a3b8; font-size: 0.8rem; margin: 0; }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <img src="https://chm-saleux.fr/images/favicon/icon2.png" alt="CHM Saleux">
+            <h1>CHM SALEUX</h1>
+        </div>
+        <div class="body">
+            <p>Bonjour,</p>
+            <p>Nous avons bien pris en compte votre demande de contact et voici notre réponse :</p>
+            <div class="response-box">
+                <p>{{ responseText }}</p>
+            </div>
+            <p class="signature">
+                Cordialement,<br>
+                <strong>{{ adminName }}</strong><br>
+                CHM Saleux
+            </p>
+        </div>
+        <div class="footer">
+            <p>© {{ "now"|date("Y") }} CHM Saleux — Club d'Haltérophilie et de Musculation de Saleux</p>
+        </div>
+    </div>
+</body>
+</html>

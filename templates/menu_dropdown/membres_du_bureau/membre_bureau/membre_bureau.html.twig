@@ -47,7 +47,10 @@
 
 					<div class="profile-image-side">
 						<div class="image-container">
-							<img src="{{ asset('images/menu_dropdown/membres_du_bureau/membre_bureau/1.png') }}" alt="Marianne Boulanger-Bailleux" loading="lazy">
+							<picture>
+								<source srcset="{{ asset('images/menu_dropdown/membres_du_bureau/membre_bureau/1.webp') }}" type="image/webp">
+								<img src="{{ asset('images/menu_dropdown/membres_du_bureau/membre_bureau/1.png') }}" alt="Marianne Boulanger-Bailleux" loading="lazy">
+							</picture>
 							<div class="experience-badge">
 								<span class="exp-label">Statut</span>
 								<span class="exp-year">Membre Actif</span>

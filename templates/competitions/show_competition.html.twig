@@ -5,6 +5,14 @@
 	— Détail compétition | CHM Saleux
 {% endblock %}
 
+{% block og_description %}
+	{{ competition.description ? competition.description|slice(0, 150) ~ '...' : 'Découvrez les résultats de cette compétition du CHM Saleux.' }}
+{% endblock %}
+
+{% block og_image %}
+	{{ app.request.schemeAndHttpHost ~ (competition.image ? asset('uploads/competitions/' ~ competition.image) : asset('images/club/club2.webp')) }}
+{% endblock %}
+
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('css/competitions/competition-detail.css') }}">

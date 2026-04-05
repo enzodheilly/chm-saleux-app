@@ -4,6 +4,16 @@
 {% block title %}Accueil – CHM Saleux
 {% endblock %}
 
+{% block og_title %}CHM Saleux - Club d'Haltérophilie et de Musculation
+{% endblock %}
+
+{% block og_description %}Rejoignez le CHM Saleux à Saleux. Haltérophilie, musculation, cours collectifs, sauna. Plus de 25 ans d'expérience.
+{% endblock %}
+
+{% block og_image %}
+	{{ app.request.schemeAndHttpHost ~ asset('images/club/club2.webp') }}
+{% endblock %}
+
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('css/accueil/home.css') }}">

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\NewsletterSubscriberRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: NewsletterSubscriberRepository::class)]
 #[ORM\Table(name: 'newsletter_subscriber')]
@@ -16,6 +17,9 @@ class NewsletterSubscriber
     private ?int $id = null;
 
     #[ORM\Column(type: "string", length: 180, unique: true)]
+    #[Assert\NotBlank(message: "L'email est obligatoire.")]
+    #[Assert\Email(message: "L'email '{{ value }}' n'est pas valide.")]
+    #[Assert\Length(max: 180)]
     private string $email;
 
     #[ORM\Column(type: 'string', length: 64, nullable: true)]
@@ -128,8 +132,7 @@ class NewsletterSubscriber
 
     public function getUnsubscribeUrl(): string
     {
-        // ✅ Corrigé : on utilise bien le token de désabonnement
-        return sprintf('http://127.0.0.1:8000/newsletter/unsubscribe/%s', $this->unsubscribeToken);
+        return sprintf('%s/newsletter/unsubscribe/%s', $_ENV['ADMIN_SITE_URL'] ?? 'https://ton-domaine.com', $this->unsubscribeToken);
     }
 
     public function __toString(): string

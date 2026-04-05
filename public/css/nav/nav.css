@@ -472,6 +472,11 @@ body.mobile-menu-open {
     gap: 6px;
     z-index: 1101;
     position: relative;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
 }
 
 .hamburger-btn span {

@@ -11,7 +11,7 @@
 
 			<div class="footer-col footer-brand">
 				<div class="logo-wrapper">
-					<img src="{{ asset('images/favicon/icon2.png') }}" alt="CHM Saleux" class="footer-logo">
+					<img src="{{ asset('images/favicon/icon2.png') }}" alt="CHM Saleux" class="footer-logo" width="48" height="48">
 					<span class="logo-text">CHM<span>SALEUX</span>
 					</span>
 				</div>
@@ -85,8 +85,8 @@
 						<input type="hidden" name="_csrf_token" value="{{ csrf_token('newsletter') }}">
 
 						<div class="input-group">
-							<input type="email" name="email" placeholder="Votre adresse email" value="{{ app.user ? app.user.email : '' }}" autocomplete="email" required>
-							<button type="submit" id="newsletter-submit" class="btn-submit-icon">
+							<input type="email" name="email" placeholder="Votre adresse email" aria-label="Adresse email pour la newsletter" value="{{ app.user ? app.user.email : '' }}" autocomplete="email" required>
+							<button type="submit" id="newsletter-submit" class="btn-submit-icon" aria-label="S'inscrire à la newsletter">
 								<i class="fa-solid fa-paper-plane"></i>
 							</button>
 						</div>
@@ -111,10 +111,10 @@
 			<div class="payment-methods">
 				<span class="label">Paiements sécurisés :</span>
 				<div class="icons">
-					<img src="{{ asset('images/payments/visa.png') }}" alt="Visa" title="Visa">
-					<img src="{{ asset('images/payments/mastercard.png') }}" alt="Mastercard" title="Mastercard">
-					<img src="{{ asset('images/payments/google.png') }}" alt="Google Pay" title="Google Pay">
-					<img src="{{ asset('images/payments/apple.png') }}" alt="Apple Pay" title="Apple Pay">
+					<img src="{{ asset('images/payments/visa.png') }}" alt="Visa" title="Visa" width="38" height="24">
+					<img src="{{ asset('images/payments/mastercard.png') }}" alt="Mastercard" title="Mastercard" width="38" height="24">
+					<img src="{{ asset('images/payments/google.png') }}" alt="Google Pay" title="Google Pay" width="38" height="24">
+					<img src="{{ asset('images/payments/apple.png') }}" alt="Apple Pay" title="Apple Pay" width="38" height="24">
 				</div>
 			</div>
 		</div>

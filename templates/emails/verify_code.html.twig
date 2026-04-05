@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre code de vérification - CHM Saleux</title>
+    <style>
+        body { margin: 0; padding: 0; background-color: #f1f5f9; font-family: Inter, Arial, sans-serif; }
+        .wrapper { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .header { background: #0f1117; padding: 32px; text-align: center; }
+        .header img { width: 56px; height: 56px; }
+        .header h1 { color: #F57706; font-size: 1.4rem; margin: 12px 0 0; }
+        .body { padding: 40px 32px; }
+        .body p { color: #374151; font-size: 1rem; line-height: 1.6; margin: 0 0 16px; }
+        .code-box { background: #f8fafc; border: 2px dashed #F57706; border-radius: 10px; padding: 24px; text-align: center; margin: 24px 0; }
+        .code { font-size: 2.5rem; font-weight: 900; letter-spacing: 8px; color: #0f1117; }
+        .expiry { color: #94a3b8; font-size: 0.85rem; margin-top: 8px; }
+        .footer { background: #f8fafc; padding: 20px 32px; text-align: center; border-top: 1px solid #e2e8f0; }
+        .footer p { color: #94a3b8; font-size: 0.8rem; margin: 0; }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <img src="https://chm-saleux.fr/images/favicon/icon2.png" alt="CHM Saleux">
+            <h1>CHM SALEUX</h1>
+        </div>
+        <div class="body">
+            <p>Bonjour <strong>{{ firstName }}</strong>,</p>
+            <p>Merci de vous inscrire sur le site du CHM Saleux. Voici votre code de vérification :</p>
+            <div class="code-box">
+                <div class="code">{{ code }}</div>
+                <div class="expiry">Ce code est valable 15 minutes</div>
+            </div>
+            <p>Si vous n'avez pas demandé ce code, vous pouvez ignorer cet email.</p>
+        </div>
+        <div class="footer">
+            <p>© {{ "now"|date("Y") }} CHM Saleux — Club d'Haltérophilie et de Musculation de Saleux</p>
+        </div>
+    </div>
+</body>
+</html>
