@@ -74,8 +74,6 @@
 						<article class="history-card history-card-archives">
 							<div class="card-thumb">
 								<img src="{{ comp.image ? asset('uploads/competitions/' ~ comp.image) : asset('images/defaults/competition-placeholder.jpg') }}" alt="{{ comp.title }}" loading="lazy">
-								<div class="card-date">{{ comp.eventDate ? comp.eventDate|date('d/m/Y') : '--/--/----' }}</div>
-
 								{% if comp.teamRanking %}
 									<div class="card-ranking-badge">
 										{{ comp.teamRanking }}{{ comp.teamRanking == 1 ? 'er' : 'e' }}
@@ -133,6 +131,45 @@
 						pour le moment.</p>
 				</div>
 			{% endif %}
+
+			{# Après la history-grid, dans la section #}
+
+			{% if totalPages > 1 %}
+				<div
+					class="pagination-elite">
+
+					{# Bouton précédent #}
+					{% if currentPage > 1 %}
+						<a href="{{ path('competition_team_archives', { gender: gender, page: currentPage - 1 }) }}" class="page-btn">
+							<i class="fa-solid fa-chevron-left"></i>
+						</a>
+					{% else %}
+						<span class="page-btn disabled">
+							<i class="fa-solid fa-chevron-left"></i>
+						</span>
+					{% endif %}
+
+					{# Numéros de pages #}
+					{% for p in 1..totalPages %}
+						<a href="{{ path('competition_team_archives', { gender: gender, page: p }) }}" class="page-btn {{ p == currentPage ? 'active' : '' }}">
+							{{ p }}
+						</a>
+					{% endfor %}
+
+					{# Bouton suivant #}
+					{% if currentPage < totalPages %}
+						<a href="{{ path('competition_team_archives', { gender: gender, page: currentPage + 1 }) }}" class="page-btn">
+							<i class="fa-solid fa-chevron-right"></i>
+						</a>
+					{% else %}
+						<span class="page-btn disabled">
+							<i class="fa-solid fa-chevron-right"></i>
+						</span>
+					{% endif %}
+
+				</div>
+			{% endif %}
+
 		</section>
 
 	</main>

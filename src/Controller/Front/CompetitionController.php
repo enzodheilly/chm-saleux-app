@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class CompetitionController extends AbstractController
 {
@@ -157,16 +158,29 @@ class CompetitionController extends AbstractController
     }
 
     #[Route('/competition/equipe/{gender}/archives', name: 'competition_team_archives', requirements: ['gender' => 'feminine|masculine'])]
-    public function teamArchives(EntityManagerInterface $em, string $gender): Response
+    public function teamArchives(EntityManagerInterface $em, Request $request, string $gender): Response
     {
-        $genderDb = $gender === 'feminine' ? 'female' : 'male';
+        $genderDb   = $gender === 'feminine' ? 'female' : 'male';
+        $limit      = 9;
+        $page       = max(1, $request->query->getInt('page', 1));
+        $offset     = ($page - 1) * $limit;
 
-        $competitions = $em->getRepository(Competition::class)
-            ->findBy(['gender' => $genderDb], ['eventDate' => 'DESC']);
+        $repo       = $em->getRepository(Competition::class);
+        $total      = count($repo->findBy(['gender' => $genderDb]));
+        $totalPages = (int) ceil($total / $limit);
+
+        $competitions = $repo->findBy(
+            ['gender' => $genderDb],
+            ['eventDate' => 'DESC'],
+            $limit,
+            $offset
+        );
 
         return $this->render('competitions/team_archives.html.twig', [
             'competitions' => $competitions,
-            'gender' => $gender,
+            'gender'       => $gender,
+            'currentPage'  => $page,
+            'totalPages'   => $totalPages,
         ]);
     }
 

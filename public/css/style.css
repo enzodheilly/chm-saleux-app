@@ -132,7 +132,7 @@ html, body {
   --fw-black: 800;
 
   /* Tailles */
-  --fs-hero-title: clamp(2.2rem, 4vw, 3rem);
+  --fs-hero-title: clamp(2.2rem, 4vw, 2.90rem);
   --fs-section-title-xl: clamp(2rem, 4vw, 3.5rem);
   --fs-section-title: clamp(1.8rem, 3vw, 3rem);
   --fs-card-title: 1.2rem;
@@ -322,7 +322,7 @@ html, body {
   width: 50%;
   height: 100%;
   background-image: var(--bg-image);
-  background-size: var(--bg-size, cover);  background-position: var(--bg-position, center);
+  background-size: var(--bg-size, cover);
   z-index: 1;
   clip-path: polygon(22% 0%, 100% 0%, 100% 100%, 0% 100%);
   border-radius: 0 0 0 8px;

@@ -6,12 +6,6 @@
 /* =========================================
    1. BASE PAGE (local uniquement)
    ========================================= */
-/* blocs alternés de la page */
-.bg-dark-alternate {
-  background-color: var(--dark-bg);
-  border-top: 1px solid var(--border-soft);
-  border-bottom: 1px solid var(--border-soft);
-}
 
 /* layout helpers */
 .section-header-center {
@@ -184,7 +178,11 @@
   color: var(--primary-color);
   flex-shrink: 0;
 }
-
+.split-layout {
+  background: #000000;
+  padding: 3rem;
+  border-radius: 16px;
+}
 .slider-wrapper-box,
 .coach-slider {
   width: 100%;
@@ -197,7 +195,6 @@
   height: 500px;
   border-radius: 16px;
   border: 1px solid var(--border-soft);
-  background: #0a0a0a;
 }
 
 .slides-track {
@@ -260,16 +257,16 @@
 
 .slider-controls {
   position: absolute;
-  bottom: 24px;
-  right: 24px;
+  bottom: 16px;
+  right: 16px;
   z-index: 2;
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .slider-controls button {
-  width: 46px;
-  height: 46px;
+  width: 40px;
+  height: 40px;
   background: var(--primary-color);
   border: none;
   color: var(--text-white);
@@ -482,7 +479,7 @@
 
   .slider-info {
     left: 16px;
-    bottom: 16px;
+    bottom: 76px;
   }
 
   .slider-info h4 {
@@ -494,9 +491,11 @@
   }
 
   .slider-controls {
-    right: 16px;
-    bottom: 16px;
+    right: 12px;
+    bottom: 12px;
     gap: 8px;
+      right: 50%;
+  transform: translateX(50%);
   }
 
   .slider-controls button {
@@ -548,3 +547,4 @@
     max-width: 700px;
     margin: 0 auto;
 }
+

@@ -1,72 +1,106 @@
+{# --- SECTION : ÉQUIPEMENTS — REFONTE --- #}
 <section class="equipment-section">
-  <div class="equipment-container">
+	<div class="container equip-inner">
 
-    <div class="equipment-layout">
-      
-      <div class="equipment-info">
-        <div class="sticky-wrapper">
-          <h2 class="section-title">NOS NOUVEAUX <span class="text-highlight">ÉQUIPEMENTS</span></h2>
-          <p class="section-desc">
-            Nous investissons chaque année pour vous offrir le meilleur. Ergonomie, biomecanique et design : découvrez les dernières arrivées au club.
-          </p>
+		<span class="equip-bg-number" aria-hidden="true">02</span>
 
-          <ul class="benefits-list">
-            <li>
-              <span class="icon">⚡</span>
-              <div>
-                <strong>Innovation continue</strong>
-                <small>Matériel renouvelé régulièrement.</small>
-              </div>
-            </li>
-            <li>
-              <span class="icon">🎯</span>
-              <div>
-                <strong>Performance & Confort</strong>
-                <small>Mouvements fluides et précis.</small>
-              </div>
-            </li>
-            <li>
-              <span class="icon">🛡️</span>
-              <div>
-                <strong>Sécurité maximale</strong>
-                <small>Adapté aux débutants et pros.</small>
-              </div>
-            </li>
-          </ul>
-          
-          <div class="scroll-indicator" aria-hidden="true">
-            <span>Glissez pour voir</span> &rarr;
-          </div>
+		<div
+			class="equip-layout">
 
-        </div>
-      </div>
+			{# ── Colonne gauche sticky ── #}
+			<aside class="equip-info">
+				<div class="equip-sticky">
 
-      <div class="equipment-gallery">
-        <div class="gallery-track">
-          
-          {% for equipment in newEquipments %}
-            <article class="machine-card">
-              <div class="image-box">
-                <img src="{{ asset('uploads/machines/' ~ equipment.image) }}" alt="{{ equipment.name }}" loading="lazy">
-                <div class="card-overlay"></div>
-              </div>
-              <div class="machine-info">
-                <h3>{{ equipment.name }}</h3>
-                <span class="category">Nouveauté</span>
-              </div>
-            </article>
-          {% endfor %}
+					<div class="cc-eyebrow">
+						<span class="cc-eyebrow-line"></span>
+						Équipements
+					</div>
 
-          <article class="machine-card last-card">
-            <div class="last-content">
-              <h3>Venez les tester</h3>
-              <a href="{{ path('seance_essai') }}" class="btn-test">Séance d'essai</a>
-            </div>
-          </article>
+					<h2 class="equip-title">
+						Nos nouveaux<br>
+						<em>équipements</em>
+					</h2>
 
-        </div>
-      </div>
+					<p class="equip-desc">
+						Nous investissons chaque année pour vous offrir le meilleur.
+						            Ergonomie, biomécanique et design — découvrez les dernières arrivées au club.
+					</p>
 
-    </div>
-  </div>
+					<ul class="equip-benefits">
+						<li class="equip-benefit">
+							<span class="equip-benefit-icon">
+								<i class="fa-solid fa-bolt"></i>
+							</span>
+							<div class="equip-benefit-text">
+								<strong>Innovation continue</strong>
+								<span>Matériel renouvelé régulièrement.</span>
+							</div>
+						</li>
+						<li class="equip-benefit">
+							<span class="equip-benefit-icon">
+								<i class="fa-solid fa-crosshairs"></i>
+							</span>
+							<div class="equip-benefit-text">
+								<strong>Performance & Confort</strong>
+								<span>Mouvements fluides et précis.</span>
+							</div>
+						</li>
+						<li class="equip-benefit">
+							<span class="equip-benefit-icon">
+								<i class="fa-solid fa-shield-halved"></i>
+							</span>
+							<div class="equip-benefit-text">
+								<strong>Sécurité maximale</strong>
+								<span>Adapté aux débutants et aux pros.</span>
+							</div>
+						</li>
+					</ul>
+
+					<div class="equip-scroll-hint" aria-hidden="true">
+						<span class="equip-scroll-line"></span>
+						<span>Glissez pour voir</span>
+						<i class="fa-solid fa-arrow-right"></i>
+					</div>
+
+				</div>
+			</aside>
+
+			{# ── Galerie droite ── #}
+			<div class="equip-gallery">
+				<div class="equip-track">
+
+					{% for equipment in newEquipments %}
+						<article class="equip-card">
+							<div class="equip-card-img">
+								<img src="{{ asset('uploads/machines/' ~ equipment.image) }}" alt="{{ equipment.name }}" loading="lazy">
+								<div class="equip-card-overlay"></div>
+							</div>
+							<div class="equip-card-body">
+								<span class="equip-badge">Nouveauté</span>
+								<h3 class="equip-card-title">{{ equipment.name }}</h3>
+							</div>
+							<div class="equip-card-corner"></div>
+						</article>
+					{% endfor %}
+
+					{# Dernière carte CTA #}
+					<article class="equip-card equip-card--cta">
+						<span class="equip-cta-bg-text" aria-hidden="true">TRY</span>
+						<div class="equip-cta-body">
+							<h3 class="equip-cta-title">
+								Venez les<br>
+								<em>tester</em>
+							</h3>
+							<a href="{{ path('seance_essai') }}" class="btn-elite equip-cta-btn">
+								Séance d'essai
+								<i class="fa-solid fa-arrow-right"></i>
+							</a>
+						</div>
+					</article>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
 </section>
