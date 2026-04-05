@@ -145,8 +145,10 @@ class VerifyCodeController extends AbstractController
                 ->from('no-reply@chm-saleux.fr')
                 ->to($user->getEmail())
                 ->subject('Votre nouveau code de vérification - CHM Saleux')
-                ->html("<p>Bonjour {$user->getFirstName()}, voici votre nouveau code : <strong>{$newCode}</strong> (valable 15 minutes)</p>");
-
+                ->html($this->renderView('emails/verify_code.html.twig', [
+                    'firstName' => $user->getFirstName(),
+                    'code'      => $newCode,
+                ]));
             $mailer->send($emailMessage);
             $this->addFlash('success', 'Un nouveau code a été envoyé.');
         } catch (\Throwable $e) {

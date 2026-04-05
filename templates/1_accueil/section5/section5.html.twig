@@ -1,69 +1,104 @@
-{# --- SECTION : APPLICATION MOBILE --- #}
+{# --- SECTION : APPLICATION MOBILE — REFONTE --- #}
 <section class="home-app-section">
-	<div class="container">
+	<div class="container app-inner">
+
+		<span class="app-bg-number" aria-hidden="true">03</span>
+
 		<div
 			class="app-grid-layout">
 
-			{# Contenu Texte #}
+			{# ── Colonne texte ── #}
 			<div class="app-info-side">
-				<div class="badge-status">
-					<span class="dot"></span>
+
+				<div class="app-status-badge">
+					<span class="app-status-dot"></span>
 					Bientôt disponible
 				</div>
 
+				<div class="cc-eyebrow">
+					<span class="cc-eyebrow-line"></span>
+					Application mobile
+				</div>
+
 				<h2 class="app-main-title">
-					Le club dans
-					<br>
-					<span class="text-outline">votre poche</span>
+					Le club dans<br>
+					<em>votre poche</em>
 				</h2>
 
 				<p class="app-description">
-					Emportez le CHM Saleux partout. Gérez votre abonnement, suivez vos records personnels et restez connecté à la communauté en un clin d'œil.
+					Emportez le CHM Saleux partout. Gérez votre abonnement, suivez vos records
+															          personnels et restez connecté à la communauté en un clin d'œil.
 				</p>
 
 				<ul class="app-benefits">
 					<li>
-						<i class="fa-solid fa-circle-check brand-orange-icon"></i>Configurer vos séances personnalisées</li>
+						<span class="app-benefit-bullet">
+							<i class="fa-solid fa-arrow-right"></i>
+						</span>
+						Configurer vos séances personnalisées
+					</li>
 					<li>
-						<i class="fa-solid fa-circle-check brand-orange-icon"></i>
-						Suivre des programmes d’entraînement déjà préparés</li>
+						<span class="app-benefit-bullet">
+							<i class="fa-solid fa-arrow-right"></i>
+						</span>
+						Suivre des programmes d'entraînement préparés
+					</li>
 					<li>
-						<i class="fa-solid fa-circle-check brand-orange-icon"></i>
-						Enregistrer & analyser vos performances</li>
+						<span class="app-benefit-bullet">
+							<i class="fa-solid fa-arrow-right"></i>
+						</span>
+						Enregistrer &amp; analyser vos performances
+					</li>
 					<li>
-						<i class="fa-solid fa-circle-check brand-orange-icon"></i>
-						Gérer vos licences (statut, renouvellement, infos)</li>
+						<span class="app-benefit-bullet">
+							<i class="fa-solid fa-arrow-right"></i>
+						</span>
+						Gérer vos licences (statut, renouvellement)
+					</li>
 				</ul>
 
-				<div class="app-download-zone">
-					<div class="store-group">
-						<div class="btn-fake-store">
-							<i class="fa-brands fa-apple"></i>
-							<div class="btn-text">
-								<span class="top">Prochainement</span>
-								<span class="bottom">App Store</span>
-							</div>
+				<div class="app-stores">
+					<div class="app-store-btn">
+						<i class="fa-brands fa-apple"></i>
+						<div class="app-store-text">
+							<span class="app-store-top">Prochainement</span>
+							<span class="app-store-bottom">App Store</span>
 						</div>
-						<div class="btn-fake-store">
-							<i class="fa-brands fa-google-play"></i>
-							<div class="btn-text">
-								<span class="top">Prochainement</span>
-								<span class="bottom">Google Play</span>
-							</div>
+					</div>
+					<div class="app-store-btn">
+						<i class="fa-brands fa-google-play"></i>
+						<div class="app-store-text">
+							<span class="app-store-top">Prochainement</span>
+							<span class="app-store-bottom">Google Play</span>
 						</div>
 					</div>
 				</div>
+
 			</div>
 
-			{# Visuel Smartphone #}
-			<div class="app-visual-side">
-				<div class="visual-container">
-					<div class="glow-bg"></div>
-					{# On garde ton image de mockup ici #}
-					<div class="phone-wrapper">
-						<img src="{{ asset('images/mockup2.png') }}" alt="CHM App Mockup" class="floating-phone" width="300" height="600" loading="lazy">
-					</div>
+			{# ── Colonne visuel ── #}
+			<div
+				class="app-visual-side">
+
+				{# Lignes de grille déco #}
+				<div class="app-grid-lines" aria-hidden="true">
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
 				</div>
+
+				{# Halo orange #}
+				<div class="app-halo" aria-hidden="true"></div>
+
+				{# Mockup téléphone #}
+				<div class="app-phone-frame">
+					<img
+					src="{{ asset('images/mockup2.png') }}" alt="CHM App Mockup" class="app-phone-img" loading="lazy">
+					{# Coin signature #}
+					<div class="app-phone-corner"></div>
+				</div>
+
 			</div>
 
 		</div>

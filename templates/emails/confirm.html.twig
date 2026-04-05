@@ -1,115 +1,185 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Confirmation d’inscription au CHM Saleux</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style type="text/css">
-        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
-        img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
-        
-        body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; background-color: #f4f6f8; font-family: 'Inter', Helvetica, Arial, sans-serif; }
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Confirmez votre inscription — CHM Saleux</title>
+		<style>
+			body,
+			table,
+			td,
+			a {
+				-webkit-text-size-adjust: 100%;
+				-ms-text-size-adjust: 100%;
+			}
+			table,
+			td {
+				mso-table-lspace: 0;
+				mso-table-rspace: 0;
+			}
+			img {
+				border: 0;
+				height: auto;
+				line-height: 100%;
+				outline: none;
+				text-decoration: none;
+				display: block;
+			}
+			body {
+				margin: 0 !important;
+				padding: 0 !important;
+				background-color: #f0f2f5;
+				font-family: 'Inter', Helvetica, Arial, sans-serif;
+			}
+			@media screen and(max-width: 600px) {
+				.container {
+					width: 100% !important;
+				}
+				.mobile-pad {
+					padding: 30px 20px !important;
+				}
+				.btn {
+					padding: 16px 28px !important;
+					font-size: 13px !important;
+				}
+			}
+		</style>
+	</head>
+	<body style="background-color: #f0f2f5; margin: 0; padding: 0;">
 
-        @media screen and (max-width: 525px) {
-            .container { width: 100% !important; }
-            .padding-mobile { padding: 25px 15px !important; }
-            /* Réduction texte bouton sur mobile */
-            .btn-text-mobile { 
-                font-size: 12px !important; 
-                padding: 15px 20px !important; 
-                letter-spacing: 0.5px !important;
-            }
-            /* Nettoyage footer mobile */
-            .footer-stack { display: block !important; width: 100% !important; padding: 5px 0 !important; }
-        }
-    </style>
-</head>
-<body style="background-color: #f4f6f8; margin: 0; padding: 0;">
+		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td
+					align="center" style="padding: 40px 16px;">
 
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-        <tr>
-            <td align="center" style="padding: 30px 10px;">
-                
-                <table class="container" border="0" cellpadding="0" cellspacing="0" width="500" style="background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.05); border: 1px solid #e5e7eb;">
-                    
-                    <tr>
-                        <td align="center" style="padding: 40px 30px 10px 30px;" class="padding-mobile">
-                            <img src="https://raw.githubusercontent.com/enzodheilly/chm-saleux-app/main/public/images/favicon/icon2.png" 
-                                 alt="CHM Saleux" width="55" style="display: block; margin-bottom: 20px;">
-                            <h1 style="margin: 0; color: #002952; font-size: 22px; font-weight: 800; line-height: 1.2; text-align: center;">
-                                Confirmez votre inscription
-                            </h1>
-                        </td>
-                    </tr>
+					{# ── CARTE PRINCIPALE ── #}
+					<table
+						class="container" border="0" cellpadding="0" cellspacing="0" width="560" style="background:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,0.07);">
 
-                    <tr>
-                        <td align="center" style="padding: 15px 35px 25px 35px; color: #4b5563; font-size: 15px; line-height: 1.6; text-align: center;" class="padding-mobile">
-                            <p style="margin: 0;">
-                                Bonjour <strong>{{ subscriber is defined and subscriber ? (subscriber.getFirstname() ?? 'à vous') : 'à vous' }}</strong>,
-                            </p>
-                            <p style="margin: 15px 0 0 0;">
-                                Pour valider votre abonnement à la newsletter du <strong>CHM Saleux</strong>, cliquez sur le bouton ci-dessous :
-                            </p>
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td align="center" style="padding: 0 30px 40px 30px;" class="padding-mobile">
-                            <table border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td align="center" bgcolor="#F57706" style="border-radius: 6px;">
-                                        <a href="{{ confirmUrl }}" target="_blank" class="btn-text-mobile" style="display: inline-block; padding: 18px 35px; font-family: Arial, sans-serif; font-size: 13px; font-weight: bold; color: #ffffff; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; text-align: center;">
-                                            Valider l'inscription
-                                        </a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
+						{# ── HEADER ── #}
+						<tr>
+							<td align="center" style="background: linear-gradient(135deg, #0f1117 0%, #1a1d27 100%); padding: 40px 40px 32px;">
+								<img src="https://raw.githubusercontent.com/enzodheilly/chm-saleux-app/main/public/images/favicon/icon2.png" alt="CHM Saleux" width="52" height="52" style="display: block; margin: 0 auto 16px auto; border-radius: 12px;">
+								<div style="color: #F57706; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; text-align: center;">
+									Club d'Haltérophilie &amp; Musculation
+								</div>
+								<div style="color: #ffffff; font-size: 22px; font-weight: 800; line-height: 1.3; text-align: center;">
+									CHM SALEUX
+								</div>
+							</td>
+						</tr>
 
-                    <tr>
-                        <td align="center" style="padding: 25px 30px; background-color: #f9fafb; border-top: 1px solid #eeeeee; color: #6b7280; font-size: 12px; line-height: 1.5;" class="padding-mobile">
-                            <p style="margin: 0 0 10px 0; color: #333333; font-weight: bold; font-size: 13px; text-transform: uppercase;">CHM SALEUX</p>
-                            
-                            <p style="margin: 0;">
-                                8 rue Max Dormoy – 80480 Saleux<br>
-                                Siège social : 79 rue Roger Salengro – 80480 Saleux<br>
-                                Tél : 03.22.89.72.57<br>
-                                <a href="mailto:chm.saleux@orange.fr" style="color: #6b7280; text-decoration: none;">chm.saleux@orange.fr</a>
-                            </p>
+						{# ── CONTENU ── #}
+						<tr>
+							<td class="mobile-pad" align="center" style="padding: 48px 48px 40px; text-align: center;">
 
-                            <p style="margin: 12px 0 0 0; font-style: italic; font-size: 11px; opacity: 0.8;">
-                                Agréé Jeunesse et Sports – Association loi 1901
-                            </p>
-                        </td>
-                    </tr>
-                </table>
+								<p style="margin: 0 0 8px; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; text-align: center;">
+									Newsletter
+								</p>
+								<h1 style="margin: 0 0 20px; color: #111827; font-size: 26px; font-weight: 800; line-height: 1.3; text-align: center;">
+									Confirmez votre inscription
+								</h1>
 
-                <table class="container" border="0" cellpadding="0" cellspacing="0" width="500">
-                    <tr>
-                        <td align="center" style="padding: 25px 0 15px 0;">
-                            <a href="https://ton-site.com" style="color: #005b94; text-decoration: none; font-weight: bold; font-size: 13px; letter-spacing: 0.5px; text-transform: uppercase;">
-                                Visiter notre site web →
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center" style="padding: 0 20px; color: #9ca3af; font-size: 11px; line-height: 1.8;">
-                            <span class="footer-stack">Vous recevez cet e-mail suite à votre inscription.</span>
-                            <span class="footer-stack">
-                                <a href="{{ subscriber.getUnsubscribeUrl() }}" style="color: #F57706; text-decoration: none; font-weight: bold;">Se désabonner</a>
-                            </span>
-                            <p style="margin: 15px 0 0 0; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; font-size: 10px;">
-                                © {{ "now"|date("Y") }} CHM Saleux
-                            </p>
-                        </td>
-                    </tr>
-                </table>
+								<p style="margin: 0 0 16px; color: #4b5563; font-size: 15px; line-height: 1.7; text-align: center;">
+									Bonjour
+									{% if subscriber is defined and subscriber and subscriber.user and subscriber.user.firstName %}
+										<strong>{{ subscriber.user.firstName }}</strong>
+									{% endif %},
+								</p>
+								<p style="margin: 0 0 32px; color: #4b5563; font-size: 15px; line-height: 1.7; text-align: center;">
+									Merci de votre intérêt pour les actualités du CHM Saleux !
+									                                Un clic suffit pour valider votre abonnement et recevoir
+									                                nos prochaines news directement dans votre boîte mail.
+								</p>
 
-            </td>
-        </tr>
-    </table>
+								{# ── BOUTON ── #}
+								<table border="0" cellpadding="0" cellspacing="0" align="center">
+									<tr>
+										<td align="center" bgcolor="#F57706" style="border-radius: 10px; box-shadow: 0 4px 14px rgba(245,119,6,0.35);">
+											<a href="{{ confirmUrl }}" target="_blank" class="btn" style="display: inline-block; padding: 18px 40px;
+													                                                  font-family: Arial, sans-serif; font-size: 14px;
+													                                                  font-weight: 700; color: #ffffff; text-decoration: none;
+													                                                  text-transform: uppercase; letter-spacing: 1.5px;">
+												✓ &nbsp;Valider mon inscription
+											</a>
+										</td>
+									</tr>
+								</table>
 
-</body>
+								{# ── NOTE SÉCURITÉ ── #}
+								<table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top: 32px;">
+									<tr>
+										<td style="background: #f9fafb; border-radius: 10px; border-left: 3px solid #F57706; padding: 16px 20px;">
+											<p style="margin: 0; color: #6b7280; font-size: 13px; line-height: 1.6; text-align: center;">
+												🔒 Ce lien est valable
+												<strong>24 heures</strong>.
+													                                            Si vous n'avez pas demandé cette inscription, ignorez simplement cet email.
+											</p>
+										</td>
+									</tr>
+								</table>
+
+							</td>
+						</tr>
+
+						{# ── SÉPARATEUR ── #}
+						<tr>
+							<td style="padding: 0 48px;">
+								<div style="height: 1px; background: #f0f2f5;"></div>
+							</td>
+						</tr>
+
+						{# ── FOOTER ── #}
+						<tr>
+							<td class="mobile-pad" style="padding: 28px 48px; background: #fafafa;">
+								<table border="0" cellpadding="0" cellspacing="0" width="100%">
+									<tr>
+										<td align="center" style="color: #9ca3af; font-size: 12px; line-height: 1.8; text-align: center;">
+											<strong style="color: #374151; font-size: 13px;">CHM SALEUX</strong><br>
+											8 rue Max Dormoy – 80480 Saleux<br>
+											Tél : 03.22.89.72.57 &nbsp;·&nbsp;
+											<a href="mailto:chm.saleux@orange.fr" style="color: #9ca3af; text-decoration: none;">chm.saleux@orange.fr</a><br>
+											<span style="font-style: italic;">Agréé Jeunesse et Sports – Association loi 1901</span>
+										</td>
+									</tr>
+									<tr>
+										<td style="padding-top: 20px;">
+											<table border="0" cellpadding="0" cellspacing="0" width="100%">
+												<tr>
+													<td style="color: #d1d5db; font-size: 11px; text-align: center;">
+														©
+														{{ "now"|date("Y") }}
+														CHM Saleux
+													</td>
+													<td align="right">
+														<a href="{{ subscriber.getUnsubscribeUrl() }}" style="color: #9ca3af; font-size: 11px; text-decoration: underline;">
+															Se désabonner
+														</a>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+					</table>
+
+					{# ── LIEN SITE ── #}
+					<table class="container" border="0" cellpadding="0" cellspacing="0" width="560">
+						<tr>
+							<td align="center" style="padding: 24px 0 8px;">
+								<a href="https://chm-saleux.fr" style="color: #9ca3af; text-decoration: none; font-size: 12px;">
+									chm-saleux.fr
+								</a>
+							</td>
+						</tr>
+					</table>
+
+				</td>
+			</tr>
+		</table>
+
+	</body>
 </html>

@@ -2,128 +2,45 @@
 <html lang="fr">
 	<head>
 		<meta charset="UTF-8">
-		<title>Désinscription Newsletter - CHM Saleux</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-		<style>
-			body {
-				font-family: 'Inter', -apple-system, sans-serif;
-				background-color: #f8fafc;
-				color: #1e293b;
-				margin: 0;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				min-height: 100vh;
-			}
-			.main-container {
-				width: 100%;
-				max-width: 420px;
-				padding: 20px;
-				text-align: center;
-			}
-			.logo {
-				/* Modifié : Taille augmentée et suppression du noir et blanc */
-				width: 60px;
-				height: auto;
-				margin-bottom: 25px;
-				opacity: 1; /* Remis à 1 pour les couleurs vives */
-			}
-			.content-box {
-				background: #ffffff;
-				padding: 40px;
-				border-radius: 4px;
-				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-				border: 1px solid #e2e8f0;
-			}
-			h1 {
-				font-size: 20px;
-				font-weight: 800;
-				margin-bottom: 15px;
-				color: #0f172a;
-				text-transform: uppercase;
-				letter-spacing: 0.5px;
-			}
-			p {
-				font-size: 15px;
-				line-height: 1.6;
-				color: #64748b;
-				margin-bottom: 25px;
-			}
-			.email-tag {
-				color: #005b94;
-				font-weight: 600;
-			}
-			.btn {
-				display: block;
-				width: 100%;
-				padding: 14px;
-				border-radius: 4px;
-				font-size: 13px;
-				font-weight: 600;
-				text-transform: uppercase;
-				letter-spacing: 1px;
-				cursor: pointer;
-				transition: all 0.2s;
-				border: none;
-				box-sizing: border-box;
-				text-decoration: none;
-				text-align: center;
-			}
-			.btn-confirm {
-				background-color: #0f172a;
-				color: #ffffff !important;
-			}
-			.btn-confirm:hover {
-				background-color: #1e293b;
-			}
-			.btn-home {
-				background-color: #f1f5f9;
-				color: #475569 !important;
-				margin-top: 10px;
-			}
-			.footer {
-				margin-top: 40px;
-				font-size: 11px;
-				color: #94a3b8;
-				text-transform: uppercase;
-				letter-spacing: 1px;
-			}
-		</style>
+		<title>Désinscription — CHM Saleux</title>
+		<link rel="stylesheet" href="{{ asset('css/newsletter_unsubscribe.css') }}">
 	</head>
 	<body>
-
 		<div class="main-container">
-			<img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo CHM Saleux" class="logo">
+			<div class="card">
+				<div class="header-accent">
+					<img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo CHM Saleux" class="logo">
+					<div class="club-name">CHM SALEUX</div>
+				</div>
 
-			<div class="content-box">
-				{% if success %}
-					<h1>Désabonnement confirmé</h1>
-					<p>L'adresse
-						<span class="email-tag">{{ subscriberEmail }}</span>
-						ne recevra plus nos communications.</p>
-					<a href="{{ path('home') }}" class="btn btn-home">Retour au site</a>
-				{% else %}
-					<h1>Désinscription</h1>
-					<p>Bonjour
-						{{ firstName ? firstName : 'à vous' }}, souhaitez-vous confirmer votre désinscription pour
-						<span class="email-tag">{{ subscriberEmail }}</span>
-						?</p>
+				<div class="content">
+					{% if success %}
+						<div class="success-icon">✓</div>
+						<h1>Désabonné</h1>
+						<p>C'est fait ! L'adresse
+							<br><span class="email-tag">{{ subscriberEmail }}</span>
+							<br>ne recevra plus nos actualités.</p>
+						<a href="{{ path('home') }}" class="btn btn-home">Retour au site</a>
+					{% else %}
+						<h1>Désinscription</h1>
+						<p>Bonjour
+							<strong>{{ firstName ? firstName : 'à vous' }}</strong>,<br>
+							Confirmez-vous la désinscription de :<br>
+							<span class="email-tag">{{ subscriberEmail }}</span>
+							?</p>
 
-					<form method="POST">
-						<input type="hidden" name="_token" value="{{ csrf_token('newsletter_unsubscribe_' ~ subscriber.id) }}">
-						<button type="submit" class="btn btn-confirm">Confirmer la désinscription</button>
-					</form>
-					<a href="{{ path('home') }}" class="btn btn-home">Annuler</a>
-				{% endif %}
+						<form method="POST">
+							<input type="hidden" name="_token" value="{{ csrf_token('newsletter_unsubscribe_' ~ subscriberId) }}">
+							<button type="submit" class="btn btn-confirm">Confirmer</button>
+						</form>
+						<a href="{{ path('home') }}" class="btn btn-home">Annuler</a>
+					{% endif %}
+				</div>
 			</div>
-
-			<div class="footer">
-				©
+			<div class="footer-text">©
 				{{ "now"|date("Y") }}
-				CHM SALEUX — ASSOCIATION LOI 1901
-			</div>
+				CHM SALEUX — FORCE & DISCIPLINE</div>
 		</div>
-
 	</body>
 </html>

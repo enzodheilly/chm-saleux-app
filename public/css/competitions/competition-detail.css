@@ -1,78 +1,33 @@
-/* =========================================================
-   COMPETITION DETAIL — PAGE SPÉCIFIQUE (CHM SALEUX)
-   ========================================================= */
+/* =================================================================
+   COMPETITION DETAIL — CSS COMPLET
+   ================================================================= */
+
 :root {
-    --brand-orange: #f57706;
-    --bg-card: rgba(255, 255, 255, 0.05);
-    --border-soft: rgba(255, 255, 255, 0.08);
-    --text-muted: #a0a0a0;
-    --text-muted-2: #c0c0c0;
-    --radius-lg: 16px;
-    --radius-md: 12px;
-    --fs-section-title: 2.2rem;
-    --fw-bold: 700;
-    --fw-black: 900;
+  --brand-orange: #f57706;
+  --primary-color: #f57706;
+  --bg-card: rgba(255,255,255,0.05);
+  --border-soft: rgba(255,255,255,0.08);
+  --text-muted: #a0a0a0;
+  --text-muted-2: #c0c0c0;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --fw-bold: 700;
+  --fw-black: 900;
 }
 
-/* Force le style du tableau qui semble ignoré */
-.stats-table {
-    width: 100%;
-    border-collapse: collapse;
-    color: #fff;
-}
-
-.stats-table th {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid var(--border-soft);
-    color: var(--text-muted);
-    font-size: 0.8rem;
-    text-transform: uppercase;
-}
-
-.stats-table td {
-    padding: 15px;
-    border-bottom: 1px solid var(--border-soft);
-}
 .competition-detail-root {
-  padding-bottom: 3rem;
+  padding-bottom: 4rem;
 }
 
-/* 1. ESPACEMENT ET TITRE (Blindage contre les doublons) */
-.section-header-compact.centered {
-  text-align: center;
-  padding-top: 110px; /* Espace pour descendre sous le header oblique */
-  padding-bottom: 20px;
-  position: relative;
-  z-index: 5;
+.competition-detail-root .page-container {
+  padding-top: 60px;
 }
 
-.section-header-compact.centered .section-heading {
-  display: inline-block; /* Nécessaire pour centrer la barre par rapport au texte */
-  font-size: var(--fs-section-title);
-  font-weight: 900;
-  text-transform: uppercase;
-  color: #fff;
-  margin: 0;
-  letter-spacing: -0.5px;
-  position: relative;
-  padding-bottom: 15px;
-  border: none !important; /* Supprime une éventuelle bordure parasite */
+.partner-heading-wrap {
+  padding-top: 3rem; /* augmente cette valeur */
 }
 
-/* On tue TOUTES les décorations héritées de feminine.css ou autres */
-.section-header-compact.centered .section-heading::before,
-.section-header-compact.centered .section-heading::after {
-    content: none !important;
-    display: none !important;
-}
-
-/* On recrée la barre orange UNIQUE, centrée mathématiquement */
-.section-header-compact.centered .section-heading span {
-  color: var(--brand-orange);
-}
-
-/* 2. INFOS LEAD (Dans le header) */
+/* ── Infos lead dans le header ── */
 .detail-lead {
   display: flex;
   flex-wrap: wrap;
@@ -80,7 +35,6 @@
   align-items: center;
   margin-top: 0.8rem;
 }
-
 .detail-lead span {
   display: inline-flex;
   align-items: center;
@@ -88,92 +42,107 @@
   color: rgba(255,255,255,0.75);
   font-size: 0.95rem;
 }
+.detail-lead i { color: var(--brand-orange); }
 
-.detail-lead i {
-  color: var(--brand-orange);
+/* =================================================================
+   STATS BAND
+   ================================================================= */
+
+.cd-stats-band {
+  display: grid;
+  overflow: hidden;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
 }
 
-/* 3. STATS BAND (La barre grise avec icônes) */
-.detail-stats-band {
-  position: relative;
-  z-index: 10;
-  margin-top: 30px; 
+/* Si pas de classement → 3 colonnes */
+.cd-stats-band:has(.cd-stat-card:nth-child(3):last-child) {
+  grid-template-columns: repeat(3, 1fr);
 }
 
-.stats-band-grid {
-  display: flex;
-  align-items: stretch;
-}
-
-.stat-band-item {
-  flex: 1;
+.cd-stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+  min-width: 0; 
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 22px 24px;
-  border-right: 1px solid var(--border-soft);
-  transition: background 0.2s ease;
+  gap: 16px;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.stat-band-item:last-child {
-  border-right: none;
+.cd-stat-card:hover {
+  border-color: rgba(245,119,6,0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.3);
 }
 
-.stat-band-item:hover {
-  background: rgba(255,255,255,0.02);
+.cd-stat-card--accent {
+  background: rgba(245,119,6,0.08);
+  border-color: rgba(245,119,6,0.2);
 }
 
-.stat-band-item--accent {
-  background: rgba(245, 119, 6, 0.06);
-  border-color: rgba(245, 119, 6, 0.15);
+.cd-stat-card--accent:hover {
+  border-color: rgba(245,119,6,0.5);
+  box-shadow: 0 10px 24px rgba(245,119,6,0.15);
 }
 
-.stat-band-item--accent:hover {
-  background: rgba(245, 119, 6, 0.10);
-}
-
-.stat-band-item > i {
-  font-size: 1.4rem;
+.cd-stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(245,119,6,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--brand-orange);
+  font-size: 1.2rem;
   flex-shrink: 0;
 }
 
-.stat-band-item--accent > i {
-  font-size: 1.6rem;
+.cd-stat-card--accent .cd-stat-icon {
+  background: rgba(245,119,6,0.22);
+  font-size: 1.3rem;
 }
 
-.stat-band-value {
-  display: block;
-  font-size: 1.05rem;
+.cd-stat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.cd-stat-value {
+  font-size: 1.1rem;
   font-weight: var(--fw-black);
   color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   line-height: 1.2;
 }
 
-.stat-band-item--accent .stat-band-value {
-  font-size: 1.5rem;
+.cd-stat-card--accent .cd-stat-value {
   color: var(--brand-orange);
+  font-size: 1.25rem;
 }
 
-.stat-band-value sup {
-  font-size: 0.65em;
-  color: var(--brand-orange);
-}
-
-.stat-band-label {
-  display: block;
+.cd-stat-label {
   font-size: 0.72rem;
-  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.6px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
   font-weight: var(--fw-bold);
-  margin-top: 2px;
 }
 
-/* 4. DESCRIPTION BOX */
-.detail-description-section {
-  padding-top: 3rem;
-  padding-bottom: 0;
+/* =================================================================
+   DESCRIPTION
+   ================================================================= */
+
+.cd-desc-section {
+  margin-bottom: 40px;
 }
 
 .detail-description-box {
@@ -189,15 +158,15 @@
 
 .detail-description-icon {
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  background: rgba(245, 119, 6, 0.1);
+  width: 46px;
+  height: 46px;
+  background: rgba(245,119,6,0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--brand-orange);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
 }
 
 .detail-description-title {
@@ -212,19 +181,61 @@
 .detail-description-text {
   color: var(--text-muted-2);
   font-size: 0.98rem;
-  line-height: 1.75;
+  line-height: 1.8;
   margin: 0;
 }
 
-/* 5. TABLEAU RÉSULTATS */
-.detail-results-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 1.5rem;
-  padding-top: 1rem;
+/* =================================================================
+   RÉSULTATS
+   ================================================================= */
+
+.cd-results-section {
+  margin-bottom: 2rem;
 }
 
+.section-header-compact.centered {
+  text-align: center;
+  padding-bottom: 24px;
+}
+
+.section-header-compact.centered .section-heading {
+  font-size: 1.9rem;
+  font-weight: var(--fw-black);
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0 0 6px;
+  letter-spacing: -0.5px;
+}
+
+.section-header-compact.centered .section-heading span {
+  color: var(--brand-orange);
+}
+
+.section-header-compact.centered .section-heading::before,
+.section-header-compact.centered .section-heading::after {
+  content: none !important;
+  display: none !important;
+}
+
+.archives-subtext {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Numéro de ligne */
+.cd-row-num {
+  font-weight: var(--fw-black);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  width: 36px;
+  text-align: center;
+}
+
+.athlete-row--top .cd-row-num {
+  color: var(--brand-orange);
+}
+
+/* Tableau */
 .detail-table-wrapper {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
@@ -232,95 +243,164 @@
   overflow: hidden;
 }
 
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #fff;
+}
+
+.stats-table th {
+  padding: 15px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: var(--fw-bold);
+  background: rgba(255,255,255,0.02);
+}
+
+.stats-table th.text-center { text-align: center; }
+
+.stats-table td {
+  padding: 15px 14px;
+  border-bottom: 1px solid var(--border-soft);
+  font-size: 0.9rem;
+}
+
+.stats-table td.text-center { text-align: center; }
+
+.athlete-row { transition: background 0.15s ease; }
+.athlete-row:last-child td { border-bottom: none; }
+.athlete-row:hover { background: rgba(255,255,255,0.03); }
+.athlete-row--top { background: rgba(245,119,6,0.04); }
+
+.stats-table .highlight {
+  background: rgba(255,255,255,0.02);
+  font-weight: var(--fw-black);
+}
+
+.stats-table .highlight-accent {
+  background: rgba(245,119,6,0.06);
+  color: var(--brand-orange);
+  font-weight: var(--fw-black);
+}
+
 .ranking-pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 58px;
+  min-width: 56px;
   padding: 5px 10px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
   color: #fff;
   font-size: 0.75rem;
   font-weight: var(--fw-bold);
 }
 
-/* 6. BOUTON RETOUR */
+/* ── Bouton retour ── */
 .detail-bottom-actions {
   display: flex;
   justify-content: center;
-  padding: 3rem 0;
+  padding: 2rem 0;
 }
 
 .btn-history-ghost {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 13px 22px;
+  padding: 13px 28px;
   border-radius: var(--radius-md);
   text-decoration: none;
   font-weight: var(--fw-bold);
   color: #fff;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.09);
-  transition: 0.3s ease;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.9rem;
+  transition: 0.25s ease;
 }
 
 .btn-history-ghost:hover {
   transform: translateY(-2px);
   border-color: var(--brand-orange);
   color: var(--brand-orange);
-  background: rgba(245,119,6,0.05);
+  background: rgba(245,119,6,0.06);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-/* =========================================
+.no-results {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-soft);
+}
+
+/* ── Déco gauche ── */
+.deco-left-wrap {
+  position: relative;
+  width: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 0;
+}
+.deco-left-img {
+  position: absolute;
+  left: -25px;
+  top: -20px;
+  width: clamp(120px, 14vw, 200px);
+  height: auto;
+  opacity: 0.55;
+  user-select: none;
+  filter: drop-shadow(0 0 8px rgba(245,119,6,0.18));
+}
+
+/* =================================================================
    RESPONSIVE
-   ========================================= */
+   ================================================================= */
+
 @media (max-width: 992px) {
-  .stats-band-grid {
-    flex-wrap: wrap;
-  }
-  .stat-band-item {
-    flex: 0 0 50%;
-    border-bottom: 1px solid var(--border-soft);
-  }
-  .stat-band-item:nth-child(even) {
-    border-right: none;
-  }
+  .cd-stats-band { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
-  .section-header-compact.centered {
-    padding-top: 60px;
-  }
+  .competition-detail-root .page-container { padding-top: 32px; }
   
-  .section-header-compact.centered .section-heading {
-    font-size: 1.7rem;
+  .cd-stats-band { 
+    grid-template-columns: 1fr;
+    gap: 10px;
+    display: none;
   }
+
+  .cd-stat-card {
+    padding: 14px 16px;
+  }
+
+  .detail-description-box { flex-direction: column; padding: 1.4rem; gap: 1rem; }
 
   .stats-table thead { display: none; }
   .stats-table, .stats-table tbody { display: block; width: 100%; }
-  
-  .stats-table .athlete-row {
+  .athlete-row {
     display: block;
     background: var(--bg-card);
     border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
+    border-radius: var(--radius-md);
     padding: 14px 0;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
-
-  .stats-table .athlete-row td {
+  .athlete-row td {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 16px;
+    padding: 9px 16px;
     border: none;
     text-align: right !important;
   }
-
-  .stats-table .athlete-row td::before {
+  .athlete-row td::before {
     content: attr(data-label);
     flex: 0 0 45%;
     text-align: left;
@@ -329,106 +409,10 @@
     font-weight: bold;
     text-transform: uppercase;
   }
+
+  .deco-left-img { display: none; }
 }
 
-@media (max-width: 600px) {
-  .stat-band-item {
-    flex: 0 0 100%;
-    border-right: none;
-  }
-  .detail-lead {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .detail-description-box {
-    flex-direction: column;
-    padding: 1.4rem;
-  }
-}
-
-/* --- DÉCORATION GAUCHE (image dots) --- */
-.deco-left-wrap {
-  position: relative;
-  width: 0;
-  overflow: visible;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.deco-left-img {
-  position: absolute;
-  left: -25px;
-  top: -20px; /* remonte légèrement pour chevaucher le séparateur */
-  width: clamp(120px, 14vw, 200px);
-  height: auto;
-  opacity: 0.55;
-  user-select: none;
-  /* Optionnel : légère teinte orange pour matcher --primary-color */
-  filter: drop-shadow(0 0 8px rgba(245, 119, 6, 0.18));
-}
-
-@media (max-width: 1100px) {
-  .deco-left-img {
-    width: clamp(80px, 10vw, 130px);
-    opacity: 0.35;
-  }
-}
-
-@media (max-width: 768px) {
-  .deco-left-img {
-    display: none; /* Masqué sur mobile pour ne pas gêner le contenu */
-  }
-}
-
-/* =========================================================
-   TITRE DE SECTION HAUT DE PAGE (STYLE PARTENAIRES)
-   ========================================================= */
-
-.partner-heading-wrap {
-    padding-top: 4rem;
-    padding-bottom: 2rem;
-    text-align: center;
-}
-
-.partner-heading-wrap .section-heading.centered {
-    display: inline-block;
-    font-size: var(--fs-section-title);
-    font-weight: 900;
-    text-transform: uppercase;
-    color: #fff;
-    margin: 0;
-    position: relative;
-    padding-bottom: 20px;
-}
-
-/* La barre orange centrée sous le titre */
-.partner-heading-wrap .section-heading.centered::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 4px;
-    background: var(--brand-orange);
-    border-radius: 2px;
-}
-
-.partner-heading-wrap .section-heading span {
-    color: var(--brand-orange);
-}
-
-/* Ajustement pour mobile */
-@media (max-width: 768px) {
-    .partner-heading-wrap {
-        padding-top: 2.5rem;
-    }
-    .partner-heading-wrap .section-heading.centered {
-        font-size: 1.8rem;
-    }
-}
-.no-results {
-    text-align: center;
-    padding: 2rem;
-    color: var(--text-muted);
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
 }

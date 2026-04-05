@@ -22,10 +22,12 @@
 						<th width="100">Visual</th>
 						<th width="25%">Competition</th>
 						<th width="20%">Details</th>
-						<th width="25%">Top Results</th>
+						<th width="20%">Top Results</th>
+						<th width="30%" class="th-right">Description</th>
 						<th class="th-right">Actions</th>
 					</tr>
 				</thead>
+
 				<tbody>
 					{% for comp in competitions %}
 						<tr>
@@ -54,10 +56,14 @@
 								<div class="time-info">
 									<span class="info-row">
 										<strong>Loc:</strong>
-										{{ comp.location|default('—') }}</span>
+										{{ comp.location|default('—') }}
+									</span>
+
 									<span class="info-row">
 										<strong>Team:</strong>
-										{{ comp.gender == 'male' ? 'Men' : (comp.gender == 'female' ? 'Women' : '—') }}</span>
+										{{ comp.gender == 'male' ? 'Men' : (comp.gender == 'female' ? 'Women' : '—') }}
+									</span>
+
 									{% if comp.teamRanking %}
 										<span class="rank-highlight">Rank:
 											{{ comp.teamRanking }}</span>
@@ -75,6 +81,7 @@
 												{{ result.lastName|slice(0,1) }}. ({{ result.total }})
 											</span>
 										{% endfor %}
+
 										{% if comp.results|length > 2 %}
 											<span class="more-count">+
 												{{ comp.results|length - 2 }}
@@ -86,12 +93,24 @@
 								{% endif %}
 							</td>
 
+							{# DESCRIPTION #}
+							<td class="desc-col">
+								{% if comp.description %}
+									{{ comp.description|length > 120
+                                        ? comp.description|slice(0, 120) ~ '…'
+                                        : comp.description
+                                    }}
+								{% else %}
+									—
+								{% endif %}
+							</td>
+
 							<td>
 								<div class="actions">
 									<a href="{{ path('admin_competition_edit', {id: comp.id}) }}" class="act-link">Edit</a>
 
-									{# MODIFICATION : Passage en js-confirm-form #}
 									<form method="post" action="{{ path('admin_competition_delete', {id: comp.id}) }}" class="js-confirm-form" data-confirm="⚠️ Delete the competition '{{ comp.title }}'? All results associated will be deleted.">
+
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comp.id) }}">
 										<button type="submit" class="act-link act-del">Delete</button>
 									</form>
@@ -100,7 +119,7 @@
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="5" class="td-empty">No competitions found.</td>
+							<td colspan="6" class="td-empty">No competitions found.</td>
 						</tr>
 					{% endfor %}
 				</tbody>

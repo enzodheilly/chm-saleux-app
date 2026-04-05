@@ -19,24 +19,28 @@
 	<style nonce="{{ csp_nonce('style') }}">
 		.competition-detail-header-bg {
 			--bg-image: url('{% if competition.image %}{{ asset('uploads/competitions/' ~ competition.image) }}{% else %}{{ asset('images/defaults/competition-placeholder.jpg') }}{% endif %}');
+			--bg-position: 30% 50%;
 		}
 	</style>
 {% endblock %}
 
 {% block body %}
-	{# HEADER (Utilise tes classes globales pour le bg-image) #}
+
+	{# ── HEADER ── #}
 	<header class="page-header-sport competition-detail-header-bg">
 		<div class="header-overlay-gradient"></div>
 		<div class="header-content">
 			<div class="page-container">
-				<a href="{{ path('competition_root') }}" class="back-link-minimal">
+				{% set backGender = (competition.gender in ['female', 'feminine']) ? 'feminine' : 'masculine' %}
+				<a href="{{ path('competition_team_archives', { gender: backGender }) }}" class="back-link-minimal">
 					<i class="fa-solid fa-chevron-left"></i>
-					<span>Compétitions</span>
+					<span>Archives</span>
 				</a>
-
 				<div class="header-main-box">
 					<div class="badge-accent">
-						{% if competition.gender in ['feminine', 'female'] %}Équipe féminine{% elseif competition.gender in ['masculine', 'male'] %}Équipe masculine{% else %}Compétition
+						{% if competition.gender in ['feminine', 'female'] %}Équipe féminine
+							{% elseif competition.gender in ['masculine', 'male'] %}Équipe masculine
+							{% else %}Compétition
 						{% endif %}
 					</div>
 					<h1>{{ competition.title }}</h1>
@@ -58,7 +62,6 @@
 		</div>
 	</header>
 
-	{# IMAGE DÉCORATIVE GAUCHE (Gérée par ton CSS .deco-left-wrap) #}
 	<div class="deco-left-wrap">
 		<img src="{{ asset('images/decorations/dots-tree.png') }}" alt="" class="deco-left-img" aria-hidden="true">
 	</div>
@@ -70,121 +73,131 @@
 				<span>Compétition</span>
 			</h2>
 		</div>
+		<div
+			class="page-container">
 
-		{# 3. STATS BAND (La barre grise avec icônes) #}
-		<section class="detail-stats-band">
-			<div class="page-container">
-				<div class="stats-band-grid">
-					<div class="stat-band-item">
+			{# ── STATS BAND ── #}
+			<section class="cd-stats-band">
+				<div class="cd-stat-card">
+					<div class="cd-stat-icon">
 						<i class="fa-solid fa-users"></i>
-						<div>
-							<span class="stat-band-value">{{ competition.results|length }}</span>
-							<span class="stat-band-label">Athlètes</span>
-						</div>
 					</div>
-
-					{% if competition.teamRanking %}
-						<div class="stat-band-item stat-band-item--accent">
-							<i class="fa-solid fa-medal"></i>
-							<div>
-								<span class="stat-band-value">
-									{{ competition.teamRanking }}<sup>{{ competition.teamRanking == 1 ? 'er' : 'e' }}</sup>
-								</span>
-								<span class="stat-band-label">Classement équipe</span>
-							</div>
-						</div>
-					{% endif %}
-
-					<div class="stat-band-item">
+					<div class="cd-stat-body">
+						<span class="cd-stat-value">{{ competition.results|length }}</span>
+						<span class="cd-stat-label">Athlètes</span>
+					</div>
+				</div>
+				<div class="cd-stat-card">
+					<div class="cd-stat-icon">
 						<i class="fa-solid fa-location-dot"></i>
-						<div>
-							<span class="stat-band-value">{{ competition.location ?: '—' }}</span>
-							<span class="stat-band-label">Lieu</span>
-						</div>
 					</div>
-
-					<div class="stat-band-item">
+					<div class="cd-stat-body">
+						<span class="cd-stat-value">{{ competition.location ?: '—' }}</span>
+						<span class="cd-stat-label">Lieu</span>
+					</div>
+				</div>
+				<div class="cd-stat-card">
+					<div class="cd-stat-icon">
 						<i class="fa-regular fa-calendar"></i>
-						<div>
-							<span class="stat-band-value">{{ competition.eventDate ? competition.eventDate|date('d/m/Y') : '—' }}</span>
-							<span class="stat-band-label">Date</span>
+					</div>
+					<div class="cd-stat-body">
+						<span class="cd-stat-value">{{ competition.eventDate ? competition.eventDate|date('d/m/Y') : '—' }}</span>
+						<span class="cd-stat-label">Date</span>
+					</div>
+				</div>
+				{% if competition.teamRanking %}
+					<div class="cd-stat-card cd-stat-card--accent">
+						<div class="cd-stat-icon">
+							<i class="fa-solid fa-medal"></i>
+						</div>
+						<div class="cd-stat-body">
+							<span class="cd-stat-value">{{ competition.teamRanking }}{{ competition.teamRanking == 1 ? 'er' : 'e' }}
+								{{ (competition.gender in ['female', 'feminine']) ? 'équipe' : 'club' }}</span>
+							<span class="cd-stat-label">Classement</span>
 						</div>
 					</div>
-				</div>
-			</div>
-		</section>
-
-		{# 4. DESCRIPTION BOX #}
-		{% if competition.description %}
-			<section class="page-container detail-description-section">
-				<div class="detail-description-box">
-					<div class="detail-description-icon">
-						<i class="fa-solid fa-newspaper"></i>
-					</div>
-					<div class="detail-description-content">
-						<h3 class="detail-description-title">À propos de cette compétition</h3>
-						<p class="detail-description-text">{{ competition.description }}</p>
-					</div>
-				</div>
+				{% endif %}
 			</section>
-		{% endif %}
 
-		{# 5. TABLEAU RÉSULTATS #}
-		<section class="page-container">
-			<div class="section-header-compact centered">
-				<h2 class="section-heading">Résultats du
-					<span>Plateau</span>
-				</h2>
+			{# ── DESCRIPTION ── #}
+			{% if competition.description %}
+				<section class="cd-desc-section">
+					<div class="detail-description-box">
+						<div class="detail-description-icon">
+							<i class="fa-solid fa-newspaper"></i>
+						</div>
+						<div class="detail-description-content">
+							<h3 class="detail-description-title">À propos de cette compétition</h3>
+							<p class="detail-description-text">{{ competition.description }}</p>
+						</div>
+					</div>
+				</section>
+			{% endif %}
+
+			{# ── TABLEAU RÉSULTATS ── #}
+			<section class="cd-results-section">
+
+				<div class="section-header-compact centered">
+					<h2 class="section-heading">Résultats du
+						<span>Plateau</span>
+					</h2>
+					<p class="archives-subtext">{{ competition.results|length }}
+						athlète{{ competition.results|length > 1 ? 's' : '' }}
+						enregistré{{ competition.results|length > 1 ? 's' : '' }}</p>
+				</div>
+
+				{% if competition.results|length > 0 %}
+					<div class="detail-table-wrapper">
+						<table class="stats-table">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Athlète</th>
+									<th>Catégorie</th>
+									<th class="text-center">PC</th>
+									<th class="text-center">Arraché</th>
+									<th class="text-center">E.J.</th>
+									<th class="highlight text-center">Total</th>
+									<th class="highlight-accent text-center">Points</th>
+									<th class="text-center">Niveau</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for result in competition.results %}
+									<tr class="athlete-row {% if loop.first %}athlete-row--top{% endif %}">
+										<td class="cd-row-num">{{ loop.index }}</td>
+										<td data-label="Athlète">
+											<strong>{{ result.lastName }}</strong>
+											{{ result.firstName }}</td>
+										<td data-label="Catégorie">{{ result.category ?: '--' }}</td>
+										<td class="text-center" data-label="PC">{{ result.bodyWeight ? result.bodyWeight ~ ' kg' : '--' }}</td>
+										<td class="text-center" data-label="Arraché">{{ result.snatch ? result.snatch ~ ' kg' : '--' }}</td>
+										<td class="text-center" data-label="E.J.">{{ result.cleanAndJerk ? result.cleanAndJerk ~ ' kg' : '--' }}</td>
+										<td class="highlight text-center" data-label="Total">{{ result.total ? result.total ~ ' kg' : '--' }}</td>
+										<td class="highlight-accent text-center" data-label="Points">{{ result.points ?: '--' }}</td>
+										<td class="text-center" data-label="Niveau">
+											<span class="ranking-pill">{{ result.rankingLevel ?: '--' }}</span>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				{% else %}
+					<div class="no-results">Aucun résultat enregistré.</div>
+				{% endif %}
+
+			</section>
+
+			{# ── RETOUR ── #}
+			<div class="detail-bottom-actions">
+				<a href="{{ path('competition_team_archives', { gender: backGender }) }}" class="btn-history-ghost">
+					<i class="fa-solid fa-arrow-left"></i>
+					Retour aux archives
+				</a>
 			</div>
 
-			{% if competition.results|length > 0 %}
-				<div class="detail-table-wrapper">
-					<table class="stats-table">
-						<thead>
-							<tr>
-								<th>Athlète</th>
-								<th>Catégorie</th>
-								<th class="text-center">PC</th>
-								<th class="text-center">Arraché</th>
-								<th class="text-center">E.J.</th>
-								<th class="highlight">Total</th>
-								<th class="highlight-accent">Points</th>
-								<th class="text-center">Niveau</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for result in competition.results %}
-								<tr class="athlete-row">
-									<td data-label="Athlète">
-										<strong>{{ result.lastName }}</strong>
-										{{ result.firstName }}
-									</td>
-									<td data-label="Catégorie">{{ result.category ?: '--' }}</td>
-									<td class="text-center" data-label="PC">{{ result.bodyWeight ? result.bodyWeight ~ ' kg' : '--' }}</td>
-									<td class="text-center" data-label="Arraché">{{ result.snatch ? result.snatch ~ ' kg' : '--' }}</td>
-									<td class="text-center" data-label="E.J.">{{ result.cleanAndJerk ? result.cleanAndJerk ~ ' kg' : '--' }}</td>
-									<td class="highlight text-center" data-label="Total">{{ result.total ? result.total ~ ' kg' : '--' }}</td>
-									<td class="highlight-accent text-center" data-label="Points">{{ result.points ?: '--' }}</td>
-									<td class="text-center" data-label="Niveau">
-										<span class="ranking-pill">{{ result.rankingLevel ?: '--' }}</span>
-									</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-			{% else %}
-				<div class="no-results">Aucun résultat.</div>
-			{% endif %}
-		</section>
-
-		{# 6. BOUTON RETOUR #}
-		<div class="detail-bottom-actions">
-			{% set backGender = (competition.gender in ['female', 'feminine']) ? 'feminine' : 'masculine' %}
-			<a href="{{ path('competition_team_archives', { gender: backGender }) }}" class="btn-history-ghost">
-				<i class="fa-solid fa-arrow-left"></i>
-				Retour aux archives
-			</a>
 		</div>
 	</main>
+
 {% endblock %}

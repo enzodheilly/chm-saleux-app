@@ -215,6 +215,7 @@ class NewsletterController extends AbstractController
         return $this->render('emails/unsubscribed.html.twig', [
             'subscriberEmail' => $email,
             'firstName' => $firstName,
+            'subscriberId' => $subscriber->getId(),
             'success' => false
         ]);
     }
