@@ -41,19 +41,35 @@
 	<main class="news-root page-shell">
 
 		<section class="page-container section-spacer">
-			<h2 class="section-heading centered">Filtrer
-				<span>les actualités</span>
-			</h2>
-
+			<div class="section-header-center">
+				<h2 class="section-heading centered">Toutes nos
+					<span>Actualités</span>
+				</h2>
+				<p>Résultats, événements et vie du club — retrouvez toute l'actu du CHM Saleux.</p>
+			</div>
 			<div class="filter-card-wrapper">
+				<div class="filter-header">
+					<span class="filter-title">
+						<i class="fa-solid fa-sliders"></i>
+						Filtrer les actualités
+					</span>
+					{% if (filters.category is defined and filters.category) or filters.date_from or filters.date_to %}
+						<a href="{{ path('actualites') }}" class="filter-reset-link">
+							<i class="fa-solid fa-rotate-left"></i>
+							Réinitialiser
+						</a>
+					{% endif %}
+				</div>
+
 				<form id="newsFilterForm" method="get" action="{{ path('actualites', {'page': 1}) }}" class="elite-filter-bar">
 					<div class="filter-inputs">
+
 						<div class="filter-field">
 							<label>
 								<i class="fa-solid fa-tag"></i>
 								Catégorie</label>
 							<select name="category">
-								<option value="">Toutes</option>
+								<option value="">Toutes les catégories</option>
 								{% for cat in categories %}
 									<option value="{{ cat.name }}" {% if filters.category is defined and filters.category == cat.name %} selected {% endif %}>
 										{{ cat.name|capitalize }}
@@ -65,30 +81,26 @@
 						<div class="filter-field">
 							<label>
 								<i class="fa-solid fa-calendar-days"></i>
-								Période</label>
-							<div class="date-range">
-								<input type="date" name="date_from" value="{{ filters.date_from ?? '' }}" placeholder="Du">
-								<span>au</span>
-								<input type="date" name="date_to" value="{{ filters.date_to ?? '' }}" placeholder="Au">
-							</div>
+								Du</label>
+							<input type="date" name="date_from" value="{{ filters.date_from ?? '' }}">
 						</div>
+
+						<div class="filter-field">
+							<label>
+								<i class="fa-solid fa-calendar-days"></i>
+								Au</label>
+							<input type="date" name="date_to" value="{{ filters.date_to ?? '' }}">
+						</div>
+
 					</div>
 
-					<div class="filter-buttons">
-						<button type="submit" class="btn-elite-search">
-							<i class="fa-solid fa-magnifying-glass"></i>
-						</button>
-
-						{% if (filters.category is defined and filters.category) or filters.date_from or filters.date_to %}
-							<a href="{{ path('actualites') }}" class="btn-elite-reset" id="resetFiltersBtn">
-								<i class="fa-solid fa-rotate-left"></i>
-							</a>
-						{% endif %}
-					</div>
+					<button type="submit" class="btn-elite-search">
+						<i class="fa-solid fa-magnifying-glass"></i>
+						Rechercher
+					</button>
 				</form>
 			</div>
 		</section>
-
 		<section class="page-container section-spacer">
 			<h2 class="section-heading">Dernières
 				<span>Actualités</span>

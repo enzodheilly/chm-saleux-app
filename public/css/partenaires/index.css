@@ -6,6 +6,20 @@
 /* =========================================
    ARGUMENTS
    ========================================= */
+
+   .partner-root .section-spacer {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+.partner-root .bg-dark-alternate .section-spacer {
+    padding-top: 1rem;
+    padding-bottom: 6rem;
+}
+
+.tax-impact-section {
+    padding: 0 0 3rem;
+}
 .partner-heading-wrap {
   text-align: center;
   margin-bottom: 3rem;
@@ -270,6 +284,16 @@
    RESPONSIVE
    ========================================= */
 @media (max-width: 992px) {
+
+      .partner-root .section-spacer {
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+
+    .tax-impact-section {
+        padding: 0 0 2.5rem;
+    }
+
   .arguments-grid {
     grid-template-columns: 1fr;
   }
@@ -312,6 +336,16 @@
 }
 
 @media (max-width: 768px) {
+
+      .partner-root .section-spacer {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    .tax-impact-section {
+        padding: 0 0 2rem;
+    }
+
   .arg-card,
   .support-box {
     padding: 26px 20px;

@@ -157,10 +157,26 @@
 /* =========================================
    3. GRID EQUIPES
    ========================================= */
+   .teams-section {
+    padding-top: 1.5rem;
+}
+
 .teams-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.4rem;
+}
+
+.bg-dark {
+    background: var(--bg-dark);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Le contenu reste au-dessus */
+.bg-dark .page-container {
+    position: relative;
+    z-index: 1;
 }
 
 .team-card {
@@ -414,4 +430,86 @@
   .card-footer-link {
     font-size: 0.75rem;
   }
+}
+
+/* =========================================
+   SECTION CHIFFRES CLÉS
+   ========================================= */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem;
+}
+
+.stat-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 18px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    transition: var(--transition-base);
+}
+
+.stat-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(245, 119, 6, 0.3);
+}
+
+.stat-card.highlight {
+    background: linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 100%);
+    border-color: rgba(245, 119, 6, 0.2);
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(245, 119, 6, 0.1);
+    border: 1px solid rgba(245, 119, 6, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+.stat-value {
+    font-size: 2.8rem;
+    font-weight: var(--fw-black);
+    color: var(--text-white);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: var(--fw-bold);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+    }
+
+    .stat-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .stat-value {
+        font-size: 2.2rem;
+    }
 }
