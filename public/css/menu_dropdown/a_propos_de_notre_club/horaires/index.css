@@ -18,7 +18,11 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.4rem;
-  margin-top: 2.2rem;
+margin-top: 2.2rem}
+
+.horaires-root .section-spacer {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
 }
 
 .schedule-card {
@@ -29,6 +33,10 @@
   position: relative;
   overflow: hidden;
   transition: var(--transition-base);
+}
+
+.section-header-center p {
+    text-align: center;
 }
 
 .schedule-card:hover {

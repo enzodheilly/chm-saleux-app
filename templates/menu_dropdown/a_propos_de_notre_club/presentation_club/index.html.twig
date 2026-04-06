@@ -43,6 +43,12 @@
 		{# --- SECTION CHIFFRES CLÉS --- #}
 		<section class="bg-dark-alternate section-spacer">
 			<div class="page-container">
+
+				<div class="section-header-competition centered">
+					<h2 class="section-heading">Le Club
+						<span>En Chiffres</span>
+					</h2>
+				</div>
 				<div class="stats-grid">
 					<div class="stat-card">
 						<span class="stat-number">55</span>
@@ -130,16 +136,6 @@
 						<p>De nombreux membres ont décroché leur qualification au Championnat de France, représentant fièrement le CHM sur la scène nationale.</p>
 					</div>
 				</div>
-
-				<div class="palmares-cta">
-					<div class="palmares-cta-inner">
-						<i class="fa-solid fa-chart-line"></i>
-						<p>Aujourd'hui en
-							<strong>Régionale 2</strong>, notre objectif est clair :
-							<strong>remonter au niveau national.</strong>
-						</p>
-					</div>
-				</div>
 			</div>
 		</section>
 
@@ -192,8 +188,8 @@
 							pour les
 							<strong>Championnats d'Europe Jeunes 2025</strong>
 							à Durrës, en Albanie (26 oct. – 5 nov. 2025).
-																																																																																											                    Seul officiel français retenu, il a accompagné et officié lors de la compétition —
-																																																																																											                    une récompense exceptionnelle pour son engagement et son dévouement sans faille. 💪🔥
+																																																																																																																														                    Seul officiel français retenu, il a accompagné et officié lors de la compétition —
+																																																																																																																														                    une récompense exceptionnelle pour son engagement et son dévouement sans faille. 💪🔥
 						</p>
 					</div>
 				</div>
@@ -280,61 +276,71 @@
 				</div>
 
 				<div class="gallery-grid">
-					{% for i in 1..6 %}
-						<div class="gallery-item gallery-placeholder">
-							<div class="gallery-placeholder-inner">
-								<i class="fa-solid fa-image"></i>
-								<span>Photo à venir</span>
-							</div>
-						</div>
-					{% endfor %}
-				</div>
-			</div>
-		</section>
-
-		{# --- SECTION BUREAU --- #}
-		<section class="page-container section-spacer">
-			<div class="section-header-competition centered">
-				<h2 class="section-heading">Le
-					<span>Bureau</span>
-				</h2>
-				<p class="section-subtext">L'équipe dirigeante qui œuvre chaque jour pour faire vivre le club.</p>
-			</div>
-
-			<div class="staff-grid mt-5">
-				<div class="staff-card highlight-staff">
-					<img src="{{ asset('images/menu_dropdown/membres_du_bureau/president/president.jpg') }}" alt="Florian" loading="lazy">
-					<div class="staff-overlay">
-						<h3>Florian ROHAUT</h3>
-						<span>Président</span>
+					<div class="gallery-item">
+						<img src="{{ asset('images/club/app-club1.jpg') }}" alt="Vie du club" loading="lazy">
 					</div>
-				</div>
-				<div class="staff-card">
-					<img src="{{ asset('images/menu_dropdown/membres_du_bureau/secretaire/secretaire.png') }}" alt="Ema" loading="lazy">
-					<div class="staff-overlay">
-						<h3>Ema BERTRAND</h3>
-						<span>Secrétaire</span>
+					<div class="gallery-item">
+						<img src="{{ asset('images/club/app-club2.jpg') }}" alt="Vie du club" loading="lazy">
 					</div>
-				</div>
-				<div class="staff-card">
-					<img src="{{ asset('images/menu_dropdown/membres_du_bureau/tresorier/tresorier.jpg') }}" alt="Aurore" loading="lazy">
-					<div class="staff-overlay">
-						<h3>Aurore BERTRAND</h3>
-						<span>Trésorière</span>
+					<div class="gallery-item">
+						<img src="{{ asset('images/club/app-club3.jpg') }}" alt="Vie du club" loading="lazy">
 					</div>
-				</div>
-				<div class="staff-card">
-					<picture>
-						<source srcset="{{ asset('images/menu_dropdown/membres_du_bureau/membre_bureau/1.webp') }}" type="image/webp">
-						<img src="{{ asset('images/menu_dropdown/membres_du_bureau/membre_bureau/1.png') }}" alt="Marianne BOULANGER-BAILLEUX" loading="lazy">
-					</picture>
-					<div class="staff-overlay">
-						<h3>Marianne BOULANGER-BAILLEUX</h3>
-						<span>Membre du bureau</span>
+					<div class="gallery-item">
+						<img src="{{ asset('images/club/app-club4.jpg') }}" alt="Vie du club" loading="lazy">
+					</div>
+					<div class="gallery-item">
+						<img src="{{ asset('images/club/app-club5.jpg') }}" alt="Vie du club" loading="lazy">
+					</div>
+					<div class="gallery-item">
+						<img src="{{ asset('images/club/app-club6.jpg') }}" alt="Vie du club" loading="lazy">
 					</div>
 				</div>
 			</div>
-		</section>
+		</div>
+	</section>
 
-	</main>
-{% endblock %}
+	{# --- SECTION BUREAU --- #}
+	<section class="page-container section-spacer">
+		<div class="section-header-competition centered">
+			<h2 class="section-heading">Le
+				<span>Bureau</span>
+			</h2>
+			<p class="section-subtext">L'équipe dirigeante qui œuvre chaque jour pour faire vivre le club.</p>
+		</div>
+
+		<div class="staff-grid mt-5">
+			<div class="staff-card highlight-staff">
+				<img src="{{ asset('images/menu_dropdown/membres_du_bureau/president/president.jpg') }}" alt="Florian" loading="lazy">
+				<div class="staff-overlay">
+					<h3>Florian ROHAUT</h3>
+					<span>Président</span>
+				</div>
+			</div>
+			<div class="staff-card">
+				<img src="{{ asset('images/menu_dropdown/membres_du_bureau/secretaire/secretaire.png') }}" alt="Ema" loading="lazy">
+				<div class="staff-overlay">
+					<h3>Ema BERTRAND</h3>
+					<span>Secrétaire</span>
+				</div>
+			</div>
+			<div class="staff-card">
+				<img src="{{ asset('images/menu_dropdown/membres_du_bureau/tresorier/tresorier.jpg') }}" alt="Aurore" loading="lazy">
+				<div class="staff-overlay">
+					<h3>Aurore BERTRAND</h3>
+					<span>Trésorière</span>
+				</div>
+			</div>
+			<div class="staff-card">
+				<picture>
+					<source srcset="{{ asset('images/menu_dropdown/membres_du_bureau/membre_bureau/1.webp') }}" type="image/webp">
+					<img src="{{ asset('images/menu_dropdown/membres_du_bureau/membre_bureau/1.png') }}" alt="Marianne BOULANGER-BAILLEUX" loading="lazy">
+				</picture>
+				<div class="staff-overlay">
+					<h3>Marianne BOULANGER-BAILLEUX</h3>
+					<span>Membre du bureau</span>
+				</div>
+			</div>
+		</div>
+	</section>
+
+</main>{% endblock %}

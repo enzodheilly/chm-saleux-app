@@ -253,4 +253,9 @@
   .pro-content h2 { font-size: 1.45rem; margin: 36px 0 18px; padding-left: 14px; }
   .pro-content h3 { font-size: 1.1rem; }
   .article-footer-cta { margin-top: 50px; padding: 24px 18px; }
+
+  .content-wrapper h2 {
+display: none;
+}
+
 }

@@ -219,6 +219,11 @@
   background-image: url('/images/menu_dropdown/a_propos_de_notre_club/labels/1.jpg');
 }
 
+.labels-root .section-spacer {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
 /* =========================================
    RESPONSIVE (spécifique labels seulement)
    ========================================= */

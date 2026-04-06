@@ -402,26 +402,26 @@ font-weight: 900;
 }
 
 .special-card {
-  background: #111;
+  background: var(--bg-card);
   padding: 2.5rem;
-  border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .special-card h3 {
   margin: 0 0 8px;
-  color: #fff;
+  color: var(--text-white);
   text-transform: uppercase;
   font-weight: 800;
 }
 
 .special-card p {
   margin: 0 0 12px;
-  color: #666;
+  color: var(--text-muted);
 }
 
 .special-card .text-muted {
-    color: #666!important; 
+  color: var(--text-muted) !important;
 }
 
 .icon-box {
@@ -444,9 +444,9 @@ font-weight: 900;
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   padding: 12px 0;
-  color: #666;
+  color: var(--text-muted);
 }
 
 .special-list li strong {
@@ -455,10 +455,11 @@ font-weight: 900;
 
 .table-container-modern {
   overflow-x: auto;
-  background: #111;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
-  padding: 2rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0;
+  border-radius: 16px;
+  margin-bottom: 2.5rem;
 }
 
 .pricing-table {
@@ -468,25 +469,42 @@ font-weight: 900;
 }
 
 .pricing-table th {
-  text-align: left;
+  text-align: center;
   text-transform: uppercase;
-  font-size: 0.8rem;
-  color: #666;
-  padding: 1.2rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  padding: 1.1rem 1.5rem;
+  letter-spacing: 1.5px;
+  font-weight: var(--fw-extrabold);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  width: 33.333%;
+}
+
+.pricing-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s ease;
+}
+
+.pricing-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.pricing-table tr:last-child td {
+  border-bottom: none;
 }
 
 .pricing-table td {
-  padding: 1.2rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  color: #666;
+  padding: 1.1rem 1.5rem;
+  font-size: 0.95rem;
+  color: #d0d0d0;
+  text-align: center;
+  width: 33.333%;
 }
 
 .pricing-table strong {
   color: var(--primary-color);
   font-weight: var(--fw-extrabold);
 }
-
 /* =========================================
    FACILITÉS DE PAIEMENT / TIMELINE
    ========================================= */
@@ -787,18 +805,60 @@ font-weight: 900;
     padding: 1.8rem;
   }
 
-  .table-container-modern {
-    padding: 1.25rem;
+.table-container-modern {
+    padding: 0.75rem;
+    border-radius: 12px;
+    overflow-x: visible;
   }
 
   .pricing-table {
-    min-width: 720px;
+    min-width: unset;
+    width: 100%;
   }
 
-  .pricing-table th,
+  .pricing-table thead {
+    display: none;
+  }
+
+  .pricing-table tbody tr {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    gap: 0.5rem;
+  }
+
+  .pricing-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
   .pricing-table td {
-    padding: 0.9rem;
-    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    font-size: 0.88rem;
+    border: none;
+    width: auto;
+  }
+
+  .pricing-table td:first-child {
+    flex: 1;
+    text-align: left;
+    justify-content: flex-start;
+  }
+
+  .pricing-table td:nth-child(2) {
+    flex: 0 0 auto;
+    justify-content: center;
+  }
+
+  .pricing-table td:last-child {
+    flex: 0 0 auto;
+    text-align: right;
+    justify-content: flex-end;
+    color: var(--text-muted);
+    font-size: 0.82rem;
   }
 
   .parallax-separator {

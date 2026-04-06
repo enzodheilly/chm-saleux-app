@@ -426,6 +426,35 @@
   .form-header .section-heading {
     font-size: 1.8rem;
   }
+
+  .elite-form .input-group,
+  .contact-form-container .input-group {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 6px;
+  }
+
+  .elite-form .input-group label,
+  .contact-form-container .input-group label {
+    width: 100% !important;
+    text-align: left !important;
+  }
+
+  .elite-form .input-group input,
+  .elite-form .input-group select,
+  .elite-form .input-group textarea,
+  .contact-form-container input,
+  .contact-form-container select,
+  .contact-form-container textarea {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
 }
 
 @media (max-width: 480px) {

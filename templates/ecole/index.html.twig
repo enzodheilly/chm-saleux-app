@@ -48,23 +48,6 @@
 	<main
 		class="page-shell ecole-root">
 
-		{# --- SECTION 1 : PHILOSOPHIE --- #}
-		<section class="page-container section-spacer">
-			<div class="section-header-competition centered">
-				<h2 class="section-heading">
-					Nos Valeurs
-					<span>Fondamentales</span>
-				</h2>
-				<p class="section-subtext">Respect, Discipline et Persévérance.</p>
-			</div>
-
-			<p class="desc-text desc-text-centered">
-				Notre école ne forme pas seulement des athlètes, elle forme des sportifs complets.
-																																																				        Nous valorisons le dépassement de soi dans un environnement bienveillant.
-																																																				        Ici, l'esprit d'équipe et le fair-play sont aussi importants que la charge soulevée.
-			</p>
-		</section>
-
 		{# --- SECTION 2 : LES PROGRAMMES --- #}
 		<section class="bg-dark-alternate section-spacer">
 			<div class="page-container">
@@ -173,6 +156,61 @@
 				</div>
 			</div>
 		</section>
+		{# --- SECTION 1 : PHILOSOPHIE --- #}
+		<section class="valeurs-section section-spacer">
+			<div
+				class="page-container valeurs-inner">
+
+				{# COLONNE GAUCHE — texte + badges #}
+				<div class="valeurs-text">
+
+					<h2 class="section-heading">
+						Nos Valeurs
+						<span>Fondamentales</span>
+					</h2>
+
+					<div class="valeurs-badges">
+
+						<div class="valeur-badge">
+							<div class="valeur-badge-icon">
+								<i class="fa-solid fa-handshake"></i>
+							</div>
+							<div class="valeur-badge-text">
+								<span class="valeur-label">Respect</span>
+								<span class="valeur-desc">Envers soi-même et les autres</span>
+							</div>
+						</div>
+
+						<div class="valeur-badge">
+							<div class="valeur-badge-icon">
+								<i class="fa-solid fa-bolt"></i>
+							</div>
+							<div class="valeur-badge-text">
+								<span class="valeur-label">Discipline</span>
+								<span class="valeur-desc">Rigueur et régularité à l'entraînement</span>
+							</div>
+						</div>
+
+						<div class="valeur-badge">
+							<div class="valeur-badge-icon">
+								<i class="fa-solid fa-fire"></i>
+							</div>
+							<div class="valeur-badge-text">
+								<span class="valeur-label">Persévérance</span>
+								<span class="valeur-desc">Ne jamais abandonner ses objectifs</span>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				{# COLONNE DROITE — image découpée #}
+				<div class="valeurs-athlete-col">
+					<img src="{{ asset('images/club/contact.jpg') }}" alt="" aria-hidden="true" class="valeurs-athlete-img">
+				</div>
+
+			</div>
+		</section>
 
 		{# --- SECTION 4 : TABLEAU --- #}
 		<section class="bg-dark-alternate section-spacer">
@@ -198,9 +236,9 @@
 									<strong>Benjamin</strong>
 								</td>
 								<td>
-									<span class="tag u-tag">U10 - U13</span>
+									<span class="tag u-tag">U10</span>
 								</td>
-								<td>2013 - 2016</td>
+								<td>2016 - 2019</td>
 							</tr>
 							<tr>
 								<td>
@@ -209,7 +247,7 @@
 								<td>
 									<span class="tag u-tag">U13</span>
 								</td>
-								<td>2011 - 2012</td>
+								<td>2013 - 2015</td>
 							</tr>
 							<tr>
 								<td>
@@ -218,7 +256,7 @@
 								<td>
 									<span class="tag u-tag">U15</span>
 								</td>
-								<td>2009 - 2010</td>
+								<td>2011 - 2012</td>
 							</tr>
 							<tr>
 								<td>
@@ -227,7 +265,7 @@
 								<td>
 									<span class="tag u-tag">U17</span>
 								</td>
-								<td>2007 - 2008</td>
+								<td>2009 - 2010</td>
 							</tr>
 							<tr>
 								<td>
@@ -236,7 +274,7 @@
 								<td>
 									<span class="tag u-tag">U20</span>
 								</td>
-								<td>2004 - 2006</td>
+								<td>2006 - 2008</td>
 							</tr>
 							<tr class="highlight-row">
 								<td>
@@ -245,7 +283,7 @@
 								<td>
 									<span class="tag s-tag">Sénior</span>
 								</td>
-								<td>1989 - 2003</td>
+								<td>1992 - 2005</td>
 							</tr>
 						</tbody>
 					</table>
