@@ -24,7 +24,6 @@
 						<th width="30%">Athlete</th>
 						<th width="15%">Category</th>
 						<th width="15%">Weight</th>
-						<th width="15%">Birth date</th>
 						<th class="th-right">Actions</th>
 					</tr>
 				</thead>
@@ -64,10 +63,6 @@
 								<span class="td-mono weight-tag">
 									{{ athlete.weightClass ?: '—' }}
 								</span>
-							</td>
-
-							<td class="td-mono-sm">
-								{{ athlete.birthDate ? athlete.birthDate|date('d/m/Y') : '—' }}
 							</td>
 
 							<td>

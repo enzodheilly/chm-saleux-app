@@ -12,7 +12,7 @@ body.mobile-menu-open {
 :root {
     /* HAUTEUR */
     --nav-height: 77px !important;
-    --top-bar-height: 40px;
+    --top-bar-height: 50px;
 
     /* COULEURS */
     --nav-bg-dark: #050505;
@@ -34,11 +34,10 @@ body.mobile-menu-open {
    2. TOP BAR (INFO BANNER)
    ========================================= */
 .info-banner {
-    background-color: #000000 !important;
+     background: #D6BEA9;
     height: var(--top-bar-height);
     display: flex;
     align-items: center;
-    border-bottom: 1px solid var(--glass-border);
     position: relative;
     z-index: 1001;
 }
@@ -106,15 +105,14 @@ body.mobile-menu-open {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.75rem !important;
-    font-weight: 600;
-    color: #cccccc;
+    font-size: 0.85rem !important;
+    font-weight: 400;
+    color: #1C1917;
     letter-spacing: 0.5px;
-    line-height: 1;
 }
 
 .info-item strong {
-    color: #ffffff;
+    color: #1C1917;
     font-weight: 800;
 }
 
@@ -122,12 +120,6 @@ body.mobile-menu-open {
     height: 16px;
     width: auto;
     vertical-align: middle;
-    filter: grayscale(1) brightness(200%);
-    transition: 0.3s;
-}
-
-.info-item:hover img {
-    filter: none;
 }
 
 .info-item i {
@@ -145,29 +137,25 @@ body.mobile-menu-open {
 }
 
 .top-link {
-    color: #b0b0b0;
+    color: #1C1917;
     text-decoration: none;
-    font-weight: 700;
-    font-size: 0.7rem !important;
+    font-weight: 400;
+    font-size: 0.85rem !important;
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: all 0.3s ease;
     letter-spacing: 1px;
+    height: 100%;
 }
 
 .top-link i {
     font-size: 0.85rem !important;
     color: var(--brand-red);
-    transition: transform 0.3s;
+    text-decoration: none;
 }
 
-.top-link:hover {
-    color: #ffffff;
-}
-
-.top-link:hover i {
-    transform: translateY(-2px);
+.top-link:hover span {
+    text-decoration: underline;
 }
 
 @media (max-width: 992px) {
@@ -179,11 +167,10 @@ body.mobile-menu-open {
 /* --- CORRECTION LIENS TOP BAR --- */
 .info-item a {
     color: inherit !important;
-    text-decoration: none !important;
-    transition: color 0.3s ease;
+    text-decoration: none;
 }
 .info-item a:hover {
-    color: #ffffff !important;
+    text-decoration: underline;
 }
 
 /* =========================================
@@ -209,7 +196,7 @@ body.mobile-menu-open {
     font-weight: 900;
     font-size: 1.1rem;
     line-height: 1;
-    color: #ffffff;
+    color: #fff;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-style: italic;
@@ -237,7 +224,7 @@ body.mobile-menu-open {
 }
 
 .nav-main-wrapper {
-    background: rgba(5, 5, 5, 0.95) !important;
+     background: var(--bg-dark);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     height: var(--nav-height);
@@ -257,10 +244,9 @@ body.mobile-menu-open {
    4. LIENS
    ========================================= */
 .nav-item {
-    color: #ffffff !important;
+    color: #F2F2F2 !important;
     text-decoration: none;
-    font-family: 'Inter', sans-serif;
-    font-weight: 800;
+    font-weight: 500;
     font-size: 1rem;
     letter-spacing: 1px;
     height: 100%;
@@ -268,8 +254,6 @@ body.mobile-menu-open {
     align-items: center;
     padding: 0;
     position: relative;
-    transition: color 0.3s;
-    opacity: 1 !important;
 }
 
 .nav-item::before {
@@ -305,7 +289,7 @@ body.mobile-menu-open {
 }
 
 .fa-chevron-down {
-    font-size: 0.68rem;
+    font-size: 1rem;
     color: var(--brand-red);
     transition: transform 0.25s ease, opacity 0.25s ease;
     opacity: 0.9;

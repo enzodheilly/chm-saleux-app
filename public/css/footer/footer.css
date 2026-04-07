@@ -1,11 +1,10 @@
 :root {
     /* Couleurs */
     --text-light: #F57706;
-
 }
 
 .footer-chm {
-    background-color: #0a0a0a;
+     background: var(--bg-dark);
     color: var(--text-light);
     border-top: 1px solid var(--glass-border);
     font-family: 'Inter', sans-serif;
@@ -98,7 +97,7 @@
 .logo-text span { color: var(--accent-color); }
 
 .brand-tagline {
-    color: var(--text-muted);
+    color: var(--text-muted-1);
     line-height: 1.6;
     margin-bottom: 2rem;
 }
@@ -152,7 +151,7 @@
 }
 
 .nav-list a {
-    color: var(--text-muted);
+    color: var(--text-muted-1);
     text-decoration: none;
     font-size: 0.95rem;
     transition: var(--transition);
@@ -179,7 +178,7 @@
 
 /* Newsletter Column */
 .newsletter-desc {
-    color: var(--text-muted);
+    color: var(--text-muted-1);
     margin-bottom: 1.5rem;
     font-size: 0.95rem;
 }
@@ -230,13 +229,13 @@
     margin-top: 1rem;
 }
 
-.privacy-note a { color: var(--text-muted); }
+.privacy-note a { color: var(--text-muted-1); }
 
 /* Divider & Payments */
 .footer-divider {
     border-top: 1px solid var(--glass-border);
     border-bottom: 1px solid var(--glass-border);
-    padding: 1.5rem 2rem;
+    padding: 1rem;
     background: #16181d;
 }
 
@@ -250,7 +249,7 @@
 .payment-methods .label {
     font-size: 0.8rem;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--text-muted-1);
     font-weight: 700;
 }
 
@@ -267,7 +266,7 @@
 .footer-bottom {
     padding: 1.5rem 2rem;
     font-size: 0.85rem;
-    color: var(--text-muted);
+    color: var(--text-muted-1);
 }
 
 .flex-between {
@@ -282,7 +281,7 @@
 }
 
 .footer-legal a {
-    color: var(--text-muted);
+    color: var(--text-muted-1);
     text-decoration: none;
     transition: var(--transition);
 }

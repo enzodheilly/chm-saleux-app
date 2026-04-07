@@ -6,7 +6,6 @@ use App\Entity\Athlete;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,12 +23,6 @@ class AthleteType extends AbstractType
             ->add('lastName', TextType::class, [
                 'label' => 'Last name',
                 'trim' => true,
-            ])
-            ->add('birthDate', DateType::class, [
-                'label' => 'Birth date',
-                'widget' => 'single_text',
-                'html5' => true,
-                'required' => false,
             ])
             ->add('gender', ChoiceType::class, [
                 'label' => 'Gender',
