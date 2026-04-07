@@ -1,86 +1,123 @@
 {# --- SECTION : TARIFS & ABONNEMENTS --- #}
 <section class="home-pricing-section">
-    <div class="container-narrow">
-        
-        <div class="pricing-header-elite reveal">
-            <h2 class="section-title">Choisissez votre <span class="text-outline">Performance</span></h2>
-            <p class="section-subtitle">
-                Accès illimité à nos 800m² d'installations : Cardio, Musculation, Haltérophilie et Cours Collectifs.
-            </p>
-        </div>
+	<div class="watermark-wrapper">
+		<div class="bg-watermark">PERFORMANCE</div>
+		<div class="bg-watermark">PERFORMANCE</div>
+		<div class="bg-watermark">PERFORMANCE</div>
+	</div>
 
-        {# --- SELECTEUR TYPE DE TARIF --- #}
-        <div class="pricing-toggle-container reveal-up d-1">
-            <div class="toggle-wrapper">
-                <input type="radio" id="type-standard" name="pricing-type" value="standard" checked>
-                <label for="type-standard">Standard</label>
+	<div class="pricing-header-elite reveal">
+		<h2 class="section-title">Choisissez votre
+			<span class="text-outline">Performance</span>
+		</h2>
+		<p class="section-subtitle">
+			Accès illimité à nos 800m² d'installations : Cardio, Musculation, Haltérophilie et Cours Collectifs.
+		</p>
+	</div>
 
-                <input type="radio" id="type-student" name="pricing-type" value="student">
-                <label for="type-student">Étudiant <span class="discount">-15€</span></label>
-                
-                <div class="toggle-glider"></div>
-            </div>
-        </div>
+	{# --- SELECTEUR TYPE DE TARIF --- #}
+	<div class="pricing-toggle-container reveal-up d-1">
+		<div class="toggle-wrapper">
+			<input type="radio" id="type-standard" name="pricing-type" value="standard" checked>
+			<label for="type-standard">Standard</label>
 
-        <div class="pricing-grid">
-            {% for plan in plans|default([]) %}
-                <article class="pricing-card-elite {{ plan.isPopular ? 'is-popular' : '' }} reveal-up d-{{ (loop.index <= 6 ? loop.index : 6) }}">
-                    {% if plan.isPopular %}
-                        <div class="popular-ribbon">Plus populaire</div>
-                    {% endif %}
+			<input type="radio" id="type-student" name="pricing-type" value="student">
+			<label for="type-student">Étudiant
+				<span class="discount">-15€</span>
+			</label>
 
-                    <div class="p-card-head">
-                        <h3 class="p-title">{{ plan.name }}</h3>
-                        <div class="p-price-box">
-                            <span class="p-currency">€</span>
-                       <span class="p-value" 
-      data-standard="{{ plan.price }}" 
-      data-student="{{ (plan.price > 100 ? 185 : plan.price)|number_format(2, '.', '') }}">
-    {{ plan.price }}
-</span>
-                            <span class="p-period">/ {{ plan.billingPeriod == 'year' ? 'an' : 'mois' }}</span>
-                        </div>
-                        <div class="p-monthly-cost">Soit env. <strong>{{ (plan.price / 12)|number_format(1) }}€</strong> / mois</div>
-                    </div>
+			<div class="toggle-glider"></div>
+		</div>
+	</div>
 
-                    <div class="p-card-body">
-                        <ul class="p-features">
-                            <li><i class="fa-solid fa-circle-check"></i> Séance d'essai gratuite</li>
-                            {% for benefit in plan.benefits %}
-                                <li><i class="fa-solid fa-check"></i> {{ benefit|split('|')|last }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
+	<div class="pricing-grid">
+		{% for plan in plans|default([]) %}
+			<article class="pricing-card-elite {{ plan.isPopular ? 'is-popular' : '' }} reveal-up d-{{ loop.index }}">
 
-                    <div class="p-card-foot">
-                        <a href="{{ path('contact') }}" class="btn-pricing {{ plan.isPopular ? 'btn-primary' : 'btn-outline' }}">
-                            S'inscrire maintenant
-                        </a>
-                    </div>
-                </article>
-            {% endfor %}
-        </div>
+				{% if plan.isPopular %}
+					<div class="popular-ribbon">⭐ Offre la plus populaire</div>
+				{% endif %}
 
-        <div class="pricing-navigation reveal-up d-2">
-            <button class="slider-arrow" id="prevCard" aria-label="Carte précédente">&#10094;</button>
-            
-            <div class="pricing-indicators">
-                <span class="dot active"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-            </div>
-            
-            <button class="slider-arrow" id="nextCard" aria-label="Carte suivante">&#10095;</button>
-        </div>
+				{# EN-TÊTE #}
+				<div class="p-card-head">
+					<h3 class="p-title">{{ plan.name }}</h3>
 
-        <div class="pricing-disclaimer reveal-up d-3">
-            <p>
-                <strong>Important :</strong>
-                Pour valider votre adhésion, merci de remplir le formulaire officiel de licence <strong>FFHM</strong>.
-                Vous pouvez le télécharger <a href="{{ asset('docs/formulaire-licence-ffhm.pdf') }}" target="_blank" rel="noopener">ici</a>.
-                Une fois votre paiement effectué, vous pourrez remettre le formulaire complété au bureau du club.
-            </p>
-        </div>
+					<div class="p-price-box">
+						<div class="p-price-row">
+							<span class="p-value" data-standard="{{ plan.price }}" data-student="{{ plan.price - 15 }}">
+								{{ plan.price }}
+							</span>
+							<span class="p-currency">€ / an</span>
+						</div>
+						<span class="p-monthly-cost">soit
+							<strong>{{ (plan.price / 12)|number_format(2, ',') }}
+								€</strong>
+							/ mois</span>
+					</div>
+				</div>
 
-    </div>
-</section>
+				{# BANDEAU PROMO #}
+				<div class="p-promo-box">
+					<i class="fa-solid fa-gift"></i>
+					<span>Séance d'essai gratuite incluse</span>
+				</div>
+
+				{# FEATURES #}
+				<ul class="p-features">
+					{% for benefit in plan.benefits %}
+						{% set parts = benefit|split(' | ') %}
+						{% set icon = parts[0] %}
+						{% set label = parts[1] ?? benefit %}
+						<li>
+							<i class="fa-solid {{ icon }}"></i>
+							<strong>{{ label }}</strong>
+						</li>
+					{% endfor %}
+				</ul>
+
+				{# CTA #}
+				<a href="{{ path('contact') }}" class="btn-pricing {{ plan.isPopular ? 'btn-primary' : 'btn-outline' }}">
+					Choisir
+					{{ plan.name }}
+				</a>
+
+			</article>
+		{% endfor %}
+	</div>
+
+	<div class="pricing-navigation reveal-up d-2">
+		<button class="slider-arrow" id="prevCard" aria-label="Carte précédente">&#10094;</button>
+
+		<div class="pricing-indicators">
+			<span class="dot active"></span>
+			<span class="dot"></span>
+			<span class="dot"></span>
+		</div>
+
+		<button class="slider-arrow" id="nextCard" aria-label="Carte suivante">&#10095;</button>
+	</div>
+
+	<div class="pricing-legal-notice reveal-up d-3">
+		<p>
+			Les abonnements sont
+			<strong>annulables à tout moment</strong>
+			mais ne sont
+			<strong>pas remboursables</strong>. 
+																																												        Des facilités de
+			<strong>paiement en plusieurs fois</strong>
+			sont disponibles. 
+																																	        Notez que le tarif est
+			<strong>dégressif</strong>
+			selon votre mois d'inscription au club. 
+																																	        Pour consulter l'intégralité des conditions et la grille tarifaire détaillée, rendez-vous sur notre page des
+			<a href="{{ path('app_pricing') }}" class="legal-link">tarifs officiels</a>.
+		</p>
+
+		<p class="mt-2">
+			La validation de votre adhésion nécessite le formulaire de licence
+			<strong>FFHM</strong>, disponible en téléchargement
+			<a href="{{ asset('docs/formulaire-licence-ffhm.pdf') }}" target="_blank" class="legal-link">ici</a>.
+		</p>
+	</div>
+
+</div></section>

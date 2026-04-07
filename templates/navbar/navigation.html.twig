@@ -29,15 +29,19 @@
 			<div class="info-actions">
 				<a href="{{ path('faq') }}" class="top-link">
 					<i class="fa-solid fa-circle-question"></i>
-					Centre d'aide</a>
+					<span>Centre d'aide</span>
+				</a>
+
 				{% if app.user %}
 					<a href="{{ path('app_logout') }}" class="top-link">
 						<i class="fa-solid fa-power-off"></i>
-						Déconnexion</a>
+						<span>Déconnexion</span>
+					</a>
 				{% else %}
 					<a href="{{ path('app_login') }}" class="top-link">
 						<i class="fa-solid fa-user"></i>
-						Espace adhérent</a>
+						<span>Espace adhérent</span>
+					</a>
 				{% endif %}
 			</div>
 		</div>

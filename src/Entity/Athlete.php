@@ -29,10 +29,6 @@ class Athlete
     #[Assert\Length(max: 100)]
     private ?string $lastName = null;
 
-    #[ORM\Column(name: "birth_date", type: "date", nullable: true)]
-    #[Assert\LessThanOrEqual("today", message: "Birth date cannot be in the future.")]
-    private ?\DateTimeInterface $birthDate = null;
-
     // Stocke uniquement un nom de fichier (pas un chemin complet)
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
@@ -57,13 +53,7 @@ class Athlete
     #[Assert\Choice(choices: ["female", "male"], message: "Gender must be 'female' or 'male'.")]
     private ?string $gender = null;
 
-    #[ORM\ManyToMany(targetEntity: Competition::class, mappedBy: "athletes")]
-    private Collection $competitions;
-
-    public function __construct()
-    {
-        $this->competitions = new ArrayCollection();
-    }
+    public function __construct() {}
 
     // --- Getters & Setters ---
 
@@ -91,17 +81,6 @@ class Athlete
     public function setLastName(string $lastName): self
     {
         $this->lastName = trim($lastName);
-        return $this;
-    }
-
-    public function getBirthDate(): ?\DateTimeInterface
-    {
-        return $this->birthDate;
-    }
-
-    public function setBirthDate(?\DateTimeInterface $birthDate): self
-    {
-        $this->birthDate = $birthDate;
         return $this;
     }
 
@@ -158,31 +137,6 @@ class Athlete
     public function setGender(string $gender): self
     {
         $this->gender = strtolower(trim($gender));
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Competition>
-     */
-    public function getCompetitions(): Collection
-    {
-        return $this->competitions;
-    }
-
-    public function addCompetition(Competition $competition): self
-    {
-        if (!$this->competitions->contains($competition)) {
-            $this->competitions->add($competition);
-            $competition->addAthlete($this);
-        }
-        return $this;
-    }
-
-    public function removeCompetition(Competition $competition): self
-    {
-        if ($this->competitions->removeElement($competition)) {
-            $competition->removeAthlete($this);
-        }
         return $this;
     }
 
