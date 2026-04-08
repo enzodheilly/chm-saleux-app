@@ -43,7 +43,6 @@
   width: 100%;
   height: 100%;
   z-index: 0;
-  
 }
 
 .hero-img {
@@ -65,15 +64,6 @@
 .hero-img-mobile {
   display: none;
   object-position: center center;
-}
-
-/* OVERLAY */
-.hero-photos::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: var(--hero-overlay-desktop);
 }
 
 /* CONTENU */
@@ -229,7 +219,7 @@
 .badge-ffhm:hover { opacity: 1; }
 
 .badge-text {
-  color: var(--text-muted);
+  color: var(--text-black);
   font-size: 0.7rem;
   font-weight: var(--fw-bold);
   text-transform: uppercase;
@@ -289,7 +279,7 @@
 
   .hero-img-mobile {
     display: block;
-    transform: translateY(10%);
+    transform: translateY(5%);
   }
 
   .hero-photos::after {
@@ -503,6 +493,10 @@
   line-height: var(--lh-heading);
 }
 
+.pricing-header-elite .text-outline {
+  color: var(--text-white);
+}
+
 .pricing-header-elite .section-subtitle {
   color: var(--text-muted-2);
   font-size: 1.05rem;
@@ -542,7 +536,7 @@
   font-weight: var(--fw-extrabold);
   font-size: 0.9rem;
   transition: var(--transition-fast);
-  color: var(--text-black);
+  color: var(--text-white);
 }
 
 .discount {
@@ -826,7 +820,6 @@
   margin: 50px auto 0;
   max-width: 900px;
   width: calc(100% - 3rem);
-  color: var(--text-black);
   font-size: 0.95rem;
   line-height: 1.5;
   padding: 16px 20px;
@@ -848,16 +841,11 @@
 }
 
 .pricing-legal-notice p {
-  color: #111;
+  color: var(--text-muted-2);
   font-size: 0.9rem;
   line-height: 1.7;
   font-weight: 400;
   margin-bottom: 15px;
-}
-
-.pricing-legal-notice strong {
-  color: #111;
-  font-weight: 500;
 }
 
 .legal-link {
@@ -1117,7 +1105,7 @@
   line-height: 1.04;
   text-transform: uppercase;
   letter-spacing: -0.04em;
-  color: var(--text-black);
+  color: var(--text-white);
   margin: 0;
 }
 
@@ -1131,7 +1119,7 @@
 .equip-desc {
   font-size: var(--fs-body-sm);
   line-height: var(--lh-relaxed);
-  color: var(--text-muted);
+  color: var(--text-muted-2);
   margin: 0;
 }
 
@@ -1182,13 +1170,13 @@
 .equip-benefit-text strong {
   font-size: 0.82rem;
   font-weight: var(--fw-medium);
-  color: var(--text-black);
+  color: var(--text-white);
   line-height: 1.2;
 }
 
 .equip-benefit-text span {
   font-size: 0.72rem;
-  color: var(--text-muted);
+  color: var(--text-muted-2);
   line-height: 1.4;
 }
 
@@ -1564,14 +1552,14 @@
 .cc-main-title em {
   display: block;
   font-style: normal;
-  color: #fff;
+  color: var(--text-white);
 }
 
 /* Description */
 .cc-description {
   font-size: var(--fs-body-sm);
   line-height: var(--lh-relaxed);
-  color: var(--text-muted);
+  color: var(--text-muted-2);
   max-width: 380px;
   margin: 0;
 }
@@ -1619,7 +1607,7 @@
 
 .cc-stat-u {
   font-size: 0.62rem;
-  color: var(--text-muted);
+  color: var(--text-muted-2);
   text-transform: uppercase;
   letter-spacing: 1.5px;
   font-weight: var(--fw-medium);
@@ -1632,7 +1620,7 @@
   align-items: center;
   gap: 12px;
   background: var(--brand-orange);
-  color: var(--text-black);
+  color: var(--text-white);
   font-family: 'Unbounded', var(--font-family-heading);
   font-size: 0.62rem;
   font-weight: var(--fw-bold);
@@ -1767,7 +1755,7 @@
 .cc-disc-name {
   font-size: 0.72rem;
   font-weight: var(--fw-medium);
-  color: var(--text-black);
+  color: var(--text-white);
   display: block;
   line-height: 1.1;
 }
@@ -1805,7 +1793,7 @@
   font-size: clamp(14rem, 26vw, 24rem);
   font-weight: 900;
   line-height: 1;
-  color: var(--text-black);
+  color: var(--text-white);
   opacity: 0.025;
   pointer-events: none;
   user-select: none;
@@ -1834,7 +1822,7 @@
   text-transform: uppercase;
   letter-spacing: -0.04em;
   line-height: 1.04;
-  color: var(--text-black);
+  color: var(--text-white);
   margin: 0;
 }
 
@@ -1844,7 +1832,7 @@
 }
 
 .cc-eyebrow-text {
-   color: var(--text-black);
+   color: var(--text-white);
 }
 
 /* Score bloc */
@@ -1859,7 +1847,7 @@
   font-family: 'Unbounded', var(--font-family-heading);
   font-size: 3.2rem;
   font-weight: 900;
-  color: var(--text-black);
+  color: var(--text-white);
   line-height: 1;
 }
 
@@ -1872,7 +1860,7 @@
 
 .score-count {
   font-size: 0.6rem;
-  color: var(--text-muted);
+  color: var(--text-muted-2);
   text-transform: uppercase;
   letter-spacing: 1.5px;
   margin-top: 4px;
@@ -1958,7 +1946,7 @@
   font-family: 'Unbounded', var(--font-family-heading);
   font-weight: var(--fw-bold);
   font-size: 0.72rem;
-  color: var(--text-black);
+  color: var(--text-white);
   flex-shrink: 0;
 }
 
@@ -1977,12 +1965,12 @@
 .rev-name {
   font-size: 0.73rem;
   font-weight: var(--fw-medium);
-  color: var(--text-black);
+  color: var(--text-white);
 }
 
 .rev-label {
   font-size: 0.58rem;
-  color: var(--text-muted);
+  color: var(--text-muted-2);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -2008,7 +1996,7 @@
   align-items: center;
   gap: 10px;
   border: 1px solid var(--border-soft-2);
-  color: var(--text-black);
+  color: var(--text-white);
   font-size: 0.64rem;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -2019,7 +2007,7 @@
 
 .reviews-cta-link:hover {
   border-color: var(--brand-orange);
-  color: var(--text-black);
+  color: var(--text-white);
 }
 
 .reviews-cta-link i {
@@ -2080,7 +2068,6 @@
 
 /* =========================
    ACCUEIL — SECTION 5 (ESPACES D'ENTRAÎNEMENT)
-   Design moderne — cohérent palette brand CHM
    ========================= */
 
 .home-cinematic-section {
@@ -2296,7 +2283,7 @@
 .panel-content {
   position: relative;
   z-index: 3;
-  color: var(--text-black);
+  color: var(--text-white);
   width: 100%;
 }
 
@@ -2334,7 +2321,7 @@
   text-transform: uppercase;
   letter-spacing: -0.5px;
   line-height: 1;
-  color: var(--text-black);
+  color: var(--text-white);
   margin-bottom: 0;
   transition: transform 0.4s ease;
 }
@@ -2566,6 +2553,18 @@
   min-height: 640px;
 }
 
+/* On cible l'eyebrow spécifiquement dans la section info de l'app */
+.app-info-side .cc-eyebrow {
+  color: var(--text-white); /* Ou une couleur sombre pour qu'il soit visible */
+  margin-bottom: 0;         /* Optionnel : pour ajuster l'espace avec le titre */
+}
+
+/* Si tu veux aussi que la ligne soit plus visible ou d'une autre couleur */
+.app-info-side .cc-eyebrow-line {
+  background: var(--brand-orange); 
+  opacity: 1;
+}
+
 /* =================================================================
    COLONNE TEXTE
    ================================================================= */
@@ -2587,7 +2586,7 @@
   font-size: 9px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--text-black);
+  color: var(--text-white);
   font-weight: var(--fw-medium);
 }
 
@@ -2615,14 +2614,14 @@
 .app-main-title em {
   display: block;
   font-style: normal;
-  color: #fff;
+  color: var(--text-white);
 }
 
 /* Description */
 .app-description {
   font-size: var(--fs-body-sm);
   line-height: var(--lh-relaxed);
-  color: var(--text-black);
+  color: var(--text-white);
   max-width: 440px;
   margin: 0;
 }
@@ -2642,13 +2641,13 @@
   padding: 13px 0;
   border-bottom: 1px solid var(--border-soft);
   font-size: 0.84rem;
-  color: var(--text-black);
+  color: var(--text-white);
   line-height: 1.4;
   transition: color var(--transition-fast);
 }
 
 .app-benefits li:hover {
-  color: var(--text-black);
+  color: var(--text-white);
 }
 
 .app-benefit-bullet {
@@ -2688,7 +2687,7 @@
 
 .app-store-btn i {
   font-size: 1.5rem;
-  color: var(--text-black);
+  color: var(--text-white);
   flex-shrink: 0;
 }
 
@@ -2702,14 +2701,14 @@
   font-size: 0.6rem;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--text-black);
+  color: var(--text-white);
 }
 
 .app-store-bottom {
   font-family: 'Unbounded', var(--font-family-heading);
   font-size: 0.78rem;
   font-weight: 700;
-  color: var(--text-black);
+  color: var(--text-white);
   line-height: 1;
 }
 
@@ -2852,84 +2851,6 @@
   .app-visual-side  { min-height: 350px; }
   .app-phone-frame  { width: 190px; }
   .app-halo         { width: 200px; height: 200px; }
-}
-
-/* =========================
-   ACCUEIL — SECTION (SLIDER CLUB)
-   ========================= */
-
-.club-slider-section{
-  position: relative;
-  width: 100%;
-  padding: 20px 20px;
-  background: var(--bg-dark);
-}
-
-.club-slider-section .hero-slider{
-  position: relative;
-  max-width: 1800px;
-  margin: auto;
-  z-index: 1;
-  overflow: hidden;
-}
-
-.club-slider-section .slider-track{
-  display: flex;
-  gap: 30px;
-  scroll-behavior: smooth;
-  overflow-x: auto;
-  scrollbar-width: none;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-x: contain;
-}
-.club-slider-section .slider-track::-webkit-scrollbar{ display: none; }
-
-.club-slider-section .slider-track img{
-  flex: 0 0 min(520px, 85vw);
-  height: clamp(320px, 55vw, 580px);
-  object-fit: cover;
-  transition: transform 0.4s ease;
-  scroll-snap-align: start;
-}
-
-.club-slider-section .slider-btn{
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0,0,0,0.7);
-  color: var(--text-white);
-  border: none;
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  font-size: 26px;
-  cursor: pointer;
-  z-index: 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background 0.3s ease, opacity 0.3s ease;
-}
-.club-slider-section .slider-btn:disabled{
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-
-.club-slider-section .slider-btn:hover{ background: rgba(0,0,0,0.9); }
-
-.club-slider-section .slider-btn.prev{ left: 15px; }
-.club-slider-section .slider-btn.next{ right: 15px; }
-
-.club-slider-section .slider-btn[style*="display: none"]{
-  opacity: 0;
-  pointer-events: none;
-}
-
-@media (max-width: 768px) {
-  .club-slider-section{
-    display: none;
-  }
 }
 
 /* =========================

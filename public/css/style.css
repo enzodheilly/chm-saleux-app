@@ -76,10 +76,10 @@ html, body {
   --brand-orange: #F57706;
 
   /* Backgrounds */
---dark-bg: linear-gradient(to bottom, #2a2a2e, #0f0f11);
-  --bg-dark: #0f0f11;
-  --bg-section: #D6BEA9;
-  --bg-card: #121212;
+  --dark-bg: #000000;
+  --bg-dark: #141414;
+  --bg-section: #262626;
+  --bg-card: linear-gradient(to bottom, #2a2a2e, #0f0f11);
   --bg-card-hover: #171717;
   --bg-light-1: #ffffff;
   --bg-light-2: #f4f6f8;
@@ -93,12 +93,12 @@ html, body {
   --surface-dark: #18181b;
 
   /* Texts */
-  --text-white: #111;
+  --text-white: #fff;
   --text-black: #fff;
   --text-body: #333333;
-  --text-muted: #111;
-  --text-muted-1: #a0a0a0;
-  --text-muted-2: #111;
+  --text-muted: #E0E0E0;
+  --text-muted-1: #C9C9C9;
+  --text-muted-2: #E0E0E0;
   --text-dark: #111;
   --text-dark-2: #333;
   --text-gray: #666;
@@ -313,6 +313,7 @@ html, body {
   overflow: hidden;
   clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
   margin-bottom: -84px;
+  z-index: 1;
 }
 
 /* Image clippée à droite avec marge */
@@ -495,7 +496,7 @@ html, body {
   width: 0;
   overflow: visible;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 
 .deco-left-img {
