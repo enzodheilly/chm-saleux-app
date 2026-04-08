@@ -34,7 +34,7 @@ body.mobile-menu-open {
    2. TOP BAR (INFO BANNER)
    ========================================= */
 .info-banner {
-     background: #D6BEA9;
+    background: #262626;
     height: var(--top-bar-height);
     display: flex;
     align-items: center;
@@ -107,12 +107,12 @@ body.mobile-menu-open {
     gap: 8px;
     font-size: 0.85rem !important;
     font-weight: 400;
-    color: #1C1917;
+    color: var(--nav-text-white);
     letter-spacing: 0.5px;
 }
 
 .info-item strong {
-    color: #1C1917;
+    color: var(--brand-orange);
     font-weight: 800;
 }
 
@@ -137,7 +137,7 @@ body.mobile-menu-open {
 }
 
 .top-link {
-    color: #1C1917;
+    color: var(--nav-text-white);
     text-decoration: none;
     font-weight: 400;
     font-size: 0.85rem !important;
@@ -196,7 +196,7 @@ body.mobile-menu-open {
     font-weight: 900;
     font-size: 1.1rem;
     line-height: 1;
-    color: #fff;
+    color: var(--nav-text-white);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-style: italic;
@@ -224,7 +224,7 @@ body.mobile-menu-open {
 }
 
 .nav-main-wrapper {
-     background: var(--bg-dark);
+    background: #000000;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     height: var(--nav-height);
@@ -308,7 +308,7 @@ body.mobile-menu-open {
     width: 960px;
     max-width: min(960px, 90vw);
 
-    background: var(--dark-bg) !important;
+    background: #000000;
     border: 1px solid rgba(255, 255, 255, 0.08);
 
     padding: 30px;
@@ -566,7 +566,7 @@ body.mobile-menu-open {
    MOBILE MENU + SUBPAGE
    ========================================= */
 @media (max-width: 992px) {
-
+    
       /* Empêche le swipe horizontal de révéler des éléments décalés */
   .mobile-nav-panel {
     overflow-y: auto;
