@@ -3,35 +3,63 @@
 
 	{# --- TOP BAR --- #}
 	<div class="info-banner">
-		<div class="info-banner-content">
+		<div
+			class="info-banner-content">
+
+			{# Desktop : tous les items en ligne #}
 			<div class="info-track">
 				<div class="info-item">
 					<i class="fa-solid fa-scale-balanced"></i>
 					<span>Association loi 1901</span>
 				</div>
-
 				<div class="info-item">
 					<i class="fa-solid fa-location-dot"></i>
 					<span>Saleux - Complexe sportif</span>
 				</div>
-
 				<div class="info-item">
 					<i class="fa-solid fa-phone"></i>
 					<a href="tel:0322897257">03.22.89.72.57</a>
 				</div>
-
 				<div class="info-item">
 					<i class="fa-solid fa-handshake"></i>
 					<a href="{{ path('app_partenaire') }}">Devenir Partenaire</a>
 				</div>
 			</div>
 
+			{# Mobile : carousel avec flèches #}
+			<div class="info-carousel">
+				<button class="info-carousel-btn" id="infoPrev" aria-label="Info précédente">
+					<i class="fa-solid fa-chevron-left"></i>
+				</button>
+				<div class="info-carousel-track">
+					<div class="info-carousel-item">
+						<i class="fa-solid fa-scale-balanced"></i>
+						<span>Association loi 1901</span>
+					</div>
+					<div class="info-carousel-item">
+						<i class="fa-solid fa-location-dot"></i>
+						<span>Saleux - Complexe sportif</span>
+					</div>
+					<div class="info-carousel-item">
+						<i class="fa-solid fa-phone"></i>
+						<a href="tel:0322897257">03.22.89.72.57</a>
+					</div>
+					<div class="info-carousel-item">
+						<i class="fa-solid fa-handshake"></i>
+						<a href="{{ path('app_partenaire') }}">Devenir Partenaire</a>
+					</div>
+				</div>
+				<button class="info-carousel-btn" id="infoNext" aria-label="Info suivante">
+					<i class="fa-solid fa-chevron-right"></i>
+				</button>
+			</div>
+
+			{# Actions droite (desktop uniquement) #}
 			<div class="info-actions">
 				<a href="{{ path('faq') }}" class="top-link">
 					<i class="fa-solid fa-circle-question"></i>
 					<span>Centre d'aide</span>
 				</a>
-
 				{% if app.user %}
 					<a href="{{ path('app_logout') }}" class="top-link">
 						<i class="fa-solid fa-power-off"></i>
@@ -44,6 +72,7 @@
 					</a>
 				{% endif %}
 			</div>
+
 		</div>
 	</div>
 
@@ -58,7 +87,7 @@
 				</span>
 			</a>
 
-			{# ✅ CTA mobile entre logo et hamburger #}
+			{# CTA mobile entre logo et hamburger #}
 			{% if app.user %}
 				<a href="{{ path('dashboard') }}" class="mobile-register-btn">Mon espace</a>
 			{% else %}
@@ -83,7 +112,6 @@
 								<a href="{{ path('evenements') }}">Événements organisés</a>
 								<a href="{{ path('sauna') }}">Sauna</a>
 							</div>
-
 							<div class="panel-column">
 								<h3>Membres du bureau</h3>
 								<a href="{{ path('president') }}">Le Président</a>
@@ -91,7 +119,6 @@
 								<a href="{{ path('secretaire') }}">La Secrétaire</a>
 								<a href="{{ path('membres_bureau') }}">Les membres du bureau</a>
 							</div>
-
 							<div class="panel-column">
 								<h3>A propos de notre club</h3>
 								<a href="{{ path('app_club') }}">Présentation du club</a>
@@ -111,7 +138,6 @@
 				<a id="assistantWidgetOpen" class="btn-icon-ai" title="Assistant IA">
 					<img src="{{ asset('images/ia.png') }}" alt="IA">
 				</a>
-
 				{% if app.user %}
 					<a href="{{ path('dashboard') }}" class="btn-nav-primary">
 						<span>MON ESPACE</span>
@@ -121,13 +147,13 @@
 						<span>S'INSCRIRE</span>
 					</a>
 				{% endif %}
-
 				<button class="hamburger-btn" id="mobileMenuTrigger" aria-label="Ouvrir le menu">
 					<span></span>
 					<span></span>
 					<span></span>
 				</button>
 			</div>
+
 		</div>
 	</div>
 
@@ -137,13 +163,10 @@
 
 			<div class="mobile-links">
 				<a href="{{ path('home') }}">Accueil</a>
-
-				{# ✅ ouvre une page interne (subpage) au lieu d'un accordéon #}
 				<button type="button" class="mobile-subpage-trigger" data-subpage="#mobileSubpageClub" aria-label="Voir le club">
 					Club & Membres du Bureau
 					<i class="fa-solid fa-arrow-right"></i>
 				</button>
-
 				<a href="{{ path('app_pricing') }}">Tarifs</a>
 				<a href="{{ path('ecole') }}">Notre École</a>
 				<a href="{{ path('competition') }}">Compétitions & Résultats</a>
@@ -165,20 +188,18 @@
 						<span>Espace adhérent</span>
 					</a>
 				{% endif %}
-
 				<a href="{{ path('faq') }}" class="mobile-footer-link-clean">
 					<i class="fa-regular fa-circle-question"></i>
 					<span>Centre d'aide</span>
 				</a>
 			</div>
 
-			{# --- SUBPAGE : Club & Membres du Bureau --- #}
+			{# SUBPAGE : Club & Membres du Bureau #}
 			<div class="mobile-subpage" id="mobileSubpageClub">
 				<button type="button" class="mobile-subpage-back" data-subpage-back aria-label="Retour">
 					<i class="fa-solid fa-arrow-left"></i>
 					Retour
 				</button>
-
 				<div class="mobile-subpage-section">
 					<span class="mobile-subpage-label">Services du club</span>
 					<a href="{{ path('halterophilie') }}">Haltérophilie</a>
@@ -188,7 +209,6 @@
 					<a href="{{ path('evenements') }}">Événements organisés</a>
 					<a href="{{ path('sauna') }}">Sauna</a>
 				</div>
-
 				<div class="mobile-subpage-section">
 					<span class="mobile-subpage-label">Membres du bureau</span>
 					<a href="{{ path('president') }}">Le Président</a>
@@ -196,7 +216,6 @@
 					<a href="{{ path('secretaire') }}">La Secrétaire</a>
 					<a href="{{ path('membres_bureau') }}">Les membres du bureau</a>
 				</div>
-
 				<div class="mobile-subpage-section">
 					<span class="mobile-subpage-label">À propos</span>
 					<a href="{{ path('app_club') }}">Présentation du club</a>
@@ -207,4 +226,5 @@
 
 		</div>
 	</div>
+
 </nav>
