@@ -79,7 +79,7 @@ html, body {
   --dark-bg: #000000;
   --bg-dark: #141414;
   --bg-section: #262626;
-  --bg-card: linear-gradient(to bottom, #2a2a2e, #0f0f11);
+  --bg-card: #111;
   --bg-card-hover: #171717;
   --bg-light-1: #ffffff;
   --bg-light-2: #f4f6f8;

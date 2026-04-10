@@ -445,6 +445,7 @@
 					</section>
 
 					<section id="tab-licence" class="section-view">
+
 						<div class="section-head">
 							<h3>Votre licence officielle</h3>
 							<div class="section-pill">
@@ -453,78 +454,151 @@
 							</div>
 						</div>
 
-						<div class="licence-shell">
-							<div class="glass-card licence-card-premium">
-								<div class="licence-topbar">
-									<div class="licence-brand-block">
-										<div class="licence-brand-logo">
-											<img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo">
+						<div
+							class="lic-shell">
+
+							{# --- CARTE PRINCIPALE --- #}
+							<div
+								class="glass-card lic-card">
+
+								{# Bandeau haut #}
+								<div class="lic-band">
+									<div class="lic-brand">
+										<div class="lic-brand-logo">
+											<img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo CHM">
 										</div>
 										<div>
-											<div class="licence-brand-label">Club affilié</div>
-											<div class="licence-brand-name">CHM SALEUX</div>
+											<div class="lic-brand-label">Club affilié</div>
+											<div class="lic-brand-name">CHM SALEUX</div>
+										</div>
+									</div>
+									<div class="lic-status-badge {{ licenceActive ? 'is-active' : 'is-inactive' }}">
+										{% if licenceActive %}
+											<span class="lic-status-dot"></span>
+											Licence active
+										{% else %}
+											<i class="fa-solid fa-triangle-exclamation" style="font-size:.7rem"></i>
+											Licence inactive
+										{% endif %}
+									</div>
+								</div>
+
+								{# Identité membre #}
+								<div class="lic-identity">
+									<div class="lic-name-block">
+										<div class="lic-member-label">Adhérent</div>
+										<div class="lic-member-name">{{ app.user.firstname }}
+											{{ app.user.lastname }}</div>
+										<div class="lic-member-email">{{ app.user.email }}</div>
+									</div>
+									<div class="lic-num-box">
+										<div class="lic-num-label">N° licence</div>
+										<div class="lic-num-val">{{ licenceNumberLabel }}</div>
+									</div>
+								</div>
+
+								{# Grille 4 colonnes #}
+								<div class="lic-grid">
+									<div class="lic-field">
+										<div class="lf-label">Club</div>
+										<div class="lf-val">CHM SALEUX</div>
+									</div>
+									<div class="lic-field">
+										<div class="lf-label">Saison</div>
+										<div class="lf-val">2025 / 2026</div>
+									</div>
+									<div class="lic-field">
+										<div class="lf-label">Type</div>
+										<div class="lf-val">{{ licenceTypeLabel }}</div>
+									</div>
+									<div class="lic-field">
+										<div class="lf-label">Statut</div>
+										<div class="lf-val {{ licenceActive ? 'lf-val--ok' : 'lf-val--danger' }}">{{ licenceStatusLabel }}</div>
+									</div>
+									<div class="lic-field">
+										<div class="lf-label">Cotisation</div>
+										<div class="lf-val">{{ admin.feesStatus|default('—') }}</div>
+									</div>
+									<div class="lic-field">
+										<div class="lf-label">Échéance cotisation</div>
+										<div class="lf-val">{{ admin.feesDue|default('—') }}</div>
+									</div>
+									<div class="lic-field">
+										<div class="lf-label">Certificat médical</div>
+										<div class="lf-val">{{ admin.medicalStatus|default('—') }}</div>
+									</div>
+									<div class="lic-field">
+										<div class="lf-label">Expiration certif.</div>
+										<div class="lf-val">{{ admin.medicalExpiry|default('—') }}</div>
+									</div>
+								</div>
+
+								{# Footer contextuel #}
+								{% if licenceActive %}
+
+									<div class="lic-footer lic-footer--active">
+										<div class="lic-footer-left">
+											<i class="fa-solid fa-circle-check lic-footer-icon lic-footer-icon--ok"></i>
+											<div>
+												<div class="lic-footer-title">Licence valide pour la saison 2025 / 2026</div>
+												<div class="lic-footer-sub">Votre renouvellement sera à effectuer en septembre 2026 auprès du club.</div>
+											</div>
+										</div>
+										<a href="{{ path('contact') }}" class="lic-footer-action">
+											Contacter le club
+											<i class="fa-solid fa-arrow-right" style="font-size:.7rem"></i>
+										</a>
+									</div>
+
+								{% else %}
+
+									{# État par défaut : invitation à saisir #}
+									<div class="lic-footer lic-footer--inactive" id="licFooterDefault">
+										<div class="lic-footer-left">
+											<i class="fa-solid fa-envelope-open-text lic-footer-icon lic-footer-icon--warn"></i>
+											<div>
+												<div class="lic-footer-title">Vous avez reçu votre numéro de licence par e-mail ?</div>
+												<div class="lic-footer-sub">Une fois votre inscription validée par le club, renseignez-le ici pour activer votre licence.</div>
+											</div>
+										</div>
+										<button type="button" class="lic-footer-action lic-footer-action--primary" id="licAddBtn">
+											Renseigner mon numéro
+											<i class="fa-solid fa-arrow-right" style="font-size:.7rem"></i>
+										</button>
+									</div>
+
+									{# Formulaire inline (masqué par défaut) #}
+									<div class="lic-footer lic-footer--form is-hidden" id="licFooterForm">
+										<div class="lic-form-wrap">
+											<div class="lic-form-header">
+												<i class="fa-solid fa-id-card" style="color:#F57706;font-size:.9rem"></i>
+												<span>Renseigner le numéro de licence</span>
+											</div>
+											<div class="lic-form-hint">
+												Votre numéro figure dans l'e-mail de confirmation envoyé par CHM Saleux suite à la validation de votre adhésion.
+											</div>
+											<div class="lic-form-row">
+												<input type="text" id="licenceInputManual" class="lic-input" placeholder="Ex : 123456789" maxlength="20" autocomplete="off">
+												<button type="button" class="btn-primary" id="licSaveBtn">
+													<i class="fa-solid fa-floppy-disk"></i>
+													Enregistrer
+												</button>
+												<button type="button" class="lic-cancel-btn" id="licCancelBtn">
+													Annuler
+												</button>
+											</div>
 										</div>
 									</div>
 
-									<div class="licence-status-badge {{ licenceActive ? 'is-active' : 'is-inactive' }}">
-										<i class="fa-solid {{ licenceActive ? 'fa-circle-check' : 'fa-triangle-exclamation' }}"></i>
-										{{ licenceActive ? 'Licence active' : 'Licence inactive' }}
-									</div>
-								</div>
+								{% endif %}
 
-								<div class="licence-hero">
-									<div class="licence-member-block">
-										<div class="licence-member-label">Nom de l’adhérent</div>
-										<div class="licence-member-name">{{ app.user.firstname }}
-											{{ app.user.lastname }}</div>
-										<div class="licence-member-sub">{{ app.user.email }}</div>
-									</div>
-
-									<div class="licence-number-box">
-										<span>N° licence</span>
-										<strong>{{ licenceNumberLabel }}</strong>
-									</div>
-								</div>
-
-								<div class="licence-grid">
-									<div class="licence-field">
-										<div class="licence-field-label">Club</div>
-										<div class="licence-field-value">CHM SALEUX</div>
-									</div>
-									<div class="licence-field">
-										<div class="licence-field-label">Saison</div>
-										<div class="licence-field-value">2025 / 2026</div>
-									</div>
-									<div class="licence-field">
-										<div class="licence-field-label">Type de licence</div>
-										<div class="licence-field-value">{{ licenceTypeLabel }}</div>
-									</div>
-									<div class="licence-field">
-										<div class="licence-field-label">Statut</div>
-										<div class="licence-field-value">{{ licenceStatusLabel }}</div>
-									</div>
-									<div class="licence-field">
-										<div class="licence-field-label">Cotisation</div>
-										<div class="licence-field-value">{{ admin.feesStatus|default('—') }}</div>
-									</div>
-									<div class="licence-field">
-										<div class="licence-field-label">Échéance cotisation</div>
-										<div class="licence-field-value">{{ admin.feesDue|default('—') }}</div>
-									</div>
-									<div class="licence-field">
-										<div class="licence-field-label">Certificat médical</div>
-										<div class="licence-field-value">{{ admin.medicalStatus|default('—') }}</div>
-									</div>
-									<div class="licence-field">
-										<div class="licence-field-label">Expiration certificat</div>
-										<div class="licence-field-value">{{ admin.medicalExpiry|default('—') }}</div>
-									</div>
-								</div>
 							</div>
 
-							<div class="licence-side-improved">
-								<div class="glass-card licence-side-card">
-									<div class="licence-side-icon">
+							{# --- COLONNE DROITE --- #}
+							<div class="lic-side">
+
+								<div class="glass-card lic-side-card">
+									<div class="lic-side-icon">
 										<i class="fa-solid fa-file-pdf"></i>
 									</div>
 									<h4>Justificatif adhérent</h4>
@@ -535,26 +609,34 @@
 									</a>
 								</div>
 
-								<div class="glass-card licence-side-card">
-									<h4>Informations utiles</h4>
-									<div class="licence-info-list">
-										<div class="licence-info-row">
-											<span>Type</span>
-											<strong>{{ licenceTypeLabel }}</strong>
+								<div class="glass-card lic-side-card">
+									<h4>Résumé</h4>
+									<div class="lic-info-rows">
+										<div class="lic-info-row">
+											<span class="lir-label">Type</span>
+											<span class="lir-val">{{ licenceTypeLabel }}</span>
 										</div>
-										<div class="licence-info-row">
-											<span>Statut</span>
-											<strong>{{ licenceStatusLabel }}</strong>
+										<div class="lic-info-row">
+											<span class="lir-label">Statut</span>
+											<span class="lir-val {{ licenceActive ? 'lir-val--ok' : 'lir-val--danger' }}">{{ licenceStatusLabel }}</span>
 										</div>
-										<div class="licence-info-row">
-											<span>Certificat</span>
-											<strong>{{ admin.medicalStatus|default('—') }}</strong>
+										<div class="lic-info-row">
+											<span class="lir-label">Certificat</span>
+											<span class="lir-val">{{ admin.medicalStatus|default('—') }}</span>
+										</div>
+										<div class="lic-info-row">
+											<span class="lir-label">Échéance</span>
+											<span class="lir-val">{{ admin.feesDue|default('—') }}</span>
 										</div>
 									</div>
 								</div>
+
 							</div>
+
 						</div>
 					</section>
+
+
 				</div>
 			</div>
 		</main>
@@ -562,143 +644,143 @@
 
 	<div id="settingsOverlay" class="settings-overlay"></div>
 
-	<aside id="settingsDrawer" class="settings-drawer" aria-hidden="true">
-		<div class="settings-drawer-header">
-			<div class="settings-drawer-header-group">
-				<i class="fa-solid fa-gear settings-drawer-header-icon"></i>
-				<div>
-					<strong class="settings-drawer-header-title">Paramètres du compte</strong>
-					<span class="settings-drawer-header-subtitle">Sécurité et informations de connexion</span>
+	<aside
+		id="settingsDrawer" class="settings-drawer" aria-hidden="true">
+
+		{# --- HEADER --- #}
+		<div class="sd-header">
+			<div class="sd-header-left">
+				<div class="sd-avatar">
+					{{ app.user.firstname|first|upper }}{{ app.user.lastname|first|upper }}
+				</div>
+				<div class="sd-header-info">
+					<strong class="sd-header-name">{{ app.user.firstname }}
+						{{ app.user.lastname }}</strong>
+					<span class="sd-header-role">Adhérent · CHM Saleux</span>
 				</div>
 			</div>
-
-			<button class="topbar-icon topbar-icon--drawer-close" id="closeSettingsDrawer" title="Fermer" type="button">
+			<button class="sd-close" id="closeSettingsDrawer" title="Fermer" type="button">
 				<i class="fa-solid fa-xmark"></i>
 			</button>
 		</div>
 
-		<div class="settings-drawer-content">
-			<div id="settingsFeedback" class="settings-feedback is-hidden"></div>
+		{# --- FEEDBACK --- #}
+		<div id="settingsFeedback" class="sd-feedback is-hidden"></div>
 
-			<div class="settings-pro-card">
-				<div class="settings-pro-head">
-					<div>
-						<div class="settings-pro-eyebrow">Compte</div>
-						<h4>Informations actuelles</h4>
+		{# --- BODY --- #}
+		<div
+			class="sd-body">
+
+			{# Groupe : Compte #}
+			<div class="sd-group">
+				<div class="sd-group-label">Compte</div>
+				<div class="sd-list">
+					<div class="sd-list-row sd-list-row--info">
+						<span class="sd-list-title">Nom</span>
+						<span class="sd-list-value">{{ app.user.firstname }}
+							{{ app.user.lastname }}</span>
 					</div>
-				</div>
-
-				<div class="settings-info-grid">
-					<div class="settings-info-box">
-						<span class="settings-info-label">Nom</span>
-						<strong>{{ app.user.firstname }}
-							{{ app.user.lastname }}</strong>
-					</div>
-					<div class="settings-info-box">
-						<span class="settings-info-label">E-mail</span>
-						<strong id="currentEmailDisplay">{{ app.user.email }}</strong>
-					</div>
-				</div>
-			</div>
-
-			<div class="settings-pro-card">
-				<div class="settings-pro-head">
-					<div>
-						<div class="settings-pro-eyebrow">Connexion</div>
-						<h4>Modifier mon e-mail</h4>
-					</div>
-					<button class="btn-outline" type="button" data-toggle-form="email">Modifier</button>
-				</div>
-
-				<div id="form-email" class="settings-form-pro is-hidden">
-					<div class="settings-form-grid">
-						<div class="settings-field">
-							<label for="input-email">Nouvel e-mail</label>
-							<input type="email" id="input-email" class="settings-input" placeholder="nouvel@email.com">
-						</div>
-						<div class="settings-field">
-							<label for="input-email-password">Mot de passe actuel</label>
-							<input type="password" id="input-email-password" class="settings-input" placeholder="Votre mot de passe actuel">
-						</div>
-					</div>
-
-					<input type="hidden" id="email-csrf" value="{{ csrf_token('update_email') }}">
-
-					<div class="settings-actions-row">
-						<button class="btn-primary" type="button" id="saveEmailBtn">
-							<i class="fa-solid fa-floppy-disk"></i>
-							Enregistrer l’e-mail
-						</button>
+					<div class="sd-list-row sd-list-row--info">
+						<span class="sd-list-title">E-mail</span>
+						{% set emailDomain = app.user.email|split('@')|last %}
+						<span class="sd-list-value">{{ app.user.email|slice(0,3) }}••••@{{ emailDomain }}</span>
 					</div>
 				</div>
 			</div>
 
-			<div class="settings-pro-card">
-				<div class="settings-pro-head">
-					<div>
-						<div class="settings-pro-eyebrow">Sécurité</div>
-						<h4>Changer mon mot de passe</h4>
+			{# Groupe : Connexion #}
+			<div class="sd-group">
+				<div class="sd-group-label">Connexion</div>
+				<div
+					class="sd-list">
+
+					{# Ligne e-mail #}
+					<div class="sd-list-row sd-list-row--action" data-toggle-form="email">
+						<span class="sd-list-title">Modifier l'e-mail</span>
+						<i class="fa-solid fa-chevron-right sd-chevron"></i>
 					</div>
-					<button class="btn-outline" type="button" data-toggle-form="password">Modifier</button>
+					<div id="form-email" class="sd-inline-form is-hidden">
+						<div class="sd-form-grid">
+							<div class="sd-field">
+								<label for="input-email">Nouvel e-mail</label>
+								<input type="email" id="input-email" class="sd-input" placeholder="nouvel@email.com">
+							</div>
+							<div class="sd-field">
+								<label for="input-email-password">Mot de passe actuel</label>
+								<input type="password" id="input-email-password" class="sd-input" placeholder="••••••••">
+							</div>
+						</div>
+						<input type="hidden" id="email-csrf" value="{{ csrf_token('update_email') }}">
+						<div class="sd-form-actions">
+							<button class="sd-cancel" type="button" data-toggle-form="email">Annuler</button>
+							<button class="btn-primary" type="button" id="saveEmailBtn">
+								<i class="fa-solid fa-floppy-disk"></i>
+								Enregistrer
+							</button>
+						</div>
+					</div>
+
+					{# Ligne mot de passe #}
+					<div class="sd-list-row sd-list-row--action" data-toggle-form="password">
+						<span class="sd-list-title">Changer le mot de passe</span>
+						<i class="fa-solid fa-chevron-right sd-chevron"></i>
+					</div>
+					<div id="form-password" class="sd-inline-form is-hidden">
+						<div class="sd-form-grid">
+							<div class="sd-field">
+								<label for="old-pass">Mot de passe actuel</label>
+								<input type="password" id="old-pass" class="sd-input" placeholder="••••••••">
+							</div>
+							<div class="sd-field">
+								<label for="new-pass">Nouveau mot de passe</label>
+								<input type="password" id="new-pass" class="sd-input" placeholder="8 caractères min.">
+							</div>
+							<div class="sd-field sd-field-full">
+								<label for="confirm-pass">Confirmer</label>
+								<input type="password" id="confirm-pass" class="sd-input" placeholder="Confirmer le nouveau mot de passe">
+							</div>
+						</div>
+						<input type="hidden" id="password-csrf" value="{{ csrf_token('update_password') }}">
+						<div class="sd-form-actions">
+							<button class="sd-cancel" type="button" data-toggle-form="password">Annuler</button>
+							<button class="btn-primary" type="button" id="savePasswordBtn">
+								<i class="fa-solid fa-shield-halved"></i>
+								Mettre à jour
+							</button>
+						</div>
+					</div>
+
 				</div>
+			</div>
 
-				<div id="form-password" class="settings-form-pro is-hidden">
-					<div class="settings-form-grid">
-						<div class="settings-field">
-							<label for="old-pass">Mot de passe actuel</label>
-							<input type="password" id="old-pass" class="settings-input" placeholder="Mot de passe actuel">
-						</div>
-						<div class="settings-field">
-							<label for="new-pass">Nouveau mot de passe</label>
-							<input type="password" id="new-pass" class="settings-input" placeholder="Minimum 8 caractères">
-						</div>
-						<div class="settings-field settings-field-full">
-							<label for="confirm-pass">Confirmer le nouveau mot de passe</label>
-							<input type="password" id="confirm-pass" class="settings-input" placeholder="Confirmez le nouveau mot de passe">
-						</div>
-					</div>
-
-					<input type="hidden" id="password-csrf" value="{{ csrf_token('update_password') }}">
-
-					<div class="settings-actions-row">
-						<button class="btn-primary" type="button" id="savePasswordBtn">
-							<i class="fa-solid fa-shield-halved"></i>
-							Mettre à jour le mot de passe
-						</button>
+			{# Groupe : Apparence #}
+			<div class="sd-group">
+				<div class="sd-group-label">Apparence</div>
+				<div class="sd-list">
+					<div class="sd-list-row">
+						<span class="sd-list-title">Thème</span>
+						<span class="sd-list-value sd-list-value--active">
+							<i class="fa-solid fa-moon" style="font-size:11px"></i>
+							Sombre actif
+						</span>
 					</div>
 				</div>
 			</div>
 
-			<div class="settings-pro-card settings-pro-card-muted">
-				<div class="settings-pro-head">
-					<div>
-						<div class="settings-pro-eyebrow">Apparence</div>
-						<h4>Thème du dashboard</h4>
-					</div>
-				</div>
-
-				<div class="settings-static-row">
-					<div>
-						<div class="settings-static-row-title">Thème sombre CHM</div>
-						<div class="settings-static-row-subtitle">Design basé sur les couleurs globales orange / bleu / noir du site</div>
-					</div>
-
-					<div class="settings-dark-pill">
-						<i class="fa-solid fa-moon"></i>
-						Actif
+			{# Groupe : Danger #}
+			<div class="sd-group">
+				<div class="sd-group-label sd-group-label--danger">Zone de danger</div>
+				<div class="sd-list">
+					<div class="sd-list-row sd-list-row--danger" id="deleteAccountBtn">
+						<span class="sd-list-title sd-list-title--danger">Supprimer le compte</span>
+						<i class="fa-solid fa-chevron-right sd-chevron sd-chevron--danger"></i>
 					</div>
 				</div>
 			</div>
 
-			<div class="danger-box">
-				<div>
-					<h4 class="danger-box-title">Zone danger</h4>
-					<p class="danger-box-text">La suppression du compte est irréversible.</p>
-				</div>
-				<button type="button" id="deleteAccountBtn" class="danger-btn" aria-label="Supprimer mon compte définitivement">Supprimer</button>
-			</div>
 		</div>
 	</aside>
+
 
 	<div id="cropperModal" class="cropper-modal-overlay">
 		<div class="cropper-modal-card">

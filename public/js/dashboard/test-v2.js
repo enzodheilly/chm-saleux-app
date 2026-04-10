@@ -1,6 +1,6 @@
 /**
  * Dashboard adhérent - version propre
- * 100% compatible avec un Twig sans JS inline
+ * Compatible avec le drawer Apple-style (sd-*)
  */
 
 (function () {
@@ -9,18 +9,20 @@
     const dashboardRoot = document.getElementById('memberDashboard');
 
     const routes = {
-        updateEmail: dashboardRoot?.dataset.routeUpdateEmail || '/espace-adherent/settings/update-email',
+        updateEmail:    dashboardRoot?.dataset.routeUpdateEmail    || '/espace-adherent/settings/update-email',
         updatePassword: dashboardRoot?.dataset.routeUpdatePassword || '/espace-adherent/settings/update-password',
-        updateLicence: dashboardRoot?.dataset.routeUpdateLicence || '/espace-adherent/licence',
-        deleteAccount: dashboardRoot?.dataset.routeDeleteAccount || '/profile/delete-account',
-        uploadPhoto: dashboardRoot?.dataset.routeUploadPhoto || '/profil/photo'
+        updateLicence:  dashboardRoot?.dataset.routeUpdateLicence  || '/espace-adherent/licence',
+        deleteAccount:  dashboardRoot?.dataset.routeDeleteAccount  || '/profile/delete-account',
+        uploadPhoto:    dashboardRoot?.dataset.routeUploadPhoto    || '/profil/photo'
     };
 
-    // ✅ Utilitaire CSRF — lit les meta tags injectées dans base.html.twig
     function getCsrfToken(name) {
         return document.querySelector(`meta[name="csrf-${name}"]`)?.content ?? '';
     }
 
+    // =========================================
+    // FLASH MESSAGES
+    // =========================================
     function showJsFlash(message, type = 'success') {
         const container = document.querySelector('.flash-container');
         if (!container) return;
@@ -28,10 +30,8 @@
         const flash = document.createElement('div');
         flash.className = `flash-message flash-${type}`;
 
-        let iconClass = 'fa-circle-info';
-        if (type === 'success') iconClass = 'fa-circle-check';
-        if (type === 'error' || type === 'danger') iconClass = 'fa-circle-xmark';
-        if (type === 'warning') iconClass = 'fa-triangle-exclamation';
+        const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', danger: 'fa-circle-xmark', warning: 'fa-triangle-exclamation' };
+        const iconClass = icons[type] || 'fa-circle-info';
 
         flash.innerHTML = `
             <i class="fa-solid ${iconClass}"></i>
@@ -60,196 +60,181 @@
             return;
         }
 
-        box.className = `settings-feedback ${type}`;
+        box.className = `sd-feedback ${type}`;
         box.textContent = message;
-        box.style.display = 'block';
+        box.classList.remove('is-hidden');
 
-        setTimeout(() => {
-            box.style.display = 'none';
-        }, 5000);
+        setTimeout(() => box.classList.add('is-hidden'), 5000);
     }
 
+    // =========================================
+    // THEME
+    // =========================================
     function applyTheme() {
         document.body.classList.remove('theme-light');
         localStorage.setItem('dashboard-theme', 'dark');
     }
 
+    // =========================================
+    // MOBILE MENU (sidebar)
+    // =========================================
     function toggleMobileMenu() {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('mobileOverlay');
-
-        if (!sidebar || !overlay) return;
-
-        sidebar.classList.toggle('active');
-        overlay.classList.toggle('active');
+        document.getElementById('sidebar')?.classList.toggle('active');
+        document.getElementById('mobileOverlay')?.classList.toggle('active');
     }
 
     function closeMobileMenu() {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('mobileOverlay');
-
-        sidebar?.classList.remove('active');
-        overlay?.classList.remove('active');
+        document.getElementById('sidebar')?.classList.remove('active');
+        document.getElementById('mobileOverlay')?.classList.remove('active');
     }
 
+    // =========================================
+    // SETTINGS DRAWER
+    // =========================================
     function openSettingsDrawer() {
-        const drawer = document.getElementById('settingsDrawer');
-        const overlay = document.getElementById('settingsOverlay');
-
-        drawer?.classList.add('open');
-        overlay?.classList.add('open');
-        drawer?.setAttribute('aria-hidden', 'false');
+        document.getElementById('settingsDrawer')?.classList.add('open');
+        document.getElementById('settingsOverlay')?.classList.add('open');
+        document.getElementById('settingsDrawer')?.setAttribute('aria-hidden', 'false');
     }
 
     function closeSettingsDrawer() {
-        const drawer = document.getElementById('settingsDrawer');
-        const overlay = document.getElementById('settingsOverlay');
-
-        drawer?.classList.remove('open');
-        overlay?.classList.remove('open');
-        drawer?.setAttribute('aria-hidden', 'true');
+        closeAllForms();
+        document.getElementById('settingsDrawer')?.classList.remove('open');
+        document.getElementById('settingsOverlay')?.classList.remove('open');
+        document.getElementById('settingsDrawer')?.setAttribute('aria-hidden', 'true');
     }
 
+    // Ferme tous les formulaires inline du drawer
+    function closeAllForms() {
+        document.querySelectorAll('.sd-inline-form').forEach(f => f.classList.add('is-hidden'));
+        document.querySelectorAll('.sd-list-row--action').forEach(r => r.classList.remove('is-open'));
+    }
+
+    // Toggle d'un formulaire inline (ouverture via ligne cliquable, fermeture via bouton Annuler)
     function toggleEdit(field) {
         const form = document.getElementById(`form-${field}`);
         if (!form) return;
 
-        const isOpen = window.getComputedStyle(form).display !== 'none';
+        const isOpen = !form.classList.contains('is-hidden');
 
-        document.querySelectorAll('.settings-form-pro').forEach((el) => {
-            el.style.display = 'none';
-        });
-
-        form.style.display = isOpen ? 'none' : 'block';
+        // Ferme tous les autres d'abord
+        closeAllForms();
 
         if (!isOpen) {
-            const firstInput = form.querySelector('input');
-            if (firstInput) {
-                setTimeout(() => firstInput.focus(), 100);
-            }
+            form.classList.remove('is-hidden');
+
+            // Marque la ligne parente comme ouverte
+            const trigger = document.querySelector(`[data-toggle-form="${field}"].sd-list-row--action`);
+            trigger?.classList.add('is-open');
+
+            setTimeout(() => form.querySelector('input')?.focus(), 80);
         }
     }
 
+    function bindSettingsDrawer() {
+        document.getElementById('openSettingsDrawer')?.addEventListener('click', openSettingsDrawer);
+        document.getElementById('closeSettingsDrawer')?.addEventListener('click', closeSettingsDrawer);
+        document.getElementById('settingsOverlay')?.addEventListener('click', closeSettingsDrawer);
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeSettingsDrawer();
+        });
+    }
+
+    function bindSettingsForms() {
+        // Triggers : lignes cliquables + boutons Annuler portent tous data-toggle-form
+        document.querySelectorAll('[data-toggle-form]').forEach(el => {
+            el.addEventListener('click', function () {
+                toggleEdit(this.dataset.toggleForm);
+            });
+        });
+
+        document.getElementById('saveEmailBtn')?.addEventListener('click', updateEmail);
+        document.getElementById('savePasswordBtn')?.addEventListener('click', updatePassword);
+        document.getElementById('deleteAccountBtn')?.addEventListener('click', confirmDeleteAccount);
+    }
+
+    // =========================================
+    // UPDATE EMAIL
+    // =========================================
     async function updateEmail() {
-        const email = document.getElementById('input-email')?.value.trim();
-        const currentPassword = document.getElementById('input-email-password')?.value;
-        const csrf = document.getElementById('email-csrf')?.value;
+        const email    = document.getElementById('input-email')?.value.trim();
+        const password = document.getElementById('input-email-password')?.value;
+        const csrf     = document.getElementById('email-csrf')?.value;
 
-        if (!email) {
-            showSettingsFeedback('error', 'Veuillez renseigner un nouvel e-mail.');
-            return;
-        }
-
-        if (!currentPassword) {
-            showSettingsFeedback('error', 'Veuillez renseigner votre mot de passe actuel.');
-            return;
-        }
+        if (!email)    return showSettingsFeedback('error', 'Veuillez renseigner un nouvel e-mail.');
+        if (!password) return showSettingsFeedback('error', 'Veuillez renseigner votre mot de passe actuel.');
 
         try {
-            const response = await fetch(routes.updateEmail, {
+            const res  = await fetch(routes.updateEmail, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: JSON.stringify({
-                    email,
-                    currentPassword,
-                    _token: csrf
-                })
+                headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                body: JSON.stringify({ email, currentPassword: password, _token: csrf })
             });
+            const data = await res.json();
 
-            const data = await response.json();
-
-            if (!response.ok || !data.success) {
-                showSettingsFeedback('error', data.message || "Impossible de mettre à jour l'e-mail.");
-                return;
+            if (!res.ok || !data.success) {
+                return showSettingsFeedback('error', data.message || "Impossible de mettre à jour l'e-mail.");
             }
 
-            const currentEmailDisplay = document.getElementById('currentEmailDisplay');
-            if (currentEmailDisplay) {
-                currentEmailDisplay.textContent = data.email || email;
-            }
+            const display = document.getElementById('currentEmailDisplay');
+            if (display) display.textContent = data.email || email;
 
-            const emailInput = document.getElementById('input-email');
-            const passwordInput = document.getElementById('input-email-password');
-            const form = document.getElementById('form-email');
-
-            if (emailInput) emailInput.value = '';
-            if (passwordInput) passwordInput.value = '';
-            if (form) form.style.display = 'none';
+            document.getElementById('input-email').value = '';
+            document.getElementById('input-email-password').value = '';
+            closeAllForms();
 
             showSettingsFeedback('success', data.message || 'E-mail mis à jour avec succès.');
             showJsFlash(data.message || 'E-mail mis à jour avec succès.', 'success');
-        } catch (error) {
+        } catch {
             showSettingsFeedback('error', "Une erreur est survenue lors de la mise à jour de l'e-mail.");
         }
     }
 
+    // =========================================
+    // UPDATE PASSWORD
+    // =========================================
     async function updatePassword() {
-        const currentPassword = document.getElementById('old-pass')?.value;
-        const newPassword = document.getElementById('new-pass')?.value;
-        const confirmPassword = document.getElementById('confirm-pass')?.value;
-        const csrf = document.getElementById('password-csrf')?.value;
+        const oldPass  = document.getElementById('old-pass')?.value;
+        const newPass  = document.getElementById('new-pass')?.value;
+        const confirm  = document.getElementById('confirm-pass')?.value;
+        const csrf     = document.getElementById('password-csrf')?.value;
 
-        if (!currentPassword || !newPassword || !confirmPassword) {
-            showSettingsFeedback('error', 'Veuillez remplir tous les champs du mot de passe.');
-            return;
-        }
-
-        if (newPassword.length < 8) {
-            showSettingsFeedback('error', 'Le nouveau mot de passe doit contenir au moins 8 caractères.');
-            return;
-        }
-
-        if (newPassword !== confirmPassword) {
-            showSettingsFeedback('error', 'La confirmation du nouveau mot de passe ne correspond pas.');
-            return;
-        }
+        if (!oldPass || !newPass || !confirm)
+            return showSettingsFeedback('error', 'Veuillez remplir tous les champs.');
+        if (newPass.length < 8)
+            return showSettingsFeedback('error', 'Le mot de passe doit contenir au moins 8 caractères.');
+        if (newPass !== confirm)
+            return showSettingsFeedback('error', 'La confirmation ne correspond pas.');
 
         try {
-            const response = await fetch(routes.updatePassword, {
+            const res  = await fetch(routes.updatePassword, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: JSON.stringify({
-                    currentPassword,
-                    newPassword,
-                    confirmPassword,
-                    _token: csrf
-                })
+                headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                body: JSON.stringify({ currentPassword: oldPass, newPassword: newPass, confirmPassword: confirm, _token: csrf })
             });
+            const data = await res.json();
 
-            const data = await response.json();
+            if (!res.ok || !data.success)
+                return showSettingsFeedback('error', data.message || 'Impossible de mettre à jour le mot de passe.');
 
-            if (!response.ok || !data.success) {
-                showSettingsFeedback('error', data.message || 'Impossible de mettre à jour le mot de passe.');
-                return;
-            }
-
-            const oldPass = document.getElementById('old-pass');
-            const newPass = document.getElementById('new-pass');
-            const confirmPass = document.getElementById('confirm-pass');
-            const form = document.getElementById('form-password');
-
-            if (oldPass) oldPass.value = '';
-            if (newPass) newPass.value = '';
-            if (confirmPass) confirmPass.value = '';
-            if (form) form.style.display = 'none';
+            document.getElementById('old-pass').value = '';
+            document.getElementById('new-pass').value = '';
+            document.getElementById('confirm-pass').value = '';
+            closeAllForms();
 
             showSettingsFeedback('success', data.message || 'Mot de passe mis à jour avec succès.');
             showJsFlash(data.message || 'Mot de passe mis à jour avec succès.', 'success');
-        } catch (error) {
+        } catch {
             showSettingsFeedback('error', 'Une erreur est survenue lors de la mise à jour du mot de passe.');
         }
     }
 
+    // =========================================
+    // DELETE ACCOUNT
+    // =========================================
     function confirmDeleteAccount() {
-        if (!confirm('ATTENTION : La suppression est définitive. Continuer ?')) {
-            return;
-        }
+        if (!confirm('ATTENTION : La suppression est définitive. Continuer ?')) return;
 
         const password = prompt('Saisissez votre mot de passe pour confirmer :');
         if (!password) return;
@@ -257,116 +242,90 @@
         fetch(routes.deleteAccount, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                password,
-                _token: getCsrfToken('delete-account') // ✅ CSRF ajouté
-            })
+            body: JSON.stringify({ password, _token: getCsrfToken('delete-account') })
         })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success) {
-                    window.location.href = '/logout';
-                } else {
-                    showJsFlash(data.message || 'Erreur lors de la suppression.', 'error');
-                }
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) window.location.href = '/logout';
+                else showJsFlash(data.message || 'Erreur lors de la suppression.', 'error');
             })
-            .catch(() => {
-                showJsFlash('Erreur réseau.', 'error');
-            });
+            .catch(() => showJsFlash('Erreur réseau.', 'error'));
     }
 
+    // =========================================
+    // LICENCE
+    // =========================================
     function openLicenceChoice() {
         const modal = document.getElementById('licenceModal');
         if (!modal) return;
-
         modal.style.display = 'flex';
-
-        setTimeout(() => {
-            const input = document.getElementById('licenceInputManual');
-            input?.focus();
-        }, 100);
+        setTimeout(() => document.getElementById('licenceInputManual')?.focus(), 100);
     }
 
     function closeLicenceModal() {
         const modal = document.getElementById('licenceModal');
-        if (modal) {
-            modal.style.display = 'none';
-        }
+        if (modal) modal.style.display = 'none';
     }
 
     async function saveLicenceManual() {
         const input = document.getElementById('licenceInputManual');
-        const num = input ? input.value.trim() : '';
+        const num   = input?.value.trim();
 
-        if (!num || num.length < 4) {
-            showJsFlash('Veuillez entrer un numéro de licence valide.', 'warning');
-            return;
-        }
+        if (!num || num.length < 4)
+            return showJsFlash('Veuillez entrer un numéro de licence valide.', 'warning');
 
         const formData = new FormData();
         formData.append('licenceNumber', num);
-        formData.append('_token', getCsrfToken('edit-license')); // ✅ CSRF ajouté
+        formData.append('_token', getCsrfToken('edit-license'));
 
         try {
-            const response = await fetch(routes.updateLicence, {
-                method: 'POST',
-                body: formData
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                location.reload();
-            } else {
-                showJsFlash(result.message || "Erreur lors de l'association.", 'error');
-            }
-        } catch (error) {
+            const res    = await fetch(routes.updateLicence, { method: 'POST', body: formData });
+            const result = await res.json();
+            if (result.success) location.reload();
+            else showJsFlash(result.message || "Erreur lors de l'association.", 'error');
+        } catch {
             showJsFlash('Erreur de connexion au serveur.', 'error');
         }
     }
 
     function openChatbot(mode = null) {
         closeLicenceModal();
-
-        const btn = document.getElementById('assistantWidgetOpen');
-        if (btn) btn.click();
+        document.getElementById('assistantWidgetOpen')?.click();
 
         if (mode === 'licence' && window.eliosInstance) {
-            setTimeout(() => {
-                window.eliosInstance.handleSend('FLOW_LICENSE');
-            }, 500);
+            setTimeout(() => window.eliosInstance.handleSend('FLOW_LICENSE'), 500);
         }
     }
 
+    // =========================================
+    // TABS NAVIGATION
+    // =========================================
     function bindTabs() {
         const navItems = document.querySelectorAll('.nav-item');
         const sections = document.querySelectorAll('.section-view');
 
-        navItems.forEach((item) => {
+        navItems.forEach(item => {
             item.addEventListener('click', function (e) {
                 e.preventDefault();
                 const targetId = this.dataset.target;
 
-                navItems.forEach((nav) => nav.classList.remove('active'));
+                navItems.forEach(n => n.classList.remove('active'));
                 this.classList.add('active');
 
-                sections.forEach((sec) => sec.classList.remove('active'));
-                const targetSection = document.getElementById(`tab-${targetId}`);
-                if (targetSection) {
-                    targetSection.classList.add('active');
-                }
+                sections.forEach(s => s.classList.remove('active'));
+                document.getElementById(`tab-${targetId}`)?.classList.add('active');
 
-                if (window.innerWidth < 1024) {
-                    closeMobileMenu();
-                }
+                if (window.innerWidth < 1024) closeMobileMenu();
             });
         });
     }
 
+    // =========================================
+    // FLASH BINDINGS
+    // =========================================
     function bindFlashes() {
-        document.querySelectorAll('.flash-message').forEach((flash) => {
-            const closeBtn = flash.querySelector('.flash-close');
-            closeBtn?.addEventListener('click', () => flash.remove());
+        document.querySelectorAll('.flash-message').forEach(flash => {
+            flash.querySelector('.flash-close')?.addEventListener('click', () => flash.remove());
 
             setTimeout(() => {
                 if (flash.parentElement) {
@@ -377,114 +336,113 @@
         });
     }
 
+    // =========================================
+    // MOBILE MENU BINDINGS
+    // =========================================
     function bindMobileMenu() {
         document.getElementById('sidebarToggle')?.addEventListener('click', toggleMobileMenu);
         document.getElementById('mobileOverlay')?.addEventListener('click', closeMobileMenu);
     }
 
-    function bindSettingsDrawer() {
-        document.getElementById('openSettingsDrawer')?.addEventListener('click', openSettingsDrawer);
-        document.getElementById('closeSettingsDrawer')?.addEventListener('click', closeSettingsDrawer);
-        document.getElementById('settingsOverlay')?.addEventListener('click', closeSettingsDrawer);
+    // =========================================
+    // ELIOS / ASSISTANT
+    // =========================================
+    function bindLicenceForm() {
+        const addBtn    = document.getElementById('licAddBtn');
+        const cancelBtn = document.getElementById('licCancelBtn');
+        const saveBtn   = document.getElementById('licSaveBtn');
+        const formEl    = document.getElementById('licFooterForm');
+        const defaultEl = document.getElementById('licFooterDefault');
 
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                closeSettingsDrawer();
-            }
-        });
-    }
+        if (!addBtn || !formEl) return;
 
-    function bindSettingsForms() {
-        document.querySelectorAll('[data-toggle-form]').forEach((btn) => {
-            btn.addEventListener('click', function () {
-                const field = this.dataset.toggleForm;
-                if (field) {
-                    toggleEdit(field);
-                }
-            });
+        addBtn.addEventListener('click', () => {
+            defaultEl?.classList.add('is-hidden');
+            formEl.classList.remove('is-hidden');
+            setTimeout(() => document.getElementById('licenceInputManual')?.focus(), 80);
         });
 
-        document.getElementById('saveEmailBtn')?.addEventListener('click', updateEmail);
-        document.getElementById('savePasswordBtn')?.addEventListener('click', updatePassword);
-        document.getElementById('deleteAccountBtn')?.addEventListener('click', confirmDeleteAccount);
+        cancelBtn?.addEventListener('click', () => {
+            formEl.classList.add('is-hidden');
+            defaultEl?.classList.remove('is-hidden');
+            const input = document.getElementById('licenceInputManual');
+            if (input) input.value = '';
+        });
+
+        saveBtn?.addEventListener('click', saveLicenceManual);
+
+        // Valider aussi avec Entrée
+        document.getElementById('licenceInputManual')?.addEventListener('keydown', e => {
+            if (e.key === 'Enter') saveLicenceManual();
+        });
     }
 
     function bindElios() {
-        const eliosBtn = document.getElementById('assistantWidgetOpen');
-        if (eliosBtn) {
-            eliosBtn.style.zIndex = '99999';
-            eliosBtn.style.pointerEvents = 'auto';
+        const btn = document.getElementById('assistantWidgetOpen');
+        if (btn) {
+            btn.style.zIndex = '99999';
+            btn.style.pointerEvents = 'auto';
         }
     }
 
+    // =========================================
+    // PHOTO CROPPER
+    // =========================================
     function bindPhotoCropper() {
-        const fileInput = document.getElementById('avatar-upload');
+        const fileInput    = document.getElementById('avatar-upload');
         const cropperModal = document.getElementById('cropperModal');
         const cropperImage = document.getElementById('cropperImage');
-        const cropBtn = document.getElementById('cropAndSaveBtn');
-        const cancelCropBtn = document.getElementById('cancelCropBtn');
+        const cropBtn      = document.getElementById('cropAndSaveBtn');
+        const cancelBtn    = document.getElementById('cancelCropBtn');
 
         if (!fileInput || !cropperModal || !cropperImage) return;
 
         let cropper = null;
 
-        fileInput.addEventListener('change', function (e) {
+        fileInput.addEventListener('change', e => {
             const file = e.target.files?.[0];
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = function (event) {
+            reader.onload = event => {
                 cropperImage.src = event.target?.result || '';
                 cropperModal.style.display = 'flex';
 
                 if (cropper) cropper.destroy();
-
-                cropper = new Cropper(cropperImage, {
-                    aspectRatio: 1,
-                    viewMode: 1
-                });
+                cropper = new Cropper(cropperImage, { aspectRatio: 1, viewMode: 1 });
             };
             reader.readAsDataURL(file);
         });
 
-        cancelCropBtn?.addEventListener('click', () => {
+        cancelBtn?.addEventListener('click', () => {
             cropperModal.style.display = 'none';
-
-            if (cropper) {
-                cropper.destroy();
-                cropper = null;
-            }
+            if (cropper) { cropper.destroy(); cropper = null; }
         });
 
         cropBtn?.addEventListener('click', () => {
             if (!cropper) return;
 
-            cropper.getCroppedCanvas({ width: 400, height: 400 }).toBlob((blob) => {
+            cropper.getCroppedCanvas({ width: 400, height: 400 }).toBlob(blob => {
                 if (!blob) return;
 
                 const formData = new FormData();
                 formData.append('profileImage', blob, 'avatar.jpg');
-                formData.append('_token', getCsrfToken('upload-photo')); // ✅ CSRF ajouté
+                formData.append('_token', getCsrfToken('upload-photo'));
 
-                fetch(routes.uploadPhoto, {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then((res) => res.json())
-                    .then((data) => {
-                        if (data.success) {
-                            location.reload();
-                        } else {
-                            showJsFlash("Erreur lors de l'envoi de la photo.", 'error');
-                        }
+                fetch(routes.uploadPhoto, { method: 'POST', body: formData })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) location.reload();
+                        else showJsFlash("Erreur lors de l'envoi de la photo.", 'error');
                     })
-                    .catch(() => {
-                        showJsFlash("Erreur réseau lors de l'envoi de la photo.", 'error');
-                    });
+                    .catch(() => showJsFlash("Erreur réseau lors de l'envoi de la photo.", 'error'));
             }, 'image/jpeg', 0.85);
         });
     }
 
+    // =========================================
+    // CHARTS
+    // =========================================
     function bindDashboardCharts() {
         if (!dashboardRoot) return;
 
@@ -492,284 +450,191 @@
         if (!rawSessionsJson) return;
 
         let rawSessions = [];
+        try { rawSessions = JSON.parse(rawSessionsJson); }
+        catch (e) { console.error('Impossible de parser les sessions.', e); return; }
 
-        try {
-            rawSessions = JSON.parse(rawSessionsJson);
-        } catch (error) {
-            console.error('Impossible de parser les sessions du dashboard.', error);
-            return;
-        }
+        if (!Array.isArray(rawSessions) || rawSessions.length === 0) return;
 
-        if (!Array.isArray(rawSessions) || rawSessions.length === 0) {
-            return;
-        }
+        const nf  = new Intl.NumberFormat('fr-FR');
+        const pad = n => String(n).padStart(2, '0');
 
-        const nf = new Intl.NumberFormat('fr-FR');
+        const parseDate  = v => { const d = new Date(v); return isNaN(d) ? null : d; };
+        const formatDate = d => `${pad(d.getDate())}/${pad(d.getMonth() + 1)}`;
 
-        const pad = (n) => String(n).padStart(2, '0');
-
-        const parseDate = (value) => {
-            const d = new Date(value);
-            return Number.isNaN(d.getTime()) ? null : d;
-        };
-
-        const formatDate = (date) => `${pad(date.getDate())}/${pad(date.getMonth() + 1)}`;
-
-        const formatDuration = (seconds) => {
-            const totalMinutes = Math.floor((Number(seconds) || 0) / 60);
-            const hours = Math.floor(totalMinutes / 60);
-            const minutes = totalMinutes % 60;
-            return hours > 0 ? `${hours}h ${minutes}m` : `${minutes} min`;
+        const formatDuration = seconds => {
+            const m = Math.floor((Number(seconds) || 0) / 60);
+            const h = Math.floor(m / 60);
+            return h > 0 ? `${h}h ${m % 60}m` : `${m} min`;
         };
 
         const formatMetric = (value, metric) => {
-            const safe = Number(value) || 0;
-            if (metric === 'duration') return formatDuration(safe);
-            if (metric === 'reps') return `${nf.format(safe)} reps`;
-            return `${nf.format(safe)} kg`;
+            const v = Number(value) || 0;
+            if (metric === 'duration') return formatDuration(v);
+            if (metric === 'reps')     return `${nf.format(v)} reps`;
+            return `${nf.format(v)} kg`;
         };
 
         const dayMap = new Map();
-
-        rawSessions.forEach((session) => {
-            const date = parseDate(session.performed_at);
+        rawSessions.forEach(s => {
+            const date = parseDate(s.performed_at);
             if (!date) return;
-
-            const key = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-
-            const existing = dayMap.get(key) || {
-                date: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
-                volume: 0,
-                duration: 0,
-                reps: 0,
-                sessionsCount: 0
-            };
-
-            existing.volume += Number(session.total_volume || 0);
-            existing.duration += Number(session.duration_seconds || 0);
-            existing.reps += Number(session.total_completed_sets || 0);
-            existing.sessionsCount += 1;
-
-            dayMap.set(key, existing);
+            const key = `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+            const ex  = dayMap.get(key) || { date: new Date(date.getFullYear(), date.getMonth(), date.getDate()), volume: 0, duration: 0, reps: 0, sessionsCount: 0 };
+            ex.volume   += Number(s.total_volume || 0);
+            ex.duration += Number(s.duration_seconds || 0);
+            ex.reps     += Number(s.total_completed_sets || 0);
+            ex.sessionsCount++;
+            dayMap.set(key, ex);
         });
 
         const allDays = Array.from(dayMap.values()).sort((a, b) => a.date - b.date);
 
-        const filterByDays = (days) => {
-            if (!days || days === 0) return [...allDays];
-
-            const now = new Date();
-            const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const filterByDays = days => {
+            if (!days) return [...allDays];
+            const start = new Date();
+            start.setHours(0,0,0,0);
             start.setDate(start.getDate() - (days - 1));
-
-            return allDays.filter((item) => item.date >= start);
+            return allDays.filter(i => i.date >= start);
         };
 
-        const totalFor = (dataset, metric) =>
-            dataset.reduce((sum, item) => sum + Number(item[metric] || 0), 0);
-
+        const totalFor    = (dataset, metric) => dataset.reduce((s, i) => s + Number(i[metric] || 0), 0);
         const bestDayText = (dataset, metric) => {
             if (!dataset.length) return '—';
-            const best = [...dataset].sort((a, b) => Number(b[metric] || 0) - Number(a[metric] || 0))[0];
+            const best = [...dataset].sort((a, b) => Number(b[metric]||0) - Number(a[metric]||0))[0];
             return `${formatDate(best.date)} · ${formatMetric(best[metric], metric)}`;
         };
 
         const renderChart = (container, dataset, metric, limit = null) => {
             if (!container) return;
+            if (!dataset.length) { container.innerHTML = '<div class="empty-state">Aucune donnée disponible.</div>'; return; }
 
-            if (!dataset.length) {
-                container.innerHTML = '<div class="empty-state">Aucune donnée disponible.</div>';
-                return;
-            }
+            const data     = limit ? dataset.slice(-limit) : dataset;
+            const maxValue = Math.max(...data.map(i => Number(i[metric] || 0)), 1);
 
-            const displayData = limit ? dataset.slice(-limit) : dataset;
-            const maxValue = Math.max(...displayData.map((item) => Number(item[metric] || 0)), 1);
-
-            container.style.gridTemplateColumns = `repeat(${displayData.length}, 1fr)`;
-
-            container.innerHTML = displayData.map((item) => {
-                const value = Number(item[metric] || 0);
-                const rawHeight = maxValue > 0 ? (value / maxValue) * 100 : 0;
-                const finalHeight = value > 0 ? Math.max(rawHeight, 10) : 8;
-
+            container.style.gridTemplateColumns = `repeat(${data.length}, 1fr)`;
+            container.innerHTML = data.map(item => {
+                const v   = Number(item[metric] || 0);
+                const raw = maxValue > 0 ? (v / maxValue) * 100 : 0;
+                const h   = v > 0 ? Math.max(raw, 10) : 8;
                 return `
                     <div class="bar-col" tabindex="0">
-                        <div class="bar-bubble refined-bubble" style="--bubble-offset: calc(${finalHeight}% + 14px);">
-                            ${formatDate(item.date)} · ${formatMetric(value, metric)}
+                        <div class="bar-bubble refined-bubble" style="--bubble-offset:calc(${h}% + 14px)">
+                            ${formatDate(item.date)} · ${formatMetric(v, metric)}
                         </div>
-                        <div class="bar ${value === 0 ? 'muted' : ''}" style="height:${finalHeight}%"></div>
+                        <div class="bar ${v === 0 ? 'muted' : ''}" style="height:${h}%"></div>
                         <div class="bar-label">${formatDate(item.date)}</div>
-                    </div>
-                `;
+                    </div>`;
             }).join('');
 
-            const cols = container.querySelectorAll('.bar-col');
-
-            cols.forEach((col) => {
+            container.querySelectorAll('.bar-col').forEach(col => {
                 col.addEventListener('click', () => {
-                    const alreadyActive = col.classList.contains('is-active');
-                    cols.forEach((c) => c.classList.remove('is-active'));
-                    if (!alreadyActive) {
-                        col.classList.add('is-active');
-                    }
+                    const was = col.classList.contains('is-active');
+                    container.querySelectorAll('.bar-col').forEach(c => c.classList.remove('is-active'));
+                    if (!was) col.classList.add('is-active');
                 });
-
-                col.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        col.click();
-                    }
-                });
+                col.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); col.click(); } });
             });
         };
 
-        // HOME
-        const homeTabs = document.querySelectorAll('#homeMetricTabs .weekly-tab');
-        const homeChart = document.getElementById('homeWeeklyChart');
-        const homeMetricTotal = document.getElementById('homeMetricTotal');
-        const homeBestDay = document.getElementById('homeBestDay');
-        const homeTotalReps = document.getElementById('homeTotalReps');
+        // HOME chart
+        const homeTabs     = document.querySelectorAll('#homeMetricTabs .weekly-tab');
+        const homeChart    = document.getElementById('homeWeeklyChart');
+        const homeTotal    = document.getElementById('homeMetricTotal');
+        const homeBestDay  = document.getElementById('homeBestDay');
+        const homeTotalReps= document.getElementById('homeTotalReps');
 
-        if (homeChart && homeTabs.length > 0) {
+        if (homeChart && homeTabs.length) {
             const homeData = allDays.slice(-7);
 
             const updateHome = (metric = 'volume') => {
-                homeTabs.forEach((tab) => tab.classList.toggle('active', tab.dataset.metric === metric));
+                homeTabs.forEach(t => t.classList.toggle('active', t.dataset.metric === metric));
                 renderChart(homeChart, homeData, metric, 7);
-
-                if (homeMetricTotal) {
-                    homeMetricTotal.textContent = formatMetric(totalFor(homeData, metric), metric);
-                }
-
-                if (homeBestDay) {
-                    homeBestDay.textContent = bestDayText(homeData, metric);
-                }
+                if (homeTotal)    homeTotal.textContent    = formatMetric(totalFor(homeData, metric), metric);
+                if (homeBestDay)  homeBestDay.textContent  = bestDayText(homeData, metric);
             };
 
-            if (homeTotalReps) {
-                homeTotalReps.textContent = nf.format(totalFor(allDays, 'reps'));
-            }
-
-            homeTabs.forEach((tab) => {
-                tab.addEventListener('click', () => updateHome(tab.dataset.metric));
-            });
-
+            if (homeTotalReps) homeTotalReps.textContent = nf.format(totalFor(allDays, 'reps'));
+            homeTabs.forEach(t => t.addEventListener('click', () => updateHome(t.dataset.metric)));
             updateHome('volume');
         }
 
-        // PROGRESS
-        const progressMetricTabs = document.querySelectorAll('#progressMetricTabs .weekly-tab');
-        const progressRangeMenu = document.getElementById('progressRangeTabs');
+        // PROGRESS chart
+        const progressMetricTabs   = document.querySelectorAll('#progressMetricTabs .weekly-tab');
+        const progressRangeMenu    = document.getElementById('progressRangeTabs');
         const progressRangeTrigger = document.getElementById('progressRangeTrigger');
-        const progressRangeLabel = progressRangeMenu?.querySelector('.progress-range-label');
-        const progressRangeTabs = document.querySelectorAll('#progressRangeTabs .progress-range-option');
+        const progressRangeLabel   = progressRangeMenu?.querySelector('.progress-range-label');
+        const progressRangeOptions = document.querySelectorAll('#progressRangeTabs .progress-range-option');
+        const progressChart        = document.getElementById('progressDetailedChart');
 
-        const progressChart = document.getElementById('progressDetailedChart');
-        const progressTotalValue = document.getElementById('progressTotalValue');
-        const progressDurationValue = document.getElementById('progressDurationValue');
-        const progressRepsValue = document.getElementById('progressRepsValue');
+        const progressTotalValue      = document.getElementById('progressTotalValue');
+        const progressDurationValue   = document.getElementById('progressDurationValue');
+        const progressRepsValue       = document.getElementById('progressRepsValue');
         const progressActiveDaysValue = document.getElementById('progressActiveDaysValue');
 
-        if (progressChart && progressMetricTabs.length > 0 && progressRangeTabs.length > 0) {
+        if (progressChart && progressMetricTabs.length && progressRangeOptions.length) {
             let progressMetric = 'volume';
-            let progressRange = 30;
+            let progressRange  = 30;
 
-            const rangeLabels = {
-                30: '30 derniers jours',
-                90: '3 derniers mois',
-                365: 'Cette année',
-                0: 'All time'
-            };
+            const rangeLabels = { 30: '30 derniers jours', 90: '3 derniers mois', 365: 'Cette année', 0: 'All time' };
 
             const updateProgress = () => {
                 const filtered = filterByDays(progressRange);
-
-                progressMetricTabs.forEach((tab) => {
-                    tab.classList.toggle('active', tab.dataset.metric === progressMetric);
-                });
-
-                progressRangeTabs.forEach((tab) => {
-                    tab.classList.toggle('active', Number(tab.dataset.range) === progressRange);
-                });
-
-                if (progressRangeLabel) {
-                    progressRangeLabel.textContent = rangeLabels[progressRange] || '30 derniers jours';
-                }
+                progressMetricTabs.forEach(t => t.classList.toggle('active', t.dataset.metric === progressMetric));
+                progressRangeOptions.forEach(t => t.classList.toggle('active', Number(t.dataset.range) === progressRange));
+                if (progressRangeLabel) progressRangeLabel.textContent = rangeLabels[progressRange] || '30 derniers jours';
 
                 renderChart(progressChart, filtered, progressMetric, 12);
 
-                if (progressTotalValue) {
-                    progressTotalValue.textContent = formatMetric(totalFor(filtered, progressMetric), progressMetric);
-                }
-
-                if (progressDurationValue) {
-                    progressDurationValue.textContent = formatDuration(totalFor(filtered, 'duration'));
-                }
-
-                if (progressRepsValue) {
-                    progressRepsValue.textContent = `${nf.format(totalFor(filtered, 'reps'))} reps`;
-                }
-
-                if (progressActiveDaysValue) {
-                    progressActiveDaysValue.textContent = nf.format(
-                        filtered.filter((item) => item.volume > 0 || item.duration > 0 || item.reps > 0).length
-                    );
-                }
+                if (progressTotalValue)      progressTotalValue.textContent      = formatMetric(totalFor(filtered, progressMetric), progressMetric);
+                if (progressDurationValue)   progressDurationValue.textContent   = formatDuration(totalFor(filtered, 'duration'));
+                if (progressRepsValue)       progressRepsValue.textContent       = `${nf.format(totalFor(filtered, 'reps'))} reps`;
+                if (progressActiveDaysValue) progressActiveDaysValue.textContent = nf.format(filtered.filter(i => i.volume > 0 || i.duration > 0 || i.reps > 0).length);
             };
 
-            progressMetricTabs.forEach((tab) => {
-                tab.addEventListener('click', () => {
-                    progressMetric = tab.dataset.metric;
-                    updateProgress();
-                });
-            });
-
-            progressRangeTrigger?.addEventListener('click', (e) => {
-                e.stopPropagation();
-                progressRangeMenu?.classList.toggle('open');
-            });
-
-            progressRangeTabs.forEach((tab) => {
-                tab.addEventListener('click', () => {
-                    progressRange = Number(tab.dataset.range);
-                    progressRangeMenu?.classList.remove('open');
-                    updateProgress();
-                });
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!progressRangeMenu?.contains(e.target)) {
-                    progressRangeMenu?.classList.remove('open');
-                }
-            });
+            progressMetricTabs.forEach(t => t.addEventListener('click', () => { progressMetric = t.dataset.metric; updateProgress(); }));
+            progressRangeTrigger?.addEventListener('click', e => { e.stopPropagation(); progressRangeMenu?.classList.toggle('open'); });
+            progressRangeOptions.forEach(t => t.addEventListener('click', () => { progressRange = Number(t.dataset.range); progressRangeMenu?.classList.remove('open'); updateProgress(); }));
+            document.addEventListener('click', e => { if (!progressRangeMenu?.contains(e.target)) progressRangeMenu?.classList.remove('open'); });
 
             updateProgress();
         }
     }
 
+    // =========================================
+    // INIT
+    // =========================================
     document.addEventListener('DOMContentLoaded', function () {
         document.body.classList.add('dashboard-page');
 
-        try { applyTheme(); } catch (e) { console.error('applyTheme error', e); }
-        try { bindTabs(); } catch (e) { console.error('bindTabs error', e); }
-        try { bindFlashes(); } catch (e) { console.error('bindFlashes error', e); }
-        try { bindMobileMenu(); } catch (e) { console.error('bindMobileMenu error', e); }
-        try { bindSettingsDrawer(); } catch (e) { console.error('bindSettingsDrawer error', e); }
-        try { bindSettingsForms(); } catch (e) { console.error('bindSettingsForms error', e); }
-        try { bindElios(); } catch (e) { console.error('bindElios error', e); }
-        try { bindPhotoCropper(); } catch (e) { console.error('bindPhotoCropper error', e); }
-        try { bindDashboardCharts(); } catch (e) { console.error('bindDashboardCharts error', e); }
+        [
+            ['applyTheme',        applyTheme],
+            ['bindTabs',          bindTabs],
+            ['bindFlashes',       bindFlashes],
+            ['bindMobileMenu',    bindMobileMenu],
+            ['bindSettingsDrawer',bindSettingsDrawer],
+            ['bindSettingsForms', bindSettingsForms],
+            ['bindElios',         bindElios],
+            ['bindPhotoCropper',  bindPhotoCropper],
+            ['bindLicenceForm',   bindLicenceForm],
+            ['bindDashboardCharts', bindDashboardCharts],
+        ].forEach(([name, fn]) => {
+            try { fn(); } catch (e) { console.error(`${name} error`, e); }
+        });
     });
 
-    window.showJsFlash = showJsFlash;
-    window.showSettingsFeedback = showSettingsFeedback;
-    window.toggleMobileMenu = toggleMobileMenu;
-    window.toggleEdit = toggleEdit;
-    window.updateEmail = updateEmail;
-    window.updatePassword = updatePassword;
-    window.confirmDeleteAccount = confirmDeleteAccount;
-    window.openLicenceChoice = openLicenceChoice;
-    window.closeLicenceModal = closeLicenceModal;
-    window.saveLicenceManual = saveLicenceManual;
-    window.openChatbot = openChatbot;
+    // Exports globaux (utilisés depuis Twig si besoin)
+    Object.assign(window, {
+        showJsFlash,
+        showSettingsFeedback,
+        toggleMobileMenu,
+        toggleEdit,
+        updateEmail,
+        updatePassword,
+        confirmDeleteAccount,
+        openLicenceChoice,
+        closeLicenceModal,
+        saveLicenceManual,
+        openChatbot
+    });
+
 })();

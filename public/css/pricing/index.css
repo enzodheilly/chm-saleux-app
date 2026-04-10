@@ -667,7 +667,7 @@
 
 .toggle-wrapper {
   background: var(--bg-section);
-  border: 1px solid var(--border-soft);
+  border: 1px solid white;
   padding: 5px;
   border-radius: 50px;
   display: flex;
@@ -1114,9 +1114,9 @@
   }
 
   .toggle-wrapper {
-    width: 100%;
-    max-width: 420px;
-  }
+        width: 80%;
+        max-width: none;
+    }
 
   .pricing-grid {
     display: flex;
@@ -1135,7 +1135,7 @@
   }
 
   .pricing-card-elite {
-    flex: 0 0 85%;
+    flex: 0 0 100%;
     scroll-snap-align: center;
     padding: 20px;
   }
@@ -1182,7 +1182,7 @@
   }
 
   .pricing-card-elite {
-    flex: 0 0 90%;
+    flex: 0 0 100%;
     padding: 18px;
   }
 
