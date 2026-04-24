@@ -265,6 +265,81 @@
   transform: translateX(0);
 }
 
+/* =========================================
+   HERO - VERSION CONNECTÉE (STATS)
+   ========================================= */
+
+/* Barre de stats horizontale */
+.hero-stats-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 3rem;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 18px 20px;
+  width: fit-content;
+  max-width: 480px;
+}
+
+/* Carte individuelle */
+.hero-stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 0 16px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.hero-stat-card.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Valeur principale */
+.hero-stat-value {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Label sous la valeur */
+.hero-stat-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--primary-color);
+  white-space: nowrap;
+}
+
+/* Séparateur vertical entre les cartes */
+.hero-stat-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+}
+
+/* Section hero connectée */
+.hero-logged .hero-content {
+  justify-content: center;
+}
+
+/* Responsive mobile — stats cachées */
+@media (max-width: 768px) {
+  .hero-stats-row {
+    display: none !important;
+  }
+}
+
 /* RESPONSIVE MOBILE HERO */
 @media (max-width: 768px) {
   .hero-section {
@@ -2045,20 +2120,54 @@
 }
 
 @media (max-width: 768px) {
-  .home-cc-section,
-  .home-reviews-section { padding: var(--section-padding-y-mobile) 0; }
+    .home-cc-section,
+    .home-reviews-section { padding: var(--section-padding-y-mobile) 0; }
 
-  .cc-stats-row    { flex-wrap: wrap; gap: 20px; }
-  .cc-stat-sep     { display: none; }
-  .cc-disc-strip   { grid-template-columns: 1fr; }
-  .cc-disc         { border-right: none; border-bottom: 1px solid var(--border-soft); }
-  .cc-disc:last-child { border-bottom: none; }
+    /* Fix débordement texte */
+    .cc-description {
+        max-width: 100%;
+    }
 
-  .cc-btn          { width: 100%; justify-content: center; }
+    /* Fix stats rognées */
+    .cc-stats-row {
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 20px 0;
+    }
 
-  .reviews-grid    { grid-template-columns: 1fr; }
-  .rev-card        { border-right: none; border-bottom: 1px solid var(--border-soft); }
-  .rev-card:last-child { border-bottom: none; }
+    .cc-stat-sep { display: none; }
+
+    .cc-stat {
+        flex: 0 0 auto;
+        min-width: 0;
+    }
+
+    .cc-stat-v {
+        font-size: clamp(1.6rem, 8vw, 2.6rem);
+    }
+
+    .cc-stat-u {
+        font-size: 0.58rem;
+        white-space: normal;
+        max-width: 70px;
+    }
+
+    /* Fix image */
+    .cc-img {
+        width: 100%;
+        max-height: none;
+        object-fit: unset;
+    }
+
+    .cc-disc-strip  { grid-template-columns: 1fr; }
+    .cc-disc        { border-right: none; border-bottom: 1px solid var(--border-soft); }
+    .cc-disc:last-child { border-bottom: none; }
+
+    .cc-btn { width: 100%; justify-content: center; }
+
+    .reviews-grid   { grid-template-columns: 1fr; }
+    .rev-card       { border-right: none; border-bottom: 1px solid var(--border-soft); }
+    .rev-card:last-child { border-bottom: none; }
 }
 
 /* =========================
@@ -2068,7 +2177,6 @@
 .home-cinematic-section {
   padding: var(--section-padding-y) 0 0 0;
   background: var(--bg-dark);
-  padding-bottom: 50px;
 }
 
 /* ── HEADER ─────────────────────────────────────────── */

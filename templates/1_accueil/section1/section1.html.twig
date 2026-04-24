@@ -13,6 +13,7 @@
 
 	<div class="hero-content">
 		{% if not app.user %}
+			{# --- VUE VISITEUR --- #}
 			<h1 class="club-title">CLUB HALTÉROPHILIE & MUSCULATION</h1>
 			<p class="club-subtitle default-subtitle">Relevez vos limites et dépassez-vous chaque jour !</p>
 
@@ -31,34 +32,86 @@
 				<a href="{{ path('app_auth_choice') }}" class="nous-rejoindre">
 					NOUS REJOINDRE
 				</a>
-
 				<a href="{{ path('app_club') }}" class="btn-en-savoir-plus">DÉCOUVRIR LE CLUB</a>
 			</div>
 
 		{% else %}
-			<h1 class="club-title user-welcome">Bonjour
-				{{ app.user.firstName }}
-				!</h1>
+			{# --- VUE CONNECTÉE --- #}
+			<div class="user-header">
+				<h1 class="club-title user-welcome">
+					<span class="greeting">Ravi de vous revoir,</span>
+					<span class="user-name">{{ app.user.firstName }}
+						!</span>
+				</h1>
+				<p class="club-date">
+					{{ "now"|format_date(locale='fr', pattern='EEEE d MMMM Y')|capitalize }}
+				</p>
+			</div>
 
-			<p class="club-date">
-				{{ "now"|format_date(locale='fr', pattern='d MMMM Y') }}
-			</p>
+			{% if heroStats and heroStats.sessions > 0 %}
+				<div class="hero-stats-container">
+					<p class="stats-mini-title">Vos 30 derniers jours</p>
 
-			<p class="club-subtitle user-subtitle">
-				Ravi de vous revoir. Découvrez vos statistiques et vos prochains objectifs !
-			</p>
+					<div
+						class="hero-stats-row">
+						{# Séances #}
+						<div class="hero-stat-card">
+							<span class="hero-stat-value">{{ heroStats.sessions }}</span>
+							<span class="hero-stat-label">Séances</span>
+						</div>
+
+						<div class="hero-stat-divider"></div>
+
+						{# Volume (Conversion kg/t) #}
+						<div class="hero-stat-card">
+							<span class="hero-stat-value">
+								{% set kg = (heroStats.volume / 1000)|round(1) %}
+								{% if kg >= 1 %}
+									{{ kg }}<small>t</small>
+								{% else %}
+									{{ heroStats.volume|round }}<small>kg</small>
+								{% endif %}
+							</span>
+							<span class="hero-stat-label">Soulevés</span>
+						</div>
+
+						<div class="hero-stat-divider"></div>
+
+						{# Temps ou Streak #}
+						<div class="hero-stat-card">
+							<span class="hero-stat-value">
+								{% if heroStats.streak > 1 %}
+									{{ heroStats.streak }}<span class="streak-emoji">🔥</span>
+								{% else %}
+									{% set h = (heroStats.duration / 3600)|round(0, 'floor') %}
+									{{ h }}<small>h</small>
+								{% endif %}
+							</span>
+							<span class="hero-stat-label">
+								{{ heroStats.streak > 1 ? 'Jours suivis' : "D'entraînement" }}
+							</span>
+						</div>
+					</div>
+				</div>
+			{% else %}
+				<div class="empty-stats-hero">
+					<p class="club-subtitle user-subtitle">
+						Aucune séance enregistrée ce mois-ci. Prêt à reprendre l'entraînement ?
+					</p>
+				</div>
+			{% endif %}
 
 			<div class="hero-buttons">
-				<a href="{{ path('dashboard') }}" class="nous-rejoindre">ACCÉDER AU DASHBOARD</a>
+				<a href="{{ path('dashboard') }}" class="nous-rejoindre">MON TABLEAU DE BORD</a>
 				<a href="{{ path('actualites') }}" class="btn-en-savoir-plus">ACTUALITÉS</a>
 			</div>
 		{% endif %}
 
+		{# Badge FFHM (commun aux deux vues) #}
 		<div class="badge-ffhm">
 			<span class="badge-text">Club affilié</span>
 			<span class="badge-separator"></span>
 			<img src="{{ asset('images/ffhm.png') }}" alt="Logo FFHM" loading="lazy" decoding="async" width="80" height="30">
 		</div>
 	</div>
-
 </section>

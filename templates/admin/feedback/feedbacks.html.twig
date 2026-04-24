@@ -1,0 +1,108 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Feedbacks
+{% endblock %}
+
+{% block body %}
+	<div class="page-header">
+		<div>
+			<h1>Feedbacks du site</h1>
+			<p>Retours, bugs et suggestions soumis par les visiteurs.</p>
+		</div>
+		<div class="toolbar">
+			<input type="text" id="searchFeedbacks" class="search-input" placeholder="Rechercher un feedback...">
+		</div>
+	</div>
+
+	<div class="table-wrapper">
+		<div class="table-scroll">
+			<table class="admin-table" id="feedbacksTable">
+				<thead>
+					<tr>
+						<th width="120">Date</th>
+						<th width="140">Type</th>
+						<th width="180">Utilisateur</th>
+						<th width="160">Page</th>
+						<th>Message</th>
+						<th class="th-right">Statut</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for fb in feedbacks %}
+						<tr>
+							<td class="td-mono-sm">
+								<strong class="date-bold">{{ fb.createdAt|date('d/m/Y') }}</strong><br>
+								<span class="td-time">{{ fb.createdAt|date('H:i') }}</span>
+							</td>
+
+							<td>
+								{% if fb.type == 'bug' %}
+									<span class="badge" style="background:rgba(230,57,70,0.15);color:#e63946;">
+										🐛 Bug
+									</span>
+								{% elseif fb.type == 'feature' %}
+									<span class="badge" style="background:rgba(245,119,6,0.15);color:#f57706;">
+										💡 Idée
+									</span>
+								{% elseif fb.type == 'improvement' %}
+									<span class="badge" style="background:rgba(99,179,237,0.15);color:#63b3ed;">
+										✨ Amélioration
+									</span>
+								{% else %}
+									<span class="badge" style="background:rgba(255,255,255,0.06);color:#aaa;">
+										💬 Général
+									</span>
+								{% endif %}
+							</td>
+
+							<td>
+								{% if fb.userEmail %}
+									<div class="identity-cell">
+										<span class="td-mono-sm sender-email">{{ fb.userEmail|pseudonymize_email }}</span>
+									</div>
+								{% else %}
+									<span class="td-muted">Anonyme</span>
+								{% endif %}
+							</td>
+
+							<td class="td-muted td-mono-sm">
+								{{ fb.page ?? '—' }}
+							</td>
+
+							<td>
+								<div class="message-bubble" title="{{ fb.message }}">
+									{{ fb.message|length > 80 ? fb.message|slice(0, 80) ~ '...' : fb.message }}
+								</div>
+							</td>
+
+							<td class="td-right">
+								{% if fb.status == 'done' %}
+									<span class="badge badge-active">✓ Traité</span>
+								{% else %}
+									<form action="{{ path('admin_feedbacks') }}" method="POST" class="reply-form">
+										<input type="hidden" name="id" value="{{ fb.id }}">
+										<input
+										type="hidden" name="_token" value="{{ csrf_token('feedback_status_' ~ fb.id) }}">
+										{# ← MANQUANT #}
+										{% if fb.status == 'new' %}
+											<button type="submit" name="status" value="read" class="btn-validate">
+												Marquer lu
+											</button>
+										{% endif %}
+										<button type="submit" name="status" value="done" class="btn-validate btn-reply">
+											Traité
+										</button>
+									</form>
+								{% endif %}
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6" class="td-empty">Aucun feedback pour le moment.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\WorkoutSession;
+use App\Repository\UserRoutineRepository;
 use App\Repository\WorkoutScheduleRepository;
 use App\Repository\WorkoutSessionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,6 +20,7 @@ class WorkoutSessionController extends AbstractController
         Request $request,
         WorkoutSessionRepository $sessionRepo,
         WorkoutScheduleRepository $scheduleRepo,
+        UserRoutineRepository $userRoutineRepo,
         EntityManagerInterface $em
     ): JsonResponse {
         $user = $this->getUser();
@@ -37,10 +39,15 @@ class WorkoutSessionController extends AbstractController
         $session->setDurationSeconds($data['duration_seconds'] ?? 0);
         $session->setTotalVolume($data['total_volume'] ?? 0);
         $session->setTotalCompletedSets($data['total_completed_sets'] ?? 0);
-
-        // ✅ On sauvegarde directement le nom et l'id de la routine
         $session->setRoutineName($data['routine_name'] ?? null);
-        $session->setRoutineId($data['routine_id'] ?? null);
+
+        // ✅ On tente de lier la UserRoutine si l'id correspond
+        if (!empty($data['routine_id'])) {
+            $userRoutine = $userRoutineRepo->find($data['routine_id']);
+            if ($userRoutine && $userRoutine->getUser() === $user) {
+                $session->setUserRoutine($userRoutine);
+            }
+        }
 
         if (!empty($data['performed_at'])) {
             try {
@@ -52,6 +59,7 @@ class WorkoutSessionController extends AbstractController
             $session->setPerformedAt(new \DateTime());
         }
 
+        // ✅ Lien avec le WorkoutSchedule si une routine template correspond
         if (!empty($data['routine_id'])) {
             $today = new \DateTime();
             $schedule = $scheduleRepo->findOneBy([
@@ -107,7 +115,8 @@ class WorkoutSessionController extends AbstractController
                 'total_volume' => $s->getTotalVolume(),
                 'total_completed_sets' => $s->getTotalCompletedSets(),
                 'routine_name' => $s->getRoutineName() ?? $s->getWorkoutSchedule()?->getRoutineTemplate()?->getName(),
-                'routine_id' => $s->getRoutineId() ?? $s->getWorkoutSchedule()?->getRoutineTemplate()?->getId(),
+                // ✅ On cherche l'id dans UserRoutine d'abord, sinon dans le schedule
+                'routine_id' => $s->getUserRoutine()?->getId() ?? $s->getWorkoutSchedule()?->getRoutineTemplate()?->getId(),
                 'is_from_planning' => $s->getWorkoutSchedule() !== null,
             ];
         }, $sessions);
@@ -123,7 +132,7 @@ class WorkoutSessionController extends AbstractController
             return $this->json(['error' => 'User not found'], 401);
         }
 
-        $range = (int)($request->query->get('range', 30)); // 7 / 30 / 90 / 0(all)
+        $range = (int)($request->query->get('range', 30));
 
         $qb = $repo->createQueryBuilder('ws')
             ->select('

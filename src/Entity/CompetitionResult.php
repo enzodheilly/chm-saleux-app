@@ -32,6 +32,10 @@ class CompetitionResult
     #[Assert\PositiveOrZero]
     private float $snatch = 0.0;
 
+    #[ORM\ManyToOne(targetEntity: Athlete::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private ?Athlete $athlete = null;
+
     #[ORM\Column(type: "float")]
     #[Assert\PositiveOrZero]
     // (Optionnel) garde-fou: total doit matcher la somme
@@ -195,5 +199,16 @@ class CompetitionResult
     private function recalculateTotal(): void
     {
         $this->total = $this->snatch + $this->cleanAndJerk;
+    }
+
+    public function getAthlete(): ?Athlete
+    {
+        return $this->athlete;
+    }
+
+    public function setAthlete(?Athlete $athlete): self
+    {
+        $this->athlete = $athlete;
+        return $this;
     }
 }
