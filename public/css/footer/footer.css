@@ -277,13 +277,16 @@
 
 .footer-legal {
     display: flex;
-    gap: 20px;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    justify-content: flex-end;
 }
 
 .footer-legal a {
     color: var(--text-muted-1);
     text-decoration: none;
     transition: var(--transition);
+    white-space: nowrap;
 }
 
 .footer-legal a:hover {
@@ -327,6 +330,11 @@
         align-items: center !important;
         justify-content: center !important;
         background: var(--accent-color) !important;
+    }
+
+       .footer-legal {
+        justify-content: center;
+        gap: 10px 16px;
     }
 
 }

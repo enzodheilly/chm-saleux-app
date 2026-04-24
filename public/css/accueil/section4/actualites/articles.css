@@ -371,9 +371,30 @@
         padding-bottom: 1rem;
     }
 
+    .filter-field select,
+    .filter-field input[type="date"] {
+        height: 46px;
+        padding: 0 14px;          /* ← supprime le padding vertical, remplacé par height fixe */
+        line-height: 46px;        /* ← centre le texte verticalement sur iOS */
+        font-size: 0.85rem;
+        -webkit-appearance: none; /* ← reset le style natif iOS */
+        appearance: none;
+    }
+
+    /* iOS affiche la date en petit, on force la couleur */
+    .filter-field input[type="date"]::-webkit-datetime-edit {
+        color: var(--text-white);
+        padding: 0;
+    }
+
+    .filter-field input[type="date"]::-webkit-date-and-time-value {
+        text-align: left;
+    }
+
     .btn-elite-search {
         width: 100%;
         justify-content: center;
+        height: 46px;
     }
 
     .news-grid-layout {

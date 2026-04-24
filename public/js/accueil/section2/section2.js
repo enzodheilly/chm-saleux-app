@@ -8,9 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function updatePrices(type) {
     priceValues.forEach(priceSpan => {
-        const standardPrice = parseFloat(priceSpan.getAttribute('data-standard'));
+        const standardPrice = parseFloat(priceSpan.getAttribute('data-standard').replace(',', '.'));
 
-        // ← Seules les cartes > 150€ sont concernées par le tarif étudiant
         if (type === 'student' && standardPrice <= 150) return;
 
         const newPrice = type === 'student'
@@ -20,15 +19,27 @@ function updatePrices(type) {
         const currentPrice = priceSpan.textContent.trim();
         if (currentPrice === newPrice) return;
 
+        // Récupère le <strong> de la mensualité dans la même .p-price-box
+        const priceBox = priceSpan.closest('.p-price-box');
+        const monthlyStrong = priceBox?.querySelector('.p-monthly-cost strong');
+
         priceSpan.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
         priceSpan.style.opacity = '0';
         priceSpan.style.transform = 'translateY(-5px)';
 
-    setTimeout(() => {
-    priceSpan.textContent = parseFloat(newPrice).toFixed(2).replace('.', ',');
-    priceSpan.style.opacity = '1';
-    priceSpan.style.transform = 'translateY(0)';
-}, 200);
+        setTimeout(() => {
+            const numericPrice = parseFloat(newPrice.replace(',', '.'));
+
+            priceSpan.textContent = numericPrice.toFixed(2).replace('.', ',');
+
+            // Met à jour la mensualité
+            if (monthlyStrong) {
+                monthlyStrong.textContent = (numericPrice / 12).toFixed(2).replace('.', ',') + ' €';
+            }
+
+            priceSpan.style.opacity = '1';
+            priceSpan.style.transform = 'translateY(0)';
+        }, 200);
     });
 }
 

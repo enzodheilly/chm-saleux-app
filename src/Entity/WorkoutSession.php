@@ -46,9 +46,10 @@ class WorkoutSession
     #[Groups(['session:read', 'session:write'])]
     private ?string $routineName = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\ManyToOne(targetEntity: UserRoutine::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[Groups(['session:read', 'session:write'])]
-    private ?int $routineId = null;
+    private ?UserRoutine $userRoutine = null;
 
     public function __construct()
     {
@@ -137,14 +138,14 @@ class WorkoutSession
         return $this;
     }
 
-    public function getRoutineId(): ?int
+    public function getUserRoutine(): ?UserRoutine
     {
-        return $this->routineId;
+        return $this->userRoutine;
     }
 
-    public function setRoutineId(?int $routineId): self
+    public function setUserRoutine(?UserRoutine $userRoutine): self
     {
-        $this->routineId = $routineId;
+        $this->userRoutine = $userRoutine;
         return $this;
     }
 }

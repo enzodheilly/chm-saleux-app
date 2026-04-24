@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AthleteRepository::class)]
 #[ORM\Index(columns: ['last_name', 'first_name'], name: 'idx_athlete_name')]
-#[ORM\UniqueConstraint(name: 'uniq_athlete_identity', columns: ['first_name', 'last_name', 'birth_date'])]
+#[ORM\UniqueConstraint(name: 'uniq_athlete_identity', columns: ['first_name', 'last_name'])]
 
 class Athlete
 {

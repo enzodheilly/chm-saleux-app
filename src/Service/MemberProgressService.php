@@ -37,7 +37,8 @@ class MemberProgressService
                 'routine_name' => $session->getRoutineName()
                     ?? $session->getWorkoutSchedule()?->getRoutineTemplate()?->getName()
                     ?? 'Séance',
-                'routine_id' => $session->getRoutineId()
+                // ✅ UserRoutine d'abord, fallback sur le schedule
+                'routine_id' => $session->getUserRoutine()?->getId()
                     ?? $session->getWorkoutSchedule()?->getRoutineTemplate()?->getId(),
                 'is_from_planning' => $session->getWorkoutSchedule() !== null,
             ];
@@ -61,7 +62,8 @@ class MemberProgressService
                 'routine_name' => $session->getRoutineName()
                     ?? $session->getWorkoutSchedule()?->getRoutineTemplate()?->getName()
                     ?? 'Séance',
-                'routine_id' => $session->getRoutineId()
+                // ✅ UserRoutine d'abord, fallback sur le schedule
+                'routine_id' => $session->getUserRoutine()?->getId()
                     ?? $session->getWorkoutSchedule()?->getRoutineTemplate()?->getId(),
                 'is_from_planning' => $session->getWorkoutSchedule() !== null,
             ];

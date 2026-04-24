@@ -74,10 +74,10 @@
 		<main class="app-main">
 			{% for message in app.flashes('warning') %}
 				 <script nonce="{{ csp_nonce('script') }}">
-																								                    window.addEventListener("DOMContentLoaded", () => {
-																								                        showToast("{{ message }}");
-																								                    });
-																								                </script>
+																																																																								                    window.addEventListener("DOMContentLoaded", () => {
+																																																																								                        showToast("{{ message }}");
+																																																																								                    });
+																																																																								                </script>
 			{% endfor %}
 
 			{% block body %}{% endblock %}
@@ -95,17 +95,72 @@
 		 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer nonce="{{ csp_nonce('script') }}"></script>
 
 		 <script nonce="{{ csp_nonce('script') }}">
-												            window.showToast = (msg) => {
-												                const t = document.createElement('div');
-												                t.className = 'toast-mini';
-												                t.textContent = msg;
-												                document.body.appendChild(t);
-												                requestAnimationFrame(() => t.classList.add('show'));
-												                setTimeout(() => {
-												                    t.classList.remove('show');
-												                    setTimeout(() => t.remove(), 200);
-												                }, 2200);
-												            };
-												        </script>{% block javascripts %}
-	{% endblock %}
-</body></html>
+																																				            window.showToast = (msg) => {
+																																				                const t = document.createElement('div');
+																																				                t.className = 'toast-mini';
+																																				                t.textContent = msg;
+																																				                document.body.appendChild(t);
+																																				                requestAnimationFrame(() => t.classList.add('show'));
+																																				                setTimeout(() => {
+																																				                    t.classList.remove('show');
+																																				                    setTimeout(() => t.remove(), 200);
+																																				                }, 2200);
+																																				            };
+																																				        </script>
+
+		{# === FEEDBACK WIDGET === #}
+			<div id="feedback-widget"> <button id="feedback-toggle" aria-label="Donner un avis">
+				<i class="fa-solid fa-comment-dots"></i>
+				<span>Feedback</span>
+			</button>
+
+			<div id="feedback-panel" class="feedback-panel" aria-hidden="true">
+				<div class="feedback-panel-header">
+					<h3>Votre retour</h3>
+					<button id="feedback-close" aria-label="Fermer">
+						<i class="fa-solid fa-xmark"></i>
+					</button>
+				</div>
+				<p class="feedback-disclaimer">
+					Vous avez rencontré un bug ou souhaitez voir une nouvelle fonctionnalité ? Faites-le nous savoir.
+					<span>
+						<i class="fa-solid fa-user-secret"></i>
+						Tous les messages sont anonymes.</span>
+				</p>
+
+				<div class="feedback-types">
+					<button class="type-btn active" data-type="bug">
+						<i class="fa-solid fa-bug"></i>
+						<span>Bug</span>
+					</button>
+					<button class="type-btn" data-type="feature">
+						<i class="fa-solid fa-lightbulb"></i>
+						<span>Idée</span>
+					</button>
+					<button class="type-btn" data-type="improvement">
+						<i class="fa-solid fa-wand-magic-sparkles"></i>
+						<span>Amélioration</span>
+					</button>
+					<button class="type-btn" data-type="general">
+						<i class="fa-solid fa-message"></i>
+						<span>Général</span>
+					</button>
+				</div>
+
+				<textarea id="feedback-message" placeholder="Décrivez votre retour..." rows="4" maxlength="1000"></textarea>
+				<div class="feedback-char-count">
+					<span id="feedback-chars">0</span>/1000</div>
+
+				<button id="feedback-send">
+
+					Envoyer
+				</button>
+				<div id="feedback-success" class="feedback-success feedback-hidden">
+					<i class="fa-solid fa-circle-check"></i>
+					Merci pour votre retour !
+				</div>
+			</div>
+		</div>
+		{% block javascripts %}{% endblock %}
+	</body>
+</html>

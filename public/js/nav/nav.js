@@ -17,20 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const overlay     = document.getElementById('mobileNavOverlay');
     const mobileLinks = overlay ? overlay.querySelectorAll('a') : [];
 
-    // 3) Subpages
-    const subpages = overlay ? overlay.querySelectorAll('.mobile-subpage') : [];
-
-    subpages.forEach(p => p.setAttribute('aria-hidden', 'true'));
-
-    const closeSubpages = () => {
-        if (!overlay) return;
-        overlay.classList.remove('subpage-open');
-        subpages.forEach(p => {
-            p.classList.remove('open');
-            p.setAttribute('aria-hidden', 'true');
-        });
-    };
-
     let savedScrollY = 0;
 
     const openMobileMenu = () => {
@@ -51,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.scrollTo(0, savedScrollY);
         overlay.classList.remove('open');
         hamburger.classList.remove('is-active');
-        closeSubpages();
     };
 
     if (hamburger && overlay) {
@@ -59,31 +44,30 @@ document.addEventListener('DOMContentLoaded', () => {
             overlay.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
         });
 
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => closeMobileMenu());
+        // Accordéon
+        const accordionTriggers = overlay.querySelectorAll('.mobile-accordion-trigger');
+        accordionTriggers.forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const content = trigger.nextElementSibling;
+                const isOpen  = trigger.classList.contains('is-open');
+
+                // Ferme tous les autres
+                accordionTriggers.forEach(t => {
+                    t.classList.remove('is-open');
+                    t.nextElementSibling.classList.remove('is-open');
+                });
+
+                // Toggle celui-ci
+                if (!isOpen) {
+                    trigger.classList.add('is-open');
+                    content.classList.add('is-open');
+                }
+            });
         });
 
-        overlay.addEventListener('click', (e) => {
-            const trigger = e.target.closest('.mobile-subpage-trigger');
-            if (trigger) {
-                const targetSel = trigger.getAttribute('data-subpage');
-                const target = targetSel ? overlay.querySelector(targetSel) : null;
-                if (!target) return;
-
-                overlay.classList.add('subpage-open');
-                target.classList.add('open');
-                target.removeAttribute('aria-hidden');
-
-                const backBtn = target.querySelector('[data-subpage-back]');
-                if (backBtn) backBtn.focus();
-                return;
-            }
-
-            const back = e.target.closest('[data-subpage-back]');
-            if (back) {
-                closeSubpages();
-                overlay.querySelector('.mobile-subpage-trigger')?.focus();
-            }
+        // Ferme le menu sur clic d'un lien
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => closeMobileMenu());
         });
     }
 
@@ -92,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // =========================================
-    // 4) INFO BANNER CAROUSEL (mobile)
+    // 3) INFO BANNER CAROUSEL (mobile)
     // =========================================
     const carouselItems = document.querySelectorAll('.info-carousel-item');
     const prevBtn       = document.getElementById('infoPrev');
@@ -102,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let current   = 0;
         let animating = false;
 
-        // Active le premier item
         carouselItems[0].classList.add('is-active');
 
         const goTo = (next, direction) => {
@@ -111,17 +94,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const leaveClass = direction === 'next' ? 'is-leaving-left' : 'is-leaving-right';
 
-            // Sort l'item actuel
             carouselItems[current].classList.remove('is-active');
             carouselItems[current].classList.add(leaveClass);
 
-            // Prépare le nouvel item hors écran sans transition
             carouselItems[next].style.transform  = direction === 'next' ? 'translateX(20px)' : 'translateX(-20px)';
             carouselItems[next].style.opacity    = '0';
             carouselItems[next].style.transition = 'none';
             carouselItems[next].classList.add('is-active');
 
-            // Déclenche l'animation d'entrée au prochain frame
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
                     carouselItems[next].style.transform  = '';
@@ -130,7 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            // Nettoie après l'animation
             setTimeout(() => {
                 carouselItems[current].classList.remove(leaveClass);
                 current   = next;

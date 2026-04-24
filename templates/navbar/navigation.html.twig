@@ -138,6 +138,9 @@
 				<a id="assistantWidgetOpen" class="btn-icon-ai" title="Assistant IA">
 					<img src="{{ asset('images/ia.png') }}" alt="IA">
 				</a>
+				<button id="feedback-nav-btn" class="btn-feedback-nav" aria-label="Donner un avis">
+					<i class="fa-solid fa-comment-dots"></i>
+				</button>
 				{% if app.user %}
 					<a href="{{ path('dashboard') }}" class="btn-nav-primary">
 						<span>MON ESPACE</span>
@@ -157,74 +160,66 @@
 		</div>
 	</div>
 
-	{# --- MOBILE MENU --- #}
-	<div class="mobile-nav-overlay" id="mobileNavOverlay">
-		<div class="mobile-nav-panel">
-
-			<div class="mobile-links">
-				<a href="{{ path('home') }}">Accueil</a>
-				<button type="button" class="mobile-subpage-trigger" data-subpage="#mobileSubpageClub" aria-label="Voir le club">
-					Club & Membres du Bureau
-					<i class="fa-solid fa-arrow-right"></i>
-				</button>
-				<a href="{{ path('app_pricing') }}">Tarifs</a>
-				<a href="{{ path('ecole') }}">Notre École</a>
-				<a href="{{ path('competition') }}">Compétitions & Résultats</a>
-			</div>
-
-			<div class="mobile-footer-nav mobile-footer-nav-redesign">
-				{% if app.user %}
-					<a href="{{ path('dashboard') }}" class="mobile-footer-link-clean">
-						<i class="fa-regular fa-user"></i>
-						<span>Mon espace</span>
-					</a>
-					<a href="{{ path('app_logout') }}" class="mobile-footer-link-clean">
-						<i class="fa-solid fa-right-from-bracket"></i>
-						<span>Se déconnecter</span>
-					</a>
-				{% else %}
-					<a href="{{ path('app_login') }}" class="mobile-footer-link-clean">
-						<i class="fa-regular fa-user"></i>
-						<span>Espace adhérent</span>
-					</a>
-				{% endif %}
-				<a href="{{ path('faq') }}" class="mobile-footer-link-clean">
-					<i class="fa-regular fa-circle-question"></i>
-					<span>Centre d'aide</span>
-				</a>
-			</div>
-
-			{# SUBPAGE : Club & Membres du Bureau #}
-			<div class="mobile-subpage" id="mobileSubpageClub">
-				<button type="button" class="mobile-subpage-back" data-subpage-back aria-label="Retour">
-					<i class="fa-solid fa-arrow-left"></i>
-					Retour
-				</button>
-				<div class="mobile-subpage-section">
-					<span class="mobile-subpage-label">Services du club</span>
-					<a href="{{ path('halterophilie') }}">Haltérophilie</a>
-					<a href="{{ path('musculation') }}">Musculation</a>
-					<a href="{{ path('cours_collectifs') }}">Cours collectifs</a>
-					<a href="{{ path('seance_essai') }}">Séance d'essai</a>
-					<a href="{{ path('evenements') }}">Événements organisés</a>
-					<a href="{{ path('sauna') }}">Sauna</a>
-				</div>
-				<div class="mobile-subpage-section">
-					<span class="mobile-subpage-label">Membres du bureau</span>
-					<a href="{{ path('president') }}">Le Président</a>
-					<a href="{{ path('tresorier') }}">Le Trésorier</a>
-					<a href="{{ path('secretaire') }}">La Secrétaire</a>
-					<a href="{{ path('membres_bureau') }}">Les membres du bureau</a>
-				</div>
-				<div class="mobile-subpage-section">
-					<span class="mobile-subpage-label">À propos</span>
-					<a href="{{ path('app_club') }}">Présentation du club</a>
-					<a href="{{ path('labels_club') }}">Les labels du club</a>
-					<a href="{{ path('horaires') }}">Les horaires</a>
-				</div>
-			</div>
-
-		</div>
-	</div>
-
 </nav>
+
+{# --- MOBILE MENU --- #}
+<div class="mobile-nav-overlay" id="mobileNavOverlay">
+	<div class="mobile-nav-panel">
+
+		<div class="mobile-links">
+			<a href="{{ path('home') }}">Accueil</a>
+
+			<button type="button" class="mobile-accordion-trigger">
+				Club & Membres du Bureau
+				<i class="fa-solid fa-chevron-down"></i>
+			</button>
+			<div class="mobile-accordion-content">
+				<span class="mobile-subpage-label">Services du club</span>
+				<a href="{{ path('halterophilie') }}">Haltérophilie</a>
+				<a href="{{ path('musculation') }}">Musculation</a>
+				<a href="{{ path('cours_collectifs') }}">Cours collectifs</a>
+				<a href="{{ path('seance_essai') }}">Séance d'essai</a>
+				<a href="{{ path('evenements') }}">Événements organisés</a>
+				<a href="{{ path('sauna') }}">Sauna</a>
+
+				<span class="mobile-subpage-label">Membres du bureau</span>
+				<a href="{{ path('president') }}">Le Président</a>
+				<a href="{{ path('tresorier') }}">Le Trésorier</a>
+				<a href="{{ path('secretaire') }}">La Secrétaire</a>
+				<a href="{{ path('membres_bureau') }}">Les membres du bureau</a>
+
+				<span class="mobile-subpage-label">À propos</span>
+				<a href="{{ path('app_club') }}">Présentation du club</a>
+				<a href="{{ path('labels_club') }}">Les labels du club</a>
+				<a href="{{ path('horaires') }}">Les horaires</a>
+			</div>
+
+			<a href="{{ path('app_pricing') }}">Tarifs</a>
+			<a href="{{ path('ecole') }}">Notre École</a>
+			<a href="{{ path('competition') }}">Compétitions & Résultats</a>
+		</div>
+
+		<div class="mobile-footer-nav mobile-footer-nav-redesign">
+			{% if app.user %}
+				<a href="{{ path('dashboard') }}" class="mobile-footer-link-clean">
+					<i class="fa-regular fa-user"></i>
+					<span>Mon espace</span>
+				</a>
+				<a href="{{ path('app_logout') }}" class="mobile-footer-link-clean">
+					<i class="fa-solid fa-right-from-bracket"></i>
+					<span>Se déconnecter</span>
+				</a>
+			{% else %}
+				<a href="{{ path('app_login') }}" class="mobile-footer-link-clean">
+					<i class="fa-regular fa-user"></i>
+					<span>Espace adhérent</span>
+				</a>
+			{% endif %}
+			<a href="{{ path('faq') }}" class="mobile-footer-link-clean">
+				<i class="fa-regular fa-circle-question"></i>
+				<span>Centre d'aide</span>
+			</a>
+		</div>
+
+	</div>
+</div>
