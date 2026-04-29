@@ -43,6 +43,11 @@
 
 		{# --- SECTION 1 : PECS --- #}
 		<section class="feature-section">
+			<div class="partner-heading-wrap">
+				<h2 class="section-heading centered">Nos différents
+					<span>Espaces d'Entraînement</span>
+				</h2>
+			</div>
 			<div class="page-container grid-2">
 				<div class="text-side">
 					<span class="side-badge">Zone Pectoraux</span>
@@ -116,9 +121,43 @@
 			</div>
 		</section>
 
-		{# --- SECTION 3 : JAMBES --- #}
+		{# --- SECTION : BRAS --- #}
 		<section class="feature-section">
 			<div class="page-container grid-2">
+				<div class="text-side">
+					<span class="side-badge">Zone Bras</span>
+
+					<h2 class="section-heading section-heading-xl">
+						Biceps &
+						<span>Triceps</span>
+					</h2>
+
+					<p>Curl pupitre, barre EZ et câbles pour un travail d'isolation complet et précis.</p>
+
+					<ul class="elite-check-list">
+						<li>
+							<i class="fa-solid fa-circle-check"></i>
+							Curl pupitre & barre EZ</li>
+						<li>
+							<i class="fa-solid fa-circle-check"></i>
+							Câbles hauts & bas</li>
+						<li>
+							<i class="fa-solid fa-circle-check"></i>
+							Haltères & barre droite</li>
+					</ul>
+				</div>
+
+				<div class="visual-side">
+					<div class="img-frame-elite">
+						<img src="{{ asset('images/zones/bras.jpg') }}" alt="Zone bras" loading="lazy">
+					</div>
+				</div>
+			</div>
+		</section>
+
+		{# --- SECTION 3 : JAMBES --- #}
+		<section class="feature-section">
+			<div class="page-container grid-2 reversed">
 				<div class="text-side">
 					<span class="side-badge">Zone Bas du Corps</span>
 
@@ -147,64 +186,71 @@
 		</section>
 
 		{# --- SECTION CARDIO --- #}
-		<section class="elite-cardio-section">
-			<div class="cardio-bg" data-bg="{{ asset('images/zones/cardio.jpg') }}" data-bg-webp="{{ asset('images/zones/cardio.webp') }}">
-				<div class="cardio-overlay"></div>
+		<section
+			class="elite-cardio-section">
 
-				<div class="page-container cardio-content">
-					<div class="cardio-header">
-						<h2 class="section-heading section-heading-xl centered">
-							Espace
-							<span>Cardio</span>
+			{# Fond image (positionné en absolu par le CSS) #}
+			<div class="cardio-bg" data-bg="{{ asset('images/zones/cardio.jpg') }}" data-bg-webp="{{ asset('images/zones/cardio.webp') }}"></div>
+
+			{# Overlay sombre par-dessus le fond #}
+			<div class="cardio-overlay"></div>
+
+			{# Contenu (z-index: 5 dans le CSS, donc au-dessus) #}
+			<div class="page-container cardio-content">
+				<div class="cardio-header">
+					<h2 class="section-heading section-heading-xl centered">
+						Espace
+						<span>Cardio</span>
+					</h2>
+					<p>Performance cardiovasculaire et condition physique.</p>
+				</div>
+
+				<div class="cardio-stats-grid">
+					<div class="stat-card">
+						<strong>4</strong>
+						<span>Tapis</span>
+					</div>
+					<div class="stat-card active">
+						<strong>5</strong>
+						<span>Vélos</span>
+					</div>
+					<div class="stat-card">
+						<strong>2</strong>
+						<span>Rameurs</span>
+					</div>
+					<div class="stat-card">
+						<strong>2</strong>
+						<span>Climbers</span>
+					</div>
+				</div>
+			</div>
+
+		</section>
+
+		{# --- CTA --- #}
+		<section class="elite-cta">
+			<div class="page-container">
+				<div class="cta-box">
+					<div class="cta-content">
+						<h2 class="section-heading section-heading-xl cta-title">
+							Prêt pour le
+							<span>Changement ?</span>
 						</h2>
-						<p>Performance cardiovasculaire et condition physique.</p>
+						<p>Réservez votre séance d'essai et découvrez notre plateau Musculation.</p>
 					</div>
 
-					<div class="cardio-stats-grid">
-						<div class="stat-card">
-							<strong>4</strong>
-							<span>Tapis</span>
-						</div>
-						<div class="stat-card active">
-							<strong>5</strong>
-							<span>Vélos</span>
-						</div>
-						<div class="stat-card">
-							<strong>2</strong>
-							<span>Rameurs</span>
-						</div>
-						<div class="stat-card">
-							<strong>2</strong>
-							<span>Climbers</span>
-						</div>
-					</div>
+					<a href="{{ path('contact') }}" class="btn-elite-big">
+						S'inscrire
+						<i class="fa-solid fa-arrow-right"></i>
+					</a>
 				</div>
-			</section>
+			</div>
+		</section>
 
-			{# --- CTA --- #}
-			<section class="elite-cta">
-				<div class="page-container">
-					<div class="cta-box">
-						<div class="cta-content">
-							<h2 class="section-heading section-heading-xl cta-title">
-								Prêt pour le
-								<span>Changement ?</span>
-							</h2>
-							<p>Réservez votre séance d'essai et découvrez notre plateau Musculation.</p>
-						</div>
+	</main>
+{% endblock %}
 
-						<a href="{{ path('contact') }}" class="btn-elite-big">
-							S'inscrire
-							<i class="fa-solid fa-arrow-right"></i>
-						</a>
-					</div>
-				</div>
-			</section>
-
-		</main>
-	{% endblock %}
-
-	{% block javascripts %}
-		{{ parent() }}
-		 <script src="{{ asset('js/nos_pratiques/musculation.js') }}"></script>
-	{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	 <script src="{{ asset('js/nos_pratiques/musculation.js') }}"></script>
+{% endblock %}

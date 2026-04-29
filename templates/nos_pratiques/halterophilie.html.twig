@@ -107,69 +107,71 @@
 					</ul>
 				</div>
 
-				<div class="visual-side">
+				<div class="visual-side visual-side--duo">
 					<div class="img-frame-elite">
-						<img src="{{ asset('images/halterophilie/barres.jpg') }}" alt="Barres et disques" loading="lazy">
+						<img src="{{ asset('images/zones/barres.jpg') }}" alt="Barres et disques" loading="lazy">
 					</div>
-					<div class="frame-glow primary"></div>
+					<div class="img-frame-elite img-frame-second">
+						<img src="{{ asset('images/zones/barres2.jpg') }}" alt="Barres et disques 2" loading="lazy">
+					</div>
 				</div>
 			</div>
-		</section>
+		</div>
+	</section>
 
-		{# --- SECTION 3 : ACCESSOIRES --- #}
-		<section class="feature-section">
-			<div class="page-container grid-2">
-				<div class="text-side">
-					<span class="side-badge">Zone 03</span>
+	{# --- SECTION 3 : ACCESSOIRES --- #}
+	<section class="feature-section">
+		<div class="page-container grid-2">
+			<div class="text-side">
+				<span class="side-badge">Zone 03</span>
 
-					<h2 class="section-heading section-heading-xl">
-						Assistance &
-						<span>Renforcement</span>
+				<h2 class="section-heading section-heading-xl">
+					Assistance &
+					<span>Renforcement</span>
+				</h2>
+
+				<p>Travaillez vos points faibles avec des outils dédiés. Notre parc d'accessoires permet une programmation complète.</p>
+
+				<div class="tag-cloud">
+					<span>Blocks d'arraché</span>
+					<span>Racks à squat</span>
+					<span>Magnésie</span>
+					<span>Élastiques</span>
+					<span>Pull-up Bars</span>
+				</div>
+			</div>
+
+			<div class="visual-side visual-side--duo">
+				<div class="img-frame-elite">
+					<img src="{{ asset('images/zones/accessoires.jpg') }}" alt="Accessoires de renforcement" loading="lazy">
+				</div>
+				<div class="img-frame-elite img-frame-second">
+					<img src="{{ asset('images/zones/accessoires2.jpg') }}" alt="Accessoires de renforcement 2" loading="lazy">
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# --- CTA --- #}
+	<section class="elite-cta">
+		<div class="page-container">
+			<div class="cta-box">
+				<div class="cta-content">
+					<h2 class="section-heading section-heading-xl cta-title">
+						Rejoignez le
+						<span>Collectif</span>
 					</h2>
-
-					<p>Travaillez vos points faibles avec des outils dédiés. Notre parc d'accessoires permet une programmation complète.</p>
-
-					<div class="tag-cloud">
-						<span>Blocks d'arraché</span>
-						<span>Racks à squat</span>
-						<span>Magnésie</span>
-						<span>Élastiques</span>
-						<span>Pull-up Bars</span>
-					</div>
+					<p>Venez tester notre plateau lors d'une séance d'essai encadrée.</p>
 				</div>
 
-				<div class="visual-side">
-					<div class="img-frame-elite">
-						<img src="{{ asset('images/halterophilie/accessoires.jpg') }}" alt="Accessoires de renforcement" loading="lazy">
-					</div>
-				</div>
+				<a href="{{ path('contact') }}" class="btn-elite-big">
+					Réserver ma séance
+					<i class="fa-solid fa-arrow-right"></i>
+				</a>
 			</div>
-		</section>
+		</div>
+	</section>
 
-		{# --- CTA --- #}
-		<section class="elite-cta">
-			<div class="page-container">
-				<div class="cta-box">
-					<div class="cta-content">
-						<h2 class="section-heading section-heading-xl cta-title">
-							Rejoignez le
-							<span>Collectif</span>
-						</h2>
-						<p>Venez tester notre plateau lors d'une séance d'essai encadrée.</p>
-					</div>
-
-					<a href="{{ path('contact') }}" class="btn-elite-big">
-						Réserver ma séance
-						<i class="fa-solid fa-arrow-right"></i>
-					</a>
-				</div>
-			</div>
-		</section>
-
-	</main>
-{% endblock %}
-
-{% block javascripts %}
-	{{ parent() }}
-	 <script src="{{ asset('js/nos_pratiques/halterophilie.js') }}"></script>
-{% endblock %}
+</main>{% endblock %}{% block javascripts %}
+{{ parent() }}
+ <script src="{{ asset('js/nos_pratiques/halterophilie.js') }}"></script>{% endblock %}
