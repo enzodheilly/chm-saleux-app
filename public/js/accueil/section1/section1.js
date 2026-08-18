@@ -1,12 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const title = document.querySelector(".club-title");
-    if (title) title.classList.add("animate");
-
     const heroSection = document.querySelector("#accueil");
-    const isLogged = heroSection && heroSection.classList.contains("hero-logged");
+    if (!heroSection) return;
 
+    const isLogged = heroSection.classList.contains("hero-logged");
+
+    /* ──────────────────────────────────────────────
+       VUE CONNECTÉE — animations existantes
+    ────────────────────────────────────────────── */
     if (isLogged) {
-        // --- Utilisateur connecté ---
         const userWelcome = document.querySelector(".user-welcome");
         if (userWelcome) userWelcome.classList.add("animate");
 
@@ -16,35 +17,75 @@ document.addEventListener("DOMContentLoaded", function () {
         const clubDate = document.querySelector(".club-date");
         if (clubDate) clubDate.classList.add("show");
 
-        // --- Anime les cartes stats avec un décalage progressif ---
-        const statsCards = document.querySelectorAll(".hero-stat-card");
-        statsCards.forEach((el, i) => {
+        document.querySelectorAll(".hero-stat-card").forEach((el, i) => {
             setTimeout(() => el.classList.add("animate"), i * 120);
         });
+        return;
+    }
 
-    } else {
-        // --- Visiteur non connecté ---
-        const defaultSubtitles = document.querySelectorAll(".default-subtitle");
-        defaultSubtitles.forEach(el => el.classList.add("animate"));
+    /* ──────────────────────────────────────────────
+       VUE VISITEUR — SLIDER
+    ────────────────────────────────────────────── */
 
-        // Compteurs animés uniquement pour la version non connectée
-        const counters = document.querySelectorAll(".hero-inner .hero-line");
-        const targets = [85, 30];
-        const speed = 25;
+    const slides = document.querySelectorAll(".slide");
+    const dots   = document.querySelectorAll(".slider-dot");
+    let current  = 0;
+    let timer    = null;
+    const DELAY  = 5000;
 
-        counters.forEach((counter, index) => {
-            if (typeof targets[index] === "undefined") return;
+    function goTo(index) {
+        slides[current].classList.remove("active");
+        dots[current].classList.remove("active");
+        current = index;
+        slides[current].classList.add("active");
+        dots[current].classList.add("active");
+    }
 
-            let count = 0;
-            counter.classList.add("animate");
+    function next() {
+        goTo((current + 1) % slides.length);
+    }
 
-            const label = index === 0 ? "ADHÉRENTS" : "COMPÉTITIONS";
+    function startTimer() {
+        clearInterval(timer);
+        timer = setInterval(next, DELAY);
+    }
 
-            const interval = setInterval(() => {
-                count++;
-                counter.innerHTML = `+ ${count} <span class="thin-text">${label}</span>`;
-                if (count >= targets[index]) clearInterval(interval);
-            }, speed);
+    // Clicks sur les dots
+    dots.forEach((dot, i) => {
+        dot.addEventListener("click", () => {
+            goTo(i);
+            startTimer();
         });
+    });
+
+    // Démarrage
+    startTimer();
+
+    /* Stats bar — visible au premier scroll */
+    const statsBar = document.querySelector(".slider-stats-bar");
+    if (statsBar) {
+        function showStats() {
+            if (window.scrollY > 40) {
+                statsBar.classList.add("stats-visible");
+            } else {
+                statsBar.classList.remove("stats-visible");
+            }
+        }
+        window.addEventListener("scroll", showStats, { passive: true });
+        showStats();
+    }
+
+    /* ──────────────────────────────────────────────
+       Compteur adhérents animé
+    ────────────────────────────────────────────── */
+    const adherentsEl = document.getElementById("adherents-counter");
+    if (adherentsEl) {
+        const target = 85;
+        let count = 0;
+        const iv = setInterval(() => {
+            count++;
+            adherentsEl.textContent = count + "+";
+            if (count >= target) clearInterval(iv);
+        }, 22);
     }
 });

@@ -1,129 +1,123 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
 
-    // =========================================
-    // 1) SCROLL EFFECT
-    // =========================================
-    const navWrapper = document.querySelector('.nav-main-wrapper');
+    const nav     = document.getElementById("mainNav");
+    const trigger = document.getElementById("mobileMenuTrigger");
+    const overlay = document.getElementById("mobileNavOverlay");
 
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) navWrapper?.classList.add('scrolled');
-        else navWrapper?.classList.remove('scrolled');
-    });
+    if (!nav) return;
 
-    // =========================================
-    // 2) MOBILE MENU
-    // =========================================
-    const hamburger   = document.getElementById('mobileMenuTrigger');
-    const overlay     = document.getElementById('mobileNavOverlay');
-    const mobileLinks = overlay ? overlay.querySelectorAll('a') : [];
+    /* ──────────────────────────────────────────────
+       TRANSPARENCE SUR HERO — scroll listener
+       Dès 80px de scroll : barre sombre
+       Pages sans hero : barre sombre dès le chargement
+    ────────────────────────────────────────────── */
+    const hero = document.querySelector(".hero-section");
+    const SCROLL_THRESHOLD = 80;
 
-    let savedScrollY = 0;
+    function updateNav() {
+        if (!hero) return;
+        if (window.scrollY > SCROLL_THRESHOLD) {
+            nav.classList.add("nav-scrolled");
+        } else {
+            nav.classList.remove("nav-scrolled");
+        }
+    }
 
-    const openMobileMenu = () => {
-        if (!overlay || !hamburger) return;
-        savedScrollY = window.scrollY;
-        document.body.style.top = `-${savedScrollY}px`;
-        document.body.classList.add('mobile-menu-open');
-        document.documentElement.classList.add('mobile-menu-open');
-        overlay.classList.add('open');
-        hamburger.classList.add('is-active');
-    };
+    if (hero) {
+        window.addEventListener("scroll", updateNav, { passive: true });
+        updateNav(); // état initial
+    } else {
+        nav.classList.add("nav-scrolled");
+    }
 
-    const closeMobileMenu = () => {
-        if (!overlay || !hamburger) return;
-        document.body.classList.remove('mobile-menu-open');
-        document.documentElement.classList.remove('mobile-menu-open');
-        document.body.style.top = '';
-        window.scrollTo(0, savedScrollY);
-        overlay.classList.remove('open');
-        hamburger.classList.remove('is-active');
-    };
+    /* ──────────────────────────────────────────────
+       MENU MOBILE — ouverture / fermeture
+    ────────────────────────────────────────────── */
+    function openMobileMenu() {
+        overlay.classList.add("is-open");
+        overlay.setAttribute("aria-hidden", "false");
+        trigger.classList.add("is-open");
+        trigger.setAttribute("aria-expanded", "true");
+        document.body.style.overflow = "hidden";
+        nav.classList.add("nav-scrolled"); // barre toujours visible quand menu ouvert
+    }
 
-    if (hamburger && overlay) {
-        hamburger.addEventListener('click', () => {
-            overlay.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
+    function closeMobileMenu() {
+        overlay.classList.remove("is-open");
+        overlay.setAttribute("aria-hidden", "true");
+        trigger.classList.remove("is-open");
+        trigger.setAttribute("aria-expanded", "false");
+        document.body.style.overflow = "";
+        updateNav();
+    }
+
+    if (trigger && overlay) {
+        trigger.addEventListener("click", () => {
+            if (overlay.classList.contains("is-open")) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
         });
 
-        // Accordéon
-        const accordionTriggers = overlay.querySelectorAll('.mobile-accordion-trigger');
-        accordionTriggers.forEach(trigger => {
-            trigger.addEventListener('click', () => {
-                const content = trigger.nextElementSibling;
-                const isOpen  = trigger.classList.contains('is-open');
+        // Fermeture sur clic en dehors du panel
+        overlay.addEventListener("click", (e) => {
+            if (e.target === overlay) closeMobileMenu();
+        });
 
-                // Ferme tous les autres
-                accordionTriggers.forEach(t => {
-                    t.classList.remove('is-open');
-                    t.nextElementSibling.classList.remove('is-open');
-                });
+        // Fermeture sur Escape
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && overlay.classList.contains("is-open")) {
+                closeMobileMenu();
+            }
+        });
+    }
 
-                // Toggle celui-ci
-                if (!isOpen) {
-                    trigger.classList.add('is-open');
-                    content.classList.add('is-open');
+    /* ──────────────────────────────────────────────
+       MEGA MENU DESKTOP — hover avec délai de fermeture
+    ────────────────────────────────────────────── */
+    const dropTrigger = document.getElementById("clubDropdownTrigger");
+    const dropMenu    = document.getElementById("clubDropdown");
+
+    if (dropTrigger && dropMenu) {
+        let closeTimer = null;
+
+        function openDrop() {
+            clearTimeout(closeTimer);
+            dropTrigger.classList.add("is-open");
+        }
+
+        function closeDrop() {
+            closeTimer = setTimeout(() => {
+                dropTrigger.classList.remove("is-open");
+            }, 180);
+        }
+
+        dropTrigger.addEventListener("mouseenter", openDrop);
+        dropTrigger.addEventListener("mouseleave", closeDrop);
+        dropMenu.addEventListener("mouseenter", openDrop);
+        dropMenu.addEventListener("mouseleave", closeDrop);
+    }
+
+    /* ──────────────────────────────────────────────
+       ACCORDÉON MOBILE
+    ────────────────────────────────────────────── */
+    document.querySelectorAll(".nav-mobile-accordion").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const sub    = btn.nextElementSibling;
+            const isOpen = btn.classList.contains("is-open");
+
+            // Fermer tous les autres
+            document.querySelectorAll(".nav-mobile-accordion.is-open").forEach((other) => {
+                if (other !== btn) {
+                    other.classList.remove("is-open");
+                    other.nextElementSibling.classList.remove("is-open");
                 }
             });
-        });
 
-        // Ferme le menu sur clic d'un lien
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => closeMobileMenu());
+            btn.classList.toggle("is-open", !isOpen);
+            if (sub) sub.classList.toggle("is-open", !isOpen);
         });
-    }
-
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 992) closeMobileMenu();
     });
-
-    // =========================================
-    // 3) INFO BANNER CAROUSEL (mobile)
-    // =========================================
-    const carouselItems = document.querySelectorAll('.info-carousel-item');
-    const prevBtn       = document.getElementById('infoPrev');
-    const nextBtn       = document.getElementById('infoNext');
-
-    if (carouselItems.length && prevBtn && nextBtn) {
-        let current   = 0;
-        let animating = false;
-
-        carouselItems[0].classList.add('is-active');
-
-        const goTo = (next, direction) => {
-            if (animating || next === current) return;
-            animating = true;
-
-            const leaveClass = direction === 'next' ? 'is-leaving-left' : 'is-leaving-right';
-
-            carouselItems[current].classList.remove('is-active');
-            carouselItems[current].classList.add(leaveClass);
-
-            carouselItems[next].style.transform  = direction === 'next' ? 'translateX(20px)' : 'translateX(-20px)';
-            carouselItems[next].style.opacity    = '0';
-            carouselItems[next].style.transition = 'none';
-            carouselItems[next].classList.add('is-active');
-
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    carouselItems[next].style.transform  = '';
-                    carouselItems[next].style.opacity    = '';
-                    carouselItems[next].style.transition = '';
-                });
-            });
-
-            setTimeout(() => {
-                carouselItems[current].classList.remove(leaveClass);
-                current   = next;
-                animating = false;
-            }, 250);
-        };
-
-        nextBtn.addEventListener('click', () => {
-            goTo((current + 1) % carouselItems.length, 'next');
-        });
-
-        prevBtn.addEventListener('click', () => {
-            goTo((current - 1 + carouselItems.length) % carouselItems.length, 'prev');
-        });
-    }
 
 });

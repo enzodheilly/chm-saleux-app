@@ -605,7 +605,7 @@ html, body {
 }
 
 body{
-  padding-top: calc(var(--info-h) + var(--nav-h));
+  padding-top: var(--nav-height);
 }
 
 .toast-mini {

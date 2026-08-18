@@ -1,47 +1,106 @@
 <section id="accueil" class="hero-section {% if app.user %}hero-logged{% endif %}">
-	<div
-		class="hero-photos">
-		{# Image desktop #}
-		<picture>
-			<source srcset="{{ asset('images/club/club3.webp') }}" type="image/webp">
-			<img class="hero-img hero-img-desktop" src="{{ asset('images/club/club3.webp') }}" alt="Image du club" loading="eager" fetchpriority="high" decoding="async">
-		</picture>
 
-		{# Image mobile #}
-		<img class="hero-img hero-img-mobile" src="{{ asset('images/club/robert.jpg') }}" alt="Image du club sur mobile" loading="eager" fetchpriority="high" decoding="async">
-	</div>
+	{% if not app.user %}
+	{# ═══════════════════════════════════════
+	   VUE VISITEUR — SLIDER
+	   ═══════════════════════════════════════ #}
 
-	<div class="hero-content">
-		{% if not app.user %}
-			{# --- VUE VISITEUR --- #}
-			<h1 class="club-title">CLUB HALTÉROPHILIE & MUSCULATION</h1>
-			<p class="club-subtitle default-subtitle">Relevez vos limites et dépassez-vous chaque jour !</p>
+		{# ── SLIDES PHOTOS ── #}
+		<div class="slider-track" aria-hidden="true">
+			<div class="slide slide-1 active"></div>
+			<div class="slide slide-2"></div>
+			<div class="slide slide-3"></div>
+			<div class="slide slide-4"></div>
+		</div>
 
-			<div class="hero-inner">
-				<div class="hero-line" id="adherents-counter">
-					+ 0
-					<span class="thin-text">ADHÉRENTS</span>
-				</div>
-				<div class="hero-line">
-					+ 30
-					<span class="thin-text">COMPÉTITIONS</span>
-				</div>
+		{# ── OVERLAY SOMBRE ── #}
+		<div class="slider-overlay"></div>
+
+		{# ── FILIGRANE GRAND TITRE ── #}
+		<div class="slider-watermark" aria-hidden="true">CHM SALEUX</div>
+
+		{# ── CONTENU BAS-GAUCHE ── #}
+		<div class="slider-content">
+			<div class="hero-eyebrow">
+				<span class="hero-eyebrow-dot"></span>
+				Saleux, Somme &bull; Depuis 1998
 			</div>
 
-			<div class="hero-buttons">
-				<a href="{{ path('app_auth_choice') }}" class="nous-rejoindre">
+			<h1 class="slider-title">
+				Club d'Haltérophilie<br>
+				<span class="slider-title-accent">&amp; Musculation</span>
+			</h1>
+
+			<p class="slider-subtitle">Rejoignez une communauté de passionnés et repoussez vos limites chaque jour.</p>
+
+			<div class="slider-cta">
+				<a href="{{ path('app_auth_choice') }}" class="hero-cta-primary">
 					NOUS REJOINDRE
 				</a>
-				<a href="{{ path('app_club') }}" class="btn-en-savoir-plus">DÉCOUVRIR LE CLUB</a>
+				<a href="{{ path('app_club') }}" class="slider-cta-play">
+					<span class="play-btn"><i class="fa-solid fa-play"></i></span>
+					Découvrir le club
+				</a>
 			</div>
+		</div>
 
-		{% else %}
-			{# --- VUE CONNECTÉE --- #}
+		{# Badge FFHM #}
+		<div class="badge-ffhm">
+			<span class="badge-text">Club affilié</span>
+			<span class="badge-separator"></span>
+			<img src="{{ asset('images/ffhm.png') }}" alt="Logo FFHM" loading="lazy" decoding="async" width="80" height="30">
+		</div>
+
+		{# ── BARRE STATS EN BAS ── #}
+		<div class="slider-stats-bar">
+			<div class="slider-stat">
+				<span class="slider-stat-num" id="adherents-counter">85+</span>
+				<span class="slider-stat-label">Adhérents</span>
+			</div>
+			<div class="slider-stat-div"></div>
+			<div class="slider-stat">
+				<span class="slider-stat-num">800</span>
+				<span class="slider-stat-label">m² d'installations</span>
+			</div>
+			<div class="slider-stat-div"></div>
+			<div class="slider-stat">
+				<span class="slider-stat-num">30+</span>
+				<span class="slider-stat-label">Compétitions</span>
+			</div>
+			<div class="slider-stat-div"></div>
+			<div class="slider-stat">
+				<span class="slider-stat-num">+25</span>
+				<span class="slider-stat-label">Ans d'expérience</span>
+			</div>
+		</div>
+
+		{# ── DOTS DE NAVIGATION ── #}
+		<div class="slider-dots">
+			<button class="slider-dot active" data-slide="0" aria-label="Slide 1">1</button>
+			<button class="slider-dot" data-slide="1" aria-label="Slide 2">2</button>
+			<button class="slider-dot" data-slide="2" aria-label="Slide 3">3</button>
+			<button class="slider-dot" data-slide="3" aria-label="Slide 4">4</button>
+		</div>
+
+	{% else %}
+	{# ═══════════════════════════════════════
+	   VUE CONNECTÉE (inchangée)
+	   ═══════════════════════════════════════ #}
+
+		<div class="hero-photos">
+			<picture>
+				<source srcset="{{ asset('images/club/club3.webp') }}" type="image/webp">
+				<img class="hero-img hero-img-desktop" src="{{ asset('images/club/club3.webp') }}" alt="CHM Saleux" loading="eager" fetchpriority="high" decoding="async">
+			</picture>
+			<img class="hero-img hero-img-mobile" src="{{ asset('images/club/robert.jpg') }}" alt="CHM Saleux" loading="eager" fetchpriority="high" decoding="async">
+		</div>
+		<div class="hero-grad"></div>
+
+		<div class="hero-content">
 			<div class="user-header">
 				<h1 class="club-title user-welcome">
 					<span class="greeting">Ravi de vous revoir,</span>
-					<span class="user-name">{{ app.user.firstName }}
-						!</span>
+					<span class="user-name">{{ app.user.firstName }}!</span>
 				</h1>
 				<p class="club-date">
 					{{ "now"|format_date(locale='fr', pattern='EEEE d MMMM Y')|capitalize }}
@@ -51,33 +110,20 @@
 			{% if heroStats and heroStats.sessions > 0 %}
 				<div class="hero-stats-container">
 					<p class="stats-mini-title">Vos 30 derniers jours</p>
-
-					<div
-						class="hero-stats-row">
-						{# Séances #}
+					<div class="hero-stats-row">
 						<div class="hero-stat-card">
 							<span class="hero-stat-value">{{ heroStats.sessions }}</span>
 							<span class="hero-stat-label">Séances</span>
 						</div>
-
 						<div class="hero-stat-divider"></div>
-
-						{# Volume (Conversion kg/t) #}
 						<div class="hero-stat-card">
 							<span class="hero-stat-value">
 								{% set kg = (heroStats.volume / 1000)|round(1) %}
-								{% if kg >= 1 %}
-									{{ kg }}<small>t</small>
-								{% else %}
-									{{ heroStats.volume|round }}<small>kg</small>
-								{% endif %}
+								{% if kg >= 1 %}{{ kg }}<small>t</small>{% else %}{{ heroStats.volume|round }}<small>kg</small>{% endif %}
 							</span>
 							<span class="hero-stat-label">Soulevés</span>
 						</div>
-
 						<div class="hero-stat-divider"></div>
-
-						{# Temps ou Streak #}
 						<div class="hero-stat-card">
 							<span class="hero-stat-value">
 								{% if heroStats.streak > 1 %}
@@ -87,9 +133,7 @@
 									{{ h }}<small>h</small>
 								{% endif %}
 							</span>
-							<span class="hero-stat-label">
-								{{ heroStats.streak > 1 ? 'Jours suivis' : "D'entraînement" }}
-							</span>
+							<span class="hero-stat-label">{{ heroStats.streak > 1 ? 'Jours suivis' : "D'entraînement" }}</span>
 						</div>
 					</div>
 				</div>
@@ -105,13 +149,14 @@
 				<a href="{{ path('dashboard') }}" class="nous-rejoindre">MON TABLEAU DE BORD</a>
 				<a href="{{ path('actualites') }}" class="btn-en-savoir-plus">ACTUALITÉS</a>
 			</div>
-		{% endif %}
 
-		{# Badge FFHM (commun aux deux vues) #}
-		<div class="badge-ffhm">
-			<span class="badge-text">Club affilié</span>
-			<span class="badge-separator"></span>
-			<img src="{{ asset('images/ffhm.png') }}" alt="Logo FFHM" loading="lazy" decoding="async" width="80" height="30">
+			<div class="badge-ffhm">
+				<span class="badge-text">Club affilié</span>
+				<span class="badge-separator"></span>
+				<img src="{{ asset('images/ffhm.png') }}" alt="Logo FFHM" loading="lazy" decoding="async" width="80" height="30">
+			</div>
 		</div>
-	</div>
+
+	{% endif %}
+
 </section>

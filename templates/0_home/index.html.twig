@@ -1,14 +1,11 @@
 {# templates/0_home/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil – CHM Saleux
-{% endblock %}
+{% block title %}Accueil – CHM Saleux{% endblock %}
 
-{% block og_title %}CHM Saleux - Club d'Haltérophilie et de Musculation
-{% endblock %}
+{% block og_title %}CHM Saleux - Club d'Haltérophilie et de Musculation{% endblock %}
 
-{% block og_description %}Rejoignez le CHM Saleux à Saleux. Haltérophilie, musculation, cours collectifs, sauna. Plus de 25 ans d'expérience.
-{% endblock %}
+{% block og_description %}Rejoignez le CHM Saleux à Saleux. Haltérophilie, musculation, cours collectifs, sauna. Plus de 25 ans d'expérience.{% endblock %}
 
 {% block og_image %}
 	{{ app.request.schemeAndHttpHost ~ asset('images/club/club1.jpg') }}
@@ -20,21 +17,24 @@
 {% endblock %}
 
 {% block body %}
+	{# 1. Hero #}
 	{% include '1_accueil/section1/section1.html.twig' %}
+
+	{# 2. Nos activités (4 cartes) #}
+	{% include '1_accueil/section_services/section_services.html.twig' %}
+
+	{# 3. Tarifs & abonnements #}
 	{% include '1_accueil/section2/section2.html.twig' %}
-	{% include '1_accueil/section8/section8.html.twig' %}
-	{% include '1_accueil/section10/section10.html.twig' %}
-	{% include '1_accueil/section3/section3.html.twig' with { newEquipments: newEquipments|default([]) } %}
-	{# {% include '1_accueil/section5/section5.html.twig' %} #}
-	{% include '1_accueil/section4/section4.html.twig' %}
+
+	{# 4. Actualités #}
+	{% include '1_accueil/section4/section4.html.twig' with { articles: articles|default([]) } %}
+
+	{# 5. CTA fermeture #}
+	{% include '1_accueil/section_cta/section_cta.html.twig' %}
 {% endblock %}
 
 {% block javascripts %}
 	{{ parent() }}
- <script src="{{ asset('js/accueil/section1/section1.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-	 <script src="{{ asset('js/accueil/section2/section2.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-	 <script src="{{ asset('js/accueil/section4/faq.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-	 <script src="{{ asset('js/accueil/section9/section9.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-
-	{# ✅ On a supprimé le script "showSetPasswordModal" ici car c'est désormais une page dédiée #}
+	<script src="{{ asset('js/accueil/section1/section1.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+	<script src="{{ asset('js/accueil/section2/section2.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

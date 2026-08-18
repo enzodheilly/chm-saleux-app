@@ -1,4 +1,4 @@
-{# --- SECTION : DERNIÈRES ACTUALITÉS --- #}
+{# ── SECTION : DERNIÈRES ACTUALITÉS ── #}
 <section class="home-news-section">
 	<div class="container">
 
@@ -22,9 +22,8 @@
 							{% if article.photo %}
 								<img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}" loading="lazy">
 							{% else %}
-								<img src="{{ asset('images/default-article.png') }}" alt="CHM Saleux">
+								<img src="{{ asset('images/article.jpg') }}" alt="CHM Saleux">
 							{% endif %}
-
 							<div class="card-overlay">
 								<span class="info-date">{{ article.publishedAt|date('d/m/Y') }}</span>
 								<h3 class="info-title">
@@ -33,9 +32,7 @@
 								<p class="info-excerpt">
 									{{ article.description|striptags|length > 80 ? article.description|striptags|slice(0, 80) ~ '...' : article.description }}
 								</p>
-								<span class="info-more">Lire l'article
-									<i class="fa-solid fa-chevron-right"></i>
-								</span>
+								<span class="info-more">Lire l'article <i class="fa-solid fa-chevron-right"></i></span>
 							</div>
 						</div>
 					</a>
@@ -45,81 +42,6 @@
 					<p>De nouvelles actualités arrivent bientôt !</p>
 				</div>
 			{% endfor %}
-		</div>
-
-	</div>
-</section>
-
-{# --- SECTION : FAQ & AIDE --- #}
-<section class="home-faq-section">
-	<div class="container">
-
-		<div
-			class="faq-grid-layout">
-
-			{# Colonne Gauche : Intro #}
-			<aside class="faq-intro-box">
-				<div class="sticky-content">
-					<h2 class="faq-main-title">Questions
-						<span class="text-outline">Fréquentes</span>
-					</h2>
-					<p class="faq-main-desc">Vous hésitez encore ? Voici les réponses aux questions les plus posées par nos nouveaux adhérents.</p>
-
-					<div class="faq-contact-card">
-						<h4>Encore un doute ?</h4>
-						<p>Nos coachs vous répondent directement par message.</p>
-						<a href="{{ path('contact') }}" class="btn-elite-contact">
-							Nous contacter
-							<i class="fa-solid fa-paper-plane"></i>
-						</a>
-					</div>
-				</div>
-			</aside>
-
-			{# Colonne Droite : Accordéons #}
-			<div class="faq-accordion-list">
-				{% set faqItems = [
-                    {
-                        q: "Quels types d'abonnements proposez-vous ?",
-                        a: "Nous proposons des formules adaptées : <strong>Compétition</strong> (Haltérophilie Jeunes & Adultes) et <strong>Loisir</strong> (Musculation & Haltérophilie santé)."
-                    },
-                    {
-                        q: "Quelle différence entre les licences ?",
-                        a: "La licence <strong>Jeune</strong> inclut un encadrement spécifique renforcé. La licence <strong>Adulte</strong> offre un accès complet au plateau et aux compétitions."
-                    },
-                    {
-                        q: "Puis-je essayer avant de m'inscrire ?",
-                        a: "Absolument ! Une <strong>séance d'essai gratuite</strong> est offerte pour découvrir l'ambiance et le matériel avec un coach."
-                    },
-                    {
-                        q: "Quels sont les horaires d'accès ?",
-                        a: "Le club est ouvert tous les jours de la semaine avec des créneaux spécifiques pour l'haltérophilie encadrée en soirée."
-                    }
-                ] %}
-
-				{% for item in faqItems %}
-					<div class="faq-elite-item">
-						<button class="faq-elite-trigger" type="button" aria-expanded="false">
-							<span class="q-text">{{ item.q }}</span>
-							<span class="q-icon">
-								<i class="fa-solid fa-plus"></i>
-							</span>
-						</button>
-						<div class="faq-elite-content">
-							<div class="inner-text">
-								{{ item.a|raw }}
-							</div>
-						</div>
-					</div>
-				{% endfor %}
-
-				<div class="faq-footer-link">
-					<a href="{{ path('faq') }}">Consulter la FAQ complète
-						<i class="fa-solid fa-arrow-right-long"></i>
-					</a>
-				</div>
-			</div>
-
 		</div>
 
 	</div>
