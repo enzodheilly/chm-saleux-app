@@ -36,7 +36,7 @@ class AdminSessionSubscriber implements EventSubscriberInterface
 
         // Vérifier si c'est une route admin
         $path = $request->getPathInfo();
-        if (!str_starts_with($path, '/admin')) {
+        if (!str_starts_with($path, '/gestion-chm-secrete-92x')) {
             return;
         }
 

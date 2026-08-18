@@ -289,7 +289,7 @@
 }
 
 .competition-header-bg {
-  --bg-image: url('/images/competitions/eee.jpg');
+  --bg-image: url('/images/competitions/competitions-bg.jpg');
     --bg-position: center -5%;
   --bg-size: auto 130%;
 }

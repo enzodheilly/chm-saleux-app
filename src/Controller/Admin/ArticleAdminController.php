@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/admin/articles', name: 'admin_articles_')]
+#[Route('/gestion-chm-secrete-92x/articles', name: 'admin_articles_')]
 class ArticleAdminController extends AbstractController
 {
     private const ALLOWED_MIMES = ['image/jpeg', 'image/png', 'image/webp'];

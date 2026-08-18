@@ -423,7 +423,7 @@
   padding-bottom: 0;
 }
 .ecole-header-bg {
-  --bg-image: url('/images/club/testr.png');
+  --bg-image: url('/images/club/ecole-bg.png');
   --bg-position: center 50%;
 }
 

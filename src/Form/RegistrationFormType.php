@@ -48,7 +48,7 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Veuillez saisir un mot de passe']),
                     new Assert\Length([
-                        'min' => 10,
+                        'min' => 8,
                         'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères.',
                     ]),
                 ],

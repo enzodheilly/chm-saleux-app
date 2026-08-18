@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/admin/exercise', name: 'admin_exercise_')]
+#[Route('/gestion-chm-secrete-92x/exercise', name: 'admin_exercise_')]
 class AdminExerciseController extends AbstractController
 {
     #[Route('/', name: 'index', methods: ['GET', 'POST'])]

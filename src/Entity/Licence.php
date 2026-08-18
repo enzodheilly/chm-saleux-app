@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\LicenceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LicenceRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Licence
 {
     #[ORM\Id]
@@ -41,6 +44,29 @@ class Licence
     #[ORM\ManyToOne(targetEntity: MembershipPlan::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?MembershipPlan $membershipPlan = null;
+
+    #[ORM\Column(type: 'string', length: 64, unique: true, nullable: true)]
+    private ?string $qrCodeToken = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $qrCodeUpdatedAt = null;
+
+    #[ORM\OneToMany(mappedBy: 'licence', targetEntity: CheckIn::class, cascade: ['remove'], orphanRemoval: true)]
+    private Collection $checkIns;
+
+    public function __construct()
+    {
+        $this->checkIns = new ArrayCollection();
+    }
+
+    #[ORM\PrePersist]
+    public function initializeQrCodeToken(): void
+    {
+        if ($this->qrCodeToken === null) {
+            $this->qrCodeToken = bin2hex(random_bytes(32));
+            $this->qrCodeUpdatedAt = new \DateTimeImmutable();
+        }
+    }
 
     public function getId(): ?int
     {
@@ -149,5 +175,32 @@ class Licence
     public function isAlreadyAssociated(): bool
     {
         return $this->user !== null;
+    }
+
+    public function getQrCodeToken(): ?string
+    {
+        return $this->qrCodeToken;
+    }
+
+    public function setQrCodeToken(?string $qrCodeToken): self
+    {
+        $this->qrCodeToken = $qrCodeToken;
+        return $this;
+    }
+
+    public function getQrCodeUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->qrCodeUpdatedAt;
+    }
+
+    public function setQrCodeUpdatedAt(?\DateTimeImmutable $qrCodeUpdatedAt): self
+    {
+        $this->qrCodeUpdatedAt = $qrCodeUpdatedAt;
+        return $this;
+    }
+
+    public function getCheckIns(): Collection
+    {
+        return $this->checkIns;
     }
 }

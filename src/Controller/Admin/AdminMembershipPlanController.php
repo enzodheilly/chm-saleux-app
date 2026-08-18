@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/admin/membership-plans')]
+#[Route('/gestion-chm-secrete-92x/membership-plans')]
 class AdminMembershipPlanController extends AbstractController
 {
     #[Route('/', name: 'admin_membership_plan_index', methods: ['GET'])]

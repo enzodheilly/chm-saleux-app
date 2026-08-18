@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/admin/competitions')]
+#[Route('/gestion-chm-secrete-92x/competitions')]
 class AdminCompetitionController extends AbstractController
 {
     #[Route('/', name: 'admin_competition_index')]

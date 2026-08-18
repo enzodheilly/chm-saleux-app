@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/admin/legal-pages', name: 'admin_legal_pages_')]
+#[Route('/gestion-chm-secrete-92x/legal-pages', name: 'admin_legal_pages_')]
 class AdminLegalPageController extends AbstractController
 {
     #[Route('/', name: 'index', methods: ['GET'])]

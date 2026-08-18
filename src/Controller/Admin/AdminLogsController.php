@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/admin/security/logs', name: 'admin_security_logs')]
+#[Route('/gestion-chm-secrete-92x/security/logs', name: 'admin_security_logs')]
 class AdminLogsController extends AbstractController
 {
     public function __invoke(LogRepository $logRepo): Response

@@ -19,7 +19,33 @@
 		</div>
 	</div>
 
-	<div class="table-wrapper">
+	<div class="table-wrapper" id="qrcode">
+		<div class="card-body" style="text-align: center;">
+			<span class="tool-label">QR code d'accès à la salle</span>
+
+			{% if qrCodeImage %}
+				<div style="margin: 1rem 0;">
+					<img src="{{ qrCodeImage }}" alt="QR code d'accès" width="180" height="180">
+				</div>
+				<span class="form-help">
+					{% if licence.qrCodeUpdatedAt %}
+						Dernière génération le {{ licence.qrCodeUpdatedAt|date('d/m/Y à H:i') }}.
+					{% endif %}
+					Ce code se régénère automatiquement toutes les 24h. En cas de perte du téléphone ou de partage
+					accidentel, régénérez-le manuellement : l'ancien code cessera immédiatement de fonctionner.
+				</span>
+			{% else %}
+				<p class="form-help">Aucun QR code généré pour l'instant.</p>
+			{% endif %}
+
+			<form method="post" action="{{ path('admin_licence_qrcode_regenerate', {'id': licence.id}) }}" onsubmit="return confirm('Régénérer le QR code de cette licence ? L\'ancien code ne fonctionnera plus.');" style="margin-top: 0.75rem;">
+				<input type="hidden" name="_token" value="{{ csrf_token('qrcode_regenerate_' ~ licence.id) }}">
+				<button type="submit" class="btn-outline">Régénérer le QR code</button>
+			</form>
+		</div>
+	</div>
+
+	<div class="table-wrapper" style="margin-top: 1.5rem;">
 		<div class="card-body">
 			{{ form_start(form) }}
 

@@ -25,24 +25,8 @@ class ResetPasswordFormType extends AbstractType
                         'message' => 'Le mot de passe ne peut pas être vide.',
                     ]),
                     new Assert\Length([
-                        'min' => 12,
+                        'min' => 8,
                         'minMessage' => 'Le mot de passe doit contenir au moins {{ limit }} caractères.',
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/[A-Z]/',
-                        'message' => 'Le mot de passe doit contenir au moins une majuscule.',
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/[a-z]/',
-                        'message' => 'Le mot de passe doit contenir au moins une minuscule.',
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/\d/',
-                        'message' => 'Le mot de passe doit contenir au moins un chiffre.',
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/[\W_]/',
-                        'message' => 'Le mot de passe doit contenir au moins un caractère spécial.',
                     ]),
                 ],
             ]);

@@ -136,6 +136,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     #[ORM\Column(type: "boolean")]
     private bool $acceptedTerms = false;
 
+    // ✅ Mensurations — données à caractère personnel : uniquement lisibles/
+    // modifiables par leur propriétaire (cf. sécurité de l'ApiResource ci-dessus
+    // et de ProfileController::updateProfile, tous deux scopés à `$this->getUser()`).
+    #[ORM\Column(type: "integer", nullable: true)]
+    #[Groups(['user:read', 'user:write'])]
+    #[Assert\Range(min: 100, max: 250, notInRangeMessage: "La taille doit être comprise entre {{ min }} et {{ max }} cm.")]
+    private ?int $heightCm = null;
+
+    #[ORM\Column(type: "integer", nullable: true)]
+    #[Groups(['user:read', 'user:write'])]
+    #[Assert\Range(min: 30, max: 300, notInRangeMessage: "Le poids doit être compris entre {{ min }} et {{ max }} kg.")]
+    private ?int $weightKg = null;
+
+    #[ORM\Column(type: "integer", nullable: true)]
+    #[Groups(['user:read', 'user:write'])]
+    #[Assert\Range(min: 10, max: 120, notInRangeMessage: "L'âge doit être compris entre {{ min }} et {{ max }} ans.")]
+    private ?int $age = null;
+
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PasswordHistory::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $passwordHistories;
 
@@ -195,6 +213,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
+        return $this;
+    }
+
+    public function getHeightCm(): ?int
+    {
+        return $this->heightCm;
+    }
+
+    public function setHeightCm(?int $heightCm): self
+    {
+        $this->heightCm = $heightCm;
+        return $this;
+    }
+
+    public function getWeightKg(): ?int
+    {
+        return $this->weightKg;
+    }
+
+    public function setWeightKg(?int $weightKg): self
+    {
+        $this->weightKg = $weightKg;
+        return $this;
+    }
+
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    public function setAge(?int $age): self
+    {
+        $this->age = $age;
         return $this;
     }
 
@@ -610,4 +661,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         $this->isTotpConfirmed = $isTotpConfirmed;
         return $this;
     }
+
 }

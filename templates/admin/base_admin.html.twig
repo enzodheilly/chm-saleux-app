@@ -52,6 +52,12 @@
 					</div>
 				</div>
 
+				<div class="nav-item">
+					<a href="{{ path('admin_attendance_index') }}" class="nav-link {% if app.request.get('_route') starts with 'admin_attendance' %}active{% endif %}">
+						Fréquentation & Scanner
+					</a>
+				</div>
+
 				<div class="nav-group-label">Sport & Abonnements</div>
 
 				<div class="nav-item">

@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Uid\Uuid;
 
-#[Route('/admin/athlete')]
+#[Route('/gestion-chm-secrete-92x/athlete')]
 class AdminAthleteController extends AbstractController
 {
     #[Route('/', name: 'admin_athlete_index')]

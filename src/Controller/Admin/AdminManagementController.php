@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminManagementController extends AbstractController
 {
-    #[Route('/admin/new-admin', name: 'admin_users_new_admin')]
+    #[Route('/gestion-chm-secrete-92x/new-admin', name: 'admin_users_new_admin')]
     public function newAdmin(
         Request $request,
         UserRepository $userRepo,

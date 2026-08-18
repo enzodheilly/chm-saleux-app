@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 
-#[Route('/admin/newsletter', name: 'admin_newsletter_')]
+#[Route('/gestion-chm-secrete-92x/newsletter', name: 'admin_newsletter_')]
 class AdminNewsletterController extends AbstractController
 {
     #[Route('/', name: 'index')]

@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/admin/mobile/routines/templates', name: 'admin_routine_template_')]
+#[Route('/gestion-chm-secrete-92x/mobile/routines/templates', name: 'admin_routine_template_')]
 class AdminRoutineTemplateController extends AbstractController
 {
     #[Route('/', name: 'index', methods: ['GET'])]

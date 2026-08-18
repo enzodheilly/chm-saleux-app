@@ -174,7 +174,7 @@
 							<div class="activity-item">
 								<div class="dot"></div>
 								<div>
-									<div class="activity-text">{{ item.text|raw }}</div>
+									<div class="activity-text">{{ item.text|striptags }}</div>
 									<span class="activity-date">{{ item.date|date('d/m à H:i') }}</span>
 								</div>
 							</div>

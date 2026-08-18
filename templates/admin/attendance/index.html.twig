@@ -1,0 +1,122 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Fréquentation & Scanner{% endblock %}
+{% block page_title %}Fréquentation & Scanner{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/admin/dashboard.css') }}">
+{% endblock %}
+
+{% block body %}
+
+	<div class="dashboard-header">
+		<div>
+			<h2>Scanner d'entrée</h2>
+			<p>Scannez le QR code d'un adhérent (scanner USB/Bluetooth branché sur ce poste) pour enregistrer son entrée ou sa sortie.</p>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-body">
+			<form id="scan-form" autocomplete="off">
+				<input type="text" id="scan-input" class="gatekeeper-input" placeholder="En attente d'un scan…" autofocus>
+			</form>
+			<div id="scan-feedback" style="margin-top: 1rem; min-height: 2.5rem;"></div>
+		</div>
+	</div>
+
+	<div class="stats-grid">
+		<div class="stat-card">
+			<div class="stat-label">Actuellement en salle</div>
+			<div class="stat-value">{{ currentlyIn|default(0) }}</div>
+			<div class="stat-trend">Adhérents présents</div>
+		</div>
+
+		<div class="stat-card">
+			<div class="stat-label">Temps moyen</div>
+			<div class="stat-value">{{ averageDurationMinutes|default(0) }} min</div>
+			<div class="stat-trend">Sur les 30 derniers jours</div>
+		</div>
+	</div>
+
+	<div class="grid-split">
+
+		<div>
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">Entrées par jour (7 jours)</h3>
+				</div>
+				<div class="card-body">
+					<canvas id="attendanceDayChart" height="80"></canvas>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">Derniers passages</h3>
+				</div>
+				<div class="card-body no-padding">
+					<div class="table-scroll">
+						<table class="clean-table">
+							<thead>
+								<tr>
+									<th>Adhérent</th>
+									<th>Type</th>
+									<th>Heure</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for checkIn in recentCheckIns %}
+									<tr>
+										<td class="td-bold">{{ checkIn.licence.firstName }} {{ checkIn.licence.lastName }}</td>
+										<td>
+											{% if checkIn.type == 'IN' %}
+												<span class="badge badge-success">Entrée</span>
+											{% else %}
+												<span class="badge badge-danger">Sortie</span>
+											{% endif %}
+										</td>
+										<td>{{ checkIn.scannedAt|date('d/m - H:i') }}</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="3" class="td-empty">Aucun passage enregistré.</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div>
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">Heures de pointe (30 jours)</h3>
+				</div>
+				<div class="card-body">
+					<canvas id="attendanceHourChart" height="200"></canvas>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset('js/vendor/chart.min.js') }}" nonce="{{ csp_nonce('script') }}"></script>
+
+	<script nonce="{{ csp_nonce('script') }}">
+		window.attendanceData = {
+			dayLabels: {{ dayLabels|json_encode|raw }},
+			dayCounts: {{ dayCounts|json_encode|raw }},
+			hourCounts: {{ hourCounts|json_encode|raw }},
+			scanUrl: {{ path('admin_attendance_scan')|json_encode|raw }},
+			csrfToken: {{ csrf_token('attendance_scan')|json_encode|raw }}
+		};
+	</script>
+
+	<script src="{{ asset('js/admin/attendance/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
+{% endblock %}

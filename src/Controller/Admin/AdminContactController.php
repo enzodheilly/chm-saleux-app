@@ -13,7 +13,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/admin/contact', name: 'admin_contact_')]
+#[Route('/gestion-chm-secrete-92x/contact', name: 'admin_contact_')]
 class AdminContactController extends AbstractController
 {
     #[Route('/', name: 'index')]

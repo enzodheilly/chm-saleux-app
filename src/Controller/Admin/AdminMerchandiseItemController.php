@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/admin/merchandise')]
+#[Route('/gestion-chm-secrete-92x/merchandise')]
 class AdminMerchandiseItemController extends AbstractController
 {
     #[Route('/', name: 'admin_merchandise_index')]

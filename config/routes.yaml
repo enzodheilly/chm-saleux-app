@@ -4,15 +4,6 @@ controllers:
         namespace: App\Controller
     type: attribute
 
-# Tes pages statiques actuelles
-app_legal:
-    path: /mentions-legales
-    controller: App\Controller\PageController::legal
-
-app_privacy:
-    path: /confidentialite
-    controller: App\Controller\PageController::privacy
-
 # ✅ LA ROUTE SPÉCIALE MOBILE
 # C'est ici que l'appli va envoyer email + mot de passe.
 # Pas besoin de créer de Controller PHP, le bundle de sécurité l'intercepte automatiquement !

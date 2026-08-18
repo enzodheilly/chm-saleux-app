@@ -36,7 +36,7 @@ class GeoBlocker implements EventSubscriberInterface
 
         $request = $event->getRequest();
 
-        if (!str_starts_with($request->getPathInfo(), '/admin')) {
+        if (!str_starts_with($request->getPathInfo(), '/gestion-chm-secrete-92x')) {
             return;
         }
 

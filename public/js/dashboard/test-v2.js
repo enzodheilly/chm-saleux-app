@@ -389,13 +389,18 @@
     // PHOTO CROPPER
     // =========================================
     function bindPhotoCropper() {
-        const fileInput    = document.getElementById('avatar-upload');
-        const cropperModal = document.getElementById('cropperModal');
-        const cropperImage = document.getElementById('cropperImage');
-        const cropBtn      = document.getElementById('cropAndSaveBtn');
-        const cancelBtn    = document.getElementById('cancelCropBtn');
+        const fileInput     = document.getElementById('avatar-upload');
+        const avatarPreview = document.getElementById('avatar-preview');
+        const cropperModal  = document.getElementById('cropperModal');
+        const cropperImage  = document.getElementById('cropperImage');
+        const cropBtn       = document.getElementById('cropAndSaveBtn');
+        const cancelBtn     = document.getElementById('cancelCropBtn');
 
         if (!fileInput || !cropperModal || !cropperImage) return;
+
+        // ✅ FIX — rien ne déclenchait l'ouverture du sélecteur de fichier :
+        // l'input est caché, il faut un point d'entrée cliquable.
+        avatarPreview?.addEventListener('click', () => fileInput.click());
 
         let cropper = null;
 

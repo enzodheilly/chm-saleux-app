@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/admin/settings', name: 'admin_settings_')]
+#[Route('/gestion-chm-secrete-92x/settings', name: 'admin_settings_')]
 class AdminSettingsController extends AbstractController
 {
     #[Route('/', name: 'index')]

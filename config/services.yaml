@@ -15,7 +15,6 @@ services:
         autoconfigure: true
         bind:
             $projectDir: "%kernel.project_dir%"
-            $geminiApiKey: "%env(GEMINI_API_KEY)%"
             $faqs: "%faq%"
 
             $registerLimiter: "@limiter.register"
@@ -26,6 +25,7 @@ services:
             $resetFinalLimiter: "@limiter.reset_final"
             $setPasswordLimiter: "@limiter.set_password"
             $googleOauthCheckLimiter: "@limiter.google_oauth_check"
+            $uploadPhotoLimiter: "@limiter.upload_photo"
 
     App\:
         resource: "../src/"

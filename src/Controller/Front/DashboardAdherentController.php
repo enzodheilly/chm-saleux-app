@@ -15,19 +15,23 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardAdherentController extends AbstractController
 {
     private EntityManagerInterface $em;
     private MemberProgressService $memberProgressService;
+    private RateLimiterFactory $uploadPhotoLimiter;
 
     public function __construct(
         EntityManagerInterface $em,
-        MemberProgressService $memberProgressService
+        MemberProgressService $memberProgressService,
+        RateLimiterFactory $uploadPhotoLimiter
     ) {
         $this->em = $em;
         $this->memberProgressService = $memberProgressService;
+        $this->uploadPhotoLimiter = $uploadPhotoLimiter;
     }
 
     #[Route('/dashboard', name: 'dashboard')]
@@ -175,22 +179,43 @@ class DashboardAdherentController extends AbstractController
             return $this->json(['success' => false], 400);
         }
 
-        // ✅ CSRF
+        // Rate limiting : 10 uploads max par 10 minutes par utilisateur
+        $limiter = $this->uploadPhotoLimiter->create('upload_photo_' . $user->getId());
+        if (!$limiter->consume(1)->isAccepted()) {
+            return $this->json(['success' => false, 'message' => 'Trop de tentatives. Réessayez dans quelques minutes.'], 429);
+        }
+
+        // CSRF
         if (!$this->isCsrfTokenValid('upload_photo', (string) $request->request->get('_token', ''))) {
             return $this->json(['success' => false, 'message' => 'Jeton CSRF invalide.'], 400);
         }
 
+        // Validation du contenu réel du fichier (indépendante du content-type client)
+        $imageInfo = @getimagesize($file->getPathname());
+        if (!$imageInfo) {
+            return $this->json(['success' => false, 'message' => 'Fichier image invalide.'], 400);
+        }
+
+        $allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
+        $detectedMime = $imageInfo['mime'];
+        if (!in_array($detectedMime, $allowedMimes, true)) {
+            return $this->json(['success' => false, 'message' => 'Format non autorisé. JPG, PNG ou WebP uniquement.'], 400);
+        }
+
+        if ($file->getSize() > 2 * 1024 * 1024) {
+            return $this->json(['success' => false, 'message' => 'Image trop lourde (max 2 Mo).'], 400);
+        }
+
         $binary = file_get_contents($file->getPathname());
-        $mime = $file->getMimeType();
 
         $user->setProfileImage($binary);
-        $user->setProfileImageMime($mime);
+        $user->setProfileImageMime($detectedMime);
         $user->setProfileImageUpdatedAt(new \DateTimeImmutable());
         $this->em->flush();
 
         return $this->json([
             'success' => true,
-            'imageDataUrl' => sprintf('data:%s;base64,%s', $mime, base64_encode($binary)),
+            'imageDataUrl' => sprintf('data:%s;base64,%s', $detectedMime, base64_encode($binary)),
         ]);
     }
 

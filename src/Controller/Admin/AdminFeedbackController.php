@@ -41,7 +41,7 @@ class AdminFeedbackController extends AbstractController
         return $this->json(['success' => true]);
     }
 
-    #[Route('/admin/feedbacks', name: 'admin_feedbacks')]
+    #[Route('/gestion-chm-secrete-92x/feedbacks', name: 'admin_feedbacks')]
     #[IsGranted('ROLE_ADMIN')]
     public function adminList(FeedbackRepository $repo, Request $request, EntityManagerInterface $em): Response
     {

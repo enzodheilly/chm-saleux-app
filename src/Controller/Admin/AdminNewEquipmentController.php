@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route('/admin/new-equipment', name: 'admin_new_equipment_')]
+#[Route('/gestion-chm-secrete-92x/new-equipment', name: 'admin_new_equipment_')]
 class AdminNewEquipmentController extends AbstractController
 {
     #[Route('/', name: 'index')]

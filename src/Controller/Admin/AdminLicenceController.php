@@ -6,6 +6,7 @@ use App\Entity\Licence;
 use App\Form\LicenceType;
 use App\Repository\LicenceRepository;
 use App\Repository\MembershipPlanRepository;
+use App\Service\QrCodeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,14 +14,24 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/admin/licences')]
+#[Route('/gestion-chm-secrete-92x/licences')]
 class AdminLicenceController extends AbstractController
 {
     #[Route('/', name: 'admin_licence_index', methods: ['GET'])]
-    public function index(LicenceRepository $licenceRepository): Response
+    public function index(LicenceRepository $licenceRepository, QrCodeService $qrCodeService): Response
     {
+        $licences = $licenceRepository->findAll();
+
+        $qrCodeImages = [];
+        foreach ($licences as $licence) {
+            if ($licence->getQrCodeToken()) {
+                $qrCodeImages[$licence->getId()] = $qrCodeService->buildQrImageDataUri($licence->getQrCodeToken());
+            }
+        }
+
         return $this->render('admin/licence/index.html.twig', [
-            'licences' => $licenceRepository->findAll(),
+            'licences' => $licences,
+            'qrCodeImages' => $qrCodeImages,
         ]);
     }
 
@@ -52,7 +63,7 @@ class AdminLicenceController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'admin_licence_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Licence $licence, EntityManagerInterface $em): Response
+    public function edit(Request $request, Licence $licence, EntityManagerInterface $em, QrCodeService $qrCodeService): Response
     {
         $form = $this->createForm(LicenceType::class, $licence);
         $form->handleRequest($request);
@@ -74,6 +85,7 @@ class AdminLicenceController extends AbstractController
         return $this->render('admin/licence/edit.html.twig', [
             'licence' => $licence,
             'form' => $form->createView(),
+            'qrCodeImage' => $licence->getQrCodeToken() ? $qrCodeService->buildQrImageDataUri($licence->getQrCodeToken()) : null,
         ]);
     }
 
@@ -87,6 +99,20 @@ class AdminLicenceController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_licence_index');
+    }
+
+    #[Route('/{id}/qrcode/regenerate', name: 'admin_licence_qrcode_regenerate', methods: ['POST'])]
+    public function regenerateQrCode(Licence $licence, Request $request, QrCodeService $qrCodeService): Response
+    {
+        if (!$this->isCsrfTokenValid('qrcode_regenerate_' . $licence->getId(), (string) $request->request->get('_token'))) {
+            $this->addFlash('error', 'Jeton CSRF invalide.');
+            return $this->redirectToRoute('admin_licence_edit', ['id' => $licence->getId()]);
+        }
+
+        $qrCodeService->regenerateForLicence($licence);
+
+        $this->addFlash('success', '🔄 QR code régénéré avec succès. L\'ancien code ne fonctionne plus.');
+        return $this->redirectToRoute('admin_licence_edit', ['id' => $licence->getId()]);
     }
 
     #[Route('/membership-plan/{id}/benefits', name: 'admin_licence_membership_plan_benefits', methods: ['GET'])]
