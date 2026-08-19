@@ -71,7 +71,7 @@
 			{% include 'navbar/navigation.html.twig' %}
 		{% endblock %}
 
-		<main class="app-main">
+		<main class="app-main {% block main_class %}page-top-offset{% endblock %}">
 			{% for message in app.flashes('warning') %}
 				 <script nonce="{{ csp_nonce('script') }}">
 																																																																								                    window.addEventListener("DOMContentLoaded", () => {

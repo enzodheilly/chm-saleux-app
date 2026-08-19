@@ -1,0 +1,21 @@
+{# ── APPLICATION MOBILE ── #}
+<section class="hm-app">
+	<div class="hm-app-content">
+		<span class="hm-label">Notre application</span>
+		<h2 class="hm-title hm-title--light">Votre club<br>dans votre <span class="hm-orange">poche</span></h2>
+		<ul class="hm-app-features">
+			<li><i class="fa-solid fa-check"></i> Suivi de vos performances</li>
+			<li><i class="fa-solid fa-check"></i> Programmes personnalisés</li>
+			<li><i class="fa-solid fa-check"></i> Accès à votre espace membre</li>
+			<li><i class="fa-solid fa-check"></i> Actualités du club en temps réel</li>
+		</ul>
+		{% if app.user %}
+			<a href="{{ path('dashboard') }}" class="hm-btn hm-btn--orange">Mon espace <i class="fa-solid fa-arrow-right"></i></a>
+		{% else %}
+			<a href="{{ path('app_auth_choice') }}" class="hm-btn hm-btn--orange">Nous rejoindre <i class="fa-solid fa-arrow-right"></i></a>
+		{% endif %}
+	</div>
+	<div class="hm-app-visual">
+		<img src="{{ asset('images/mockup2.png') }}" alt="Application CHM Saleux" class="hm-app-mockup">
+	</div>
+</section>

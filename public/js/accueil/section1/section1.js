@@ -1,3 +1,7 @@
+// Empêche le navigateur de restaurer une position de scroll
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+window.scrollTo(0, 0);
+
 document.addEventListener("DOMContentLoaded", function () {
     const heroSection = document.querySelector("#accueil");
     if (!heroSection) return;
