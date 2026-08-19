@@ -1,70 +1,45 @@
-{# ── SECTION : NOS ACTIVITÉS ── #}
-<section class="home-services-section">
+{# ── SECTION : NOS DISCIPLINES ── #}
+<section class="disciplines-section">
 
-	<div class="services-header container">
-		<div class="services-eyebrow">
-			<span class="services-eyebrow-line"></span>
-			Nos activités
+	<div class="disciplines-header container">
+		<div class="disc-eyebrow">
+			<span class="disc-eyebrow-line"></span>
+			Nos disciplines
 		</div>
-		<h2 class="services-title">
-			Trouvez votre<br>
-			<span class="text-outline">discipline</span>
+		<h2 class="disc-title">
+			Ce que nous<br>
+			<span class="disc-title-outline">pratiquons</span>
 		</h2>
 	</div>
 
-	<div class="services-grid">
+	<div class="disciplines-panels">
 
-		<a href="{{ path('pratique_musculation') }}" class="service-card">
-			<div class="service-card-bg svc-musculation"></div>
-			<div class="service-card-overlay"></div>
-			<div class="service-card-content">
-				<span class="service-card-num">01</span>
-				<div class="service-card-body">
-					<h3 class="service-card-title">Musculation</h3>
-					<p class="service-card-desc">800 m² d'équipements haut de gamme pour progresser à votre rythme.</p>
+		<a href="{{ path('pratique_musculation') }}" class="disc-panel">
+			<div class="disc-bg svc-musculation"></div>
+			<div class="disc-overlay"></div>
+			<div class="disc-num" aria-hidden="true">01</div>
+			<div class="disc-content">
+				<h3 class="disc-name">Musculation</h3>
+				<div class="disc-reveal">
+					<p class="disc-desc">800 m² d'équipements haut de gamme pour progresser à votre rythme.</p>
+					<span class="disc-cta">Découvrir <i class="fa-solid fa-arrow-right"></i></span>
 				</div>
-				<span class="service-card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
 			</div>
 		</a>
 
-		<a href="{{ path('pratique_haltérophilie') }}" class="service-card">
-			<div class="service-card-bg svc-halterophilie"></div>
-			<div class="service-card-overlay"></div>
-			<div class="service-card-content">
-				<span class="service-card-num">02</span>
-				<div class="service-card-body">
-					<h3 class="service-card-title">Haltérophilie</h3>
-					<p class="service-card-desc">Plateforme olympique et coaching expert pour la compétition.</p>
+		<a href="{{ path('pratique_haltérophilie') }}" class="disc-panel">
+			<div class="disc-bg svc-halterophilie"></div>
+			<div class="disc-overlay"></div>
+			<div class="disc-num" aria-hidden="true">02</div>
+			<div class="disc-content">
+				<h3 class="disc-name">Haltérophilie</h3>
+				<div class="disc-reveal">
+					<p class="disc-desc">Plateforme olympique et coaching expert pour la compétition.</p>
+					<span class="disc-cta">Découvrir <i class="fa-solid fa-arrow-right"></i></span>
 				</div>
-				<span class="service-card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
 			</div>
 		</a>
 
-		<a href="{{ path('cours_collectifs') }}" class="service-card">
-			<div class="service-card-bg svc-cours"></div>
-			<div class="service-card-overlay"></div>
-			<div class="service-card-content">
-				<span class="service-card-num">03</span>
-				<div class="service-card-body">
-					<h3 class="service-card-title">Cours Collectifs</h3>
-					<p class="service-card-desc">Séances encadrées 2× par semaine, tous niveaux, dans une ambiance survoltée.</p>
-				</div>
-				<span class="service-card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
-			</div>
-		</a>
-
-		<a href="{{ path('sauna') }}" class="service-card">
-			<div class="service-card-bg svc-sauna"></div>
-			<div class="service-card-overlay"></div>
-			<div class="service-card-content">
-				<span class="service-card-num">04</span>
-				<div class="service-card-body">
-					<h3 class="service-card-title">Sauna</h3>
-					<p class="service-card-desc">Récupération et bien-être après l'effort.</p>
-				</div>
-				<span class="service-card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
-			</div>
-		</a>
 
 	</div>
 

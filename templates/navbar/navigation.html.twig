@@ -1,9 +1,13 @@
 <nav class="nav-fixed" id="mainNav">
-	<div class="nav-inner">
+	<div
+		class="nav-inner">
 
 		{# ── LOGO ── #}
 		<a href="{{ path('home') }}" class="nav-brand">
 			<img src="{{ asset('images/favicon/icon2.png') }}" alt="CHM Saleux" width="40" height="40">
+			<span class="nav-brand-text">CHM
+				<em>SALEUX</em>
+			</span>
 		</a>
 
 		{# ── LIENS DESKTOP ── #}
@@ -22,64 +26,82 @@
 
 							<div class="nav-dropdown-col">
 								<p class="nav-dropdown-label">
-									<i class="fa-solid fa-dumbbell"></i> Nos activités
+									<i class="fa-solid fa-dumbbell"></i>
+									Nos activités
 								</p>
 								<a href="{{ path('halterophilie') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span> Haltérophilie
+									<span class="ndl-arrow">→</span>
+									Haltérophilie
 								</a>
 								<a href="{{ path('musculation') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span> Musculation
+									<span class="ndl-arrow">→</span>
+									Musculation
 								</a>
 								<a href="{{ path('cours_collectifs') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span> Cours collectifs
+									<span class="ndl-arrow">→</span>
+									Cours collectifs
 								</a>
 								<a href="{{ path('seance_essai') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span> Séance d'essai
+									<span class="ndl-arrow">→</span>
+									Séance d'essai
 								</a>
 								<a href="{{ path('evenements') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span> Événements
+									<span class="ndl-arrow">→</span>
+									Événements
 								</a>
 								<a href="{{ path('sauna') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span> Sauna
+									<span class="ndl-arrow">→</span>
+									Sauna
 								</a>
 							</div>
 
 							<div class="nav-dropdown-col">
 								<p class="nav-dropdown-label">
-									<i class="fa-solid fa-users"></i> Le Bureau
+									<i class="fa-solid fa-users"></i>
+									Le Bureau
 								</p>
 								<a href="{{ path('president') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span> Le Président
+									<span class="ndl-arrow">→</span>
+									Le Président
 								</a>
 								<a href="{{ path('tresorier') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span> Le Trésorier
+									<span class="ndl-arrow">→</span>
+									Le Trésorier
 								</a>
 								<a href="{{ path('secretaire') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span> La Secrétaire
+									<span class="ndl-arrow">→</span>
+									La Secrétaire
 								</a>
 								<a href="{{ path('membres_bureau') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span> Tous les membres
+									<span class="ndl-arrow">→</span>
+									Tous les membres
 								</a>
 							</div>
 
 							<div class="nav-dropdown-col">
 								<p class="nav-dropdown-label">
-									<i class="fa-solid fa-circle-info"></i> À propos
+									<i class="fa-solid fa-circle-info"></i>
+									À propos
 								</p>
 								<a href="{{ path('app_club') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span> Présentation
+									<span class="ndl-arrow">→</span>
+									Présentation
 								</a>
 								<a href="{{ path('labels_club') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span> Nos labels
+									<span class="ndl-arrow">→</span>
+									Nos labels
 								</a>
 								<a href="{{ path('horaires') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span> Horaires
+									<span class="ndl-arrow">→</span>
+									Horaires
 								</a>
 								<a href="{{ path('app_partenaire') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span> Partenaires
+									<span class="ndl-arrow">→</span>
+									Partenaires
 								</a>
 								<a href="{{ path('app_boite_a_idees') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span> Boîte à idées
+									<span class="ndl-arrow">→</span>
+									Boîte à idées
 								</a>
 							</div>
 
@@ -90,7 +112,7 @@
 			</div>
 
 			<a href="{{ path('ecole') }}" class="nav-link">Notre École</a>
-			<a href="{{ path('competition_root') }}" class="nav-link">Compétitions</a>
+			<a href="{{ path('competition_root') }}" class="nav-link">Compétitions & Résultats</a>
 		</div>
 
 		{# ── ACTIONS DROITE ── #}
@@ -155,18 +177,22 @@
 		<div class="nav-mobile-footer">
 			{% if app.user %}
 				<a href="{{ path('dashboard') }}" class="nav-mobile-footer-link">
-					<i class="fa-regular fa-user"></i> Mon espace
+					<i class="fa-regular fa-user"></i>
+					Mon espace
 				</a>
 				<a href="{{ path('app_logout') }}" class="nav-mobile-footer-link">
-					<i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+					<i class="fa-solid fa-right-from-bracket"></i>
+					Déconnexion
 				</a>
 			{% else %}
 				<a href="{{ path('app_login') }}" class="nav-mobile-footer-link">
-					<i class="fa-regular fa-user"></i> Espace adhérent
+					<i class="fa-regular fa-user"></i>
+					Espace adhérent
 				</a>
 			{% endif %}
 			<a href="{{ path('actualites', {page: 1}) }}" class="nav-mobile-footer-link">
-				<i class="fa-regular fa-newspaper"></i> Actualités
+				<i class="fa-regular fa-newspaper"></i>
+				Actualités
 			</a>
 		</div>
 

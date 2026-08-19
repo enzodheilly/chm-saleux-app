@@ -6,29 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!nav) return;
 
-    /* ──────────────────────────────────────────────
-       TRANSPARENCE SUR HERO — scroll listener
-       Dès 80px de scroll : barre sombre
-       Pages sans hero : barre sombre dès le chargement
-    ────────────────────────────────────────────── */
-    const hero = document.querySelector(".hero-section");
-    const SCROLL_THRESHOLD = 80;
-
-    function updateNav() {
-        if (!hero) return;
-        if (window.scrollY > SCROLL_THRESHOLD) {
-            nav.classList.add("nav-scrolled");
-        } else {
-            nav.classList.remove("nav-scrolled");
-        }
-    }
-
-    if (hero) {
-        window.addEventListener("scroll", updateNav, { passive: true });
-        updateNav(); // état initial
-    } else {
-        nav.classList.add("nav-scrolled");
-    }
 
     /* ──────────────────────────────────────────────
        MENU MOBILE — ouverture / fermeture
@@ -48,7 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
         trigger.classList.remove("is-open");
         trigger.setAttribute("aria-expanded", "false");
         document.body.style.overflow = "";
-        updateNav();
     }
 
     if (trigger && overlay) {
