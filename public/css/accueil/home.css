@@ -3535,11 +3535,8 @@
   .slider-cta { flex-direction: column; gap: 14px; }
   .hero-cta-primary { width: 100%; justify-content: center; }
   .slider-dots { display: none; }
-  .slider-stats-bar { height: auto; padding: 12px 0; }
-  .slider-stat-label { display: none; }
-  .slider-stat-num { font-size: 1.1rem; }
+  .slider-stats-bar { display: none; }
   .hero-section .badge-ffhm { display: none; }
-  .slider-stats-bar { flex-wrap: wrap; }
 }
 
 
@@ -3552,15 +3549,54 @@
    ══════════════════════════════════════════════════════ */
 
 .disciplines-section {
-  background: #080808;
-  padding: 100px 0 0;
+  background: #161616;
+  padding: 60px 0 0;
 }
 
 /* ── Header ── */
 .disciplines-header {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 5% 64px;
+  padding: 0 5% 36px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.disc-header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.disc-affiliation {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.disc-affiliation-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+
+.disc-badge-ffhm {
+  height: 80px;
+  width: auto;
+  opacity: 0.8;
+  filter: brightness(0) invert(1);
+  transition: opacity 0.2s;
+}
+
+.disc-badge-ffhm:hover {
+  opacity: 1;
 }
 
 .disc-eyebrow {
@@ -3715,25 +3751,46 @@
   gap: 12px;
 }
 
-/* ── Responsive ── */
+/* ── Responsive disciplines ── */
 @media (max-width: 900px) {
+  .disciplines-section { padding: 48px 0 0; }
+
+  .disciplines-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 0 5% 32px;
+  }
+
+  .disc-header-right { align-items: flex-start; }
+
+  .disc-badge-ffhm { height: 56px; }
+
   .disciplines-panels {
     flex-direction: column;
     height: auto;
     min-height: unset;
+    gap: 3px;
   }
+
   .disc-panel {
     flex: none;
-    height: 200px;
-    transition: height 0.5s ease;
+    height: 260px;
   }
-  .disc-reveal { max-height: 0 !important; opacity: 0 !important; }
-  .disc-panel:hover .disc-reveal { max-height: 80px !important; opacity: 1 !important; }
+
+  /* Sur mobile : description toujours visible */
+  .disc-name { margin-bottom: 12px !important; }
+  .disc-reveal {
+    max-height: 120px !important;
+    opacity: 1 !important;
+  }
+
+  .disc-num { font-size: 4rem; }
 }
 
-@media (max-width: 540px) {
-  .disc-panel { height: 160px; }
-  .disciplines-section { padding: 60px 0 0; }
+@media (max-width: 480px) {
+  .disc-panel { height: 220px; }
+  .disc-title { font-size: clamp(2rem, 9vw, 3rem); }
 }
 
 
@@ -3846,8 +3903,8 @@
 /* ═══════════════════════════════════════════════════════════════
    BACKGROUNDS DES CARTES SERVICES (CSP compliance)
    ═══════════════════════════════════════════════════════════════ */
-.svc-musculation   { background-image: url('/images/zones/pecs.jpg'); }
-.svc-halterophilie { background-image: url('/images/halterophilie/1.jpg'); }
+.svc-musculation   { background-image: url('/images/nos_pratiques/musculation/histoire-club.jpg'); }
+.svc-halterophilie { background-image: url('/images/nos_pratiques/halterophilie/1.jpg'); }
 .svc-cours         { background-image: url('/images/menu_dropdown/services_du_club/cours_collectifs/cours-co.jpg'); }
 .svc-sauna         { background-image: url('/images/sauna.jpg'); }
 
