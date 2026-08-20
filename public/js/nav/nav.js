@@ -50,6 +50,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ──────────────────────────────────────────────
+       SCROLL — fond sombre au défilement
+    ────────────────────────────────────────────── */
+    function handleScroll() {
+        if (window.scrollY > 20) {
+            nav.classList.add("nav-scrolled");
+        } else {
+            nav.classList.remove("nav-scrolled");
+        }
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    /* ──────────────────────────────────────────────
        MEGA MENU DESKTOP — hover avec délai de fermeture
     ────────────────────────────────────────────── */
     const dropTrigger = document.getElementById("clubDropdownTrigger");

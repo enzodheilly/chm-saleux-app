@@ -1,48 +1,32 @@
 {# ── SECTION : DERNIÈRES ACTUALITÉS ── #}
-<section class="home-news-section">
-	<div class="container">
+<section class="hm-news">
+	<div class="hm-news-head">
+		<div>
+			<span class="hm-label">Actualités</span>
+			<h2 class="hm-title">Dernières <span class="hm-orange">nouvelles</span></h2>
+		</div>
+		<a href="{{ path('actualites') }}" class="hm-btn hm-btn--outline">Tout voir <i class="fa-solid fa-arrow-right"></i></a>
+	</div>
 
-		<div class="section-header-elite">
-			<div class="header-text">
-				<h2 class="section-title">Dernières
-					<span class="text-outline">Actualités</span>
-				</h2>
+	<div class="hm-news-list">
+		{% for article in articles|slice(0, 3) %}
+		<a href="{{ path('article_show', { id: article.id }) }}" class="hm-news-row">
+			<div class="hm-news-row-content">
+				<span class="hm-news-date">{{ article.publishedAt|date('d/m/Y') }}</span>
+				<h3 class="hm-news-row-title">{{ article.title|length > 70 ? article.title|slice(0, 70) ~ '…' : article.title }}</h3>
+				<p class="hm-news-row-excerpt">{{ article.description|striptags|length > 100 ? article.description|striptags|slice(0, 100) ~ '…' : article.description|striptags }}</p>
+				<span class="hm-news-more">Lire l'article <i class="fa-solid fa-arrow-right"></i></span>
 			</div>
-			<a href="{{ path('actualites') }}" class="btn-link-all">
-				Voir tout le journal
-				<i class="fa-solid fa-arrow-right"></i>
-			</a>
-		</div>
-
-		<div class="news-grid-home">
-			{% for article in articles|slice(0, 3) %}
-				<article class="news-card-minimal">
-					<a href="{{ path('article_show', { id: article.id }) }}" class="card-anchor">
-						<div class="card-img-container">
-							{% if article.photo %}
-								<img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}" loading="lazy">
-							{% else %}
-								<img src="{{ asset('images/article.jpg') }}" alt="CHM Saleux">
-							{% endif %}
-							<div class="card-overlay">
-								<span class="info-date">{{ article.publishedAt|date('d/m/Y') }}</span>
-								<h3 class="info-title">
-									{{ article.title|length > 55 ? article.title|slice(0, 55) ~ '...' : article.title }}
-								</h3>
-								<p class="info-excerpt">
-									{{ article.description|striptags|length > 80 ? article.description|striptags|slice(0, 80) ~ '...' : article.description }}
-								</p>
-								<span class="info-more">Lire l'article <i class="fa-solid fa-chevron-right"></i></span>
-							</div>
-						</div>
-					</a>
-				</article>
-			{% else %}
-				<div class="empty-news-minimal">
-					<p>De nouvelles actualités arrivent bientôt !</p>
-				</div>
-			{% endfor %}
-		</div>
-
+			<div class="hm-news-row-img">
+				{% if article.photo %}
+					<img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}" loading="lazy">
+				{% else %}
+					<img src="{{ asset('images/article.jpg') }}" alt="CHM Saleux">
+				{% endif %}
+			</div>
+		</a>
+		{% else %}
+			<p class="hm-news-empty">De nouvelles actualités arrivent bientôt.</p>
+		{% endfor %}
 	</div>
 </section>

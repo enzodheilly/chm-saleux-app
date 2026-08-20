@@ -1,13 +1,12 @@
 <section id="accueil" class="hero-section {% if app.user %}hero-logged{% endif %}">
 
 	{% if not app.user %}
-	{# ═══════════════════════════════════════
-	   VUE VISITEUR — SLIDER
-	   ═══════════════════════════════════════ #}
+		{# ═══════════════════════════════════════
+			   VUE VISITEUR — SLIDER
+			   ═══════════════════════════════════════ #}
 
 		{# ── SLIDES PHOTOS ── #}
-		<div class="slider-track" aria-hidden="true">
-			<div class="slide slide-1 active"></div>
+			<div class="slider-track" aria-hidden="true"> <div class="slide slide-1 active"></div>
 			<div class="slide slide-2"></div>
 			<div class="slide slide-3"></div>
 			<div class="slide slide-4"></div>
@@ -38,7 +37,9 @@
 					NOUS REJOINDRE
 				</a>
 				<a href="{{ path('app_club') }}" class="slider-cta-play">
-					<span class="play-btn"><i class="fa-solid fa-play"></i></span>
+					<span class="play-btn">
+						<i class="fa-solid fa-play"></i>
+					</span>
 					Découvrir le club
 				</a>
 			</div>
@@ -59,7 +60,7 @@
 			</div>
 			<div class="slider-stat-div"></div>
 			<div class="slider-stat">
-				<span class="slider-stat-num">800</span>
+				<span class="slider-stat-num">300</span>
 				<span class="slider-stat-label">m² d'installations</span>
 			</div>
 			<div class="slider-stat-div"></div>
@@ -83,9 +84,9 @@
 		</div>
 
 	{% else %}
-	{# ═══════════════════════════════════════
-	   VUE CONNECTÉE (inchangée)
-	   ═══════════════════════════════════════ #}
+		{# ═══════════════════════════════════════
+			   VUE CONNECTÉE (inchangée)
+			   ═══════════════════════════════════════ #}
 
 		<div class="hero-photos">
 			<picture>
@@ -119,7 +120,11 @@
 						<div class="hero-stat-card">
 							<span class="hero-stat-value">
 								{% set kg = (heroStats.volume / 1000)|round(1) %}
-								{% if kg >= 1 %}{{ kg }}<small>t</small>{% else %}{{ heroStats.volume|round }}<small>kg</small>{% endif %}
+								{% if kg >= 1 %}
+									{{ kg }}<small>t</small>
+								{% else %}
+									{{ heroStats.volume|round }}<small>kg</small>
+								{% endif %}
 							</span>
 							<span class="hero-stat-label">Soulevés</span>
 						</div>
