@@ -510,7 +510,7 @@
   position: relative;
   overflow: hidden;
   padding: var(--section-padding-y) 0;
-  background: #0a0a0a;
+  background: #f8f7f5;
   border-bottom: none;
   z-index: 1;
 }
@@ -520,7 +520,7 @@
   font-weight: 900;
   text-transform: uppercase;
   line-height: 0.9;
-  color: rgba(255, 255, 255, 0.03);
+  color: rgba(0, 0, 0, 0.07);
   white-space: nowrap;
   max-width: 90vw;
   overflow: hidden;
@@ -548,7 +548,7 @@
 .pricing-header-elite {
   color: var(--text-black);
   text-align: center;
-  margin-bottom: 56px;
+  margin-bottom: -22px;
 }
 
 .pricing-header-elite::before {
@@ -571,7 +571,7 @@
   text-transform: uppercase;
   margin-top: 0;
   margin-bottom: 14px;
-  color: #ffffff;
+  color: #0a0a0a;
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -944,7 +944,7 @@
 }
 
 .pricing-legal-notice p {
-  color: var(--text-muted-2);
+  color: rgba(0, 0, 0, 0.7);
   font-size: 0.9rem;
   line-height: 1.7;
   font-weight: 400;
@@ -955,17 +955,17 @@
   color: #F57706;
   text-decoration: underline;
   text-underline-offset: 3px;
-  text-decoration-color: rgba(255, 255, 255, 0.3);
+  text-decoration-color: rgba(245, 119, 6, 0.3);
   transition: text-decoration-color 0.3s ease;
 }
 
 .legal-link:hover {
-  text-decoration-color: rgba(255, 255, 255, 1);
+  text-decoration-color: rgba(245, 119, 6, 1);
 }
 
 .mt-2 {
   margin-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
   padding-top: 15px;
 }
 
@@ -4023,7 +4023,7 @@
 
 /* ── Cours Collectifs ── */
 .hm-cc {
-  background: #fff;
+  background: #f8f7f5;
   padding: 80px 5%;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -4103,7 +4103,7 @@
 
 /* ── Équipements — fond blanc, scroll horizontal épuré ── */
 .hm-equip {
-  background: #fff;
+  background: #f8f7f5;
   padding: 80px 5%;
   overflow: hidden;
 }
@@ -4211,37 +4211,65 @@
 /* ── Partenaires — fond blanc, logos épurés ── */
 .hm-partners {
   background: #0a0a0a;
-  padding: 64px 5%;
+  padding: 56px 0;
+  overflow: hidden;
 }
 
 .hm-partners-title {
   font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
+  font-weight: 800;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #fff;
+  color: rgba(255,255,255,0.35);
   text-align: center;
-  margin: 0 0 40px;
+  margin: 0 0 36px;
 }
 
-.hm-partners-grid {
+/* ── Carousel étroit centré ── */
+.hm-partners-carousel {
+  width: 1400px;
+  max-width: 90%;
+  margin: 0 auto;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
+}
+
+.hm-partners-track {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  width: max-content;
+  animation: partners-scroll 30s linear infinite;
+}
+
+.hm-partners-track:hover { animation-play-state: paused; }
+
+@keyframes partners-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.hm-partner-item {
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 40px 60px;
-  max-width: 900px;
-  margin: 0 auto;
+  padding: 0 56px;
+  border-right: 1px solid rgba(255,255,255,0.12);
 }
 
 .hm-partner-logo {
-  height: 60px;
+  height: 90px;
   width: auto;
   object-fit: contain;
-  transition: transform 0.3s;
+  flex-shrink: 0;
+  transition: transform 0.3s, opacity 0.3s;
+  opacity: 0.9;
 }
 
-.hm-partner-logo:hover { transform: scale(1.05); }
+.hm-partner-logo:hover {
+  transform: scale(1.08);
+  opacity: 1;
+}
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
@@ -4259,9 +4287,8 @@
   .hm-equip-card { flex: 0 0 200px; height: 280px; }
   .hm-equip-card.is-active { flex: 0 0 280px; }
 
-  .hm-partners { padding: 48px 5%; }
-  .hm-partners-grid { gap: 28px 40px; }
-  .hm-partner-logo { height: 28px; }
+  .hm-partners { padding: 40px 0; }
+  .hm-partner-logo { height: 44px; }
 }
 
 @media (max-width: 480px) {
@@ -4694,7 +4721,7 @@
    SECTION ACTUALITÉS — layout liste éditorial
    ═══════════════════════════════════════════════════════════════ */
 .hm-news {
-  background: #fff;
+  background: #f8f7f5;
   padding: 80px 5%;
 }
 
@@ -4782,7 +4809,7 @@
   grid-template-columns: 110px 1fr;
   border-radius: 8px;
   overflow: hidden;
-  background: #f4f4f4;
+  background: #eeede9;
   text-decoration: none;
   flex: 1;
   transition: transform 0.22s, box-shadow 0.22s;
@@ -4953,4 +4980,151 @@
 
 @media (max-width: 480px) {
   .hm-news { padding: 60px 5%; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SECTION APP MOBILE — refonte pro
+   ═══════════════════════════════════════════════════════════════ */
+.app-section {
+  background: #0a0a0a;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 80px 5%;
+  gap: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glow orange derrière le mockup */
+.app-glow {
+  position: absolute;
+  right: 10%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(245,119,6,0.18) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Contenu ── */
+.app-content {
+  position: relative;
+  z-index: 1;
+}
+
+.app-content .hm-title { margin-bottom: 12px; }
+.app-content .hm-text  { margin-bottom: 36px; }
+
+/* ── Features 2x2 ── */
+.app-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.app-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 16px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.app-feature:hover {
+  background: rgba(245,119,6,0.06);
+  border-color: rgba(245,119,6,0.25);
+}
+
+.app-feature-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(245,119,6,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #F57706;
+  font-size: 0.85rem;
+}
+
+.app-feature-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+  margin-bottom: 3px;
+}
+
+.app-feature-sub {
+  font-size: 0.73rem;
+  color: rgba(255,255,255,0.38);
+  line-height: 1.4;
+}
+
+/* ── Actions ── */
+.app-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hm-btn--ghost {
+  background: transparent;
+  color: rgba(255,255,255,0.55);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  transition: color 0.2s;
+}
+.hm-btn--ghost:hover { color: #fff; }
+
+/* ── Visuel mockup ── */
+.app-visual {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.app-mockup-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.app-mockup {
+  max-height: 520px;
+  width: auto;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 40px 80px rgba(245,119,6,0.2));
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .app-section {
+    grid-template-columns: 1fr;
+    padding: 60px 5%;
+    gap: 40px;
+  }
+  .app-features { grid-template-columns: 1fr 1fr; }
+  .app-visual { padding-top: 0; }
+  .app-mockup { max-height: 300px; }
+  .app-glow { right: 50%; transform: translate(50%, -50%); }
+}
+
+@media (max-width: 480px) {
+  .app-features { grid-template-columns: 1fr; }
 }

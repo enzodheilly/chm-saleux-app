@@ -1,11 +1,28 @@
 {# ── NOS PARTENAIRES ── #}
 <section class="hm-partners">
 	<h2 class="hm-partners-title">Ils nous font confiance</h2>
-	<div class="hm-partners-grid">
-		<img src="{{ asset('images/sponsors/logo-conseil-departemental-somme.png') }}" alt="Conseil Départemental de la Somme" class="hm-partner-logo">
-		<img src="{{ asset('images/sponsors/logo-hdf.png') }}" alt="Hauts-de-France" class="hm-partner-logo">
-		<img src="{{ asset('images/sponsors/logo-vectoriel-amiens-metropole.png') }}" alt="Amiens Métropole" class="hm-partner-logo">
-		<img src="{{ asset('images/sponsors/FFHMFAC.png') }}" alt="FFHM FAC" class="hm-partner-logo">
-		<img src="{{ asset('images/sponsors/Logo-legue-chauffage.png') }}" alt="Legue Chauffage" class="hm-partner-logo">
+	<div class="hm-partners-carousel">
+		<div class="hm-partners-track">
+			{% set logos = [
+				{ src: 'images/sponsors/logo-conseil-departemental-somme.png', alt: 'Conseil Départemental de la Somme' },
+				{ src: 'images/sponsors/logo-hdf.png', alt: 'Hauts-de-France' },
+				{ src: 'images/sponsors/logo-vectoriel-amiens-metropole.png', alt: 'Amiens Métropole' },
+				{ src: 'images/sponsors/FFHMFAC.png', alt: 'FFHM FAC' },
+				{ src: 'images/sponsors/Logo-legue-chauffage.png', alt: 'Legue Chauffage' },
+				{ src: 'images/sponsors/mairie-saleux.jpg', alt: 'Mairie de Saleux' },
+				{ src: 'images/sponsors/nicolas-coiffeur.jpg', alt: "L'Atelier de Nicolas" }
+			] %}
+			{% for logo in logos %}
+				<div class="hm-partner-item">
+					<img src="{{ asset(logo.src) }}" alt="{{ logo.alt }}" class="hm-partner-logo">
+				</div>
+			{% endfor %}
+			{# Duplication invisible nécessaire pour la boucle seamless #}
+			{% for logo in logos %}
+				<div class="hm-partner-item" aria-hidden="true">
+					<img src="{{ asset(logo.src) }}" alt="" class="hm-partner-logo">
+				</div>
+			{% endfor %}
+		</div>
 	</div>
 </section>
