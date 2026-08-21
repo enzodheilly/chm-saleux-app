@@ -486,84 +486,93 @@
   }
 }
 /* =========================================
-   THÈME CLAIR
+   ALTERNANCE CLAIR / SOMBRE
    ========================================= */
+
+/* --- Base globale --- */
 .elite-main {
-  --text-white: #0a0a0a;
-  --text-black: #0a0a0a;
-  --text-muted: rgba(0,0,0,0.5);
-  --text-muted-1: rgba(0,0,0,0.45);
-  --text-muted-2: rgba(0,0,0,0.55);
+  background: #f8f7f5;
+  color: #0a0a0a;
   --bg-card: #fff;
   --bg-section: #f8f7f5;
   --border-soft: rgba(0,0,0,0.08);
-  --border-soft-2: rgba(0,0,0,0.06);
-  --color-card-bg: #fff;
-  --color-border: rgba(0,0,0,0.1);
   --color-text-primary: #0a0a0a;
   --title-color: #0a0a0a;
+}
 
+/* --- Sections CLAIRES (feature-section sans alt-bg) --- */
+.elite-main .feature-section:not(.alt-bg) {
   background: #f8f7f5;
-  color: #0a0a0a;
 }
-.elite-main .section-heading { color: #0a0a0a; }
-.elite-main .alt-bg {
-  background: #fff;
-  border-top-color: rgba(0,0,0,0.07);
-  border-bottom-color: rgba(0,0,0,0.07);
-  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-}
-.elite-main .feature-text p,
-.elite-main .bio-content p,
-.elite-main p { color: rgba(0,0,0,0.55); }
-.elite-main .feature-title,
-.elite-main h2, .elite-main h3 { color: #0a0a0a; }
-.elite-main .stat-box,
-.elite-main .card-item,
-.elite-main [class*="card"] {
-  background: #fff;
-  border-color: rgba(0,0,0,0.08);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-}
-.elite-main .stat-value,
-.elite-main .card-title { color: #0a0a0a; }
-.elite-main .stat-label,
-.elite-main .card-desc { color: rgba(0,0,0,0.5); }
+.elite-main .feature-section:not(.alt-bg) .section-heading,
+.elite-main .feature-section:not(.alt-bg) h2,
+.elite-main .feature-section:not(.alt-bg) h3 { color: #0a0a0a; }
 
-/* =========================================
-   THÈME CLAIR — compléments hardcodés
-   ========================================= */
-.elite-main { --dark-soft: #f0ede8; }
+.elite-main .feature-section:not(.alt-bg) .text-side p { color: rgba(0,0,0,0.55); }
 
-/* Spec items */
-.elite-main .spec-item {
+.elite-main .feature-section:not(.alt-bg) .spec-item {
   background: #fff;
   border-color: rgba(0,0,0,0.08);
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
-.elite-main .spec-item strong { color: #0a0a0a; }
-.elite-main .spec-item small { color: rgba(0,0,0,0.45); }
+.elite-main .feature-section:not(.alt-bg) .spec-item strong { color: #0a0a0a; }
+.elite-main .feature-section:not(.alt-bg) .spec-item small { color: rgba(0,0,0,0.45); }
 
-/* Check list */
-.elite-main .elite-check-list li { color: #0a0a0a; }
+.elite-main .feature-section:not(.alt-bg) .elite-check-list li { color: #0a0a0a; }
 
-/* Tags */
-.elite-main .tag-cloud span {
+.elite-main .feature-section:not(.alt-bg) .tag-cloud span {
   background: rgba(0,0,0,0.05);
   border-color: rgba(0,0,0,0.1);
   color: #0a0a0a;
 }
 
-/* Image frame */
-.elite-main .img-frame-elite {
+.elite-main .feature-section:not(.alt-bg) .img-frame-elite {
   background: #e8e4de;
   border-color: rgba(0,0,0,0.08);
 }
 
-/* Glow decoratif — invisible sur fond clair */
-.elite-main .frame-glow { background: rgba(0,0,0,0.03); }
+.elite-main .feature-section:not(.alt-bg) .frame-glow {
+  background: rgba(0,0,0,0.02);
+}
 
-/* CTA box — gardée sombre intentionnellement */
+/* --- Sections SOMBRES (.alt-bg) --- */
+.elite-main .alt-bg {
+  background: #111;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.elite-main .alt-bg .section-heading,
+.elite-main .alt-bg h2,
+.elite-main .alt-bg h3 { color: #fff; }
+
+.elite-main .alt-bg .text-side p { color: rgba(255,255,255,0.6); }
+.elite-main .alt-bg .side-badge { color: var(--brand-orange); }
+
+.elite-main .alt-bg .elite-check-list li { color: rgba(255,255,255,0.85); }
+
+.elite-main .alt-bg .spec-item {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.08);
+}
+.elite-main .alt-bg .spec-item strong { color: #fff; }
+.elite-main .alt-bg .spec-item small { color: rgba(255,255,255,0.45); }
+
+.elite-main .alt-bg .tag-cloud span {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+.elite-main .alt-bg .img-frame-elite {
+  background: #0a0a0a;
+  border-color: rgba(255,255,255,0.08);
+}
+
+.elite-main .alt-bg .frame-glow {
+  background: rgba(245,119,6,0.12);
+}
+
+/* CTA box et cardio — restent sombres */
 .elite-main .cta-box h2 { color: #fff; }
-
-/* Cardio section — reste sombre (bg image) : on ne touche pas */
+.elite-main .cta-box p { color: rgba(255,255,255,0.65); }
