@@ -398,3 +398,9 @@
 .collectif-root .instructor-name { color: #0a0a0a; }
 .collectif-root .instructor-role { color: rgba(0,0,0,0.45); }
 .collectif-root .cta-section { background: #111; }
+.collectif-root .cta-card { background: #fff; border-color: rgba(0,0,0,0.08); box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+.collectif-root .cta-card h2,
+.collectif-root .cta-card h3 { color: #0a0a0a; }
+.collectif-root .cta-card p { color: rgba(0,0,0,0.55); }
+.collectif-root .tags-row span { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.07); }
+.collectif-root .coach-quote { background: rgba(245,119,6,0.04); }

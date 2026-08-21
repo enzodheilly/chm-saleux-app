@@ -658,3 +658,4 @@
 .presentation-root .step-num { color: var(--primary-color); }
 .presentation-root .step-info strong { color: #0a0a0a; }
 .presentation-root .step-info span { color: rgba(0,0,0,0.5); }
+.presentation-root .staff-card { background: #e8e4de; border-color: rgba(0,0,0,0.07); }

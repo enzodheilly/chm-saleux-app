@@ -415,3 +415,8 @@
 .seance-essai-root .step-number { color: var(--primary-color); }
 .seance-essai-root .step-title { color: #0a0a0a; }
 .seance-essai-root .step-desc { color: rgba(0,0,0,0.5); }
+.seance-essai-root { --bg-alt: #f0ede8; }
+.seance-essai-root .cta-card { background: #fff; border-color: rgba(0,0,0,0.08); box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+.seance-essai-root .cta-card h2,
+.seance-essai-root .cta-card h3 { color: #0a0a0a; }
+.seance-essai-root .cta-card p { color: rgba(0,0,0,0.55); }

@@ -212,3 +212,6 @@
 .tresorier-root .info-block { background: rgba(245,119,6,0.05); border-left-color: var(--primary-color); color: rgba(0,0,0,0.6); }
 .tresorier-root .info-label { color: rgba(0,0,0,0.45); }
 .tresorier-root .info-value { color: #0a0a0a; }
+.tresorier-root .profile-image-side { background: #f0ede8; }
+.tresorier-root .profile-stat-row { border-color: rgba(0,0,0,0.07); }
+.tresorier-root .badge-role { border-color: rgba(0,0,0,0.12); color: rgba(0,0,0,0.5); }

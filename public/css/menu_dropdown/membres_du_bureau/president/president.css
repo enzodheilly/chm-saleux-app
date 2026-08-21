@@ -225,3 +225,6 @@
 .president-root .info-block { background: rgba(245,119,6,0.05); border-left-color: var(--primary-color); color: rgba(0,0,0,0.6); }
 .president-root .info-label { color: rgba(0,0,0,0.45); }
 .president-root .info-value { color: #0a0a0a; }
+.president-root .profile-image-side { background: #f0ede8; }
+.president-root .profile-stat-row { border-color: rgba(0,0,0,0.07); }
+.president-root .badge-role { border-color: rgba(0,0,0,0.12); color: rgba(0,0,0,0.5); }

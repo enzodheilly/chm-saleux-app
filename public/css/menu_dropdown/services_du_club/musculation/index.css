@@ -254,3 +254,7 @@
 .musculation-root [class*="-card"] p { color: rgba(0,0,0,0.5); }
 .musculation-root .bg-alt { background: #fff; border-top: 1px solid rgba(0,0,0,0.06); border-bottom: 1px solid rgba(0,0,0,0.06); }
 .musculation-root .cta-section { background: #111; }
+.musculation-root { --bg-alt: #f0ede8; }
+.musculation-root .ffhm-note { background: #fff; color: #0a0a0a; border-color: rgba(0,0,0,0.08); box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+.musculation-root .ffhm-note p { color: rgba(0,0,0,0.6); }
+.musculation-root .full-width-section { background: #f0ede8; border-color: rgba(0,0,0,0.07); box-shadow: none; }
