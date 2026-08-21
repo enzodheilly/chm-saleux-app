@@ -3,6 +3,108 @@
    (s'appuie sur la base globale : page-shell / page-container / header / typo)
    ========================================================= */
 
+/* =========================================
+   THÈME CLAIR — BASE
+   ========================================= */
+.competitions-root {
+  background: #f8f7f5;
+  color: #0a0a0a;
+}
+
+/* Titres et sous-titres des sections claires */
+.competitions-root .section-heading {
+  color: #0a0a0a;
+}
+
+.competitions-root .section-subtext {
+  color: rgba(0,0,0,0.5);
+}
+
+/* Rétablir les couleurs claires dans la section équipes (fond sombre) */
+.competitions-root .bg-dark .section-heading {
+  color: #fff;
+}
+
+.competitions-root .bg-dark .section-subtext {
+  color: var(--text-muted);
+}
+
+/* =========================================
+   CALENDRIER — THÈME CLAIR
+   ========================================= */
+.competitions-root .calendar-card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+.competitions-root .current-month-display {
+  color: #0a0a0a;
+}
+
+.competitions-root .nav-arrow {
+  background: rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.12);
+  color: #0a0a0a;
+}
+
+.competitions-root .calendar-main-grid {
+  background: rgba(0,0,0,0.06);
+  border-color: rgba(0,0,0,0.08);
+}
+
+.competitions-root .day-header {
+  background: #f0ede8;
+  color: rgba(0,0,0,0.5);
+}
+
+.competitions-root .day-cell-wrapper {
+  background: #fff;
+}
+
+.competitions-root .day-cell-wrapper:hover {
+  background: #fafaf8;
+}
+
+.competitions-root .day-cell-wrapper.empty {
+  background: #f5f3ef;
+}
+
+.competitions-root .day-num {
+  color: rgba(0,0,0,0.4);
+}
+
+.competitions-root .event-name {
+  color: #0a0a0a;
+}
+
+/* =========================================
+   STATS — THÈME CLAIR
+   ========================================= */
+.competitions-root .stat-card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+.competitions-root .stat-card:hover {
+  border-color: rgba(245,119,6,0.3);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+}
+
+.competitions-root .stat-card.highlight {
+  background: linear-gradient(145deg, #fff 0%, #fdf9f5 100%);
+  border-color: rgba(245,119,6,0.2);
+}
+
+.competitions-root .stat-value {
+  color: #0a0a0a;
+}
+
+.competitions-root .stat-label {
+  color: rgba(0,0,0,0.45);
+}
+
 .bg-dark-alternate {
   position: relative;
   background-color: var(--dark-bg);

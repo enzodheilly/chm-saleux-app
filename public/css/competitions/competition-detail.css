@@ -15,8 +15,126 @@
   --fw-black: 900;
 }
 
+/* =========================================
+   THÈME CLAIR
+   ========================================= */
 .competition-detail-root {
+  background: #f8f7f5;
+  color: #0a0a0a;
   padding-bottom: 4rem;
+}
+
+/* Titres */
+.competition-detail-root .section-heading {
+  color: #0a0a0a !important;
+}
+
+.competition-detail-root .archives-subtext {
+  color: rgba(0,0,0,0.45);
+}
+
+/* Stats band */
+.competition-detail-root .cd-stat-card {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+
+.competition-detail-root .cd-stat-card:hover {
+  box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+}
+
+.competition-detail-root .cd-stat-card--accent {
+  background: rgba(245,119,6,0.06);
+  border-color: rgba(245,119,6,0.2);
+}
+
+.competition-detail-root .cd-stat-value {
+  color: #0a0a0a;
+}
+
+.competition-detail-root .cd-stat-label {
+  color: rgba(0,0,0,0.4);
+}
+
+/* Description */
+.competition-detail-root .detail-description-box {
+  background: #fff;
+  border-color: rgba(0,0,0,0.07);
+}
+
+.competition-detail-root .detail-description-text {
+  color: rgba(0,0,0,0.55);
+}
+
+/* Tableau */
+.competition-detail-root .detail-table-wrapper {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+}
+
+.competition-detail-root .stats-table {
+  color: #0a0a0a;
+}
+
+.competition-detail-root .stats-table th {
+  background: #fafaf8;
+  color: rgba(0,0,0,0.45);
+  border-bottom-color: rgba(0,0,0,0.08);
+}
+
+.competition-detail-root .stats-table td {
+  border-bottom-color: rgba(0,0,0,0.06);
+}
+
+.competition-detail-root .athlete-row:hover {
+  background: rgba(0,0,0,0.02);
+}
+
+.competition-detail-root .athlete-row--top {
+  background: rgba(245,119,6,0.04);
+}
+
+.competition-detail-root .stats-table .highlight {
+  background: rgba(0,0,0,0.02);
+}
+
+.competition-detail-root .ranking-pill {
+  background: rgba(0,0,0,0.05);
+  border-color: rgba(0,0,0,0.08);
+  color: #0a0a0a;
+}
+
+/* Mobile rows */
+.competition-detail-root .athlete-row {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+}
+
+.competition-detail-root .athlete-row td::before {
+  color: rgba(0,0,0,0.45);
+}
+
+/* Bouton retour */
+.competition-detail-root .btn-history-ghost {
+  color: #0a0a0a;
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.12);
+}
+
+.competition-detail-root .btn-history-ghost:hover {
+  color: var(--brand-orange);
+  border-color: var(--brand-orange);
+  background: rgba(245,119,6,0.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* No results */
+.competition-detail-root .no-results {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  color: rgba(0,0,0,0.45);
 }
 
 .competition-detail-root .page-container {

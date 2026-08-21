@@ -2,6 +2,139 @@
    CARTES D'ARCHIVES — VERSION MODERNISÉE
    Garde la structure existante, polish professionnel
    ================================================================= */
+
+/* =========================================
+   THÈME CLAIR
+   ========================================= */
+.archives-page-root {
+  background: #f8f7f5;
+  color: #0a0a0a;
+}
+
+.archives-page-root .section-heading {
+  color: #0a0a0a;
+}
+
+.archives-page-root .archives-subtext {
+  color: rgba(0,0,0,0.45);
+}
+
+/* Cartes */
+.archives-page-root .history-card-archives {
+  background: #fff;
+  border-color: rgba(0,0,0,0.07);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  border-radius: 20px;
+}
+
+.archives-page-root .history-card-archives::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--brand-orange);
+  border-radius: 20px 20px 0 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+
+.archives-page-root .history-card-archives:hover::before {
+  transform: scaleX(1);
+}
+
+.archives-page-root .history-card-archives:hover {
+  border-color: rgba(0,0,0,0.1);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+  transform: translateY(-5px);
+}
+
+/* Image — nette sur fond clair */
+.archives-page-root .card-thumb img {
+  filter: brightness(0.9);
+}
+
+.archives-page-root .history-card-archives:hover .card-thumb img {
+  filter: brightness(1);
+}
+
+.archives-page-root .history-card-archives h4 {
+  color: #0a0a0a;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.archives-page-root .card-lieu {
+  color: rgba(0,0,0,0.4);
+  font-size: 0.78rem;
+}
+
+/* Bloc méta-infos */
+.archives-page-root .archive-meta-list {
+  border: none;
+  background: #f8f7f5;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.archives-page-root .archive-meta-item {
+  background: transparent;
+  border-bottom-color: rgba(0,0,0,0.06);
+  padding: 8px 12px;
+}
+
+.archives-page-root .archive-meta-item:last-child {
+  border-bottom: none;
+}
+
+.archives-page-root .history-card-archives:hover .archive-meta-item {
+  background: transparent;
+}
+
+.archives-page-root .meta-label {
+  color: rgba(0,0,0,0.38);
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+}
+
+.archives-page-root .meta-value {
+  color: #0a0a0a;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* Lien bas de carte */
+.archives-page-root .card-link {
+  border-top-color: rgba(0,0,0,0.07);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Pagination */
+.archives-page-root .page-btn {
+  background: #fff;
+  border-color: rgba(0,0,0,0.1);
+  color: #0a0a0a;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.archives-page-root .page-btn:hover {
+  border-color: rgba(245,119,6,0.35);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+.archives-page-root .page-btn.active {
+  background: var(--brand-orange);
+  border-color: var(--brand-orange);
+  color: #fff;
+}
+
+.archives-page-root .page-btn.disabled {
+  opacity: 0.3;
+}
 .feminine-archives-header-bg { --bg-image: url('/images/competitions/1.jpg'); }
 .masculine-archives-header-bg { --bg-image: url('/images/competitions/male-team.jpg'); }
 

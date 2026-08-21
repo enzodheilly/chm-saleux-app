@@ -3,6 +3,120 @@
    (s'appuie sur la base globale : page-shell / page-container / header / typo)
    ========================================================= */
 
+/* =========================================
+   THÈME CLAIR
+   ========================================= */
+.team-root {
+  background: #f8f7f5;
+  color: #0a0a0a;
+}
+
+/* Titres & sous-titres */
+.team-root .section-heading {
+  color: #0a0a0a;
+}
+
+/* Slider athlètes */
+.team-root .nav-circle {
+  border-color: rgba(0,0,0,0.12);
+  color: #0a0a0a;
+  background: rgba(0,0,0,0.04);
+}
+
+.team-root .athlete-img-wrapper {
+  background: #e8e4de;
+  border-color: rgba(0,0,0,0.08);
+}
+
+.team-root .athlete-info .last-name {
+  color: #0a0a0a;
+}
+
+.team-root .athlete-info .first-name {
+  color: rgba(0,0,0,0.5);
+}
+
+/* Carte résultat principal */
+.team-root .result-card-main {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+/* Table */
+.team-root .stats-table th {
+  background: #fafaf8;
+  color: rgba(0,0,0,0.45);
+  border-bottom-color: rgba(0,0,0,0.08);
+}
+
+.team-root .athlete-row {
+  border-bottom-color: rgba(0,0,0,0.06);
+}
+
+.team-root .athlete-row:hover {
+  background: rgba(0,0,0,0.02);
+}
+
+.team-root .ath-last-name,
+.team-root .ath-first-name {
+  color: #0a0a0a;
+}
+
+.team-root .weight-val {
+  color: #0a0a0a;
+}
+
+.team-root .highlight {
+  background: rgba(0,0,0,0.02);
+}
+
+.team-root .cat-pill {
+  background: rgba(0,0,0,0.07);
+  color: #0a0a0a;
+}
+
+/* Mobile table */
+.team-root .stats-table .athlete-row {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+}
+
+.team-root .stats-table .athlete-row td::before {
+  color: rgba(0,0,0,0.45);
+}
+
+.team-root .stats-table .athlete-row td.ath-name-cell {
+  border-bottom-color: rgba(0,0,0,0.06);
+}
+
+/* Empty state */
+.team-root .empty-dashboard {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  color: rgba(0,0,0,0.45);
+}
+
+/* Archives */
+.team-root .history-card {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+
+.team-root .history-card:hover {
+  border-color: rgba(245,119,6,0.3);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+}
+
+.team-root .card-body h4 {
+  color: #0a0a0a;
+}
+
+.team-root .card-lieu {
+  color: rgba(0,0,0,0.45);
+}
+
 .bg-dark-alternate {
   background: var(--dark-bg);
   border-top: 1px solid var(--border-soft);
@@ -391,7 +505,7 @@
 
 .card-thumb {
   position: relative;
-  height: 180px;
+  height: 280px;
 }
 
 .card-thumb img {
