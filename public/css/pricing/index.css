@@ -1,4 +1,200 @@
 /* =========================================
+   THÈME CLAIR — PAGE TARIFS
+   ========================================= */
+
+/* Fond général clair */
+.pricing-root {
+  background: #f8f7f5;
+  color: #0a0a0a;
+}
+
+/* Section 3 : tarifs dégressifs — clair */
+.pricing-root > .page-container.section-spacer {
+  background: #f8f7f5;
+}
+
+/* Titres sections claires */
+.pricing-root .pricing-section-title-light {
+  color: #0a0a0a;
+}
+
+.pricing-root .section-header-center p {
+  color: rgba(0,0,0,0.45);
+}
+
+/* Sections sombres — fond noir */
+.pricing-root .bg-dark-alternate {
+  background: #111;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* Sections sombres (bg-dark-alternate) : textes clairs */
+.pricing-root .bg-dark-alternate .pricing-section-title-light {
+  color: #fff;
+}
+
+.pricing-root .bg-dark-alternate .section-header-center p {
+  color: #ddd;
+}
+
+.pricing-root .bg-dark-alternate .pricing-desc-light {
+  color: #ddd;
+}
+
+.pricing-root .bg-dark-alternate .feature-check-list li {
+  color: #ddd;
+}
+
+.pricing-root .bg-dark-alternate .step-info strong {
+  color: #fff;
+}
+
+.pricing-root .bg-dark-alternate .step-info span {
+  color: #ddd;
+}
+
+/* Table : version claire */
+.pricing-root .table-container-modern {
+  background: #fff;
+  border-color: rgba(0,0,0,0.07);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+}
+
+.pricing-root .pricing-table th {
+  color: rgba(0,0,0,0.45);
+  border-bottom-color: rgba(0,0,0,0.07);
+  background: #fafaf8;
+}
+
+.pricing-root .pricing-table tbody tr {
+  border-bottom-color: rgba(0,0,0,0.05);
+}
+
+.pricing-root .pricing-table tbody tr:hover {
+  background: rgba(245,119,6,0.03);
+}
+
+.pricing-root .pricing-table td {
+  color: #0a0a0a;
+}
+
+/* Section cartes abonnements — toggle clair */
+.home-pricing-section .toggle-wrapper {
+  background: rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.12);
+}
+
+.home-pricing-section .toggle-wrapper label {
+  color: rgba(0,0,0,0.55);
+}
+
+.home-pricing-section #type-standard:checked ~ label[for="type-standard"],
+.home-pricing-section #type-student:checked ~ label[for="type-student"] {
+  color: #fff;
+}
+
+/* Section cartes abonnements — cards claires */
+.home-pricing-section .pricing-card-elite {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+.home-pricing-section .pricing-card-elite:hover {
+  border-color: rgba(0,0,0,0.14);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+.home-pricing-section .pricing-card-elite.is-popular {
+  background: #fff;
+  border-color: var(--brand-orange);
+  box-shadow: 0 0 40px rgba(245,119,6,0.1);
+}
+
+.home-pricing-section .p-monthly-cost {
+  color: rgba(0,0,0,0.4);
+}
+
+.home-pricing-section .p-features {
+  border-top-color: rgba(0,0,0,0.08);
+}
+
+.home-pricing-section .p-feature-text span {
+  color: rgba(0,0,0,0.4);
+}
+
+.home-pricing-section .btn-outline {
+  border-color: rgba(0,0,0,0.2);
+  color: #0a0a0a;
+}
+
+.home-pricing-section .btn-outline:hover {
+  border-color: #0a0a0a;
+  color: #0a0a0a;
+}
+
+.home-pricing-section .pricing-legal-notice {
+  color: rgba(0,0,0,0.45);
+}
+
+.home-pricing-section .legal-link {
+  color: var(--brand-orange);
+  text-decoration-color: rgba(245,119,6,0.4);
+}
+
+.home-pricing-section .legal-link:hover {
+  text-decoration-color: var(--brand-orange);
+}
+
+/* Textes cartes — var(--text-black) et var(--text-white) valent #fff sur ce site */
+.home-pricing-section .p-title {
+  color: #0a0a0a;
+}
+
+.home-pricing-section .is-popular .p-title {
+  color: var(--brand-orange);
+}
+
+.home-pricing-section .p-value {
+  color: #0a0a0a;
+}
+
+.home-pricing-section .p-currency {
+  color: rgba(0,0,0,0.55);
+}
+
+.home-pricing-section .p-promo-box {
+  color: #0a0a0a;
+}
+
+.home-pricing-section .p-features li {
+  color: #0a0a0a;
+}
+
+.home-pricing-section .p-features li strong,
+.home-pricing-section .p-feature-text strong {
+  color: #0a0a0a;
+}
+
+/* Notice légale */
+.home-pricing-section .pricing-legal-notice p {
+  color: rgba(0,0,0,0.45);
+}
+
+.home-pricing-section .mt-2 {
+  border-top-color: rgba(0,0,0,0.07);
+}
+
+/* Navigation mobile */
+.home-pricing-section .slider-arrow:hover {
+  color: #0a0a0a;
+}
+
+.home-pricing-section .pricing-indicators .dot {
+  background-color: rgba(0,0,0,0.15);
+}
+
+/* =========================================
    HEADER TARIFS (MÊME STYLE QUE L'ACCUEIL)
    ========================================= */
 .pricing-header-elite {
@@ -588,8 +784,8 @@
   position: relative;
   overflow: hidden;
   padding: var(--section-padding-y) 0;
-  background: var(--bg-section);
-  border-bottom: 1px solid #4D4D4D;
+  background: #f8f7f5;
+  border-bottom: none;
   z-index: 0;
 }
 
@@ -598,7 +794,7 @@
   font-weight: 900;
   text-transform: uppercase;
   line-height: 0.9;
-  color: rgba(255, 255, 255, 0.03);
+  color: rgba(0, 0, 0, 0.06);
   white-space: nowrap;
   max-width: 90vw;
   overflow: hidden;
@@ -645,11 +841,11 @@
 }
 
 .pricing-header-elite .text-outline {
-  color: var(--text-white);
+  color: #0a0a0a;
 }
 
 .pricing-header-elite .section-subtitle {
-  color: var(--text-muted-2);
+  color: rgba(0,0,0,0.5);
   font-size: 1.05rem;
   line-height: 1.6;
   max-width: 820px;
