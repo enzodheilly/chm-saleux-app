@@ -439,6 +439,20 @@
    THÈME CLAIR
    ========================================= */
 .news-root {
+  --text-white: #0a0a0a;
+  --text-black: #0a0a0a;
+  --text-muted: rgba(0,0,0,0.5);
+  --text-muted-1: rgba(0,0,0,0.45);
+  --text-muted-2: rgba(0,0,0,0.55);
+  --bg-card: #fff;
+  --bg-section: #f8f7f5;
+  --border-soft: rgba(0,0,0,0.08);
+  --border-soft-2: rgba(0,0,0,0.06);
+  --color-card-bg: #fff;
+  --color-border: rgba(0,0,0,0.1);
+  --color-text-primary: #0a0a0a;
+  --title-color: #0a0a0a;
+
   background: #f8f7f5;
   color: #0a0a0a;
 }
