@@ -6,7 +6,7 @@
 {% block og_title %}Devenir Partenaire — CHM Saleux
 {% endblock %}
 
-{% block og_description %}Soutenez le CHM Saleux et bénéficiez d'une visibilité auprès de notre communauté sportive.
+{% block og_description %}Associez votre entreprise aux valeurs de performance et de dépassement de soi du CHM Saleux. Visibilité locale, déduction fiscale 60%, partenariat sur-mesure.
 {% endblock %}
 
 {% block stylesheets %}
@@ -18,7 +18,6 @@
 
 	<header class="page-header-sport partner-page-header">
 		<div class="header-overlay-gradient"></div>
-
 		<div class="header-content">
 			<div class="page-container">
 				<nav class="breadcrumb-nav">
@@ -27,129 +26,196 @@
 						<span>Accueil</span>
 					</a>
 				</nav>
-
 				<div class="header-main-box">
 					<div class="badge-accent">Sponsoring & Mécénat</div>
 					<h1>Devenez
 						<span class="text-outline">Partenaire</span>
 					</h1>
 					<p class="lead">
-						Associez l'image de votre entreprise aux valeurs de performance, de dépassement de soi
-																																																												                        et de solidarité du CHM Saleux.
+						Associez l'image de votre entreprise aux valeurs de performance,<br>
+						de dépassement de soi et de solidarité du CHM Saleux.
 					</p>
+					<div class="hero-cta-row">
+						<a href="{{ path('contact') }}" class="hero-btn-primary">
+							Discuter d'un partenariat
+							<i class="fa-solid fa-arrow-right"></i>
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
 	</header>
 
-	{# IMAGE DÉCORATIVE GAUCHE #}
-
-	<main
-		class="page-shell partner-root">
+	<main class="page-shell partner-root">
 
 		{# --- ARGUMENTS --- #}
-		<section class="page-container section-spacer">
-			<div class="partner-heading-wrap">
-				<h2 class="section-heading centered">Pourquoi nous
-					<span>Soutenir ?</span>
+		<section class="partner-args-section page-container">
+			<div class="partner-section-head">
+				<span class="section-eyebrow">Pourquoi nous soutenir ?</span>
+				<h2 class="section-heading">Une visibilité
+					<span>locale & nationale</span>
 				</h2>
+				<p class="section-sub">Chaque partenariat est une opportunité concrète de rayonner auprès d'une communauté sportive engagée.</p>
 			</div>
 
 			<div class="arguments-grid">
 				<div class="arg-card">
-					<div class="arg-icon">
+					<div class="arg-icon-wrap">
 						<i class="fa-solid fa-eye"></i>
 					</div>
-					<h3>Visibilité Locale</h3>
-					<p>Votre logo sur nos tenues, nos affiches et nos réseaux sociaux. Touchez une audience large et engagée.</p>
+					<div class="arg-body">
+						<h3>Visibilité Locale</h3>
+						<p>Votre logo sur nos tenues, affiches et réseaux sociaux. Touchez une audience locale large et engagée tout au long de la saison.</p>
+					</div>
 				</div>
 
 				<div class="arg-card">
-					<div class="arg-icon">
+					<div class="arg-icon-wrap">
 						<i class="fa-solid fa-medal"></i>
 					</div>
-					<h3>Image Positive</h3>
-					<p>Associez votre marque au dynamisme, à la santé et à la réussite. Renforcez votre ancrage territorial.</p>
+					<div class="arg-body">
+						<h3>Image Positive</h3>
+						<p>Associez votre marque au dynamisme, à la santé et à la réussite sportive. Renforcez votre ancrage territorial durablement.</p>
+					</div>
 				</div>
 
 				<div class="arg-card">
-					<div class="arg-icon">
+					<div class="arg-icon-wrap">
 						<i class="fa-solid fa-handshake"></i>
 					</div>
-					<h3>Réseau B2B</h3>
-					<p>Intégrez le cercle des partenaires. Participez à nos événements et développez vos relations locales.</p>
+					<div class="arg-body">
+						<h3>Réseau B2B</h3>
+						<p>Intégrez le cercle des partenaires. Participez à nos événements et développez vos relations professionnelles locales.</p>
+					</div>
+				</div>
+
+				<div class="arg-card">
+					<div class="arg-icon-wrap">
+						<i class="fa-solid fa-trophy"></i>
+					</div>
+					<div class="arg-body">
+						<h3>Compétitions FFHM</h3>
+						<p>Votre marque visible lors des championnats régionaux et nationaux, relayée sur les médias sportifs officiels.</p>
+					</div>
 				</div>
 			</div>
 		</section>
 
 		{# --- FISCALITÉ --- #}
-		<section class="tax-impact-section">
-			<div class="page-container">
-				<div class="tax-card">
-					<div class="tax-info">
-						<span class="badge-tax">Loi Mécénat</span>
-						<h2>Réduction d'impôt majeure</h2>
-						<p>Le CHM Saleux est une association reconnue d'intérêt général. Votre soutien ouvre droit à un avantage fiscal significatif.</p>
-					</div>
-
-					<div class="tax-figure">
-						<div class="number">60%</div>
-						<div class="label">Déduction fiscale*</div>
+		<section class="tax-section page-container">
+			<div class="tax-card">
+				<div class="tax-visual">
+					<div class="tax-circle">
+						<span class="tax-pct">60%</span>
+						<span class="tax-pct-lbl">de déduction</span>
 					</div>
 				</div>
-
-				<p class="tax-legal">*Dans la limite de 20 000 € ou 5 ‰ du chiffre d'affaires HT (Art. 238 bis du CGI).</p>
+				<div class="tax-content">
+					<span class="badge-tax">Loi Mécénat — Art. 238 bis CGI</span>
+					<h2>Un avantage fiscal<br>immédiat</h2>
+					<p>Le CHM Saleux est une association reconnue d'intérêt général. Votre don ouvre droit à une réduction d'impôt de <strong>60%</strong> du montant versé, dans la limite de 20 000 € ou 5 ‰ de votre chiffre d'affaires HT.</p>
+					<div class="tax-example">
+						<div class="tax-ex-item">
+							<span class="tax-ex-label">Don de</span>
+							<span class="tax-ex-val">500 €</span>
+						</div>
+						<i class="fa-solid fa-arrow-right tax-ex-arrow"></i>
+						<div class="tax-ex-item">
+							<span class="tax-ex-label">Coût réel</span>
+							<span class="tax-ex-val tax-ex-val--orange">200 €</span>
+						</div>
+					</div>
+					<p class="tax-legal">*Déduction applicable sur IS ou IR. Soumis aux conditions légales en vigueur.</p>
+				</div>
 			</div>
 		</section>
 
 		{# --- TYPES DE SOUTIEN --- #}
-		<section class="page-container section-spacer">
-			<h2 class="section-heading centered">Trois façons de
-				<span>nous aider</span>
-			</h2>
+		<section class="support-section page-container">
+			<div class="partner-section-head">
+				<span class="section-eyebrow">Modalités</span>
+				<h2 class="section-heading">Trois façons de
+					<span>nous aider</span>
+				</h2>
+			</div>
 
-			<div class="support-flex">
-				<div class="support-box">
-					<span class="support-num">01</span>
+			<div class="support-grid">
+				<div class="support-card">
+					<div class="support-num-badge">01</div>
+					<div class="support-icon"><i class="fa-solid fa-coins"></i></div>
 					<h4>Mécénat Financier</h4>
-					<p>Financement direct de matériel olympique ou des déplacements en compétition nationale.</p>
+					<p>Financement direct de matériel olympique, de déplacements en compétition nationale ou de travaux d'aménagement.</p>
 				</div>
-
-				<div class="support-box">
-					<span class="support-num">02</span>
+				<div class="support-card">
+					<div class="support-num-badge">02</div>
+					<div class="support-icon"><i class="fa-solid fa-box-open"></i></div>
 					<h4>Mécénat en Nature</h4>
-					<p>Don de matériel, dotation pour nos événements ou ravitaillement pour nos athlètes.</p>
+					<p>Don de matériel, dotation pour nos événements, ravitaillement pour nos athlètes ou mise à disposition d'équipements.</p>
 				</div>
-
-				<div class="support-box">
-					<span class="support-num">03</span>
-					<h4>Compétences</h4>
-					<p>Mise à disposition de savoir-faire (communication, logistique, aménagement de salle).</p>
+				<div class="support-card">
+					<div class="support-num-badge">03</div>
+					<div class="support-icon"><i class="fa-solid fa-lightbulb"></i></div>
+					<h4>Mécénat de Compétences</h4>
+					<p>Mise à disposition de savoir-faire dans les domaines de la communication, de la logistique ou de l'aménagement.</p>
 				</div>
 			</div>
 		</section>
 
-		{# --- CONTACT CTA --- #}
-		<section class="bg-dark-alternate">
-			<div class="page-container section-spacer">
-				<div class="partner-cta-card">
-					<div class="cta-content">
-						<h2>Construisons un projet
-							<span>Ensemble</span>
+		{# --- PARTENAIRES ACTUELS --- #}
+		<section class="current-partners-section page-container">
+			<div class="partner-section-head">
+				<span class="section-eyebrow">Ils nous font confiance</span>
+				<h2 class="section-heading">Nos partenaires
+					<span>actuels</span>
+				</h2>
+			</div>
+			<div class="partners-logos-row">
+				<div class="partner-logo-item">
+					<img src="{{ asset('images/sponsors/logo-conseil-departemental-somme.png') }}" alt="Conseil Départemental de la Somme" loading="lazy">
+				</div>
+				<div class="partner-logo-item">
+					<img src="{{ asset('images/sponsors/logo-hdf.png') }}" alt="Hauts-de-France" loading="lazy">
+				</div>
+				<div class="partner-logo-item">
+					<img src="{{ asset('images/sponsors/logo-vectoriel-amiens-metropole.png') }}" alt="Amiens Métropole" loading="lazy">
+				</div>
+				<div class="partner-logo-item">
+					<img src="{{ asset('images/sponsors/FFHMFAC.png') }}" alt="FFHM FAC" loading="lazy">
+				</div>
+				<div class="partner-logo-item">
+					<img src="{{ asset('images/sponsors/Logo-legue-chauffage.png') }}" alt="Legue Chauffage" loading="lazy">
+				</div>
+				<div class="partner-logo-item">
+					<img src="{{ asset('images/sponsors/mairie-saleux.jpg') }}" alt="Mairie de Saleux" loading="lazy">
+				</div>
+				<div class="partner-logo-item">
+					<img src="{{ asset('images/sponsors/nicolas-coiffeur.jpg') }}" alt="L'Atelier de Nicolas" loading="lazy">
+				</div>
+			</div>
+		</section>
+
+		{# --- CTA FINAL --- #}
+		<section class="partner-cta-section page-container">
+			<div class="partner-cta-card">
+				<div class="cta-deco-line"></div>
+				<div class="cta-inner">
+					<div class="cta-text-side">
+						<span class="section-eyebrow section-eyebrow--orange">Prêt à nous rejoindre ?</span>
+						<h2 class="cta-title">Construisons un projet<br>
+							<span>ensemble</span>
 						</h2>
 						<p>Nous étudions chaque demande pour créer un partenariat sur-mesure, adapté à vos objectifs de communication et à votre budget.</p>
-
-						<div class="cta-actions">
-							<a href="{{ path('contact') }}" class="btn-elite">
-								Prendre rendez-vous
-								<i class="fa-solid fa-calendar-check"></i>
-							</a>
-							<a href="tel:0322897257" class="btn-outline-white">03.22.89.72.57</a>
-						</div>
 					</div>
-
-					<div class="cta-image" aria-hidden="true">
-						<i class="fa-solid fa-briefcase"></i>
+					<div class="cta-actions-side">
+						<a href="{{ path('contact') }}" class="cta-btn-main">
+							<i class="fa-solid fa-calendar-check"></i>
+							Prendre rendez-vous
+						</a>
+						<a href="tel:0322897257" class="cta-btn-phone">
+							<i class="fa-solid fa-phone"></i>
+							03.22.89.72.57
+						</a>
+						<p class="cta-reassure">Réponse garantie sous 48h ouvrées</p>
 					</div>
 				</div>
 			</div>

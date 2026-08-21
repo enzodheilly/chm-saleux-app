@@ -1,302 +1,539 @@
 /* =========================================================
    HORAIRES — PAGE SPECIFIQUE
-   (s'appuie sur la base globale : page-shell / page-container / header / typo)
+   Thème clair (#f8f7f5 / #0a0a0a / #F57706)
    ========================================================= */
 
-/* Petit alias local si besoin de cohérence visuelle */
-:root {
-  --card-radius-lg: 22px;
-  --card-radius-md: 16px;
-  --shadow-elevated: 0 16px 34px rgba(0,0,0,0.35);
-  --accent-border-soft: rgba(245, 119, 6, 0.35);
+.horaires-root {
+  --text-white: #0a0a0a;
+  --text-black: #0a0a0a;
+  --text-muted: rgba(0,0,0,0.5);
+  --bg-card: #fff;
+  --border-soft: rgba(0,0,0,0.08);
+
+  background: #f8f7f5;
+  color: #0a0a0a;
 }
 
 /* =========================================
-   SCHEDULE CARDS
+   HEADER IMAGE
    ========================================= */
-.schedule-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.4rem;
-margin-top: 2.2rem}
-
-.horaires-root .section-spacer {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-}
-
-.schedule-card {
-  background: var(--bg-card);
-  border-radius: var(--card-radius-lg);
-  padding: 34px;
-  border: 1px solid var(--border-soft);
-  position: relative;
-  overflow: hidden;
-  transition: var(--transition-base);
-}
-
-.section-header-center p {
-    text-align: center;
-}
-
-.schedule-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--accent-border-soft);
-}
-
-.active-day {
-  border-top: 4px solid var(--primary-color);
-}
-
-.closed-day {
-  opacity: 0.78;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.card-head h3 {
-  font-size: 1.25rem;
-  font-weight: var(--fw-black);
-  margin: 0 0 6px;
-  color: var(--text-white);
-  text-transform: uppercase;
-  line-height: 1.2;
-}
-
-.day-tag {
-  display: inline-block;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  font-weight: var(--fw-black);
-  letter-spacing: 1px;
-  color: var(--primary-color);
-}
-
-.day-tag.closed {
-  color: #ff4444;
-}
-
-.card-times {
-  margin: 26px 0;
-}
-
-.time-slot {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-}
-
-.slot-label {
-  color: var(--text-muted);
-  font-size: 0.92rem;
-}
-
-.slot-hour {
-  font-weight: var(--fw-extrabold);
-  font-size: 1.05rem;
-  color: var(--text-white);
-  text-align: right;
-}
-
-.time-separator {
-  height: 1px;
-  background: var(--border-soft);
-  margin: 14px 0;
-}
-
-.closed-content {
-  text-align: center;
-  padding: 34px 0;
-}
-
-.closed-content i {
-  font-size: 2.7rem;
-  color: #ff4444;
-  margin-bottom: 12px;
-  display: block;
-}
-
-.closed-content p {
-  color: var(--text-muted);
-  margin: 0;
-  line-height: 1.5;
-}
-
-.card-foot p {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  font-style: italic;
-  margin: 18px 0 0;
-  line-height: 1.5;
-}
-
-/* =========================================
-   INFO BLOCKS
-   ========================================= */
-.info-blocks-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.2rem;
-  margin-top: 2.4rem;
-}
-
-.info-mini-card {
-  background: rgba(255,255,255,0.03);
-  padding: 26px;
-  border-radius: var(--card-radius-md);
-  text-align: center;
-  border: 1px solid rgba(255,255,255,0.04);
-  transition: var(--transition-base);
-}
-
-.info-mini-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(255,255,255,0.08);
-}
-
-.info-mini-card i {
-  color: var(--primary-color);
-  font-size: 1.9rem;
-  margin-bottom: 14px;
-}
-
-.info-mini-card h4 {
-  text-transform: uppercase;
-  font-weight: var(--fw-black);
-  margin: 0 0 10px;
-  letter-spacing: 1px;
-  color: var(--text-white);
-  line-height: 1.2;
-}
-
-.info-mini-card p {
-  font-size: 0.92rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-  margin: 0;
-}
-
-.call-to-action-horaires {
-  text-align: center;
-  margin-top: 44px;
-}
-
-.call-to-action-horaires p {
-  color: var(--text-muted);
-  margin: 0 0 14px;
-}
-
-.btn-phone {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  text-transform: uppercase;
-  background: var(--primary-color);
-  color: var(--text-white);
-  padding: 15px 30px;
-  text-decoration: none;
-  font-weight: var(--fw-black);
-  transition: var(--transition-base);
-}
-
-.btn-phone:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 10px 20px rgba(245, 119, 6, 0.25);
-}
-
 .horaires-header-bg {
   --bg-image: url('/images/menu_dropdown/a_propos_de_notre_club/horaires/11.jpg');
   --bg-position: center -60%;
 }
 
-/* On descend l'image de fond ici aussi */
 .horaires-header-bg::before {
-  background-position: center 5% !important; /* Teste entre 70% et 90% selon l'image */
+  background-position: center 5% !important;
 }
 
 /* =========================================
-   RESPONSIVE (spécifique horaires seulement)
+   HEADINGS COMMUNS
    ========================================= */
-@media (max-width: 992px) {
+.planning-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
 
-  .schedule-grid,
-  .info-blocks-grid {
+.h-eyebrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #F57706;
+  margin-bottom: 14px;
+}
+
+.h-eyebrow--light { color: rgba(255,255,255,0.5); }
+
+.h-title {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 900;
+  color: #0a0a0a;
+  margin: 0 0 1rem;
+  line-height: 1.1;
+}
+
+.h-title span { color: #F57706; }
+.h-title--light { color: #fff; }
+.h-title--light span { color: #F57706; }
+.text-outline-light { -webkit-text-stroke: 1.5px rgba(255,255,255,0.55); color: transparent; }
+
+.h-sub {
+  color: rgba(0,0,0,0.5);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+/* =========================================
+   SECTION PLANNING
+   ========================================= */
+.planning-section {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+/* =========================================
+   GRILLE SEMAINE — 7 jours
+   ========================================= */
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+/* ---- Carte jour ---- */
+.day-card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 18px;
+  padding: 22px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
+  border-top: 3px solid #F57706;
+}
+
+.day-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(245,119,6,0.35);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.07);
+}
+
+.day-card--closed {
+  border-top-color: rgba(0,0,0,0.12);
+  background: rgba(0,0,0,0.02);
+  opacity: 0.7;
+}
+
+.day-card--closed:hover {
+  transform: none;
+  border-color: rgba(0,0,0,0.07);
+  box-shadow: none;
+}
+
+.day-card--note {
+  border-top-color: #F57706;
+}
+
+/* ---- En-tête jour ---- */
+.day-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.day-name {
+  font-size: 0.95rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #0a0a0a;
+}
+
+.day-badge {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 3px 9px;
+  border-radius: 50px;
+  width: fit-content;
+}
+
+.day-badge.open {
+  background: rgba(245,119,6,0.1);
+  color: #F57706;
+}
+
+.day-badge.closed {
+  background: rgba(0,0,0,0.06);
+  color: rgba(0,0,0,0.4);
+}
+
+/* ---- Créneaux ---- */
+.day-slots {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.slot {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 0;
+}
+
+.slot-period {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: rgba(0,0,0,0.4);
+}
+
+.slot-period i {
+  font-size: 0.65rem;
+  color: #F57706;
+}
+
+.slot-hours {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #0a0a0a;
+  line-height: 1.2;
+}
+
+.slot-hours sup {
+  font-size: 0.6rem;
+  color: #F57706;
+  font-weight: 700;
+}
+
+.slot-divider {
+  height: 1px;
+  background: rgba(0,0,0,0.06);
+  margin: 0;
+}
+
+/* ---- Fermé ---- */
+.closed-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.closed-body i {
+  font-size: 1.6rem;
+  color: rgba(0,0,0,0.18);
+}
+
+.closed-body p {
+  font-size: 0.78rem;
+  color: rgba(0,0,0,0.35);
+  margin: 0;
+  font-weight: 600;
+}
+
+/* ---- Note vendredi ---- */
+.day-note {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(245,119,6,0.25);
+  font-size: 0.7rem;
+  color: rgba(0,0,0,0.45);
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  line-height: 1.5;
+}
+
+.day-note i {
+  color: #F57706;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* =========================================
+   LÉGENDE
+   ========================================= */
+.planning-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: rgba(0,0,0,0.45);
+  font-weight: 600;
+}
+
+.legend-item i {
+  color: #F57706;
+  font-size: 0.85rem;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-dot.open { background: #F57706; }
+.legend-dot.closed { background: rgba(0,0,0,0.2); }
+
+/* =========================================
+   SECTION INFOS PRATIQUES
+   ========================================= */
+.infos-section {
+  background: #111;
+  padding: 80px 0;
+}
+
+.infos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 3rem;
+}
+
+.info-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.info-card:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.12);
+}
+
+.info-icon {
+  width: 50px;
+  height: 50px;
+  background: rgba(245,119,6,0.12);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: #F57706;
+  flex-shrink: 0;
+}
+
+.info-icon--green {
+  background: rgba(37,211,102,0.1);
+  color: #25d366;
+}
+
+.info-body h4 {
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #fff;
+  margin: 0 0 10px;
+}
+
+.info-body p {
+  margin: 0;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.7;
+  font-size: 0.92rem;
+}
+
+/* ---- CTA WhatsApp ---- */
+.infos-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #25d366;
+  color: #fff;
+  padding: 15px 32px;
+  border-radius: 50px;
+  font-weight: 800;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.btn-whatsapp:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(37,211,102,0.35);
+}
+
+.btn-whatsapp i { font-size: 1.2rem; }
+
+.infos-cta-note {
+  color: rgba(255,255,255,0.35);
+  font-size: 0.8rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* =========================================
+   CTA CONTACT
+   ========================================= */
+.horaires-cta-section {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.horaires-cta-card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 24px;
+  padding: 48px 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+}
+
+.horaires-cta-text h3 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #0a0a0a;
+  margin: 0 0 10px;
+}
+
+.horaires-cta-text p {
+  margin: 0;
+  color: rgba(0,0,0,0.5);
+  line-height: 1.6;
+  max-width: 460px;
+}
+
+.horaires-cta-actions {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.btn-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: #F57706;
+  color: #fff;
+  padding: 14px 26px;
+  border-radius: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: transform 0.22s, box-shadow 0.22s;
+  white-space: nowrap;
+}
+
+.btn-cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(245,119,6,0.35);
+}
+
+.btn-cta-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: #f8f7f5;
+  color: #0a0a0a;
+  padding: 14px 26px;
+  border-radius: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  font-size: 0.9rem;
+  border: 1px solid rgba(0,0,0,0.08);
+  transition: border-color 0.2s;
+  white-space: nowrap;
+}
+
+.btn-cta-phone:hover {
+  border-color: #0a0a0a;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 1200px) {
+  .week-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .week-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .infos-grid {
     grid-template-columns: 1fr;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .schedule-card {
-    padding: 28px 20px;
-  }
-}
-
-@media (max-width: 768px) {
-  .card-head h3 {
-    font-size: 1.15rem;
+  .horaires-cta-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 36px 28px;
+    gap: 28px;
   }
 
-  .closed-content {
-    padding: 28px 0;
-  }
-
-  .time-slot {
-    align-items: flex-start;
-  }
-
-  .slot-hour {
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .btn-phone {
+  .horaires-cta-actions {
+    justify-content: center;
     width: 100%;
   }
 
-  .time-slot {
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .slot-hour {
-    text-align: left;
+  .horaires-cta-text p {
+    max-width: 100%;
   }
 }
-/* =========================================
-   THÈME CLAIR
-   ========================================= */
-.horaires-root {
-  --text-white: #0a0a0a;
-  --text-black: #0a0a0a;
-  --text-muted: rgba(0,0,0,0.5);
-  --text-muted-1: rgba(0,0,0,0.45);
-  --text-muted-2: rgba(0,0,0,0.55);
-  --bg-card: #fff;
-  --bg-section: #f8f7f5;
-  --border-soft: rgba(0,0,0,0.08);
-  --border-soft-2: rgba(0,0,0,0.06);
-  --color-card-bg: #fff;
-  --color-border: rgba(0,0,0,0.1);
-  --color-text-primary: #0a0a0a;
-  --title-color: #0a0a0a;
 
-  background: #f8f7f5;
-  color: #0a0a0a;
-}
-.horaires-root .section-heading { color: #0a0a0a; }
-.horaires-root .schedule-card {
-  background: #fff;
-  border-color: rgba(0,0,0,0.08);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-}
-.horaires-root .day-name { color: var(--primary-color); }
-.horaires-root .schedule-row { border-bottom-color: rgba(0,0,0,0.06); }
-.horaires-root .schedule-time { color: #0a0a0a; }
-.horaires-root .schedule-activity { color: rgba(0,0,0,0.5); }
-.horaires-root .closed-text { color: #ff4444; }
-.horaires-root .legend-item { color: rgba(0,0,0,0.5); }
-.horaires-root .special-note { background: rgba(245,119,6,0.06); border-color: rgba(245,119,6,0.2); color: rgba(0,0,0,0.6); }
-.horaires-root .active-badge {
-  background: var(--primary-color);
-  color: #fff;
+@media (max-width: 600px) {
+  .week-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .day-card {
+    padding: 18px 14px;
+    border-radius: 14px;
+  }
+
+  .slot-hours {
+    font-size: 0.82rem;
+  }
+
+  .day-name {
+    font-size: 0.85rem;
+  }
+
+  .btn-cta-primary,
+  .btn-cta-phone {
+    width: 100%;
+    justify-content: center;
+    max-width: 320px;
+  }
+
+  .planning-legend {
+    gap: 16px;
+  }
 }

@@ -649,6 +649,22 @@
 #type-student:checked ~ label[for="type-student"] { color: var(--text-black); }
 #type-standard:checked ~ label[for="type-standard"] { color: var(--text-black); }
 
+/* Toggle version claire — section abonnements (fond #f8f7f5) */
+.home-pricing-section .toggle-wrapper {
+  background: rgba(0,0,0,0.05);
+  box-shadow: none;
+  border: 1px solid rgba(0,0,0,0.12);
+}
+
+.home-pricing-section .toggle-wrapper label {
+  color: rgba(0,0,0,0.55);
+}
+
+.home-pricing-section #type-standard:checked ~ label[for="type-standard"],
+.home-pricing-section #type-student:checked ~ label[for="type-student"] {
+  color: #fff;
+}
+
 /* =========================================
    GRID
    ========================================= */
