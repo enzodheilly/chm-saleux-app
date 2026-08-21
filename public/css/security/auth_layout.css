@@ -173,6 +173,38 @@ html, body {
   text-decoration: none;
 }
 
+/* Bouton Apple */
+.apple-btn {
+  background: #0a0a0a;
+  color: #fff;
+  border: 1.5px solid #0a0a0a;
+  position: relative;
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.apple-icon {
+  width: 18px;
+  height: 18px;
+  fill: #fff;
+  flex-shrink: 0;
+}
+
+.apple-soon-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--auth-brand);
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
 .google-icon {
   display: inline-block;
   width: 20px;
