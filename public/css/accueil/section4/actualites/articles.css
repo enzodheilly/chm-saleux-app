@@ -435,3 +435,55 @@
         transition: none !important;
     }
 }
+/* =========================================
+   THÈME CLAIR
+   ========================================= */
+.news-root {
+  background: #f8f7f5;
+  color: #0a0a0a;
+}
+.news-root .section-heading { color: #0a0a0a; }
+.news-root .section-header-center p { color: rgba(0,0,0,0.5); }
+/* Filter bar */
+.news-root .filter-card-wrapper {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.news-root .filter-label,
+.news-root .filter-title { color: #0a0a0a; }
+.news-root .filter-btn {
+  background: #f8f7f5;
+  border-color: rgba(0,0,0,0.1);
+  color: #0a0a0a;
+}
+.news-root .filter-btn.active {
+  background: var(--primary-color);
+  color: #fff;
+}
+/* Article cards */
+.news-root .article-card,
+.news-root .news-card {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+}
+.news-root .article-card h3,
+.news-root .news-card h3,
+.news-root .card-title { color: #0a0a0a; }
+.news-root .article-card p,
+.news-root .news-card p,
+.news-root .card-excerpt { color: rgba(0,0,0,0.5); }
+.news-root .card-meta,
+.news-root .article-meta { color: rgba(0,0,0,0.4); }
+/* Pagination */
+.news-root .page-btn {
+  background: #fff;
+  border-color: rgba(0,0,0,0.1);
+  color: #0a0a0a;
+}
+.news-root .page-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+}

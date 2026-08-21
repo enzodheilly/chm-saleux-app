@@ -431,3 +431,25 @@
     transition: none !important;
   }
 }
+
+/* =========================================
+   THÈME CLAIR
+   ========================================= */
+.elite-main {
+  background: #f8f7f5;
+  color: #0a0a0a;
+}
+.elite-main .section-heading { color: #0a0a0a; }
+.elite-main .alt-bg {
+  background: #fff;
+  border-top-color: rgba(0,0,0,0.07);
+  border-bottom-color: rgba(0,0,0,0.07);
+}
+.elite-main p { color: rgba(0,0,0,0.55); }
+.elite-main h2, .elite-main h3 { color: #0a0a0a; }
+.elite-main [class*="card"],
+.elite-main [class*="stat"] {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}

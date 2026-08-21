@@ -208,3 +208,36 @@
         align-items: center;
     }
 }
+/* =========================================
+   THÈME CLAIR
+   ========================================= */
+.bai-root {
+  background: #f8f7f5;
+  color: #0a0a0a;
+}
+.bai-root .section-heading { color: #0a0a0a; }
+.bai-root .idea-card,
+.bai-root .step-card,
+.bai-root .qr-card {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.bai-root .idea-card p,
+.bai-root .step-card p { color: rgba(0,0,0,0.55); }
+.bai-root .idea-card h3,
+.bai-root .step-card h3 { color: #0a0a0a; }
+.bai-root .form-card,
+.bai-root form {
+  --color-card-bg: #fff;
+  --color-border: rgba(0,0,0,0.1);
+  --color-text-primary: #0a0a0a;
+}
+.bai-root input,
+.bai-root textarea,
+.bai-root select {
+  background: #fff;
+  border-color: rgba(0,0,0,0.12);
+  color: #0a0a0a;
+}
+.bai-root label { color: rgba(0,0,0,0.6); }

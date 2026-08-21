@@ -259,3 +259,29 @@ display: none;
 }
 
 }
+/* =========================================
+   THÈME CLAIR
+   ========================================= */
+.generic-page-root {
+  background: #f8f7f5;
+  color: #0a0a0a;
+}
+.generic-page-root .article-header { background: #111; }
+.generic-page-root h1, .generic-page-root h2, .generic-page-root h3 { color: #0a0a0a; }
+.generic-page-root .pro-content { color: rgba(0,0,0,0.7); }
+.generic-page-root .pro-content strong { color: #0a0a0a; }
+.generic-page-root .pro-content a { color: var(--primary-color); }
+.generic-page-root .pro-content blockquote {
+  border-left-color: var(--primary-color);
+  background: rgba(245,119,6,0.04);
+  color: rgba(0,0,0,0.6);
+}
+.generic-page-root .sidebar-card {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.generic-page-root .sidebar-card h4 { color: #0a0a0a; }
+.generic-page-root .sidebar-card p { color: rgba(0,0,0,0.5); }
+.generic-page-root .header-meta { color: rgba(255,255,255,0.7); }
+.generic-page-root .article-footer-cta { background: #0a0a0a; }

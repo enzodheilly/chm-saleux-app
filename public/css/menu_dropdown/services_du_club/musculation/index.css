@@ -220,3 +220,23 @@
     gap: 16px;
   }
 }
+/* =========================================
+   THÈME CLAIR
+   ========================================= */
+.musculation-root {
+  background: #f8f7f5;
+  color: #0a0a0a;
+}
+.musculation-root .section-heading { color: #0a0a0a; }
+.musculation-root .desc-text,
+.musculation-root p { color: rgba(0,0,0,0.55); }
+.musculation-root [class*="-card"] {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.musculation-root [class*="-card"] h3,
+.musculation-root [class*="-card"] h4 { color: #0a0a0a; }
+.musculation-root [class*="-card"] p { color: rgba(0,0,0,0.5); }
+.musculation-root .bg-alt { background: #fff; border-top: 1px solid rgba(0,0,0,0.06); border-bottom: 1px solid rgba(0,0,0,0.06); }
+.musculation-root .cta-section { background: #111; }

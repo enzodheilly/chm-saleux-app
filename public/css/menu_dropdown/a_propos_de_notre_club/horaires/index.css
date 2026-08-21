@@ -262,3 +262,27 @@ margin-top: 2.2rem}
     text-align: left;
   }
 }
+/* =========================================
+   THÈME CLAIR
+   ========================================= */
+.horaires-root {
+  background: #f8f7f5;
+  color: #0a0a0a;
+}
+.horaires-root .section-heading { color: #0a0a0a; }
+.horaires-root .schedule-card {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.horaires-root .day-name { color: var(--primary-color); }
+.horaires-root .schedule-row { border-bottom-color: rgba(0,0,0,0.06); }
+.horaires-root .schedule-time { color: #0a0a0a; }
+.horaires-root .schedule-activity { color: rgba(0,0,0,0.5); }
+.horaires-root .closed-text { color: #ff4444; }
+.horaires-root .legend-item { color: rgba(0,0,0,0.5); }
+.horaires-root .special-note { background: rgba(245,119,6,0.06); border-color: rgba(245,119,6,0.2); color: rgba(0,0,0,0.6); }
+.horaires-root .active-badge {
+  background: var(--primary-color);
+  color: #fff;
+}

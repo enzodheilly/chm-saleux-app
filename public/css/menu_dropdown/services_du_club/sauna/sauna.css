@@ -117,3 +117,22 @@
     border-radius: 12px;
   }
 }
+/* =========================================
+   THÈME CLAIR
+   ========================================= */
+.sauna-root {
+  background: #f8f7f5;
+  color: #0a0a0a;
+}
+.sauna-root .section-heading { color: #0a0a0a; }
+.sauna-root .title-color,
+.sauna-root h2, .sauna-root h3 { color: #0a0a0a; }
+.sauna-root p, .sauna-root .text-muted { color: rgba(0,0,0,0.55); }
+.sauna-root .feature-card,
+.sauna-root [class*="-card"] {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.sauna-root .cta-section,
+.sauna-root .bg-dark { background: #111; }

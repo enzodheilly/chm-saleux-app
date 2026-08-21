@@ -381,3 +381,23 @@
     font-size: 2rem;
   }
 }
+/* =========================================
+   THÈME CLAIR
+   ========================================= */
+.seance-essai-root {
+  background: #f8f7f5;
+  color: #0a0a0a;
+}
+.seance-essai-root .section-heading { color: #0a0a0a; }
+.seance-essai-root h2, .seance-essai-root h3 { color: #0a0a0a; }
+.seance-essai-root p { color: rgba(0,0,0,0.55); }
+.seance-essai-root [class*="-card"] {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.seance-essai-root .bg-alt,
+.seance-essai-root .bg-dark-alt { background: #111; }
+.seance-essai-root .step-number { color: var(--primary-color); }
+.seance-essai-root .step-title { color: #0a0a0a; }
+.seance-essai-root .step-desc { color: rgba(0,0,0,0.5); }

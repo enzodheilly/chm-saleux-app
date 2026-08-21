@@ -247,3 +247,35 @@
 @media (max-width: 480px) {
   .benefit-chip { width: 100%; justify-content: center; }
 }
+/* =========================================
+   THÈME CLAIR
+   ========================================= */
+.labels-root {
+  background: #f8f7f5;
+  color: #0a0a0a;
+}
+.labels-root .section-heading { color: #0a0a0a; }
+.labels-root .section-subtext,
+.labels-root .desc-text { color: rgba(0,0,0,0.5); }
+.labels-root .benefit-chip {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.08);
+  color: #0a0a0a;
+}
+.labels-root .benefit-chip i { color: var(--primary-color); }
+.labels-root .label-card {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.labels-root .label-card-title { color: #0a0a0a; }
+.labels-root .label-card-desc { color: rgba(0,0,0,0.5); }
+.labels-root .elite-list li { color: rgba(0,0,0,0.6); }
+.labels-root .elite-list li i { color: var(--primary-color); }
+.labels-root .cta-card {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.labels-root .cta-card h3 { color: #0a0a0a; }
+.labels-root .cta-card p { color: rgba(0,0,0,0.5); }

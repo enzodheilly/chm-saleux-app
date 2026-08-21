@@ -173,3 +173,25 @@
     font-size: 1rem;
   }
 }
+/* =========================================
+   THÈME CLAIR
+   ========================================= */
+.membre-bureau-root {
+  background: #f8f7f5;
+  color: #0a0a0a;
+}
+.membre-bureau-root .section-heading { color: #0a0a0a; }
+.membre-bureau-root .profile-card-elite {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+.membre-bureau-root .profile-img-wrapper { background: #f0ede8; border-color: rgba(0,0,0,0.08); }
+.membre-bureau-root .profile-name { color: #0a0a0a; }
+.membre-bureau-root .profile-role { color: var(--primary-color); }
+.membre-bureau-root .profile-bio { color: rgba(0,0,0,0.55); }
+.membre-bureau-root .profile-stat-value { color: #0a0a0a; }
+.membre-bureau-root .profile-stat-label { color: rgba(0,0,0,0.45); }
+.membre-bureau-root .info-block { background: rgba(245,119,6,0.05); border-left-color: var(--primary-color); color: rgba(0,0,0,0.6); }
+.membre-bureau-root .info-label { color: rgba(0,0,0,0.45); }
+.membre-bureau-root .info-value { color: #0a0a0a; }

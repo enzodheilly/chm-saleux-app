@@ -360,3 +360,27 @@
     padding: 14px 18px;
   }
 }
+/* =========================================
+   THÈME CLAIR
+   ========================================= */
+.collectif-root {
+  background: #f8f7f5;
+  color: #0a0a0a;
+}
+.collectif-root .section-heading { color: #0a0a0a; }
+.collectif-root .section-subtext { color: rgba(0,0,0,0.5); }
+.collectif-root .course-card,
+.collectif-root [class*="-card"] {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.collectif-root .course-card h3,
+.collectif-root [class*="-card"] h3 { color: #0a0a0a; }
+.collectif-root .course-card p,
+.collectif-root [class*="-card"] p { color: rgba(0,0,0,0.5); }
+.collectif-root .schedule-info { color: #0a0a0a; }
+.collectif-root .schedule-time { color: var(--primary-color); }
+.collectif-root .instructor-name { color: #0a0a0a; }
+.collectif-root .instructor-role { color: rgba(0,0,0,0.45); }
+.collectif-root .cta-section { background: #111; }
