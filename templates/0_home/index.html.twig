@@ -41,7 +41,10 @@
 	{# 8. Actualités — fond noir #}
 	{% include '1_accueil/section4/section4.html.twig' with { articles: articles|default([]) } %}
 
-	{# 9. CTA fermeture #}
+	{# 9. FAQ #}
+	{% include '1_accueil/section_faq/section_faq.html.twig' %}
+
+	{# 10. CTA fermeture #}
 	{% include '1_accueil/section_cta/section_cta.html.twig' %}
 
 {% endblock %}
@@ -56,4 +59,5 @@
 	<script src="{{ asset('js/accueil/section1/section1.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 	<script src="{{ asset('js/accueil/section2/section2.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 	<script src="{{ asset('js/accueil/section3/section3.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+	<script src="{{ asset('js/accueil/section_app/section_app.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

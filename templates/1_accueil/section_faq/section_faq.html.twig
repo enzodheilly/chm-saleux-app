@@ -1,0 +1,71 @@
+{# ── FAQ ── #}
+<section class="hm-faq">
+
+	{# ── GAUCHE : accordéon ── #}
+	<div class="hm-faq-col-questions">
+		<span class="hm-label hm-label--light">Questions fréquentes</span>
+		<h2 class="hm-title hm-title--light">On répond à vos <span class="hm-orange">questions</span></h2>
+
+		<div class="hm-faq-list">
+
+			<details class="hm-faq-item">
+				<summary class="hm-faq-question">
+					Comment fonctionne la séance d'essai gratuite ?
+					<span class="hm-faq-icon"><i class="fa-solid fa-plus"></i></span>
+				</summary>
+				<div class="hm-faq-answer">
+					<p>Rien de plus simple : créez votre compte en ligne, sélectionnez une séance d'essai et présentez-vous au club. Un coach vous accueille et vous accompagne lors de votre première séance. Aucun engagement requis.</p>
+				</div>
+			</details>
+
+			<details class="hm-faq-item">
+				<summary class="hm-faq-question">
+					Faut-il être licencié pour s'entraîner ?
+					<span class="hm-faq-icon"><i class="fa-solid fa-plus"></i></span>
+				</summary>
+				<div class="hm-faq-answer">
+					<p>La licence FFHM est obligatoire pour les compétitions officielles d'haltérophilie. Pour la musculation et les cours collectifs, un simple abonnement suffit. Nos conseillers vous guident vers la formule adaptée.</p>
+				</div>
+			</details>
+
+			<details class="hm-faq-item">
+				<summary class="hm-faq-question">
+					Quels sont les horaires d'ouverture ?
+					<span class="hm-faq-icon"><i class="fa-solid fa-plus"></i></span>
+				</summary>
+				<div class="hm-faq-answer">
+					<p>Le club est ouvert du lundi au vendredi ainsi que le samedi matin. Les horaires précis sont disponibles sur la page contact. En cas de fermeture exceptionnelle, nos membres sont prévenus via l'application.</p>
+				</div>
+			</details>
+
+			<details class="hm-faq-item">
+				<summary class="hm-faq-question">
+					Comment choisir ma formule d'abonnement ?
+					<span class="hm-faq-icon"><i class="fa-solid fa-plus"></i></span>
+				</summary>
+				<div class="hm-faq-answer">
+					<p>Tout dépend de votre pratique et de vos objectifs. Nous proposons des formules mensuelles et annuelles. Profitez de la séance d'essai pour discuter avec un coach de la formule la plus adaptée à votre rythme.</p>
+				</div>
+			</details>
+
+		</div>
+
+		<a href="{{ path('faq') }}" class="hm-faq-see-all">
+			Voir toutes les questions <i class="fa-solid fa-arrow-right"></i>
+		</a>
+	</div>
+
+	{# ── DROITE : contact direct ── #}
+	<div class="hm-faq-col-cta">
+		<p class="hm-faq-cta-eyebrow">Toujours pas de réponse ?</p>
+		<h3 class="hm-faq-cta-title">Parlons-en<br>directement.</h3>
+		<p class="hm-faq-cta-text">Notre équipe répond à vos questions, que ce soit par message ou en passant directement au club.</p>
+		<a href="{{ path('contact') }}" class="hm-btn hm-btn--orange">
+			Nous écrire <i class="fa-solid fa-arrow-right"></i>
+		</a>
+		<a href="{{ path('app_auth_choice') }}" class="hm-faq-cta-sub">
+			Ou créer votre compte gratuitement
+		</a>
+	</div>
+
+</section>

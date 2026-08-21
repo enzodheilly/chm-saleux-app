@@ -4,7 +4,7 @@
    ══════════════════════════════════════════════════════════════ */
 
 :root {
-    --nav-height: 72px;
+    --nav-height: 82px;
     --brand-red:  #F57706;
     --nav-dark:   rgba(10, 10, 10, 0.72);
     --nav-blur:   blur(20px);

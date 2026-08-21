@@ -1,58 +1,64 @@
 {# ── APPLICATION MOBILE ── #}
 <section class="app-section">
 
-	{# Glow décoratif #}
-	<div class="app-glow" aria-hidden="true"></div>
-
 	{# ── CONTENU GAUCHE ── #}
 	<div class="app-content">
-		<span class="hm-label">Notre application</span>
+		<span class="hm-label hm-label--light">Notre application</span>
 		<h2 class="hm-title hm-title--light">Votre club,<br>dans votre <span class="hm-orange">poche</span></h2>
 		<p class="hm-text hm-text--light">Gérez vos entraînements, suivez vos progrès et restez connecté au club où que vous soyez.</p>
 
-		<div class="app-features">
-			<div class="app-feature">
-				<div class="app-feature-icon"><i class="fa-solid fa-chart-line"></i></div>
+		<ul class="app-features">
+			<li class="app-feature">
+				<i class="fa-solid fa-chart-line app-feature-icon"></i>
 				<div>
 					<div class="app-feature-title">Suivi des performances</div>
-					<div class="app-feature-sub">Historique complet de vos séances</div>
+					<div class="app-feature-sub">Historique complet de vos séances et évolution de vos records</div>
 				</div>
-			</div>
-			<div class="app-feature">
-				<div class="app-feature-icon"><i class="fa-solid fa-dumbbell"></i></div>
+			</li>
+			<li class="app-feature">
+				<i class="fa-solid fa-dumbbell app-feature-icon"></i>
 				<div>
 					<div class="app-feature-title">Programmes personnalisés</div>
-					<div class="app-feature-sub">Adaptés à votre niveau et vos objectifs</div>
+					<div class="app-feature-sub">Adaptés à votre niveau, vos objectifs et votre planning</div>
 				</div>
-			</div>
-			<div class="app-feature">
-				<div class="app-feature-icon"><i class="fa-solid fa-id-card"></i></div>
+			</li>
+			<li class="app-feature">
+				<i class="fa-solid fa-id-card app-feature-icon"></i>
 				<div>
 					<div class="app-feature-title">Espace membre</div>
-					<div class="app-feature-sub">Licence, abonnement, documents</div>
+					<div class="app-feature-sub">Licence, abonnement et documents accessibles en un clic</div>
 				</div>
-			</div>
-			<div class="app-feature">
-				<div class="app-feature-icon"><i class="fa-solid fa-bell"></i></div>
+			</li>
+			<li class="app-feature">
+				<i class="fa-solid fa-bell app-feature-icon"></i>
 				<div>
 					<div class="app-feature-title">Actualités en temps réel</div>
-					<div class="app-feature-sub">Compétitions, événements, news club</div>
+					<div class="app-feature-sub">Compétitions, événements et news directement dans votre poche</div>
 				</div>
-			</div>
-		</div>
+			</li>
+		</ul>
 
 		<div class="app-actions">
-			{% if app.user %}
-				<a href="{{ path('dashboard') }}" class="hm-btn hm-btn--orange">Mon espace <i class="fa-solid fa-arrow-right"></i></a>
-			{% else %}
-				<a href="{{ path('app_auth_choice') }}" class="hm-btn hm-btn--orange">Créer mon compte <i class="fa-solid fa-arrow-right"></i></a>
-				<a href="{{ path('app_login') }}" class="hm-btn hm-btn--ghost">Connexion</a>
-			{% endif %}
+			<a href="javascript:void(0)" class="app-store-btn">
+				<i class="fa-brands fa-apple"></i>
+				<div class="app-store-label">
+					<span>Télécharger sur</span>
+					<strong>App Store</strong>
+				</div>
+			</a>
+			<a href="javascript:void(0)" class="app-store-btn">
+				<i class="fa-brands fa-google-play"></i>
+				<div class="app-store-label">
+					<span>Disponible sur</span>
+					<strong>Google Play</strong>
+				</div>
+			</a>
 		</div>
 	</div>
 
 	{# ── VISUEL DROIT ── #}
 	<div class="app-visual">
+		<img src="{{ asset('images/favicon/icon2.png') }}" alt="" class="app-logo-watermark" aria-hidden="true">
 		<div class="app-mockup-wrap">
 			<img src="{{ asset('images/mockup2.png') }}" alt="Application CHM Saleux" class="app-mockup">
 		</div>
