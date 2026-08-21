@@ -467,3 +467,30 @@
   border-color: rgba(0,0,0,0.08);
   box-shadow: 0 2px 12px rgba(0,0,0,0.04);
 }
+
+/* =========================================
+   THÈME CLAIR — compléments hardcodés
+   ========================================= */
+.elite-main { --dark-soft: #f0ede8; }
+
+.elite-main .spec-item {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.elite-main .spec-item strong { color: #0a0a0a; }
+.elite-main .spec-item small { color: rgba(0,0,0,0.45); }
+
+.elite-main .elite-check-list li { color: #0a0a0a; }
+
+.elite-main .tag-cloud span {
+  background: rgba(0,0,0,0.05);
+  border-color: rgba(0,0,0,0.1);
+  color: #0a0a0a;
+}
+
+.elite-main .img-frame-elite {
+  background: #e8e4de;
+  border-color: rgba(0,0,0,0.08);
+}
+.elite-main .frame-glow { background: rgba(0,0,0,0.03); }
