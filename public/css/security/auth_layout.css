@@ -17,12 +17,17 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-/* Annule le fond sombre et le padding navbar du body global */
+/* Annule le fond sombre global sur les pages auth */
 html, body {
   background: var(--auth-bg) !important;
-  padding-top: 0 !important;
   margin: 0;
-  overflow: hidden;
+  padding: 0 !important;
+}
+
+/* Le wrapper <main> n'a aucun padding sur les pages auth */
+.app-main {
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 /* ============================================================
