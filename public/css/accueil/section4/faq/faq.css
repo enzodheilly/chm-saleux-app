@@ -2,6 +2,82 @@
    FAQ — PAGE SPECIFIQUE
    ========================================================= */
 
+/* ── Thème clair ── */
+.page-shell.faq-root {
+  background: #f8f7f5;
+  color: #0a0a0a;
+}
+
+.faq-root .section-header-compact.centered .section-heading {
+  color: #0a0a0a;
+}
+
+.faq-root .section-header-compact.centered .detail-description-text {
+  color: rgba(0,0,0,0.5);
+}
+
+.faq-root .faq-filters-scroll {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.08);
+  backdrop-filter: none;
+}
+
+.faq-root .filter-btn {
+  background: #fff;
+  border-color: rgba(0,0,0,0.1);
+  color: #0a0a0a;
+}
+
+.faq-root .filter-btn:hover {
+  border-color: rgba(245,119,6,0.4);
+}
+
+.faq-root .group-title {
+  color: #0a0a0a;
+}
+
+.faq-root .group-title span {
+  color: #F57706;
+}
+
+.faq-root .accordion-item {
+  background: #fff;
+  border-color: rgba(0,0,0,0.07);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+
+.faq-root .accordion-item:hover {
+  border-color: rgba(245,119,6,0.25);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+}
+
+.faq-root .accordion-header {
+  color: #0a0a0a;
+}
+
+.faq-root .accordion-body {
+  background: rgba(0,0,0,0.02);
+}
+
+.faq-root .accordion-body p {
+  color: rgba(0,0,0,0.55);
+}
+
+.faq-root .contact-bar-elite {
+  border-top-color: rgba(0,0,0,0.08);
+}
+
+.faq-root .contact-circle {
+  background: #fff;
+  border-color: rgba(0,0,0,0.1);
+  color: #0a0a0a;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.faq-root .faq-contact-title {
+  color: #0a0a0a;
+}
+
 /* =========================================
    BLOC TITRE : CENTRE D'AIDE (FAQ)
    ========================================= */
