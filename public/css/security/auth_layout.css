@@ -184,10 +184,10 @@ html, body {
 }
 
 .apple-icon {
-  width: 18px;
-  height: 18px;
-  fill: #fff;
+  font-size: 1.2rem;
+  color: #fff;
   flex-shrink: 0;
+  line-height: 1;
 }
 
 .apple-soon-badge {
