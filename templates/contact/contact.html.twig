@@ -32,16 +32,7 @@
 
 	{# IMAGE DÉCORATIVE GAUCHE #}
 
-	<main
-		class="contact-root page-shell">
-
-		{# Titre de section style "Agenda" #}
-		<div class="section-header-competition centered">
-			<h2 class="section-heading">Restons en
-				<span>Contact</span>
-			</h2>
-			<p class="section-subtext">Besoin d'informations ? Remplissez le formulaire ci-dessous.</p>
-		</div>
+	<main class="contact-root page-shell">
 
 		{# Zone des messages flash #}
 		<div class="page-container flash-container">
@@ -54,13 +45,13 @@
 			{% endfor %}
 		</div>
 
-		<section class="page-container section-spacer">
+		<section class="contact-section">
 			<div class="contact-grid">
 				<div class="contact-form-container form-area">
 					<div class="form-header">
-						<h2 class="section-heading">Envoyez un
-							<span>message</span>
-						</h2>
+						<span class="contact-eyebrow">Formulaire de contact</span>
+						<h2 class="contact-form-title">Envoyez-nous<br>un <span>message</span></h2>
+						<p class="contact-form-sub">Notre équipe vous répond sous 48h.</p>
 					</div>
 
 					<form action="{{ path('contact_submit') }}" method="POST" class="elite-form">
@@ -143,6 +134,7 @@
 				</aside>
 			</div>
 		</section>
+
 	</main>
 {% endblock %}
 
