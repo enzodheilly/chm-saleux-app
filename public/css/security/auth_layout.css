@@ -17,6 +17,14 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* Annule le fond sombre et le padding navbar du body global */
+html, body {
+  background: var(--auth-bg) !important;
+  padding-top: 0 !important;
+  margin: 0;
+  overflow: hidden;
+}
+
 /* ============================================================
    STRUCTURE
    ============================================================ */
