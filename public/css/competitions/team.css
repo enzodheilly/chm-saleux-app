@@ -267,94 +267,160 @@
   border-color: var(--primary-color);
 }
 
-/* --- DERNIER RESULTAT --- */
+/* --- DERNIER PLATEAU --- */
 .last-result-section {
   padding-top: 0;
 }
 
-.result-card-main {
-  background: var(--bg-card);
-  border-radius: 16px;
+/* Carte principale */
+.lp-card {
+  background: #fff;
+  border-radius: 18px;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 4px 28px rgba(0,0,0,0.07);
 }
 
-.result-header {
-  height: 220px;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  padding: 2rem;
+/* Layout split gauche / droite */
+.lp-split {
   display: flex;
-  align-items: flex-end;
-  background-color: #161616;
+  align-items: stretch;
+  min-height: 380px;
 }
 
-.result-header-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.45) 100%);
-}
-
-.result-meta-data {
+/* Colonne image — gauche fixe */
+.lp-img-col {
+  flex: 0 0 340px;
   position: relative;
-  z-index: 2;
-  display: flex;
-  justify-content: space-between;
+  overflow: hidden;
+}
+
+.lp-img-col img {
   width: 100%;
-  align-items: flex-end;
-  gap: 1rem;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+  -webkit-user-drag: none;
+  pointer-events: none;
 }
 
-.date-label {
-  color: #ddd;
-  font-size: 0.85rem;
+/* Badge classement */
+.lp-rank-pill {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  background: #F57706;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 6px 13px;
+  border-radius: 999px;
   display: inline-flex;
   align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 14px rgba(245,119,6,0.4);
+}
+
+/* Colonne droite — meta + tableau */
+.lp-content-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid rgba(0,0,0,0.07);
+}
+
+/* Zone meta : titre, date, lieu */
+.lp-meta {
+  padding: 24px 26px 18px;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 
-.result-meta-data h3 {
-  font-size: 1.55rem;
-  font-weight: var(--fw-black);
+.lp-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 700;
   text-transform: uppercase;
-  margin: 0.4rem 0 0.35rem;
-  line-height: 1.1;
-  color: #fff;
+  letter-spacing: 1px;
+  color: #F57706;
 }
 
-.comp-location {
-  font-size: 0.92rem;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.lp-title {
+  font-size: 1.3rem;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: #0a0a0a;
+  line-height: 1.15;
   margin: 0;
 }
 
-.team-rank-box {
-  text-align: center;
-  background: var(--primary-color);
-  padding: 12px 20px;
-  border-radius: 10px;
-  min-width: 120px;
-  color: #fff;
-  box-shadow: 0 12px 22px rgba(245,119,6,0.18);
+.lp-infos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  margin-top: 2px;
 }
 
-.rank-label {
-  font-size: 0.65rem;
+.lp-info-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: rgba(0,0,0,0.45);
+}
+
+.lp-info-item i { color: #F57706; font-size: 0.75rem; }
+
+/* Barre athlètes + lien détail */
+.lp-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.lp-athletes-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: rgba(0,0,0,0.38);
+}
+
+.lp-athletes-count i { color: #F57706; font-size: 0.75rem; }
+
+.lp-detail-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #F57706;
+  font-size: 0.75rem;
+  font-weight: 900;
   text-transform: uppercase;
-  font-weight: var(--fw-bold);
-  display: block;
-  opacity: 0.95;
-  letter-spacing: 0.7px;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: gap 0.2s ease, opacity 0.2s ease;
 }
 
-.rank-number {
-  font-size: 2.2rem;
-  font-weight: var(--fw-black);
-  line-height: 1;
+.lp-detail-link:hover {
+  gap: 11px;
+  opacity: 0.8;
+}
+
+/* Tableau : prend le reste de la hauteur */
+.lp-content-col .table-container {
+  flex: 1;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table-container {
@@ -472,7 +538,7 @@
 
 .status-pill.success {
   background: rgba(0, 255, 136, 0.12);
-  color: #00d97e;
+  color: #22c55e;
 }
 
 .status-pill.error {
@@ -583,19 +649,24 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 20px;
-  border-radius: var(--border-radius);
+  padding: 12px 26px;
+  border-radius: 12px;
   text-decoration: none;
-  font-weight: 700;
-  color: #fff;
-  background: var(--primary-color);
-  transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+  font-weight: 800;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #0a0a0a;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.12);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
 }
 
 .btn-history-more:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(255, 122, 24, 0.35);
-  opacity: 0.95;
+  border-color: rgba(245,119,6,0.4);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
 }
 
 /* --- HEADERS --- */
@@ -619,18 +690,6 @@
 
   .history-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .result-meta-data {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.25rem;
-  }
-
-  .team-rank-box {
-    width: 100%;
-    max-width: 260px;
-    text-align: left;
   }
 
   .table-container {
@@ -672,21 +731,13 @@
     font-size: 0.98rem;
   }
 
-  .result-header {
-    height: auto;
-    min-height: 220px;
-    padding: 1.25rem;
-  }
-
-  .result-meta-data h3 {
-    font-size: 1.2rem;
-  }
-
-  .team-rank-box {
-    width: 100%;
-    max-width: none;
-    text-align: center;
-  }
+  /* Dernier Plateau — mobile : empilé */
+  .lp-split { flex-direction: column; min-height: unset; }
+  .lp-img-col { flex: unset; height: 240px; }
+  .lp-content-col { border-left: none; border-top: 1px solid rgba(0,0,0,0.07); }
+  .lp-meta { padding: 18px 18px 14px; }
+  .lp-title { font-size: 1.05rem; }
+  .lp-bar { flex-direction: column; align-items: flex-start; gap: 8px; }
 
   .stats-table {
     min-width: 100%;
@@ -776,10 +827,6 @@
   .nav-circle {
     width: 40px;
     height: 40px;
-  }
-
-  .rank-number {
-    font-size: 1.8rem;
   }
 
   .stats-table .athlete-row td {

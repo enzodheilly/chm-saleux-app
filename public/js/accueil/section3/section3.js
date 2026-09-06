@@ -1,27 +1,71 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const track = document.getElementById('equipTrack');
-    const prev  = document.getElementById('equipPrev');
-    const next  = document.getElementById('equipNext');
+document.addEventListener('DOMContentLoaded', function () {
+	var wrap  = document.querySelector('.hm-equip-wrap');
+	var track = document.getElementById('equipTrack');
+	var prev  = document.getElementById('equipPrev');
+	var next  = document.getElementById('equipNext');
 
-    if (!track) return;
+	if (!track || !wrap) return;
 
-    const cards = Array.from(track.querySelectorAll('.hm-equip-card'));
-    if (!cards.length) return;
+	var cards = Array.from(track.querySelectorAll('.hm-equip-card'));
+	if (!cards.length) return;
 
-    let current = 0;
+	var CARD_W   = 260 + 16; // flex-basis + gap
+	var ACTIVE_W = 380 + 16;
 
-    function setActive(index) {
-        cards.forEach((c, i) => c.classList.toggle('is-active', i === index));
-        current = index;
-        const card = cards[index];
-        const wrap = track.parentElement;
-        const offset = card.offsetLeft - wrap.offsetWidth / 2 + card.offsetWidth / 2;
-        track.style.transform = `translateX(${-Math.max(0, offset)}px)`;
-    }
+	/* ── Carte active ── */
+	function setActive(index) {
+		cards.forEach(function (c, i) { c.classList.toggle('is-active', i === index); });
+	}
 
-    cards.forEach((card, i) => card.addEventListener('click', () => setActive(i)));
-    prev?.addEventListener('click', () => setActive(Math.max(0, current - 1)));
-    next?.addEventListener('click', () => setActive(Math.min(cards.length - 1, current + 1)));
+	cards.forEach(function (card, i) {
+		card.addEventListener('click', function () { setActive(i); });
+	});
 
-    setActive(0);
+	setActive(0);
+
+	/* ── Boutons ── */
+	prev && prev.addEventListener('click', function () {
+		wrap.scrollBy({ left: -ACTIVE_W, behavior: 'smooth' });
+	});
+	next && next.addEventListener('click', function () {
+		wrap.scrollBy({ left: ACTIVE_W, behavior: 'smooth' });
+	});
+
+	/* ── Molette → scroll horizontal ── */
+	wrap.addEventListener('wheel', function (e) {
+		if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+			e.preventDefault();
+			wrap.scrollLeft += e.deltaY * 1.2;
+		}
+	}, { passive: false });
+
+	/* ── Drag souris ── */
+	var isDragging = false;
+	var startX     = 0;
+	var scrollLeft = 0;
+
+	wrap.addEventListener('mousedown', function (e) {
+		isDragging = true;
+		startX     = e.pageX - wrap.offsetLeft;
+		scrollLeft = wrap.scrollLeft;
+		wrap.classList.add('is-grabbing');
+	});
+
+	wrap.addEventListener('mouseleave', function () {
+		isDragging = false;
+		wrap.classList.remove('is-grabbing');
+	});
+
+	wrap.addEventListener('mouseup', function () {
+		isDragging = false;
+		wrap.classList.remove('is-grabbing');
+	});
+
+	wrap.addEventListener('mousemove', function (e) {
+		if (!isDragging) return;
+		e.preventDefault();
+		var x    = e.pageX - wrap.offsetLeft;
+		var walk = (x - startX) * 1.5;
+		wrap.scrollLeft = scrollLeft - walk;
+	});
 });

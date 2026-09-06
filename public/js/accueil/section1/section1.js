@@ -1,6 +1,18 @@
-// Empêche le navigateur de restaurer une position de scroll
-if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-window.scrollTo(0, 0);
+/* ── Restauration position scroll au refresh (sans flash) ── */
+(function () {
+    var KEY = 'homeScrollPos';
+    var pos = sessionStorage.getItem(KEY);
+    if (pos) {
+        window.scrollTo(0, parseInt(pos, 10));
+        sessionStorage.removeItem(KEY);
+    }
+    /* Révèle la page (avec ou sans position sauvegardée) */
+    document.documentElement.style.transition = 'opacity 0.12s';
+    document.documentElement.style.opacity = '1';
+    window.addEventListener('beforeunload', function () {
+        sessionStorage.setItem(KEY, window.scrollY);
+    });
+})();
 
 document.addEventListener("DOMContentLoaded", function () {
     const heroSection = document.querySelector("#accueil");

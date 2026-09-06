@@ -1,12 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-	{{ competition.title }}
-	— Détail compétition | CHM Saleux
-{% endblock %}
+{% block title %}{{ competition.title }} — CHM Saleux{% endblock %}
 
 {% block og_description %}
-	{{ competition.description ? competition.description|slice(0, 150) ~ '...' : 'Découvrez les résultats de cette compétition du CHM Saleux.' }}
+	{{ competition.description ? competition.description|striptags|slice(0, 150) ~ '...' : 'Découvrez les résultats de cette compétition du CHM Saleux.' }}
 {% endblock %}
 
 {% block og_image %}
@@ -16,164 +13,144 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('css/competitions/competition-detail.css') }}">
-	<style nonce="{{ csp_nonce('style') }}">
-		.competition-detail-header-bg {
-			--bg-image: url('{% if competition.image %}{{ asset('uploads/competitions/' ~ competition.image) }}{% else %}{{ asset('images/defaults/competition-placeholder.jpg') }}{% endif %}');
-			--bg-position: 30% 50%;
-		}
-	</style>
 {% endblock %}
 
 {% block body %}
 
-	{# ── HEADER ── #}
-	<header class="page-header-sport competition-detail-header-bg">
-		<div class="header-overlay-gradient"></div>
-		<div class="header-content">
-			<div class="page-container">
-				{% set backGender = (competition.gender in ['female', 'feminine']) ? 'feminine' : 'masculine' %}
-				<a href="{{ path('competition_team_archives', { gender: backGender }) }}" class="back-link-minimal">
-					<i class="fa-solid fa-chevron-left"></i>
-					<span>Archives</span>
-				</a>
-				<div class="header-main-box">
-					<div class="badge-accent">
-						{% if competition.gender in ['feminine', 'female'] %}Équipe féminine
-							{% elseif competition.gender in ['masculine', 'male'] %}Équipe masculine
-							{% else %}Compétition
-						{% endif %}
-					</div>
-					<h1>{{ competition.title }}</h1>
-					<div class="detail-lead">
-						<span>
-							<i class="fa-regular fa-calendar"></i>
-							{{ competition.eventDate ? competition.eventDate|date('d F Y') : 'Date non renseignée' }}</span>
-						<span>
-							<i class="fa-solid fa-location-dot"></i>
-							{{ competition.location ?: 'Lieu non renseigné' }}</span>
-						{% if competition.competitionType %}
-							<span>
-								<i class="fa-solid fa-trophy"></i>
-								{{ competition.competitionType }}</span>
-						{% endif %}
-					</div>
-				</div>
-			</div>
-		</div>
-	</header>
+{% set backGender = (competition.gender in ['female', 'feminine']) ? 'feminine' : 'masculine' %}
+{% set teamLabel  = backGender == 'feminine' ? 'Féminine' : 'Masculine' %}
 
+<main class="cd-root">
 
-	<main class="page-shell competition-detail-root">
+	{# ── EN-TÊTE ÉDITORIAL ── #}
+	<div class="cd-page-header">
+		<div class="cd-content-container">
 
-		<div class="partner-heading-wrap">
-			<h2 class="section-heading centered">Détails de la
-				<span>Compétition</span>
-			</h2>
-		</div>
-		<div
-			class="page-container">
+			<nav class="cd-breadcrumb">
+				<a href="{{ path('competitions_team', { gender: backGender }) }}">Équipe {{ teamLabel|lower }}</a>
+				<i class="fa-solid fa-chevron-right"></i>
+				<a href="{{ path('competition_team_archives', { gender: backGender }) }}">Archives</a>
+			</nav>
 
-			{# ── STATS BAND ── #}
-			<section class="cd-stats-band">
-				<div class="cd-stat-card">
-					<div class="cd-stat-icon">
-						<i class="fa-solid fa-users"></i>
-					</div>
-					<div class="cd-stat-body">
-						<span class="cd-stat-value">{{ competition.results|length }}</span>
-						<span class="cd-stat-label">Athlètes</span>
-					</div>
-				</div>
-				<div class="cd-stat-card">
-					<div class="cd-stat-icon">
-						<i class="fa-solid fa-location-dot"></i>
-					</div>
-					<div class="cd-stat-body">
-						<span class="cd-stat-value">{{ competition.location ?: '—' }}</span>
-						<span class="cd-stat-label">Lieu</span>
-					</div>
-				</div>
-				<div class="cd-stat-card">
-					<div class="cd-stat-icon">
-						<i class="fa-regular fa-calendar"></i>
-					</div>
-					<div class="cd-stat-body">
-						<span class="cd-stat-value">{{ competition.eventDate ? competition.eventDate|date('d/m/Y') : '—' }}</span>
-						<span class="cd-stat-label">Date</span>
-					</div>
-				</div>
-				{% if competition.teamRanking %}
-					<div class="cd-stat-card cd-stat-card--accent">
-						<div class="cd-stat-icon">
-							<i class="fa-solid fa-medal"></i>
-						</div>
-						<div class="cd-stat-body">
-							<span class="cd-stat-value">{{ competition.teamRanking }}{{ competition.teamRanking == 1 ? 'er' : 'e' }}
-								{{ (competition.gender in ['female', 'feminine']) ? 'équipe' : 'club' }}</span>
-							<span class="cd-stat-label">Classement</span>
-						</div>
-					</div>
+			<span class="cd-badge">Équipe {{ teamLabel }}</span>
+
+			<h1 class="cd-title">{{ competition.title }}</h1>
+
+			<div class="cd-meta">
+				{% if competition.eventDate %}
+					<span class="cd-meta-item">
+						<i class="fa-regular fa-calendar-check"></i>
+						{{ competition.eventDate|date('d F Y') }}
+					</span>
 				{% endif %}
-			</section>
+				{% if competition.location %}
+					<span class="cd-meta-item">
+						<i class="fa-solid fa-location-dot"></i>
+						{{ competition.location }}
+					</span>
+				{% endif %}
+				{% if competition.competitionType %}
+					<span class="cd-meta-item">
+						<i class="fa-solid fa-trophy"></i>
+						{{ competition.competitionType }}
+					</span>
+				{% endif %}
+				<span class="cd-meta-item">
+					<i class="fa-solid fa-users"></i>
+					{{ competition.results|length }} athlète{{ competition.results|length > 1 ? 's' : '' }}
+				</span>
+			</div>
 
-			{# ── DESCRIPTION ── #}
-			{% if competition.description %}
-				<section class="cd-desc-section">
-					<div class="detail-description-box">
-						<div class="detail-description-icon">
-							<i class="fa-solid fa-newspaper"></i>
-						</div>
-						<div class="detail-description-content">
-							<h3 class="detail-description-title">À propos de cette compétition</h3>
-							<p class="detail-description-text">{{ competition.description }}</p>
-						</div>
+		</div>
+	</div>
+
+	{# ── PHOTO PLEINE LARGEUR ── #}
+	{% if competition.image %}
+		<div class="cd-cover">
+			<img
+				src="{{ asset('uploads/competitions/' ~ competition.image) }}"
+				alt="{{ competition.title }}"
+				draggable="false"
+				loading="eager">
+		</div>
+	{% endif %}
+
+	{# ── CONTENU ── #}
+	<section class="cd-body-wrapper">
+		<div class="cd-content-container">
+
+				{# ── Classement équipe ── #}
+			{% if competition.teamRanking %}
+				<div class="cd-ranking-banner">
+					<div class="cd-ranking-icon">
+						<i class="fa-solid fa-medal"></i>
 					</div>
-				</section>
+					<div>
+						<span class="cd-ranking-eyebrow">Classement par équipes</span>
+						<p class="cd-ranking-value">
+							{{ competition.teamRanking }}{{ competition.teamRanking == 1 ? 'er' : 'e' }}
+							{{ backGender == 'feminine' ? 'équipe féminine' : 'club' }}
+						</p>
+					</div>
+				</div>
 			{% endif %}
 
-			{# ── TABLEAU RÉSULTATS ── #}
-			<section class="cd-results-section">
-
-				<div class="section-header-compact centered">
-					<h2 class="section-heading">Résultats du
-						<span>Plateau</span>
-					</h2>
-					<p class="archives-subtext">{{ competition.results|length }}
-						athlète{{ competition.results|length > 1 ? 's' : '' }}
-						enregistré{{ competition.results|length > 1 ? 's' : '' }}</p>
+			{# ── Description ── #}
+			{% if competition.description %}
+				<div class="cd-description">
+					{{ competition.description|nl2br }}
 				</div>
+			{% endif %}
+
+			{# ── Résultats ── #}
+			<div class="cd-results-section">
+
+				<h2 class="cd-results-heading">
+					Résultats du <span>Plateau</span>
+				</h2>
 
 				{% if competition.results|length > 0 %}
-					<div class="detail-table-wrapper">
-						<table class="stats-table">
+					<div class="cd-table-wrap">
+						<table class="cd-table">
 							<thead>
 								<tr>
-									<th>#</th>
+									<th class="col-rank">#</th>
 									<th>Athlète</th>
 									<th>Catégorie</th>
-									<th class="text-center">PC</th>
-									<th class="text-center">Arraché</th>
-									<th class="text-center">E.J.</th>
-									<th class="highlight text-center">Total</th>
-									<th class="highlight-accent text-center">Points</th>
-									<th class="text-center">Niveau</th>
+									<th class="col-num">Poids de corps</th>
+									<th class="col-num">Arraché</th>
+									<th class="col-num">Épaulé-Jeté</th>
+									<th class="col-total">Total</th>
+									<th class="col-pts">Points</th>
+									<th class="col-level">Niveau</th>
 								</tr>
 							</thead>
 							<tbody>
 								{% for result in competition.results %}
-									<tr class="athlete-row {% if loop.first %}athlete-row--top{% endif %}">
-										<td class="cd-row-num">{{ loop.index }}</td>
-										<td data-label="Athlète">
-											<strong>{{ result.lastName }}</strong>
-											{{ result.firstName }}</td>
-										<td data-label="Catégorie">{{ result.category ?: '--' }}</td>
-										<td class="text-center" data-label="PC">{{ result.bodyWeight ? result.bodyWeight ~ ' kg' : '--' }}</td>
-										<td class="text-center" data-label="Arraché">{{ result.snatch ? result.snatch ~ ' kg' : '--' }}</td>
-										<td class="text-center" data-label="E.J.">{{ result.cleanAndJerk ? result.cleanAndJerk ~ ' kg' : '--' }}</td>
-										<td class="highlight text-center" data-label="Total">{{ result.total ? result.total ~ ' kg' : '--' }}</td>
-										<td class="highlight-accent text-center" data-label="Points">{{ result.points ?: '--' }}</td>
-										<td class="text-center" data-label="Niveau">
-											<span class="ranking-pill">{{ result.rankingLevel ?: '--' }}</span>
+									<tr class="cd-row {% if loop.index == 1 %}cd-row--gold{% elseif loop.index == 2 %}cd-row--silver{% elseif loop.index == 3 %}cd-row--bronze{% endif %}">
+										<td class="col-rank">
+											{% if loop.index <= 3 %}
+												<span class="cd-medal cd-medal--{{ loop.index == 1 ? 'gold' : (loop.index == 2 ? 'silver' : 'bronze') }}">
+													<i class="fa-solid fa-medal"></i>
+												</span>
+											{% else %}
+												<span class="cd-row-num">{{ loop.index }}</span>
+											{% endif %}
+										</td>
+										<td data-label="Athlète" class="col-name">
+											<strong class="cd-lastname">{{ result.lastName }}</strong>
+											<span class="cd-firstname">{{ result.firstName }}</span>
+										</td>
+										<td data-label="Catégorie">{{ result.category ?: '—' }}</td>
+										<td class="col-num" data-label="Poids de corps">{{ result.bodyWeight ? result.bodyWeight ~ ' kg' : '—' }}</td>
+										<td class="col-num" data-label="Arraché">{{ result.snatch ? result.snatch ~ ' kg' : '—' }}</td>
+										<td class="col-num" data-label="Épaulé-Jeté">{{ result.cleanAndJerk ? result.cleanAndJerk ~ ' kg' : '—' }}</td>
+										<td class="col-total" data-label="Total">{{ result.total ? result.total ~ ' kg' : '—' }}</td>
+										<td class="col-pts" data-label="Points">{{ result.points ?: '—' }}</td>
+										<td class="col-level" data-label="Niveau">
+											{% if result.rankingLevel %}
+												<span class="cd-level-pill">{{ result.rankingLevel }}</span>
+											{% else %}—{% endif %}
 										</td>
 									</tr>
 								{% endfor %}
@@ -181,20 +158,24 @@
 						</table>
 					</div>
 				{% else %}
-					<div class="no-results">Aucun résultat enregistré.</div>
+					<div class="cd-empty">
+						<i class="fa-solid fa-clipboard-list"></i>
+						<p>Aucun résultat enregistré pour cette compétition.</p>
+					</div>
 				{% endif %}
 
-			</section>
+			</div>
 
-			{# ── RETOUR ── #}
-			<div class="detail-bottom-actions">
-				<a href="{{ path('competition_team_archives', { gender: backGender }) }}" class="btn-history-ghost">
-					<i class="fa-solid fa-arrow-left"></i>
-					Retour aux archives
+			<div class="cd-bottom-nav">
+				<a href="{{ path('competition_team_archives', { gender: backGender }) }}" class="cd-back-link">
+					<i class="fa-solid fa-arrow-left-long"></i>
+					Archives {{ teamLabel|lower }}s
 				</a>
 			</div>
 
 		</div>
-	</main>
+	</section>
+
+</main>
 
 {% endblock %}

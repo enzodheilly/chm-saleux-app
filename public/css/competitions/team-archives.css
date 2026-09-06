@@ -1,27 +1,10 @@
 /* =================================================================
-   CARTES D'ARCHIVES — VERSION MODERNISÉE
-   Garde la structure existante, polish professionnel
+   ARCHIVES — STYLE ÉDITORIAL (image nette + bande texte blanche)
    ================================================================= */
 
-/* =========================================
-   THÈME CLAIR
-   ========================================= */
+/* ── Fond de page ── */
 .archives-page-root {
-  --text-white: #0a0a0a;
-  --text-black: #0a0a0a;
-  --text-muted: rgba(0,0,0,0.5);
-  --text-muted-1: rgba(0,0,0,0.45);
-  --text-muted-2: rgba(0,0,0,0.55);
-  --bg-card: #fff;
-  --bg-section: #f8f7f5;
-  --border-soft: rgba(0,0,0,0.08);
-  --border-soft-2: rgba(0,0,0,0.06);
-  --color-card-bg: #fff;
-  --color-border: rgba(0,0,0,0.1);
-  --color-text-primary: #0a0a0a;
-  --title-color: #0a0a0a;
-
-  background: #f8f7f5;
+  background: #f4f3f1;
   color: #0a0a0a;
 }
 
@@ -29,380 +12,268 @@
   color: #0a0a0a;
 }
 
-.archives-page-root .archives-subtext {
-  color: rgba(0,0,0,0.45);
-}
-
-/* Cartes */
-.archives-page-root .history-card-archives {
-  background: #fff;
-  border-color: rgba(0,0,0,0.07);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-  border-radius: 20px;
-}
-
-.archives-page-root .history-card-archives::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: var(--brand-orange);
-  border-radius: 20px 20px 0 0;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
-}
-
-.archives-page-root .history-card-archives:hover::before {
-  transform: scaleX(1);
-}
-
-.archives-page-root .history-card-archives:hover {
-  border-color: rgba(0,0,0,0.1);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.1);
-  transform: translateY(-5px);
-}
-
-/* Image — nette sur fond clair */
-.archives-page-root .card-thumb img {
-  filter: brightness(0.9);
-}
-
-.archives-page-root .history-card-archives:hover .card-thumb img {
-  filter: brightness(1);
-}
-
-.archives-page-root .history-card-archives h4 {
-  color: #0a0a0a;
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-}
-
-.archives-page-root .card-lieu {
-  color: rgba(0,0,0,0.4);
-  font-size: 0.78rem;
-}
-
-/* Bloc méta-infos */
-.archives-page-root .archive-meta-list {
-  border: none;
-  background: #f8f7f5;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.archives-page-root .archive-meta-item {
-  background: transparent;
-  border-bottom-color: rgba(0,0,0,0.06);
-  padding: 8px 12px;
-}
-
-.archives-page-root .archive-meta-item:last-child {
-  border-bottom: none;
-}
-
-.archives-page-root .history-card-archives:hover .archive-meta-item {
-  background: transparent;
-}
-
-.archives-page-root .meta-label {
-  color: rgba(0,0,0,0.38);
-  font-size: 0.65rem;
-  letter-spacing: 1px;
-}
-
-.archives-page-root .meta-value {
-  color: #0a0a0a;
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-
-/* Lien bas de carte */
-.archives-page-root .card-link {
-  border-top-color: rgba(0,0,0,0.07);
-  font-size: 0.78rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-/* Pagination */
-.archives-page-root .page-btn {
-  background: #fff;
-  border-color: rgba(0,0,0,0.1);
-  color: #0a0a0a;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-
-.archives-page-root .page-btn:hover {
-  border-color: rgba(245,119,6,0.35);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-}
-
-.archives-page-root .page-btn.active {
-  background: var(--brand-orange);
-  border-color: var(--brand-orange);
-  color: #fff;
-}
-
-.archives-page-root .page-btn.disabled {
-  opacity: 0.3;
-}
-.feminine-archives-header-bg { --bg-image: url('/images/competitions/1.jpg'); }
+/* ── Header images ── */
+.feminine-archives-header-bg  { --bg-image: url('/images/competitions/1.jpg'); }
 .masculine-archives-header-bg { --bg-image: url('/images/competitions/male-team.jpg'); }
 
+/* ── En-tête section ── */
+.archives-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.archives-count-pill {
+  display: inline-flex;
+  align-items: center;
+  background: #1a1a1a;
+  color: rgba(255,255,255,0.65);
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 7px 16px;
+  border-radius: 999px;
+}
+
 /* ── Grille ── */
-.history-grid-archives {
+.arc-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin-top: 2rem;
+  column-gap: 1.5rem;
+  row-gap: 2rem;
+  background: transparent;
 }
 
 /* ── Carte ── */
-.history-card-archives {
-  background: #1a1b21;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 16px;
-  overflow: hidden;
+.arc-card {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.25s ease;
   position: relative;
 }
 
-.history-card-archives:hover {
-  transform: translateY(-6px);
-  border-color: rgba(245, 119, 6, 0.4);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(245, 119, 6, 0.15);
+.arc-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+  z-index: 1;
 }
 
-/* ── Vignette image ── */
-.card-thumb {
-  position: relative;
-  height: 210px;
+/* ── Zone image ── */
+.arc-card-media {
+  width: 100%;
+  height: 240px;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
-.card-thumb img {
+.arc-card-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: 50% 30%;
-  filter: brightness(0.65);
-  transition: transform 0.5s ease, filter 0.4s ease;
-}
-
-.history-card-archives:hover .card-thumb img {
-  transform: scale(1.06);
-  filter: brightness(0.8);
-}
-
-/* Overlay bas de l'image */
-.card-thumb::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.05) 0%,
-    rgba(0,0,0,0.5) 100%
-  );
+  transition: transform 0.55s ease;
+  -webkit-user-drag: none;
   pointer-events: none;
+  display: block;
 }
 
-/* Badge date */
-.card-date {
-  position: absolute;
-  bottom: 14px;
-  left: 14px;
-  z-index: 2;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 6px;
-  padding: 4px 10px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
-  letter-spacing: 0.5px;
-}
 
-/* Badge classement */
-.card-ranking-badge {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 2;
-  background: var(--brand-orange);
-  color: #fff;
-  padding: 5px 12px;
-  border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 900;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 14px rgba(245, 119, 6, 0.45);
-}
-
-/* ── Corps de la carte ── */
-.history-card-archives .card-body {
-  padding: 1.25rem 1.25rem 1.1rem;
+/* ── Bande texte ── */
+.arc-card-body {
+  padding: 16px 18px 14px;
   display: flex;
   flex-direction: column;
+  gap: 6px;
   flex: 1;
-  gap: 10px;
+  background: #fff;
 }
 
-.history-card-archives h4 {
-  color: #fff;
-  font-size: 1.05rem;
-  font-weight: 800;
-  line-height: 1.25;
-  margin: 0;
+/* Eyebrow — lieu ou classement */
+.arc-card-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(0,0,0,0.38);
+  line-height: 1;
+}
+
+.arc-eyebrow--orange {
+  color: #F57706;
+}
+
+/* Titre — bold italic uppercase comme le screenshot */
+.arc-card-title {
+  font-size: 0.97rem;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  line-height: 1.28;
+  margin: 2px 0 0;
   letter-spacing: -0.01em;
 }
 
-.card-lieu {
+/* Extrait description */
+.arc-card-excerpt {
+  font-size: 0.8rem;
+  color: rgba(0,0,0,0.48);
+  line-height: 1.55;
+  margin: 2px 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Pied de carte — athlètes + date */
+.arc-card-footer {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin: 0;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 12px;
 }
 
-.card-lieu i {
-  color: var(--brand-orange);
+.arc-card-meta {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(0,0,0,0.35);
+}
+
+.arc-card-date {
   font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(0,0,0,0.35);
+  letter-spacing: 0.2px;
+  margin-left: auto;
 }
 
-/* ── Méta-infos ── */
-.archive-meta-list {
+/* ── État vide ── */
+.arc-empty {
   display: flex;
   flex-direction: column;
-  gap: 0;
-  margin-top: 4px;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  margin-bottom: 4px;
-}
-
-.archive-meta-item {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 9px 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: background 0.2s ease;
+  gap: 1rem;
+  padding: 5rem 0;
+  color: rgba(0,0,0,0.3);
+  text-align: center;
 }
 
-.archive-meta-item:last-child {
-  border-bottom: none;
+.arc-empty i {
+  font-size: 2.5rem;
+  color: rgba(0,0,0,0.1);
 }
 
-.history-card-archives:hover .archive-meta-item {
-  background: rgba(255, 255, 255, 0.045);
+.arc-empty p {
+  font-size: 0.9rem;
+  max-width: 340px;
 }
 
-.meta-label {
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  font-weight: 600;
-  letter-spacing: 0.8px;
-}
-
-.meta-value {
-  font-size: 0.82rem;
-  color: #fff;
-  font-weight: 600;
-}
-
-.meta-rank {
-  color: var(--brand-orange);
-  font-weight: 800;
-}
-
-/* ── Lien bas de carte ── */
-.card-link {
-  margin-top: auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--brand-orange);
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 0.85rem;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  transition: gap 0.2s ease, opacity 0.2s ease;
-}
-
-.card-link:hover {
-  gap: 12px;
-  opacity: 0.85;
-  text-decoration: none;
-}
-
-.card-link i {
-  transition: transform 0.25s ease;
-  font-size: 0.75rem;
-}
-
-.card-link:hover i {
-  transform: translateX(3px);
-}
-
-/* ── Responsive ── */
-@media (max-width: 992px) {
-  .history-grid-archives { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 768px) {
-  .history-grid-archives { grid-template-columns: 1fr; }
-  .card-thumb { height: 180px; }
-}
-
-.pagination-elite {
+/* ── Pagination ── */
+.arc-pagination {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 2.6rem;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3.5rem;
   flex-wrap: wrap;
 }
 
-.page-btn {
+.arc-page-btn {
   width: 45px;
   height: 45px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #1a1b21;
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 12px;
-  color: #fff;
+  color: #0a0a0a;
   text-decoration: none;
-  font-weight: 700;
-  transition: all 0.2s ease;
+  font-weight: 900;
+  font-size: 0.85rem;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 
-.page-btn:hover {
+.arc-page-btn:hover {
   transform: translateY(-2px);
-  border-color: rgba(245, 119, 6, 0.35);
+  border-color: rgba(245,119,6,0.4);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
 }
 
-.page-btn.active {
-  background: var(--brand-orange);
-  border-color: var(--brand-orange);
-  box-shadow: 0 4px 14px rgba(245, 119, 6, 0.35);
+.arc-page-btn.active {
+  background: #F57706;
+  border-color: #F57706;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(245,119,6,0.35);
 }
 
-.page-btn.disabled {
+.arc-page-btn.disabled {
   opacity: 0.3;
   pointer-events: none;
+  cursor: default;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .arc-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Bouton "Voir plus" mobile — masqué par défaut */
+.arc-mobile-more-wrap { display: none; }
+
+@media (max-width: 600px) {
+  .arc-grid { grid-template-columns: 1fr; column-gap: 0; row-gap: 1.5rem; }
+  .arc-card-media { height: 220px; }
+  .archives-header { flex-direction: column; align-items: flex-start; }
+
+  /* Masque les cartes 7+ tant que la grille n'est pas étendue */
+  .arc-grid:not(.arc-grid--expanded) .arc-card:nth-child(n+7) { display: none; }
+
+  /* Bouton visible sur mobile */
+  .arc-mobile-more-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.25rem;
+  }
+
+  /* Caché quand la grille est étendue */
+  .arc-grid--expanded ~ .arc-mobile-more-wrap,
+  .arc-mobile-more-wrap.hidden { display: none; }
+
+  .arc-mobile-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 26px;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 12px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #0a0a0a;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  }
+
+  .arc-mobile-more-btn:hover {
+    border-color: rgba(245,119,6,0.4);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+  }
+
+  .arc-mobile-more-btn i {
+    color: #F57706;
+    transition: transform 0.2s;
+  }
 }
