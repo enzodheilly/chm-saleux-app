@@ -1,66 +1,110 @@
 {# ── APPLICATION MOBILE ── #}
 <section class="app-section">
 
-	{# ── CONTENU GAUCHE ── #}
-	<div class="app-content">
-		<span class="hm-label hm-label--light">Notre application</span>
-		<h2 class="hm-title hm-title--light">Votre club,<br>dans votre <span class="hm-orange">poche</span></h2>
-		<p class="hm-text hm-text--light">Gérez vos entraînements, suivez vos progrès et restez connecté au club où que vous soyez.</p>
+	{# ── Décors background ── #}
+	<div class="app-grid-bg"></div>
 
-		<ul class="app-features">
-			<li class="app-feature">
-				<i class="fa-solid fa-chart-line app-feature-icon"></i>
+	{# ── Colonne gauche : texte ── #}
+	<div class="app-copy">
+
+		<div class="app-label-row">
+			<span class="hm-label">Notre application</span>
+			<span class="app-coming-badge">
+				<span class="app-coming-dot"></span>
+				Bientôt disponible
+			</span>
+		</div>
+
+		<h2 class="app-headline">
+			CHM Saleux,<br>
+			à portée<br>
+			<span class="hm-orange">de main.</span>
+		</h2>
+
+		<p class="app-lead">Vous pourrez bientôt gérer vos entraînements, suivre vos progrès et rester connecté au club, où que vous soyez.</p>
+
+		<ul class="app-benefits">
+			<li class="app-benefit">
+				<i class="fa-solid fa-circle-check app-benefit-icon"></i>
 				<div>
-					<div class="app-feature-title">Suivi des performances</div>
-					<div class="app-feature-sub">Historique complet de vos séances et évolution de vos records</div>
+					<strong>Suivi des performances</strong>
+					<span>Historique complet de vos séances et records personnels</span>
 				</div>
 			</li>
-			<li class="app-feature">
-				<i class="fa-solid fa-dumbbell app-feature-icon"></i>
+			<li class="app-benefit">
+				<i class="fa-solid fa-circle-check app-benefit-icon"></i>
 				<div>
-					<div class="app-feature-title">Programmes personnalisés</div>
-					<div class="app-feature-sub">Adaptés à votre niveau, vos objectifs et votre planning</div>
+					<strong>Programmes personnalisés</strong>
+					<span>Adaptés à votre niveau, vos objectifs et votre planning</span>
 				</div>
 			</li>
-			<li class="app-feature">
-				<i class="fa-solid fa-id-card app-feature-icon"></i>
+			<li class="app-benefit">
+				<i class="fa-solid fa-circle-check app-benefit-icon"></i>
 				<div>
-					<div class="app-feature-title">Espace membre</div>
-					<div class="app-feature-sub">Licence, abonnement et documents accessibles en un clic</div>
+					<strong>Espace membre complet</strong>
+					<span>Licence, abonnement et documents en un clic</span>
 				</div>
 			</li>
-			<li class="app-feature">
-				<i class="fa-solid fa-bell app-feature-icon"></i>
+			<li class="app-benefit">
+				<i class="fa-solid fa-circle-check app-benefit-icon"></i>
 				<div>
-					<div class="app-feature-title">Actualités en temps réel</div>
-					<div class="app-feature-sub">Compétitions, événements et news directement dans votre poche</div>
+					<strong>Actualités en temps réel</strong>
+					<span>Compétitions, événements et news directement dans votre poche</span>
 				</div>
 			</li>
 		</ul>
 
-		<div class="app-actions">
-			<a href="javascript:void(0)" class="app-store-btn">
+		<div class="app-stores">
+			<span class="app-store-badge app-store-badge--disabled" aria-disabled="true">
 				<i class="fa-brands fa-apple"></i>
 				<div class="app-store-label">
 					<span>Télécharger sur</span>
 					<strong>App Store</strong>
 				</div>
-			</a>
-			<a href="javascript:void(0)" class="app-store-btn">
+			</span>
+			<span class="app-store-badge app-store-badge--disabled" aria-disabled="true">
 				<i class="fa-brands fa-google-play"></i>
 				<div class="app-store-label">
 					<span>Disponible sur</span>
 					<strong>Google Play</strong>
 				</div>
-			</a>
+			</span>
 		</div>
+		<p class="app-stores-note">
+			<i class="fa-regular fa-clock"></i>
+			Disponible prochainement sur iOS et Android
+		</p>
+
 	</div>
 
-	{# ── VISUEL DROIT ── #}
+	{# ── Colonne droite : carousel mockups ── #}
 	<div class="app-visual">
-		<div class="app-mockup-wrap">
-			<img src="{{ asset('images/mockup2.png') }}" alt="Application CHM Saleux" class="app-mockup">
+
+		<div class="app-carousel-wrapper">
+			<div class="app-carousel-track">
+
+				<div class="app-slide is-active" data-index="0">
+					<img src="{{ asset('images/mockup-screen-1.png') }}" alt="Accueil application CHM Saleux" loading="lazy">
+				</div>
+
+				<div class="app-slide" data-index="1">
+					<img src="{{ asset('images/mockup-screen-2.png') }}" alt="Statistiques application CHM Saleux" loading="lazy">
+				</div>
+
+				<div class="app-slide" data-index="2">
+					<img src="{{ asset('images/mockup-screen-3.png') }}" alt="Programme application CHM Saleux" loading="lazy">
+				</div>
+
+			</div>
 		</div>
+
+		{# Dots pagination ── #}
+		<div class="app-dots">
+			<span class="app-dot app-dot--active" data-index="0" role="button" aria-label="Écran 1"></span>
+			<span class="app-dot" data-index="1" role="button" aria-label="Écran 2"></span>
+			<span class="app-dot" data-index="2" role="button" aria-label="Écran 3"></span>
+		</div>
+
 	</div>
 
 </section>

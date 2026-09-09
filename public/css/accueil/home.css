@@ -4737,9 +4737,9 @@
    BACKGROUNDS DES SLIDES (hors inline style — CSP compliance)
    ═══════════════════════════════════════════════════════════════ */
 .slide-1 { background-image: url('/images/club/1.jpg'); }
-.slide-2 { background-image: url('/images/club/3.jpg'); }
-.slide-3 { background-image: url('/images/club/4.jpg'); }
-.slide-4 { background-image: url('/images/club/club1.jpg'); }
+.slide-2 { background-image: url('/images/club/jeanne.jpg'); background-position: center 20%; }
+.slide-3 { background-image: url('/images/club/test.jpg'); background-position: center 25%;}
+.slide-4 { background-image: url('/images/club/bg.jpg'); }
 
 /* ═══════════════════════════════════════════════════════════════
    BACKGROUNDS DES CARTES SERVICES (CSP compliance)
@@ -5239,171 +5239,295 @@
   .hm-faq-card { padding: 28px 24px; }
 }
 
+
 /* ═══════════════════════════════════════════════════════════════
    SECTION APP MOBILE
    ═══════════════════════════════════════════════════════════════ */
+
 .app-section {
   background: #0a0a0a;
   position: relative;
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 0.85fr 1.4fr;
   align-items: center;
-  padding: 80px 5%;
-  gap: 0;
-  min-height: 640px;
+  gap: 0 60px;
+  padding: 80px 8%;
+  min-height: 880px;
 }
 
-/* ── Contenu gauche ── */
-.app-content {
-  position: relative;
-  z-index: 2;
-  padding-right: 40px;
+.app-grid-bg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none; z-index: 0;
 }
 
-.app-content .hm-title { margin-bottom: 12px; }
-.app-content .hm-text  { margin-bottom: 32px; }
-
-/* ── Features liste ── */
-.app-features {
-  list-style: none;
-  margin: 0 0 36px;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
+/* ── Colonne gauche ── */
+.app-copy {
+  position: relative; z-index: 2;
+  max-width: 480px;
 }
 
-.app-feature {
-  display: flex;
-  align-items: flex-start;
-  gap: 18px;
-  padding: 18px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
-}
-
-.app-feature:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
-
-.app-feature-icon {
-  color: #F57706;
-  font-size: 1rem;
-  flex-shrink: 0;
-  margin-top: 3px;
-  width: 18px;
-  text-align: center;
-}
-
-.app-feature-title {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1.3;
-  margin-bottom: 4px;
-}
-
-.app-feature-sub {
-  font-size: 0.78rem;
-  color: rgba(255,255,255,0.42);
-  line-height: 1.5;
-}
-
-/* ── Boutons stores ── */
-.app-actions {
+/* Label + badge "bientôt" côte à côte */
+.app-label-row {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   flex-wrap: wrap;
+  margin-bottom: 10px; /* reprend le margin-bottom du .hm-label supprimé en dessous */
 }
 
-.hm-btn--ghost {
-  background: transparent;
-  color: rgba(255,255,255,0.55);
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-decoration: none;
-  letter-spacing: 0.06em;
-  transition: color 0.2s;
+/* Neutralise display:block et margin-bottom du .hm-label global */
+.app-label-row .hm-label {
+  display: inline;
+  margin-bottom: 0;
+  line-height: 1;
 }
-.hm-btn--ghost:hover { color: #fff; }
 
-.app-store-btn {
-  display: flex;
+.app-coming-badge {
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 12px;
-  padding: 11px 20px;
-  text-decoration: none;
+  gap: 7px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 99px;
+  padding: 4px 10px 4px 8px;
+}
+
+/* Petit dot orange pulsant */
+.app-coming-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #F57706;
+  flex-shrink: 0;
+  animation: app-dot-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes app-dot-pulse {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.7); }
+}
+
+.app-headline {
+  font-size: clamp(2rem, 3.2vw, 3.4rem);
+  font-weight: 900;
+  line-height: 1.05;
   color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  margin: 10px 0 14px;
+}
+
+.app-lead {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.65;
+  margin: 0 0 20px;
+  max-width: 400px;
+}
+
+/* Benefits */
+.app-benefits {
+  list-style: none; margin: 0 0 24px; padding: 0;
+  display: flex; flex-direction: column;
+}
+.app-benefit {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.app-benefit:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
+.app-benefit-icon { color: #F57706; font-size: 0.95rem; flex-shrink: 0; margin-top: 2px; }
+.app-benefit strong { display: block; font-size: 0.86rem; font-weight: 700; color: #fff; margin-bottom: 1px; }
+.app-benefit span { font-size: 0.76rem; color: rgba(255,255,255,0.38); line-height: 1.4; }
+
+/* Store badges */
+.app-stores { display: flex; gap: 10px; flex-wrap: wrap; }
+.app-store-badge {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px; padding: 10px 18px;
+  text-decoration: none; color: #fff;
+  min-width: 145px;
   transition: background 0.2s, border-color 0.2s, transform 0.2s;
 }
-.app-store-btn:hover {
-  background: rgba(255,255,255,0.1);
+.app-store-badge:hover {
+  background: rgba(255,255,255,0.12);
   border-color: rgba(255,255,255,0.22);
   transform: translateY(-2px);
 }
-.app-store-btn > i { font-size: 1.6rem; opacity: 0.9; }
+.app-store-badge > i { font-size: 1.5rem; }
 .app-store-label { display: flex; flex-direction: column; line-height: 1.2; }
-.app-store-label span {
-  font-size: 0.62rem;
-  color: rgba(255,255,255,0.5);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-.app-store-label strong { font-size: 0.9rem; font-weight: 700; }
+.app-store-label span { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); }
+.app-store-label strong { font-size: 0.86rem; font-weight: 700; }
 
-/* ── Visuel droit ── */
-.app-visual {
-  position: relative;
-  z-index: 1;
+/* Bouton désactivé : app non encore disponible */
+.app-store-badge--disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(0.25);
+}
+
+/* Note "Disponible prochainement" sous les boutons */
+.app-stores-note {
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100%;
-  min-height: 640px;
+  gap: 7px;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.32);
+  margin: 10px 0 0;
+  font-style: italic;
+}
+.app-stores-note i { font-size: 0.78rem; color: rgba(255,165,0,0.55); }
+
+/* ── Colonne droite : carousel ── */
+.app-visual {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 28px;
+  /* overflow visible : les slides adjacents dépassent de la colonne */
+  overflow: visible;
 }
 
-.app-mockup-wrap {
+.app-carousel-wrapper {
+  position: relative;
+  width: 100%;
+  /* pas de overflow:hidden — la section clip les débordements via overflow-x:clip */
+}
+
+/*
+ * Le track est un conteneur de hauteur fixe (= hauteur slide actif).
+ * Les 3 slides sont positionnés en absolu à l'intérieur,
+ * centrés verticalement et horizontalement via transform.
+ *
+ * Images mockup 1920×1440 : ratio container 0.467:1 (≈ iPhone) + object-fit:cover centré
+ * → crop parfait sur le téléphone (les 32.5% de blanc de chaque côté disparaissent).
+ */
+.app-carousel-track {
+  position: relative;
+  width: 100%;
+  height: 642px;
+}
+
+/* Base commune à tous les slides */
+.app-slide {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) translateX(120%);
-  opacity: 0;
-  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.75s ease;
-  width: 90%;
-  max-width: 990px;
+  /* 300×642 : ratio 0.467 (≈ iPhone) → object-fit:cover crop parfait sur les mockups 1920×1440 */
+  width: 300px;
+  height: 642px;
+  overflow: hidden;
+  border-radius: 4px;
+  transform-origin: center center;
+  will-change: transform, opacity;
+  transition:
+    transform  0.52s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity    0.52s ease,
+    filter     0.52s ease;
 }
 
-.app-section.is-visible .app-mockup-wrap {
+/* Slide actif : centré, pleine taille */
+.app-slide.is-active {
+  transform: translateX(-50%) translateY(-50%) scale(1);
   opacity: 1;
-  transform: translate(-50%, -50%) translateX(0);
+  filter: none;
+  z-index: 2;
+  cursor: default;
 }
 
-.app-mockup {
+/*
+ * Slides adjacents : mêmes 300×642px, réduits à 60% → ~180×385px visibles.
+ * Décalage 260px depuis le centre (= 150 + 20gap + 90 demi-adj-visuel).
+ */
+.app-slide.is-prev {
+  transform: translateX(calc(-50% - 260px)) translateY(-50%) scale(0.6);
+  opacity: 0.35;
+  filter: blur(0.8px);
+  z-index: 1;
+  cursor: pointer;
+}
+.app-slide.is-next {
+  transform: translateX(calc(-50% + 260px)) translateY(-50%) scale(0.6);
+  opacity: 0.35;
+  filter: blur(0.8px);
+  z-index: 1;
+  cursor: pointer;
+}
+
+.app-slide img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
   display: block;
-  filter: drop-shadow(0 30px 80px rgba(0,0,0,0.6));
+}
+
+/* ── Pagination dots ── */
+.app-dots { display: flex; align-items: center; gap: 8px; }
+.app-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: width 0.25s, border-radius 0.25s, background 0.25s;
+  display: inline-block;
+  cursor: pointer;
+}
+.app-dot--active { width: 24px; border-radius: 4px; background: #F57706; }
+.app-dot:hover:not(.app-dot--active) { background: rgba(255,255,255,0.4); }
+
+/* ── Animations d'entrée ── */
+.app-copy {
+  opacity: 0;
+  transform: translateX(-28px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+.app-visual {
+  opacity: 0;
+  transform: translateX(28px);
+  transition: opacity 0.7s ease 0.15s, transform 0.7s cubic-bezier(0.22,1,0.36,1) 0.15s;
+}
+.app-section.is-visible .app-copy,
+.app-section.is-visible .app-visual {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* ── Responsive ── */
-@media (max-width: 900px) {
+@media (max-width: 992px) {
   .app-section {
     grid-template-columns: 1fr;
-    padding: 60px 5% 0;
+    padding: 60px 5% 56px;
     min-height: auto;
+    overflow: hidden;
   }
-  .app-content { padding-right: 0; }
-  .app-visual {
-    min-height: 340px;
-    margin-top: 40px;
-  }
-  .app-mockup-wrap {
-    max-width: 260px;
-  }
+  .app-visual { margin-top: 44px; }
+  .app-carousel-track { height: 514px; }
+  .app-slide { width: 240px; height: 514px; }
+  /* Slides adjacents masqués sur mobile — manque de place */
+  .app-slide.is-prev { opacity: 0; pointer-events: none; }
+  .app-slide.is-next { opacity: 0; pointer-events: none; }
+  .app-store-badge { min-width: unset; flex: 1; justify-content: center; }
+}
+
+@media (max-width: 600px) {
+  .app-carousel-track { height: 428px; }
+  .app-slide { width: 200px; height: 428px; }
 }
 
 @media (max-width: 480px) {
-  .app-feature { padding: 16px 0; gap: 14px; }
-  .app-store-btn { padding: 10px 16px; }
+  .app-stores { flex-direction: column; }
+  .app-carousel-track { height: 375px; }
+  .app-slide { width: 175px; height: 375px; }
 }
