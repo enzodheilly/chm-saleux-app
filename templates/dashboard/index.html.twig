@@ -23,12 +23,13 @@
 {% set profileImage = app.user.profileImageDataUrl ? app.user.profileImageDataUrl : app.user|avatar_initials %}
 {% set bannerRightImage = asset('images/dashboard/banner-athlete-right.webp') %}
 
+{% block main_class %}{% endblock %}
+
 {% block title %}Espace Membre - CHM SALEUX
 {% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('vendor/fullcalendar/index.global.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('vendor/cropper/cropper.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/dashboard/test-v2.css') }}">
 {% endblock %}
@@ -84,10 +85,6 @@
 				<a href="{{ path('home') }}" class="sidebar-link" title="Retour au site">
 					<i class="fa-solid fa-arrow-left"></i>
 				</a>
-
-				<div class="sidebar-profile">
-					<img id="avatar-preview" src="{{ profileImage }}" alt="Photo de profil" title="Cliquer pour changer la photo" style="cursor:pointer;">
-				</div>
 			</div>
 		</nav>
 
@@ -122,14 +119,16 @@
 						Contact
 					</a>
 
-					<button class="topbar-icon" id="openSettingsDrawer" title="Paramètres" type="button">
-						<i class="fa-solid fa-gear"></i>
+					<button class="topbar-avatar-btn" id="openSettingsDrawer" title="Paramètres" type="button">
+						<img id="avatar-preview" src="{{ profileImage }}" alt="Photo de profil" class="topbar-avatar-img">
 					</button>
 				</div>
 			</header>
 
 			<div class="content-scroll">
 				<div class="content-inner">
+					<section id="tab-home" class="section-view active">
+
 					<div class="hero-top">
 						<div class="welcome-block">
 							<div class="eyebrow">Suivez votre progression ici</div>
@@ -162,7 +161,6 @@
 						</div>
 					</div>
 
-					<section id="tab-home" class="section-view active">
 						<div class="home-banner-wrap">
 							<div class="glass-card banner-card">
 								<div class="banner-content">
@@ -213,9 +211,7 @@
 									<div class="card-head-left">
 										<div class="card-icon"></div>
 										<div class="dashboard-card-heading">
-											<span class="dashboard-card-kicker">Suivi performance</span>
 											<h3 class="dashboard-card-title">Progression hebdomadaire</h3>
-											<span class="dashboard-card-title-line"></span>
 										</div>
 									</div>
 								</div>
@@ -252,9 +248,7 @@
 										<div class="card-head-left">
 											<div class="card-icon"></div>
 											<div class="dashboard-card-heading">
-												<span class="dashboard-card-kicker">Activité récente</span>
 												<h3 class="dashboard-card-title">Vos dernières séances</h3>
-												<span class="dashboard-card-title-line"></span>
 											</div>
 										</div>
 									</div>
@@ -300,8 +294,6 @@
 
 													{% if s.is_from_planning|default(false) %}
 														<div class="today-badge">Planning</div>
-													{% else %}
-														<div class="today-badge">Libre</div>
 													{% endif %}
 												</div>
 											{% endfor %}
@@ -650,13 +642,16 @@
 		{# --- HEADER --- #}
 		<div class="sd-header">
 			<div class="sd-header-left">
-				<div class="sd-avatar">
-					{{ app.user.firstname|first|upper }}{{ app.user.lastname|first|upper }}
+				<div class="sd-avatar-wrap" id="sdAvatarTrigger" title="Changer la photo de profil">
+					<img src="{{ profileImage }}" alt="Photo de profil" class="sd-avatar-photo">
+					<div class="sd-avatar-overlay"><i class="fa-solid fa-camera"></i></div>
 				</div>
 				<div class="sd-header-info">
 					<strong class="sd-header-name">{{ app.user.firstname }}
 						{{ app.user.lastname }}</strong>
+					{% if licence %}
 					<span class="sd-header-role">Adhérent · CHM Saleux</span>
+				{% endif %}
 				</div>
 			</div>
 			<button class="sd-close" id="closeSettingsDrawer" title="Fermer" type="button">
@@ -696,7 +691,10 @@
 
 					{# Ligne e-mail #}
 					<div class="sd-list-row sd-list-row--action" data-toggle-form="email">
-						<span class="sd-list-title">Modifier l'e-mail</span>
+						<div class="sd-list-title-wrap">
+							<span class="sd-list-title">Modifier l'e-mail</span>
+							<span class="sd-list-sub">{% set emailDomain2 = app.user.email|split('@')|last %}{{ app.user.email|slice(0,3) }}••••@{{ emailDomain2 }}</span>
+						</div>
 						<i class="fa-solid fa-chevron-right sd-chevron"></i>
 					</div>
 					<div id="form-email" class="sd-inline-form is-hidden">
@@ -722,7 +720,10 @@
 
 					{# Ligne mot de passe #}
 					<div class="sd-list-row sd-list-row--action" data-toggle-form="password">
-						<span class="sd-list-title">Changer le mot de passe</span>
+						<div class="sd-list-title-wrap">
+							<span class="sd-list-title">Changer le mot de passe</span>
+							<span class="sd-list-sub">Protection de votre compte</span>
+						</div>
 						<i class="fa-solid fa-chevron-right sd-chevron"></i>
 					</div>
 					<div id="form-password" class="sd-inline-form is-hidden">
@@ -778,19 +779,73 @@
 				</div>
 			</div>
 
+			{# Déconnexion — bas de page #}
+			<div class="sd-logout-footer">
+				<a href="{{ path('app_logout') }}" class="sd-logout-btn">
+					<i class="fa-solid fa-right-from-bracket"></i>
+					Se déconnecter
+				</a>
+			</div>
+
 		</div>
 	</aside>
 
 
+	{# CSRF hidden pour suppression de compte #}
+	<input type="hidden" id="delete-account-csrf" value="{{ csrf_token('delete_account') }}">
+
+	{# Modal — Confirmation suppression de compte #}
+	<div id="deleteAccountModal" class="confirm-modal-overlay">
+		<div class="confirm-modal-card">
+			<div class="confirm-modal-icon-wrap">
+				<i class="fa-solid fa-triangle-exclamation confirm-modal-icon"></i>
+			</div>
+			<h3 class="confirm-modal-title">Supprimer votre compte</h3>
+			<p class="confirm-modal-body">
+				En confirmant, votre compte sera <strong>immédiatement désactivé</strong> — vous ne pourrez
+				plus vous connecter. Vos données (séances, progression, licence) seront conservées
+				<strong>3 mois</strong> à des fins légales de traçabilité, puis définitivement supprimées.
+			</p>
+			<p class="confirm-modal-body confirm-modal-body--small">
+				<a href="{{ path('legal_page_show', {'slug': 'confidentialite'}) }}" target="_blank" class="confirm-modal-link">
+					Politique de confidentialité
+				</a>
+			</p>
+			<div class="confirm-modal-actions">
+				<button id="cancelDeleteBtn" class="btn-outline" type="button">Annuler</button>
+				<button id="confirmDeleteBtn" class="btn-danger" type="button">
+					Supprimer définitivement
+				</button>
+			</div>
+		</div>
+	</div>
+
 	<div id="cropperModal" class="cropper-modal-overlay">
 		<div class="cropper-modal-card">
 			<h3 class="cropper-modal-title">Ajuster la photo</h3>
+
 			<div class="cropper-modal-frame">
-				<img id="cropperImage" src="" class="cropper-modal-image" alt="">
+				<img id="cropperImage" src="" alt="">
 			</div>
+
+			<div class="cropper-modal-controls">
+				<div class="cropper-zoom-row">
+					<i class="fa-solid fa-magnifying-glass-minus cropper-zoom-icon"></i>
+					<input type="range" id="cropperZoomSlider" class="cropper-zoom-slider" min="-1" max="1" step="0.01" value="0">
+					<i class="fa-solid fa-magnifying-glass-plus cropper-zoom-icon"></i>
+				</div>
+				<div class="cropper-preview-wrap">
+					<span class="cropper-preview-label">Aperçu</span>
+					<div id="cropperPreview" class="cropper-preview-circle"></div>
+				</div>
+			</div>
+
 			<div class="cropper-modal-actions">
 				<button id="cancelCropBtn" class="btn-outline" type="button">Annuler</button>
-				<button id="cropAndSaveBtn" class="btn-primary" type="button">Enregistrer</button>
+				<button id="cropAndSaveBtn" class="btn-primary" type="button">
+					<i class="fa-solid fa-floppy-disk"></i>
+					Enregistrer
+				</button>
 			</div>
 		</div>
 	</div>
@@ -799,7 +854,7 @@
 
 {% block javascripts %}
 	{{ parent() }}
- <script src="{{ asset('vendor/chartjs/chart.umd.min.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-	 <script src="{{ asset('vendor/fullcalendar/index.global.min.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-	 <script src="{{ asset('js/dashboard/test-v2.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+	<script src="{{ asset('vendor/cropper/cropper.min.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+	<script src="{{ asset('vendor/chartjs/chart.umd.min.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+	<script src="{{ asset('js/dashboard/test-v2.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

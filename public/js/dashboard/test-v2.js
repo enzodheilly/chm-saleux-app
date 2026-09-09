@@ -234,22 +234,45 @@
     // DELETE ACCOUNT
     // =========================================
     function confirmDeleteAccount() {
-        if (!confirm('ATTENTION : La suppression est définitive. Continuer ?')) return;
+        const modal = document.getElementById('deleteAccountModal');
+        if (modal) modal.style.display = 'flex';
+    }
 
-        const password = prompt('Saisissez votre mot de passe pour confirmer :');
-        if (!password) return;
+    function bindDeleteAccountModal() {
+        const modal      = document.getElementById('deleteAccountModal');
+        const cancelBtn  = document.getElementById('cancelDeleteBtn');
+        const confirmBtn = document.getElementById('confirmDeleteBtn');
+        if (!modal) return;
 
-        fetch(routes.deleteAccount, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password, _token: getCsrfToken('delete-account') })
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) window.location.href = '/logout';
-                else showJsFlash(data.message || 'Erreur lors de la suppression.', 'error');
+        const closeModal = () => { modal.style.display = 'none'; };
+
+        cancelBtn?.addEventListener('click', closeModal);
+        modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+        confirmBtn?.addEventListener('click', () => {
+            confirmBtn.disabled = true;
+            const token = document.getElementById('delete-account-csrf')?.value ?? '';
+
+            fetch(routes.deleteAccount, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ _token: token })
             })
-            .catch(() => showJsFlash('Erreur réseau.', 'error'));
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) window.location.href = data.redirect || '/au-revoir';
+                    else {
+                        confirmBtn.disabled = false;
+                        closeModal();
+                        showJsFlash(data.message || 'Erreur lors de la suppression.', 'error');
+                    }
+                })
+                .catch(() => {
+                    confirmBtn.disabled = false;
+                    closeModal();
+                    showJsFlash('Erreur réseau.', 'error');
+                });
+        });
     }
 
     // =========================================
@@ -389,20 +412,28 @@
     // PHOTO CROPPER
     // =========================================
     function bindPhotoCropper() {
-        const fileInput     = document.getElementById('avatar-upload');
-        const avatarPreview = document.getElementById('avatar-preview');
-        const cropperModal  = document.getElementById('cropperModal');
-        const cropperImage  = document.getElementById('cropperImage');
-        const cropBtn       = document.getElementById('cropAndSaveBtn');
-        const cancelBtn     = document.getElementById('cancelCropBtn');
+        const fileInput    = document.getElementById('avatar-upload');
+        const cropperModal = document.getElementById('cropperModal');
+        const cropperImage = document.getElementById('cropperImage');
+        const cropBtn      = document.getElementById('cropAndSaveBtn');
+        const cancelBtn    = document.getElementById('cancelCropBtn');
+        const zoomSlider   = document.getElementById('cropperZoomSlider');
 
         if (!fileInput || !cropperModal || !cropperImage) return;
 
-        // ✅ FIX — rien ne déclenchait l'ouverture du sélecteur de fichier :
-        // l'input est caché, il faut un point d'entrée cliquable.
-        avatarPreview?.addEventListener('click', () => fileInput.click());
+        document.getElementById('sdAvatarTrigger')?.addEventListener('click', () => fileInput.click());
 
-        let cropper = null;
+        let cropper          = null;
+        let initialRatio     = null; // ratio zoom de référence enregistré au ready()
+        let sliderIsZooming  = false; // anti-boucle : slider → zoom event → slider
+
+        const closeCropper = () => {
+            cropperModal.style.display = 'none';
+            if (cropper) { cropper.destroy(); cropper = null; }
+            initialRatio = null;
+            fileInput.value = '';
+            if (zoomSlider) zoomSlider.value = 0;
+        };
 
         fileInput.addEventListener('change', e => {
             const file = e.target.files?.[0];
@@ -410,25 +441,61 @@
 
             const reader = new FileReader();
             reader.onload = event => {
+                if (cropper) { cropper.destroy(); cropper = null; }
+
                 cropperImage.src = event.target?.result || '';
                 cropperModal.style.display = 'flex';
 
-                if (cropper) cropper.destroy();
-                cropper = new Cropper(cropperImage, { aspectRatio: 1, viewMode: 1 });
+                // rAF : laisse le navigateur rendre le modal + l'image avant d'initialiser
+                requestAnimationFrame(() => {
+                    cropper = new Cropper(cropperImage, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        dragMode: 'move',
+                        autoCropArea: 0.8,
+                        restore: false,
+                        guides: false,
+                        center: false,
+                        highlight: false,
+                        cropBoxMovable: false,
+                        cropBoxResizable: false,
+                        toggleDragModeOnDblclick: false,
+                        preview: '#cropperPreview',  // sélecteur CSS string, plus fiable
+                        ready() {
+                            // Enregistrer le ratio d'ajustement initial comme base 0
+                            const d = this.cropper.getCanvasData();
+                            initialRatio = d.width / d.naturalWidth;
+                            if (zoomSlider) zoomSlider.value = 0;
+                        },
+                        zoom(e) {
+                            // Sync le slider avec la molette (sans boucle récursive)
+                            if (sliderIsZooming || !zoomSlider || initialRatio === null) return;
+                            const logRatio = Math.log2(e.detail.ratio / initialRatio);
+                            zoomSlider.value = Math.max(-1, Math.min(1, logRatio));
+                        },
+                    });
+                });
             };
             reader.readAsDataURL(file);
         });
 
-        cancelBtn?.addEventListener('click', () => {
-            cropperModal.style.display = 'none';
-            if (cropper) { cropper.destroy(); cropper = null; }
+        // Slider → zoomTo (relatif au ratio initial)
+        zoomSlider?.addEventListener('input', () => {
+            if (!cropper || initialRatio === null) return;
+            sliderIsZooming = true;
+            cropper.zoomTo(initialRatio * Math.pow(2, parseFloat(zoomSlider.value)));
+            sliderIsZooming = false;
         });
+
+        cancelBtn?.addEventListener('click', closeCropper);
+        cropperModal.addEventListener('click', e => { if (e.target === cropperModal) closeCropper(); });
 
         cropBtn?.addEventListener('click', () => {
             if (!cropper) return;
 
+            cropBtn.disabled = true;
             cropper.getCroppedCanvas({ width: 400, height: 400 }).toBlob(blob => {
-                if (!blob) return;
+                if (!blob) { cropBtn.disabled = false; return; }
 
                 const formData = new FormData();
                 formData.append('profileImage', blob, 'avatar.jpg');
@@ -437,10 +504,11 @@
                 fetch(routes.uploadPhoto, { method: 'POST', body: formData })
                     .then(res => res.json())
                     .then(data => {
+                        cropBtn.disabled = false;
                         if (data.success) location.reload();
                         else showJsFlash("Erreur lors de l'envoi de la photo.", 'error');
                     })
-                    .catch(() => showJsFlash("Erreur réseau lors de l'envoi de la photo.", 'error'));
+                    .catch(() => { cropBtn.disabled = false; showJsFlash("Erreur réseau lors de l'envoi de la photo.", 'error'); });
             }, 'image/jpeg', 0.85);
         });
     }
@@ -619,8 +687,9 @@
             ['bindSettingsDrawer',bindSettingsDrawer],
             ['bindSettingsForms', bindSettingsForms],
             ['bindElios',         bindElios],
-            ['bindPhotoCropper',  bindPhotoCropper],
-            ['bindLicenceForm',   bindLicenceForm],
+            ['bindPhotoCropper',       bindPhotoCropper],
+            ['bindDeleteAccountModal', bindDeleteAccountModal],
+            ['bindLicenceForm',        bindLicenceForm],
             ['bindDashboardCharts', bindDashboardCharts],
         ].forEach(([name, fn]) => {
             try { fn(); } catch (e) { console.error(`${name} error`, e); }

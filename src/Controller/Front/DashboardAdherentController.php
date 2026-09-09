@@ -139,6 +139,13 @@ class DashboardAdherentController extends AbstractController
             return $this->json(['success' => false, 'message' => 'Licence déjà associée à un compte']);
         }
 
+        // Vérification d'identité : l'email de la licence doit correspondre à l'utilisateur connecté
+        $licenceEmail = strtolower(trim((string) $licence->getEmail()));
+        $userEmail = strtolower(trim($user->getEmail()));
+        if ($licenceEmail !== '' && $licenceEmail !== $userEmail) {
+            return $this->json(['success' => false, 'message' => 'Cette licence ne correspond pas à votre compte.']);
+        }
+
         $licence->setUser($user);
         $this->em->flush();
 
@@ -241,6 +248,10 @@ class DashboardAdherentController extends AbstractController
             return $this->json(['success' => false, 'message' => 'Mot de passe actuel incorrect.']);
         }
 
+        if (mb_strlen($newPassword) < 10) {
+            return $this->json(['success' => false, 'message' => 'Le nouveau mot de passe doit contenir au moins 10 caractères.']);
+        }
+
         $user->setPassword($passwordHasher->hashPassword($user, $newPassword));
         $this->em->flush();
 
@@ -251,7 +262,6 @@ class DashboardAdherentController extends AbstractController
     public function deleteAccount(
         Security $security,
         SessionInterface $session,
-        UserPasswordHasherInterface $passwordHasher,
         Request $request
     ): JsonResponse {
         $user = $this->getUser();
@@ -261,21 +271,25 @@ class DashboardAdherentController extends AbstractController
 
         $data = json_decode($request->getContent(), true) ?? [];
 
-        // ✅ CSRF — passé dans le body JSON
         if (!$this->isCsrfTokenValid('delete_account', $data['_token'] ?? '')) {
             return $this->json(['success' => false, 'message' => 'Jeton CSRF invalide.'], 400);
         }
 
-        if (!$passwordHasher->isPasswordValid($user, $data['password'] ?? '')) {
-            return $this->json(['success' => false, 'message' => 'Mot de passe incorrect.']);
-        }
+        $now = new \DateTimeImmutable();
+        $user->setDeletedAt($now);
+        $user->setScheduledPurgeAt($now->modify('+3 months'));
+        $this->em->flush();
 
         $security->logout(false);
         $session->invalidate();
-        $this->em->remove($user);
-        $this->em->flush();
 
-        return $this->json(['success' => true]);
+        return $this->json(['success' => true, 'redirect' => $this->generateUrl('account_goodbye')]);
+    }
+
+    #[Route('/au-revoir', name: 'account_goodbye', methods: ['GET'])]
+    public function goodbye(): Response
+    {
+        return $this->render('dashboard/goodbye.html.twig');
     }
 
     /* ============================================================
@@ -391,7 +405,7 @@ class DashboardAdherentController extends AbstractController
             ], 400);
         }
 
-        if (mb_strlen($newPassword) < 8) {
+        if (mb_strlen($newPassword) < 10) {
             return $this->json([
                 'success' => false,
                 'message' => 'Le nouveau mot de passe doit contenir au moins 8 caractères.',
@@ -480,7 +494,7 @@ class DashboardAdherentController extends AbstractController
                 ]);
             }
 
-            if (strlen($newPass) < 8) {
+            if (strlen($newPass) < 10) {
                 return $this->json([
                     'success' => false,
                     'message' => 'Le nouveau mot de passe doit faire au moins 8 caractères',

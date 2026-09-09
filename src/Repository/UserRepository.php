@@ -25,4 +25,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->persist($user);
         $this->_em->flush();
     }
+
+    /**
+     * @return User[]
+     */
+    public function findAccountsDueForPurge(\DateTimeImmutable $now): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.scheduledPurgeAt IS NOT NULL')
+            ->andWhere('u.scheduledPurgeAt <= :now')
+            ->setParameter('now', $now)
+            ->getQuery()
+            ->getResult();
+    }
 }

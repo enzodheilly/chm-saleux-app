@@ -17,12 +17,12 @@ class WorkoutSession
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[Groups(['session:read'])]
     private ?User $user = null;
 
     #[ORM\OneToOne(targetEntity: WorkoutSchedule::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[Groups(['session:read', 'session:write'])]
     private ?WorkoutSchedule $workoutSchedule = null;
 

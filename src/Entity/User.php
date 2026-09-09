@@ -63,7 +63,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     private ?string $lastName = null;
 
     #[ORM\Column(type: "json")]
-    #[Groups(['user:read'])]
     private array $roles = [];
 
     #[ORM\Column(type: 'json', nullable: true)]
@@ -117,6 +116,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $lastResetRequestAt = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $deletedAt = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $scheduledPurgeAt = null;
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: NewsletterSubscriber::class, cascade: ['persist', 'remove'])]
     private ?NewsletterSubscriber $newsletterSubscription = null;
@@ -425,6 +430,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     public function setLastResetRequestAt(?\DateTimeImmutable $lastResetRequestAt): self
     {
         $this->lastResetRequestAt = $lastResetRequestAt;
+        return $this;
+    }
+
+    public function getDeletedAt(): ?\DateTimeImmutable
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTimeImmutable $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
+        return $this;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->deletedAt !== null;
+    }
+
+    public function getScheduledPurgeAt(): ?\DateTimeImmutable
+    {
+        return $this->scheduledPurgeAt;
+    }
+
+    public function setScheduledPurgeAt(?\DateTimeImmutable $scheduledPurgeAt): self
+    {
+        $this->scheduledPurgeAt = $scheduledPurgeAt;
         return $this;
     }
 

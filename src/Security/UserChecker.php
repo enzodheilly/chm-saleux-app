@@ -11,7 +11,18 @@ class UserChecker implements UserCheckerInterface
 {
     public function checkPreAuth(UserInterface $user): void
     {
-        // On peut vérifier ici si le compte est banni par exemple
+        if (!$user instanceof User) {
+            return;
+        }
+
+        if ($user->getDeletedAt() !== null) {
+            throw new CustomUserMessageAccountStatusException('Ce compte a été désactivé et est en cours de suppression. Si vous pensez qu\'il s\'agit d\'une erreur, contactez-nous.');
+        }
+
+        $lockedUntil = $user->getLockedUntil();
+        if ($lockedUntil && $lockedUntil > new \DateTimeImmutable()) {
+            throw new CustomUserMessageAccountStatusException('Compte temporairement bloqué. Réessayez plus tard.');
+        }
     }
 
     public function checkPostAuth(UserInterface $user): void

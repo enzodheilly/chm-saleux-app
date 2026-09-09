@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Compte désactivé — CHM Saleux{% endblock %}
+
+{% block body %}
+<div class="goodbye-wrap">
+	<div class="goodbye-card">
+		<div class="goodbye-icon-wrap">
+			<i class="fa-solid fa-circle-check goodbye-icon"></i>
+		</div>
+
+		<h1 class="goodbye-title">Votre compte a été désactivé</h1>
+
+		<p class="goodbye-body">
+			Votre demande a bien été prise en compte. Votre compte est désormais désactivé
+			et ne peut plus être utilisé pour se connecter.
+		</p>
+
+		<p class="goodbye-body">
+			Conformément à nos obligations légales, vos données personnelles seront conservées
+			pendant <strong>3 mois</strong> à des fins de traçabilité, puis définitivement
+			supprimées de nos serveurs.
+		</p>
+
+		<p class="goodbye-body goodbye-body--small">
+			Pour en savoir plus sur la gestion de vos données,
+			consultez notre <a href="{{ path('legal_page_show', {'slug': 'confidentialite'}) }}" class="goodbye-link">politique de confidentialité</a>.
+		</p>
+
+		<a href="{{ path('home') }}" class="goodbye-btn">
+			Retour à l'accueil
+		</a>
+	</div>
+</div>
+
+<style>
+.goodbye-wrap {
+	min-height: 70vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 40px 16px;
+}
+.goodbye-card {
+	background: var(--card-bg, #fff);
+	border: 1px solid var(--border-color, #e5e7eb);
+	border-radius: 4px;
+	padding: 48px 40px;
+	max-width: 520px;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 16px;
+	text-align: center;
+}
+.goodbye-icon-wrap {
+	width: 52px;
+	height: 52px;
+	border-radius: 50%;
+	background: rgba(34, 197, 94, .1);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+.goodbye-icon {
+	font-size: 1.3rem;
+	color: #16a34a;
+}
+.goodbye-title {
+	font-size: 1.15rem;
+	font-weight: 700;
+	color: var(--text-primary, #111);
+	margin: 0;
+}
+.goodbye-body {
+	font-size: .875rem;
+	line-height: 1.6;
+	color: var(--text-secondary, #6b7280);
+	margin: 0;
+	max-width: 420px;
+}
+.goodbye-body strong {
+	color: var(--text-primary, #111);
+	font-weight: 600;
+}
+.goodbye-body--small {
+	font-size: .8rem;
+}
+.goodbye-link {
+	color: #F57706;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+.goodbye-link:hover { color: #d96800; }
+.goodbye-btn {
+	margin-top: 8px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 36px;
+	padding: 0 20px;
+	background: #F57706;
+	color: #fff;
+	font-size: .82rem;
+	font-weight: 600;
+	border-radius: 4px;
+	text-decoration: none;
+	transition: background .15s ease;
+}
+.goodbye-btn:hover { background: #d96800; }
+@media (max-width: 540px) {
+	.goodbye-card { padding: 36px 20px; }
+}
+</style>
+{% endblock %}
