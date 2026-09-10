@@ -66,8 +66,24 @@
 		 <script src="{{ asset('js/app.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 	</head>
 
-	<body class="bg-background text-foreground app-body">
+	{% set active_banner = site_banner() %}
+	<body class="bg-background text-foreground app-body{% block banner_body_class %}{% if active_banner %} has-banner{% endif %}{% endblock %}">
+		{% if is_preview_mode %}
+			<a href="{{ path('admin_preview_off') }}" class="admin-preview-fab" title="Quitter le mode aperçu et retourner au dashboard">
+				<i class="fa-solid fa-shield-halved"></i>
+				<span>Retour au dashboard admin</span>
+			</a>
+		{% endif %}
+
 		{% block navbar %}
+			{% if active_banner %}
+				<div class="site-announcement-banner" role="banner">
+					<div class="site-banner-inner">
+						<img src="{{ asset('images/ffhm-logo.jpg') }}" alt="FFHM" class="site-banner-logo">
+						<span class="site-banner-text">{{ active_banner.message }}</span>
+					</div>
+				</div>
+			{% endif %}
 			{% include 'navbar/navigation.html.twig' %}
 		{% endblock %}
 

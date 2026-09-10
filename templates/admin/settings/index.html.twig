@@ -45,6 +45,49 @@
 			</label>
 		</div>
 
+		{# Bannière d'annonce #}
+		<div class="settings-card">
+			<h3 class="settings-card-title">Bannière d'annonce</h3>
+			<p style="font-size:.82rem;color:var(--text-muted,#888);margin:0 0 16px;">
+				Affiche un message court en haut de toutes les pages du site. Laissez le texte vide ou désactivez pour masquer la bannière.
+			</p>
+			<form method="post" action="{{ path('admin_settings_banner_update') }}">
+				<input type="hidden" name="_token" value="{{ csrf_token('update_banner') }}">
+				<div class="form-group" style="margin-bottom:14px;">
+					<label class="tool-label" for="banner-message">Texte de la bannière</label>
+					<input
+						type="text"
+						id="banner-message"
+						name="message"
+						class="input"
+						maxlength="500"
+						placeholder="Ex : Inscriptions au Challenge Muscu ouvertes !"
+						value="{{ banner.message ?? '' }}"
+					>
+				</div>
+				<div class="settings-card flex-row" style="padding:0;background:none;border:none;box-shadow:none;margin-bottom:18px;">
+					<div class="switch-info">
+						<h4 style="margin:0 0 2px;font-size:.88rem;">Bannière active</h4>
+						<p style="margin:0;font-size:.78rem;color:var(--text-muted,#888);">
+							{{ banner.isActive ? 'Actuellement visible sur le site' : 'Actuellement masquée' }}
+						</p>
+					</div>
+					<label class="switch">
+						<input type="checkbox" name="is_active" value="1" {% if banner.isActive %}checked{% endif %}>
+						<span class="slider"></span>
+					</label>
+				</div>
+				<div class="form-actions">
+					<button type="submit" class="btn-create">Enregistrer la bannière</button>
+				</div>
+				{% if banner.updatedAt %}
+					<p style="font-size:.72rem;color:var(--text-muted,#888);margin:10px 0 0;">
+						Dernière mise à jour : {{ banner.updatedAt|date('d/m/Y à H:i') }}
+					</p>
+				{% endif %}
+			</form>
+		</div>
+
 		{# Sécurité #}
 		<div class="settings-card">
 			<h3 class="settings-card-title">Historique & Sécurité</h3>
