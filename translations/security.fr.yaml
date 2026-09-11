@@ -1,0 +1,36 @@
+# Traductions françaises du domaine "security" de Symfony
+# Surcharge les messages anglais par défaut du composant symfony/security-core
+
+# ── Identifiants incorrects ──────────────────────────────────────────────────
+'Bad credentials.': "Identifiant ou mot de passe incorrect."
+'Invalid credentials.': "Identifiant ou mot de passe incorrect."
+'The presented password is invalid.': "Le mot de passe saisi est incorrect."
+'The presented password cannot be empty.': "Le mot de passe ne peut pas être vide."
+'Username could not be found.': "Aucun compte trouvé avec cette adresse email."
+
+# ── État du compte ────────────────────────────────────────────────────────────
+'Account is disabled.': "Votre compte est désactivé. Contactez l'équipe du club."
+'Account is locked.': "Votre compte est temporairement bloqué. Contactez l'équipe du club."
+'Account is expired.': "Votre compte a expiré. Contactez l'équipe du club."
+'Account has expired.': "Votre compte a expiré. Contactez l'équipe du club."
+'Credentials have expired.': "Vos identifiants ont expiré. Veuillez réinitialiser votre mot de passe."
+
+# ── Trop de tentatives ────────────────────────────────────────────────────────
+'Too many failed login attempts, please try again later.': "Trop de tentatives de connexion échouées. Veuillez réessayer dans quelques minutes."
+
+# ── CSRF / Jeton de sécurité ──────────────────────────────────────────────────
+'Invalid CSRF token.': "Jeton de sécurité invalide. Rechargez la page et réessayez."
+'No authentication token could be found.': "Session expirée. Veuillez vous reconnecter."
+'A Token was not found in the TokenStorage.': "Session expirée. Veuillez vous reconnecter."
+
+# ── Session / Cookie ──────────────────────────────────────────────────────────
+'Your session has timed out, please login again.': "Votre session a expiré. Veuillez vous reconnecter."
+'The cookie is expired.': "Votre session mémorisée a expiré. Veuillez vous reconnecter."
+'Cookie has already been used by someone else.': "Ce lien de connexion a déjà été utilisé."
+'The security token was removed due to an account change.': "Votre session a été réinitialisée suite à une modification de votre compte. Veuillez vous reconnecter."
+
+# ── Autres erreurs système ────────────────────────────────────────────────────
+'Authentication request could not be processed due to a system problem.': "Une erreur système est survenue lors de la connexion. Veuillez réessayer."
+'No authentication provider found to support the authentication token.': "Méthode d'authentification non prise en charge."
+'Access Denied.': "Accès refusé. Vous n'avez pas les droits nécessaires."
+'Full authentication is required to access this resource.': "Vous devez être connecté pour accéder à cette page."

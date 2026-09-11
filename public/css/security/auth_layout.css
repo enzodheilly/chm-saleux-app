@@ -38,7 +38,7 @@ html, body {
   height: 100vh;
   width: 100%;
   overflow: hidden;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 /* ============================================================
@@ -217,16 +217,20 @@ html, body {
 }
 
 .login-btn {
-  background: var(--auth-brand);
-  color: #fff;
-  box-shadow: 0 4px 14px rgba(245,119,6,0.28);
+  background: #fff;
+  color: #0a0a0a;
+  border: 1px solid rgba(0,0,0,0.12);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .login-btn:hover {
-  background: #e06800;
-  box-shadow: 0 6px 20px rgba(245,119,6,0.38);
   transform: translateY(-1px);
-  color: #fff;
+  border-color: rgba(245,119,6,0.4);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  color: #0a0a0a;
   text-decoration: none;
 }
 

@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Service\SystemLoggerService;
+
 use App\Service\TurnstileVerifierService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,13 +21,11 @@ class RegistrationController extends AbstractController
 {
     private function isStrongPassword(string $password): bool
     {
-        if (mb_strlen($password) < 10) return false;
-
-        $blacklist = ['password', 'azerty', '123456', 'motdepasse', 'chmsaleux'];
-        foreach ($blacklist as $banned) {
-            if (str_contains(strtolower($password), $banned)) return false;
-        }
-
+        if (mb_strlen($password) < 8) return false;
+        if (!preg_match('/[A-Z]/', $password)) return false;
+        if (!preg_match('/[a-z]/', $password)) return false;
+        if (!preg_match('/\d/', $password)) return false;
+        if (!preg_match('/[^A-Za-z0-9]/', $password)) return false;
         return true;
     }
 
@@ -79,7 +78,7 @@ class RegistrationController extends AbstractController
                 if ($password1 !== $password2) {
                     $errors[] = "Les mots de passe ne correspondent pas.";
                 } elseif (!$this->isStrongPassword($password1)) {
-                    $errors[] = "Votre mot de passe doit contenir au moins 10 caractères.";
+                    $errors[] = "Le mot de passe doit contenir au moins 8 caractères, avec une majuscule, une minuscule, un chiffre et un caractère spécial.";
                 }
 
                 if (!empty($errors)) {
@@ -101,6 +100,8 @@ class RegistrationController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
+                $logger->add(SystemLoggerService::TYPE_SECURITE, 'Nouvelle inscription : ' . $user->getEmail(), $user->getEmail());
+
                 // 6. Envoi Email avec template Twig
                 $emailMessage = (new Email())
                     ->from('no-reply@chm-saleux.fr')
@@ -115,7 +116,7 @@ class RegistrationController extends AbstractController
                 $request->getSession()->set('verify_email', $user->getEmail());
                 return $this->redirectToRoute('app_verify_code');
             } catch (\Throwable $e) {
-                $logger->add('Erreur inscription', $e->getMessage());
+                $logger->add(SystemLoggerService::TYPE_SECURITE, 'Erreur inscription : ' . $e->getMessage(), null, false);
                 $this->addFlash('error', 'Une erreur serveur est survenue.');
             }
         }

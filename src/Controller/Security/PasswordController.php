@@ -17,15 +17,11 @@ class PasswordController extends AbstractController
 {
     private function isStrongPassword(string $password): bool
     {
-        // Longueur minimum
-        if (mb_strlen($password) < 10) return false;
-
-        // Bloquer les mots de passe trop courants
-        $blacklist = ['password', 'azerty', '123456', 'motdepasse', 'chmsaleux'];
-        foreach ($blacklist as $banned) {
-            if (str_contains(strtolower($password), $banned)) return false;
-        }
-
+        if (mb_strlen($password) < 8) return false;
+        if (!preg_match('/[A-Z]/', $password)) return false;
+        if (!preg_match('/[a-z]/', $password)) return false;
+        if (!preg_match('/\d/', $password)) return false;
+        if (!preg_match('/[^A-Za-z0-9]/', $password)) return false;
         return true;
     }
 
@@ -69,12 +65,18 @@ class PasswordController extends AbstractController
             }
 
             if (!$this->isStrongPassword($password)) {
-                $this->addFlash('error', 'Votre mot de passe doit contenir au moins 10 caractères.');
+                $this->addFlash('error', 'Le mot de passe doit contenir au moins 8 caractères, avec une majuscule, une minuscule, un chiffre et un caractère spécial.');
                 $hasErrors = true;
             }
 
             if (!$hasErrors) {
                 $hasher = $hasherFactory->getPasswordHasher($user);
+
+                // Vérification contre le mot de passe actuel (non encore archivé)
+                if ($user->getPassword() && $hasher->verify($user->getPassword(), $password)) {
+                    $this->addFlash('error', 'Ce mot de passe a déjà été utilisé récemment. Choisissez-en un différent.');
+                    return $this->redirectToRoute('set_password');
+                }
 
                 // Vérification historique
                 $lastPasswords = $em->getRepository(PasswordHistory::class)->findBy(
@@ -85,7 +87,7 @@ class PasswordController extends AbstractController
 
                 foreach ($lastPasswords as $history) {
                     if ($hasher->verify($history->getPasswordHash(), $password)) {
-                        $this->addFlash('error', 'Ce mot de passe a déjà été utilisé récemment.');
+                        $this->addFlash('error', 'Ce mot de passe a déjà été utilisé récemment. Choisissez-en un différent.');
                         return $this->redirectToRoute('set_password');
                     }
                 }

@@ -9,32 +9,26 @@
 {% endblock %}
 
 {% block body %}
-	<header class="page-header-sport contact-header-bg">
-		<div class="header-overlay-gradient"></div>
-		<div class="header-content">
-			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
-				<div class="header-main-box">
-					<div class="badge-accent">À votre écoute</div>
-					<h1>Contactez
-						<span class="text-outline">nous</span>
-					</h1>
-					<p class="lead">Notre équipe vous répond sous 48h.</p>
-				</div>
+
+	<header class="contact-page-header">
+		<div class="page-container contact-hero-container">
+			{% include 'components/breadcrumb.html.twig' with { items: [
+				{ label: 'Contact' }
+			] } %}
+			<div class="contact-header-body">
+				<h1>CONTACTEZ
+					<span>NOUS</span>
+				</h1>
+				<p class="contact-header-lead">Une question, une demande d'inscription ou simplement envie d'en savoir plus ? Notre équipe est là pour vous répondre.</p>
 			</div>
 		</div>
+		<img class="contact-header-athlete" src="{{ asset('images/contact/athlete-contact.png') }}" alt="" aria-hidden="true">
 	</header>
 
-	{# IMAGE DÉCORATIVE GAUCHE #}
+	<main
+		class="contact-root page-shell">
 
-	<main class="contact-root page-shell">
-
-		{# Zone des messages flash #}
+		{# Flash messages #}
 		<div class="page-container flash-container">
 			{% for label, messages in app.flashes %}
 				{% for message in messages %}
@@ -45,12 +39,16 @@
 			{% endfor %}
 		</div>
 
-		<section class="contact-section">
-			<div class="contact-grid">
+		<section class="contact-section page-container">
+			<div
+				class="contact-grid">
+
+				{# ── Formulaire ── #}
 				<div class="contact-form-container form-area">
 					<div class="form-header">
-						<span class="contact-eyebrow">Formulaire de contact</span>
-						<h2 class="contact-form-title">Envoyez-nous<br>un <span>message</span></h2>
+						<h2 class="contact-form-title">Envoyez-nous<br>un
+							<span>message</span>
+						</h2>
 						<p class="contact-form-sub">Notre équipe vous répond sous 48h.</p>
 					</div>
 
@@ -89,14 +87,11 @@
 						</div>
 
 						<div class="turnstile-wrapper">
-							<div class="cf-turnstile" data-sitekey="0x4AAAAAACvankHbbJ6UuueH" data-theme="dark"></div>
+							<div class="cf-turnstile" data-sitekey="0x4AAAAAACvankHbbJ6UuueH" data-theme="light"></div>
 						</div>
 
 						<button type="submit" class="btn-elite-submit btn-modern">
-							<span class="btn-text">Envoyer
-								<i class="fa-solid fa-paper-plane"></i>
-							</span>
-							{# Ajoute bien le style display: none ici #}
+							<span class="btn-text">Soumettre</span>
 							<span class="spinner">
 								<i class="fa-solid fa-circle-notch fa-spin"></i>
 							</span>
@@ -104,33 +99,79 @@
 					</form>
 				</div>
 
-				<aside class="contact-sidebar">
+				{# ── Sidebar ── #}
+				<aside
+					class="contact-sidebar">
+
+					{# Infos rapides #}
+					<div class="sidebar-box sidebar-info">
+						<span class="sidebar-eyebrow">Nous trouver</span>
+						<div class="info-items">
+							<div class="info-item">
+								<div class="info-item-icon">
+									<i class="fa-solid fa-phone"></i>
+								</div>
+								<div class="info-item-body">
+									<span class="info-item-label">Téléphone</span>
+									<span class="info-item-val">03.22.89.72.57</span>
+								</div>
+							</div>
+							<a href="mailto:chm.saleux@orange.fr" class="info-item">
+								<div class="info-item-icon">
+									<i class="fa-solid fa-envelope"></i>
+								</div>
+								<div class="info-item-body">
+									<span class="info-item-label">Email</span>
+									<span class="info-item-val">chm.saleux@orange.fr</span>
+								</div>
+							</a>
+							<div class="info-item">
+								<div class="info-item-icon">
+									<i class="fa-solid fa-clock"></i>
+								</div>
+								<div class="info-item-body">
+									<span class="info-item-label">Horaires salle</span>
+									<span class="info-item-val">Lun - Mer - Ven · 10h–12h & 16h–20h</span>
+									<span class="info-item-val">Mar - Jeu · 10h–12h & 16h–19h30</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{# FAQ mini #}
 					<div class="sidebar-box">
-						<h3>
-							<i class="fa-solid fa-circle-question"></i>
-							FAQ Rapide</h3>
+						<span class="sidebar-eyebrow">FAQ Rapide</span>
 						<details class="faq-mini">
-							<summary>Séance d'essai ?</summary>
-							<p>Oui ! Précisez vos disponibilités dans le message.</p>
+							<summary>Séance d'essai gratuite ?</summary>
+							<p>Oui ! Précisez vos disponibilités dans le message, on vous rappellera pour confirmer un créneau.</p>
+						</details>
+						<details class="faq-mini">
+							<summary>Quel équipement prévoir ?</summary>
+							<p>Tenue de sport et chaussures fermées suffisent pour une première séance. On s'occupe du reste.</p>
+						</details>
+						<details class="faq-mini">
+							<summary>Délai de réponse ?</summary>
+							<p>Nous répondons sous 48h en semaine. Pour une urgence, appelez-nous directement.</p>
 						</details>
 					</div>
 
-					<div class="map-card map-card--sidebar">
+					{# Carte #}
+					<div class="map-card">
 						<div class="map-head">
 							<div class="map-title">
 								<h3>CHM Saleux</h3>
 								<p>8 rue Marx Dormoy, 80480 Saleux</p>
 							</div>
-							<a class="map-cta" target="_blank" rel="noopener" href="https://maps.google.com">
+							<a class="map-cta" target="_blank" rel="noopener" href="https://maps.google.com/?q=8+rue+Marx+Dormoy+80480+Saleux">
 								Itinéraire
 								<i class="fa-solid fa-arrow-up-right-from-square"></i>
 							</a>
 						</div>
 						<div class="map-frame">
 							<iframe src="https://www.google.com/maps?q=CHM%20Saleux%2C%208%20rue%20Marx%20Dormoy%2C%2080480%20Saleux&output=embed" loading="lazy"></iframe>
-							<div class="map-overlay"></div>
 						</div>
 					</div>
+
 				</aside>
 			</div>
 		</section>

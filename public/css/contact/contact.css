@@ -5,8 +5,79 @@
 .contact-root {
   background: #f8f7f5;
   color: #0a0a0a;
-  font-family: "Inter", sans-serif;
-  overflow-x: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.contact-root .page-container {
+  max-width: 1280px !important;
+}
+
+/* =========================================================
+   HEADER SOMBRE
+   ========================================================= */
+
+.contact-page-header {
+  background: #111214;
+  padding-top: 40px;
+  padding-bottom: 36px;
+  position: relative;
+  overflow: visible;
+  z-index: 2;
+}
+
+.contact-hero-container { /* page-container géré globalement */ }
+
+/* ── Athlète flottant (straddle header / contenu) ── */
+.contact-header-athlete {
+  position: absolute;
+  right: 14.5%;
+  top: 20px;
+  bottom: -70px;
+  width: 270px;
+  max-width: 34vw;
+  object-fit: contain;
+  object-position: bottom center;
+  pointer-events: none;
+  user-select: none;
+  filter:
+    drop-shadow(0  1px 0 #fff)
+    drop-shadow(0 -1px 0 #fff)
+    drop-shadow( 1px 0 0 #fff)
+    drop-shadow(-1px 0 0 #fff);
+}
+
+
+.contact-header-body { max-width: 640px; }
+
+.contact-header-eyebrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #F57706;
+  margin-bottom: 14px;
+}
+
+.contact-page-header h1 {
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0 0 16px;
+  line-height: 1.05;
+}
+
+.contact-page-header h1 span { color: #fff; }
+
+.contact-header-lead {
+  color: rgba(255,255,255,0.5);
+  font-size: 1rem;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 520px;
 }
 
 /* =========================================================
@@ -14,16 +85,14 @@
    ========================================================= */
 
 .contact-section {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 60px 5% 100px;
+  padding-top: 56px;
+  padding-bottom: 100px;
 }
-
 
 .contact-grid {
   display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 40px;
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
   align-items: start;
 }
 
@@ -36,14 +105,14 @@
   padding: 44px 40px;
   border-radius: 20px;
   border: 1px solid rgba(0,0,0,0.07);
-  box-shadow: 0 4px 30px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.05);
 }
 
 .contact-eyebrow {
   display: inline-block;
   font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
+  font-weight: 900;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: #F57706;
   margin-bottom: 12px;
@@ -93,7 +162,7 @@
 
 .contact-form-container .input-group label,
 .elite-form .input-group label {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -117,9 +186,7 @@
 }
 
 .contact-form-container input::placeholder,
-.contact-form-container textarea::placeholder {
-  color: rgba(0,0,0,0.3);
-}
+.contact-form-container textarea::placeholder { color: rgba(0,0,0,0.3); }
 
 .contact-form-container .input-group {
   background: transparent !important;
@@ -139,8 +206,8 @@
 .elite-form .input-group input:focus,
 .elite-form .input-group select:focus,
 .elite-form .input-group textarea:focus {
-  border-color: rgba(245, 119, 6, 0.5);
-  box-shadow: 0 0 0 3px rgba(245, 119, 6, 0.08);
+  border-color: rgba(245,119,6,0.5);
+  box-shadow: 0 0 0 3px rgba(245,119,6,0.08);
   background: #fff;
   outline: none;
 }
@@ -152,31 +219,35 @@
   background-position: right 14px center;
   background-size: 12px;
   appearance: none;
+  cursor: pointer;
 }
 
 .btn-elite-submit {
-  background: #F57706;
-  color: white;
-  border: none;
-  padding: 14px 28px;
-  border-radius: 12px;
-  font-weight: 800;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-  margin-top: 4px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
+  padding: 12px 26px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #0a0a0a;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.12);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  margin-top: 4px;
+  align-self: flex-start;
+  justify-self: center;
 }
 
 .btn-elite-submit:hover {
-  background: #e06900;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(245, 119, 6, 0.25);
+  border-color: rgba(245,119,6,0.4);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
 }
 
 .turnstile-wrapper { margin: 8px 0; }
@@ -187,10 +258,10 @@
 
 .contact-sidebar {
   position: sticky;
-  top: calc(var(--nav-height, 82px) + 20px);
+  top: calc(var(--nav-height, 72px) + 20px);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .sidebar-box {
@@ -198,44 +269,116 @@
   padding: 24px;
   border-radius: 16px;
   border: 1px solid rgba(0,0,0,0.07);
-  box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
 }
 
-.sidebar-box h3 {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
+.sidebar-eyebrow {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: #F57706;
-  margin-bottom: 14px;
-  display: inline-flex;
+  margin-bottom: 16px;
+}
+
+/* ---- Infos rapides ---- */
+.sidebar-info { }
+
+.info-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s;
+}
+
+.info-item:last-child { border-bottom: none; padding-bottom: 0; }
+.info-item:first-child { padding-top: 0; }
+
+a.info-item:hover { opacity: 0.75; }
+
+.info-item-icon {
+  width: 38px;
+  height: 38px;
+  background: rgba(245,119,6,0.08);
+  border-radius: 10px;
+  display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  font-size: 0.95rem;
+  color: #F57706;
+  flex-shrink: 0;
 }
 
+.info-item-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.info-item-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: rgba(0,0,0,0.38);
+}
+
+.info-item-val {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #0a0a0a;
+  line-height: 1.4;
+}
+
+/* ---- FAQ mini ---- */
 .faq-mini {
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-  padding: 10px 0;
-  cursor: pointer;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  padding: 12px 0;
 }
 
-.faq-mini:last-child { border-bottom: none; }
+.faq-mini:last-child { border-bottom: none; padding-bottom: 0; }
+.faq-mini:first-of-type { padding-top: 0; }
 
 .faq-mini summary {
   font-weight: 700;
-  font-size: 0.88rem;
+  font-size: 0.87rem;
   color: #0a0a0a;
-  margin-bottom: 4px;
   list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 }
 
+.faq-mini summary::after {
+  content: '+';
+  font-size: 1.1rem;
+  color: #F57706;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.faq-mini[open] summary::after { transform: rotate(45deg); }
 .faq-mini summary::-webkit-details-marker { display: none; }
 
 .faq-mini p {
-  font-size: 0.82rem;
+  font-size: 0.83rem;
   color: rgba(0,0,0,0.5);
-  padding-top: 6px;
-  line-height: 1.55;
+  padding-top: 8px;
+  line-height: 1.6;
   margin: 0;
 }
 
@@ -248,7 +391,7 @@
   border: 1px solid rgba(0,0,0,0.07);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
 }
 
 .map-head {
@@ -256,77 +399,53 @@
   justify-content: space-between;
   align-items: center;
   gap: 14px;
-  padding: 18px 20px;
+  padding: 16px 20px;
   border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
 .map-title h3 {
   margin: 0;
-  font-weight: 800;
-  font-size: 0.95rem;
+  font-weight: 900;
+  font-size: 0.9rem;
   color: #0a0a0a;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .map-title p {
-  margin: 4px 0 0;
+  margin: 3px 0 0;
   color: rgba(0,0,0,0.45);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
 }
 
 .map-cta {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   text-decoration: none;
   font-weight: 700;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #F57706;
   background: rgba(245,119,6,0.08);
-  border: 1px solid rgba(245,119,6,0.25);
-  padding: 8px 14px;
+  border: 1px solid rgba(245,119,6,0.2);
+  padding: 7px 12px;
   border-radius: 999px;
-  transition: all 0.2s;
+  transition: background 0.2s, border-color 0.2s;
   white-space: nowrap;
 }
 
-.map-cta:hover {
-  background: rgba(245,119,6,0.15);
-  border-color: rgba(245,119,6,0.5);
-}
+.map-cta:hover { background: rgba(245,119,6,0.15); border-color: rgba(245,119,6,0.45); }
+.map-cta i { font-size: 0.7rem; }
 
-.map-frame {
-  position: relative;
-  height: 300px;
-}
+.map-frame { position: relative; height: 240px; }
 
 .map-frame iframe {
   width: 100%;
   height: 100%;
   border: 0;
   display: block;
-}
-
-.map-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(to top, rgba(0,0,0,0.1) 0%, transparent 50%);
-}
-
-/* =========================================================
-   HEADER
-   ========================================================= */
-
-.contact-header-bg {
-  --bg-image: url('/images/contact.jpg');
-}
-
-.contact-header-bg::before {
-  background-position: center 60% !important;
 }
 
 /* =========================================================
@@ -344,8 +463,8 @@
   letter-spacing: 0.03em;
 }
 
-.flash-success { background: rgba(40,167,69,0.1); border: 1px solid #28a745; color: #1a7a32; }
-.flash-danger  { background: rgba(220,53,69,0.1); border: 1px solid #dc3545; color: #b91c1c; }
+.flash-success { background: rgba(40,167,69,0.08); border: 1px solid rgba(40,167,69,0.3); color: #1a7a32; }
+.flash-danger  { background: rgba(220,53,69,0.08); border: 1px solid rgba(220,53,69,0.3); color: #b91c1c; }
 
 /* =========================================================
    SPINNER
@@ -359,18 +478,20 @@
    ========================================================= */
 
 @media (max-width: 1024px) {
-  .contact-grid { grid-template-columns: 1fr 280px; }
+  .contact-grid { grid-template-columns: 1fr 300px; }
 }
 
 @media (max-width: 860px) {
   .contact-grid { grid-template-columns: 1fr; }
   .contact-sidebar { position: static; }
   .map-frame { height: 260px; }
+  .contact-header-athlete { display: none; }
 }
 
 @media (max-width: 600px) {
-  .contact-section { padding: 40px 5% 60px; }
+  .contact-section { padding-top: 40px; padding-bottom: 60px; }
   .contact-form-container { padding: 28px 20px; }
   .form-row { grid-template-columns: 1fr; }
-  .btn-elite-submit { width: 100%; }
+  .btn-elite-submit { width: 100%; justify-self: stretch; }
+  .contact-page-header { padding-bottom: 32px; }
 }

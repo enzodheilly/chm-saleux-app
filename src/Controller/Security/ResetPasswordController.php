@@ -22,7 +22,7 @@ class ResetPasswordController extends AbstractController
 {
     private function isStrongPassword(string $password): bool
     {
-        if (mb_strlen($password) < 12) return false;
+        if (mb_strlen($password) < 8) return false;
         if (!preg_match('/[A-Z]/', $password)) return false;
         if (!preg_match('/[a-z]/', $password)) return false;
         if (!preg_match('/\d/', $password)) return false;
@@ -104,7 +104,7 @@ class ResetPasswordController extends AbstractController
                     ]));
                 $mailer->send($emailMessage);
             } catch (\Throwable $e) {
-                $logger->add('Erreur email reset', $e->getMessage());
+                $logger->add(SystemLoggerService::TYPE_SECURITE, 'Erreur envoi email reset MDP : ' . $e->getMessage(), $email, false);
             }
         }
 
@@ -128,6 +128,7 @@ class ResetPasswordController extends AbstractController
         $user = $em->getRepository(User::class)->findOneBy(['resetToken' => $token]);
 
         if (!$user || !$user->getResetTokenExpiresAt() || $user->getResetTokenExpiresAt() < new \DateTimeImmutable()) {
+            $logger->add(SystemLoggerService::TYPE_SECURITE, 'Tentative reset MDP avec token invalide ou expiré.', null, false);
             $this->addFlash('error', 'Le lien est invalide ou a expiré.');
             return $this->redirectToRoute('app_login');
         }
@@ -157,11 +158,17 @@ class ResetPasswordController extends AbstractController
 
         $hasher = $passwordHasherFactory->getPasswordHasher($user);
 
+        // Vérification contre le mot de passe actuel (non encore archivé)
+        if ($user->getPassword() && $hasher->verify($user->getPassword(), $newPassword)) {
+            $this->addFlash('error', 'Ce mot de passe a déjà été utilisé récemment. Choisissez-en un différent.');
+            return $this->redirectToRoute('app_reset_password_confirm', ['token' => $token]);
+        }
+
         // Vérification de l'historique (les 5 derniers)
         $lastPasswords = $em->getRepository(PasswordHistory::class)->findBy(['user' => $user], ['changedAt' => 'DESC'], 5);
         foreach ($lastPasswords as $history) {
             if ($hasher->verify($history->getPasswordHash(), $newPassword)) {
-                $this->addFlash('error', 'Vous avez déjà utilisé ce mot de passe récemment.');
+                $this->addFlash('error', 'Ce mot de passe a déjà été utilisé récemment. Choisissez-en un différent.');
                 return $this->redirectToRoute('app_reset_password_confirm', ['token' => $token]);
             }
         }
