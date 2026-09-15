@@ -22,15 +22,9 @@
 
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
+				{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'Compétitions' }] } %}
 
 				<div class="header-main-box">
-					<div class="badge-accent">Saison 2025 / 2026</div>
 					<h1>Compétitions &
 						<span class="text-outline">Résultats</span>
 					</h1>
@@ -46,15 +40,8 @@
 		class="page-shell competitions-root">
 
 		{# --- SECTION AGENDA --- #}
-		<section class="page-container section-spacer calendar-section" data-aos="fade-up">
-			<div class="section-header-competition centered">
-				<h2 class="section-heading">
-					Agenda
-					<span>Sportif</span>
-				</h2>
-				<p class="section-subtext">Retrouvez les dates clés des prochaines échéances gérées par le club.</p>
-			</div>
-
+		<section class="page-container section-spacer calendar-section">
+			<div class="comp-wm" aria-hidden="true">AGENDA</div>
 			<div id="calendar-container" class="calendar-wrapper">
 				<div class="calendar-card">
 					{% include 'competitions/_calendar_grid.html.twig' %}
@@ -64,34 +51,24 @@
 
 		{# --- SECTION ÉQUIPES --- #}
 		<section class="bg-dark">
+			<div class="comp-wm" aria-hidden="true">NOS <br class="wm-br">ÉQUIPES</div>
 			<div class="page-container section-spacer teams-section">
-				<div class="section-header-competition">
-					<h2 class="section-heading">
-						Nos
-						<span>Équipes / Athlètes</span>
-					</h2>
-					<p class="section-subtext">Sélectionnez une catégorie pour accéder aux records et classements.</p>
-				</div>
-
 				<div
 					class="teams-grid">
 					{# Carte Féminine #}
 					<a href="{{ path('competitions_team', { 'gender': 'feminine' }) }}" class="team-card" aria-label="Voir l'équipe féminine">
 						<div class="card-img-box">
-							<img src="{{ asset('images/competitions/1.jpg') }}" alt="Équipe Féminine CHM Saleux" loading="lazy">
+							<img src="{{ asset('images/competitions/1.jpg') }}" alt="Équipe Féminine CHM Saleux" loading="lazy" draggable="false">
 							<div class="card-overlay"></div>
-							<div class="pille">Féminin</div>
 						</div>
-
+						<div class="card-num" aria-hidden="true">01</div>
 						<div class="card-info">
-							<h3>Équipe
-								<strong>Féminine</strong>
-							</h3>
-							<p>Calendriers de matchs, résultats individuels et performances collectives.</p>
-							<span class="card-footer-link">
-								Explorer
-								<i class="fa-solid fa-arrow-right-long"></i>
-							</span>
+							<div class="card-pille">Féminin</div>
+							<h3>Équipe <strong>Féminine</strong></h3>
+							<div class="card-reveal">
+								<p>Calendriers de matchs, résultats individuels et performances collectives.</p>
+								<span class="card-footer-link">Explorer <i class="fa-solid fa-arrow-right"></i></span>
+							</div>
 						</div>
 					</a>
 
@@ -100,21 +77,18 @@
 						<div class="card-img-box">
 							<picture>
 								<source srcset="{{ asset('images/competitions/male-team.webp') }}" type="image/webp">
-								<img src="{{ asset('images/competitions/male-team.jpg') }}" alt="Équipe Masculine CHM Saleux" loading="lazy">
+								<img src="{{ asset('images/competitions/male-team.jpg') }}" alt="Équipe Masculine CHM Saleux" loading="lazy" draggable="false">
 							</picture>
 							<div class="card-overlay"></div>
-							<div class="pille">Masculin</div>
 						</div>
-
+						<div class="card-num" aria-hidden="true">02</div>
 						<div class="card-info">
-							<h3>Équipe
-								<strong>Masculine</strong>
-							</h3>
-							<p>Suivi des records, calendrier des plateaux et effectifs de la saison.</p>
-							<span class="card-footer-link">
-								Explorer
-								<i class="fa-solid fa-arrow-right-long"></i>
-							</span>
+							<div class="card-pille">Masculin</div>
+							<h3>Équipe <strong>Masculine</strong></h3>
+							<div class="card-reveal">
+								<p>Suivi des records, calendrier des plateaux et effectifs de la saison.</p>
+								<span class="card-footer-link">Explorer <i class="fa-solid fa-arrow-right"></i></span>
+							</div>
 						</div>
 					</a>
 				</div>
@@ -174,4 +148,14 @@
 {% block javascripts %}
 	{{ parent() }}
 	 <script src="{{ asset('js/competitions/competitions.js') }}" defer></script>
+	<script nonce="{{ csp_nonce('script') }}">
+		(function(){
+			var els = document.querySelectorAll('.comp-wm');
+			if(!els.length) return;
+			var obs = new IntersectionObserver(function(entries){
+				entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('is-visible'); });
+			},{threshold:0});
+			els.forEach(function(el){ obs.observe(el); });
+		})();
+	</script>
 {% endblock %}

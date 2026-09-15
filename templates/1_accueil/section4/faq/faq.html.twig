@@ -12,67 +12,43 @@
 
 	<header class="page-header-sport faq-header-bg">
 		<div class="header-overlay-gradient"></div>
-
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
-
+				{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'FAQ' }] } %}
 				<div class="header-main-box">
-					<div class="badge-accent">Centre d'aide</div>
 					<h1>Questions
 						<span class="text-outline">Fréquentes</span>
 					</h1>
-					<p class="lead">
-						Abonnements, entraînements, équipements... Trouvez toutes les réponses pour bien débuter au club.
-					</p>
+					<p class="lead">Abonnements, entraînements, équipements... Toutes les réponses pour bien débuter.</p>
 				</div>
 			</div>
 		</div>
 	</header>
 
-	{# IMAGE DÉCORATIVE GAUCHE #}
-
 	<main class="page-shell faq-root">
 
-		<section class="page-container">
-			<div class="section-header-compact centered">
-				<h2 class="section-heading">
-					Centre
-					<span>d'aide</span>
-				</h2>
-				<p class="detail-description-text">
-					Une question ? Parcourez nos catégories pour trouver rapidement toutes les réponses à vos interrogations.
-				</p>
+		{# --- SECTION PRINCIPALE --- #}
+		<section class="page-container section-spacer faq-main-section">
+
+			<div class="faq-wm" aria-hidden="true">QUESTIONS</div>
+
+			{# Filtres #}
+			<div class="faq-nav-wrapper">
+				<div class="faq-filters-scroll">
+					<button class="filter-btn active" data-target="questions">Général</button>
+					<button class="filter-btn" data-target="abonnement">Abonnement</button>
+					<button class="filter-btn" data-target="entrainement">Entraînement</button>
+					<button class="filter-btn" data-target="installations">Installations</button>
+					<button class="filter-btn" data-target="competition">Compétition</button>
+					<button class="filter-btn" data-target="autres">Divers</button>
+				</div>
 			</div>
-		</section>
 
-		{# --- FILTRES DE NAVIGATION --- #}
-		<section class="page-container faq-nav-wrapper">
-			<div class="faq-filters-scroll">
-				<button class="filter-btn active" data-target="questions">Général</button>
-				<button class="filter-btn" data-target="abonnement">Abonnement</button>
-				<button class="filter-btn" data-target="entrainement">Entraînement</button>
-				<button class="filter-btn" data-target="installations">Installations</button>
-				<button class="filter-btn" data-target="competition">Compétition</button>
-				<button class="filter-btn" data-target="autres">Divers</button>
-			</div>
-		</section>
+			{# Accordéons #}
+			<div class="faq-container">
 
-		{# --- CONTENU FAQ --- #}
-		<section class="page-container section-spacer">
-			<div
-				class="faq-container">
-
-				{# GROUPE : GÉNÉRAL #}
 				<div class="faq-group active" id="questions">
-					<h2 class="section-heading group-title">Questions
-						<span>Fréquentes</span>
-					</h2>
+					<h2 class="group-title">Questions <span>Fréquentes</span></h2>
 					<div class="accordion-elite">
 						{% for faq in faqs | filter(f => f.categorie == 'questions') %}
 							<div class="accordion-item">
@@ -88,11 +64,8 @@
 					</div>
 				</div>
 
-				{# GROUPE : ABONNEMENT #}
 				<div class="faq-group faq-group-hidden" id="abonnement">
-					<h2 class="section-heading group-title">Mon
-						<span>Abonnement</span>
-					</h2>
+					<h2 class="group-title">Mon <span>Abonnement</span></h2>
 					<div class="accordion-elite">
 						{% for faq in faqs | filter(f => f.categorie == 'abonnement') %}
 							<div class="accordion-item">
@@ -108,11 +81,8 @@
 					</div>
 				</div>
 
-				{# GROUPE : ENTRAÎNEMENT #}
 				<div class="faq-group faq-group-hidden" id="entrainement">
-					<h2 class="section-heading group-title">Mon
-						<span>Entraînement</span>
-					</h2>
+					<h2 class="group-title">Mon <span>Entraînement</span></h2>
 					<div class="accordion-elite">
 						{% for faq in faqs | filter(f => f.categorie == 'entrainement') %}
 							<div class="accordion-item">
@@ -128,11 +98,8 @@
 					</div>
 				</div>
 
-				{# GROUPE : INSTALLATIONS #}
 				<div class="faq-group faq-group-hidden" id="installations">
-					<h2 class="section-heading group-title">Nos
-						<span>Installations</span>
-					</h2>
+					<h2 class="group-title">Nos <span>Installations</span></h2>
 					<div class="accordion-elite">
 						{% for faq in faqs | filter(f => f.categorie == 'installations') %}
 							<div class="accordion-item">
@@ -148,11 +115,8 @@
 					</div>
 				</div>
 
-				{# GROUPE : COMPÉTITION #}
 				<div class="faq-group faq-group-hidden" id="competition">
-					<h2 class="section-heading group-title">La
-						<span>Compétition</span>
-					</h2>
+					<h2 class="group-title">La <span>Compétition</span></h2>
 					<div class="accordion-elite">
 						{% for faq in faqs | filter(f => f.categorie == 'competition') %}
 							<div class="accordion-item">
@@ -168,11 +132,8 @@
 					</div>
 				</div>
 
-				{# GROUPE : DIVERS #}
 				<div class="faq-group faq-group-hidden" id="autres">
-					<h2 class="section-heading group-title">Questions
-						<span>Diverses</span>
-					</h2>
+					<h2 class="group-title">Questions <span>Diverses</span></h2>
 					<div class="accordion-elite">
 						{% for faq in faqs | filter(f => f.categorie == 'autres') %}
 							<div class="accordion-item">
@@ -197,8 +158,7 @@
 				<h2 class="section-heading centered faq-contact-title">Toujours
 					<span>une question ?</span>
 				</h2>
-
-				<div class="contact-bar-elite mt-5">
+				<div class="contact-bar-elite">
 					<a href="{{ path('contact') }}" class="contact-circle" title="Email">
 						<i class="fa-solid fa-envelope"></i>
 					</a>
@@ -216,9 +176,10 @@
 		</section>
 
 	</main>
+
 {% endblock %}
 
 {% block javascripts %}
 	{{ parent() }}
-	 <script src="{{ asset('js/accueil/section4/faq/faq.js') }}"></script>
+	<script src="{{ asset('js/accueil/section4/faq/faq.js') }}"></script>
 {% endblock %}

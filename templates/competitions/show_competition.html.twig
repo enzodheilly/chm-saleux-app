@@ -26,11 +26,12 @@
 	<div class="cd-page-header">
 		<div class="cd-content-container">
 
-			<nav class="cd-breadcrumb">
-				<a href="{{ path('competitions_team', { gender: backGender }) }}">Équipe {{ teamLabel|lower }}</a>
-				<i class="fa-solid fa-chevron-right"></i>
-				<a href="{{ path('competition_team_archives', { gender: backGender }) }}">Archives</a>
-			</nav>
+		{% include 'components/breadcrumb.html.twig' with { items: [
+				{ label: 'Compétitions', url: path('competition_root') },
+				{ label: 'Équipe ' ~ teamLabel, url: path('competitions_team', { gender: backGender }) },
+				{ label: 'Archives', url: path('competition_team_archives', { gender: backGender }) },
+				{ label: competition.title }
+			] } %}
 
 			<span class="cd-badge">Équipe {{ teamLabel }}</span>
 
@@ -104,7 +105,6 @@
 
 			{# ── Résultats ── #}
 			<div class="cd-results-section">
-
 				<h2 class="cd-results-heading">
 					Résultats du <span>Plateau</span>
 				</h2>
@@ -178,4 +178,8 @@
 
 </main>
 
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
 {% endblock %}

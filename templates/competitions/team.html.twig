@@ -20,15 +20,12 @@
 
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('competition_root') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Compétitions</span>
-					</a>
-				</nav>
+				{% include 'components/breadcrumb.html.twig' with { items: [
+					{ label: 'Compétitions', url: path('competition_root') },
+					{ label: 'Équipe ' ~ (isFeminine ? 'Féminine' : 'Masculine') }
+				] } %}
 
 				<div class="header-main-box">
-					<div class="badge-accent">Saison 2025 / 2026</div>
 					<h1>Équipe
 						<span class="text-outline">{{ isFeminine ? 'Féminine' : 'Masculine' }}</span>
 					</h1>
@@ -42,12 +39,8 @@
 		class="page-shell dashboard-root team-root">
 
 		{# --- EFFECTIF --- #}
-		<section class="page-container section-spacer athlete-section">
-			<div class="section-header-row">
-				<h2 class="section-heading">Effectif
-					<span>Saison 25/26</span>
-				</h2>
-
+		<section class="page-container effectif-section">
+			<div class="effectif-nav-row">
 				<div class="slider-nav">
 					<button id="prevAthlete" type="button" class="nav-circle" aria-label="Précédent">
 						<i class="fa-solid fa-arrow-left"></i>
@@ -199,12 +192,8 @@
 
 		{# --- ARCHIVES --- #}
 		{% if competitions|length > 1 %}
-			<section class="page-container section-spacer pt-0 section-history">
-				<div class="section-header-compact">
-					<h2 class="section-heading">Archives
-						<span>Saison en cours</span>
-					</h2>
-				</div>
+			<section class="page-container section-spacer section-history">
+				<div class="team-wm" aria-hidden="true">ARCHIVES</div>
 
 				<div class="arc-grid">
 					{% for comp in competitions|slice(1, 3) %}
@@ -266,4 +255,14 @@
 {% block javascripts %}
 	{{ parent() }}
 	 <script src="{{ asset('js/competitions/competitions.js') }}"></script>
+	<script nonce="{{ csp_nonce('script') }}">
+		(function(){
+			var els = document.querySelectorAll('.team-wm');
+			if(!els.length) return;
+			var obs = new IntersectionObserver(function(entries){
+				entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('is-visible'); });
+			},{threshold:0});
+			els.forEach(function(el){ obs.observe(el); });
+		})();
+	</script>
 {% endblock %}

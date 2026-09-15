@@ -17,14 +17,12 @@
 		<div class="header-overlay-gradient"></div>
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav archives-breadcrumbs">
-					<a href="{{ path('competitions_team', { gender: gender }) }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Équipe {{ teamLabel|lower }}</span>
-					</a>
-				</nav>
+				{% include 'components/breadcrumb.html.twig' with { items: [
+					{ label: 'Compétitions', url: path('competition_root') },
+					{ label: 'Équipe ' ~ teamLabel, url: path('competitions_team', { gender: gender }) },
+					{ label: 'Archives' }
+				] } %}
 				<div class="header-main-box">
-					<div class="badge-accent">Historique complet</div>
 					<h1>Archives
 						<span class="text-outline">{{ teamLabel }}s</span>
 					</h1>
@@ -36,10 +34,10 @@
 
 	<main class="page-shell archives-page-root">
 
-		<section class="page-container section-spacer">
+		<section class="page-container section-spacer archives-section-wrap">
+			<div class="comp-wm" aria-hidden="true">ARCHIVES</div>
 
 			<div class="archives-header">
-				<h2 class="section-heading">Tous les <span>Résultats</span></h2>
 				<span class="archives-count-pill">
 					{{ total }} plateau{{ total > 1 ? 'x' : '' }} au total
 				</span>
@@ -138,4 +136,14 @@
 {% block javascripts %}
 	{{ parent() }}
 	<script src="{{ asset('js/competitions/archives.js') }}"></script>
+	<script nonce="{{ csp_nonce('script') }}">
+		(function(){
+			var els = document.querySelectorAll('.comp-wm');
+			if(!els.length) return;
+			var obs = new IntersectionObserver(function(entries){
+				entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('is-visible'); });
+			},{threshold:0});
+			els.forEach(function(el){ obs.observe(el); });
+		})();
+	</script>
 {% endblock %}

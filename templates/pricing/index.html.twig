@@ -1,13 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tarifs & Adhésions — CHM Saleux
-{% endblock %}
-
-{% block og_title %}Tarifs & Adhésions — CHM Saleux
-{% endblock %}
-
-{% block og_description %}Découvrez nos offres d'adhésion et tarifs pour rejoindre le CHM Saleux. Accès salle, cours collectifs, haltérophilie.
-{% endblock %}
+{% block title %}Tarifs & Adhésions — CHM Saleux{% endblock %}
+{% block og_title %}Tarifs & Adhésions — CHM Saleux{% endblock %}
+{% block og_description %}Découvrez nos offres d'adhésion et tarifs pour rejoindre le CHM Saleux. Accès salle, cours collectifs, haltérophilie.{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
@@ -16,21 +11,13 @@
 
 {% block body %}
 
-	{# --- HEADER SPORTIF IMMERSIF (GLOBAL) --- #}
+	{# --- HEADER --- #}
 	<header class="page-header-sport pricing-header-bg">
 		<div class="header-overlay-gradient"></div>
-
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
-
+				{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'Tarifs' }] } %}
 				<div class="header-main-box">
-					<div class="badge-accent">Saison 2025 / 2026</div>
 					<h1>Tarifs &
 						<span class="text-outline">Adhésions</span>
 					</h1>
@@ -40,358 +27,255 @@
 		</div>
 	</header>
 
-	{# IMAGE DÉCORATIVE GAUCHE #}
-
 	<main class="page-shell pricing-root">
 
-		{# --- SECTION 1 : GRILLE DES TARIFS --- #}
-		{# --- SECTION : TARIFS & ABONNEMENTS --- #}
-			<section class="home-pricing-section"> <div class="watermark-wrapper">
-				<div class="bg-watermark">PERFORMANCE</div>
-				<div class="bg-watermark">PERFORMANCE</div>
-				<div class="bg-watermark">PERFORMANCE</div>
-			</div>
+		{# --- SECTION 1 : ABONNEMENTS --- #}
+		<section class="pricing-section pricing-section--plans">
+			<div class="pricing-wm" aria-hidden="true">ABONNEMENTS</div>
 
-			<div class="pricing-header-elite reveal">
-				<h2 class="section-title">Choisissez votre
-					<span class="text-outline">Performance</span>
-				</h2>
-				<p class="section-subtitle">
-					Accès illimité à nos 800m² d'installations : Cardio, Musculation, Haltérophilie et Cours Collectifs.
-				</p>
-			</div>
+			<div class="page-container pricing-section-inner">
 
-			{# --- SELECTEUR TYPE DE TARIF --- #}
-			<div class="pricing-toggle-container reveal-up d-1">
-				<div class="toggle-wrapper">
-					<input type="radio" id="type-standard" name="pricing-type" value="standard" checked>
-					<label for="type-standard">Standard</label>
+				<div class="pricing-section-head">
+					<h2 class="pricing-title">Débloquez votre<br><span>Potentiel</span></h2>
+					</div>
 
-					<input type="radio" id="type-student" name="pricing-type" value="student">
-					<label for="type-student">Étudiant
-						<span class="discount">-15€</span>
-					</label>
+				{# --- SELECTEUR TYPE DE TARIF --- #}
+				<div class="pricing-toggle-container">
+					<div class="toggle-wrapper">
+						<input type="radio" id="type-standard" name="pricing-type" value="standard" checked>
+						<label for="type-standard">Standard</label>
 
-					<div class="toggle-glider"></div>
+						<input type="radio" id="type-student" name="pricing-type" value="student">
+						<label for="type-student">Étudiant
+							<span class="discount">-15€</span>
+						</label>
+
+						<div class="toggle-glider"></div>
+					</div>
 				</div>
-			</div>
 
-			<div class="pricing-grid">
-				{% for plan in plans|default([]) %}
-					<article class="pricing-card-elite {{ plan.isPopular ? 'is-popular' : '' }} reveal-up d-{{ loop.index }}">
+				<div class="pricing-grid">
+					{% for plan in plans|default([]) %}
+						<article class="pricing-card-elite {{ plan.isPopular ? 'is-popular' : '' }}">
 
-						{% if plan.isPopular %}
-							<div class="popular-ribbon">⭐ Offre la plus populaire</div>
-						{% endif %}
+							{% if plan.isPopular %}
+								<div class="popular-ribbon">⭐ Offre la plus populaire</div>
+							{% endif %}
 
-						{# EN-TÊTE #}
-						<div class="p-card-head">
-							<h3 class="p-title">{{ plan.name }}</h3>
-
-							<div class="p-price-box">
-								<div class="p-price-row">
-									<span class="p-value" data-standard="{{ plan.price }}" data-student="{{ plan.price - 15 }}">
-										{{ plan.price }}
-									</span>
-									<span class="p-currency">€ / an</span>
+							<div class="p-card-head">
+								<h3 class="p-title">{{ plan.name }}</h3>
+								<div class="p-price-box">
+									<div class="p-price-row">
+										<span class="p-value" data-standard="{{ plan.price }}" data-student="{{ plan.price - 15 }}">
+											{{ plan.price }}
+										</span>
+										<span class="p-currency">€ / an</span>
+									</div>
+									<span class="p-monthly-cost">soit
+										<strong>{{ (plan.price / 12)|number_format(2, ',') }} €</strong>
+										/ mois</span>
 								</div>
-								<span class="p-monthly-cost">soit
-									<strong>{{ (plan.price / 12)|number_format(2, ',') }}
-										€</strong>
-									/ mois</span>
+							</div>
+
+							<div class="p-promo-box">
+								<i class="fa-solid fa-gift"></i>
+								<span>Séance d'essai gratuite incluse</span>
+							</div>
+
+							<ul class="p-features">
+								{% for benefit in plan.benefits %}
+									{% set parts = benefit|split(' | ') %}
+									{% set icon = parts[0] %}
+									{% set label = parts[1] ?? benefit %}
+									<li>
+										<i class="fa-solid {{ icon }}"></i>
+										<strong>{{ label }}</strong>
+									</li>
+								{% endfor %}
+							</ul>
+
+						</article>
+					{% endfor %}
+				</div>
+
+				<div class="pricing-navigation">
+					<button class="slider-arrow" id="prevCard" aria-label="Carte précédente">&#10094;</button>
+					<div class="pricing-indicators">
+						<span class="dot active"></span>
+						<span class="dot"></span>
+						<span class="dot"></span>
+					</div>
+					<button class="slider-arrow" id="nextCard" aria-label="Carte suivante">&#10095;</button>
+				</div>
+
+				<div class="pricing-legal-notice">
+					<p>
+						Les abonnements sont annulables à tout moment mais ne sont pas remboursables.
+						Des facilités de paiement en plusieurs fois sont disponibles.
+						Notez que le tarif est dégressif selon votre mois d'inscription au club.
+						Pour consulter l'intégralité des conditions et la grille tarifaire détaillée, rendez-vous sur notre page des
+						<a href="{{ path('app_pricing') }}" class="legal-link">tarifs officiels</a>.
+					</p>
+					<p class="mt-2">
+						La validation de votre adhésion nécessite le formulaire de licence
+						<strong>FFHM</strong>, disponible en téléchargement
+						<a href="{{ asset('docs/formulaire-licence-ffhm.pdf') }}" target="_blank" class="legal-link">ici</a>.
+					</p>
+				</div>
+
+			</div>
+		</section>
+
+		{# --- SECTION 2 : OFFRES SPÉCIFIQUES --- #}
+		<section class="pricing-section pricing-section--specials">
+			<div class="pricing-wm" aria-hidden="true">AVANTAGES</div>
+
+			<div class="page-container pricing-section-inner">
+
+				<div class="pricing-section-head"></div>
+
+				<div class="specials-grid">
+
+					<div class="special-card special-card--family">
+						<span class="special-card-eyebrow">Réductions familiales</span>
+						<div class="special-card-head">
+							<div class="special-icon-wrap">
+								<i class="fa-solid fa-users"></i>
+							</div>
+							<div>
+								<h3>Offre Famille</h3>
+								<p>Chaque licence supplémentaire au sein d'un même foyer bénéficie d'une réduction automatique.</p>
 							</div>
 						</div>
-
-						{# BANDEAU PROMO #}
-						<div class="p-promo-box">
-							<i class="fa-solid fa-gift"></i>
-							<span>Séance d'essai gratuite incluse</span>
-						</div>
-
-						{# FEATURES #}
-						<ul class="p-features">
-							{% for benefit in plan.benefits %}
-								{% set parts = benefit|split(' | ') %}
-								{% set icon = parts[0] %}
-								{% set label = parts[1] ?? benefit %}
-								<li>
-									<i class="fa-solid {{ icon }}"></i>
-									<strong>{{ label }}</strong>
-								</li>
-							{% endfor %}
+						<ul class="special-list">
+							<li><span>2ème licence</span><strong>-10 %</strong></li>
+							<li><span>3ème licence</span><strong>-15 %</strong></li>
+							<li><span>4ème licence et +</span><strong>-20 %</strong></li>
 						</ul>
-
-						{# CTA #}
-						<a href="{{ path('contact') }}" class="btn-pricing {{ plan.isPopular ? 'btn-primary' : 'btn-outline' }}">
-							Choisir
-							{{ plan.name }}
-						</a>
-
-					</article>
-				{% endfor %}
-			</div>
-
-			<div class="pricing-navigation reveal-up d-2">
-				<button class="slider-arrow" id="prevCard" aria-label="Carte précédente">&#10094;</button>
-
-				<div class="pricing-indicators">
-					<span class="dot active"></span>
-					<span class="dot"></span>
-					<span class="dot"></span>
-				</div>
-
-				<button class="slider-arrow" id="nextCard" aria-label="Carte suivante">&#10095;</button>
-			</div>
-
-			<div class="pricing-legal-notice reveal-up d-3">
-				<p>
-					Les abonnements sont
-																annulables à tout moment
-																mais ne sont
-																pas remboursables. 
-																																																									        Des facilités de
-																paiement en plusieurs fois
-																sont disponibles. 
-																																														        Notez que le tarif est
-																dégressif
-																selon votre mois d'inscription au club. 
-																																														        Pour consulter l'intégralité des conditions et la grille tarifaire détaillée, rendez-vous sur notre page des
-					<a href="{{ path('app_pricing') }}" class="legal-link">tarifs officiels</a>.
-				</p>
-
-				<p class="mt-2">
-					La validation de votre adhésion nécessite le formulaire de licence
-					<strong>FFHM</strong>, disponible en téléchargement
-					<a href="{{ asset('docs/formulaire-licence-ffhm.pdf') }}" target="_blank" class="legal-link">ici</a>.
-				</p>
-			</div>
-
-		</div>
-	</section>
-
-
-	{# --- IMAGE DE TRANSITION 1 (PARALLAX) --- #}
-	<div class="parallax-separator pricing-separator-1">
-		<div class="parallax-overlay"></div>
-		<div class="parallax-content">
-			<h2>L'esprit d'équipe</h2>
-			<p>Plus qu'une salle, une communauté soudée pour performer.</p>
-		</div>
-	</div>
-
-	{# --- SECTION 2 : OFFRES SPÉCIFIQUES --- #}
-	<section class="bg-dark-alternate section-spacer">
-		<div class="page-container">
-			<div class="section-header-center">
-				<h2 class="section-heading centered pricing-section-title-light">Offres
-					<span>Spécifiques</span>
-				</h2>
-				<p>Familles nombreuses ou compétiteurs, nous avons pensé à vous.</p>
-			</div>
-
-			<div class="specials-grid">
-				<div class="special-card">
-					<div class="icon-box">
-						<i class="fa-solid fa-users"></i>
 					</div>
-					<h3>Offre Famille</h3>
-					<p>Réduction pour les membres d'un même foyer.</p>
-					<ul class="special-list">
-						<li>
-							<span>2ème licence</span>
-							<strong>-10%</strong>
-						</li>
-						<li>
-							<span>3ème licence</span>
-							<strong>-15%</strong>
-						</li>
-						<li>
-							<span>4ème et +</span>
-							<strong>-20%</strong>
-						</li>
-					</ul>
-				</div>
 
-				<div class="special-card">
-					<div class="icon-box gold">
-						<i class="fa-solid fa-trophy"></i>
-					</div>
-					<h3>Compétition FFHM</h3>
-					<p>Rejoignez nos équipes en championnat.</p>
-					<ul class="special-list">
-						<li>
-							<span>Benjamins (8-13 ans)</span>
-							<strong>50 €*</strong>
-						</li>
-						<li>
-							<span>Cadets/Juniors</span>
-							<strong>75 €</strong>
-						</li>
-						<li>
-							<span>Séniors (+21 ans)</span>
-							<strong>95 €</strong>
-						</li>
-					</ul>
-					<small class="text-muted">* Gratuit si un parent est inscrit au club.</small>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	{# --- IMAGE DE TRANSITION 2 (PARALLAX) --- #}
-	<div class="parallax-separator pricing-separator-2">
-		<div class="parallax-overlay"></div>
-		<div class="parallax-content">
-			<h2>Inscription en cours d'année ?</h2>
-			<p>Ne payez que ce que vous consommez avec nos tarifs dégressifs.</p>
-		</div>
-	</div>
-
-	{# --- SECTION 3 : TARIFS DÉGRESSIFS --- #}
-	<section class="page-container section-spacer">
-		<div class="section-header-center">
-			<h2 class="section-heading centered pricing-section-title-light">Tarifs
-				<span>Dégressifs</span>
-			</h2>
-			<p>Prorata temporis selon votre mois d'arrivée.</p>
-		</div>
-
-		<div class="table-container-modern">
-			<table class="pricing-table">
-				<thead>
-					<tr>
-						<th>Mois d'inscription</th>
-						<th>Tarif Plein</th>
-						<th>Tarif Réduit</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>Septembre — Décembre</td>
-						<td>
-							<strong>200 €</strong>
-						</td>
-						<td>185 €</td>
-					</tr>
-					<tr>
-						<td>Janvier</td>
-						<td>
-							<strong>185 €</strong>
-						</td>
-						<td>175 €</td>
-					</tr>
-					<tr>
-						<td>Février</td>
-						<td>
-							<strong>170 €</strong>
-						</td>
-						<td>160 €</td>
-					</tr>
-					<tr>
-						<td>Mars</td>
-						<td>
-							<strong>150 €</strong>
-						</td>
-						<td>140 €</td>
-					</tr>
-					<tr>
-						<td>Avril</td>
-						<td>
-							<strong>125 €</strong>
-						</td>
-						<td>115 €</td>
-					</tr>
-					<tr>
-						<td>Mai</td>
-						<td>
-							<strong>100 €</strong>
-						</td>
-						<td>90 €</td>
-					</tr>
-					<tr>
-						<td>Juin</td>
-						<td>
-							<strong>80 €</strong>
-						</td>
-						<td>70 €</td>
-					</tr>
-					<tr>
-						<td>Juillet</td>
-						<td>
-							<strong>60 €</strong>
-						</td>
-						<td>50 €</td>
-					</tr>
-					<tr>
-						<td>Août</td>
-						<td>
-							<strong>30 €</strong>
-						</td>
-						<td>30 €</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</section>
-
-	{# --- SECTION 4 : FACILITÉS DE PAIEMENT --- #}
-	<section class="bg-dark-alternate section-spacer">
-		<div class="page-container">
-			<div class="split-layout">
-				<div class="text-content">
-					<div class="badge-accent">Facilités de paiement</div>
-					<h2 class="section-heading pricing-section-title-light pricing-section-title-left">Payez à
-						<span>Votre Rythme</span>
-					</h2>
-					<p class="pricing-desc-light">
-						Nous croyons que le budget ne doit pas être un frein à la pratique du sport.
-																																																																																																                            Étalez votre cotisation annuelle sur 3 mois, par chèque, sans aucun frais supplémentaire.
-					</p>
-					<ul class="feature-check-list">
-						<li>
-							<i class="fa-solid fa-circle-check"></i>
-							<strong>Sans frais</strong>
-							: Pas d'intérêts cachés.</li>
-						<li>
-							<i class="fa-solid fa-circle-check"></i>
-							<strong>Simple</strong>
-							: 3 chèques remis à l'inscription.</li>
-						<li>
-							<i class="fa-solid fa-circle-check"></i>
-							<strong>Garanti</strong>
-							: Encaissements différés chaque mois.</li>
-					</ul>
-				</div>
-
-				<div class="timeline-visual">
-					<div class="timeline-step current">
-						<div class="step-icon">1</div>
-						<div class="step-info">
-							<strong>Inscription</strong>
-							<span>~67 € (1er chèque)</span>
+					<div class="special-card special-card--competition">
+						<span class="special-card-eyebrow">Licences compétition FFHM</span>
+						<div class="special-card-head">
+							<div class="special-icon-wrap gold">
+								<i class="fa-solid fa-trophy"></i>
+							</div>
+							<div>
+								<h3>Compétition FFHM</h3>
+								<p>Représentez le CHM Saleux en championnat. Tarifs établis par catégorie d'âge.</p>
+							</div>
+						</div>
+						<ul class="special-list">
+							<li><span>Benjamins<small>8–13 ans</small></span><strong>50 €</strong></li>
+							<li><span>Cadets / Juniors</span><strong>75 €</strong></li>
+							<li><span>Séniors<small>21 ans et +</small></span><strong>95 €</strong></li>
+						</ul>
+						<div class="special-bonus">
+							<i class="fa-solid fa-gift"></i>
+							<span>Licence Benjamin <strong>gratuite</strong> si un parent est déjà inscrit au club.</span>
 						</div>
 					</div>
-					<div class="timeline-connector"></div>
-					<div class="timeline-step">
-						<div class="step-icon">2</div>
-						<div class="step-info">
-							<strong>Mois +1</strong>
-							<span>~67 € (2ème chèque)</span>
+
+				</div>
+			</div>
+		</section>
+
+		{# --- SECTION 3 : TARIFS DÉGRESSIFS --- #}
+		<section class="pricing-section pricing-section--degressif">
+			<div class="pricing-wm" aria-hidden="true">SAISON</div>
+
+			<div class="page-container pricing-section-inner">
+
+				<div class="pricing-section-head">
+					<h2 class="pricing-title">Tarifs<br><span>Dégressifs</span></h2>
+					<p class="pricing-subtitle">Prorata temporis selon votre mois d'arrivée.</p>
+				</div>
+
+				<div class="degressif-card">
+					<div class="degressif-card-head">
+						<span class="special-card-eyebrow">Grille tarifaire — Saison 2025 / 2026</span>
+						<div class="degressif-legend">
+							<span class="degressif-legend-item degressif-legend--standard">
+								<span class="degressif-legend-dot"></span>Tarif standard
+							</span>
+							<span class="degressif-legend-item degressif-legend--reduced">
+								<span class="degressif-legend-dot"></span>Tarif réduit
+							</span>
 						</div>
 					</div>
-					<div class="timeline-connector"></div>
-					<div class="timeline-step">
-						<div class="step-icon">3</div>
-						<div class="step-info">
-							<strong>Mois +2</strong>
-							<span>~66 € (Dernier chèque)</span>
-						</div>
+
+					<div class="table-container-modern">
+						<table class="pricing-table">
+							<thead>
+								<tr>
+									<th>Mois d'inscription</th>
+									<th>Standard</th>
+									<th>Réduit</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr><td>Septembre — Décembre</td><td><strong>200 €</strong></td><td>185 €</td></tr>
+								<tr><td>Janvier</td><td><strong>185 €</strong></td><td>175 €</td></tr>
+								<tr><td>Février</td><td><strong>170 €</strong></td><td>160 €</td></tr>
+								<tr><td>Mars</td><td><strong>150 €</strong></td><td>140 €</td></tr>
+								<tr><td>Avril</td><td><strong>125 €</strong></td><td>115 €</td></tr>
+								<tr><td>Mai</td><td><strong>100 €</strong></td><td>90 €</td></tr>
+								<tr><td>Juin</td><td><strong>80 €</strong></td><td>70 €</td></tr>
+								<tr><td>Juillet</td><td><strong>60 €</strong></td><td>50 €</td></tr>
+								<tr><td>Août</td><td><strong>30 €</strong></td><td>30 €</td></tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="degressif-note">
+						<i class="fa-solid fa-circle-info"></i>
+						<span>Les licences sont renouvelées chaque 1er septembre. Quelle que soit votre date d'inscription, votre adhésion court jusqu'au 31 août de la saison en cours. Le tarif réduit s'applique sur présentation d'un justificatif (Carte Génération HDF, Carte Universitaire, etc.).</span>
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 
-</main>{% endblock %}{% block javascripts %}
-{{ parent() }}
- <script src="{{ asset('js/accueil/section2/section2.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>{% endblock %}
+		{# --- SECTION 4 : FACILITÉS DE PAIEMENT --- #}
+		<section class="pricing-section pricing-section--payment">
+			<div class="pricing-wm" aria-hidden="true">PAIEMENT</div>
+
+			<div class="page-container pricing-section-inner">
+				<div class="split-layout">
+					<div class="text-content">
+						<h2 class="pricing-title pricing-title--left">Payez à<br><span>Votre Rythme</span></h2>
+						<p class="pricing-desc">
+							Nous croyons que le budget ne doit pas être un frein à la pratique du sport.
+							Étalez votre cotisation annuelle sur 3 mois, par chèque, sans aucun frais supplémentaire.
+						</p>
+						<ul class="feature-check-list">
+							<li><i class="fa-solid fa-circle-check"></i><strong>Sans frais</strong> : Pas d'intérêts cachés.</li>
+							<li><i class="fa-solid fa-circle-check"></i><strong>Simple</strong> : 3 chèques remis à l'inscription.</li>
+							<li><i class="fa-solid fa-circle-check"></i><strong>Garanti</strong> : Encaissements différés chaque mois.</li>
+						</ul>
+					</div>
+
+				</div>
+			</div>
+		</section>
+
+	</main>
+
+	<script nonce="{{ csp_nonce('script') }}">
+	(function() {
+		var wms = document.querySelectorAll('.pricing-wm');
+		if (!wms.length) return;
+		var obs = new IntersectionObserver(function(entries) {
+			entries.forEach(function(e) {
+				if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); }
+			});
+		}, { threshold: 0 });
+		wms.forEach(function(el) { obs.observe(el); });
+	})();
+	</script>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ asset('js/accueil/section2/section2.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+{% endblock %}
