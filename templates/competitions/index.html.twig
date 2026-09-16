@@ -41,7 +41,7 @@
 
 		{# --- SECTION AGENDA --- #}
 		<section class="page-container section-spacer calendar-section">
-			<div class="comp-wm" aria-hidden="true">AGENDA</div>
+			<div class="comp-wm page-wm" aria-hidden="true">AGENDA</div>
 			<div id="calendar-container" class="calendar-wrapper">
 				<div class="calendar-card">
 					{% include 'competitions/_calendar_grid.html.twig' %}
@@ -51,7 +51,7 @@
 
 		{# --- SECTION ÉQUIPES --- #}
 		<section class="bg-dark">
-			<div class="comp-wm" aria-hidden="true">NOS <br class="wm-br">ÉQUIPES</div>
+			<div class="comp-wm page-wm" aria-hidden="true">NOS <br class="wm-br">ÉQUIPES</div>
 			<div class="page-container section-spacer teams-section">
 				<div
 					class="teams-grid">
@@ -75,10 +75,7 @@
 					{# Carte Masculine #}
 					<a href="{{ path('competitions_team', { 'gender': 'masculine' }) }}" class="team-card" aria-label="Voir l'équipe masculine">
 						<div class="card-img-box">
-							<picture>
-								<source srcset="{{ asset('images/competitions/male-team.webp') }}" type="image/webp">
-								<img src="{{ asset('images/competitions/male-team.jpg') }}" alt="Équipe Masculine CHM Saleux" loading="lazy" draggable="false">
-							</picture>
+							<img src="{{ asset('images/competitions/male-team.jpg') }}" alt="Équipe Masculine CHM Saleux" loading="lazy" draggable="false">
 							<div class="card-overlay"></div>
 						</div>
 						<div class="card-num" aria-hidden="true">02</div>

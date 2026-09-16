@@ -1,167 +1,89 @@
-<section id="accueil" class="hero-section {% if app.user %}hero-logged{% endif %}">
+<section id="accueil" class="hero-section">
 
-	{% if not app.user %}
-		{# ═══════════════════════════════════════
-			   VUE VISITEUR — SLIDER
-			   ═══════════════════════════════════════ #}
+	{# ── SLIDES PHOTOS ── #}
+	<div class="slider-track" aria-hidden="true">
+		<div class="slide slide-1 active"></div>
+		<div class="slide slide-2"></div>
+		<div class="slide slide-3"></div>
+		<div class="slide slide-4"></div>
+	</div>
 
-		{# ── SLIDES PHOTOS ── #}
-			<div class="slider-track" aria-hidden="true"> <div class="slide slide-1 active"></div>
-			<div class="slide slide-2"></div>
-			<div class="slide slide-3"></div>
-			<div class="slide slide-4"></div>
-		</div>
+	{# ── OVERLAY SOMBRE ── #}
+	<div class="slider-overlay"></div>
 
-		{# ── OVERLAY SOMBRE ── #}
-		<div class="slider-overlay"></div>
+	{# ── FILIGRANE GRAND TITRE ── #}
+	<div class="slider-watermark" aria-hidden="true">CHM SALEUX</div>
 
-		{# ── FILIGRANE GRAND TITRE ── #}
-		<div class="slider-watermark" aria-hidden="true">CHM SALEUX</div>
-
-		{# ── CONTENU BAS-GAUCHE ── #}
-		<div class="slider-content">
-			<div class="hero-eyebrow">
-				<span class="hero-eyebrow-dot"></span>
-				Saleux, Somme &bull; Depuis 1998
-			</div>
-
-			<h1 class="slider-title">
+	{# ── CONTENU BAS-GAUCHE ── #}
+	<div class="slider-content">
+<h1 class="slider-title">
+			{% if app.user and not is_preview_mode %}
+				Bonjour,<br>
+				<span class="slider-title-accent">{{ app.user.firstName }} !</span>
+			{% else %}
 				Club d'Haltérophilie<br>
 				<span class="slider-title-accent">&amp; Musculation</span>
-			</h1>
+			{% endif %}
+		</h1>
 
+		{% if app.user and not is_preview_mode %}
+			<p class="slider-subtitle">Retrouvez vos séances, vos progrès et l'actualité du club.</p>
+		{% else %}
 			<p class="slider-subtitle">Rejoignez une communauté de passionnés et repoussez vos limites chaque jour.</p>
+		{% endif %}
 
-			<div class="slider-cta">
+		<div class="slider-cta">
+			{% if app.user and not is_preview_mode %}
+				<a href="{{ path(is_granted('ROLE_ADMIN') ? 'admin_dashboard' : 'dashboard') }}" class="hero-cta-primary">
+					MON TABLEAU DE BORD
+				</a>
+			{% else %}
 				<a href="{{ path('app_auth_choice') }}" class="hero-cta-primary">
 					NOUS REJOINDRE
 				</a>
-				<a href="{{ path('app_club') }}" class="slider-cta-play">
-					<span class="play-btn">
-						<i class="fa-solid fa-play"></i>
-					</span>
+				<a href="{{ path('app_club') }}" class="hero-cta-white">
 					Découvrir le club
 				</a>
-			</div>
-		</div>
-
-		{# Badge FFHM #}
-		<div class="badge-ffhm">
-			<span class="badge-text">Club affilié</span>
-			<span class="badge-separator"></span>
-			<img src="{{ asset('images/ffhm.png') }}" alt="Logo FFHM" loading="lazy" decoding="async" width="80" height="30">
-		</div>
-
-		{# ── BARRE STATS EN BAS ── #}
-		<div class="slider-stats-bar">
-			<div class="slider-stat">
-				<span class="slider-stat-num" id="adherents-counter">85+</span>
-				<span class="slider-stat-label">Adhérents</span>
-			</div>
-			<div class="slider-stat-div"></div>
-			<div class="slider-stat">
-				<span class="slider-stat-num">300</span>
-				<span class="slider-stat-label">m² d'installations</span>
-			</div>
-			<div class="slider-stat-div"></div>
-			<div class="slider-stat">
-				<span class="slider-stat-num">30+</span>
-				<span class="slider-stat-label">Compétitions</span>
-			</div>
-			<div class="slider-stat-div"></div>
-			<div class="slider-stat">
-				<span class="slider-stat-num">+25</span>
-				<span class="slider-stat-label">Ans d'expérience</span>
-			</div>
-		</div>
-
-		{# ── DOTS DE NAVIGATION ── #}
-		<div class="slider-dots">
-			<button class="slider-dot active" data-slide="0" aria-label="Slide 1">1</button>
-			<button class="slider-dot" data-slide="1" aria-label="Slide 2">2</button>
-			<button class="slider-dot" data-slide="2" aria-label="Slide 3">3</button>
-			<button class="slider-dot" data-slide="3" aria-label="Slide 4">4</button>
-		</div>
-
-	{% else %}
-		{# ═══════════════════════════════════════
-			   VUE CONNECTÉE (inchangée)
-			   ═══════════════════════════════════════ #}
-
-		<div class="hero-photos">
-			<picture>
-				<source srcset="{{ asset('images/club/club3.webp') }}" type="image/webp">
-				<img class="hero-img hero-img-desktop" src="{{ asset('images/club/club3.webp') }}" alt="CHM Saleux" loading="eager" fetchpriority="high" decoding="async">
-			</picture>
-			<img class="hero-img hero-img-mobile" src="{{ asset('images/club/robert.jpg') }}" alt="CHM Saleux" loading="eager" fetchpriority="high" decoding="async">
-		</div>
-		<div class="hero-grad"></div>
-
-		<div class="hero-content">
-			<div class="user-header">
-				<h1 class="club-title user-welcome">
-					<span class="greeting">Ravi de vous revoir,</span>
-					<span class="user-name">{{ app.user.firstName }}!</span>
-				</h1>
-				<p class="club-date">
-					{{ "now"|format_date(locale='fr', pattern='EEEE d MMMM Y')|capitalize }}
-				</p>
-			</div>
-
-			{% if heroStats and heroStats.sessions > 0 %}
-				<div class="hero-stats-container">
-					<p class="stats-mini-title">Vos 30 derniers jours</p>
-					<div class="hero-stats-row">
-						<div class="hero-stat-card">
-							<span class="hero-stat-value">{{ heroStats.sessions }}</span>
-							<span class="hero-stat-label">Séances</span>
-						</div>
-						<div class="hero-stat-divider"></div>
-						<div class="hero-stat-card">
-							<span class="hero-stat-value">
-								{% set kg = (heroStats.volume / 1000)|round(1) %}
-								{% if kg >= 1 %}
-									{{ kg }}<small>t</small>
-								{% else %}
-									{{ heroStats.volume|round }}<small>kg</small>
-								{% endif %}
-							</span>
-							<span class="hero-stat-label">Soulevés</span>
-						</div>
-						<div class="hero-stat-divider"></div>
-						<div class="hero-stat-card">
-							<span class="hero-stat-value">
-								{% if heroStats.streak > 1 %}
-									{{ heroStats.streak }}<span class="streak-emoji">🔥</span>
-								{% else %}
-									{% set h = (heroStats.duration / 3600)|round(0, 'floor') %}
-									{{ h }}<small>h</small>
-								{% endif %}
-							</span>
-							<span class="hero-stat-label">{{ heroStats.streak > 1 ? 'Jours suivis' : "D'entraînement" }}</span>
-						</div>
-					</div>
-				</div>
-			{% else %}
-				<div class="empty-stats-hero">
-					<p class="club-subtitle user-subtitle">
-						Aucune séance enregistrée ce mois-ci. Prêt à reprendre l'entraînement ?
-					</p>
-				</div>
 			{% endif %}
-
-			<div class="hero-buttons">
-				<a href="{{ path('dashboard') }}" class="nous-rejoindre">MON TABLEAU DE BORD</a>
-				<a href="{{ path('actualites') }}" class="btn-en-savoir-plus">ACTUALITÉS</a>
-			</div>
-
-			<div class="badge-ffhm">
-				<span class="badge-text">Club affilié</span>
-				<span class="badge-separator"></span>
-				<img src="{{ asset('images/ffhm.png') }}" alt="Logo FFHM" loading="lazy" decoding="async" width="80" height="30">
-			</div>
 		</div>
+	</div>
 
-	{% endif %}
+	{# Badge FFHM #}
+	<div class="badge-ffhm">
+		<span class="badge-text">Club affilié</span>
+		<span class="badge-separator"></span>
+		<img src="{{ asset('images/ffhm.png') }}" alt="Logo FFHM" loading="lazy" decoding="async" width="80" height="30">
+	</div>
+
+	{# ── BARRE STATS EN BAS ── #}
+	<div class="slider-stats-bar">
+		<div class="slider-stat">
+			<span class="slider-stat-num" id="adherents-counter">85+</span>
+			<span class="slider-stat-label">Adhérents</span>
+		</div>
+		<div class="slider-stat-div"></div>
+		<div class="slider-stat">
+			<span class="slider-stat-num">300</span>
+			<span class="slider-stat-label">m² d'installations</span>
+		</div>
+		<div class="slider-stat-div"></div>
+		<div class="slider-stat">
+			<span class="slider-stat-num">30+</span>
+			<span class="slider-stat-label">Compétitions</span>
+		</div>
+		<div class="slider-stat-div"></div>
+		<div class="slider-stat">
+			<span class="slider-stat-num">+25</span>
+			<span class="slider-stat-label">Ans d'expérience</span>
+		</div>
+	</div>
+
+	{# ── DOTS DE NAVIGATION ── #}
+	<div class="slider-dots">
+		<button class="slider-dot active" data-slide="0" aria-label="Slide 1">1</button>
+		<button class="slider-dot" data-slide="1" aria-label="Slide 2">2</button>
+		<button class="slider-dot" data-slide="2" aria-label="Slide 3">3</button>
+		<button class="slider-dot" data-slide="3" aria-label="Slide 4">4</button>
+	</div>
 
 </section>

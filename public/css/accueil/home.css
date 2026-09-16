@@ -148,7 +148,7 @@
   padding: 12px 26px;
   font-size: var(--btn-font-size);
   letter-spacing: 0.8px;
-  border-radius: var(--btn-radius);
+  border-radius: 0;
   border: 2px solid var(--primary-color);
   display: inline-flex;
   justify-content: center;
@@ -345,6 +345,7 @@
     height: auto;
     min-height: 100vh;
     align-items: flex-start;
+    margin-top: 0 !important;
   }
 
   .hero-img-desktop {
@@ -361,7 +362,7 @@
   }
 
   .hero-content {
-    padding-top: 150px;
+    padding-top: 60px;
     padding-bottom: 40px;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
@@ -3431,7 +3432,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: 16px 36px;
-  border-radius: 4px;
+  border-radius: 0;
   text-decoration: none;
   transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
 }
@@ -3439,6 +3440,24 @@
   background: #d96800;
   transform: translateY(-2px);
   box-shadow: 0 10px 35px rgba(245,119,6,0.45);
+}
+.hero-cta-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  color: #0a0a0a;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 16px 36px;
+  border-radius: 0;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+.hero-cta-white:hover {
+  background: rgba(255,255,255,0.85);
 }
 
 .slider-cta-play {
@@ -4734,6 +4753,7 @@
   position: relative;
   padding: 60px 5% 80px;
   overflow: hidden;
+  background: #161616;
 }
 
 .hm-equip-head {
@@ -5379,7 +5399,7 @@
 .slide-4 { background-image: url('/images/club/bg.jpg'); }
 
 @media (max-width: 768px) {
-  .slide-1 { background-image: url('/images/club/robert.jpg') !important; background-position: center 20% !important; opacity: 1 !important; }
+  .slide-1 { background-image: url('/images/club/robert.jpg') !important; background-size: cover !important; background-position: center top !important; opacity: 1 !important; }
   .slide-2, .slide-3, .slide-4 { display: none; }
 }
 
@@ -5476,15 +5496,6 @@
 }
 
 
-/* ── Variante blanc doux ── */
-.hm-news .arc-card--soft,
-.hm-news .arc-card--soft .arc-card-body {
-  background: #faf8f5;
-}
-.hm-news .arc-card--soft .arc-card-title  { color: #0a0a0a; }
-.hm-news .arc-card--soft .arc-card-eyebrow { color: rgba(0,0,0,0.45); }
-.hm-news .arc-card--soft .arc-card-excerpt { color: rgba(0,0,0,0.5); }
-.hm-news .arc-card--soft .arc-card-date   { color: rgba(0,0,0,0.38); }
 
 /* ── Variante orange ── */
 .hm-news .arc-card--orange,
@@ -5507,14 +5518,14 @@
   text-transform: uppercase;
 }
 .hm-news .hm-btn--outline {
-  background: #fff;
-  color: #0a0a0a;
-  border-color: #fff;
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.18);
 }
 .hm-news .hm-btn--outline:hover {
-  background: rgba(255,255,255,0.82);
-  border-color: rgba(255,255,255,0.82);
-  color: #0a0a0a;
+  border-color: #F57706;
+  background: rgba(245,119,6,0.06);
+  color: #fff;
 }
 
 /* ── Grid : featured gauche + 2 cards droite ── */
@@ -6869,7 +6880,7 @@
     height: 75vh;
     min-height: 480px;
   }
-  .slide-1 { background-position: center 20% !important; }
+  .slide-1 { background-size: cover !important; background-position: center top !important; }
 
   /* Filigranes ultra compact */
   .hm-equip-watermark,

@@ -1,32 +1,51 @@
 {# ── SECTION : DERNIÈRES ACTUALITÉS ── #}
 <section class="hm-news">
-	<div class="hm-news-head">
-		<div>
-			<span class="hm-label">Actualités</span>
-			<h2 class="hm-title">Dernières <span class="hm-orange">nouvelles</span></h2>
-		</div>
-		<a href="{{ path('actualites') }}" class="hm-btn hm-btn--outline">Tout voir <i class="fa-solid fa-arrow-right"></i></a>
-	</div>
+	<div class="hm-news-watermark" aria-hidden="true">ACTUALITÉS</div>
 
-	<div class="hm-news-list">
-		{% for article in articles|slice(0, 3) %}
-		<a href="{{ path('article_show', { id: article.id }) }}" class="hm-news-row">
-			<div class="hm-news-row-content">
-				<span class="hm-news-date">{{ article.publishedAt|date('d/m/Y') }}</span>
-				<h3 class="hm-news-row-title">{{ article.title|length > 70 ? article.title|slice(0, 70) ~ '…' : article.title }}</h3>
-				<p class="hm-news-row-excerpt">{{ article.description|striptags|length > 100 ? article.description|striptags|slice(0, 100) ~ '…' : article.description|striptags }}</p>
-				<span class="hm-news-more">Lire l'article <i class="fa-solid fa-arrow-right"></i></span>
-			</div>
-			<div class="hm-news-row-img">
-				{% if article.photo %}
-					<img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}" loading="lazy">
-				{% else %}
-					<img src="{{ asset('images/article.jpg') }}" alt="CHM Saleux">
-				{% endif %}
-			</div>
-		</a>
-		{% else %}
-			<p class="hm-news-empty">De nouvelles actualités arrivent bientôt.</p>
-		{% endfor %}
-	</div>
+	{% if articles is not empty %}
+		<div class="arc-grid">
+			{% for article in articles|slice(0, 3) %}
+				<a href="{{ path('article_show', { id: article.id }) }}" class="arc-card arc-card--soft">
+					<div class="arc-card-media">
+						<img
+							class="arc-card-img"
+							src="{{ article.photo ? asset('uploads/' ~ article.photo) : asset('images/article.jpg') }}"
+							alt="{{ article.title }}"
+							loading="lazy"
+							draggable="false">
+					</div>
+					<div class="arc-card-body">
+						<span class="arc-card-eyebrow">{{ article.category ? article.category.name|capitalize : 'Info' }}</span>
+						<h4 class="arc-card-title">{{ article.title }}</h4>
+						{% if article.description %}
+							<p class="arc-card-excerpt">{{ article.description|striptags|slice(0, 110) }}…</p>
+						{% endif %}
+						<div class="arc-card-footer">
+							<span class="arc-card-date">{{ article.publishedAt|date('d/m/Y') }}</span>
+						</div>
+					</div>
+				</a>
+			{% endfor %}
+		</div>
+		<div class="hm-news-cta">
+			<a href="{{ path('actualites') }}" class="hm-btn hm-btn--outline">Voir toutes les actualités</a>
+		</div>
+	{% else %}
+		<p class="hm-news-empty">De nouvelles actualités arrivent bientôt.</p>
+	{% endif %}
+
 </section>
+
+<script nonce="{{ csp_nonce('script') }}">
+(function() {
+    var el = document.querySelector('.hm-news-watermark');
+    if (!el) return;
+    var obs = new IntersectionObserver(function(entries) {
+        if (entries[0].isIntersecting) {
+            el.classList.add('is-visible');
+            obs.disconnect();
+        }
+    }, { threshold: 0.4 });
+    obs.observe(el);
+})();
+</script>

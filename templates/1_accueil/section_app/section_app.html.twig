@@ -1,25 +1,11 @@
 {# ── APPLICATION MOBILE ── #}
 <section class="app-section">
 
-	{# ── Décors background ── #}
-	<div class="app-grid-bg"></div>
+	<div class="app-watermark" aria-hidden="true">APPLICATION<br>MOBILE</div>
+
 
 	{# ── Colonne gauche : texte ── #}
 	<div class="app-copy">
-
-		<div class="app-label-row">
-			<span class="hm-label">Notre application</span>
-			<span class="app-coming-badge">
-				<span class="app-coming-dot"></span>
-				Bientôt disponible
-			</span>
-		</div>
-
-		<h2 class="app-headline">
-			CHM Saleux,<br>
-			à portée<br>
-			<span class="hm-orange">de main.</span>
-		</h2>
 
 		<p class="app-lead">Vous pourrez bientôt gérer vos entraînements, suivre vos progrès et rester connecté au club, où que vous soyez.</p>
 
@@ -45,13 +31,6 @@
 					<span>Licence, abonnement et documents en un clic</span>
 				</div>
 			</li>
-			<li class="app-benefit">
-				<i class="fa-solid fa-circle-check app-benefit-icon"></i>
-				<div>
-					<strong>Actualités en temps réel</strong>
-					<span>Compétitions, événements et news directement dans votre poche</span>
-				</div>
-			</li>
 		</ul>
 
 		<div class="app-stores">
@@ -70,11 +49,6 @@
 				</div>
 			</span>
 		</div>
-		<p class="app-stores-note">
-			<i class="fa-regular fa-clock"></i>
-			Disponible prochainement sur iOS et Android
-		</p>
-
 	</div>
 
 	{# ── Colonne droite : carousel mockups ── #}
@@ -82,6 +56,12 @@
 
 		<div class="app-carousel-wrapper">
 			<div class="app-carousel-track">
+
+				<!--
+					SPOTLIGHT SVG — triangle inversé (faisceau) + ellipse (flaque au sol).
+					SVG feGaussianBlur : region étendue → bords vraiment doux, pas clippés.
+					viewBox 1000×642 : 1000 unités de large, 642 = hauteur exacte du track.
+				-->
 
 				<div class="app-slide is-active" data-index="0">
 					<img src="{{ asset('images/mockup-screen-1.png') }}" alt="Accueil application CHM Saleux" loading="lazy">
@@ -98,13 +78,50 @@
 			</div>
 		</div>
 
-		{# Dots pagination ── #}
+	</div>
+
+	{# ── Ligne de bas : note + dots ── #}
+	<div class="app-bottom-row">
+		<p class="app-stores-note">
+			<i class="fa-regular fa-clock"></i>
+			Disponible prochainement sur iOS et Android
+		</p>
 		<div class="app-dots">
 			<span class="app-dot app-dot--active" data-index="0" role="button" aria-label="Écran 1"></span>
 			<span class="app-dot" data-index="1" role="button" aria-label="Écran 2"></span>
 			<span class="app-dot" data-index="2" role="button" aria-label="Écran 3"></span>
 		</div>
-
 	</div>
+
+	{# ── Mobile uniquement : note sous les btns + dots sous le carousel ── #}
+	<p class="app-stores-note app-stores-note--mobile">
+		<i class="fa-regular fa-clock"></i>
+		Disponible prochainement
+	</p>
+	<div class="app-dots app-dots--mobile">
+		<span class="app-dot app-dot--active" data-index="0" role="button" aria-label="Écran 1"></span>
+		<span class="app-dot" data-index="1" role="button" aria-label="Écran 2"></span>
+		<span class="app-dot" data-index="2" role="button" aria-label="Écran 3"></span>
+	</div>
+
+	<script nonce="{{ csp_nonce('script') }}">
+	(function() {
+		var section = document.querySelector('.app-section');
+		var el = document.querySelector('.app-watermark');
+		if (!section || !el) return;
+		var obs = new IntersectionObserver(function(entries) {
+			if (entries[0].isIntersecting) {
+				el.classList.add('is-visible');
+				obs.disconnect();
+			}
+		}, { threshold: 0.2 });
+		obs.observe(section);
+
+		var mist = section.querySelector('.app-mist');
+		if (mist) mist.playbackRate = 0.65;
+		if (mist) mist.addEventListener('loadedmetadata', function() { mist.playbackRate = 0.65; });
+
+	})();
+	</script>
 
 </section>
