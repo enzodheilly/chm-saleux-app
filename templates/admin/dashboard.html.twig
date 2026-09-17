@@ -1,211 +1,275 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Tableau de bord
-{% endblock %}
+{% block title %}Dashboard — CHM Saleux{% endblock %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/dashboard.css') }}">
 {% endblock %}
-
 
 {% block body %}
 
-	{# ================================================================= #}
-	{# 🔒 LOCK SCREEN (SI QR CODE REQUIS)                               #}
-	{# ================================================================= #}
+{% if qrCodeContent is defined and qrCodeContent %}
+    <div class="gatekeeper-overlay">
+        <div class="gatekeeper-card">
+            <div class="gatekeeper-logo">
+                <img src="{{ asset('images/favicon/icon2.png') }}" width="50">
+            </div>
+            <h1 class="gatekeeper-title">Vérification requise</h1>
+            <p class="gatekeeper-subtitle">Scannez le code QR avec votre application 2FA pour accéder au panel administrateur.</p>
+            <div class="gatekeeper-qr">
+                <img src="{{ qr_code_data_uri(qrCodeContent) }}" alt="QR Code" width="180" height="180">
+            </div>
+            <form method="POST">
+                <input type="text" name="auth_code" class="gatekeeper-input" placeholder="000000" autofocus autocomplete="off" maxlength="6">
+                <button type="submit" class="btn-unlock">Accéder au Dashboard</button>
+            </form>
+            <a href="{{ path('home') }}" class="gatekeeper-back">Retour au site</a>
+        </div>
+    </div>
+{% else %}
 
-		{% if qrCodeContent is defined and qrCodeContent %}
+{# ── WELCOME ─────────────────────────────────────────────── #}
+<div class="db-welcome">
+    <div class="db-welcome-left">
+        <h2 class="db-welcome-title">Bonjour, <span>{{ app.user.firstname|default('Admin') }}</span></h2>
+        <p class="db-welcome-sub">Voici l'état de votre plateforme en temps réel.</p>
+    </div>
+    <div class="db-welcome-right">
+        <div class="db-live-clock" id="liveClock"></div>
+        <a href="{{ path('admin_security_logs') }}" class="db-btn-outline">
+            <i class="fa-solid fa-shield-halved"></i> Journal de sécurité
+        </a>
+    </div>
+</div>
 
-			<div class="gatekeeper-overlay"> <div class="gatekeeper-card">
+{# ── KPI CARDS ────────────────────────────────────────────── #}
+<div class="db-kpi-grid">
 
-				<div class="gatekeeper-logo">
-					<img src="{{ asset('images/favicon/icon2.png') }}" width="50">
-				</div>
+    <div class="db-kpi-card">
+        <div class="db-kpi-body">
+            <span class="db-kpi-label">Utilisateurs</span>
+            <strong class="db-kpi-value">{{ totalUsers }}</strong>
+            <span class="db-kpi-sub">{{ verifiedUsers }} vérifiés</span>
+        </div>
+    </div>
 
-				<h1 class="gatekeeper-title">Vérification requise</h1>
-				<p class="gatekeeper-subtitle">
-					Scannez le code QR avec votre application 2FA pour accéder au panel administrateur.
-				</p>
+    <div class="db-kpi-card">
+        <div class="db-kpi-body">
+            <span class="db-kpi-label">Connexions (24h)</span>
+            <strong class="db-kpi-value db-kpi-value--green">{{ successLast24h }}</strong>
+            <span class="db-kpi-sub">réussies</span>
+        </div>
+    </div>
 
-				<div class="gatekeeper-qr">
-					<img src="{{ qr_code_data_uri(qrCodeContent) }}" alt="QR Code" width="180" height="180">
-				</div>
+    <div class="db-kpi-card">
+        <div class="db-kpi-body">
+            <span class="db-kpi-label">Échecs (24h)</span>
+            <strong class="db-kpi-value db-kpi-value--red">{{ failsLast24h }}</strong>
+            <span class="db-kpi-sub">tentatives échouées</span>
+        </div>
+    </div>
 
-				<form method="POST">
-					<input type="text" name="auth_code" class="gatekeeper-input" placeholder="000000" autofocus autocomplete="off" maxlength="6">
-					<button type="submit" class="btn-unlock">Accéder au Dashboard</button>
-				</form>
+    <div class="db-kpi-card">
+        <div class="db-kpi-body">
+            <span class="db-kpi-label">Actions admin (24h)</span>
+            <strong class="db-kpi-value db-kpi-value--orange">{{ adminActionsLast24h }}</strong>
+            <span class="db-kpi-sub">opérations</span>
+        </div>
+    </div>
 
-				<a href="{{ path('home') }}" class="gatekeeper-back">
-					Retour au site
-				</a>
+    <div class="db-kpi-card">
+        <div class="db-kpi-body">
+            <span class="db-kpi-label">Newsletter</span>
+            <strong class="db-kpi-value">{{ newsletterSubs }}</strong>
+            <span class="db-kpi-sub">abonnés confirmés</span>
+        </div>
+    </div>
 
-			</div>
-		</div>
+</div>
 
-	{% else %}
+{# ── LIGNE : Graphique linéaire connexions (full-width) ────── #}
+<div class="db-card db-card--full">
+    <div class="db-card-header">
+        <div>
+            <span class="db-card-eyebrow">Activité d'authentification</span>
+            <h3 class="db-card-title">Connexions réussies vs Échecs</h3>
+        </div>
+        <div class="db-period-tabs" id="periodTabs">
+            <button class="db-period-btn active" data-period="d7">7 jours</button>
+            <button class="db-period-btn" data-period="d14">14 jours</button>
+            <button class="db-period-btn" data-period="d30">30 jours</button>
+        </div>
+    </div>
+    <div class="db-card-body">
+        <canvas id="lineChart" height="60"></canvas>
+    </div>
+</div>
 
-		{# ================================================================= #}
-		{# 📊 DASHBOARD CONTENT                                             #}
-		{# ================================================================= #}
+{# ── LIGNE 3-col : Donut + Admin actions + Recent logs ───── #}
+<div class="db-row-three">
 
-			<div class="dashboard-header"> <div>
-				<h2>Bienvenue,
-					{{ app.user.firstname|default('Admin') }}</h2>
-				<p>Voici ce qui se passe sur votre plateforme aujourd'hui.</p>
-			</div>
-			<div></div>
-		</div>
+    {# Donut — répartition types #}
+    <div class="db-card">
+        <div class="db-card-header">
+            <div>
+                <span class="db-card-eyebrow">Répartition</span>
+                <h3 class="db-card-title">Types de logs</h3>
+            </div>
+        </div>
+        <div class="db-card-body db-donut-layout">
+            <canvas id="donutChart"></canvas>
+            <div class="db-donut-legend" id="donutLegend"></div>
+        </div>
+        <div class="db-card-divider"></div>
+        <div class="db-card-header">
+            <div>
+                <span class="db-card-eyebrow">Appareils</span>
+                <h3 class="db-card-title">Systèmes d'exploitation</h3>
+            </div>
+        </div>
+        <div class="db-card-body db-donut-layout">
+            <canvas id="osChart"></canvas>
+            <div class="db-donut-legend" id="osLegend"></div>
+        </div>
+    </div>
 
-		{# 1. KPIs #}
-		<div class="stats-grid">
+    {# Recent admin actions #}
+    <div class="db-card">
+        <div class="db-card-header">
+            <div>
+                <span class="db-card-eyebrow">Actions récentes</span>
+                <h3 class="db-card-title">Opérations admin</h3>
+            </div>
+            <a href="{{ path('admin_security_logs', {filter: 'admin'}) }}" class="db-link-more">Voir tout →</a>
+        </div>
+        <div class="db-card-body db-card-body--nopad">
+            <table class="db-table">
+                <thead>
+                    <tr>
+                        <th>Heure</th>
+                        <th>Action</th>
+                        <th>Par</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in recentAdminLogs %}
+                    <tr>
+                        <td class="db-td-mono">{{ log.createdAt|date('H:i') }}<br><span class="db-td-dim">{{ log.createdAt|date('d/m') }}</span></td>
+                        <td><span class="db-td-small">{{ log.message|slice(0, 40) }}{% if log.message|length > 40 %}…{% endif %}</span></td>
+                        <td class="db-td-mono db-td-small">{{ log.user ? log.user.email|pseudonymize_email : '—' }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="3" class="db-td-empty">Aucune action récente.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-			<div class="stat-card">
-				<div class="stat-label">Utilisateurs</div>
-				<div class="stat-value">{{ totalUsers|default(0) }}</div>
-				<div class="stat-trend trend-up">
-					<span class="stat-accent">{{ verifiedUsers|default(0) }}</span>
-					vérifiés
-				</div>
-			</div>
+    {# Recent logs table #}
+    <div class="db-card">
+        <div class="db-card-header">
+            <div>
+                <span class="db-card-eyebrow">Sécurité</span>
+                <h3 class="db-card-title">Derniers événements</h3>
+            </div>
+            <a href="{{ path('admin_security_logs') }}" class="db-link-more">Voir tout →</a>
+        </div>
+        <div class="db-card-body db-card-body--nopad">
+            <table class="db-table">
+                <thead>
+                    <tr>
+                        <th>Heure</th>
+                        <th>Événement</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in recentLogs %}
+                    <tr>
+                        <td class="db-td-mono">{{ log.createdAt|date('H:i') }}<br><span class="db-td-dim">{{ log.createdAt|date('d/m') }}</span></td>
+                        <td>
+                            {% if log.type == 'Admin' %}
+                                <span class="db-badge db-badge--orange">ADMIN</span>
+                            {% elseif log.type == 'Connexion' and log.success is same as(true) %}
+                                <span class="db-badge db-badge--green">OK</span>
+                            {% elseif log.type == 'Connexion' and log.success is same as(false) %}
+                                <span class="db-badge db-badge--red">ÉCHEC</span>
+                            {% elseif log.type in ['Session'] %}
+                                <span class="db-badge db-badge--blue">SESSION</span>
+                            {% else %}
+                                <span class="db-badge db-badge--gray">INFO</span>
+                            {% endif %}
+                            <span class="db-td-dim db-td-small">{{ log.message|slice(0, 30) }}{% if log.message|length > 30 %}…{% endif %}</span>
+                        </td>
+                        <td>
+                            {% if log.success is same as(false) %}
+                                <span class="db-dot db-dot--red"></span>
+                            {% elseif log.type == 'Admin' %}
+                                <span class="db-dot db-dot--orange"></span>
+                            {% else %}
+                                <span class="db-dot db-dot--green"></span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="3" class="db-td-empty">Aucun log récent.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-			<div class="stat-card">
-				<div class="stat-label">Newsletter</div>
-				<div class="stat-value">{{ newsletterSubscribers|default(0) }}</div>
-				<div class="stat-trend trend-up">
-					+{{ newSubscribersToday|default(0) }}
-					aujourd'hui
-				</div>
-			</div>
+</div>
 
-			<div class="stat-card">
-				<div class="stat-label">Sécurité</div>
-				<div class="stat-value">{{ successfulAttempts|default(0) }}</div>
-				<div class="stat-trend">Connexions (24h)</div>
-			</div>
+{# ── LIGNE 2-col : Activité par heure + Newsletter ─────────── #}
+<div class="db-row-split">
 
-			<div class="stat-card">
-				<div class="stat-label">Athlètes</div>
-				<div class="stat-value">{{ totalAthletes|default(0) }}</div>
-				<div class="stat-trend">Actifs</div>
-			</div>
+    {# Activité par heure #}
+    <div class="db-card">
+        <div class="db-card-header">
+            <div>
+                <span class="db-card-eyebrow">30 derniers jours</span>
+                <h3 class="db-card-title">Activité par heure</h3>
+            </div>
+            <span class="db-kpi-pill">00h → 23h</span>
+        </div>
+        <div class="db-card-body">
+            <canvas id="hourlyChart" height="130"></canvas>
+        </div>
+    </div>
 
-		</div>
+    {# Newsletter bar chart #}
+    <div class="db-card">
+        <div class="db-card-header">
+            <div>
+                <span class="db-card-eyebrow">30 derniers jours</span>
+                <h3 class="db-card-title">Inscriptions Newsletter</h3>
+            </div>
+            <span class="db-kpi-pill">{{ newsletterSubs }} abonnés</span>
+        </div>
+        <div class="db-card-body">
+            <canvas id="barChart" height="130"></canvas>
+        </div>
+    </div>
 
-		{# 2. GRAPHIQUES & TABLEAUX #}
-		<div
-			class="grid-split">
+</div>
 
-			{# COLONNE GAUCHE #}
-			<div>
-
-				<div class="card">
-					<div class="card-header">
-						<h3 class="card-title">Trafic & Connexions (7 jours)</h3>
-					</div>
-					<div class="card-body">
-						<canvas id="loginChart" height="80"></canvas>
-					</div>
-				</div>
-
-				<div class="card">
-					<div class="card-header">
-						<h3 class="card-title">Dernières tentatives d'accès</h3>
-					</div>
-					<div class="card-body no-padding">
-						<div class="table-scroll">
-							<table class="clean-table">
-								<thead>
-									<tr>
-										<th>Utilisateur</th>
-										<th>IP</th>
-										<th>Date</th>
-										<th>Statut</th>
-									</tr>
-								</thead>
-								<tbody>
-									{% for attempt in recentAttempts|slice(0, 5) %}
-										<tr>
-											<td class="td-bold">{{ attempt.emailAttempt }}</td>
-											<td class="td-muted">{{ attempt.ip ?? 'N/A' }}</td>
-											<td>{{ attempt.createdAt|date('d/m - H:i') }}</td>
-											<td>
-												{% if attempt.success %}
-													<span class="badge badge-success">Succès</span>
-												{% else %}
-													<span class="badge badge-danger">Échec</span>
-												{% endif %}
-											</td>
-										</tr>
-									{% else %}
-										<tr>
-											<td colspan="4" class="td-empty">
-												Aucune donnée récente.
-											</td>
-										</tr>
-									{% endfor %}
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-
-			</div>
-
-			{# COLONNE DROITE #}
-			<div>
-
-				<div class="card">
-					<div class="card-header">
-						<h3 class="card-title">Inscriptions Newsletter</h3>
-					</div>
-					<div class="card-body">
-						<canvas id="newsletterChart" height="200"></canvas>
-					</div>
-				</div>
-
-				<div class="card">
-					<div class="card-header">
-						<h3 class="card-title">Fil d'activité</h3>
-					</div>
-					<div class="card-body no-padding">
-
-						{% for item in recentActivity|default([])|slice(0, 5) %}
-							<div class="activity-item">
-								<div class="dot"></div>
-								<div>
-									<div class="activity-text">{{ item.text|striptags }}</div>
-									<span class="activity-date">{{ item.date|date('d/m à H:i') }}</span>
-								</div>
-							</div>
-						{% else %}
-							<div class="activity-empty">
-								R.A.S pour le moment.
-							</div>
-						{% endfor %}
-
-					</div>
-				</div>
-
-			</div>
-
-		</div>
-
-	{% endif %}
-
+{% endif %}
 {% endblock %}
 
 {% block javascripts %}
-	{% if not qrCodeContent %} <script src="{{ asset('js/vendor/chart.min.js') }}" nonce="{{ csp_nonce('script') }}"></script>
-
-		 <script nonce="{{ csp_nonce('script') }}">
-							window.dashboardData = {
-								labels7: {{ labels7|default(['L','M','M','J','V','S','D'])|json_encode|raw }},
-								loginsSuccessByDay: {{ loginsSuccessByDay|default([0,0,0,0,0,0,0])|json_encode|raw }},
-								newSubscribersByDay: {{ newSubscribersByDay|default([0,0,0,0,0,0,0])|json_encode|raw }}
-							};
-						</script>
-
-		 <script src="{{ asset('js/admin/dashboard/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
-	{% endif %}
+{% if not (qrCodeContent is defined and qrCodeContent) %}
+<script src="{{ asset('js/vendor/chart.min.js') }}" nonce="{{ csp_nonce('script') }}"></script>
+<script nonce="{{ csp_nonce('script') }}">
+window.__dash = {
+    line:   {{ lineData|json_encode|raw }},
+    donut:  {{ donutData|json_encode|raw }},
+    bar:    {{ newsletterChartData|json_encode|raw }},
+    hourly: {{ hourlyData|json_encode|raw }},
+    os:     {{ osData|json_encode|raw }}
+};
+</script>
+<script src="{{ asset('js/admin/dashboard/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
+{% endif %}
 {% endblock %}
