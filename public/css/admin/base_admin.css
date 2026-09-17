@@ -129,14 +129,14 @@ button {
 }
 
 .nav-group-label {
-    padding: 0 1.5rem;
-    margin-top: 1.75rem;
-    margin-bottom: 0.4rem;
-    font-size: 0.65rem;
+    padding: 1.4rem 1.5rem 0.45rem;
+    margin-top: 0;
+    font-size: 0.62rem;
     font-weight: 700;
     text-transform: uppercase;
-    color: var(--text-header);
-    letter-spacing: 0.08em;
+    color: #525268;
+    letter-spacing: 0.1em;
+    border-top: 1px solid var(--border-color);
 }
 
 .nav-item {
