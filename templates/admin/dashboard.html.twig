@@ -31,7 +31,7 @@
 {# ── WELCOME ─────────────────────────────────────────────── #}
 <div class="db-welcome">
     <div class="db-welcome-left">
-        <h2 class="db-welcome-title">Bonjour, <span>{{ app.user.firstname|default('Admin') }}</span></h2>
+        <h2 class="db-welcome-title">Bonjour, <span>{{ app.user.firstname|default('Admin')|capitalize }}</span></h2>
         <p class="db-welcome-sub">Voici l'état de votre plateforme en temps réel.</p>
     </div>
     <div class="db-welcome-right">
