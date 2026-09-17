@@ -88,14 +88,58 @@ document.addEventListener('DOMContentLoaded', function () {
     // 2. Synchroniser le Switch de la page Paramètres (si présent)
     const themeCheckbox = document.getElementById('themeToggleCheckbox');
     if (themeCheckbox) {
-        // Coche la case si on est en mode dark
         themeCheckbox.checked = (html.getAttribute('data-theme') === 'dark');
-        
-        // Écoute le changement du switch
-        themeCheckbox.addEventListener('change', function() {
-            toggleTheme();
-        });
+        themeCheckbox.addEventListener('change', function() { toggleTheme(); });
     }
 
     updateThemeText();
+
+    // 3. Filtrage universel des tableaux admin
+    var tbody = document.querySelector('.admin-table tbody');
+    if (!tbody) return;
+
+    // Ligne "Aucun résultat" ajoutée dynamiquement
+    var noResultRow = document.createElement('tr');
+    noResultRow.id = 'admin-no-result';
+    var noResultTd = document.createElement('td');
+    noResultTd.colSpan = 99;
+    noResultTd.className = 'td-empty';
+    noResultTd.textContent = 'Aucun résultat pour cette recherche.';
+    noResultTd.style.display = 'block'; // sera contrôlé via la ligne parente
+    noResultRow.appendChild(noResultTd);
+    noResultRow.style.display = 'none';
+    tbody.appendChild(noResultRow);
+
+    function applyFilters() {
+        var textEl = document.querySelector('input.search-input');
+        var q = textEl ? textEl.value.toLowerCase().trim() : '';
+
+        // Selects de filtre (ex: filterGoal → data-goal, filterLevel → data-level)
+        var selectFilters = Array.from(
+            document.querySelectorAll('select.search-input')
+        ).map(function (s) {
+            return { key: s.id.replace(/^filter/i, '').toLowerCase(), val: s.value.toLowerCase() };
+        });
+
+        var visibleCount = 0;
+        Array.from(tbody.rows).forEach(function (row) {
+            if (row.id === 'admin-no-result') return;
+            var textOk = !q || row.textContent.toLowerCase().includes(q);
+            var selOk  = selectFilters.every(function (f) {
+                if (!f.val) return true;
+                return (row.dataset[f.key] || '').toLowerCase() === f.val;
+            });
+            var show = textOk && selOk;
+            row.style.display = show ? '' : 'none';
+            if (show) visibleCount++;
+        });
+
+        noResultRow.style.display = visibleCount === 0 ? '' : 'none';
+    }
+
+    var textInput = document.querySelector('input.search-input');
+    if (textInput) textInput.addEventListener('input', applyFilters);
+    document.querySelectorAll('select.search-input').forEach(function (sel) {
+        sel.addEventListener('change', applyFilters);
+    });
 });
