@@ -33,6 +33,7 @@ nelmio_security:
                 - https://maps.googleapis.com
                 - https://maps.gstatic.com
                 - https://www.google.com
+                - https://www.instagram.com
 
             style-src:
                 - "'self'"
@@ -57,6 +58,9 @@ nelmio_security:
                 - https://maps.googleapis.com
                 - https://www.google.com
                 - https://flagcdn.com
+                - https://www.instagram.com
+                - https://*.instagram.com
+                - https://*.cdninstagram.com
 
             connect-src:
                 - "'self'"
@@ -70,11 +74,15 @@ nelmio_security:
                 - https://ipapi.co
 
             frame-src:
+                - "'self'"
+                - "blob:"
                 - https://challenges.cloudflare.com
                 - https://www.google.com
+                - https://www.instagram.com
 
             object-src:
-                - "'none'"
+                - "'self'"
+                - "blob:"
 
             base-uri:
                 - "'self'"

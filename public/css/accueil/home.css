@@ -25,7 +25,7 @@
 .hero-section {
     position: relative;
     margin-top: calc(-1 * var(--nav-height));
-    height: 100vh;
+    height: 85vh;
     min-height: 600px;
   width: 100%;
   overflow: hidden;
@@ -3279,7 +3279,7 @@
 .hero-section {
   position: relative;
   margin-top: -42px;
-  height: 100vh;
+  height: 85vh;
   min-height: 620px;
   width: 100%;
   overflow: hidden;
@@ -3389,7 +3389,7 @@
 }
 
 .slider-title {
-  font-size: clamp(2rem, 5vw, 4rem);
+  font-size: clamp(1.8rem, 4.2vw, 3.4rem);
   font-weight: 900;
   text-transform: uppercase;
   line-height: 1;
@@ -3404,7 +3404,7 @@
 
 /* Sous-titre */
 .slider-subtitle {
-  font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+  font-size: clamp(0.8rem, 1.2vw, 0.95rem);
   color: rgba(255,255,255,0.65);
   font-weight: 400;
   line-height: 1.6;
@@ -3428,10 +3428,10 @@
   background: var(--brand-orange);
   color: #fff;
   font-weight: 800;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 16px 36px;
+  padding: 13px 28px;
   border-radius: 0;
   text-decoration: none;
   transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
@@ -3448,10 +3448,10 @@
   background: #fff;
   color: #0a0a0a;
   font-weight: 800;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 16px 36px;
+  padding: 13px 28px;
   border-radius: 0;
   text-decoration: none;
   transition: background 0.2s, color 0.2s;
@@ -3582,23 +3582,27 @@
   bottom: 100px;
   left: 5.3%;
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 12px;
+  padding: 14px 18px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(6px);
   z-index: 5;
-  opacity: 0.7;
+  opacity: 0.8;
   transition: opacity 0.2s;
 }
 .hero-section .badge-ffhm:hover { opacity: 1; }
 
 .badge-text {
-  color: rgba(255,255,255,0.7);
-  font-size: 0.65rem;
+  color: rgba(255,255,255,0.65);
+  font-size: 0.46rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 0.18em;
 }
-.badge-separator { width: 1px; height: 14px; background: rgba(255,255,255,0.2); }
-.badge-ffhm img { height: 36px; width: auto; }
+.badge-ffhm img { height: 26px; width: auto; min-height: 26px; }
 
 /* ─ Overlay gradient hero v2 (vue connectée) ─ */
 .hero-grad {

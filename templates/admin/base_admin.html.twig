@@ -88,6 +88,7 @@
 						<a href="{{ path('admin_legal_pages_index') }}">Pages statiques</a>
 						<a href="{{ path('admin_articles_index') }}">Articles / Blog</a>
 						<a href="{{ path('admin_new_equipment_index') }}">Nouveaux Matériels</a>
+						<a href="{{ path('admin_document_index') }}">Documents du club</a>
 					</div>
 				</div>
 
@@ -157,11 +158,13 @@
 			</div>
 
 			<div class="sidebar-footer">
-				<div class="sidebar-footer">
-					<a href="{{ path('app_logout') }}" class="logout-link">
-						Se déconnecter
-					</a>
-				</div>
+				<a href="{{ path('admin_preview_on') }}" class="view-site-link">
+					<i class="fa-solid fa-arrow-up-right-from-square"></i>
+					Voir le site
+				</a>
+				<a href="{{ path('app_logout') }}" class="logout-link">
+					Se déconnecter
+				</a>
 			</div>
 		</nav>
 
@@ -174,9 +177,7 @@
 						{% endblock %}
 					</h1>
 				</div>
-				<div class="topbar-right">
-					<button id="theme-toggle">Mode Clair</button>
-				</div>
+				<div class="topbar-right"></div>
 			</header>
 
 			<div class="content">
@@ -196,5 +197,145 @@
 		 <script src="{{ asset('js/admin/base_admin.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 
 		{% block javascripts %}{% endblock %}
+
+		{# ── Modal avertissement expiration session ── #}
+		<div id="session-warn-modal" class="sw-overlay" aria-modal="true" role="dialog" aria-labelledby="sw-title">
+			<div class="sw-box">
+				<div class="sw-icon"><i class="fa-regular fa-clock"></i></div>
+				<h3 id="sw-title" class="sw-title">Êtes-vous toujours là ?</h3>
+				<p class="sw-body">Votre session admin expire dans <strong id="sw-countdown">2:00</strong>.</p>
+				<p class="sw-sub">Sans action, vous serez déconnecté automatiquement.</p>
+				<div class="sw-actions">
+					<button id="sw-btn-stay" class="sw-btn sw-btn--primary">
+						<i class="fa-solid fa-check"></i> Oui, je suis là
+					</button>
+					<button id="sw-btn-leave" class="sw-btn sw-btn--danger">
+						<i class="fa-solid fa-right-from-bracket"></i> Me déconnecter
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<script nonce="{{ csp_nonce('script') }}">
+		(function () {
+			var LIFETIME    = {{ constant('App\\EventSubscriber\\AdminSessionSubscriber::ADMIN_SESSION_LIFETIME') }};
+			var WARN_BEFORE = 120;
+			var PING_URL    = '{{ path('admin_session_ping') }}';
+			var LOGOUT_URL  = '{{ path('app_logout') }}';
+			var LS_KEY      = 'chm_admin_deadline';
+
+			var deadline    = Date.now() + LIFETIME * 1000;
+			localStorage.setItem(LS_KEY, String(deadline));
+
+			var warnTimer   = null;
+			var forceTimer  = null;
+			var cdInterval  = null;
+			var modalActive = false;
+
+			var overlay     = document.getElementById('session-warn-modal');
+			var cdEl        = document.getElementById('sw-countdown');
+			var btnStay     = document.getElementById('sw-btn-stay');
+			var btnLeave    = document.getElementById('sw-btn-leave');
+
+			/* ── Countdown display ── */
+			function formatTime(ms) {
+				var s = Math.max(0, Math.floor(ms / 1000));
+				var m = Math.floor(s / 60);
+				return m + ':' + String(s % 60).padStart(2, '0');
+			}
+
+			function tickCountdown() {
+				var remaining = deadline - Date.now();
+				cdEl.textContent = formatTime(remaining);
+				if (remaining <= 0) { clearInterval(cdInterval); doLogout(); }
+			}
+
+			/* ── Modal show/hide ── */
+			function showModal() {
+				if (modalActive) return;
+				modalActive = true;
+				overlay.classList.add('is-active');
+				cdEl.textContent = formatTime(deadline - Date.now());
+				clearInterval(cdInterval);
+				cdInterval = setInterval(tickCountdown, 1000);
+			}
+
+			function hideModal() {
+				modalActive = false;
+				overlay.classList.remove('is-active');
+				clearInterval(cdInterval);
+			}
+
+			/* ── Logout ── */
+			function doLogout() {
+				window.location.href = LOGOUT_URL;
+			}
+
+			/* ── Schedule timers based on current deadline ── */
+			function scheduleTimers() {
+				clearTimeout(warnTimer);
+				clearTimeout(forceTimer);
+
+				var now       = Date.now();
+				var warnDelay = deadline - WARN_BEFORE * 1000 - now;
+				var expDelay  = deadline - now;
+
+				if (expDelay <= 0) { doLogout(); return; }
+
+				if (warnDelay > 0) {
+					warnTimer = setTimeout(showModal, warnDelay);
+				} else {
+					showModal(); // déjà dans la fenêtre d'avertissement
+				}
+
+				forceTimer = setTimeout(doLogout, expDelay);
+			}
+
+			scheduleTimers();
+
+			/* ── Cross-tab sync via localStorage ── */
+			window.addEventListener('storage', function (e) {
+				if (e.key === LS_KEY && e.newValue) {
+					deadline = parseInt(e.newValue, 10);
+					hideModal();
+					scheduleTimers();
+				}
+			});
+
+			/* ── Résistance au throttling (onglet en arrière-plan) ── */
+			document.addEventListener('visibilitychange', function () {
+				if (document.hidden) return;
+				var now = Date.now();
+				if (now >= deadline) {
+					doLogout();
+				} else if (now >= deadline - WARN_BEFORE * 1000) {
+					showModal();
+				}
+			});
+
+			/* ── Bouton "Oui, je suis là" ── */
+			btnStay.addEventListener('click', function () {
+				fetch(PING_URL, {
+					method: 'GET',
+					headers: { 'X-Requested-With': 'XMLHttpRequest' }
+				})
+				.then(function (r) { return r.json(); })
+				.then(function (data) {
+					if (data.ok) {
+						deadline = Date.now() + LIFETIME * 1000;
+						localStorage.setItem(LS_KEY, String(deadline));
+						hideModal();
+						scheduleTimers();
+					} else {
+						doLogout();
+					}
+				})
+				.catch(doLogout);
+			});
+
+			/* ── Bouton "Me déconnecter" ── */
+			btnLeave.addEventListener('click', doLogout);
+		})();
+		</script>
 	</body>
 </html>

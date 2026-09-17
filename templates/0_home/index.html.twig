@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CHM Saleux — Club d'Haltérophilie et Musculation{% endblock %}
+{% block title %}CHM Saleux — Club d'Haltérophilie et Musculation
+{% endblock %}
 
 {# Le hero plein écran commence à y=0, pas besoin d'offset #}
 {% block main_class %}{% endblock %}
@@ -8,37 +9,34 @@
 {% block body %}
 
 	{# Masque la page instantanément si une position scroll est sauvegardée, pour éviter le flash #}
-	<script nonce="{{ csp_nonce('script') }}">
-	(function(){ if(sessionStorage.getItem('homeScrollPos')) document.documentElement.style.opacity='0'; })();
-	</script>
+	 <script nonce="{{ csp_nonce('script') }}">
+				(function(){ if(sessionStorage.getItem('homeScrollPos')) document.documentElement.style.opacity='0'; })();
+				</script>
 
 	{# 1. Hero #}
 	{% include '1_accueil/section1/section1.html.twig' %}
 
 	{# Fix hauteur hero : buffer de 2px pour couvrir les sub-pixel gaps #}
-	<script nonce="{{ csp_nonce('script') }}">
-	(function(){
-		var h = document.getElementById('accueil');
-		function fix(){ if(h) h.style.height = (window.innerHeight + 60) + 'px'; }
-		fix();
-		window.addEventListener('resize', fix);
-	})();
-	</script>
+	 <script nonce="{{ csp_nonce('script') }}">
+				(function(){
+					var h = document.getElementById('accueil');
+					function fix(){ if(h) h.style.height = Math.round(window.innerHeight * 0.99) + 'px'; }
+					fix();
+					window.addEventListener('resize', fix);
+				})();
+				</script>
 
 	{# 2. Disciplines — fond noir, panels horizontaux #}
 	{% include '1_accueil/section_services/section_services.html.twig' %}
 
-	{# 3. Abonnements — fond blanc #}
-	{% include '1_accueil/section2/section2.html.twig' %}
+	{# 3. Bannière promo abonnement — fond noir #}
+	{% include '1_accueil/section_promo_banner/section_promo_banner.html.twig' %}
 
 	{# 4. Application mobile — fond noir #}
 	{% include '1_accueil/section_app/section_app.html.twig' %}
 
-	{# 5. Cours Collectifs — fond blanc #}
-	{% include '1_accueil/section_cours_co/section_cours_co.html.twig' %}
-
-	{# 6. Nouveaux équipements — fond noir #}
-	{% include '1_accueil/section3/section3.html.twig' with { newEquipments: newEquipments } %}
+	{# 5 + 6. Cours Collectifs + Nouveaux équipements — section unifiée #}
+	{% include '1_accueil/section_club/section_club.html.twig' with { newEquipments: newEquipments } %}
 
 	{# 7. Partenaires — fond blanc #}
 	{% include '1_accueil/section_partenaires/section_partenaires.html.twig' %}
@@ -50,20 +48,19 @@
 	{% include '1_accueil/section_faq/section_faq.html.twig' %}
 
 	{# 10. CTA fermeture #}
-	{% include '1_accueil/section_cta/section_cta.html.twig' %}
+{% include '1_accueil/section_cta/section_cta.html.twig' %}
 
 {% endblock %}
 
-{% block stylesheets %}
+	{% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('css/accueil/home.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/accueil/home.css') }}"> <link rel="stylesheet" href="{{ asset('css/competitions/team-archives.css') }}">
 {% endblock %}
 
 {% block javascripts %}
 	{{ parent() }}
-	<script src="{{ asset('js/accueil/section1/section1.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-	<script src="{{ asset('js/accueil/section2/section2.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-	<script src="{{ asset('js/accueil/section3/section3.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-	<script src="{{ asset('js/accueil/section_app/section_app.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
-	<script src="{{ asset('js/accueil/section_services/section_services.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+ <script src="{{ asset('js/accueil/section1/section1.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+	 <script src="{{ asset('js/accueil/section3/section3.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+	 <script src="{{ asset('js/accueil/section_app/section_app.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
+	 <script src="{{ asset('js/accueil/section_services/section_services.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

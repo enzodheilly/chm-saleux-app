@@ -1,0 +1,240 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Documents du club{% endblock %}
+
+{% block body %}
+<div class="page-header">
+    <div>
+        <h1>Documents du club</h1>
+        <p>Gérez les documents officiels accessibles au public.</p>
+    </div>
+</div>
+
+{% for type, messages in app.flashes %}
+    {% for msg in messages %}
+        <div class="alert alert-{{ type == 'success' ? 'success' : 'error' }}">{{ msg }}</div>
+    {% endfor %}
+{% endfor %}
+
+<div class="settings-layout">
+    <div class="settings-card doc-card">
+
+        {# ── En-tête ── #}
+        <div class="doc-card-header">
+            <div class="doc-card-title">
+                {% if document %}
+                    <a href="{{ asset('documents/reglement-interieur.pdf') }}" target="_blank" class="doc-thumb-link">
+                        {% if hasThumbnail %}
+                            <img src="{{ asset('documents/reglement-interieur-thumb.png') }}" alt="Aperçu règlement intérieur" class="doc-thumb">
+                        {% else %}
+                            <span class="doc-thumb doc-thumb--fallback">
+                                <i class="fa-solid fa-file-pdf"></i>
+                            </span>
+                        {% endif %}
+                    </a>
+                {% else %}
+                    <i class="fa-solid fa-file-pdf doc-pdf-icon"></i>
+                {% endif %}
+                <div>
+                    <h3>Règlement intérieur</h3>
+                    {% if document %}
+                        <div class="doc-meta">
+                            <span class="doc-status doc-status--ok">
+                                <i class="fa-solid fa-circle-check"></i>
+                                Mis à jour le {{ document.uploadedAt|date('d/m/Y à H:i') }}
+                            </span>
+                            <span class="doc-meta-sep">·</span>
+                            <span class="doc-meta-size">{{ (document.fileSize / 1024)|round(1) }} Ko</span>
+                        </div>
+                    {% else %}
+                        <span class="doc-status doc-status--empty">Aucun fichier importé</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="doc-card-actions">
+                {% if document %}
+                    <a href="{{ asset('documents/reglement-interieur.pdf') }}" target="_blank" class="btn-outline-sm">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Ouvrir
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        {# ── Pied de carte ── #}
+        <form method="POST" action="{{ path('admin_document_upload') }}" enctype="multipart/form-data" id="uploadForm">
+            <input type="hidden" name="_token" value="{{ csrf_token('doc_upload') }}">
+            <input type="file" id="pdfInput" name="pdf" accept="application/pdf" class="doc-hidden-input">
+
+            <div class="doc-footer">
+
+                {% if document %}
+                    {# Bouton "Remplacer" — visible par défaut #}
+                    <div id="stateNormal">
+                        <button type="button" class="doc-replace-btn" id="replaceBtn">
+                            <i class="fa-solid fa-rotate"></i> Remplacer le fichier
+                        </button>
+                    </div>
+
+                    {# Zone de dépôt — cachée par défaut #}
+                    <div id="stateUpload" class="doc-hidden">
+                        <div class="doc-drop-zone" id="dropZone">
+                            <div id="dropInner" class="doc-drop-inner">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <span>Déposer le nouveau PDF ici</span>
+                                <span class="doc-drop-hint">PDF uniquement — 20 Mo max — cliquer pour parcourir</span>
+                            </div>
+                            <div id="dropReady" class="doc-drop-ready doc-hidden">
+                                <i class="fa-solid fa-file-pdf"></i>
+                                <span id="dropFilename"></span>
+                                <button type="submit" class="btn-create">
+                                    <i class="fa-solid fa-upload"></i> Remplacer
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="doc-cancel-btn" id="cancelBtn">
+                            <i class="fa-solid fa-xmark"></i> Annuler
+                        </button>
+                    </div>
+
+                {% else %}
+                    {# Pas de document — zone visible directement #}
+                    <div class="doc-drop-zone" id="dropZone">
+                        <div id="dropInner" class="doc-drop-inner">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <span>Déposer votre PDF ici</span>
+                            <span class="doc-drop-hint">PDF uniquement — 20 Mo max — cliquer pour parcourir</span>
+                        </div>
+                        <div id="dropReady" class="doc-drop-ready doc-hidden">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span id="dropFilename"></span>
+                            <button type="submit" class="btn-create">
+                                <i class="fa-solid fa-upload"></i> Importer
+                            </button>
+                        </div>
+                    </div>
+                {% endif %}
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<style nonce="{{ csp_nonce('style') }}">
+/* ── Utilitaire caché (remplace style="display:none" bloqué par CSP) ── */
+.doc-hidden { display: none !important; }
+.doc-hidden-input { display: none !important; }
+
+.doc-card { padding: 0; overflow: hidden; }
+
+.doc-thumb-link { flex-shrink: 0; display: block; }
+.doc-thumb { width: 52px; height: 70px; object-fit: cover; border: 1px solid rgba(255,255,255,.12); border-radius: 3px; display: block; transition: opacity .2s; }
+.doc-thumb-link:hover .doc-thumb { opacity: .75; }
+.doc-thumb--fallback { display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.05); color: #F57706; font-size: 1.4rem; }
+
+.doc-card-header { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:24px 28px; }
+.doc-card-title { display:flex; align-items:center; gap:14px; }
+.doc-pdf-icon { font-size:2rem; color:#F57706; flex-shrink:0; }
+.doc-card-title h3 { margin:0 0 5px; font-size:1rem; font-weight:700; }
+.doc-meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.doc-status { font-size:.75rem; font-weight:600; display:inline-flex; align-items:center; gap:5px; }
+.doc-status--ok { color:#86efac; }
+.doc-status--empty { color:rgba(255,255,255,.4); font-size:.78rem; }
+.doc-meta-sep { color:rgba(255,255,255,.25); font-size:.75rem; }
+.doc-meta-size { font-size:.75rem; color:rgba(255,255,255,.45); }
+.doc-card-actions { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+
+.btn-outline-sm { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border:1px solid rgba(255,255,255,.2); color:#fff; font-size:.78rem; font-weight:600; text-decoration:none; white-space:nowrap; transition:border-color .2s,color .2s; }
+.btn-outline-sm:hover { border-color:#F57706; color:#F57706; }
+
+.doc-footer { border-top:1px solid rgba(255,255,255,.08); padding:20px 28px; }
+
+.doc-replace-btn { background:none; border:1px solid rgba(255,255,255,.15); color:rgba(255,255,255,.5); font-size:.78rem; font-weight:600; padding:8px 16px; cursor:pointer; display:inline-flex; align-items:center; gap:7px; transition:border-color .2s,color .2s; }
+.doc-replace-btn:hover { border-color:#F57706; color:#F57706; }
+
+.doc-drop-zone { border:1.5px dashed rgba(255,255,255,.15); padding:40px 24px; text-align:center; cursor:pointer; transition:background .2s,border-color .2s; margin-bottom:12px; }
+.doc-drop-zone:hover { background:rgba(255,255,255,.03); border-color:rgba(255,255,255,.25); }
+.doc-drop-zone.drag-over { background:rgba(245,119,6,.06); border-color:#F57706; }
+
+.doc-drop-inner { display:flex; flex-direction:column; align-items:center; gap:8px; pointer-events:none; }
+.doc-drop-inner i { font-size:1.8rem; color:rgba(255,255,255,.2); }
+.doc-drop-inner > span:first-of-type { font-size:.88rem; color:rgba(255,255,255,.6); }
+.doc-drop-hint { font-size:.72rem; color:rgba(255,255,255,.3); }
+
+.doc-drop-ready { display:flex; align-items:center; gap:14px; justify-content:center; }
+.doc-drop-ready > i { font-size:1.4rem; color:#F57706; flex-shrink:0; }
+.doc-drop-ready > span { font-size:.88rem; color:#fff; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:300px; }
+
+.doc-cancel-btn { background:none; border:none; color:rgba(255,255,255,.4); font-size:.78rem; cursor:pointer; display:inline-flex; align-items:center; gap:6px; padding:0; transition:color .2s; }
+.doc-cancel-btn:hover { color:#fff; }
+
+.alert { padding:12px 18px; margin-bottom:20px; font-size:.88rem; font-weight:600; }
+.alert-success { background:rgba(34,197,94,.12); border-left:3px solid #22c55e; color:#86efac; }
+.alert-error { background:rgba(239,68,68,.12); border-left:3px solid #ef4444; color:#fca5a5; }
+</style>
+
+<script nonce="{{ csp_nonce('script') }}">
+(function () {
+    var input       = document.getElementById('pdfInput');
+    var zone        = document.getElementById('dropZone');
+    var inner       = document.getElementById('dropInner');
+    var ready       = document.getElementById('dropReady');
+    var fileLabel   = document.getElementById('dropFilename');
+    var replaceBtn  = document.getElementById('replaceBtn');
+    var cancelBtn   = document.getElementById('cancelBtn');
+    var stateNormal = document.getElementById('stateNormal');
+    var stateUpload = document.getElementById('stateUpload');
+
+    function show(el) { if (el) el.classList.remove('doc-hidden'); }
+    function hide(el) { if (el) el.classList.add('doc-hidden'); }
+
+    if (replaceBtn) {
+        replaceBtn.addEventListener('click', function () {
+            hide(stateNormal);
+            show(stateUpload);
+        });
+    }
+
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', function () {
+            hide(stateUpload);
+            show(stateNormal);
+            show(inner);
+            hide(ready);
+            input.value = '';
+        });
+    }
+
+    function selectFile(file) {
+        if (!file || file.type !== 'application/pdf') return;
+        fileLabel.textContent = file.name;
+        hide(inner);
+        show(ready);
+    }
+
+    if (zone) {
+        zone.addEventListener('click', function (e) {
+            if (e.target.closest('#dropReady')) return;
+            input.click();
+        });
+        zone.addEventListener('dragover', function (e) { e.preventDefault(); zone.classList.add('drag-over'); });
+        zone.addEventListener('dragleave', function () { zone.classList.remove('drag-over'); });
+        zone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            zone.classList.remove('drag-over');
+            var file = e.dataTransfer.files[0];
+            if (file && file.type === 'application/pdf') {
+                var dt = new DataTransfer();
+                dt.items.add(file);
+                input.files = dt.files;
+                selectFile(file);
+            }
+        });
+    }
+
+    if (input) {
+        input.addEventListener('change', function () { selectFile(this.files[0]); });
+    }
+})();
+</script>
+{% endblock %}
