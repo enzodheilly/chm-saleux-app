@@ -100,19 +100,34 @@ button {
 }
 
 .brand {
-    font-weight: 700;
-    font-size: 0.95rem;
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--text-main);
-}
-.brand span {
-    color: var(--accent);
 }
 .brand img {
-    height: 24px;
+    height: 28px;
     width: auto;
+    flex-shrink: 0;
+}
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+.brand-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.01em;
+    line-height: 1;
+}
+.brand-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    line-height: 1;
 }
 
 .sidebar-content {
