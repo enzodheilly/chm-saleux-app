@@ -149,7 +149,7 @@ button {
     font-size: 0.62rem;
     font-weight: 700;
     text-transform: uppercase;
-    color: #525268;
+    color: rgba(255,255,255,0.75);
     letter-spacing: 0.1em;
     border-top: 1px solid var(--border-color);
 }
