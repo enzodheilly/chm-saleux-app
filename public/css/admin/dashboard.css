@@ -15,8 +15,8 @@
     --db-blue:     #3b82f6;
     --db-purple:   #8b5cf6;
     --db-yellow:   #eab308;
-    --db-radius:   14px;
-    --db-radius-sm:8px;
+    --db-radius:   0;
+    --db-radius-sm: 0;
 }
 
 /* ── WELCOME ─────────────────────────────────────────────── */
@@ -77,7 +77,7 @@
     gap: 8px;
     padding: 10px 20px;
     border: 1px solid var(--db-border);
-    border-radius: var(--db-radius-sm);
+    border-radius: 0;
     color: var(--db-muted);
     text-decoration: none;
     font-size: 0.82rem;
@@ -101,7 +101,7 @@
 .db-kpi-card {
     background: var(--db-card);
     border: 1px solid var(--db-border);
-    border-radius: var(--db-radius);
+    border-radius: 0;
     padding: 22px 20px;
     display: flex;
     align-items: flex-start;
@@ -117,7 +117,7 @@
 .db-kpi-icon {
     width: 44px;
     height: 44px;
-    border-radius: 12px;
+    border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -143,7 +143,7 @@
 .db-card {
     background: var(--db-card);
     border: 1px solid var(--db-border);
-    border-radius: var(--db-radius);
+    border-radius: 0;
     overflow: hidden;
     margin-bottom: 20px;
     display: flex;
@@ -189,7 +189,7 @@
     display: flex;
     gap: 4px;
     background: rgba(255,255,255,0.04);
-    border-radius: 8px;
+    border-radius: 0;
     padding: 3px;
     flex-shrink: 0;
 }
@@ -201,7 +201,7 @@
     font-size: 0.78rem;
     font-weight: 700;
     padding: 6px 14px;
-    border-radius: 6px;
+    border-radius: 0;
     cursor: pointer;
     transition: background 0.18s, color 0.18s;
 }
@@ -261,7 +261,7 @@
 .db-legend-dot {
     width: 10px;
     height: 10px;
-    border-radius: 50%;
+    border-radius: 0;
     flex-shrink: 0;
 }
 
@@ -308,7 +308,7 @@
 .db-badge {
     display: inline-block;
     padding: 2px 8px;
-    border-radius: 4px;
+    border-radius: 0;
     font-size: 0.62rem;
     font-weight: 800;
     text-transform: uppercase;
@@ -327,7 +327,7 @@
     display: inline-block;
     width: 8px;
     height: 8px;
-    border-radius: 50%;
+    border-radius: 0;
 }
 
 .db-dot--green  { background: var(--db-green); box-shadow: 0 0 6px var(--db-green); }
@@ -363,7 +363,7 @@
     color: var(--db-accent);
     font-size: 0.75rem;
     font-weight: 700;
-    border-radius: 50px;
+    border-radius: 0;
     white-space: nowrap;
     align-self: center;
     flex-shrink: 0;
@@ -420,7 +420,7 @@
 .card {
     background: #111111;
     border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 16px;
+    border-radius: 0;
     overflow: hidden;
     margin-bottom: 20px;
 }
@@ -451,7 +451,7 @@
 .stat-card {
     background: #111111;
     border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 12px;
+    border-radius: 0;
     padding: 20px 24px;
 }
 

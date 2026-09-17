@@ -9,7 +9,7 @@
 			margin-left: 0 !important;
 			width: 100% !important;
 			min-height: 100vh !important;
-			background: #0e0e10 !important;
+			background: #0a0a0a !important;
 		}
 		.content {
 			padding: 0 !important;
@@ -23,7 +23,7 @@
 			padding: 0;
 			overflow-x: hidden;
 			overflow-y: auto;
-			background: #0e0e10;
+			background: #0a0a0a;
 		}
 
 		/* ✨ DESIGN DU "SECURITY WALL" */
@@ -33,14 +33,14 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			background: #0e0e10;
+			background: #0a0a0a;
 			padding: 20px;
 		}
 		.setup-card {
-			background: #131315;
+			background: #111111;
 			width: 100%;
 			max-width: 950px;
-			border-radius: 12px;
+			border-radius: 0;
 			display: grid;
 			grid-template-columns: 1fr 1fr;
 			overflow: hidden;
@@ -70,7 +70,7 @@
 			height: 32px;
 			background: #ff6600;
 			color: #fff;
-			border-radius: 50%;
+			border-radius: 0;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -101,7 +101,7 @@
 		.qr-box {
 			background: #fff;
 			padding: 15px;
-			border-radius: 12px;
+			border-radius: 0;
 			margin-bottom: 35px;
 			display: flex;
 			align-items: center;
@@ -128,7 +128,7 @@
 			background: #ff6600;
 			color: #fff;
 			padding: 16px 24px;
-			border-radius: 8px;
+			border-radius: 0;
 			font-weight: 800;
 			text-decoration: none;
 			text-transform: uppercase;
@@ -139,7 +139,7 @@
 		}
 
 		.code-input {
-			background: #0e0e10 !important;
+			background: #0a0a0a !important;
 			border: 2px solid #262629 !important;
 			color: #ff6600 !important;
 			font-size: 32px !important;
@@ -149,17 +149,17 @@
 			width: 100%;
 			max-width: 280px;
 			padding: 15px !important;
-			border-radius: 8px !important;
+			border-radius: 0;
 			margin-bottom: 25px !important;
 			outline: none !important;
 			letter-spacing: 12px !important;
 		}
 		.btn-validate {
 			background: #ededed;
-			color: #0e0e10;
+			color: #0a0a0a;
 			border: none;
 			padding: 18px 40px;
-			border-radius: 6px;
+			border-radius: 0;
 			font-weight: 800;
 			cursor: pointer;
 			width: 100%;

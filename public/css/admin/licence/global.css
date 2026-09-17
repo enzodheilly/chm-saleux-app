@@ -1,0 +1,36 @@
+/* ================================================================
+   GESTION DES LICENCES — styles spécifiques
+   ================================================================ */
+
+/* Aperçu des avantages du forfait (chargé en JS) */
+.avantages-preview {
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: rgba(245, 119, 6, 0.06);
+    border: 1px solid rgba(245, 119, 6, 0.2);
+    border-radius: 0;
+    display: none;
+}
+
+.avantages-preview h4 {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #F57706;
+    margin: 0 0 10px;
+}
+
+.avantages-list {
+    margin: 0;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.avantages-list li {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+}

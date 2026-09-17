@@ -64,7 +64,7 @@
 							<td>
 								{% if qrCodeImages[licence.id] is defined %}
 									<a href="{{ path('admin_licence_edit', {id: licence.id}) }}#qrcode" title="Voir le QR code d'accès">
-										<img src="{{ qrCodeImages[licence.id] }}" alt="QR code" width="44" height="44" style="border-radius: 6px; background: #fff; padding: 2px;">
+										<img src="{{ qrCodeImages[licence.id] }}" alt="QR code" width="44" height="44" style="background: #fff; padding: 2px;">
 									</a>
 								{% else %}
 									<span class="td-mono-sm">—</span>

@@ -2,7 +2,7 @@
 .user-cell { display: flex; align-items: center; gap: 12px; }
 .avatar {
     width: 34px; height: 34px; background: var(--border-color);
-    color: var(--text-main); border-radius: 4px;
+    color: var(--text-main); border-radius: 0;
     display: flex; align-items: center; justify-content: center;
     font-weight: 700; font-size: 0.8rem;
 }
@@ -10,13 +10,13 @@
 .u-name { font-weight: 600; font-size: 0.95rem; }
 .u-email { font-size: 0.8rem; color: var(--text-muted); }
 
-.role-badge { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; }
+.role-badge { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; padding: 4px 8px; border-radius: 0; }
 .badge-admin { background: rgba(255, 102, 0, 0.15); color: var(--accent); border: 1px solid rgba(255, 102, 0, 0.2); }
 .badge-user { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); }
 
 .secu-tag { font-size: 0.7rem; display: flex; align-items: center; gap: 6px; font-weight: 700; }
 .secu-dot { font-size: 1.2rem; }
-.secu-on { color: #10b981; }
+.secu-on { color: #22c55e; }
 .secu-off { color: var(--text-muted); opacity: 0.5; }
 
 .act-edit { color: var(--text-main); }

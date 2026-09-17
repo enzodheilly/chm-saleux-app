@@ -7,13 +7,13 @@
     gap: 15px;
     padding: 1rem;
     background: rgba(255,255,255,0.02);
-    border-radius: 6px;
+    border-radius: 0;
 }
 
 .current-avatar {
     width: 80px; height: 80px;
     object-fit: cover;
-    border-radius: 50%;
+    border-radius: 0;
     border: 2px solid var(--border-color);
     background: var(--bg-body);
 }

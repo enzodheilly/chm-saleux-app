@@ -1,109 +1,291 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Journal des connexions
+{% block title %}Journal de sécurité{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/admin/security/logs.css') }}">
 {% endblock %}
 
 {% block body %}
-	<div class="page-header">
-		<div>
-			<h1>Journal des connexions</h1>
-			<p>Activités système et alertes de sécurité en temps réel.</p>
-		</div>
-		<div
-			class="toolbar">
-			{# MODIFICATION 1 : Le bouton Purger #}
-			<a href="{{ path('admin_security_purge_logs') }}" class="btn-danger-outline js-confirm-link" data-confirm="⚠️ Purger tout l'historique ? Cette action est irréversible.">
-				Purger les journaux
-			</a>
-		</div>
-	</div>
+<div class="page-header">
+    <div>
+        <h1>Journal de sécurité</h1>
+        <p>Toutes les actions critiques et événements d'authentification du système.</p>
+    </div>
+    <div class="toolbar">
+        <form method="POST" action="{{ path('admin_security_export_csv') }}" class="inline-form">
+            <input type="hidden" name="_token" value="{{ csrf_token('export_csv') }}">
+            <button type="submit" class="btn-tab">
+                <i class="fa-solid fa-file-arrow-down"></i> Exporter CSV
+            </button>
+        </form>
+        <form method="POST" action="{{ path('admin_security_purge_logs') }}" class="inline-form js-confirm-form" data-confirm="Purger tout l'historique ? Cette action est irréversible.">
+            <input type="hidden" name="_token" value="{{ csrf_token('purge_logs') }}">
+            <button type="submit" class="btn-danger-outline">
+                <i class="fa-solid fa-trash-can"></i> Purger
+            </button>
+        </form>
+    </div>
+</div>
 
-	{# Grille de surveillance (Top Targets) #}
-	<div class="security-grid">
-		{% for target in topTargets|default([]) %}
-			<div class="target-card">
-				<div class="td-mono-sm card-label">CIBLE PRIORITAIRE</div>
-				<div class="target-email">{{ (target.email ?? 'Inconnu')|pseudonymize_email }}</div>
-				<div class="badge badge-danger">{{ target.attempts }}
-					ÉCHECS</div>
-			</div>
-		{% endfor %}
-	</div>
+{# ---- STATS ---- #}
+<div class="sl-stats-row">
+    <div class="sl-stat-card">
+        <div class="sl-stat-icon sl-stat-icon--gray"><i class="fa-solid fa-list-ul"></i></div>
+        <div class="sl-stat-body">
+            <span class="sl-stat-label">Total des logs</span>
+            <strong class="sl-stat-value">{{ stats.total }}</strong>
+        </div>
+    </div>
+    <div class="sl-stat-card">
+        <div class="sl-stat-icon sl-stat-icon--green"><i class="fa-solid fa-circle-check"></i></div>
+        <div class="sl-stat-body">
+            <span class="sl-stat-label">Connexions réussies</span>
+            <strong class="sl-stat-value sl-stat-value--green">{{ stats.connexions }}</strong>
+        </div>
+    </div>
+    <div class="sl-stat-card">
+        <div class="sl-stat-icon sl-stat-icon--red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="sl-stat-body">
+            <span class="sl-stat-label">Échecs de connexion</span>
+            <strong class="sl-stat-value sl-stat-value--red">{{ stats.echecs }}</strong>
+        </div>
+    </div>
+    <div class="sl-stat-card">
+        <div class="sl-stat-icon sl-stat-icon--orange"><i class="fa-solid fa-shield-halved"></i></div>
+        <div class="sl-stat-body">
+            <span class="sl-stat-label">Actions admin</span>
+            <strong class="sl-stat-value sl-stat-value--orange">{{ stats.admin }}</strong>
+        </div>
+    </div>
+</div>
 
-	<div class="toolbar-container flex-between">
-		<div class="actions group-left">
-			<button class="btn-tab active">TOUS</button>
-			<button class="btn-tab">SUCCÈS</button>
-			<button class="btn-tab">ÉCHECS</button>
-		</div>
-		<div class="toolbar-right">
-			<a href="{{ path('admin_security_export_csv') }}" class="btn-tab">📥 EXPORTER</a>
-			<input type="text" id="searchLogs" class="search-input" placeholder="Chercher IP ou Email...">
-		</div>
-	</div>
+{# ---- CIBLES PRIORITAIRES ---- #}
+{% if topTargets|length > 0 %}
+<div class="security-grid">
+    {% for target in topTargets %}
+        <div class="target-card">
+            <div class="td-mono-sm card-label">CIBLE PRIORITAIRE</div>
+            <div class="target-email">{{ (target.email ?? 'Inconnu')|pseudonymize_email }}</div>
+            <div class="badge badge-danger">{{ target.attempts }} ÉCHECS</div>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
 
-	<div class="table-wrapper">
-		<div class="table-scroll">
-			<table class="admin-table" id="logsTable">
-				<thead>
-					<tr>
-						<th width="120">Date</th>
-						<th width="200">Utilisateur</th>
-						<th width="180">IP / Géo</th>
-						<th width="120">Appareil</th>
-						<th>Message</th>
-						<th width="100">Statut</th>
-						<th class="th-right">Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for log in logs|default([]) %}
-						<tr class="{{ log.type == 'Session' ? 'row-session' : '' }}">
-							<td class="td-mono-sm">
-								<strong>{{ log.createdAt|date('d/m/Y') }}</strong><br>
-								<span class="time-dimmed">{{ log.createdAt|date('H:i:s') }}</span>
-							</td>
-							<td>
-								<strong>{{ log.user ? log.user.email|pseudonymize_email : 'SYSTÈME' }}</strong>
-							</td>
-							<td>
-								<span class="td-mono ip-accent">{{ log.ip|default('—') }}</span>
-							</td>
-							<td>
-								<span class="td-muted device-tag">
-									{% if 'Mobi' in log.userAgent %}📱 Mobile
-										{% elseif 'Windows' in log.userAgent %}💻 PC
-										{% else %}🌐 Web
-									{% endif %}
-								</span>
-							</td>
-							<td>
-								<div class="time-info">
-									<span class="log-message">{{ log.message }}</span>
-									{% if log.createdAt|date('H') < 7 or log.createdAt|date('H') > 21 %}
-										<span class="badge badge-nocturnal">🌙 NOCTURNE</span>
-									{% endif %}
-								</div>
-							</td>
-							<td>
-								<span class="badge {{ log.type == 'erreur' ? 'badge-danger' : 'badge-active' }}">
-									{{ log.type == 'erreur' ? 'BLOQUÉ' : 'OK' }}
-								</span>
-							</td>
-							<td class="td-right">
-								{% if log.ip and log.ip not in ['127.0.0.1', '::1', '—'] %}
-									{# MODIFICATION 2 : Le lien de bannissement #}
-									<a href="{{ path('admin_security_ban_ip', {'ip': log.ip}) }}" class="act-link act-del fs-large js-confirm-link" data-confirm="🚫 Bannir définitivement l'adresse IP {{ log.ip }} ?" title="Bannir">🚫</a>
-								{% endif %}
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
+{# ---- FILTRES + RECHERCHE ---- #}
+<div class="toolbar-container flex-between">
+    <div class="actions group-left">
+        <a href="{{ path('admin_security_logs', {filter: 'all'}) }}"
+           class="btn-tab filter-tab {{ filter == 'all' ? 'active' : '' }}">
+            Tous
+        </a>
+        <a href="{{ path('admin_security_logs', {filter: 'connexion'}) }}"
+           class="btn-tab filter-tab {{ filter == 'connexion' ? 'active' : '' }}">
+            <i class="fa-solid fa-circle-check"></i> Connexions
+        </a>
+        <a href="{{ path('admin_security_logs', {filter: 'echec'}) }}"
+           class="btn-tab filter-tab {{ filter == 'echec' ? 'active' : '' }}">
+            <i class="fa-solid fa-xmark"></i> Échecs
+        </a>
+        <a href="{{ path('admin_security_logs', {filter: 'admin'}) }}"
+           class="btn-tab filter-tab {{ filter == 'admin' ? 'active' : '' }}">
+            <i class="fa-solid fa-shield-halved"></i> Admin
+        </a>
+        <a href="{{ path('admin_security_logs', {filter: 'securite'}) }}"
+           class="btn-tab filter-tab {{ filter == 'securite' ? 'active' : '' }}">
+            <i class="fa-solid fa-lock"></i> Sécurité
+        </a>
+    </div>
+    <div class="toolbar-right">
+        <input type="text" id="searchLogs" class="search-input" placeholder="Chercher IP, email, action…">
+    </div>
+</div>
+
+{# ---- TABLE ---- #}
+<div class="table-wrapper">
+    <div class="table-scroll">
+        <table class="admin-table" id="logsTable">
+            <thead>
+                <tr>
+                    <th width="110">Date</th>
+                    <th width="180">Utilisateur</th>
+                    <th>Action</th>
+                    <th width="150">IP / Appareil</th>
+                    <th width="110">Statut</th>
+                    <th class="th-right" width="70">Bannir</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                    <tr class="log-row" data-status="{{ log.success is same as(false) ? 'echec' : (log.type == 'Connexion' ? 'connexion' : 'info') }}">
+
+                        {# Date #}
+                        <td class="td-mono-sm">
+                            <strong>{{ log.createdAt|date('d/m/Y') }}</strong><br>
+                            <span class="time-dimmed">{{ log.createdAt|date('H:i:s') }}</span>
+                            {% if log.createdAt|date('H') < 7 or log.createdAt|date('H') > 21 %}
+                                <br><span class="badge badge-nocturnal" title="Activité nocturne">🌙</span>
+                            {% endif %}
+                        </td>
+
+                        {# Utilisateur #}
+                        <td>
+                            <span class="td-mono-sm">{{ log.user ? log.user.email|pseudonymize_email : 'SYSTÈME' }}</span>
+                        </td>
+
+                        {# Action = type badge + message #}
+                        <td>
+                            <div style="display:flex; align-items:flex-start; gap:8px; flex-wrap:wrap;">
+                                {% if log.type == 'Admin' %}
+                                    <span class="sl-type-badge sl-type-badge--orange">ADMIN</span>
+                                {% elseif log.type == 'Connexion' and log.success is same as(true) %}
+                                    <span class="sl-type-badge sl-type-badge--green">CONNEXION</span>
+                                {% elseif log.type == 'Connexion' and log.success is same as(false) %}
+                                    <span class="sl-type-badge sl-type-badge--red">ÉCHEC</span>
+                                {% elseif log.type in ['Session'] %}
+                                    <span class="sl-type-badge sl-type-badge--blue">SESSION</span>
+                                {% elseif log.type in ['Sécurité', 'connexion'] %}
+                                    <span class="sl-type-badge sl-type-badge--purple">SÉCURITÉ</span>
+                                {% else %}
+                                    <span class="sl-type-badge sl-type-badge--gray">{{ log.type|upper }}</span>
+                                {% endif %}
+                                <span class="log-message">{{ log.message }}</span>
+                            </div>
+                        </td>
+
+                        {# IP + appareil #}
+                        <td>
+                            <span class="td-mono ip-accent ip-lookup" data-ip="{{ log.ip }}">{{ log.ip|default('—') }}</span>
+                            <div class="ip-geo td-muted" style="font-size:0.75rem; margin-top:2px;"></div>
+                            {% if log.userAgent %}
+                                <div class="td-muted" style="font-size:0.75rem; margin-top:2px;">
+                                    {% if 'Mobi' in log.userAgent %}
+                                        <i class="fa-solid fa-mobile-screen"></i> Mobile
+                                    {% elseif 'Windows' in log.userAgent or 'Macintosh' in log.userAgent or 'Linux' in log.userAgent %}
+                                        <i class="fa-solid fa-display"></i> Bureau
+                                    {% else %}
+                                        <i class="fa-solid fa-globe"></i> Web
+                                    {% endif %}
+                                    {% if log.browser %} — {{ log.browser }}{% endif %}
+                                </div>
+                            {% endif %}
+                        </td>
+
+                        {# Statut #}
+                        <td>
+                            {% if log.success is same as(false) %}
+                                <span class="badge badge-danger">ÉCHEC</span>
+                            {% elseif log.type == 'Admin' %}
+                                <span class="badge sl-badge-admin">ACTION</span>
+                            {% elseif log.type in ['Sécurité', 'Session', 'connexion'] %}
+                                <span class="badge sl-badge-info">INFO</span>
+                            {% else %}
+                                <span class="badge badge-active">OK</span>
+                            {% endif %}
+                        </td>
+
+                        {# Bannir #}
+                        <td class="td-right">
+                            {% if log.ip and log.ip not in ['127.0.0.1', '::1', '—'] %}
+                                <form method="POST" action="{{ path('admin_security_ban_ip', {ip: log.ip}) }}" class="inline-form js-confirm-form" data-confirm="Bannir définitivement l'IP {{ log.ip }} ?">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('ban_ip_' ~ log.ip) }}">
+                                    <button type="submit" class="act-link act-del fs-large" title="Bannir cette IP">
+                                        <i class="fa-solid fa-ban"></i>
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" style="text-align:center; padding:40px; color:var(--text-muted);">
+                            Aucun log pour ce filtre.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="noResults" style="display:none; text-align:center; padding:32px; color:var(--text-muted);">
+        Aucun résultat pour cette recherche.
+    </div>
+</div>
+
+<style>
+/* Stats row */
+.sl-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+}
+.sl-stat-card {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, rgba(0,0,0,0.08));
+    border-radius: 0;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.sl-stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    flex-shrink: 0;
+}
+.sl-stat-icon--gray   { background: rgba(120,120,120,0.1); color: #888; }
+.sl-stat-icon--green  { background: rgba(52,199,89,0.12);  color: #22c55e; }
+.sl-stat-icon--red    { background: rgba(239,68,68,0.12);  color: #ef4444; }
+.sl-stat-icon--orange { background: rgba(245,119,6,0.12);  color: #F57706; }
+.sl-stat-body { display: flex; flex-direction: column; gap: 2px; }
+.sl-stat-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
+.sl-stat-value { font-size: 1.6rem; font-weight: 900; line-height: 1; }
+.sl-stat-value--green  { color: #22c55e; }
+.sl-stat-value--red    { color: #ef4444; }
+.sl-stat-value--orange { color: #F57706; }
+
+/* Type badges */
+.sl-type-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 0;
+    font-size: 0.63rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.sl-type-badge--green  { background: rgba(52,199,89,0.14);  color: #22c55e; }
+.sl-type-badge--red    { background: rgba(239,68,68,0.14);  color: #ef4444; }
+.sl-type-badge--orange { background: rgba(245,119,6,0.14);  color: #F57706; }
+.sl-type-badge--blue   { background: rgba(59,130,246,0.14); color: #3b82f6; }
+.sl-type-badge--purple { background: rgba(139,92,246,0.14); color: #8b5cf6; }
+.sl-type-badge--gray   { background: rgba(120,120,120,0.12); color: #888; }
+
+/* Statut badges extra */
+.sl-badge-admin { background: rgba(245,119,6,0.12); color: #F57706; }
+.sl-badge-info  { background: rgba(59,130,246,0.12); color: #3b82f6; }
+
+/* Filter tabs active override */
+.filter-tab.active { background: #F57706; color: #fff; border-color: #F57706; }
+
+/* Responsive stats */
+@media (max-width: 900px) {
+    .sl-stats-row { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 500px) {
+    .sl-stats-row { grid-template-columns: 1fr; }
+}
+</style>
 {% endblock %}
 
 {% block javascripts %}
-	 <script src="{{ asset('js/admin/security/logs.js') }}" nonce="{{ csp_nonce('script') }}"></script>
+<script src="{{ asset('js/admin/security/logs.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

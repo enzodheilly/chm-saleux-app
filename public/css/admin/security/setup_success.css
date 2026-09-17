@@ -7,7 +7,7 @@ html, body {
         margin: 0;
         padding: 0;
     }
-    body { background: #09090b !important; }
+    body { background: #0a0a0a !important; }
 
     /* Nettoyage de l'interface admin par défaut */
     .sidebar, .top-bar, .mobile-toggle, .alert { display: none !important; }
@@ -24,15 +24,15 @@ html, body {
         display: flex; align-items: center; justify-content: center;
         width: 100%; height: 100vh;
         padding: 20px;
-        background: radial-gradient(circle at center, #111113 0%, #09090b 100%);
+        background: radial-gradient(circle at center, #181818 0%, #0a0a0a 100%);
         box-sizing: border-box;
     }
 
     /* Carte format compact */
     .backup-card {
-        background: #121214;
-        border: 1px solid #262629;
-        border-radius: 12px;
+        background: #111111;
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 0;
         padding: 30px 24px;
         width: 100%;
         max-width: 400px; 
@@ -41,7 +41,7 @@ html, body {
         animation: fadeIn 0.4s ease-out;
     }
 
-    .check-icon { color: #10b981; font-size: 1.8rem; margin-bottom: 12px; }
+    .check-icon { color: #22c55e; font-size: 1.8rem; margin-bottom: 12px; }
     h1 { color: #fff; font-size: 1.4rem; font-weight: 700; margin: 0 0 8px 0; }
     .subtitle { color: #71717a; font-size: 0.85rem; margin-bottom: 20px; }
 
@@ -50,7 +50,7 @@ html, body {
         background: rgba(245, 158, 11, 0.05);
         border-left: 3px solid #f59e0b;
         padding: 10px 15px;
-        border-radius: 4px;
+        border-radius: 0;
         margin-bottom: 20px;
         text-align: left;
     }
@@ -60,7 +60,7 @@ html, body {
     .codes-container {
         background: #000;
         border: 1px solid #262629;
-        border-radius: 8px;
+        border-radius: 0;
         padding: 18px;
         margin-bottom: 20px;
         display: grid; gap: 8px;
@@ -70,13 +70,13 @@ html, body {
         font-size: 1.1rem; color: #fff;
         letter-spacing: 2px; font-weight: 600;
         background: rgba(255,255,255,0.03);
-        padding: 6px; border-radius: 4px;
+        padding: 6px; border-radius: 0;
     }
 
     /* Actions */
     .btn-print {
         background: #ededed; color: #000;
-        border: none; padding: 12px; border-radius: 6px;
+        border: none; padding: 12px; border-radius: 0;
         width: 100%; font-weight: 700; font-size: 0.85rem;
         cursor: pointer; transition: 0.2s;
     }

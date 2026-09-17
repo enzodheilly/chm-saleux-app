@@ -4,7 +4,7 @@
 
 .athlete-avatar, .athlete-initials {
     width: 36px; height: 36px;
-    border-radius: 50%;
+    border-radius: 0;
     border: 1px solid var(--border-color);
     object-fit: cover;
     background: var(--bg-body);
@@ -24,7 +24,7 @@
 /* Badges Catégorie (Benjamin, Senior, etc.) */
 .cat-badge {
     font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-    padding: 3px 8px; border-radius: 4px; letter-spacing: 0.05em;
+    padding: 3px 8px; border-radius: 0; letter-spacing: 0.05em;
     background: rgba(255,255,255,0.05); color: var(--text-muted);
     border: 1px solid var(--border-color);
 }

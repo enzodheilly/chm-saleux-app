@@ -1,7 +1,7 @@
 /* admin/users/global.css */
 .user-id-badge {
     font-family: monospace; background: rgba(255, 255, 255, 0.05);
-    padding: 2px 6px; border-radius: 4px; font-size: 0.82em; color: var(--text-main);
+    padding: 2px 6px; border-radius: 0; font-size: 0.82em; color: var(--text-main);
 }
 .user-email-highlight { color: var(--text-main); font-weight: 600; }
 .input-roles { height: auto; min-height: 100px; }
