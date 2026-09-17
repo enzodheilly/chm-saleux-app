@@ -81,15 +81,26 @@
 
 				<div class="nav-item" id="menu-content">
 					<div class="nav-link" data-submenu="menu-content">
-						<span>Pages & Blog</span>
+						<span>Pages & Articles</span>
 						<span class="caret"></span>
 					</div>
 					<div class="submenu">
 						<a href="{{ path('admin_legal_pages_index') }}">Pages statiques</a>
 						<a href="{{ path('admin_articles_index') }}">Articles / Blog</a>
-						<a href="{{ path('admin_new_equipment_index') }}">Nouveaux Matériels</a>
 						<a href="{{ path('admin_document_index') }}">Documents du club</a>
 					</div>
+				</div>
+
+				<div class="nav-item">
+					<a href="{{ path('admin_settings_index') }}" class="nav-link {% if app.request.get('_route') == 'admin_settings_index' %}active{% endif %}">
+						Bandeau d'annonce
+					</a>
+				</div>
+
+				<div class="nav-item">
+					<a href="{{ path('admin_new_equipment_index') }}" class="nav-link {% if app.request.get('_route') starts with 'admin_new_equipment' %}active{% endif %}">
+						Nouveaux Matériels
+					</a>
 				</div>
 
 				<div class="nav-group-label">Appli Mobile</div>
@@ -101,7 +112,7 @@
 					</div>
 					<div class="submenu">
 						<a href="{{ path('admin_equipment_index') }}" class="{% if app.request.get('_route') starts with 'admin_equipment' %}active-sub{% endif %}">
-							Équipements
+							Équipements (base exercices)
 						</a>
 						<a href="{{ path('admin_exercise_index') }}" class="{% if app.request.get('_route') starts with 'admin_exercise' %}active-sub{% endif %}">
 							Exercices
@@ -119,7 +130,7 @@
 					</a>
 				</div>
 
-				<div class="nav-group-label">Marketing</div>
+				<div class="nav-group-label">Communication</div>
 				<div class="nav-item" id="menu-com">
 					<div class="nav-link" data-submenu="menu-com">
 						<span>Communication</span>
@@ -144,15 +155,11 @@
 					</div>
 				</div>
 
-				<div class="nav-group-label">Configuration</div>
-				<div class="nav-item" id="menu-config">
-					<div class="nav-link" data-submenu="menu-config">
-						<span>Système</span>
-						<span class="caret"></span>
-					</div>
-					<div class="submenu">
-						<a href="{{ path('admin_settings_index') }}">Paramètres Généraux</a>
-					</div>
+				<div class="nav-group-label">Paramètres</div>
+				<div class="nav-item">
+					<a href="{{ path('admin_settings_index') }}" class="nav-link {% if app.request.get('_route') == 'admin_settings_index' %}active{% endif %}">
+						Mon compte
+					</a>
 				</div>
 
 			</div>
