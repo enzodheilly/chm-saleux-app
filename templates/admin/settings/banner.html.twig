@@ -1,0 +1,97 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Bandeau d'annonce{% endblock %}
+
+{% block body %}
+<div class="page-header">
+    <div>
+        <h1>Bandeau d'annonce</h1>
+        <p>Affiche un ou plusieurs messages en rotation en haut de toutes les pages.</p>
+    </div>
+</div>
+
+{% for type, msgs in app.flashes %}
+    {% for msg in msgs %}
+        <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }}">{{ msg }}</div>
+    {% endfor %}
+{% endfor %}
+
+<div class="settings-layout">
+    <div class="settings-card">
+        <h3 class="settings-card-title">Messages actifs</h3>
+        <p style="font-size:.82rem;color:var(--text-muted);margin:0 0 20px;">
+            Si aucun message n'est actif, la bannière est masquée automatiquement.
+        </p>
+
+        {% if messages is empty %}
+            <p style="font-size:.84rem;color:var(--text-muted);margin:0 0 20px;font-style:italic;">
+                Aucun message — ajoutez-en un ci-dessous.
+            </p>
+        {% else %}
+            <div class="banner-msg-list">
+                {% for msg in messages %}
+                    <div class="banner-msg-row">
+                        <span class="banner-msg-text">{{ msg.text }}</span>
+
+                        <div class="banner-msg-actions">
+                            <form method="post" action="{{ path('admin_settings_banner_toggle', {id: msg.id}) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('banner_toggle_' ~ msg.id) }}">
+                                <button type="submit" class="banner-btn banner-btn-toggle {% if msg.isActive %}is-active{% endif %}"
+                                    title="{{ msg.isActive ? 'Désactiver' : 'Activer' }}">
+                                    {{ msg.isActive ? 'ON' : 'OFF' }}
+                                </button>
+                            </form>
+
+                            {% if not loop.first %}
+                                <form method="post" action="{{ path('admin_settings_banner_move', {id: msg.id, direction: 'up'}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('banner_move_' ~ msg.id) }}">
+                                    <button type="submit" class="banner-btn banner-btn-icon" title="Monter">↑</button>
+                                </form>
+                            {% else %}
+                                <span class="banner-btn banner-btn-icon banner-btn-disabled">↑</span>
+                            {% endif %}
+
+                            {% if not loop.last %}
+                                <form method="post" action="{{ path('admin_settings_banner_move', {id: msg.id, direction: 'down'}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('banner_move_' ~ msg.id) }}">
+                                    <button type="submit" class="banner-btn banner-btn-icon" title="Descendre">↓</button>
+                                </form>
+                            {% else %}
+                                <span class="banner-btn banner-btn-icon banner-btn-disabled">↓</span>
+                            {% endif %}
+
+                            <form method="post" action="{{ path('admin_settings_banner_delete', {id: msg.id}) }}"
+                                class="js-confirm-form" data-confirm="Supprimer ce message ?">
+                                <input type="hidden" name="_token" value="{{ csrf_token('banner_delete_' ~ msg.id) }}">
+                                <button type="submit" class="banner-btn banner-btn-delete" title="Supprimer">✕</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" action="{{ path('admin_settings_banner_add') }}" style="margin-top:16px;display:flex;gap:10px;align-items:center;">
+            <input type="hidden" name="_token" value="{{ csrf_token('banner_add') }}">
+            <input type="text" name="text" class="input" maxlength="500"
+                placeholder="Nouveau message (max 500 caractères)…" style="flex:1;" required>
+            <button type="submit" class="btn-create" style="white-space:nowrap;">+ Ajouter</button>
+        </form>
+    </div>
+</div>
+
+<style nonce="{{ csp_nonce('style') }}">
+.banner-msg-list { display:flex; flex-direction:column; gap:8px; margin-bottom:4px; }
+.banner-msg-row  { display:flex; align-items:center; gap:10px; padding:10px 14px; background:rgba(255,255,255,.04); border:1px solid var(--border-color); }
+.banner-msg-text { flex:1; font-size:.84rem; line-height:1.4; }
+.banner-msg-actions { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+.banner-btn { display:inline-flex; align-items:center; justify-content:center; border:none; cursor:pointer; font-size:.75rem; font-weight:700; padding:4px 8px; background:rgba(255,255,255,.08); color:var(--text-muted); transition:background .15s,color .15s; }
+.banner-btn:hover { background:rgba(255,255,255,.14); color:#fff; }
+.banner-btn-toggle { min-width:38px; }
+.banner-btn-toggle.is-active { background:rgba(34,197,94,.15); color:#22c55e; }
+.banner-btn-icon { min-width:28px; }
+.banner-btn-disabled { opacity:.25; cursor:default; min-width:28px; text-align:center; font-weight:700; font-size:.75rem; display:inline-flex; align-items:center; justify-content:center; }
+.banner-btn-delete { color:#f87171; }
+.banner-btn-delete:hover { background:rgba(248,113,113,.15); color:#f87171; }
+</style>
+{% endblock %}

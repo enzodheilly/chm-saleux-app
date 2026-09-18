@@ -95,7 +95,7 @@
 				</div>
 
 				<div class="nav-item">
-					<a href="{{ path('admin_settings_index') }}" class="nav-link {% if app.request.get('_route') == 'admin_settings_index' %}active{% endif %}">
+					<a href="{{ path('admin_settings_banner_index') }}" class="nav-link {% if app.request.get('_route') starts with 'admin_settings_banner' %}active{% endif %}">
 						Bandeau d'annonce
 					</a>
 				</div>
