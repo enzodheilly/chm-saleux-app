@@ -1,0 +1,25 @@
+{# ── SECTION : BANNIÈRE ABONNEMENT ── #}
+<section class="hcb-section">
+	<picture>
+		<source
+			srcset="{{ asset('images/accueil/banner-abonnement-mobile.jpg') }}"
+			media="(max-width: 768px)">
+		<img
+			src="{{ asset('images/accueil/banner-abonnement.jpg') }}"
+			alt="Nos abonnements — CHM Saleux"
+			class="hcb-banner-img"
+			loading="eager"
+			draggable="false">
+	</picture>
+
+	<div class="hcb-overlay">
+		<div class="hcb-ctas">
+			<a href="{{ path('app_auth_choice') }}" class="hcb-btn-main">JE M'INSCRIS !</a>
+			<a href="{{ path('seance_essai') }}" class="hcb-btn-ghost">SÉANCE D'ESSAI GRATUITE</a>
+		</div>
+		<p class="hcb-legal">
+			*70€/an : tarif Compétition Jeunes. Abonnement annuel, non remboursable. Facilités de paiement disponibles. Le tarif est dégressif selon votre mois d'arrivée dans le club.
+			Plus d'informations disponibles sur la page <a href="{{ path('app_pricing') }}">tarifs</a>.
+		</p>
+	</div>
+</section>

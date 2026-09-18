@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Plateau Haltérophilie - CHM Saleux
-{% endblock %}
+{% block title %}Plateau Haltérophilie · CHM Saleux{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
@@ -15,15 +14,9 @@
 
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
+				{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'Le Club' }, { label: 'Haltérophilie' }] } %}
 
 				<div class="header-main-box">
-					<div class="badge-accent">Performance Olympique</div>
 					<h1>Espace
 						<span class="text-outline">Haltérophilie</span>
 					</h1>
@@ -35,8 +28,8 @@
 
 	{# IMAGE DÉCORATIVE GAUCHE #}
 
-	<main
-		class="page-shell elite-main">
+	<main class="page-shell elite-main">
+
 
 		{# --- SECTION 1 : PODIUMS --- #}
 		<section class="feature-section">
@@ -71,7 +64,7 @@
 
 				<div class="visual-side">
 					<div class="img-frame-elite">
-						<img src="{{ asset('images/halterophilie/podiums.jpg') }}" alt="Plateaux d'haltérophilie" loading="lazy">
+						<img src="{{ asset('images/nos_pratiques/halterophilie/podiums.jpg') }}" alt="Plateaux d'haltérophilie" loading="lazy">
 					</div>
 					<div class="frame-glow"></div>
 				</div>
@@ -101,6 +94,9 @@
 						<li>
 							<i class="fa-solid fa-circle-check"></i>
 							Barres d'initiation en aluminium</li>
+						<li>
+							<i class="fa-solid fa-circle-check"></i>
+							Disques : de 1 kg à 25 kg</li>
 					</ul>
 				</div>
 

@@ -1,125 +1,111 @@
 <nav class="nav-fixed" id="mainNav">
-	<div
-		class="nav-inner">
+	<div class="nav-inner">
 
 		{# ── LOGO ── #}
 		<a href="{{ path('home') }}" class="nav-brand">
 			<img src="{{ asset('images/favicon/icon2.png') }}" alt="CHM Saleux" width="40" height="40">
-			<span class="nav-brand-text">CHM
-				<em>SALEUX</em>
-			</span>
 		</a>
 
 		{# ── LIENS DESKTOP ── #}
 		<div class="nav-links" id="navLinks">
-			<a href="{{ path('home') }}" class="nav-link">Accueil</a>
+
+			<a href="{{ path('ecole') }}" class="nav-link">Notre École</a>
 			<a href="{{ path('app_pricing') }}" class="nav-link">Tarifs</a>
 
 			<div class="nav-link nav-has-dropdown" id="clubDropdownTrigger">
-				<span>Le Club</span>
+				<span>Club & Activités</span>
 				<i class="fa-solid fa-chevron-down nav-chevron"></i>
 
 				<div class="nav-dropdown" id="clubDropdown">
 					<div class="nav-dropdown-wrap">
-
 						<div class="nav-dropdown-links">
 
 							<div class="nav-dropdown-col">
-								<p class="nav-dropdown-label">
-									<i class="fa-solid fa-dumbbell"></i>
-									Nos activités
+								<p class="nav-dropdown-label">Nos activités
 								</p>
 								<a href="{{ path('halterophilie') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span>
-									Haltérophilie
+									<span class="ndl-arrow">→</span>Haltérophilie
 								</a>
 								<a href="{{ path('musculation') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span>
-									Musculation
+									<span class="ndl-arrow">→</span>Musculation
 								</a>
 								<a href="{{ path('cours_collectifs') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span>
-									Cours collectifs
+									<span class="ndl-arrow">→</span>Cours collectifs
 								</a>
 								<a href="{{ path('seance_essai') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span>
-									Séance d'essai
+									<span class="ndl-arrow">→</span>Séance d'essai
 								</a>
 								<a href="{{ path('evenements') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span>
-									Événements
+									<span class="ndl-arrow">→</span>Événements
 								</a>
 								<a href="{{ path('sauna') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span>
-									Sauna
+									<span class="ndl-arrow">→</span>Sauna
 								</a>
 							</div>
 
 							<div class="nav-dropdown-col">
-								<p class="nav-dropdown-label">
-									<i class="fa-solid fa-users"></i>
-									Le Bureau
+								<p class="nav-dropdown-label">Le Bureau
 								</p>
 								<a href="{{ path('president') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span>
-									Le Président
+									<span class="ndl-arrow">→</span>Le Président
 								</a>
 								<a href="{{ path('tresorier') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span>
-									Le Trésorier
+									<span class="ndl-arrow">→</span>Le Trésorier
 								</a>
 								<a href="{{ path('secretaire') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span>
-									La Secrétaire
+									<span class="ndl-arrow">→</span>La Secrétaire
 								</a>
 								<a href="{{ path('membres_bureau') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span>
-									Tous les membres
-								</a>
-							</div>
-
-							<div class="nav-dropdown-col">
-								<p class="nav-dropdown-label">
-									<i class="fa-solid fa-circle-info"></i>
-									À propos
-								</p>
-								<a href="{{ path('app_club') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span>
-									Présentation
-								</a>
-								<a href="{{ path('labels_club') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span>
-									Nos labels
-								</a>
-								<a href="{{ path('horaires') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span>
-									Horaires
-								</a>
-								<a href="{{ path('app_partenaire') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span>
-									Partenaires
-								</a>
-								<a href="{{ path('app_boite_a_idees') }}" class="nav-dropdown-link">
-									<span class="ndl-arrow">→</span>
-									Boîte à idées
+									<span class="ndl-arrow">→</span>Tous les membres
 								</a>
 							</div>
 
 						</div>
-
 					</div>
 				</div>
 			</div>
 
-			<a href="{{ path('ecole') }}" class="nav-link">Notre École</a>
 			<a href="{{ path('competition_root') }}" class="nav-link">Compétitions & Résultats</a>
+
+			<div class="nav-link nav-has-dropdown" id="aboutDropdownTrigger">
+				<span>À propos de nous</span>
+				<i class="fa-solid fa-chevron-down nav-chevron"></i>
+
+				<div class="nav-dropdown" id="aboutDropdown">
+					<div class="nav-dropdown-wrap">
+						<div class="nav-dropdown-links">
+
+							<div class="nav-dropdown-col">
+								<p class="nav-dropdown-label">Infos & présentation</p>
+								<a href="{{ path('app_club') }}" class="nav-dropdown-link">
+									<span class="ndl-arrow">→</span>Présentation
+								</a>
+								<a href="{{ path('labels_club') }}" class="nav-dropdown-link">
+									<span class="ndl-arrow">→</span>Nos labels
+								</a>
+								<a href="{{ path('horaires') }}" class="nav-dropdown-link">
+									<span class="ndl-arrow">→</span>Horaires
+								</a>
+								<a href="{{ path('app_partenaire') }}" class="nav-dropdown-link">
+									<span class="ndl-arrow">→</span>Partenaires
+								</a>
+								<a href="{{ path('app_boite_a_idees') }}" class="nav-dropdown-link">
+									<span class="ndl-arrow">→</span>Boîte à idées
+								</a>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
 
 		{# ── ACTIONS DROITE ── #}
 		<div class="nav-end">
-			{% if app.user %}
+			{% if app.user and not is_preview_mode %}
 				<a href="{{ path('dashboard') }}" class="nav-cta">
-					MON ESPACE
+					ESPACE ADHÉRENT
 				</a>
 			{% else %}
 				<a href="{{ path('app_login') }}" class="nav-cta nav-cta--outline">
@@ -128,6 +114,12 @@
 				<a href="{{ path('app_auth_choice') }}" class="nav-cta">
 					S'INSCRIRE
 				</a>
+			{% endif %}
+
+			{% if app.user and not is_preview_mode %}
+				<a href="{{ path('dashboard') }}" class="nav-cta-mobile">MON ESPACE</a>
+			{% else %}
+				<a href="{{ path('app_auth_choice') }}" class="nav-cta-mobile">S'INSCRIRE</a>
 			{% endif %}
 
 			<button class="nav-hamburger" id="mobileMenuTrigger" aria-label="Menu" aria-expanded="false">
@@ -145,10 +137,12 @@
 	<div class="nav-mobile-panel">
 
 		<div class="nav-mobile-links">
-			<a href="{{ path('home') }}" class="nav-mobile-link">Accueil</a>
+
+			<a href="{{ path('ecole') }}" class="nav-mobile-link">Notre École</a>
+			<a href="{{ path('app_pricing') }}" class="nav-mobile-link">Tarifs</a>
 
 			<button type="button" class="nav-mobile-accordion">
-				Le Club
+				Club & Activités
 				<i class="fa-solid fa-plus nav-mobile-icon"></i>
 			</button>
 			<div class="nav-mobile-sub">
@@ -163,22 +157,29 @@
 				<a href="{{ path('president') }}">Le Président</a>
 				<a href="{{ path('tresorier') }}">Le Trésorier</a>
 				<a href="{{ path('secretaire') }}">La Secrétaire</a>
-				<span class="nav-mobile-sublabel">À propos</span>
+			</div>
+
+			<a href="{{ path('competition_root') }}" class="nav-mobile-link">Compétitions & Résultats</a>
+
+			<button type="button" class="nav-mobile-accordion">
+				À propos de nous
+				<i class="fa-solid fa-plus nav-mobile-icon"></i>
+			</button>
+			<div class="nav-mobile-sub">
 				<a href="{{ path('app_club') }}">Présentation</a>
 				<a href="{{ path('labels_club') }}">Nos labels</a>
 				<a href="{{ path('horaires') }}">Horaires</a>
+				<a href="{{ path('app_partenaire') }}">Partenaires</a>
+				<a href="{{ path('app_boite_a_idees') }}">Boîte à idées</a>
 			</div>
 
-			<a href="{{ path('app_pricing') }}" class="nav-mobile-link">Tarifs</a>
-			<a href="{{ path('ecole') }}" class="nav-mobile-link">Notre École</a>
-			<a href="{{ path('competition_root') }}" class="nav-mobile-link">Compétitions</a>
 		</div>
 
 		<div class="nav-mobile-footer">
-			{% if app.user %}
+			{% if app.user and not is_preview_mode %}
 				<a href="{{ path('dashboard') }}" class="nav-mobile-footer-link">
 					<i class="fa-regular fa-user"></i>
-					Mon espace
+					Espace adhérent
 				</a>
 				<a href="{{ path('app_logout') }}" class="nav-mobile-footer-link">
 					<i class="fa-solid fa-right-from-bracket"></i>

@@ -10,11 +10,13 @@ use App\Form\RoutineTemplateExerciseType;
 use App\Repository\RoutineTemplateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/gestion-chm-secrete-92x/mobile/routines/templates', name: 'admin_routine_template_')]
+#[IsGranted('ROLE_SUPER_ADMIN')]
 class AdminRoutineTemplateController extends AbstractController
 {
     #[Route('/', name: 'index', methods: ['GET'])]

@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Repository\ContactMessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
@@ -14,6 +15,7 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/gestion-chm-secrete-92x/contact', name: 'admin_contact_')]
+#[IsGranted('ROLE_STAFF')]
 class AdminContactController extends AbstractController
 {
     #[Route('/', name: 'index')]
@@ -59,32 +61,43 @@ class AdminContactController extends AbstractController
             ? $user->getFirstName()
             : 'Admin';
 
-        if ($responseText !== '') {
-            $message->setResponse($responseText);
-            $message->setResolvedBy($adminName);
-            $message->setIsFromAdmin(true);
-
-            $em->flush();
-
-            $clientEmail = $message->getEmail();
-
-            if ($clientEmail) {
-                $email = (new Email())
-                    ->from('no-reply@chm-saleux.fr')
-                    ->to($clientEmail)
-                    ->subject('Réponse à votre demande de contact')
-                    ->html($this->renderView('emails/contact_response.html.twig', [
-                        'responseText' => $responseText,
-                        'adminName'    => $adminName,
-                    ]));
-
-                $mailer->send($email);
-            }
-
-            $this->addFlash('success', 'La réponse a bien été enregistrée et envoyée au client.');
-        } else {
+        if ($responseText === '') {
             $this->addFlash('warning', 'Le champ de réponse est vide.');
+            return $this->redirectToRoute('admin_contact_index');
         }
+
+        if ($message->getResponse() !== null) {
+            $this->addFlash('warning', 'Une réponse a déjà été envoyée pour ce message.');
+            return $this->redirectToRoute('admin_contact_index');
+        }
+
+        $message->setResponse($responseText);
+        $message->setResolvedBy($adminName);
+        $message->setIsFromAdmin(true);
+
+        $em->flush();
+
+        $clientEmail = $message->getEmail();
+
+        if ($clientEmail) {
+            $email = (new Email())
+                ->from('no-reply@chm-saleux.fr')
+                ->to($clientEmail)
+                ->subject('Réponse à votre demande de contact')
+                ->html($this->renderView('emails/contact_response.html.twig', [
+                    'responseText' => $responseText,
+                    'adminName'    => $adminName,
+                ]));
+
+            try {
+                $mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                $this->addFlash('warning', 'La réponse a été enregistrée mais l\'email n\'a pas pu être envoyé.');
+                return $this->redirectToRoute('admin_contact_index');
+            }
+        }
+
+        $this->addFlash('success', 'La réponse a bien été enregistrée et envoyée au client.');
 
         return $this->redirectToRoute('admin_contact_index');
     }

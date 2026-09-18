@@ -75,6 +75,11 @@ class GoogleAuthenticator extends AbstractAuthenticator
                     $pseudo = $this->logger->pseudonymizeEmail($email);
 
                     if ($user instanceof User) {
+                        $lockedUntil = $user->getLockedUntil();
+                        if ($lockedUntil && $lockedUntil > new \DateTimeImmutable()) {
+                            throw new CustomUserMessageAuthenticationException('Compte temporairement bloqué. Réessayez plus tard.');
+                        }
+
                         if (!$user->getFirstName() && $firstName) $user->setFirstName($firstName);
                         if (!$user->getLastName() && $lastName)  $user->setLastName($lastName);
 
@@ -87,11 +92,6 @@ class GoogleAuthenticator extends AbstractAuthenticator
                         }
 
                         $this->em->flush();
-
-                        $this->logger->add(
-                            'Connexion',
-                            sprintf('OAuth Google OK (user existant): %s (IP: %s)', $pseudo, $ip)
-                        );
 
                         return $user;
                     }
@@ -137,7 +137,8 @@ class GoogleAuthenticator extends AbstractAuthenticator
             return new RedirectResponse($this->router->generate('set_password'));
         }
 
-        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        $roles = $user->getRoles();
+        if (in_array('ROLE_STAFF', $roles, true) || in_array('ROLE_SUPER_ADMIN', $roles, true)) {
             return new RedirectResponse($this->router->generate('admin_dashboard'));
         }
 

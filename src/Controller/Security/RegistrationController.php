@@ -29,7 +29,7 @@ class RegistrationController extends AbstractController
         return true;
     }
 
-    #[Route('/register', name: 'app_register', methods: ['GET', 'POST'])]
+    #[Route('/inscription', name: 'app_register', methods: ['GET', 'POST'])]
     public function register(
         Request $request,
         UserPasswordHasherInterface $passwordHasher,

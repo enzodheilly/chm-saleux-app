@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Contactez-nous — CHM Saleux
-{% endblock %}
+{% block title %}Contact · CHM Saleux{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
@@ -22,8 +21,7 @@
 				<p class="contact-header-lead">Une question, une demande d'inscription ou simplement envie d'en savoir plus ? Notre équipe est là pour vous répondre.</p>
 			</div>
 		</div>
-		<img class="contact-header-athlete" src="{{ asset('images/contact/athlete-contact.png') }}" alt="" aria-hidden="true">
-	</header>
+		</header>
 
 	<main
 		class="contact-root page-shell">
@@ -40,6 +38,7 @@
 		</div>
 
 		<section class="contact-section page-container">
+			<div class="contact-wm page-wm" aria-hidden="true">CONTACT</div>
 			<div
 				class="contact-grid">
 
@@ -108,27 +107,18 @@
 						<span class="sidebar-eyebrow">Nous trouver</span>
 						<div class="info-items">
 							<div class="info-item">
-								<div class="info-item-icon">
-									<i class="fa-solid fa-phone"></i>
-								</div>
 								<div class="info-item-body">
 									<span class="info-item-label">Téléphone</span>
 									<span class="info-item-val">03.22.89.72.57</span>
 								</div>
 							</div>
 							<a href="mailto:chm.saleux@orange.fr" class="info-item">
-								<div class="info-item-icon">
-									<i class="fa-solid fa-envelope"></i>
-								</div>
 								<div class="info-item-body">
 									<span class="info-item-label">Email</span>
 									<span class="info-item-val">chm.saleux@orange.fr</span>
 								</div>
 							</a>
 							<div class="info-item">
-								<div class="info-item-icon">
-									<i class="fa-solid fa-clock"></i>
-								</div>
 								<div class="info-item-body">
 									<span class="info-item-label">Horaires salle</span>
 									<span class="info-item-val">Lun - Mer - Ven · 10h–12h & 16h–20h</span>

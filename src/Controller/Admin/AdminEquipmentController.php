@@ -6,20 +6,24 @@ namespace App\Controller\Admin;
 use App\Entity\Equipment;
 use App\Form\EquipmentType;
 use App\Repository\EquipmentRepository;
+use App\Service\SystemLoggerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/gestion-chm-secrete-92x/equipment', name: 'admin_equipment_')]
+#[IsGranted('ROLE_SUPER_ADMIN')]
 class AdminEquipmentController extends AbstractController
 {
     #[Route('/', name: 'index', methods: ['GET', 'POST'])]
     public function index(
         EquipmentRepository $equipmentRepository,
         Request $request,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        SystemLoggerService $logger
     ): Response {
         $equipments = $equipmentRepository->findBy([], ['name' => 'ASC']);
 
@@ -32,6 +36,7 @@ class AdminEquipmentController extends AbstractController
             $em->persist($equipment);
             $em->flush();
 
+            $logger->add(SystemLoggerService::TYPE_ADMIN, 'Ajout équipement : ' . $equipment->getName());
             $this->addFlash('success', 'Équipement ajouté avec succès.');
             return $this->redirectToRoute('admin_equipment_index');
         }
@@ -43,7 +48,7 @@ class AdminEquipmentController extends AbstractController
     }
 
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em): Response
+    public function new(Request $request, EntityManagerInterface $em, SystemLoggerService $logger): Response
     {
         $equipment = new Equipment();
         $form = $this->createForm(EquipmentType::class, $equipment);
@@ -53,6 +58,7 @@ class AdminEquipmentController extends AbstractController
             $em->persist($equipment);
             $em->flush();
 
+            $logger->add(SystemLoggerService::TYPE_ADMIN, 'Ajout équipement : ' . $equipment->getName());
             $this->addFlash('success', 'Équipement ajouté avec succès.');
             return $this->redirectToRoute('admin_equipment_index');
         }
@@ -63,7 +69,7 @@ class AdminEquipmentController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
-    public function edit(Equipment $equipment, Request $request, EntityManagerInterface $em): Response
+    public function edit(Equipment $equipment, Request $request, EntityManagerInterface $em, SystemLoggerService $logger): Response
     {
         $form = $this->createForm(EquipmentType::class, $equipment);
         $form->handleRequest($request);
@@ -71,6 +77,7 @@ class AdminEquipmentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
 
+            $logger->add(SystemLoggerService::TYPE_ADMIN, 'Modification équipement : ' . $equipment->getName());
             $this->addFlash('success', 'Équipement modifié avec succès.');
             return $this->redirectToRoute('admin_equipment_index');
         }
@@ -82,12 +89,14 @@ class AdminEquipmentController extends AbstractController
     }
 
     #[Route('/{id}', name: 'delete', methods: ['POST'])]
-    public function delete(Equipment $equipment, Request $request, EntityManagerInterface $em): Response
+    public function delete(Equipment $equipment, Request $request, EntityManagerInterface $em, SystemLoggerService $logger): Response
     {
         if ($this->isCsrfTokenValid('delete_equipment_' . $equipment->getId(), (string) $request->request->get('_token'))) {
+            $name = $equipment->getName();
             $em->remove($equipment);
             $em->flush();
 
+            $logger->add(SystemLoggerService::TYPE_ADMIN, 'Suppression équipement : ' . $name);
             $this->addFlash('success', 'Équipement supprimé.');
         } else {
             $this->addFlash('danger', 'Token CSRF invalide.');

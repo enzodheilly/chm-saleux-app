@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Boîte à idées — CHM Saleux
-{% endblock %}
+{% block title %}Boîte à idées · CHM Saleux{% endblock %}
 {% block description %}Partagez vos idées pour améliorer le club CHM Saleux.
 {% endblock %}
 
@@ -12,19 +11,12 @@
 
 {% block body %}
 
-	{# --- HEADER --- #}
 	<header class="page-header-sport boite-a-idees-header-bg">
 		<div class="header-overlay-gradient"></div>
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
+				{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'Le Club' }, { label: 'Boîte à idées' }] } %}
 				<div class="header-main-box">
-					<div class="badge-accent">Votre avis compte</div>
 					<h1>Boîte à
 						<span class="text-outline">Idées</span>
 					</h1>
@@ -34,123 +26,102 @@
 		</div>
 	</header>
 
-	{# DÉCO GAUCHE #}
+	<main class="bai-root page-shell">
+		<div class="bai-wm page-wm" aria-hidden="true">SUGGESTIONS</div>
 
-	<main
-		class="page-shell bai-root">
+		{# --- QR + ÉTAPES --- #}
+		<section class="bai-qr-section page-container">
 
-		{# --- SECTION PRINCIPALE --- #}
-		<section
-			class="page-container section-spacer">
-
-			{# EN-TÊTE DE SECTION #}
-			<div class="section-header-center">
-				<h2 class="section-heading centered">Scannez &amp;
-					<span>Suggérez</span>
-				</h2>
-				<p>Un geste, une idée. Pointez votre appareil photo sur le code ci-dessous.</p>
+			<div class="bai-section-head">
+				<h2 class="bai-title">Scannez &amp; <span>Suggérez</span></h2>
+				<p class="bai-sub">Un geste, une idée. Pointez votre appareil photo sur le QR code et rédigez votre suggestion en 30 secondes.</p>
 			</div>
 
-			{# HERO QR #}
-			<div
-				class="bai-hero">
+			<div class="bai-layout">
 
-				{# ÉTAPES HORIZONTALES #}
-				<div class="bai-steps-row">
-					<div class="bai-step">
+				{# Étapes #}
+				<div class="bai-steps">
+					<div class="bai-step-card">
 						<div class="bai-step-num">1</div>
 						<div class="bai-step-body">
-							<strong>Scannez</strong>
-							<span>Ouvrez l'appareil photo</span>
+							<h4>Scannez</h4>
+							<p>Ouvrez l'appareil photo de votre téléphone et pointez-le sur le QR code.</p>
 						</div>
 					</div>
-					<div class="bai-step-arrow">
-						<i class="fa-solid fa-chevron-right"></i>
-					</div>
-					<div class="bai-step">
+					<div class="bai-step-connector"></div>
+					<div class="bai-step-card">
 						<div class="bai-step-num">2</div>
 						<div class="bai-step-body">
-							<strong>Rédigez</strong>
-							<span>Décrivez votre idée</span>
+							<h4>Rédigez</h4>
+							<p>Décrivez votre idée ou suggestion librement, sans contrainte de longueur.</p>
 						</div>
 					</div>
-					<div class="bai-step-arrow">
-						<i class="fa-solid fa-chevron-right"></i>
-					</div>
-					<div class="bai-step">
+					<div class="bai-step-connector"></div>
+					<div class="bai-step-card">
 						<div class="bai-step-num">3</div>
 						<div class="bai-step-body">
-							<strong>Envoyez</strong>
-							<span>L'équipe la reçoit</span>
+							<h4>Envoyez</h4>
+							<p>L'équipe du club reçoit immédiatement votre suggestion et l'étudie.</p>
 						</div>
 					</div>
 				</div>
 
-				{# QR CODE CENTRAL #}
-				<div class="bai-qr-stage">
-					<div class="bai-qr-glow-ring" aria-hidden="true"></div>
-
-					<div
-						class="bai-qr-frame">
-						{# Coins décoratifs #}
+				{# QR Code #}
+				<div class="bai-qr-block">
+					<div class="bai-qr-frame">
 						<span class="qr-corner tl" aria-hidden="true"></span>
 						<span class="qr-corner tr" aria-hidden="true"></span>
 						<span class="qr-corner bl" aria-hidden="true"></span>
 						<span class="qr-corner br" aria-hidden="true"></span>
-
-						{#
-						                            Remplacez le src par votre vrai QR code.
-						                            Ex : src="{{ asset('images/qrcodes/boite-a-idees.png') }}"
-						                        #}
 						<img src="{{ asset('images/qrcodes/boite-a-idees.png') }}" alt="QR Code — Boîte à idées CHM Saleux" class="bai-qr-img">
 					</div>
-
 					<p class="bai-qr-label">
 						<i class="fa-solid fa-mobile-screen-button"></i>
-						Ouvrez l'appareil photo et pointez-le ici
+						Pointez votre appareil photo ici
 					</p>
-				</div>
-
-				{# BADGES GARANTIES #}
-				<div class="bai-badges-row">
-					<span class="bai-badge">
-						<i class="fa-solid fa-user-secret"></i>
-						100&nbsp;% anonyme
-					</span>
-					<span class="bai-badge">
-						<i class="fa-solid fa-eye"></i>
-						Toutes les idées sont lues
-					</span>
-					<span class="bai-badge">
-						<i class="fa-solid fa-bolt"></i>
-						30&nbsp;secondes chrono
-					</span>
+					<div class="bai-badges">
+						<span class="bai-badge">
+							<i class="fa-solid fa-user-secret"></i>
+							100&nbsp;% anonyme
+						</span>
+						<span class="bai-badge">
+							<i class="fa-solid fa-bolt"></i>
+							30&nbsp;secondes
+						</span>
+					</div>
 				</div>
 
 			</div>
-			{# /bai-hero #}
-
 		</section>
 
-		{# --- SECTION POURQUOI --- #}
-		<section class="bg-dark-alternate section-spacer">
+		{# --- POURQUOI --- #}
+		<section class="bai-why-section">
 			<div class="page-container">
-				<h2 class="section-heading centered">Pourquoi nous
-					<span>suggérer</span>&nbsp;?</h2>
-				<div class="info-blocks-grid">
-					<div class="info-mini-card">
-						<i class="fa-solid fa-users"></i>
-						<h4>Un club participatif</h4>
-						<p>Le CHM Saleux évolue grâce à ses membres. Votre avis est le meilleur moteur de notre progression.</p>
+				<div class="bai-section-head bai-section-head--light">
+					<h2 class="bai-title bai-title--light">Pourquoi nous <span class="text-outline-light">suggérer</span>&nbsp;?</h2>
+					<p class="bai-sub bai-sub--light">Le CHM Saleux évolue grâce à ses membres. Chaque suggestion est une opportunité d'amélioration.</p>
+				</div>
+
+				<div class="bai-why-grid">
+					<div class="bai-why-card">
+						<div class="bai-why-icon">
+							<i class="fa-solid fa-people-group"></i>
+						</div>
+						<h3>Un club participatif</h3>
+						<p>Le CHM Saleux évolue grâce à ses membres. Votre avis est le meilleur moteur de notre progression collective.</p>
 					</div>
-					<div class="info-mini-card">
-						<i class="fa-solid fa-chart-line"></i>
-						<h4>Des idées qui aboutissent</h4>
+					<div class="bai-why-card">
+						<div class="bai-why-icon">
+							<i class="fa-solid fa-lightbulb"></i>
+						</div>
+						<h3>Des idées qui aboutissent</h3>
 						<p>Plusieurs améliorations du club sont nées de suggestions de membres. La vôtre peut être la prochaine.</p>
 					</div>
-					<div class="info-mini-card">
-						<i class="fa-solid fa-lock"></i>
-						<h4>100&nbsp;% Anonyme</h4>
+					<div class="bai-why-card">
+						<div class="bai-why-icon">
+							<i class="fa-solid fa-lock"></i>
+						</div>
+						<h3>100&nbsp;% Anonyme</h3>
 						<p>Pas besoin de compte. Pas de traçage. Votre idée arrive directement à l'équipe, sans intermédiaire.</p>
 					</div>
 				</div>

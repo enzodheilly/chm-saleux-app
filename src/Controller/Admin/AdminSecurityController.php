@@ -2,10 +2,10 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\SecurityLog;
 use App\Entity\User;
 use App\Repository\SecurityLogRepository;
 use App\Repository\UserRepository;
+use App\Service\SystemLoggerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
@@ -13,28 +13,44 @@ use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/gestion-chm-secrete-92x/security', name: 'admin_security_')]
+#[IsGranted('ROLE_SUPER_ADMIN')]
 class AdminSecurityController extends AbstractController
 {
     /**
      * 📋 Journal des connexions
      */
     #[Route('/logs', name: 'logs')]
-    public function logs(SecurityLogRepository $repo): Response
+    public function logs(SecurityLogRepository $repo, Request $request): Response
     {
-        $logs = $repo->findBy([], ['createdAt' => 'DESC'], 100);
+        $filter = $request->query->get('filter', 'all');
+        if (!in_array($filter, ['all', 'connexion', 'echec', 'admin', 'securite'], true)) {
+            $filter = 'all';
+        }
+
+        $logs = $repo->findFiltered($filter, 200);
+
+        $stats = [
+            'total'      => $repo->countAll(),
+            'connexions' => $repo->countByTypeAndSuccess('Connexion', true),
+            'echecs'     => $repo->countByTypeAndSuccess('Connexion', false),
+            'admin'      => $repo->countByTypeAndSuccess('Admin'),
+        ];
 
         $topTargets = $repo->createQueryBuilder('l')
             ->join('l.user', 'u')
             ->select('u.id AS userId, u.email AS email, COUNT(l.id) AS attempts')
             ->where('l.type = :type')
+            ->andWhere('l.success = :s')
             ->andWhere('l.user IS NOT NULL')
-            ->setParameter('type', 'erreur')
+            ->setParameter('type', 'Connexion')
+            ->setParameter('s', false)
             ->groupBy('u.id, u.email')
             ->orderBy('attempts', 'DESC')
             ->setMaxResults(4)
@@ -42,8 +58,10 @@ class AdminSecurityController extends AbstractController
             ->getArrayResult();
 
         return $this->render('admin/security/logs.html.twig', [
-            'logs' => $logs,
+            'logs'       => $logs,
             'topTargets' => $topTargets,
+            'stats'      => $stats,
+            'filter'     => $filter,
         ]);
     }
 
@@ -79,9 +97,14 @@ class AdminSecurityController extends AbstractController
     /**
      * 🔓 Débloquer un utilisateur manuellement
      */
-    #[Route('/blocklist/unlock/{id}', name: 'unlock_user')]
-    public function unlockUser(UserRepository $userRepository, EntityManagerInterface $em, int $id): Response
+    #[Route('/blocklist/unlock/{id}', name: 'unlock_user', methods: ['POST'])]
+    public function unlockUser(Request $request, UserRepository $userRepository, EntityManagerInterface $em, SystemLoggerService $logger, int $id): Response
     {
+        if (!$this->isCsrfTokenValid('unlock_user_' . $id, (string) $request->request->get('_token', ''))) {
+            $this->addFlash('error', 'Jeton CSRF invalide.');
+            return $this->redirectToRoute('admin_security_blocklist');
+        }
+
         $user = $userRepository->find($id);
 
         if (!$user) {
@@ -92,6 +115,7 @@ class AdminSecurityController extends AbstractController
         $user->setLockedUntil(null);
         $user->setFailedAttempts(0);
         $em->flush();
+        $logger->add(SystemLoggerService::TYPE_SECURITE, 'Déblocage utilisateur : ' . $user->getEmail());
 
         // ✅ XSS — échappement de l'email
         $this->addFlash('success', sprintf(
@@ -105,27 +129,20 @@ class AdminSecurityController extends AbstractController
     /**
      * 🧹 Purge tous les logs de connexion
      */
-    #[Route('/purge', name: 'purge_logs')]
-    public function purge(SecurityLogRepository $repo, EntityManagerInterface $em, Request $request): Response
+    #[Route('/purge', name: 'purge_logs', methods: ['POST'])]
+    public function purge(Request $request, SecurityLogRepository $repo, SystemLoggerService $logger): Response
     {
+        if (!$this->isCsrfTokenValid('purge_logs', (string) $request->request->get('_token', ''))) {
+            $this->addFlash('error', 'Jeton CSRF invalide.');
+            return $this->redirectToRoute('admin_security_logs');
+        }
+
         $repo->createQueryBuilder('l')
             ->delete()
             ->getQuery()
             ->execute();
 
-        /** @var User $admin */
-        $admin = $this->getUser();
-
-        $log = new SecurityLog();
-        $log->setType('Session');
-        $log->setMessage('L\'historique complet des journaux a été purgé par l\'administrateur.');
-        $log->setUser($admin);
-        $log->setIp($request->getClientIp());
-        $log->setUserAgent($request->headers->get('User-Agent'));
-        $log->setMethod($request->getMethod());
-
-        $em->persist($log);
-        $em->flush();
+        $logger->add(SystemLoggerService::TYPE_SECURITE, 'Purge complète de l\'historique des journaux de sécurité.');
 
         $this->addFlash('success', '🧹 Historique de sécurité réinitialisé avec succès.');
         return $this->redirectToRoute('admin_security_logs');
@@ -138,7 +155,8 @@ class AdminSecurityController extends AbstractController
     public function setup(
         Request $request,
         GoogleAuthenticatorInterface $ga,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        SystemLoggerService $logger
     ): Response {
         /** @var User $user */
         $user = $this->getUser();
@@ -191,17 +209,9 @@ class AdminSecurityController extends AbstractController
                     $plainCodes
                 );
                 $user->setBackupCodes($hashedCodes);
-
-                $log = new SecurityLog();
-                $log->setType('connexion');
-                $log->setMessage('Double authentification (2FA) activée avec codes de secours.');
-                $log->setUser($user);
-                $log->setIp($request->getClientIp());
-                $log->setUserAgent($request->headers->get('User-Agent'));
-                $log->setMethod($request->getMethod());
-
-                $em->persist($log);
                 $em->flush();
+
+                $logger->add(SystemLoggerService::TYPE_SECURITE, 'Activation de la double authentification (2FA) avec codes de secours.');
 
                 // On passe les codes EN CLAIR en session pour affichage unique
                 $request->getSession()->set('show_backup_codes', $plainCodes);
@@ -238,13 +248,19 @@ class AdminSecurityController extends AbstractController
     /**
      * 🔐 Réinitialiser le 2FA d'un utilisateur
      */
-    #[Route('/reset-2fa/{id}', name: 'reset_2fa')]
+    #[Route('/reset-2fa/{id}', name: 'reset_2fa', methods: ['POST'])]
     public function reset2fa(
+        Request $request,
         int $id,
         UserRepository $userRepository,
         EntityManagerInterface $em,
-        Request $request
+        SystemLoggerService $logger
     ): Response {
+        if (!$this->isCsrfTokenValid('reset_2fa_' . $id, (string) $request->request->get('_token', ''))) {
+            $this->addFlash('error', 'Jeton CSRF invalide.');
+            return $this->redirectToRoute('admin_security_blocklist');
+        }
+
         $user = $userRepository->find($id);
 
         if (!$user) {
@@ -254,19 +270,9 @@ class AdminSecurityController extends AbstractController
 
         $user->setGoogleAuthenticatorSecret(null);
         $user->setIsTotpConfirmed(false);
-
-        /** @var User $admin */
-        $admin = $this->getUser();
-
-        $log = new SecurityLog();
-        $log->setType('Session');
-        $log->setMessage("Le 2FA de l'utilisateur {$user->getEmail()} a été réinitialisé par l'admin.");
-        $log->setUser($admin);
-        $log->setIp($request->getClientIp());
-        $log->setMethod('POST');
-
-        $em->persist($log);
         $em->flush();
+
+        $logger->add(SystemLoggerService::TYPE_SECURITE, 'Réinitialisation 2FA : ' . $user->getEmail());
 
         // ✅ XSS — échappement de l'email
         $this->addFlash('success', sprintf(
@@ -280,41 +286,48 @@ class AdminSecurityController extends AbstractController
     /**
      * 🔨 Bannir une IP
      */
-    #[Route('/blocklist/ban-ip/{ip}', name: 'ban_ip')]
+    #[Route('/blocklist/ban-ip/{ip}', name: 'ban_ip', methods: ['POST'])]
     public function banIp(
+        Request $request,
         string $ip,
         SecurityLogRepository $repo,
-        UserRepository $userRepository,
         EntityManagerInterface $em,
-        Request $request
+        SystemLoggerService $logger
     ): Response {
+        if (!$this->isCsrfTokenValid('ban_ip_' . $ip, (string) $request->request->get('_token', ''))) {
+            $this->addFlash('error', 'Jeton CSRF invalide.');
+            return $this->redirectToRoute('admin_security_logs');
+        }
+
+        if (!filter_var($ip, FILTER_VALIDATE_IP)) {
+            $this->addFlash('error', 'Adresse IP invalide.');
+            return $this->redirectToRoute('admin_security_logs');
+        }
+
         $lastLog = $repo->findOneBy(['ip' => $ip], ['createdAt' => 'DESC']);
+        $found = false;
 
         if ($lastLog && $lastLog->getUser()) {
             $userToBan = $lastLog->getUser();
             $userToBan->setLockedUntil(new \DateTimeImmutable('+99 years'));
             $em->persist($userToBan);
+            $em->flush();
+            $found = true;
         }
 
-        /** @var User $admin */
-        $admin = $this->getUser();
+        $logger->add(SystemLoggerService::TYPE_SECURITE, 'Bannissement manuel IP : ' . $ip);
 
-        $log = new SecurityLog();
-        $log->setType('Session');
-        $log->setMessage("Bannissement manuel de l'IP : $ip.");
-        $log->setUser($admin);
-        $log->setIp($request->getClientIp());
-        $log->setUserAgent($request->headers->get('User-Agent'));
-        $log->setMethod('POST');
-
-        $em->persist($log);
-        $em->flush();
-
-        // ✅ XSS — échappement de l'IP
-        $this->addFlash('success', sprintf(
-            "🚫 L'adresse IP <strong>%s</strong> a été bannie.",
-            htmlspecialchars($ip, ENT_QUOTES, 'UTF-8')
-        ));
+        if ($found) {
+            $this->addFlash('success', sprintf(
+                "🚫 L'adresse IP <strong>%s</strong> a été bannie.",
+                htmlspecialchars($ip, ENT_QUOTES, 'UTF-8')
+            ));
+        } else {
+            $this->addFlash('warning', sprintf(
+                "⚠️ Aucun utilisateur trouvé pour l'IP <strong>%s</strong>. Action journalisée.",
+                htmlspecialchars($ip, ENT_QUOTES, 'UTF-8')
+            ));
+        }
 
         return $this->redirectToRoute('admin_security_logs');
     }
@@ -322,10 +335,19 @@ class AdminSecurityController extends AbstractController
     /**
      * 📥 Exportation CSV
      */
-    #[Route('/export-csv', name: 'export_csv')]
-    public function exportCsv(SecurityLogRepository $repo): Response
+    #[Route('/export-csv', name: 'export_csv', methods: ['POST'])]
+    public function exportCsv(Request $request, SecurityLogRepository $repo): Response
     {
-        $logs = $repo->findBy([], ['createdAt' => 'DESC']);
+        if (!$this->isCsrfTokenValid('export_csv', (string) $request->request->get('_token', ''))) {
+            $this->addFlash('error', 'Jeton CSRF invalide.');
+            return $this->redirectToRoute('admin_security_logs');
+        }
+
+        $logs = $repo->createQueryBuilder('l')
+            ->orderBy('l.createdAt', 'DESC')
+            ->setMaxResults(10000)
+            ->getQuery()
+            ->getResult();
 
         $rows = [['ID', 'Date', 'Utilisateur', 'IP', 'Action']];
 

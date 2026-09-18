@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Cours Collectifs — CHM Saleux
-{% endblock %}
+{% block title %}Cours Collectifs · CHM Saleux{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
@@ -12,107 +11,96 @@
 
 	<header class="page-header-sport cours-collectifs-page-header">
 		<div class="header-overlay-gradient"></div>
-
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
-
+				{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'Le Club' }, { label: 'Cours collectifs' }] } %}
 				<div class="header-main-box">
-					<div class="badge-accent">Fitness & Cardio</div>
 					<h1>L'Énergie
 						<span class="text-outline">Collective</span>
 					</h1>
-					<p class="lead">
-						Plus qu'un simple cours, une expérience de groupe. Trouvez la motivation,
-																																																												                        dépassez vos limites et progressez ensemble.
-					</p>
+					<p class="lead">Plus qu'un simple cours, une expérience de groupe. Trouvez la motivation, dépassez vos limites et progressez ensemble.</p>
 				</div>
 			</div>
 		</div>
 	</header>
 
-	{# IMAGE DÉCORATIVE GAUCHE #}
-
 	<main class="collectif-root page-shell">
+		<div class="cc-wm page-wm" aria-hidden="true">COLLECTIF</div>
 
-		<section class="page-container section-spacer">
-			<div class="intro-block">
-				<h2 class="section-heading title-with-bar">Plus qu'un sport,
-					<span>Une Tribu.</span>
-				</h2>
-				<p class="desc-text">
-					Oubliez la monotonie de l'entraînement en solo. Ici, on transpire ensemble,
-																																													            on se motive et on progresse ensemble.
-																																													            L'énergie du groupe vous poussera toujours plus loin.
-				</p>
+		{# --- INTRO + INFOS CLÉS --- #}
+		<section class="cc-intro-section page-container">
+			<div class="cc-section-head">
+				<h2 class="cc-title">La Force du <span>Collectif</span></h2>
+				<p class="cc-sub">Oubliez la monotonie de l'entraînement en solo. Ici, on transpire ensemble, on se motive et on progresse. L'énergie du groupe vous poussera toujours plus loin.</p>
 			</div>
 
-			<div class="key-facts-grid">
-				<div class="fact-card">
-					<i class="fa-regular fa-clock"></i>
+			<div class="cc-facts-grid">
+				<div class="cc-fact-card">
+					<div class="cc-fact-icon">
+						<i class="fa-regular fa-clock"></i>
+					</div>
 					<strong>45 Minutes</strong>
 					<span>Durée de séance</span>
 				</div>
-				<div class="fact-card">
-					<i class="fa-solid fa-calendar-days"></i>
-					<strong>Mardi & Jeudi</strong>
+				<div class="cc-fact-card">
+					<div class="cc-fact-icon">
+						<i class="fa-solid fa-calendar-days"></i>
+					</div>
+					<strong>Mardi &amp; Jeudi</strong>
 					<span>Créneaux du soir</span>
 				</div>
-				<div class="fact-card">
-					<i class="fa-solid fa-fire"></i>
-					<strong>2 Séances</strong>
+				<div class="cc-fact-card">
+					<div class="cc-fact-icon">
+						<i class="fa-solid fa-fire"></i>
+					</div>
+					<strong>Jusqu’à 2 séances</strong>
 					<span>Par semaine</span>
 				</div>
 			</div>
 		</section>
 
-		<section class="bg-dark-alternate section-spacer">
+		{# --- ACTIVITÉS --- #}
+		<section class="cc-activities-section">
 			<div class="page-container">
-				<div class="section-header-center">
-					<h2 class="section-heading title-with-bar center-bar">Nos
-						<span>Univers</span>
-					</h2>
+				<div class="cc-section-head cc-section-head--light">
+					<h2 class="cc-title cc-title--light">Nos <span>Univers</span></h2>
+					<p class="cc-sub cc-sub--light">Des disciplines variées pour tous les niveaux, animées par une coach passionnée.</p>
 				</div>
 
-				<div class="activities-grid">
-					<div class="activity-card">
-						<div class="card-icon">
+				<div class="cc-activities-grid">
+					<div class="cc-activity-card">
+						<div class="cc-activity-icon">
 							<i class="fa-solid fa-fire-flame-curved"></i>
 						</div>
-						<h3>Cardio & Intense</h3>
+						<h3>Cardio &amp; Intense</h3>
 						<p>Défoulez-vous, augmentez votre endurance et brûlez des calories sur des rythmes entraînants.</p>
-						<div class="tags-row">
+						<div class="cc-tags">
 							<span>Step</span>
 							<span>LIA</span>
 							<span>HIIT</span>
 						</div>
 					</div>
 
-					<div class="activity-card">
-						<div class="card-icon">
+					<div class="cc-activity-card">
+						<div class="cc-activity-icon">
 							<i class="fa-solid fa-dumbbell"></i>
 						</div>
 						<h3>Renforcement</h3>
 						<p>Sculptez votre corps. Des exercices ciblés pour tonifier abdos, fessiers, cuisses et haut du corps.</p>
-						<div class="tags-row">
+						<div class="cc-tags">
 							<span>CAF</span>
 							<span>Pump</span>
 							<span>Abdos</span>
 						</div>
 					</div>
 
-					<div class="activity-card">
-						<div class="card-icon">
+					<div class="cc-activity-card">
+						<div class="cc-activity-icon cc-activity-icon--green">
 							<i class="fa-solid fa-spa"></i>
 						</div>
-						<h3>Mobilité & Zen</h3>
+						<h3>Mobilité &amp; Zen</h3>
 						<p>Améliorez votre souplesse et prenez soin de vos articulations pour un corps fonctionnel.</p>
-						<div class="tags-row">
+						<div class="cc-tags">
 							<span>Stretching</span>
 							<span>Pilates</span>
 							<span>Mobilité</span>
@@ -122,53 +110,56 @@
 			</div>
 		</section>
 
-		<section class="page-container section-spacer">
-			<div class="coach-spotlight-wrapper">
-				<div class="coach-visual">
-					<div class="framed-image">
-						<img src="{{ asset('images/menu_dropdown/services_du_club/cours_collectifs/3.jpg') }}" alt="Coach Ema" loading="lazy">
-					</div>
+		{# --- COACH EMA --- #}
+		<section class="cc-coach-section">
+			<div class="cc-coach-grid">
+				<div class="cc-coach-photo">
+					<img src="{{ asset('images/menu_dropdown/services_du_club/cours_collectifs/3.jpg') }}" alt="Coach Ema" loading="lazy">
+					<div class="cc-coach-photo-overlay"></div>
+					<div class="cc-coach-photo-name" aria-hidden="true">EMA</div>
 				</div>
-
-				<div class="coach-info">
-					<h2 class="section-heading title-with-bar">Rencontrez
-						<span>Ema</span>
-					</h2>
-					<p class="desc-text">
-						Passionnée et énergique, Ema ne se contente pas de montrer les mouvements :
-																																																												                        elle vous accompagne. Son super-pouvoir ? Adapter chaque exercice pour que
-																																																												                        débutants et confirmés s'amusent dans le même cours.
-					</p>
-
-					<div class="coach-quote">
-						<i class="fa-solid fa-quote-left"></i>
-						<p>Mon but n'est pas que vous souffriez, mais que vous soyez fiers de vous à la fin de chaque séance.</p>
+				<div class="cc-coach-panel">
+					<div class="cc-coach-panel-inner">
+						<span class="cc-coach-eyebrow">Coach · CHM Saleux</span>
+						<h2 class="cc-coach-heading">Votre<br><strong>Entraîneuse</strong></h2>
+						<p class="cc-coach-lead">Passionnée et énergique, Ema ne se contente pas de montrer les mouvements — elle vous accompagne. Son super-pouvoir ? Adapter chaque exercice pour que débutants et confirmés progressent dans le même cours.</p>
+						<div class="cc-coach-stats">
+							<div class="cc-coach-stat">
+								<i class="fa-solid fa-certificate"></i>
+								<span>Coach diplômée</span>
+							</div>
+							<div class="cc-coach-stat">
+								<i class="fa-solid fa-users"></i>
+								<span>Tous niveaux</span>
+							</div>
+							<div class="cc-coach-stat">
+								<i class="fa-solid fa-heart"></i>
+								<span>Bienveillante</span>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</section>
 
-		<section class="bg-dark-alternate section-spacer">
-			<div class="page-container text-center">
-				<div class="cta-card">
-					<h2 class="section-heading centered">📅 Vos
-						<span>Rendez-vous</span>
-					</h2>
-					<p class="lead">Rejoignez-nous tous les
-						<strong>Mardi et Jeudi soirs</strong>
-						pour vos sessions.</p>
-
-					<div class="cta-actions">
-						<a href="https://chat.whatsapp.com/TON-LIEN" target="_blank" class="btn-whatsapp">
+		{# --- CTA PLANNING --- #}
+		<section class="cc-cta-section">
+			<div class="page-container">
+				<div class="cc-cta-inner">
+					<div class="cc-cta-text">
+						<h3>Vos Rendez-vous</h3>
+						<p>Rejoignez-nous tous les <strong>Mardi et Jeudi soirs</strong> pour vos sessions. Planning susceptible de modifications pendant les vacances scolaires.</p>
+					</div>
+					<div class="cc-cta-actions">
+						<a href="https://chat.whatsapp.com/TON-LIEN" target="_blank" rel="noopener noreferrer" class="cc-btn-whatsapp">
 							<i class="fa-brands fa-whatsapp"></i>
-							Rejoindre le groupe Info
+							Groupe info WhatsApp
 						</a>
-						<a href="{{ path('contact') }}" class="btn-trial-white">
+						<a href="{{ path('contact') }}" class="cc-btn-primary">
 							Réserver une séance d'essai
+							<i class="fa-solid fa-arrow-right"></i>
 						</a>
 					</div>
-
-					<p class="cta-footer-note">* Planning susceptible de modifications pendant les vacances scolaires.</p>
 				</div>
 			</div>
 		</section>

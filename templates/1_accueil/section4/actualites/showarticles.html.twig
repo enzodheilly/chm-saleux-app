@@ -1,27 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-	{{ article.title }}
-	- CHM Saleux
-{% endblock %}
+{% block title %}{{ article.title }} · CHM Saleux{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('css/accueil/section4/actualites/showarticles.css') }}">
 
-	<style nonce="{{ csp_nonce('style') }}">
-		{% if article.photo %}
-			.article-hero-bg {
-				background-image: url('{{ asset('uploads/' ~ article.photo) }}');
-			}
-		{% else %}
-			.article-hero-bg {
-				background-image: url('{{ asset('images/defaults/article-placeholder.jpg') }}');
-			}
-		{% endif %}
-
-		/* Correction de la mise en page du texte */
-	</style>
 {% endblock %}
 
 {% block body %}
@@ -29,33 +13,26 @@
 		class="article-root">
 
 		{# --- HEADER DE L'ARTICLE --- #}
-		<header class="article-hero">
-			<div class="hero-bg article-hero-bg"></div>
-			<div class="hero-overlay"></div>
-
-			<div class="article-hero-container hero-content">
-				<nav class="article-breadcrumb">
-					<a href="{{ path('home') }}">Accueil</a>
-					<i class="fa-solid fa-chevron-right"></i>
-					<a href="{{ path('actualites') }}">Actualités</a>
-				</nav>
-
-				<div
-					class="title-area">
-					{# CORRECTION : Accès au nom de la catégorie #}
+		<header class="article-page-header">
+			<div class="article-hero-container">
+			{% include 'components/breadcrumb.html.twig' with { items: [
+					{ label: 'Actualités', url: path('actualites') },
+					{ label: article.title }
+				] } %}
+				<div class="article-header-body">
 					{% if article.category %}
 						<span class="badge-category">{{ article.category.name|upper }}</span>
 					{% endif %}
-
 					<h1>{{ article.title }}</h1>
-
 					<div class="article-meta">
 						<span class="meta-item">
 							<i class="fa-regular fa-calendar-check"></i>
-							{{ article.publishedAt|date('d/m/Y') }}</span>
+							{{ article.publishedAt|date('d/m/Y') }}
+						</span>
 						<span class="meta-item">
 							<i class="fa-regular fa-clock"></i>
-							3 min de lecture</span>
+							3 min de lecture
+						</span>
 					</div>
 				</div>
 			</div>

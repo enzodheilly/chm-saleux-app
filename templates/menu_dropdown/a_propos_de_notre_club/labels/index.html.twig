@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Labels & Certifications - CHM Saleux
-{% endblock %}
+{% block title %}Labels & Certifications · CHM Saleux{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
@@ -10,127 +9,187 @@
 
 {% block body %}
 
-	{# --- HEADER ELITE (GLOBAL) --- #}
 	<header class="page-header-sport labels-header-bg">
 		<div class="header-overlay-gradient"></div>
-
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
-
+				{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'Le Club' }, { label: 'Nos Labels' }] } %}
 				<div class="header-main-box">
-					<div class="badge-accent">Reconnaissance Fédérale</div>
-					<h1>Labels
-						<span class="text-outline">Qualité</span>
+					<h1>Labels &
+						<span class="text-outline">Certifications</span>
 					</h1>
-					<p class="lead">Performance, Pédagogie et Santé. Découvrez les certifications officielles qui valident notre expertise.</p>
+					<p class="lead">Performance, Pédagogie et Santé. Des certifications officielles FFHM qui valident notre expertise et garantissent votre sécurité.</p>
 				</div>
 			</div>
 		</div>
 	</header>
 
-	{# IMAGE DÉCORATIVE GAUCHE #}
+	<main class="labels-root page-shell">
+		<div class="lab-wm page-wm" aria-hidden="true">ENGAGEMENT</div>
 
-	<main
-		class="labels-root page-shell">
-
-		{# --- SECTION INTRO --- #}
-		<section class="page-container section-spacer">
-			<div class="intro-centered-box">
-				<h2 class="section-heading centered">L'excellence
-					<span>certifiée</span>
+		{# --- GARANTIES --- #}
+		<section class="garanties-section page-container">
+			<div class="lab-section-head">
+				<h2 class="lab-title">Ce que nos labels
+					<span>garantissent</span>
 				</h2>
-				<p class="desc-text-large">
-					Au CHM Saleux, nos certifications garantissent que vous pratiquez dans une structure auditée, sécurisée et reconnue par la FFHM pour son excellence pédagogique.
-				</p>
+				<p class="lab-sub">Chaque label est attribué après audit par la Fédération Française d'Haltérophilie. Ce ne sont pas de simples titres — ils engagent le club sur des critères concrets.</p>
+			</div>
 
-				<div class="benefit-row mt-5">
-					<div class="benefit-chip">
+			<div class="garanties-grid">
+				<div class="garantie-card">
+					<div class="garantie-icon">
 						<i class="fa-solid fa-user-graduate"></i>
-						Encadrement Diplômé</div>
-					<div class="benefit-chip">
+					</div>
+					<h4>Encadrement diplômé</h4>
+					<p>Nos bénévoles et encadrants détiennent les qualifications fédérales requises pour enseigner en toute sécurité.</p>
+				</div>
+				<div class="garantie-card">
+					<div class="garantie-icon">
 						<i class="fa-solid fa-shield-heart"></i>
-						Pratique Sécurisée</div>
-					<div class="benefit-chip">
+					</div>
+					<h4>Pratique sécurisée</h4>
+					<p>Les installations, le matériel et les protocoles d'entraînement sont audités et conformes aux normes FFHM.</p>
+				</div>
+				<div class="garantie-card">
+					<div class="garantie-icon">
 						<i class="fa-solid fa-medal"></i>
-						Matériel Homologué</div>
+					</div>
+					<h4>Matériel homologué</h4>
+					<p>Barres, haltères et équipements répondent aux normes de compétition de la Fédération Française.</p>
+				</div>
+				<div class="garantie-card">
+					<div class="garantie-icon">
+						<i class="fa-solid fa-rotate"></i>
+					</div>
+					<h4>Renouvellement annuel</h4>
+					<p>Les labels ne sont pas définitifs. Ils sont réévalués chaque saison pour maintenir le niveau d'exigence.</p>
 				</div>
 			</div>
 		</section>
 
-		{# --- SECTION LABELS --- #}
-		<section class="bg-dark-alternate section-spacer">
-			<div
-				class="page-container">
+		{# --- LABELS PRINCIPAUX --- #}
+		<section class="labels-section">
+			<div class="page-container">
 
-				{# Label Principal : École #}
-				<article class="label-main-card">
-					<div class="label-main-content">
-						<div class="label-tag gold-tag">
-							<i class="fa-solid fa-award"></i>
-							Label Or</div>
-						<h3>École d'Haltérophilie & Club Formateur</h3>
-						<p>Ce label récompense notre savoir-faire dans l'accueil et la formation des jeunes. Il valide notre pédagogie et notre sécurité.</p>
-						<ul class="elite-list">
-							<li>
-								<i class="fa-solid fa-check"></i>
-								Apprentissage par niveaux</li>
-							<li>
-								<i class="fa-solid fa-check"></i>
-								Suivi des jeunes talents</li>
-							<li>
-								<i class="fa-solid fa-check"></i>
-								Compétitions fédérales</li>
-						</ul>
-					</div>
-					<div class="label-main-img labels-main-img-bg"></div>
-				</article>
-
-				{# Grille Labels Secondaires #}
-				<div class="labels-grid mt-4">
-					<div class="label-small-card">
-						<div class="icon-circle blue-icon">
-							<i class="fa-solid fa-dumbbell"></i>
-						</div>
-						<h4>Musculation Loisir</h4>
-						<p>Accès libre à un plateau complet pour une pratique autonome ou guidée.</p>
-					</div>
-					<div class="label-small-card">
-						<div class="icon-circle green-icon">
-							<i class="fa-solid fa-heart-pulse"></i>
-						</div>
-						<h4>Musculation Bien-être</h4>
-						<p>Adaptation des charges et prévention santé pour tous les âges.</p>
-					</div>
-					<div class="label-small-card">
-						<div class="icon-circle purple-icon">
-							<i class="fa-solid fa-users-gear"></i>
-						</div>
-						<h4>Affiliation FFHM</h4>
-						<p>Respect strict des règlements et éthique sportive irréprochable.</p>
-					</div>
+				<div class="lab-section-head">
+					<h2 class="lab-title">Labels
+						<span>officiels FFHM</span>
+					</h2>
 				</div>
 
+				<div class="labels-cards-grid">
+
+					{# LABEL OR — ÉCOLE #}
+					<div class="label-card label-card--gold">
+						<div class="label-card-accent"></div>
+						<div class="label-card-top">
+							<div class="label-badge label-badge--gold">
+								<i class="fa-solid fa-award"></i>
+								Label Or
+							</div>
+							<div class="label-icon">
+								<i class="fa-solid fa-school"></i>
+							</div>
+						</div>
+						<div class="label-card-body">
+							<h3>École d'Haltérophilie</h3>
+							<p class="label-card-sub">Club Formateur Officiel</p>
+							<p class="label-card-desc">Le label le plus prestigieux de la FFHM. Il récompense notre savoir-faire dans l'accueil, la formation et le suivi des jeunes athlètes.</p>
+							<ul class="label-features">
+								<li><i class="fa-solid fa-circle-check"></i> Apprentissage progressif par niveaux</li>
+								<li><i class="fa-solid fa-circle-check"></i> Suivi individualisé des jeunes talents</li>
+								<li><i class="fa-solid fa-circle-check"></i> Accès aux compétitions fédérales</li>
+								<li><i class="fa-solid fa-circle-check"></i> Encadrement pédagogique certifié</li>
+							</ul>
+						</div>
+					</div>
+
+					{# LABEL MUSCULATION LOISIR #}
+					<div class="label-card label-card--blue">
+						<div class="label-card-accent"></div>
+						<div class="label-card-top">
+							<div class="label-badge label-badge--blue">
+								<i class="fa-solid fa-dumbbell"></i>
+								Label FFHM
+							</div>
+							<div class="label-icon label-icon--blue">
+								<i class="fa-solid fa-dumbbell"></i>
+							</div>
+						</div>
+						<div class="label-card-body">
+							<h3>Musculation Loisir</h3>
+							<p class="label-card-sub">Pratique autonome & guidée</p>
+							<p class="label-card-desc">Certification pour l'accueil de pratiquants souhaitant une activité physique régulière, encadrée dans un cadre sécurisé et bienveillant.</p>
+							<ul class="label-features">
+								<li><i class="fa-solid fa-circle-check"></i> Plateau accessible à tous niveaux</li>
+								<li><i class="fa-solid fa-circle-check"></i> Accompagnement à la prise en main</li>
+								<li><i class="fa-solid fa-circle-check"></i> Matériel conforme aux normes</li>
+								<li><i class="fa-solid fa-circle-check"></i> Bilan physique à l'entrée</li>
+							</ul>
+						</div>
+					</div>
+
+					{# LABEL BIEN-ÊTRE #}
+					<div class="label-card label-card--green">
+						<div class="label-card-accent"></div>
+						<div class="label-card-top">
+							<div class="label-badge label-badge--green">
+								<i class="fa-solid fa-heart-pulse"></i>
+								Label FFHM
+							</div>
+							<div class="label-icon label-icon--green">
+								<i class="fa-solid fa-heart-pulse"></i>
+							</div>
+						</div>
+						<div class="label-card-body">
+							<h3>Musculation Bien-être</h3>
+							<p class="label-card-sub">Santé & prévention</p>
+							<p class="label-card-desc">Adapté aux publics séniors, en réathlétisation ou souhaitant pratiquer à leur rythme, avec un suivi orienté santé et prévention des blessures.</p>
+							<ul class="label-features">
+								<li><i class="fa-solid fa-circle-check"></i> Adaptation des charges et intensités</li>
+								<li><i class="fa-solid fa-circle-check"></i> Prévention des blessures intégrée</li>
+								<li><i class="fa-solid fa-circle-check"></i> Ouvert à tous les âges</li>
+								<li><i class="fa-solid fa-circle-check"></i> Suivi de la progression santé</li>
+							</ul>
+						</div>
+					</div>
+
+				</div>
 			</div>
 		</section>
 
-		{# --- TRUST BOX --- #}
-		<section class="page-container section-spacer">
-			<div class="ffhm-trust-box">
-				<div class="trust-flex">
-					<img src="{{ asset('images/ffhm.png') }}" alt="FFHM" class="ffhm-logo">
-					<div class="trust-text">
-						<h3>Un gage de sérieux</h3>
-						<p>Le CHM Saleux est audité régulièrement. Nos labels sont renouvelés sur la base de critères stricts : diplômes, installations et résultats.</p>
-						<a href="https://www.ffhaltero.fr" target="_blank" class="elite-btn-link">En savoir plus sur la FFHM
-							<i class="fa-solid fa-arrow-right"></i>
-						</a>
+		{# --- FFHM TRUST --- #}
+		<section class="ffhm-section page-container">
+			<div class="ffhm-card">
+				<div class="ffhm-logo-side">
+					<img src="{{ asset('images/ffhm.png') }}" alt="Logo FFHM" class="ffhm-logo">
+					<p class="ffhm-since">Affilié depuis la création du club</p>
+				</div>
+				<div class="ffhm-divider"></div>
+				<div class="ffhm-content">
+					<h3 class="ffhm-title">Fédération Française<br>d'Haltérophilie</h3>
+					<p>Le CHM Saleux est audité régulièrement par la FFHM. Nos labels sont renouvelés chaque saison sur la base de critères stricts portant sur les diplômes des encadrants, la qualité des installations et les résultats sportifs obtenus.</p>
+					<a href="https://www.ffhaltero.fr" target="_blank" rel="noopener noreferrer" class="ffhm-link">
+						En savoir plus sur la FFHM
+						<i class="fa-solid fa-arrow-up-right-from-square"></i>
+					</a>
+				</div>
+			</div>
+		</section>
+
+		{# --- CTA --- #}
+		<section class="labels-cta-section">
+			<div class="page-container">
+				<div class="labels-cta-inner">
+					<div class="labels-cta-text">
+						<h3>Envie de rejoindre un club certifié ?</h3>
+						<p>Profitez d'une séance d'essai gratuite pour découvrir nos installations et rencontrer nos encadrants.</p>
 					</div>
+					<a href="{{ path('contact') }}" class="labels-cta-btn">
+						Réserver une séance d'essai
+						<i class="fa-solid fa-arrow-right"></i>
+					</a>
 				</div>
 			</div>
 		</section>

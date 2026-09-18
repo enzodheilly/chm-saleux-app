@@ -1,7 +1,6 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Utilisateurs - Chm Saleux
-{% endblock %}
+{% block title %}Utilisateurs{% endblock %}
 
 {% block body %}
 	<div class="page-header">
@@ -67,9 +66,10 @@
 								<div class="actions">
 									{% if user.isTotpConfirmed and user.id != app.user.id %}
 										{# MODIFICATION : Lien Reset 2FA #}
-										<a href="{{ path('admin_security_reset_2fa', {'id': user.id}) }}" class="act-link act-warn js-confirm-link" data-confirm="🔐 Réinitialiser le 2FA pour {{ user.firstname }} ? Cela l'obligera à scanner un nouveau QR code.">
-											Reset 2FA
-										</a>
+										<form method="POST" action="{{ path('admin_security_reset_2fa', {'id': user.id}) }}" class="inline-form js-confirm-form" data-confirm="🔐 Réinitialiser le 2FA pour {{ user.firstname }} ? Cela l'obligera à scanner un nouveau QR code.">
+											<input type="hidden" name="_token" value="{{ csrf_token('reset_2fa_' ~ user.id) }}">
+											<button type="submit" class="act-link act-warn">Reset 2FA</button>
+										</form>
 									{% endif %}
 
 									<a href="{{ path('admin_users_edit', {'id': user.id}) }}" class="act-link">Éditer</a>
@@ -77,6 +77,7 @@
 									{% if user.id != app.user.id %}
 										{# MODIFICATION : Formulaire de suppression #}
 										<form method="post" action="{{ path('admin_users_delete', {'id': user.id}) }}" class="inline-form js-confirm-form" data-confirm="🚫 Supprimer définitivement le compte de {{ user.firstname }} {{ user.lastname|upper }} ?">
+											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
 											<button class="act-link act-del">Supprimer</button>
 										</form>
 									{% endif %}

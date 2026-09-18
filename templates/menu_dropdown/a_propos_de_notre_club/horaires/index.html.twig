@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Horaires d'entraînement — CHM Saleux
-{% endblock %}
+{% block title %}Horaires · CHM Saleux{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
@@ -14,14 +13,8 @@
 		<div class="header-overlay-gradient"></div>
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
+				{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'Le Club' }, { label: 'Horaires' }] } %}
 				<div class="header-main-box">
-					<div class="badge-accent">Planning Hebdomadaire</div>
 					<h1>Nos
 						<span class="text-outline">Créneaux</span>
 					</h1>
@@ -32,12 +25,12 @@
 	</header>
 
 	<main class="horaires-root page-shell">
+		<div class="horaires-wm page-wm" aria-hidden="true">HORAIRES</div>
 
 		{# --- PLANNING SEMAINE --- #}
 		<section class="planning-section page-container">
 
 			<div class="planning-header">
-				<span class="h-eyebrow">Planning Hebdomadaire</span>
 				<h2 class="h-title">Horaires d'<span>ouverture</span></h2>
 				<p class="h-sub">La salle est ouverte du lundi au vendredi. Les horaires sont susceptibles de varier selon les disponibilités des bénévoles.</p>
 			</div>
@@ -222,8 +215,7 @@
 			<div class="page-container">
 
 				<div class="planning-header">
-					<span class="h-eyebrow h-eyebrow--light">À savoir</span>
-					<h2 class="h-title h-title--light">Informations <span class="text-outline-light">pratiques</span></h2>
+					<h2 class="h-title">Informations <span>pratiques</span></h2>
 				</div>
 
 				<div class="infos-grid">

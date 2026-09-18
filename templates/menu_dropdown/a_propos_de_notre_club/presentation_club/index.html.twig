@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Présentation du Club — CHM Saleux
-{% endblock %}
+{% block title %}Notre Club · CHM Saleux{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
@@ -10,123 +9,81 @@
 
 {% block body %}
 
-	{# --- HEADER --- #}
 	<header class="page-header-sport presentation-club-header-bg">
 		<div class="header-overlay-gradient"></div>
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
+				{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'Le Club' }, { label: 'Présentation' }] } %}
 				<div class="header-main-box">
-					<div class="badge-accent">Depuis 1984</div>
 					<h1>L'Esprit
 						<span class="text-outline">CHM Saleux</span>
 					</h1>
-					<p class="lead">Bien plus qu'une salle de sport. Une association bâtie sur l'amitié, la performance et le partage depuis 40 ans.</p>
+					<p class="lead">Bien plus qu'une salle de sport. Une association bâtie sur l'amitié, la performance et le partage depuis plus de 40 ans.</p>
 				</div>
 			</div>
 		</div>
 	</header>
 
-	{# IMAGE DÉCORATIVE GAUCHE #}
+	<main class="presentation-root page-shell">
+		<div class="pres-wm page-wm" aria-hidden="true">DEPUIS 1984</div>
 
-	<main
-		class="presentation-root page-shell">
-
-		{# --- SECTION CHIFFRES CLÉS --- #}
-		<section class="bg-dark-alternate section-spacer">
-			<div class="page-container">
-
-				<div class="section-header-competition centered">
-					<h2 class="section-heading">Le Club
-						<span>En Chiffres</span>
-					</h2>
-				</div>
-				<div class="stats-grid">
-					<div class="stat-card">
-						<span class="stat-number">55</span>
-						<span class="stat-label">Adhérents</span>
-					</div>
-					<div class="stat-card">
-						<span class="stat-number">300<small>m²</small>
-						</span>
-						<span class="stat-label">De salle</span>
-					</div>
-					<div class="stat-card">
-						<span class="stat-number">40+</span>
-						<span class="stat-label">Ans d'existence</span>
-					</div>
-					<div class="stat-card">
-						<span class="stat-number">3</span>
-						<span class="stat-label">Coachs</span>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		{# --- SECTION HISTOIRE --- #}
-		<section class="page-container section-spacer">
-			<div class="section-header-competition centered">
-				<h2 class="section-heading">Notre
-					<span>Histoire</span>
-				</h2>
-				<p class="section-subtext">Découvrez les origines du CHM Saleux et les valeurs qui nous animent depuis plus de 40 ans.</p>
+		{# --- HISTOIRE --- #}
+		<section class="histoire-section page-container">
+			<div class="pres-section-head">
+				<h2 class="pres-title">Notre <span>Histoire</span></h2>
+				<p class="pres-sub">Découvrez les origines du CHM Saleux et les valeurs qui nous animent depuis plus de 40 ans.</p>
 			</div>
 
-			<div class="split-layout">
-				<div class="split-content">
-					<p class="desc-text-large">
+			<div class="histoire-layout">
+				<div class="histoire-content">
+					<p class="histoire-lead">
 						Fondé en 1984 par Michel et Francine, le CHM est né d'une volonté simple : offrir un espace d'entraînement sérieux et chaleureux au cœur de Saleux.
 					</p>
-					<div class="bio-content">
-						<p>Au fil des décennies, le club s'est imposé comme une référence de l'haltérophilie dans la Somme. Nos athlètes ont battu de nombreux records, décroché des titres de Champion de la Somme dans plusieurs catégories, et nombreux ont été qualifiés au Championnat de France.</p>
-						<p style="margin-top: 1rem;">Aujourd'hui, le CHM évolue en Régionale 2 avec une ambition claire : retrouver le niveau national qui était le nôtre. La flamme brûle toujours.</p>
+					<p>Au fil des décennies, le club s'est imposé comme une référence de l'haltérophilie dans la Somme. Nos athlètes ont battu de nombreux records, décroché des titres de Champion de la Somme dans plusieurs catégories, et nombreux ont été qualifiés au Championnat de France.</p>
+					<p>Aujourd'hui, le CHM évolue en Régionale 2 avec une ambition claire : retrouver le niveau national qui était le nôtre. La flamme brûle toujours.</p>
+					<div class="histoire-chips">
+						<span class="histoire-chip"><i class="fa-solid fa-map-pin"></i> Saleux, Somme</span>
+						<span class="histoire-chip"><i class="fa-solid fa-calendar"></i> Fondé en 1984</span>
+						<span class="histoire-chip"><i class="fa-solid fa-users"></i> Association loi 1901</span>
 					</div>
 				</div>
-
-				<div class="split-image">
-					<div class="image-frame">
-						<img src="{{ asset('images/menu_dropdown/a_propos_de_notre_club/presentation_club/2.jpg') }}" alt="Histoire du club" loading="lazy">
-						<div class="experience-floating-badge">
-							<span class="years">40+</span>
-							<span class="label">Ans de passion</span>
-						</div>
+				<div class="histoire-visual">
+					<div class="histoire-img-frame">
+						<img src="{{ asset('images/menu_dropdown/a_propos_de_notre_club/presentation_club/2.jpg') }}" alt="Histoire du CHM Saleux" loading="lazy">
+					</div>
+					<div class="histoire-badge">
+						<span class="histoire-badge-num">40+</span>
+						<span class="histoire-badge-lbl">Ans de passion</span>
 					</div>
 				</div>
 			</div>
 		</section>
 
-		{# --- SECTION PALMARÈS --- #}
-		<section class="bg-dark-alternate section-spacer">
+		{# --- PALMARÈS --- #}
+		<section class="palmares-section">
 			<div class="page-container">
-				<div class="section-header-competition centered">
-					<h2 class="section-heading">Notre
-						<span>Palmarès</span>
-					</h2>
-					<p class="section-subtext">Des années de travail, de sueur et de détermination récompensées sur les plus grandes scènes de l'haltérophilie française.</p>
+				<div class="pres-section-head">
+					<h2 class="pres-title">Notre <span>Palmarès</span></h2>
+					<p class="pres-sub">Des années de travail, de sueur et de détermination récompensées sur les plus grandes scènes de l'haltérophilie française.</p>
 				</div>
 
 				<div class="palmares-grid">
 					<div class="palmares-card">
-						<div class="palmares-icon">
+						<div class="palmares-icon-wrap">
 							<i class="fa-solid fa-trophy"></i>
 						</div>
 						<h3>Ancienne N1</h3>
-						<p>Le club a évolué au plus haut niveau national, preuve du talent et de l'investissement de nos athlètes et encadrants.</p>
+						<p>Le club a évolué au plus haut niveau national, preuve du talent et de l'investissement de nos athlètes et encadrants au fil des années.</p>
 					</div>
 					<div class="palmares-card palmares-card--highlight">
-						<div class="palmares-icon">
+						<div class="palmares-icon-wrap palmares-icon-wrap--gold">
 							<i class="fa-solid fa-medal"></i>
 						</div>
 						<h3>Champions de la Somme</h3>
-						<p>Plusieurs de nos athlètes ont été sacrés Champions de la Somme dans leur catégorie respective, hommes comme femmes.</p>
+						<p>Plusieurs athlètes sacrés Champions de la Somme dans leur catégorie respective, hommes comme femmes, tout au long de l'histoire du club.</p>
 					</div>
 					<div class="palmares-card">
-						<div class="palmares-icon">
+						<div class="palmares-icon-wrap">
 							<i class="fa-solid fa-flag"></i>
 						</div>
 						<h3>Qualifiés France</h3>
@@ -136,164 +93,133 @@
 			</div>
 		</section>
 
-		{# --- SECTION VALEURS --- #}
-		<section class="page-container section-spacer">
-			<div class="section-header-competition centered">
-				<h2 class="section-heading">Nos
-					<span>Piliers</span>
-				</h2>
-				<p class="section-subtext">Ce qui nous unit au-delà de la barre et des kilos.</p>
+		{# --- VALEURS --- #}
+		<section class="valeurs-section page-container">
+			<div class="pres-section-head">
+				<h2 class="pres-title">Nos <span>Piliers</span></h2>
+				<p class="pres-sub">Au-delà de la barre et des kilos, le CHM repose sur des valeurs humaines fortes.</p>
 			</div>
 
-			<div class="values-grid">
-				<div class="value-card">
-					<div class="value-icon">💪</div>
+			<div class="valeurs-grid">
+				<div class="valeur-card">
+					<div class="valeur-icon">
+						<i class="fa-solid fa-arrow-trend-up"></i>
+					</div>
 					<h3>Dépassement</h3>
 					<p>Nous valorisons l'effort intelligent et la constance dans la progression, que tu sois débutant ou athlète confirmé.</p>
 				</div>
-				<div class="value-card">
-					<div class="value-icon">🤝</div>
+				<div class="valeur-card">
+					<div class="valeur-icon">
+						<i class="fa-solid fa-people-group"></i>
+					</div>
 					<h3>Communauté</h3>
 					<p>Une vraie famille soudée. Ici on s'entraide, on se motive et on célèbre chaque victoire ensemble — Noël, Pâques et bien plus.</p>
 				</div>
-				<div class="value-card">
-					<div class="value-icon">🛡️</div>
+				<div class="valeur-card">
+					<div class="valeur-icon">
+						<i class="fa-solid fa-shield-heart"></i>
+					</div>
 					<h3>Sécurité</h3>
-					<p>Technique et prévention des blessures sont au cœur de notre approche. Nos 3 coachs veillent sur chaque mouvement.</p>
+					<p>Technique et prévention des blessures sont au cœur de notre approche. Nos coachs veillent sur chaque mouvement au quotidien.</p>
 				</div>
 			</div>
 		</section>
 
-		{# --- SECTION COACHS --- #}
-		<section class="bg-dark-alternate section-spacer">
+		{# --- COACHS --- #}
+		<section class="coachs-section">
 			<div class="page-container">
-				<div class="section-header-competition centered">
-					<h2 class="section-heading">Nos
-						<span>Coachs</span>
-					</h2>
-					<p class="section-subtext">Trois encadrants passionnés qui transmettent leur savoir-faire au quotidien.</p>
+				<div class="pres-section-head">
+					<h2 class="pres-title">Nos <span>Coachs</span></h2>
+					<p class="pres-sub">Trois encadrants passionnés qui transmettent leur savoir-faire au quotidien.</p>
 				</div>
 
-				{# --- SPOTLIGHT FLORIAN --- #}
+				{# Spotlight Florian #}
 				<div class="spotlight-banner">
-					<div class="spotlight-flag">🇦🇱</div>
-					<div class="spotlight-content">
-						<div class="spotlight-badge">🏆 Distinction internationale</div>
-						<p>
-							<strong>Florian ROHAUT</strong>
-							a été sélectionné en tant qu'<strong>officiel technique</strong>
-							pour les
-							<strong>Championnats d'Europe Jeunes 2025</strong>
-							à Durrës, en Albanie (26 oct. – 5 nov. 2025).
-																																																																																																																																					                    Seul officiel français retenu, il a accompagné et officié lors de la compétition —
-																																																																																																																																					                    une récompense exceptionnelle pour son engagement et son dévouement sans faille. 💪🔥
-						</p>
+					<div class="spotlight-icon">🇦🇱</div>
+					<div class="spotlight-body">
+						<span class="spotlight-tag">🏆 Distinction internationale</span>
+						<p><strong>Florian ROHAUT</strong> a été sélectionné en tant qu'<strong>officiel technique</strong> pour les <strong>Championnats d'Europe Jeunes 2025</strong> à Durrës, en Albanie. Seul officiel français retenu, une récompense exceptionnelle pour son engagement sans faille.</p>
 					</div>
 				</div>
 
 				<div class="coachs-grid">
 					<div class="coach-card coach-card--featured">
 						<div class="coach-avatar">
-							<img src="{{ asset('images/menu_dropdown/membres_du_bureau/president/president.jpg') }}" alt="Florian" loading="lazy">
+							<img src="{{ asset('images/menu_dropdown/membres_du_bureau/president/president.jpg') }}" alt="Florian ROHAUT" loading="lazy">
 						</div>
-						<div class="coach-badge-europe">🇦🇱 Officiel Championnats d'Europe</div>
-						<div class="coach-info">
-							<h3>Florian ROHAUT</h3>
-							<span class="coach-role">Coach · Président · Arbitre · Athlète</span>
-							<p>Véritable pilier du CHM, Florian cumule les casquettes avec passion. Sa sélection comme seul officiel français aux Championnats d'Europe Jeunes 2025 témoigne de sa valeur reconnue bien au-delà de Saleux.</p>
-						</div>
+						<div class="coach-europe-badge">🇦🇱 Officiel Championnats d'Europe</div>
+						<h3 class="coach-name">Florian ROHAUT</h3>
+						<span class="coach-role">Coach · Président · Arbitre · Athlète</span>
+						<p class="coach-desc">Véritable pilier du CHM, Florian cumule les casquettes avec passion. Sa sélection comme seul officiel français aux Championnats d'Europe Jeunes 2025 témoigne de sa valeur reconnue bien au-delà de Saleux.</p>
 					</div>
 
 					<div class="coach-card">
 						<div class="coach-avatar">
-							<img src="{{ asset('images/menu_dropdown/membres_du_bureau/secretaire/secretaire.png') }}" alt="Ema" loading="lazy">
+							<img src="{{ asset('images/menu_dropdown/membres_du_bureau/secretaire/secretaire.png') }}" alt="Ema BERTRAND" loading="lazy">
 						</div>
-						<div class="coach-info">
-							<h3>Ema BERTRAND</h3>
-							<span class="coach-role">Coach & Secrétaire</span>
-							<p>À la fois encadrante et pilier administratif du club, Ema apporte rigueur et bienveillance dans son coaching.</p>
-						</div>
+						<h3 class="coach-name">Ema BERTRAND</h3>
+						<span class="coach-role">Coach & Secrétaire</span>
+						<p class="coach-desc">À la fois encadrante et pilier administratif du club, Ema apporte rigueur et bienveillance dans son coaching au quotidien.</p>
 					</div>
 
 					<div class="coach-card">
 						<div class="coach-avatar coach-avatar--placeholder">
 							<i class="fa-solid fa-user"></i>
 						</div>
-						<div class="coach-info">
-							<h3>Robert</h3>
-							<span class="coach-role">Coach</span>
-							<p>Fort d'une longue expérience dans l'haltérophilie, Robert accompagne nos athlètes avec passion et exigence.</p>
-						</div>
+						<h3 class="coach-name">Robert</h3>
+						<span class="coach-role">Coach</span>
+						<p class="coach-desc">Fort d'une longue expérience dans l'haltérophilie, Robert accompagne nos athlètes avec passion et exigence au fil des saisons.</p>
 					</div>
 				</div>
 			</div>
 		</section>
 
-		{# --- SECTION VIE DU CLUB --- #}
-		<section class="page-container section-spacer">
-			<div class="section-header-competition centered">
-				<h2 class="section-heading">La Vie
-					<span>du Club</span>
-				</h2>
-				<p class="section-subtext">Le CHM, c'est aussi des événements, des fêtes et des moments qui renforcent les liens.</p>
+		{# --- VIE DU CLUB --- #}
+		<section class="vie-section page-container">
+			<div class="pres-section-head">
+				<h2 class="pres-title">La Vie <span>du Club</span></h2>
+				<p class="pres-sub">Le CHM, c'est aussi des événements, des fêtes et des moments qui renforcent les liens.</p>
 			</div>
 
-			<div class="vie-club-grid">
+			<div class="vie-grid">
 				<div class="vie-card">
-					<div class="vie-icon">🎄</div>
-					<h3>Noël du Club</h3>
+					<div class="vie-icon"><i class="fa-solid fa-snowflake"></i></div>
+					<h4>Noël du Club</h4>
 					<p>Chaque année, le club se réunit pour fêter Noël ensemble. Un moment convivial et chaleureux que tout le monde attend.</p>
 				</div>
 				<div class="vie-card">
-					<div class="vie-icon">🐣</div>
-					<h3>Pâques</h3>
+					<div class="vie-icon"><i class="fa-solid fa-egg"></i></div>
+					<h4>Pâques</h4>
 					<p>Une tradition bien ancrée au CHM. L'occasion de partager un moment de détente et de rire entre membres.</p>
 				</div>
 				<div class="vie-card">
-					<div class="vie-icon">🏋️</div>
-					<h3>Cours Collectifs</h3>
+					<div class="vie-icon"><i class="fa-solid fa-dumbbell"></i></div>
+					<h4>Cours Collectifs</h4>
 					<p>Des séances collectives accessibles à tous les niveaux pour progresser ensemble dans une ambiance motivante.</p>
 				</div>
 				<div class="vie-card">
-					<div class="vie-icon">🎉</div>
-					<h3>Événements Réguliers</h3>
+					<div class="vie-icon"><i class="fa-solid fa-champagne-glasses"></i></div>
+					<h4>Événements Réguliers</h4>
 					<p>Sorties, repas, célébrations de podiums… La vie associative est riche et animée tout au long de l'année.</p>
 				</div>
 			</div>
 		</section>
 
-		{# --- SECTION GALERIE --- #}
-		<section class="bg-dark-alternate section-spacer">
+		{# --- CTA --- #}
+		<section class="pres-cta-section">
 			<div class="page-container">
-				<div class="section-header-competition centered">
-					<h2 class="section-heading">Galerie
-						<span>Photos</span>
-					</h2>
-					<p class="section-subtext">Quelques instants capturés au cœur de la vie du CHM Saleux.</p>
-				</div>
-
-				<div class="gallery-grid">
-					<div class="gallery-item">
-						<img src="{{ asset('images/club/app-club1.jpg') }}" alt="Vie du club" loading="lazy">
+				<div class="pres-cta-inner">
+					<div class="pres-cta-text">
+						<h3>Prêt à nous rejoindre ?</h3>
+						<p>Venez découvrir le CHM Saleux lors d'une séance d'essai gratuite. On vous accueille avec plaisir.</p>
 					</div>
-					<div class="gallery-item">
-						<img src="{{ asset('images/club/app-club2.jpg') }}" alt="Vie du club" loading="lazy">
-					</div>
-					<div class="gallery-item">
-						<img src="{{ asset('images/club/app-club3.jpg') }}" alt="Vie du club" loading="lazy">
-					</div>
-					<div class="gallery-item">
-						<img src="{{ asset('images/club/app-club4.jpg') }}" alt="Vie du club" loading="lazy">
-					</div>
-					<div class="gallery-item">
-						<img src="{{ asset('images/club/app-club5.jpg') }}" alt="Vie du club" loading="lazy">
-					</div>
-					<div class="gallery-item">
-						<img src="{{ asset('images/club/app-club6.jpg') }}" alt="Vie du club" loading="lazy">
-					</div>
+					<a href="{{ path('contact') }}" class="pres-cta-btn">
+						Réserver une séance d'essai
+						<i class="fa-solid fa-arrow-right"></i>
+					</a>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 
-</main>{% endblock %}
+	</main>
+{% endblock %}

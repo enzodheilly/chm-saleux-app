@@ -1,13 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}École d'Haltérophilie — CHM Saleux
-{% endblock %}
-
-{% block og_title %}École d'Haltérophilie — CHM Saleux
-{% endblock %}
-
-{% block og_description %}Notre école forme des athlètes complets. Entraîneurs diplômés, respect, discipline et persévérance au CHM Saleux.
-{% endblock %}
+{% block title %}École d'Haltérophilie — CHM Saleux{% endblock %}
+{% block og_title %}École d'Haltérophilie — CHM Saleux{% endblock %}
+{% block og_description %}Notre école forme des athlètes complets. Entraîneurs diplômés, respect, discipline et persévérance au CHM Saleux.{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
@@ -16,21 +11,13 @@
 
 {% block body %}
 
-	{# --- HEADER SPORTIF IMMERSIF (GLOBAL) --- #}
+	{# --- HEADER --- #}
 	<header class="page-header-sport ecole-header-bg">
 		<div class="header-overlay-gradient"></div>
-
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
-
+				{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'Notre École' }] } %}
 				<div class="header-main-box">
-					<div class="badge-accent">Formation & Excellence</div>
 					<h1>L'École
 						<span class="text-outline">d'Haltérophilie</span>
 					</h1>
@@ -40,67 +27,61 @@
 		</div>
 	</header>
 
-	{# IMAGE DÉCORATIVE GAUCHE #}
+	<main class="ecole-root">
 
-	<main
-		class="page-shell ecole-root">
+		{# --- SECTION 1 : NOS PÔLES DE FORMATION --- #}
+		<section class="ecole-section ecole-programs-section">
+			<div class="ecole-wm ecole-wm--poles page-wm" aria-hidden="true">FORMATION</div>
 
-		{# --- SECTION 2 : LES PROGRAMMES --- #}
-		<section class="bg-dark-alternate section-spacer">
-			<div class="page-container">
-				<div class="section-header-center">
-					<h2 class="section-heading centered">Nos Pôles
-						<span>De Formation</span>
-					</h2>
-					<p>Des groupes de niveaux adaptés pour progresser à son rythme.</p>
+			<div class="page-container ecole-section-inner">
+				<div class="ecole-section-head">
+					<h2 class="ecole-title">Nos Pôles<br><span>De Formation</span></h2>
+					<p class="ecole-subtitle">Des groupes de niveaux adaptés pour progresser à son rythme.</p>
 				</div>
 
 				<div class="programs-grid">
 					<article class="program-card">
-						<div class="card-icon">
-							<i class="fa-solid fa-child-reaching"></i>
-						</div>
-						<h3>U13 / Débutants</h3>
-						<div class="card-meta">
-							<span>
-								<i class="fa-regular fa-calendar"></i>
-								Lun, Mer, Ven</span>
-							<span>
-								<i class="fa-regular fa-clock"></i>
-								17h30 - 19h00</span>
+						<div class="program-card-eyebrow">Initiation</div>
+						<div class="program-card-body">
+							<div class="program-icon-wrap"><i class="fa-solid fa-child-reaching"></i></div>
+							<div>
+								<h3>U13 / Débutants</h3>
+								<div class="program-schedule">
+									<span><i class="fa-regular fa-calendar"></i> Lun, Mer, Ven</span>
+									<span><i class="fa-regular fa-clock"></i> 17h30 – 19h00</span>
+								</div>
+							</div>
 						</div>
 						<p>Découverte ludique et sécurisée. L'accent est mis sur la coordination, la posture et l'apprentissage technique sans charge lourde.</p>
 					</article>
 
-					<article class="program-card highlight">
-						<div class="card-badge">Performance</div>
-						<div class="card-icon">
-							<i class="fa-solid fa-trophy"></i>
-						</div>
-						<h3>Pôle Compétition</h3>
-						<div class="card-meta">
-							<span>
-								<i class="fa-regular fa-calendar"></i>
-								Lun, Mer, Ven</span>
-							<span>
-								<i class="fa-regular fa-clock"></i>
-								17h00 - 19h00</span>
+					<article class="program-card program-card--featured">
+						<span class="program-card-badge">Performance</span>
+						<div class="program-card-eyebrow">Haute Performance</div>
+						<div class="program-card-body">
+							<div class="program-icon-wrap"><i class="fa-solid fa-trophy"></i></div>
+							<div>
+								<h3>Pôle Compétition</h3>
+								<div class="program-schedule">
+									<span><i class="fa-regular fa-calendar"></i> Lun, Mer, Ven</span>
+									<span><i class="fa-regular fa-clock"></i> 17h00 – 19h00</span>
+								</div>
+							</div>
 						</div>
 						<p>Suivi personnalisé et planification. Objectif : maîtrise technique parfaite, force et préparation aux championnats.</p>
 					</article>
 
 					<article class="program-card">
-						<div class="card-icon">
-							<i class="fa-solid fa-heart-pulse"></i>
-						</div>
-						<h3>Licence Loisir</h3>
-						<div class="card-meta">
-							<span>
-								<i class="fa-regular fa-calendar"></i>
-								Mercredi</span>
-							<span>
-								<i class="fa-regular fa-clock"></i>
-								17h30 - 19h00</span>
+						<div class="program-card-eyebrow">Loisir & Découverte</div>
+						<div class="program-card-body">
+							<div class="program-icon-wrap"><i class="fa-solid fa-heart-pulse"></i></div>
+							<div>
+								<h3>Licence Loisir</h3>
+								<div class="program-schedule">
+									<span><i class="fa-regular fa-calendar"></i> Mercredi</span>
+									<span><i class="fa-regular fa-clock"></i> 17h30 – 19h00</span>
+								</div>
+							</div>
 						</div>
 						<p>Pour apprendre l'haltérophilie en complément (CrossTraining) ou pour le plaisir, sans la pression des compétitions.</p>
 					</article>
@@ -108,195 +89,139 @@
 			</div>
 		</section>
 
-		{# --- SECTION 3 : COACH SLIDER --- #}
-		<section class="page-container section-spacer">
-			<div class="split-layout reverse-mobile">
-				<div class="slider-wrapper-box">
-					<div class="coach-slider">
-						<div class="slides-track" id="track">
-							<img src="{{ asset('images/club/ema.jpg') }}" class="active" data-role="Coach Fédéral" data-name="Ema" alt="Ema" loading="lazy">
-							<img src="{{ asset('images/club/florian.jpg') }}" data-role="Coach Fédéral" data-name="Florian" alt="Florian" loading="lazy">
-							<img src="{{ asset('images/club/robert2.jpg') }}" data-role="Coach Fédéral" data-name="Robert" alt="Robert" loading="lazy">
-						</div>
+		{# --- SECTION 2 : COACH SLIDER --- #}
+		<section class="ecole-section ecole-coach-section">
+			<div class="ecole-wm ecole-wm--coaching page-wm" aria-hidden="true">COACHING</div>
 
-						<div class="slider-info">
-							<h4 id="coachName">Ema</h4>
-							<span id="coachRole">Coach Fédéral</span>
+			<div class="page-container ecole-section-inner">
+				<div class="ecole-coach-grid">
+					<div class="coach-avatars-wrap">
+					<div class="coach-avatars">
+						<div class="coach-avatar-top">
+							<div class="coach-avatar">
+								<img src="{{ asset('images/club/ema.jpg') }}" alt="Ema" loading="lazy">
+								<div class="coach-avatar-info">
+									<span class="coach-avatar-name">Ema</span>
+									<span class="coach-avatar-role">Coach Fédéral</span>
+								</div>
+							</div>
 						</div>
-
-						<div class="slider-controls">
-							<button id="prevBtn" type="button" aria-label="Photo précédente">
-								<i class="fa-solid fa-arrow-left"></i>
-							</button>
-							<button id="nextBtn" type="button" aria-label="Photo suivante">
-								<i class="fa-solid fa-arrow-right"></i>
-							</button>
+						<div class="coach-avatar-bottom">
+							<div class="coach-avatar">
+								<img src="{{ asset('images/club/florian.jpg') }}" alt="Florian" loading="lazy">
+								<div class="coach-avatar-info">
+									<span class="coach-avatar-name">Florian</span>
+									<span class="coach-avatar-role">Coach Fédéral</span>
+								</div>
+							</div>
+							<div class="coach-avatar">
+								<img src="{{ asset('images/club/robert2.jpg') }}" alt="Robert" loading="lazy">
+								<div class="coach-avatar-info">
+									<span class="coach-avatar-name">Robert</span>
+									<span class="coach-avatar-role">Coach Fédéral</span>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
+					</div>
 
-				<div class="text-content">
-					<h2 class="section-heading ecole-section-title-left">L'Équipe
-						<span>Technique</span>
-					</h2>
-					<p class="desc-text">
-						Nos coachs sont diplômés d'État et fédéraux. Ils assurent un encadrement pédagogique de qualité, veillant à la sécurité physique et à la progression de chaque élève.
-					</p>
-					<ul class="feature-list">
-						<li>
-							<i class="fa-solid fa-check"></i>
-							Suivi individualisé</li>
-						<li>
-							<i class="fa-solid fa-check"></i>
-							Programmation sur mesure</li>
-					</ul>
+					<div class="coach-text">
+						<h2 class="ecole-title">L'Équipe<br><span>Technique</span></h2>
+						<p class="coach-desc">Nos coachs sont diplômés d'État et fédéraux. Ils assurent un encadrement pédagogique de qualité, veillant à la sécurité physique et à la progression de chaque élève.</p>
+						<ul class="feature-list">
+							<li><i class="fa-solid fa-check"></i> Suivi individualisé</li>
+							<li><i class="fa-solid fa-check"></i> Programmation sur mesure</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</section>
-		{# --- SECTION 1 : PHILOSOPHIE --- #}
-		<section class="valeurs-section section-spacer">
-			<div
-				class="page-container valeurs-inner">
 
-				{# COLONNE GAUCHE — texte + badges #}
-				<div class="valeurs-text">
+		{# --- SECTION 3 : VALEURS --- #}
+		<section class="ecole-section ecole-valeurs-section">
+			<div class="ecole-wm ecole-wm--valeurs page-wm" aria-hidden="true">VALEURS</div>
 
-					<h2 class="section-heading">
-						Nos Valeurs
-						<span>Fondamentales</span>
-					</h2>
-
-					<div class="valeurs-badges">
-
-						<div class="valeur-badge">
-							<div class="valeur-badge-icon">
-								<i class="fa-solid fa-handshake"></i>
+			<div class="page-container ecole-section-inner">
+				<div class="ecole-valeurs-grid">
+					<div class="valeurs-text">
+						<h2 class="ecole-title">Nos Valeurs<br><span>Fondamentales</span></h2>
+						<div class="valeurs-badges">
+							<div class="valeur-badge">
+								<div class="valeur-badge-icon"><i class="fa-solid fa-handshake"></i></div>
+								<div class="valeur-badge-text">
+									<span class="valeur-label">Respect</span>
+									<span class="valeur-desc">Envers soi-même et les autres</span>
+								</div>
 							</div>
-							<div class="valeur-badge-text">
-								<span class="valeur-label">Respect</span>
-								<span class="valeur-desc">Envers soi-même et les autres</span>
+							<div class="valeur-badge">
+								<div class="valeur-badge-icon"><i class="fa-solid fa-bolt"></i></div>
+								<div class="valeur-badge-text">
+									<span class="valeur-label">Discipline</span>
+									<span class="valeur-desc">Rigueur et régularité à l'entraînement</span>
+								</div>
 							</div>
-						</div>
-
-						<div class="valeur-badge">
-							<div class="valeur-badge-icon">
-								<i class="fa-solid fa-bolt"></i>
-							</div>
-							<div class="valeur-badge-text">
-								<span class="valeur-label">Discipline</span>
-								<span class="valeur-desc">Rigueur et régularité à l'entraînement</span>
+							<div class="valeur-badge">
+								<div class="valeur-badge-icon"><i class="fa-solid fa-fire"></i></div>
+								<div class="valeur-badge-text">
+									<span class="valeur-label">Persévérance</span>
+									<span class="valeur-desc">Ne jamais abandonner ses objectifs</span>
+								</div>
 							</div>
 						</div>
-
-						<div class="valeur-badge">
-							<div class="valeur-badge-icon">
-								<i class="fa-solid fa-fire"></i>
-							</div>
-							<div class="valeur-badge-text">
-								<span class="valeur-label">Persévérance</span>
-								<span class="valeur-desc">Ne jamais abandonner ses objectifs</span>
-							</div>
-						</div>
-
+					</div>
+					<div class="valeurs-athlete-col">
+						<img src="{{ asset('images/club/contact.jpg') }}" alt="" aria-hidden="true" class="valeurs-athlete-img">
 					</div>
 				</div>
-
-				{# COLONNE DROITE — image découpée #}
-				<div class="valeurs-athlete-col">
-					<img src="{{ asset('images/club/contact.jpg') }}" alt="" aria-hidden="true" class="valeurs-athlete-img">
-				</div>
-
 			</div>
 		</section>
 
-		{# --- SECTION 4 : TABLEAU --- #}
-		<section class="bg-dark-alternate section-spacer">
-			<div class="page-container">
-				<div class="section-header-center">
-					<h2 class="section-heading centered">Catégories
-						<span>D'Âge</span>
-					</h2>
+		{# --- SECTION 4 : CATÉGORIES D'ÂGE --- #}
+		<section class="ecole-section ecole-categories-section">
+			<div class="ecole-wm ecole-wm--categories page-wm" aria-hidden="true">NIVEAUX</div>
+
+			<div class="page-container ecole-section-inner">
+				<div class="ecole-section-head">
+					<h2 class="ecole-title">Catégories<br><span>D'Âge</span></h2>
+					<p class="ecole-subtitle">Chaque athlète évolue dans la catégorie correspondant à son année de naissance.</p>
 				</div>
 
-				<div class="table-container-modern">
-					<table class="age-table">
-						<thead>
-							<tr>
-								<th>Catégorie</th>
-								<th>Code</th>
-								<th>Année de naissance</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<strong>Benjamin</strong>
-								</td>
-								<td>
-									<span class="tag u-tag">U10</span>
-								</td>
-								<td>2016 - 2019</td>
-							</tr>
-							<tr>
-								<td>
-									<strong>Minime</strong>
-								</td>
-								<td>
-									<span class="tag u-tag">U13</span>
-								</td>
-								<td>2013 - 2015</td>
-							</tr>
-							<tr>
-								<td>
-									<strong>Cadet 1</strong>
-								</td>
-								<td>
-									<span class="tag u-tag">U15</span>
-								</td>
-								<td>2011 - 2012</td>
-							</tr>
-							<tr>
-								<td>
-									<strong>Cadet 2</strong>
-								</td>
-								<td>
-									<span class="tag u-tag">U17</span>
-								</td>
-								<td>2009 - 2010</td>
-							</tr>
-							<tr>
-								<td>
-									<strong>Junior</strong>
-								</td>
-								<td>
-									<span class="tag u-tag">U20</span>
-								</td>
-								<td>2006 - 2008</td>
-							</tr>
-							<tr class="highlight-row">
-								<td>
-									<strong>Sénior</strong>
-								</td>
-								<td>
-									<span class="tag s-tag">Sénior</span>
-								</td>
-								<td>1992 - 2005</td>
-							</tr>
-						</tbody>
-					</table>
+				<div class="categories-grid">
+					<div class="cat-card"><span class="cat-code u-tag">U10</span><h4 class="cat-name">Benjamin</h4><span class="cat-years">2016 – 2019</span></div>
+					<div class="cat-card"><span class="cat-code u-tag">U13</span><h4 class="cat-name">Minime</h4><span class="cat-years">2013 – 2015</span></div>
+					<div class="cat-card"><span class="cat-code u-tag">U15</span><h4 class="cat-name">Cadet 1</h4><span class="cat-years">2011 – 2012</span></div>
+					<div class="cat-card"><span class="cat-code u-tag">U17</span><h4 class="cat-name">Cadet 2</h4><span class="cat-years">2009 – 2010</span></div>
+					<div class="cat-card"><span class="cat-code u-tag">U20</span><h4 class="cat-name">Junior</h4><span class="cat-years">2006 – 2008</span></div>
+					<div class="cat-card cat-card--senior"><span class="cat-code s-tag">Sénior</span><h4 class="cat-name">Sénior</h4><span class="cat-years">1992 – 2005</span></div>
 				</div>
 
 				<div class="cta-box">
 					<p>Prêt à rejoindre l'aventure ?</p>
-					<a href="{{ path('app_pricing') }}" class="btn-cta-red">Voir les tarifs & Inscriptions</a>
+					<a href="{{ path('app_pricing') }}" class="ecole-cta-btn">
+						Voir les tarifs & Inscriptions
+					</a>
 				</div>
 			</div>
 		</section>
 
 	</main>
+
+	<script nonce="{{ csp_nonce('script') }}">
+	(function() {
+		var wms = document.querySelectorAll('.ecole-wm');
+		if (!wms.length) return;
+		var obs = new IntersectionObserver(function(entries) {
+			entries.forEach(function(e) {
+				if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); }
+			});
+		}, { threshold: 0.15 });
+		wms.forEach(function(el) { obs.observe(el); });
+	})();
+	</script>
+
 {% endblock %}
 
 {% block javascripts %}
 	{{ parent() }}
-	 <script src="{{ asset('js/ecole/index.js') }}"></script>
+	<script src="{{ asset('js/ecole/index.js') }}"></script>
 {% endblock %}

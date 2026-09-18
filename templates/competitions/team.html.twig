@@ -2,10 +2,7 @@
 
 {% set isFeminine = gender == 'feminine' %}
 
-{% block title %}
-	{{ isFeminine ? 'Équipe Féminine' : 'Équipe Masculine' }}
-	— CHM Saleux
-{% endblock %}
+{% block title %}{{ isFeminine ? 'Équipe Féminine' : 'Équipe Masculine' }} · CHM Saleux{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
@@ -193,7 +190,7 @@
 		{# --- ARCHIVES --- #}
 		{% if competitions|length > 1 %}
 			<section class="page-container section-spacer section-history">
-				<div class="team-wm" aria-hidden="true">ARCHIVES</div>
+				<div class="team-wm page-wm" aria-hidden="true">ARCHIVES</div>
 
 				<div class="arc-grid">
 					{% for comp in competitions|slice(1, 3) %}

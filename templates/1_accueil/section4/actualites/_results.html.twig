@@ -1,25 +1,26 @@
 {% if articles is not empty %}
-    <div class="news-grid-layout">
+    <div class="arc-grid">
         {% for article in articles %}
-            <article class="news-card-elite">
-                <div class="card-thumb">
-                    <img src="{{ asset('uploads/' ~ article.photo) }}" alt="{{ article.title }}" loading="lazy">
-                    <div class="card-badge">{{ article.category ? article.category.name|capitalize : 'Info' }}</div>
+            <a href="{{ path('article_show', {'id': article.id}) }}" class="arc-card">
+                <div class="arc-card-media">
+                    <img
+                        class="arc-card-img"
+                        src="{{ article.photo ? asset('uploads/' ~ article.photo) : asset('images/article.jpg') }}"
+                        alt="{{ article.title }}"
+                        loading="lazy"
+                        draggable="false">
                 </div>
-
-                <div class="card-body">
-                    <span class="card-date">
-                        <i class="fa-regular fa-calendar"></i> {{ article.publishedAt|date('d/m/Y') }}
-                    </span>
-                    <h3>
-                        <a href="{{ path('article_show', {'id': article.id}) }}">{{ article.title }}</a>
-                    </h3>
-                    <p>{{ article.description|striptags|slice(0, 100) ~ '...' }}</p>
-                    <a href="{{ path('article_show', {'id': article.id}) }}" class="link-arrow">
-                        Lire l'article <i class="fa-solid fa-arrow-right"></i>
-                    </a>
+                <div class="arc-card-body">
+                    <span class="arc-card-eyebrow">{{ article.category ? article.category.name|capitalize : 'Info' }}</span>
+                    <h4 class="arc-card-title">{{ article.title }}</h4>
+                    {% if article.description %}
+                        <p class="arc-card-excerpt">{{ article.description|striptags|slice(0, 110) }}…</p>
+                    {% endif %}
+                    <div class="arc-card-footer">
+                        <span class="arc-card-date">{{ article.publishedAt|date('d/m/Y') }}</span>
+                    </div>
                 </div>
-            </article>
+            </a>
         {% endfor %}
     </div>
 

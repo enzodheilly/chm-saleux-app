@@ -25,7 +25,7 @@ class PasswordController extends AbstractController
         return true;
     }
 
-    #[Route('/set-password', name: 'set_password', methods: ['GET', 'POST'])]
+    #[Route('/compte/definir-mot-de-passe', name: 'set_password', methods: ['GET', 'POST'])]
     public function setPassword(
         Request $request,
         UserPasswordHasherInterface $passwordHasher,

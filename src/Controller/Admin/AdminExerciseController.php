@@ -8,11 +8,13 @@ use App\Form\ExerciseType;
 use App\Repository\ExerciseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/gestion-chm-secrete-92x/exercise', name: 'admin_exercise_')]
+#[IsGranted('ROLE_SUPER_ADMIN')]
 class AdminExerciseController extends AbstractController
 {
     #[Route('/', name: 'index', methods: ['GET', 'POST'])]

@@ -3,67 +3,135 @@
 {% block title %}Mon compte{% endblock %}
 
 {% block body %}
-	<div class="page-header">
-		<div>
-			<h1>Mon compte</h1>
-			<p>Gérez vos informations de connexion et vos préférences.</p>
+<style nonce="{{ csp_nonce('style') }}">
+.account-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+.settings-card-title { font-size: .88rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); margin: 0 0 18px; }
+.info-row { display: flex; flex-direction: column; gap: 4px; }
+.info-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; color: var(--text-muted); }
+.info-value { font-size: .92rem; font-weight: 600; color: var(--text-primary); }
+.info-value.mono { font-family: monospace; color: var(--accent); }
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 24px; }
+.section-sep { border: none; border-top: 1px solid var(--border-color); margin: 20px 0; }
+.pw-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; align-items: end; }
+.twofa-status { display: inline-flex; align-items: center; gap: 8px; font-size: .84rem; font-weight: 600; padding: 6px 12px; }
+.twofa-status.enabled { background: rgba(34,197,94,.1); color: #22c55e; }
+.twofa-status.disabled { background: rgba(248,113,113,.1); color: #f87171; }
+.twofa-status .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.twofa-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+@media (max-width: 600px) {
+  .info-grid { grid-template-columns: 1fr; }
+  .pw-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="page-header">
+	<div>
+		<h1>Mon compte</h1>
+		<p>Informations de connexion, sécurité et accès.</p>
+	</div>
+</div>
+
+<div class="settings-layout account-grid">
+
+	{# ── Profil ── #}
+	<div class="settings-card">
+		<h3 class="settings-card-title">Informations de profil</h3>
+		<div class="info-grid">
+			<div class="info-row">
+				<span class="info-label">Identité</span>
+				<span class="info-value">{{ app.user.firstName }} {{ app.user.lastName }}</span>
+			</div>
+			<div class="info-row">
+				<span class="info-label">Email de connexion</span>
+				<span class="info-value">{{ app.user.email }}</span>
+			</div>
 		</div>
 	</div>
 
-	<div
-		class="settings-layout">
-		{# Profil #}
-		<div class="settings-card">
-			<h3 class="settings-card-title">Informations de profil</h3>
-			<div class="form-grid">
+	{# ── Modifier le mot de passe ── #}
+	<div class="settings-card">
+		<h3 class="settings-card-title">Modifier le mot de passe</h3>
+		<form method="post" action="{{ path('admin_settings_change_password') }}" autocomplete="off">
+			<input type="hidden" name="_token" value="{{ csrf_token('change_password') }}">
+			<div class="pw-grid">
 				<div class="form-group">
-					<label class="tool-label">Identité</label>
-					<input type="text" class="input input-readonly" value="{{ app.user.firstName }} {{ app.user.lastName }}" readonly>
+					<label class="tool-label" for="current_password">Mot de passe actuel</label>
+					<input type="password" id="current_password" name="current_password" class="input" required autocomplete="current-password" placeholder="••••••••">
 				</div>
 				<div class="form-group">
-					<label class="tool-label">Email de connexion</label>
-					<input type="email" class="input input-readonly" value="{{ app.user.email }}" readonly>
+					<label class="tool-label" for="new_password">Nouveau mot de passe</label>
+					<input type="password" id="new_password" name="new_password" class="input" required autocomplete="new-password" placeholder="Min. 8 caractères">
 				</div>
-				<div class="form-actions">
-					<a href="#" class="btn-create">Modifier le mot de passe</a>
+				<div class="form-group">
+					<label class="tool-label" for="confirm_password">Confirmer</label>
+					<input type="password" id="confirm_password" name="confirm_password" class="input" required autocomplete="new-password" placeholder="••••••••">
 				</div>
 			</div>
-		</div>
+			<div class="form-actions" style="margin-top:16px;">
+				<button type="submit" class="btn-save">Mettre à jour le mot de passe</button>
+			</div>
+		</form>
+	</div>
 
-		{# Thème - Utilisation du Switch #}
-		<div class="settings-card flex-row">
-			<div class="switch-info">
-				<h4>Mode sombre</h4>
-				<p>Réduit la fatigue oculaire dans l'obscurité.</p>
-			</div>
-			<label
-				class="switch">
-				{# L'ID est utilisé par le JS global pour synchroniser le thème #}
-				<input type="checkbox" id="themeToggleCheckbox">
-				<span class="slider"></span>
-			</label>
+	{# ── Authentification à deux facteurs ── #}
+	<div class="settings-card">
+		<h3 class="settings-card-title">Authentification à deux facteurs (2FA)</h3>
+		<p style="font-size:.84rem;color:var(--text-muted);margin:0 0 16px;line-height:1.6;">
+			Protège votre compte avec Google Authenticator ou une application compatible TOTP.
+			Une fois activée, un code temporaire vous sera demandé à chaque connexion.
+		</p>
+		<div class="twofa-row">
+			{% if app.user.isGoogleAuthenticatorEnabled() %}
+				<div class="twofa-status enabled">
+					<span class="dot"></span>
+					2FA activée
+				</div>
+				<a href="{{ path('admin_security_2fa_setup') }}" class="btn-save" style="font-size:.82rem;padding:6px 14px;">
+					Reconfigurer
+				</a>
+			{% else %}
+				<div class="twofa-status disabled">
+					<span class="dot"></span>
+					2FA non configurée
+				</div>
+				<a href="{{ path('admin_security_2fa_setup') }}" class="btn-create" style="font-size:.82rem;padding:6px 14px;">
+					Configurer maintenant
+				</a>
+			{% endif %}
 		</div>
+		{% if not app.user.isGoogleAuthenticatorEnabled() %}
+			<p style="font-size:.78rem;color:#f87171;margin:12px 0 0;line-height:1.5;">
+				Votre compte n'est pas protégé par la 2FA. En tant qu'administrateur, il est fortement recommandé de l'activer.
+			</p>
+		{% endif %}
+	</div>
 
-		{# Sécurité #}
-		<div class="settings-card">
-			<h3 class="settings-card-title">Historique & Sécurité</h3>
-			<div class="security-info-grid">
-				<div class="title-stack">
-					<span class="td-mono-sm">DERNIÈRE ACTIVITÉ</span>
-					<strong>{{ app.user.lastLoginAt ? app.user.lastLoginAt|date('d/m/Y à H:i') : 'Session actuelle' }}</strong>
-				</div>
-				<div class="title-stack">
-					<span class="td-mono-sm">IP ENREGISTRÉE</span>
-					<strong class="td-mono text-accent">{{ app.user.lastLoginIp ?? '—' }}</strong>
-				</div>
+	{# ── Historique de connexion ── #}
+	<div class="settings-card">
+		<h3 class="settings-card-title">Historique & Sécurité</h3>
+		<div class="info-grid">
+			<div class="info-row">
+				<span class="info-label">Dernière activité</span>
+				<span class="info-value">{{ app.user.lastLoginAt ? app.user.lastLoginAt|date('d/m/Y à H:i') : 'Session actuelle' }}</span>
 			</div>
-			<div
-				class="section-divider">
-				{# MODIFICATION : Ajout de la classe js-confirm-link pour réutiliser le moteur de confirmation #}
-				<button class="btn-danger-outline js-confirm-link" id="btn-reset-sessions" data-confirm="⚠️ Cela vous déconnectera de tous vos autres appareils. Continuer ?">
-					RÉINITIALISER LES SESSIONS ACTIVES
-				</button>
+			<div class="info-row">
+				<span class="info-label">IP enregistrée</span>
+				<span class="info-value mono">{{ app.user.lastLoginIp ?? '—' }}</span>
 			</div>
 		</div>
 	</div>
+
+	{# ── Thème ── #}
+	<div class="settings-card flex-row">
+		<div class="switch-info">
+			<h4>Mode sombre</h4>
+			<p>Réduit la fatigue oculaire dans l'obscurité.</p>
+		</div>
+		<label class="switch">
+			<input type="checkbox" id="themeToggleCheckbox">
+			<span class="slider"></span>
+		</label>
+	</div>
+
+</div>
 {% endblock %}

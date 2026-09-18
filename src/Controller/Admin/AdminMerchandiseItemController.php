@@ -7,12 +7,14 @@ use App\Entity\MerchandiseItem;
 use App\Form\MerchandiseItemType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/gestion-chm-secrete-92x/merchandise')]
+#[IsGranted('ROLE_STAFF')]
 class AdminMerchandiseItemController extends AbstractController
 {
     #[Route('/', name: 'admin_merchandise_index')]
@@ -36,7 +38,17 @@ class AdminMerchandiseItemController extends AbstractController
 
             $imageFile = $form->get('image')->getData();
             if ($imageFile) {
-                $newFilename = uniqid() . '.' . $imageFile->guessExtension();
+                $allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
+                if (!in_array($imageFile->getMimeType(), $allowedMimes, true)) {
+                    $this->addFlash('error', 'Format non autorisé (JPEG, PNG ou WebP uniquement).');
+                    return $this->redirectToRoute('admin_merchandise_new');
+                }
+                if ($imageFile->getSize() > 2 * 1024 * 1024) {
+                    $this->addFlash('error', 'Image trop volumineuse (max 2 Mo).');
+                    return $this->redirectToRoute('admin_merchandise_new');
+                }
+
+                $newFilename = bin2hex(random_bytes(8)) . '.' . $imageFile->guessExtension();
 
                 try {
                     $imageFile->move(
@@ -44,7 +56,7 @@ class AdminMerchandiseItemController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    $this->addFlash('error', 'Error while uploading the image.');
+                    $this->addFlash('error', 'Erreur lors de l\'upload de l\'image.');
                     return $this->redirectToRoute('admin_merchandise_new');
                 }
 
@@ -54,7 +66,7 @@ class AdminMerchandiseItemController extends AbstractController
             $em->persist($item);
             $em->flush();
 
-            $this->addFlash('success', 'Merchandise item created successfully!');
+            $this->addFlash('success', 'Article créé avec succès !');
             return $this->redirectToRoute('admin_merchandise_index');
         }
 
@@ -73,7 +85,17 @@ class AdminMerchandiseItemController extends AbstractController
 
             $imageFile = $form->get('image')->getData();
             if ($imageFile) {
-                $newFilename = uniqid() . '.' . $imageFile->guessExtension();
+                $allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
+                if (!in_array($imageFile->getMimeType(), $allowedMimes, true)) {
+                    $this->addFlash('error', 'Format non autorisé (JPEG, PNG ou WebP uniquement).');
+                    return $this->redirectToRoute('admin_merchandise_edit', ['id' => $item->getId()]);
+                }
+                if ($imageFile->getSize() > 2 * 1024 * 1024) {
+                    $this->addFlash('error', 'Image trop volumineuse (max 2 Mo).');
+                    return $this->redirectToRoute('admin_merchandise_edit', ['id' => $item->getId()]);
+                }
+
+                $newFilename = bin2hex(random_bytes(8)) . '.' . $imageFile->guessExtension();
 
                 try {
                     $imageFile->move(
@@ -81,7 +103,7 @@ class AdminMerchandiseItemController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    $this->addFlash('error', 'Error while uploading the image.');
+                    $this->addFlash('error', 'Erreur lors de l\'upload de l\'image.');
                     return $this->redirectToRoute('admin_merchandise_edit', ['id' => $item->getId()]);
                 }
 

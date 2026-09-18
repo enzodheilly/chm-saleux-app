@@ -1,34 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Actualités du Club — CHM Saleux
-{% endblock %}
+{% block title %}Actualités · CHM Saleux{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('css/accueil/section4/actualites/articles.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/competitions/team-archives.css') }}">
 {% endblock %}
 
 {% block body %}
 
-	<header class="page-header-sport actualites-header-bg">
-		<div class="header-overlay-gradient"></div>
-
-		<div class="header-content">
-			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
-
-				<div class="header-main-box">
-					<div class="badge-accent">Le Journal du Club</div>
-					<h1>Actualités
-						<span class="text-outline">& News</span>
-					</h1>
-					<p class="lead">Résultats, événements et vie de l'association : ne manquez rien de l'actu du CHM.</p>
-				</div>
+	<header class="news-page-header">
+		<div class="page-container">
+		{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'Actualités' }] } %}
+			<div class="news-header-body">
+				<h1 class="news-header-title">Actualités <span>& News</span></h1>
+				<p class="news-header-lead">Résultats, événements et vie de l'association — ne manquez rien de l'actu du CHM.</p>
 			</div>
 		</div>
 	</header>
@@ -37,73 +24,39 @@
 
 	<main class="news-root page-shell">
 
-		<section class="page-container section-spacer">
-			<div class="section-header-center">
-				<h2 class="section-heading centered">Toutes nos
-					<span>Actualités</span>
-				</h2>
-				<p>Résultats, événements et vie du club — retrouvez toute l'actu du CHM Saleux.</p>
-			</div>
-			<div class="filter-card-wrapper">
-				<div class="filter-header">
-					<span class="filter-title">
-						<i class="fa-solid fa-sliders"></i>
-						Filtrer les actualités
-					</span>
-					{% if (filters.category is defined and filters.category) or filters.date_from or filters.date_to %}
-						<a href="{{ path('actualites') }}" class="filter-reset-link">
-							<i class="fa-solid fa-rotate-left"></i>
-							Réinitialiser
-						</a>
-					{% endif %}
+		<section class="page-container news-main-section">
+<form id="newsFilterForm" method="get" action="{{ path('actualites', {'page': 1}) }}" class="news-filter-bar">
+
+				<select name="category" class="nf-select">
+					<option value="">Toutes les catégories</option>
+					{% for cat in categories %}
+						<option value="{{ cat.name }}" {% if filters.category is defined and filters.category == cat.name %}selected{% endif %}>
+							{{ cat.name|capitalize }}
+						</option>
+					{% endfor %}
+				</select>
+
+				<div class="nf-separator"></div>
+
+				<div class="nf-date-range">
+					<input type="date" name="date_from" value="{{ filters.date_from ?? '' }}" class="nf-date" placeholder="Du">
+					<span class="nf-date-sep">→</span>
+					<input type="date" name="date_to" value="{{ filters.date_to ?? '' }}" class="nf-date" placeholder="Au">
 				</div>
 
-				<form id="newsFilterForm" method="get" action="{{ path('actualites', {'page': 1}) }}" class="elite-filter-bar">
-					<div class="filter-inputs">
+				<button type="submit" class="nf-btn-search">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</button>
 
-						<div class="filter-field">
-							<label>
-								<i class="fa-solid fa-tag"></i>
-								Catégorie</label>
-							<select name="category">
-								<option value="">Toutes les catégories</option>
-								{% for cat in categories %}
-									<option value="{{ cat.name }}" {% if filters.category is defined and filters.category == cat.name %} selected {% endif %}>
-										{{ cat.name|capitalize }}
-									</option>
-								{% endfor %}
-							</select>
-						</div>
+				{% if (filters.category is defined and filters.category) or filters.date_from or filters.date_to %}
+					<a href="{{ path('actualites') }}" class="nf-btn-reset" title="Réinitialiser">
+						<i class="fa-solid fa-xmark"></i>
+					</a>
+				{% endif %}
 
-						<div class="filter-field">
-							<label>
-								<i class="fa-solid fa-calendar-days"></i>
-								Du</label>
-							<input type="date" name="date_from" value="{{ filters.date_from ?? '' }}">
-						</div>
+			</form>
 
-						<div class="filter-field">
-							<label>
-								<i class="fa-solid fa-calendar-days"></i>
-								Au</label>
-							<input type="date" name="date_to" value="{{ filters.date_to ?? '' }}">
-						</div>
-
-					</div>
-
-					<button type="submit" class="btn-elite-search">
-						<i class="fa-solid fa-magnifying-glass"></i>
-						Rechercher
-					</button>
-				</form>
-			</div>
-		</section>
-		<section class="page-container section-spacer">
-			<h2 class="section-heading">Dernières
-				<span>Actualités</span>
-			</h2>
-
-			<div id="newsResults">
+			<div id="newsResults" class="news-results-wrap">
 				{% include '1_accueil/section4/actualites/_results.html.twig' %}
 			</div>
 		</section>

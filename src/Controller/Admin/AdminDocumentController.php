@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/gestion-chm-secrete-92x/documents', name: 'admin_document_')]
-#[IsGranted('ROLE_ADMIN')]
+#[IsGranted('ROLE_STAFF')]
 class AdminDocumentController extends AbstractController
 {
     private const SLUG = 'reglement-interieur';

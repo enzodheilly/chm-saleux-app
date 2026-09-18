@@ -5,12 +5,14 @@ namespace App\Controller\Admin;
 use App\Repository\CheckInRepository;
 use App\Service\CheckInService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/gestion-chm-secrete-92x/frequentation', name: 'admin_attendance_')]
+#[IsGranted('ROLE_STAFF')]
 class AdminAttendanceController extends AbstractController
 {
     #[Route('/', name: 'index')]

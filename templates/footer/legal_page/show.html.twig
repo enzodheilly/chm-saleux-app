@@ -1,9 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-	{{ page.title }}
-	- CHM Saleux
-{% endblock %}
+{% block title %}{{ page.title }} · CHM Saleux{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
@@ -24,18 +21,11 @@
 
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-arrow-left-long"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
+			{% include 'components/breadcrumb.html.twig' with { items: [
+					{ label: page.title }
+				] } %}
 
 				<div class="header-main-box">
-					<div class="badge-accent">
-						<i class="fa-solid fa-shield-halved"></i>
-						Informations Officielles
-					</div>
 					<h1>{{ page.title|upper }}</h1>
 
 					<div class="header-meta">
@@ -43,13 +33,6 @@
 							<i class="fa-regular fa-calendar-check"></i>
 							<span>Mis à jour le
 								{{ page.updatedAt ? page.updatedAt|date('d/m/Y') : "now"|date('d/m/Y') }}</span>
-						</div>
-						<span class="meta-separator">•</span>
-						<div class="meta-item">
-							<i class="fa-regular fa-clock"></i>
-							<span>Lecture :
-								{{ (page.content|striptags|split(' ')|length / 200)|round(0, 'ceil') }}
-								min</span>
 						</div>
 					</div>
 				</div>

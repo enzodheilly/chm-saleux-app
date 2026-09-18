@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Vie du Club & Événements — CHM Saleux
-{% endblock %}
+{% block title %}Événements · CHM Saleux{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
@@ -12,135 +11,118 @@
 
 	<header class="page-header-sport evenements-page-header">
 		<div class="header-overlay-gradient"></div>
-
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
-
+				{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'Le Club' }, { label: 'Événements' }] } %}
 				<div class="header-main-box">
-					<div class="badge-accent">Convivialité & Partage</div>
 					<h1>La Vie
 						<span class="text-outline">du Club</span>
 					</h1>
-					<p class="lead">
-						Parce qu'un club de sport, c'est aussi une famille. Découvrez les moments festifs
-												                        qui nous rassemblent hors des plateaux.
-					</p>
+					<p class="lead">Parce qu'un club de sport, c'est aussi une famille. Découvrez les moments festifs qui nous rassemblent hors des plateaux.</p>
 				</div>
 			</div>
 		</div>
 	</header>
 
-	{# IMAGE DÉCORATIVE GAUCHE #}
+	<main class="events-root page-shell">
+		<div class="ev-wm page-wm" aria-hidden="true">ÉVÉNEMENTS</div>
 
-	<main
-		class="page-shell events-root">
-
-		{# --- SECTION 1 : INTRO --- #}
-		<section class="section-spacer">
+		{# --- INTRO --- #}
+		<section class="ev-section ev-intro">
 			<div class="page-container">
-				<div class="intro-centered-box">
-					<div class="badge-outline">Esprit d'équipe</div>
-
-					{# ✅ connecté à la typo globale #}
-					<h2 class="section-heading centered">
-						Plus qu'une salle,
-						<span>une famille.</span>
-					</h2>
-
-					<p class="desc-text-large">
-						La performance c'est bien, mais les souvenirs c'est mieux.
-												                        Au CHM Saleux, nous croyons que la cohésion se forge autant
-												                        autour d'un bon repas que sous une barre chargée.
-					</p>
+				<div class="ev-section-head">
+					<h2 class="ev-h2">Plus qu'une salle,<br><span>une famille.</span></h2>
+					<p class="ev-desc">La performance c'est bien, mais les souvenirs c'est mieux. Au CHM Saleux, nous croyons que la cohésion se forge autant autour d'un bon repas que sous une barre chargée.</p>
+				</div>
+				<div class="ev-pillars">
+					<div class="ev-pillar">
+						<div class="ev-pillar-icon"><i class="fa-solid fa-handshake-angle"></i></div>
+						<h4>Cohésion</h4>
+						<p>Des moments partagés qui renforcent les liens entre membres, bien au-delà des entraînements.</p>
+					</div>
+					<div class="ev-pillar">
+						<div class="ev-pillar-icon"><i class="fa-solid fa-champagne-glasses"></i></div>
+						<h4>Convivialité</h4>
+						<p>On s'entraîne dur, mais on sait aussi s'amuser. La bonne humeur fait partie de notre ADN.</p>
+					</div>
+					<div class="ev-pillar">
+						<div class="ev-pillar-icon"><i class="fa-solid fa-calendar-heart"></i></div>
+						<h4>Traditions</h4>
+						<p>Galette, Pâques, Noël… Des rendez-vous immanquables qui rythment la saison du club.</p>
+					</div>
 				</div>
 			</div>
 		</section>
 
-		{# --- SECTION 2 : CALENDRIER FESTIF --- #}
-		<section class="bg-dark-alternate section-spacer">
+		{# --- CALENDRIER FESTIF --- #}
+		<section class="ev-section ev-calendar">
 			<div class="page-container">
-				<div class="events-grid">
-
-					<article class="event-card border-gold">
-						<div class="event-glow"></div>
-						<div class="event-content">
-							<span class="event-date">Janvier</span>
-							<div class="event-icon">
-								<i class="fa-solid fa-crown"></i>
-							</div>
+				<div class="ev-section-head">
+					<h2 class="ev-h2">Notre <span>Calendrier</span></h2>
+					<p class="ev-desc">Des événements réguliers qui rendent la vie du club unique et soudée.</p>
+				</div>
+				<div class="ev-cards">
+					<div class="ev-card">
+						<div class="ev-card-top ev-card-top--gold">
+							<span class="ev-card-date">Janvier</span>
+							<div class="ev-card-icon"><i class="fa-solid fa-crown"></i></div>
+						</div>
+						<div class="ev-card-body">
 							<h3>Galette des Rois</h3>
 							<p>On commence l'année par un classique ! Après l'effort, le réconfort. Qui sera le roi ou la reine de la saison ?</p>
 						</div>
-					</article>
-
-					<article class="event-card border-blue">
-						<div class="event-glow"></div>
-						<div class="event-content">
-							<span class="event-date">Avril</span>
-							<div class="event-icon">
-								<i class="fa-solid fa-egg"></i>
-							</div>
+					</div>
+					<div class="ev-card">
+						<div class="ev-card-top ev-card-top--blue">
+							<span class="ev-card-date">Avril</span>
+							<div class="ev-card-icon ev-card-icon--blue"><i class="fa-solid fa-egg"></i></div>
+						</div>
+						<div class="ev-card-body">
 							<h3>Fête de Pâques</h3>
 							<p>Chasse aux œufs et chocolats pour les petits (et les grands). Un moment familial incontournable au club.</p>
 						</div>
-					</article>
-
-					<article class="event-card border-red">
-						<div class="event-glow"></div>
-						<div class="event-content">
-							<span class="event-date">Décembre</span>
-							<div class="event-icon">
-								<i class="fa-solid fa-gift"></i>
-							</div>
+					</div>
+					<div class="ev-card">
+						<div class="ev-card-top ev-card-top--red">
+							<span class="ev-card-date">Décembre</span>
+							<div class="ev-card-icon ev-card-icon--red"><i class="fa-solid fa-gift"></i></div>
+						</div>
+						<div class="ev-card-body">
 							<h3>Repas de Noël</h3>
-							<p>Le grand rassemblement. On troque les tenues de sport pour une soirée festive et un bon repas.</p>
+							<p>Le grand rassemblement. On troque les tenues de sport pour une soirée festive et un bon repas entre membres.</p>
 						</div>
-					</article>
-
-					<article class="event-card border-green">
-						<div class="event-glow"></div>
-						<div class="event-content">
-							<span class="event-date">Toute l'année</span>
-							<div class="event-icon">
-								<i class="fa-solid fa-fire"></i>
-							</div>
+					</div>
+					<div class="ev-card">
+						<div class="ev-card-top ev-card-top--green">
+							<span class="ev-card-date">Toute l'année</span>
+							<div class="ev-card-icon ev-card-icon--green"><i class="fa-solid fa-fire"></i></div>
+						</div>
+						<div class="ev-card-body">
 							<h3>Les "Imprévus"</h3>
-							<p>Barbecues improvisés, challenges internes, sorties... Parce que les meilleurs moments ne sont pas planifiés.</p>
+							<p>Barbecues improvisés, challenges internes, sorties… Parce que les meilleurs moments ne sont pas planifiés.</p>
 						</div>
-					</article>
-
+					</div>
 				</div>
 			</div>
 		</section>
 
-		{# --- SECTION 3 : WHATSAPP CONNECT --- #}
-		<section class="section-spacer">
+		{# --- WHATSAPP --- #}
+		<section class="ev-section ev-wa-section">
 			<div class="page-container">
-				<div class="whatsapp-connect-card">
-					<div
-						class="wa-info">
-						{# ✅ connecté au style global section title #}
-						<h2 class="section-heading">
-							Ne ratez
-							<span>aucune info</span>
-							!
-						</h2>
-						<p>L'organisation des événements et les sondages circulent sur notre groupe privé réservé aux membres.</p>
-						<a href="https://chat.whatsapp.com/TON-LIEN" target="_blank" class="btn-wa">
+				<div class="ev-wa-card">
+					<div class="ev-wa-icon"><i class="fa-brands fa-whatsapp"></i></div>
+					<div class="ev-wa-content">
+						<h3>Ne ratez <span>aucune info</span> !</h3>
+						<p>L'organisation des événements et les sondages circulent sur notre groupe privé réservé aux membres. Rejoignez-le pour être informé en temps réel.</p>
+						<a href="https://chat.whatsapp.com/TON-LIEN" target="_blank" rel="noopener noreferrer" class="ev-btn-wa">
 							<i class="fa-brands fa-whatsapp"></i>
 							Rejoindre le groupe Membres
 						</a>
 					</div>
-
-					<div class="wa-visual">
-						<div class="wa-bubble">Prochain BBQ Samedi ! 🍖</div>
-						<div class="wa-bubble alt">Qui vient pour Noël ? 🎄</div>
+					<div class="ev-wa-bubbles" aria-hidden="true">
+						<div class="ev-bubble ev-bubble--received">Prochain BBQ Samedi !</div>
+						<div class="ev-bubble ev-bubble--sent">Qui vient pour Noël ?</div>
+						<div class="ev-bubble ev-bubble--received">J'apporte les desserts</div>
 					</div>
 				</div>
 			</div>

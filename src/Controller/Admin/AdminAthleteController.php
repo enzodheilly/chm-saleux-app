@@ -4,8 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\Athlete;
 use App\Form\AthleteType;
+use App\Service\SystemLoggerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +16,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Uid\Uuid;
 
 #[Route('/gestion-chm-secrete-92x/athlete')]
+#[IsGranted('ROLE_STAFF')]
 class AdminAthleteController extends AbstractController
 {
     #[Route('/', name: 'admin_athlete_index')]
@@ -28,18 +31,22 @@ class AdminAthleteController extends AbstractController
     public function new(
         Request $request,
         EntityManagerInterface $em,
-        SluggerInterface $slugger
+        SluggerInterface $slugger,
+        SystemLoggerService $logger
     ): Response {
         $athlete = new Athlete();
         $form = $this->createForm(AthleteType::class, $athlete);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->handleAthleteImageUpload($form->get('image')->getData(), $athlete, $slugger);
+            if (!$this->handleAthleteImageUpload($form->get('image')->getData(), $athlete, $slugger)) {
+                return $this->redirectToRoute('admin_athlete_new');
+            }
 
             $em->persist($athlete);
             $em->flush();
 
+            $logger->add(SystemLoggerService::TYPE_ADMIN, 'Création athlète : ' . $athlete->getFullName());
             $this->addFlash('success', 'Athlete created successfully!');
             return $this->redirectToRoute('admin_athlete_index');
         }
@@ -54,7 +61,8 @@ class AdminAthleteController extends AbstractController
         Athlete $athlete,
         Request $request,
         EntityManagerInterface $em,
-        SluggerInterface $slugger
+        SluggerInterface $slugger,
+        SystemLoggerService $logger
     ): Response {
         $oldImage = $athlete->getImage();
 
@@ -73,6 +81,7 @@ class AdminAthleteController extends AbstractController
 
             $em->flush();
 
+            $logger->add(SystemLoggerService::TYPE_ADMIN, 'Modification athlète : ' . $athlete->getFullName());
             $this->addFlash('success', 'Athlete updated successfully!');
             return $this->redirectToRoute('admin_athlete_index');
         }
@@ -84,15 +93,16 @@ class AdminAthleteController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'admin_athlete_delete', methods: ['POST'])]
-    public function delete(Athlete $athlete, Request $request, EntityManagerInterface $em): Response
+    public function delete(Athlete $athlete, Request $request, EntityManagerInterface $em, SystemLoggerService $logger): Response
     {
         if ($this->isCsrfTokenValid('delete' . $athlete->getId(), (string) $request->request->get('_token'))) {
-            // ✅ delete file before removing entity
+            $name = $athlete->getFullName();
             $this->deleteAthleteImageFile($athlete->getImage());
 
             $em->remove($athlete);
             $em->flush();
 
+            $logger->add(SystemLoggerService::TYPE_ADMIN, 'Suppression athlète : ' . $name);
             $this->addFlash('success', 'Athlete deleted successfully!');
         }
 
@@ -103,18 +113,16 @@ class AdminAthleteController extends AbstractController
         mixed $imageFile,
         Athlete $athlete,
         SluggerInterface $slugger
-    ): void {
+    ): bool {
         if (!$imageFile) {
-            return;
+            return true;
         }
 
-        // ✅ Extra safety: allow only image extensions (you should ALSO validate in the form)
         $ext = strtolower((string) $imageFile->guessExtension());
         if ($ext === '' || !in_array($ext, ['jpg', 'jpeg', 'png', 'webp'], true)) {
-            $ext = 'bin'; // fallback (shouldn't happen if your form constraint is correct)
+            $ext = 'bin';
         }
 
-        // ✅ Safe filename: slug + uuid
         $originalName = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
         $safeName = $slugger->slug($originalName)->lower();
         $newFilename = $safeName . '-' . Uuid::v4()->toRfc4122() . '.' . $ext;
@@ -124,8 +132,10 @@ class AdminAthleteController extends AbstractController
         try {
             $imageFile->move($targetDir, $newFilename);
             $athlete->setImage($newFilename);
+            return true;
         } catch (FileException) {
             $this->addFlash('error', 'Error while uploading the image.');
+            return false;
         }
     }
 

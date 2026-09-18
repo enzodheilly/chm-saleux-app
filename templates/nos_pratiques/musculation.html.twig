@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Espace Musculation - CHM Saleux
-{% endblock %}
+{% block title %}Espace Musculation · CHM Saleux{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
@@ -15,15 +14,9 @@
 
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
+				{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'Le Club' }, { label: 'Musculation' }] } %}
 
 				<div class="header-main-box">
-					<div class="badge-accent">Force & Hypertrophie</div>
 					<h1>Espace
 						<span class="text-outline">Musculation</span>
 					</h1>
@@ -35,8 +28,8 @@
 
 	{# IMAGE DÉCORATIVE GAUCHE #}
 
-	<main
-		class="page-shell elite-main">
+	<main class="page-shell elite-main">
+
 
 		{# --- SECTION 1 : PECS --- #}
 		<section class="feature-section">
@@ -61,7 +54,7 @@
 							<i class="fa-solid fa-dumbbell"></i>
 							<div>
 								<strong>Charges</strong>
-								<small>Haltères 1 à 34kg</small>
+								<small>Disques 2,5 à 25kg</small>
 							</div>
 						</div>
 						<div class="spec-item">
@@ -141,6 +134,9 @@
 						<li>
 							<i class="fa-solid fa-circle-check"></i>
 							Haltères & barre droite</li>
+						<li>
+							<i class="fa-solid fa-circle-check"></i>
+							Haltères : de 2 kg à 34 kg</li>
 					</ul>
 				</div>
 
@@ -205,19 +201,27 @@
 				<div class="cardio-stats-grid">
 					<div class="stat-card">
 						<strong>4</strong>
-						<span>Tapis</span>
-					</div>
-					<div class="stat-card active">
-						<strong>5</strong>
-						<span>Vélos</span>
+						<span>Tapis de course</span>
 					</div>
 					<div class="stat-card">
 						<strong>2</strong>
 						<span>Rameurs</span>
 					</div>
+					<div class="stat-card active">
+						<strong>2</strong>
+						<span>Vélos elliptiques</span>
+					</div>
+					<div class="stat-card active">
+						<strong>2</strong>
+						<span>Vélos elliptiques verticaux</span>
+					</div>
 					<div class="stat-card">
 						<strong>2</strong>
-						<span>Climbers</span>
+						<span>Vélos allongés</span>
+					</div>
+					<div class="stat-card">
+						<strong>2</strong>
+						<span>Vélos droits</span>
 					</div>
 				</div>
 			</div>

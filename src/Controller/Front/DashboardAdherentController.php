@@ -258,7 +258,7 @@ class DashboardAdherentController extends AbstractController
         return $this->json(['success' => true, 'message' => 'Mot de passe modifié avec succès !']);
     }
 
-    #[Route('/profile/delete-account', name: 'profile_delete_account', methods: ['POST'])]
+    #[Route('/compte/supprimer', name: 'profile_delete_account', methods: ['POST'])]
     public function deleteAccount(
         Security $security,
         SessionInterface $session,

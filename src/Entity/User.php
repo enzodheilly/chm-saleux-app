@@ -663,7 +663,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
 
     public function isGoogleAuthenticatorEnabled(): bool
     {
-        return in_array('ROLE_ADMIN', $this->getRoles(), true)
+        $roles = $this->getRoles();
+        $isStaff = in_array('ROLE_STAFF', $roles, true)
+            || in_array('ROLE_SUPER_ADMIN', $roles, true);
+
+        return $isStaff
             && $this->googleAuthenticatorSecret !== null
             && $this->isTotpConfirmed;
     }

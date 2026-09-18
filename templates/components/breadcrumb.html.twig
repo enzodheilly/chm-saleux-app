@@ -1,0 +1,21 @@
+{#
+  Fil d'Ariane réutilisable.
+  Usage :
+    include 'components/breadcrumb.html.twig' with { items: [
+      { label: 'Le Club' },    -- parent sans lien (pas de route propre)
+      { label: 'Sauna' }       -- page courante, toujours sans lien
+    ] }
+  "Accueil" est toujours prepend automatiquement.
+  Un item avec url fait un lien cliquable ; sans url = texte seul.
+#}
+<nav class="page-breadcrumb" aria-label="Fil d'Ariane">
+	<a href="{{ path('home') }}" class="page-breadcrumb__link">Accueil</a>
+	{% for item in items %}
+		<i class="fa-solid fa-chevron-right page-breadcrumb__sep" aria-hidden="true"></i>
+		{% if item.url is defined and item.url %}
+			<a href="{{ item.url }}" class="page-breadcrumb__link">{{ item.label }}</a>
+		{% else %}
+			<span class="page-breadcrumb__current">{{ item.label }}</span>
+		{% endif %}
+	{% endfor %}
+</nav>

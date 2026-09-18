@@ -1,72 +1,105 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Sécurisation du Compte
-{% endblock %}
+{% block title %}Configuration 2FA{% endblock %}
 
 {% block stylesheets %}
 	<link rel="stylesheet" href="{{ asset('css/admin/security/setup_2fa.css') }}">
 {% endblock %}
 
 {% block body %}
-	<div class="setup-container">
-		<div class="setup-card">
-			<div class="setup-info">
-				<h1>Sécurisez votre accès</h1>
-				<p class="setup-subtitle">L'activation du 2FA garantit que vous seul pouvez accéder à l'administration du Chm Saleux.</p>
+<div class="tfa-page">
 
-				<div class="step-item">
-					<div class="step-number">1</div>
-					<div class="step-text">
-						<h4>Application mobile</h4>
-						<p>Utilisez
-							<strong>Google Authenticator</strong>
-							ou une application similaire sur votre smartphone.</p>
-					</div>
-				</div>
+	<div class="tfa-card">
 
-				<div class="step-item">
-					<div class="step-number">2</div>
-					<div class="step-text">
-						<h4>Liaison du compte</h4>
-						<p class="hide-mobile">Scannez le code QR ci-contre avec votre application.</p>
-						<p class="show-mobile hide">Appuyez sur le bouton orange ci-dessous pour ajouter automatiquement le compte.</p>
-					</div>
-				</div>
-
-				<div class="step-item">
-					<div class="step-number">3</div>
-					<div class="step-text">
-						<h4>Code de vérification</h4>
-						<p>Saisissez le code à 6 chiffres généré par l'application pour confirmer l'accès.</p>
-					</div>
-				</div>
-			</div>
-
-			<div class="setup-action">
-				<div class="qr-box">
-					<img src="{{ qrCodeBase64 }}" alt="QR Code">
-				</div>
-
-				<div class="mobile-link-container">
-					<a href="{{ qrContent }}" class="btn-mobile-auth">
-						Lier mon application
-					</a>
-					<p class="mobile-hint">Cliquez ici pour ouvrir Google Authenticator</p>
-
-				</div>
-
-				<form method="POST" class="verify-form">
-					<input type="hidden" name="_token" value="{{ csrf_token('setup_2fa') }}">
-					<div class="code-label">Code de vérification</div>
-					<input type="text" name="auth_code" class="code-input" id="2fa_code" placeholder="000000" maxlength="6" inputmode="numeric" required>
-					<button type="submit" class="btn-validate">Confirmer et Entrer</button>
-				</form>
-			</div>
+		{# ── En-tête avec fond coloré ── #}
+		<div class="tfa-header">
+			<img src="{{ asset('images/favicon/icon2.png') }}" alt="CHM Saleux" class="tfa-logo">
+			<span class="tfa-header-name">CHM Saleux</span>
 		</div>
+
+		{# ── Corps ── #}
+		<div class="tfa-body">
+
+			<h1 class="tfa-title">Sécurisez votre accès</h1>
+			<p class="tfa-desc">Scannez le QR Code avec Google Authenticator ou une application TOTP, puis entrez le code à 6 chiffres affiché.</p>
+
+			{# QR Code – desktop #}
+			<div class="tfa-qr-wrap">
+				<div class="tfa-qr-frame">
+					<img src="{{ qrCodeBase64 }}" alt="QR Code 2FA">
+				</div>
+			</div>
+
+			{# Bouton – mobile uniquement #}
+			<div class="tfa-mobile-only">
+				<a href="{{ qrContent }}" class="tfa-btn-link">Lier mon application</a>
+			</div>
+
+			<p class="tfa-field-label">Code de vérification</p>
+
+			<form method="POST" class="tfa-form" id="tfa-form" autocomplete="off">
+				<input type="hidden" name="_token" value="{{ csrf_token('setup_2fa') }}">
+				<input type="hidden" name="auth_code" id="auth_code_hidden">
+
+				<div class="tfa-digits">
+					<input class="tfa-digit" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Chiffre 1">
+					<input class="tfa-digit" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Chiffre 2">
+					<input class="tfa-digit" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Chiffre 3">
+					<span class="tfa-sep"></span>
+					<input class="tfa-digit" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Chiffre 4">
+					<input class="tfa-digit" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Chiffre 5">
+					<input class="tfa-digit" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Chiffre 6">
+				</div>
+
+				<button type="submit" class="tfa-btn-submit" id="tfa-submit" disabled>
+					Confirmer et accéder
+				</button>
+			</form>
+
+		</div>
+
 	</div>
 
+</div>
 {% endblock %}
 
 {% block javascripts %}
-	 <script src="{{ asset('js/admin/security/setup_2fa.js') }}" nonce="{{ csp_nonce('script') }}"></script>
+<script nonce="{{ csp_nonce('script') }}">
+(function () {
+    var digits = Array.from(document.querySelectorAll('.tfa-digit'));
+    var hidden = document.getElementById('auth_code_hidden');
+    var submit = document.getElementById('tfa-submit');
+
+    function sync() {
+        var val = digits.map(function(d){ return d.value; }).join('');
+        hidden.value = val;
+        submit.disabled = val.length < 6;
+        digits.forEach(function(d){ d.classList.toggle('tfa-digit--on', d.value !== ''); });
+    }
+
+    digits.forEach(function(d, i) {
+        d.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(-1);
+            sync();
+            if (this.value && i < digits.length - 1) digits[i + 1].focus();
+        });
+        d.addEventListener('keydown', function(e) {
+            if (e.key === 'Backspace' && !this.value && i > 0) {
+                digits[i - 1].value = '';
+                digits[i - 1].focus();
+                sync();
+            }
+        });
+        d.addEventListener('paste', function(e) {
+            e.preventDefault();
+            var p = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+            p.split('').slice(0, 6).forEach(function(ch, j){ if(digits[j]) digits[j].value = ch; });
+            sync();
+            digits[Math.min(p.length, 5)].focus();
+        });
+    });
+
+    digits[0].focus();
+})();
+</script>
 {% endblock %}

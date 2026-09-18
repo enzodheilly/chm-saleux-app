@@ -1,7 +1,6 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Blocklist & Sécurité
-{% endblock %}
+{% block title %}Blocage IP{% endblock %}
 
 {% block body %}
 	<div class="page-header">
@@ -59,9 +58,10 @@
 								<div
 									class="actions">
 									{# MODIFICATION ICI : class ajoutée + data-confirm #}
-									<a href="{{ path('admin_security_unlock_user', {id: row.id}) }}" class="btn-unlock js-confirm-link" data-confirm="🔓 Débloquer cet accès ?">
-										DÉBLOQUER
-									</a>
+									<form method="POST" action="{{ path('admin_security_unlock_user', {id: row.id}) }}" class="inline-form js-confirm-form" data-confirm="🔓 Débloquer cet accès ?">
+										<input type="hidden" name="_token" value="{{ csrf_token('unlock_user_' ~ row.id) }}">
+										<button type="submit" class="btn-unlock">DÉBLOQUER</button>
+									</form>
 								</div>
 							</td>
 						</tr>

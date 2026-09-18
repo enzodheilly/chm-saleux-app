@@ -8,11 +8,13 @@ use App\Form\LegalPageType;
 use App\Repository\LegalPageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/gestion-chm-secrete-92x/legal-pages', name: 'admin_legal_pages_')]
+#[IsGranted('ROLE_SUPER_ADMIN')]
 class AdminLegalPageController extends AbstractController
 {
     #[Route('/', name: 'index', methods: ['GET'])]

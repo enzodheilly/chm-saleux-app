@@ -117,7 +117,8 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $this->logger->add('Connexion', sprintf('Utilisateur %s connecté (IP: %s)', $user->getEmail(), $ip));
 
         // Déterminer la route de redirection
-        $targetUrl = in_array('ROLE_ADMIN', $user->getRoles(), true)
+        $roles = $user->getRoles();
+        $targetUrl = (in_array('ROLE_STAFF', $roles, true) || in_array('ROLE_SUPER_ADMIN', $roles, true))
             ? $this->router->generate('admin_dashboard')
             : $this->router->generate('home');
 

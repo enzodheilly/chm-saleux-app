@@ -33,7 +33,7 @@ class ResetPasswordController extends AbstractController
     /**
      * ÉTAPE 1 : Demande de réinitialisation (Saisie de l'email)
      */
-    #[Route('/reset-password', name: 'app_reset_password_request', methods: ['GET', 'POST'])]
+    #[Route('/mot-de-passe-oublie', name: 'app_reset_password_request', methods: ['GET', 'POST'])]
     public function request(
         Request $request,
         EntityManagerInterface $em,
@@ -116,7 +116,7 @@ class ResetPasswordController extends AbstractController
     /**
      * ÉTAPE 2 : Saisie du nouveau mot de passe (via le lien de l'email)
      */
-    #[Route('/reset-password/confirm/{token}', name: 'app_reset_password_confirm', methods: ['GET', 'POST'])]
+    #[Route('/mot-de-passe-oublie/reinitialiser/{token}', name: 'app_reset_password_confirm', methods: ['GET', 'POST'])]
     public function reset(
         string $token,
         Request $request,

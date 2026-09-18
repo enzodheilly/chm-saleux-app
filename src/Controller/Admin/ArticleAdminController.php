@@ -5,13 +5,16 @@ namespace App\Controller\Admin;
 use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
+use App\Service\SystemLoggerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/gestion-chm-secrete-92x/articles', name: 'admin_articles_')]
+#[IsGranted('ROLE_STAFF')]
 class ArticleAdminController extends AbstractController
 {
     private const ALLOWED_MIMES = ['image/jpeg', 'image/png', 'image/webp'];
@@ -29,7 +32,7 @@ class ArticleAdminController extends AbstractController
     }
 
     #[Route('/new', name: 'new')]
-    public function new(Request $request, EntityManagerInterface $em): Response
+    public function new(Request $request, EntityManagerInterface $em, SystemLoggerService $logger): Response
     {
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
@@ -48,7 +51,7 @@ class ArticleAdminController extends AbstractController
                     return $this->redirectToRoute('admin_articles_new');
                 }
 
-                $newFilename = uniqid() . '.' . $photoFile->guessExtension();
+                $newFilename = bin2hex(random_bytes(8)) . '.' . $photoFile->guessExtension();
                 $photoFile->move($this->getParameter('uploads_directory'), $newFilename);
                 $article->setPhoto($newFilename);
             }
@@ -56,6 +59,7 @@ class ArticleAdminController extends AbstractController
             $em->persist($article);
             $em->flush();
 
+            $logger->add(SystemLoggerService::TYPE_ADMIN, 'Création article : ' . $article->getTitle());
             $this->addFlash('success', 'Article créé avec succès !');
 
             return $this->redirectToRoute('admin_articles_index');
@@ -68,12 +72,14 @@ class ArticleAdminController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'delete', methods: ['POST'])]
-    public function delete(Request $request, Article $article, EntityManagerInterface $em): Response
+    public function delete(Request $request, Article $article, EntityManagerInterface $em, SystemLoggerService $logger): Response
     {
         if ($this->isCsrfTokenValid('delete' . $article->getId(), $request->request->get('_token'))) {
+            $title = $article->getTitle();
             $em->remove($article);
             $em->flush();
 
+            $logger->add(SystemLoggerService::TYPE_ADMIN, 'Suppression article : ' . $title);
             $this->addFlash('success', 'Article supprimé avec succès !');
         } else {
             $this->addFlash('error', 'Token invalide. Suppression impossible.');
@@ -83,7 +89,7 @@ class ArticleAdminController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'edit')]
-    public function edit(Request $request, Article $article, EntityManagerInterface $em): Response
+    public function edit(Request $request, Article $article, EntityManagerInterface $em, SystemLoggerService $logger): Response
     {
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
@@ -101,13 +107,22 @@ class ArticleAdminController extends AbstractController
                     return $this->redirectToRoute('admin_articles_edit', ['id' => $article->getId()]);
                 }
 
-                $newFilename = uniqid() . '.' . $photoFile->guessExtension();
+                $oldPhoto = $article->getPhoto();
+                if ($oldPhoto) {
+                    $oldPath = $this->getParameter('uploads_directory') . '/' . $oldPhoto;
+                    if (is_file($oldPath)) {
+                        @unlink($oldPath);
+                    }
+                }
+
+                $newFilename = bin2hex(random_bytes(8)) . '.' . $photoFile->guessExtension();
                 $photoFile->move($this->getParameter('uploads_directory'), $newFilename);
                 $article->setPhoto($newFilename);
             }
 
             $em->flush();
 
+            $logger->add(SystemLoggerService::TYPE_ADMIN, 'Modification article : ' . $article->getTitle());
             $this->addFlash('success', 'Article mis à jour avec succès !');
             return $this->redirectToRoute('admin_articles_index');
         }

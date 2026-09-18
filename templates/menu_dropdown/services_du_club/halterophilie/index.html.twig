@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Découverte de l'Haltérophilie - CHM Saleux
-{% endblock %}
+{% block title %}Haltérophilie · CHM Saleux{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
@@ -15,15 +14,9 @@
 
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
+				{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'Le Club' }, { label: 'Haltérophilie' }] } %}
 
 				<div class="header-main-box">
-					<div class="badge-accent">Discipline Olympique</div>
 					<h1>L'Haltérophilie</h1>
 					<p class="lead">
 						Force, puissance, vitesse et technique. Découvrez un sport complet qui forge le corps et l'esprit.

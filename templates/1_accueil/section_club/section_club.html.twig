@@ -1,0 +1,43 @@
+{# ── SECTION CLUB : NOUVEAUX ÉQUIPEMENTS ── #}
+<section class="hm-club">
+
+	{# ── Nouveaux équipements ── #}
+	<div class="hm-equip">
+		<div class="hm-equip-watermark" aria-hidden="true">NOUVEAUX<br>ÉQUIPEMENTS</div>
+		<div class="hm-equip-arrows">
+			<button class="hm-arrow" id="equipPrev"><i class="fa-solid fa-chevron-left"></i></button>
+			<button class="hm-arrow" id="equipNext"><i class="fa-solid fa-chevron-right"></i></button>
+		</div>
+		{% if newEquipments is not empty %}
+			<div class="hm-equip-wrap">
+				<div class="hm-equip-track" id="equipTrack">
+					{% for equipment in newEquipments %}
+						<article class="hm-equip-card">
+							<img src="{{ asset('uploads/machines/' ~ equipment.image) }}" alt="{{ equipment.name }}" class="hm-equip-card-img" loading="lazy">
+							<div class="hm-equip-card-overlay"></div>
+							<div class="hm-equip-card-body">
+								<span class="hm-equip-badge">Nouveauté</span>
+								<h3 class="hm-equip-card-name">{{ equipment.name }}</h3>
+							</div>
+						</article>
+					{% endfor %}
+				</div>
+			</div>
+		{% else %}
+			<p class="hm-equip-empty">Aucun équipement pour le moment.</p>
+		{% endif %}
+	</div>
+
+
+	<script nonce="{{ csp_nonce('script') }}">
+	(function() {
+		var wm = document.querySelector('.hm-equip-watermark');
+		if (!wm) return;
+		var obs = new IntersectionObserver(function(entries) {
+			if (entries[0].isIntersecting) { wm.classList.add('is-visible'); obs.disconnect(); }
+		}, { threshold: 0.1 });
+		obs.observe(wm.closest('.hm-club'));
+	})();
+	</script>
+
+</section>

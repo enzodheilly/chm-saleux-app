@@ -1,32 +1,15 @@
 {# ── SECTION : NOS DISCIPLINES ── #}
 <section class="disciplines-section">
 
-	<div class="disciplines-header container">
-		<h2 class="disc-title">
-			<span class="disc-line-1">Ce que nous</span>
-			<span class="disc-title-outline">pratiquons</span>
-		</h2>
-	</div>
+	<div class="disc-watermark" aria-hidden="true">NOS PRATIQUES</div>
 
 	<div class="disciplines-panels">
 
-		<a href="{{ path('pratique_musculation') }}" class="disc-panel">
-			<div class="disc-bg svc-musculation"></div>
-			<div class="disc-overlay"></div>
-			<div class="disc-num" aria-hidden="true">01</div>
-			<div class="disc-content">
-				<h3 class="disc-name">Musculation</h3>
-				<div class="disc-reveal">
-					<p class="disc-desc">Entraînez-vous dans une salle équipée et progressez à votre rythme, débutant ou confirmé.</p>
-					<span class="disc-cta">Découvrir <i class="fa-solid fa-arrow-right"></i></span>
-				</div>
-			</div>
-		</a>
-
-		<a href="{{ path('pratique_haltérophilie') }}" class="disc-panel">
+		{# ── Haltérophilie — grande carte gauche ── #}
+		<a href="{{ path('pratique_haltérophilie') }}" class="disc-panel disc-panel--large">
 			<div class="disc-bg svc-halterophilie"></div>
 			<div class="disc-overlay"></div>
-			<div class="disc-num" aria-hidden="true">02</div>
+			<div class="disc-num" aria-hidden="true">01</div>
 			<div class="disc-content">
 				<h3 class="disc-name">Haltérophilie</h3>
 				<div class="disc-reveal">
@@ -36,7 +19,75 @@
 			</div>
 		</a>
 
+		{# ── Groupe droit : Musculation + Cours collectifs empilés ── #}
+		<div class="disc-panel-group">
+
+			<a href="{{ path('pratique_musculation') }}" class="disc-panel">
+				<div class="disc-bg svc-musculation"></div>
+				<div class="disc-overlay"></div>
+				<div class="disc-num" aria-hidden="true">02</div>
+				<div class="disc-content">
+					<h3 class="disc-name">Musculation</h3>
+					<div class="disc-reveal">
+						<p class="disc-desc">Entraînez-vous dans une salle équipée et progressez à votre rythme, débutant ou confirmé.</p>
+						<span class="disc-cta">Découvrir <i class="fa-solid fa-arrow-right"></i></span>
+					</div>
+				</div>
+			</a>
+
+			<a href="{{ path('cours_collectifs') }}" class="disc-panel">
+				<div class="disc-bg svc-cours"></div>
+				<div class="disc-overlay"></div>
+				<div class="disc-num" aria-hidden="true">03</div>
+				<div class="disc-content">
+					<h3 class="disc-name">Cours collectifs</h3>
+					<div class="disc-reveal">
+						<p class="disc-desc">Cardio, renforcement, mobilité… Des séances encadrées pour progresser à plusieurs.</p>
+						<span class="disc-cta">Découvrir <i class="fa-solid fa-arrow-right"></i></span>
+					</div>
+				</div>
+			</a>
+
+		</div>
 
 	</div>
+
+	{# ── Dots carrousel tablette ── #}
+	<div class="disc-carousel-dots" aria-hidden="true">
+		<span class="disc-dot disc-dot--active"></span>
+		<span class="disc-dot"></span>
+		<span class="disc-dot"></span>
+	</div>
+
+	<script nonce="{{ csp_nonce('script') }}">
+	(function() {
+		var section = document.querySelector('.disciplines-section');
+		var el = document.querySelector('.disc-watermark');
+		if (!section || !el) return;
+		var obs = new IntersectionObserver(function(entries) {
+			if (entries[0].isIntersecting) {
+				el.classList.add('is-visible');
+				obs.disconnect();
+			}
+		}, { threshold: 0.2 });
+		obs.observe(section);
+
+		var mist = section.querySelector('.disc-mist');
+		if (mist) mist.playbackRate = 0.65;
+		if (mist) mist.addEventListener('loadedmetadata', function() { mist.playbackRate = 0.65; });
+
+		/* ── Carousel tablette : dots ── */
+		var panels = document.querySelector('.disciplines-panels');
+		var dots   = document.querySelectorAll('.disc-dot');
+		if (!panels || !dots.length) return;
+		function updateDots() {
+			var total  = panels.scrollWidth - panels.clientWidth;
+			var ratio  = total > 0 ? panels.scrollLeft / total : 0;
+			var index  = Math.round(ratio * (dots.length - 1));
+			dots.forEach(function(d, i) { d.classList.toggle('disc-dot--active', i === index); });
+		}
+		panels.addEventListener('scroll', updateDots, { passive: true });
+	})();
+	</script>
 
 </section>

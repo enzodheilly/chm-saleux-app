@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Devenir Partenaire — CHM Saleux
-{% endblock %}
+{% block title %}Devenir Partenaire · CHM Saleux{% endblock %}
 
 {% block og_title %}Devenir Partenaire — CHM Saleux
 {% endblock %}
@@ -20,14 +19,8 @@
 		<div class="header-overlay-gradient"></div>
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
+				{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'Partenaires' }] } %}
 				<div class="header-main-box">
-					<div class="badge-accent">Sponsoring & Mécénat</div>
 					<h1>Devenez
 						<span class="text-outline">Partenaire</span>
 					</h1>
@@ -35,24 +28,18 @@
 						Associez l'image de votre entreprise aux valeurs de performance,<br>
 						de dépassement de soi et de solidarité du CHM Saleux.
 					</p>
-					<div class="hero-cta-row">
-						<a href="{{ path('contact') }}" class="hero-btn-primary">
-							Discuter d'un partenariat
-							<i class="fa-solid fa-arrow-right"></i>
-						</a>
-					</div>
 				</div>
 			</div>
 		</div>
 	</header>
 
 	<main class="page-shell partner-root">
+		<div class="part-wm page-wm" aria-hidden="true">PARTENAIRES</div>
 
 		{# --- ARGUMENTS --- #}
 		<section class="partner-args-section page-container">
 			<div class="partner-section-head">
-				<span class="section-eyebrow">Pourquoi nous soutenir ?</span>
-				<h2 class="section-heading">Une visibilité
+				<h2 class="section-heading">Une visibilité<br>
 					<span>locale & nationale</span>
 				</h2>
 				<p class="section-sub">Chaque partenariat est une opportunité concrète de rayonner auprès d'une communauté sportive engagée.</p>
@@ -133,7 +120,6 @@
 		{# --- TYPES DE SOUTIEN --- #}
 		<section class="support-section page-container">
 			<div class="partner-section-head">
-				<span class="section-eyebrow">Modalités</span>
 				<h2 class="section-heading">Trois façons de
 					<span>nous aider</span>
 				</h2>
@@ -164,7 +150,6 @@
 		{# --- PARTENAIRES ACTUELS --- #}
 		<section class="current-partners-section page-container">
 			<div class="partner-section-head">
-				<span class="section-eyebrow">Ils nous font confiance</span>
 				<h2 class="section-heading">Nos partenaires
 					<span>actuels</span>
 				</h2>
@@ -200,7 +185,6 @@
 				<div class="cta-deco-line"></div>
 				<div class="cta-inner">
 					<div class="cta-text-side">
-						<span class="section-eyebrow section-eyebrow--orange">Prêt à nous rejoindre ?</span>
 						<h2 class="cta-title">Construisons un projet<br>
 							<span>ensemble</span>
 						</h2>

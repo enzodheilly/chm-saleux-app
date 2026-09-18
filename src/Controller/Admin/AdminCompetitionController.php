@@ -8,12 +8,14 @@ use App\Entity\Athlete;
 use App\Repository\CompetitionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/gestion-chm-secrete-92x/competitions')]
+#[IsGranted('ROLE_STAFF')]
 class AdminCompetitionController extends AbstractController
 {
     #[Route('/', name: 'admin_competition_index')]
@@ -49,8 +51,13 @@ class AdminCompetitionController extends AbstractController
             $competition->setGender($gender === '' ? null : $gender);
             $competition->setTeamRanking($this->nullify($data['teamRanking'] ?? null));
 
+            $eventDateStr = (string) ($data['eventDate'] ?? '');
+            if ($eventDateStr === '') {
+                $this->addFlash('error', 'La date de compétition est obligatoire.');
+                return $this->redirectToRoute('admin_competition_new');
+            }
             try {
-                $eventDate = new \DateTimeImmutable((string) ($data['eventDate'] ?? ''));
+                $eventDate = new \DateTimeImmutable($eventDateStr);
                 $competition->setEventDate($eventDate);
             } catch (\Throwable $e) {
                 $this->addFlash('error', 'Invalid event date.');
@@ -128,8 +135,13 @@ class AdminCompetitionController extends AbstractController
             $competition->setGender($gender === '' ? null : $gender);
             $competition->setTeamRanking($this->nullify($data['teamRanking'] ?? null));
 
+            $eventDateStrEdit = (string) ($data['eventDate'] ?? '');
+            if ($eventDateStrEdit === '') {
+                $this->addFlash('error', 'La date de compétition est obligatoire.');
+                return $this->redirectToRoute('admin_competition_edit', ['id' => $competition->getId()]);
+            }
             try {
-                $eventDate = new \DateTimeImmutable((string) ($data['eventDate'] ?? ''));
+                $eventDate = new \DateTimeImmutable($eventDateStrEdit);
                 $competition->setEventDate($eventDate);
             } catch (\Throwable $e) {
                 $this->addFlash('error', 'Invalid event date.');

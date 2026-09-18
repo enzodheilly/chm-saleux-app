@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Le Mot du Président — CHM Saleux
-{% endblock %}
+{% block title %}Le Président · CHM Saleux{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
@@ -15,15 +14,9 @@
 
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
+				{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'Le Club' }, { label: 'Le Président' }] } %}
 
 				<div class="header-main-box">
-					<div class="badge-accent">Direction & Engagement</div>
 					<h1>Le Mot
 						<span class="text-outline">du Président</span>
 					</h1>

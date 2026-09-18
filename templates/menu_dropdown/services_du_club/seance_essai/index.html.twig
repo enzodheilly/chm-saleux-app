@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Séance d'Essai Gratuite - CHM Saleux
-{% endblock %}
+{% block title %}Séance d'Essai · CHM Saleux{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
@@ -12,74 +11,49 @@
 
 	<header class="page-header-sport seance-essai-page-header">
 		<div class="header-overlay-gradient"></div>
-
 		<div class="header-content">
 			<div class="page-container">
-				<nav class="breadcrumb-nav">
-					<a href="{{ path('home') }}" class="back-link-minimal">
-						<i class="fa-solid fa-chevron-left"></i>
-						<span>Accueil</span>
-					</a>
-				</nav>
-
+				{% include 'components/breadcrumb.html.twig' with { items: [{ label: 'Le Club' }, { label: 'Séance d\'essai' }] } %}
 				<div class="header-main-box">
-					<div class="badge-accent">100% Gratuit & Sans Engagement</div>
 					<h1>Votre Séance
 						<span class="text-outline">Découverte</span>
 					</h1>
 					<p class="lead">
 						N'ayez pas peur de pousser la porte. Venez tester nos équipements, rencontrer l'équipe
-												                        et ressentir l'ambiance du club avant de vous décider.
+						et ressentir l'ambiance du club avant de vous décider.
 					</p>
 				</div>
 			</div>
 		</div>
 	</header>
 
-	{# IMAGE DÉCORATIVE GAUCHE #}
-
 	<main class="page-shell seance-essai-root">
+		<div class="se-wm page-wm" aria-hidden="true">DÉCOUVERTE</div>
 
-		<section class="reassurance-section section-spacer">
+		{# --- POURQUOI NOUS --- #}
+		<section class="se-section se-reasons">
 			<div class="page-container">
-				<div class="container-narrow">
-					<div class="intro-badge">Gratuit & Sans Engagement</div>
-
-					<h2 class="section-heading centered">
-						Poussez la porte,
-						<span class="highlight-text">on s'occupe du reste.</span>
-					</h2>
-
-					<p class="intro-desc">
-						Nous savons que la première fois dans une salle peut être intimidante.
-												                        Au CHM Saleux, pas de jugement. Juste une équipe passionnée prête à vous accueillir,
-												                        quel que soit votre niveau ou votre âge.
-					</p>
+				<div class="se-section-head">
+					<h2 class="se-h2">Poussez la porte,<br><span>on s'occupe du reste.</span></h2>
+					<p class="se-desc">Nous savons que la première fois dans une salle peut être intimidante. Au CHM Saleux, pas de jugement — juste une équipe passionnée prête à vous accueillir, quel que soit votre niveau.</p>
 				</div>
-			</div>
-		</section>
-
-		<section class="reasons-section section-spacer">
-			<div class="page-container">
-				<div class="reasons-grid">
-					<div class="reason-card">
-						<div class="card-icon blue">
+				<div class="se-cards">
+					<div class="se-card">
+						<div class="se-card-icon">
 							<i class="fa-solid fa-dumbbell"></i>
 						</div>
 						<h3>Matériel Pro</h3>
 						<p>Testez nos barres Eleiko, nos plateaux d'haltéro et nos machines guidées. La qualité fait la différence.</p>
 					</div>
-
-					<div class="reason-card">
-						<div class="card-icon yellow">
+					<div class="se-card">
+						<div class="se-card-icon">
 							<i class="fa-solid fa-users"></i>
 						</div>
 						<h3>Ambiance Club</h3>
 						<p>Ici, on se dit bonjour. Ressentez l'entraide et la convivialité qui font la réputation du club.</p>
 					</div>
-
-					<div class="reason-card">
-						<div class="card-icon green">
+					<div class="se-card">
+						<div class="se-card-icon">
 							<i class="fa-solid fa-user-check"></i>
 						</div>
 						<h3>Conseils Coach</h3>
@@ -89,37 +63,31 @@
 			</div>
 		</section>
 
-		<section class="how-it-works-section section-spacer">
+		{# --- COMMENT ÇA SE PASSE --- #}
+		<section class="se-section se-steps-section">
 			<div class="page-container">
-				<div class="section-header">
-					<h2 class="section-heading centered">Comment ça se passe ?</h2>
-					<p class="desc-text-large">Votre première visite en 3 étapes simples.</p>
+				<div class="se-section-head">
+					<h2 class="se-h2">Comment ça <span>se passe ?</span></h2>
+					<p class="se-desc">Votre première visite en 3 étapes simples.</p>
 				</div>
-
-				<div class="steps-container">
-					<div class="step-item">
-						<div class="step-number">1</div>
-						<div class="step-content">
+				<div class="se-steps">
+					<div class="se-step">
+						<div class="se-step-num">01</div>
+						<div class="se-step-body">
 							<h3>Venez aux horaires d'ouverture</h3>
 							<p>Présentez-vous à l'accueil lors des créneaux encadrés (soir ou mercredi après-midi).</p>
 						</div>
 					</div>
-
-					<div class="step-connector"></div>
-
-					<div class="step-item">
-						<div class="step-number">2</div>
-						<div class="step-content">
+					<div class="se-step">
+						<div class="se-step-num">02</div>
+						<div class="se-step-body">
 							<h3>Dites "Je viens pour un essai"</h3>
 							<p>L'équipe vous fera visiter, vous expliquera le fonctionnement et vous montrera les vestiaires.</p>
 						</div>
 					</div>
-
-					<div class="step-connector"></div>
-
-					<div class="step-item">
-						<div class="step-number">3</div>
-						<div class="step-content">
+					<div class="se-step">
+						<div class="se-step-num">03</div>
+						<div class="se-step-body">
 							<h3>Entraînez-vous !</h3>
 							<p>Profitez de votre séance. N'oubliez pas votre bouteille d'eau et votre serviette.</p>
 						</div>
@@ -128,34 +96,27 @@
 			</div>
 		</section>
 
-		<section class="final-cta-section section-spacer">
+		{# --- CTA FINAL --- #}
+		<section class="se-section se-cta-section">
 			<div class="page-container">
-				<div class="cta-card">
-					<div class="cta-left">
-						<h3>🎒 Dans votre sac</h3>
-						<ul class="checklist">
-							<li>
-								<i class="fa-solid fa-check"></i>
-								Tenue de sport</li>
-							<li>
-								<i class="fa-solid fa-check"></i>
-								Baskets propres</li>
-							<li>
-								<i class="fa-solid fa-check"></i>
-								Serviette & Eau</li>
+				<div class="se-cta-card">
+					<div class="se-cta-left">
+						<ul class="se-checklist">
+							<li><i class="fa-solid fa-check"></i> Tenue de sport</li>
+							<li><i class="fa-solid fa-check"></i> Baskets propres</li>
+							<li><i class="fa-solid fa-check"></i> Serviette & Eau</li>
 						</ul>
 					</div>
-
-					<div class="cta-right">
+					<div class="se-cta-divider"></div>
+					<div class="se-cta-right">
 						<h3>On vous attend !</h3>
-						<p>Pas besoin de réserver, mais si vous avez une question, n'hésitez pas.</p>
-
-						<div class="action-buttons">
-							<a href="{{ path('contact') }}" class="btn-contact">
+						<p>Pas besoin de réserver, mais si vous avez une question, n'hésitez pas à nous contacter.</p>
+						<div class="se-cta-btns">
+							<a href="{{ path('contact') }}" class="se-btn-primary">
 								<i class="fa-regular fa-envelope"></i>
 								Prévenir de ma venue
 							</a>
-							<a href="https://www.google.com/maps/dir//CHM+Saleux" target="_blank" class="btn-map">
+							<a href="https://www.google.com/maps/dir//CHM+Saleux" target="_blank" class="se-btn-outline">
 								<i class="fa-solid fa-location-arrow"></i>
 								Itinéraire
 							</a>

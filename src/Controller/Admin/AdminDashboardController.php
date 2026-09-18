@@ -3,13 +3,15 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
-use App\Repository\SecurityLogRepository;
 use App\Repository\NewsletterSubscriberRepository;
+use App\Repository\SecurityLogRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[IsGranted('ROLE_STAFF')]
 class AdminDashboardController extends AbstractController
 {
     #[Route('/gestion-chm-secrete-92x', name: 'admin_dashboard')]
@@ -18,65 +20,91 @@ class AdminDashboardController extends AbstractController
         SecurityLogRepository $logRepo,
         NewsletterSubscriberRepository $subsRepo
     ): Response {
-
         $user = $this->getUser();
 
-        // 🔒 REDIRECTION DE SÉCURITÉ
         if (!$user instanceof User) {
             return $this->redirectToRoute('app_login');
         }
 
-        // Si l'admin n'a pas confirmé son 2FA, on l'éjecte vers la page dédiée.
         if (!$user->isTotpConfirmed()) {
             return $this->redirectToRoute('admin_security_2fa_setup');
         }
 
-        // =========================================================================
-        // 📊 STATISTIQUES DU DASHBOARD (Exécuté seulement si admin sécurisé)
-        // =========================================================================
+        $now24h = new \DateTimeImmutable('-24 hours');
 
-        // Statistiques principales
-        $totalUsers = $userRepo->count([]);
-        $verifiedUsers = $userRepo->count(['isVerified' => true]);
-        $newsletterSubscribers = $subsRepo->countConfirmed();
+        // --- KPIs ---
+        $totalUsers          = $userRepo->count([]);
+        $verifiedUsers       = $userRepo->count(['isVerified' => true]);
+        $newsletterSubs      = $subsRepo->countConfirmed();
+        $successLast24h      = $logRepo->countSince('Connexion', true, $now24h);
+        $failsLast24h        = $logRepo->countSince('Connexion', false, $now24h);
+        $adminActionsLast24h = $logRepo->countSince('Admin', null, $now24h);
 
-        // Logs sécurité
-        $successfulAttempts = $logRepo->countSuccessful();
-        $failedAttempts = $logRepo->countFailedSince(new \DateTimeImmutable('-24 hours'));
-        $recentLogs = $logRepo->findRecent(10);
+        // --- Graphique linéaire — multi-périodes (7 / 14 / 30 jours) ---
+        $lineData = [];
+        foreach ([7, 14, 30] as $days) {
+            $succ = $logRepo->getLogsByDayAndSuccess($days, true);
+            $fail = $logRepo->getLogsByDayAndSuccess($days, false);
+            $lineData["d{$days}"] = [
+                'labels'  => array_keys($succ),
+                'success' => array_values($succ),
+                'fails'   => array_values($fail),
+            ];
+        }
 
-        // Connexions réussies sur 7 jours
-        $successByDay = $logRepo->getSuccessCountByDay(7);
-        $labels7 = array_keys($successByDay);
-        $loginsSuccessByDay = array_values($successByDay);
-
-        // Nouveaux abonnés sur 7 jours
-        $subsByDay = $subsRepo->countByDay(7);
-        $newSubscribersByDay = array_values($subsByDay);
-
-        // Abonnés récents
-        $recentSubscribers = $subsRepo->findRecent(5);
-
-        // Activité simulée
-        $recentActivity = [
-            ['text' => 'Nouvel utilisateur <b>inscrit</b>', 'date' => new \DateTimeImmutable('-2 hours')],
-            ['text' => 'Envoi d\'une newsletter test', 'date' => new \DateTimeImmutable('-1 day')],
-            ['text' => 'Suppression d\'un ancien log', 'date' => new \DateTimeImmutable('-3 days')],
+        // --- Donut — répartition des types de logs (tout) ---
+        $donutData = [
+            'labels' => ['Connexions', 'Échecs', 'Admin', 'Sécurité', 'Session'],
+            'values' => [
+                $logRepo->countByTypeAndSuccess('Connexion', true),
+                $logRepo->countByTypeAndSuccess('Connexion', false),
+                $logRepo->countByTypeAndSuccess('Admin'),
+                $logRepo->countByTypeAndSuccess('Sécurité'),
+                $logRepo->countByTypeAndSuccess('Session'),
+            ],
         ];
 
+        // --- Newsletter bar chart ---
+        $subsByDay = $subsRepo->countByDay(30);
+        $newsletterChartData = [
+            'labels' => array_keys($subsByDay),
+            'values' => array_values($subsByDay),
+        ];
+
+        // --- Distribution OS ---
+        $osData = $logRepo->getOsDistribution();
+
+        // --- Activité par heure (30 jours) ---
+        $hourlyRaw = $logRepo->getLoginsByHour(30);
+        $hourlyData = [
+            'labels'  => array_map(fn(int $h) => sprintf('%02dh', $h), range(0, 23)),
+            'success' => $hourlyRaw['success'],
+            'fails'   => $hourlyRaw['fails'],
+        ];
+
+        // --- Derniers logs sécurité (10) ---
+        $recentLogs = $logRepo->findRecent(10);
+
+        // --- Dernières actions admin (8) ---
+        $recentAdminLogs = $logRepo->findFiltered('admin', 8);
+
         return $this->render('admin/dashboard.html.twig', [
-            'qrCodeContent' => null,
-            'totalUsers' => $totalUsers,
-            'verifiedUsers' => $verifiedUsers,
-            'successfulAttempts' => $successfulAttempts,
-            'failedAttempts' => $failedAttempts,
-            'newsletterSubscribers' => $newsletterSubscribers,
-            'recentSubscribers' => $recentSubscribers,
-            'labels7' => $labels7,
-            'loginsSuccessByDay' => $loginsSuccessByDay,
-            'newSubscribersByDay' => $newSubscribersByDay,
-            'recentAttempts' => $recentLogs,
-            'recentActivity' => $recentActivity,
+            // KPIs
+            'totalUsers'          => $totalUsers,
+            'verifiedUsers'       => $verifiedUsers,
+            'newsletterSubs'      => $newsletterSubs,
+            'successLast24h'      => $successLast24h,
+            'failsLast24h'        => $failsLast24h,
+            'adminActionsLast24h' => $adminActionsLast24h,
+            // Charts
+            'lineData'            => $lineData,
+            'donutData'           => $donutData,
+            'newsletterChartData' => $newsletterChartData,
+            'hourlyData'          => $hourlyData,
+            'osData'              => $osData,
+            // Tables
+            'recentLogs'          => $recentLogs,
+            'recentAdminLogs'     => $recentAdminLogs,
         ]);
     }
 }

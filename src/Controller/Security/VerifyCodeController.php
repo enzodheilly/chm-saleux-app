@@ -15,11 +15,10 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class VerifyCodeController extends AbstractController
 {
-    #[Route('/verify/code', name: 'app_verify_code', methods: ['GET', 'POST'])]
+    #[Route('/verification/email', name: 'app_verify_code', methods: ['GET', 'POST'])]
     public function verifyCode(
         Request $request,
         SessionInterface $session,
@@ -71,11 +70,13 @@ class VerifyCodeController extends AbstractController
         // Vérification du code
         $expiresAt = $user->getVerificationCodeExpiresAt();
         if (!$expiresAt || $expiresAt < new \DateTimeImmutable()) {
+            $logger->add(SystemLoggerService::TYPE_SECURITE, 'Code de vérification expiré pour : ' . $email, $email, false);
             $this->addFlash('error', 'Le code a expiré.');
             return $this->redirectToRoute('app_verify_code');
         }
 
         if ((string) $user->getVerificationCode() !== $code) {
+            $logger->add(SystemLoggerService::TYPE_SECURITE, 'Code de vérification incorrect pour : ' . $email, $email, false);
             $this->addFlash('error', 'Code incorrect.');
             return $this->redirectToRoute('app_verify_code');
         }
@@ -86,13 +87,14 @@ class VerifyCodeController extends AbstractController
         $user->setVerificationCodeExpiresAt(null);
         $em->flush();
 
+        $logger->add(SystemLoggerService::TYPE_SECURITE, 'Compte vérifié par email : ' . $email, $email);
         $session->remove('verify_email');
         $this->addFlash('success', 'Votre compte est validé !');
 
         return $userAuthenticator->authenticateUser($user, $authenticator, $request);
     }
 
-    #[Route('/verify/code/resend', name: 'app_resend_code', methods: ['POST'])]
+    #[Route('/verification/email/renvoyer', name: 'app_resend_code', methods: ['POST'])]
     public function resendCode(
         Request $request,
         SessionInterface $session,
@@ -116,7 +118,6 @@ class VerifyCodeController extends AbstractController
 
         // Rate limit anti-spam
         $ip = (string) $request->getClientIp();
-        $logger->add('Debug rate limit', 'IP: ' . $ip . ' | Email: ' . $email);
         $limit = $resend_codeLimiter->create($ip . '|' . $email)->consume(1);
         if (!$limit->isAccepted()) {
             $retryAfter = $limit->getRetryAfter()->getTimestamp() - time();
@@ -152,7 +153,7 @@ class VerifyCodeController extends AbstractController
             $mailer->send($emailMessage);
             $this->addFlash('success', 'Un nouveau code a été envoyé.');
         } catch (\Throwable $e) {
-            $logger->add('Erreur renvoi code', $e->getMessage());
+            $logger->add(SystemLoggerService::TYPE_SECURITE, 'Erreur envoi code vérification : ' . $e->getMessage(), $email, false);
             $this->addFlash('error', "Erreur lors de l'envoi de l'email.");
         }
 

@@ -66,8 +66,8 @@
 		 <script src="{{ asset('js/app.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 	</head>
 
-	{% set active_banner = site_banner() %}
-	<body class="bg-background text-foreground app-body{% block banner_body_class %}{% if active_banner %} has-banner{% endif %}{% endblock %}">
+	{% set banner_messages = site_banner() %}
+	<body class="bg-background text-foreground app-body{% block banner_body_class %}{% if banner_messages %} has-banner{% endif %}{% endblock %}">
 		{% if is_preview_mode %}
 			<a href="{{ path('admin_preview_off') }}" class="admin-preview-fab" title="Quitter le mode aperçu et retourner au dashboard">
 				<i class="fa-solid fa-shield-halved"></i>
@@ -76,11 +76,17 @@
 		{% endif %}
 
 		{% block navbar %}
-			{% if active_banner %}
-				<div class="site-announcement-banner" role="banner">
+			{% if banner_messages %}
+				<div class="site-announcement-banner" role="banner"
+					data-messages="{{ banner_messages|json_encode|e('html_attr') }}">
 					<div class="site-banner-inner">
 						<img src="{{ asset('images/ffhm-logo.jpg') }}" alt="FFHM" class="site-banner-logo">
-						<span class="site-banner-text">{{ active_banner.message }}</span>
+						<span class="site-banner-text">{{ banner_messages[0] }}</span>
+					</div>
+					{# Mobile : tous les messages concaténés pour le marquee #}
+					<div class="site-banner-inner site-banner-mobile" aria-hidden="true">
+						<img src="{{ asset('images/ffhm-logo.jpg') }}" alt="" class="site-banner-logo">
+						<span class="site-banner-text">{{ banner_messages|join(' · ') }}</span>
 					</div>
 				</div>
 			{% endif %}
@@ -104,6 +110,7 @@
 		{% endblock %}
 
 		{# Vendor JS #}
+		 <script src="{{ asset('js/banner/banner.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 		 <script src="{{ asset('js/nav/nav.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 		 <script src="{{ asset('js/footer/newsletter.js') }}" defer nonce="{{ csp_nonce('script') }}"></script>
 

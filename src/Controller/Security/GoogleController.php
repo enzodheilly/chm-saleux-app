@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class GoogleController extends AbstractController
 {
-    #[Route('/connect/google', name: 'oauth_google_start')]
+    #[Route('/connexion/google', name: 'oauth_google_start')]
     public function connect(ClientRegistry $clientRegistry)
     {
         // On ajoute le deuxième argument au redirect() pour les options
@@ -22,7 +22,7 @@ class GoogleController extends AbstractController
             );
     }
 
-    #[Route('/connect/google/check', name: 'oauth_google_check')]
+    #[Route('/connexion/google/callback', name: 'oauth_google_check')]
     public function connectCheck(): Response
     {
         // gestion du retour Google

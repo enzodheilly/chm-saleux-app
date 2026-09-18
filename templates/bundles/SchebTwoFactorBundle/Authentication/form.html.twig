@@ -1,61 +1,110 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Vérification 2FA
-{% endblock %}
+{% block title %}Vérification 2FA{% endblock %}
 
 {% block stylesheets %}
 	<link rel="stylesheet" href="{{ asset('css/bundles/form.css') }}">
 {% endblock %}
 
 {% block body %}
-	<div class="tfa-overlay">
-		<div class="tfa-wrapper">
+<div class="tfa-page">
+	<div class="tfa-card">
 
-			<div class="tfa-header">
-				<div class="tfa-logo">
-					<img src="{{ asset('images/favicon/icon2.png') }}" alt="CHM Saleux" width="32" height="32">
+		<div class="tfa-header">
+			<img src="{{ asset('images/favicon/icon2.png') }}" alt="CHM Saleux" class="tfa-logo">
+			<span class="tfa-header-name">CHM Saleux</span>
+		</div>
+
+		<div class="tfa-body">
+			<h1 class="tfa-title">Vérification en deux étapes</h1>
+			<p class="tfa-desc">Ouvrez votre application d'authentification et saisissez le code à 6 chiffres affiché.</p>
+
+			<p class="tfa-field-label">Code de vérification</p>
+
+			<form action="{{ checkPathUrl ? checkPathUrl : path(checkPathRoute) }}" method="post" id="tfa-form" autocomplete="off">
+				<input type="hidden" name="{{ authCodeParameterName }}" id="auth_code_hidden">
+
+				{% if csrfToken is defined and csrfToken %}
+					<input type="hidden" name="{{ csrfParameterName }}" value="{{ csrfToken }}">
+				{% endif %}
+
+				<div class="tfa-digits">
+					<input class="tfa-digit" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Chiffre 1">
+					<input class="tfa-digit" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Chiffre 2">
+					<input class="tfa-digit" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Chiffre 3">
+					<span class="tfa-sep"></span>
+					<input class="tfa-digit" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Chiffre 4">
+					<input class="tfa-digit" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Chiffre 5">
+					<input class="tfa-digit" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Chiffre 6">
 				</div>
-				<p class="tfa-label">CHM Saleux — Administration</p>
-				<h1 class="tfa-title">Vérification en deux étapes</h1>
-				<p class="tfa-desc">Ouvrez votre application d'authentification<br>et saisissez le code à 6 chiffres.</p>
-			</div>
-
-			<form class="tfa-card" action="{{ checkPathUrl ? checkPathUrl : path(checkPathRoute) }}" method="post">
-
-				<span class="tfa-field-label">Code de vérification</span>
-
-				<input id="auth_code" type="text" name="{{ authCodeParameterName }}" class="tfa-input" autocomplete="one-time-code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autofocus required placeholder="• • • • • •"/>
 
 				{% if authenticationError %}
 					<div class="tfa-error">
-						<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
-							<circle cx="12" cy="12" r="10"/>
-							<path d="M12 8v4M12 16h.01"/>
-						</svg>
+						<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
 						{{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}
 					</div>
 				{% endif %}
 
-				{% if csrfToken is defined and csrfToken %}
-					<input type="hidden" name="{{ csrfParameterName }}" value="{{ csrfToken }}"/>
-				{% endif %}
-
-				<button type="submit" class="tfa-btn">Vérifier le code</button>
-
+				<button type="submit" class="tfa-btn-submit" id="tfa-submit" disabled>
+					Vérifier le code
+				</button>
 			</form>
 
 			<div class="tfa-footer-links">
 				<a href="{{ path('app_logout') }}" class="tfa-cancel">← Annuler et se déconnecter</a>
 			</div>
-
-			<div class="tfa-footer">
-				<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
-					<rect x="3" y="11" width="18" height="11" rx="2"/>
-					<path d="M7 11V7a5 5 0 0110 0v4"/>
-				</svg>
-				<span>Connexion chiffrée · Session sécurisée</span>
-			</div>
-
 		</div>
+
 	</div>
+
+	<div class="tfa-legal">
+		<span>© {{ "now"|date("Y") }} CHM Saleux · Tous droits réservés</span>
+		<span class="tfa-legal-sep">·</span>
+		<a href="{{ path('legal_page_show', {slug: 'mentions-legales'}) }}" class="tfa-legal-link">Mentions légales</a>
+		<span class="tfa-legal-sep">·</span>
+		<a href="{{ path('legal_page_show', {slug: 'politique-de-confidentialite'}) }}" class="tfa-legal-link">Confidentialité</a>
+	</div>
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script nonce="{{ csp_nonce('script') }}">
+(function () {
+    var digits = Array.from(document.querySelectorAll('.tfa-digit'));
+    var hidden = document.getElementById('auth_code_hidden');
+    var submit = document.getElementById('tfa-submit');
+
+    function sync() {
+        var val = digits.map(function(d){ return d.value; }).join('');
+        hidden.value = val;
+        submit.disabled = val.length < 6;
+        digits.forEach(function(d){ d.classList.toggle('tfa-digit--on', d.value !== ''); });
+    }
+
+    digits.forEach(function(d, i) {
+        d.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(-1);
+            sync();
+            if (this.value && i < digits.length - 1) digits[i + 1].focus();
+        });
+        d.addEventListener('keydown', function(e) {
+            if (e.key === 'Backspace' && !this.value && i > 0) {
+                digits[i - 1].value = '';
+                digits[i - 1].focus();
+                sync();
+            }
+        });
+        d.addEventListener('paste', function(e) {
+            e.preventDefault();
+            var p = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+            p.split('').slice(0, 6).forEach(function(ch, j){ if(digits[j]) digits[j].value = ch; });
+            sync();
+            digits[Math.min(p.length, 5)].focus();
+        });
+    });
+
+    digits[0].focus();
+})();
+</script>
 {% endblock %}

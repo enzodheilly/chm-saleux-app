@@ -6,6 +6,7 @@ use App\Entity\NewsletterSubscriber;
 use App\Entity\NewsletterCampaign;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -15,6 +16,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 
 #[Route('/gestion-chm-secrete-92x/newsletter', name: 'admin_newsletter_')]
+#[IsGranted('ROLE_STAFF')]
 class AdminNewsletterController extends AbstractController
 {
     #[Route('/', name: 'index')]
@@ -49,18 +51,25 @@ class AdminNewsletterController extends AbstractController
                     return $this->json(['message' => '❌ Vous devez être connecté pour envoyer un test.'], 403);
                 }
 
+                $testSubject = mb_substr((string) ($data['subject'] ?? ''), 0, 200);
+                $testContent = mb_substr((string) ($data['content'] ?? ''), 0, 200000);
+
+                if ($testSubject === '' || $testContent === '') {
+                    return $this->json(['message' => '❌ Sujet et contenu obligatoires.'], 400);
+                }
+
                 $email = (new Email())
-                    ->from('no-reply@monsite.com')
+                    ->from('no-reply@chm-saleux.fr')
                     ->to($user->getEmail())
-                    ->subject('[TEST] ' . $data['subject'])
-                    ->html($data['content']);
+                    ->subject('[TEST] ' . $testSubject)
+                    ->html($testContent);
 
                 try {
                     $mailer->send($email);
 
                     $campaign = (new NewsletterCampaign())
-                        ->setSubject($data['subject'])
-                        ->setContent($data['content'])
+                        ->setSubject($testSubject)
+                        ->setContent($testContent)
                         ->setIsTest(true)
                         ->setSentBy($user->getEmail())
                         ->setRecipientCount(1)
@@ -85,8 +94,17 @@ class AdminNewsletterController extends AbstractController
                 return $this->redirectToRoute('admin_newsletter_compose');
             }
 
-            $subject = $request->request->get('subject');
-            $content = $request->request->get('content');
+            $subject = trim((string) $request->request->get('subject', ''));
+            $content = trim((string) $request->request->get('content', ''));
+
+            if ($subject === '' || strlen($subject) > 200) {
+                $this->addFlash('danger', 'Le sujet est obligatoire et ne doit pas dépasser 200 caractères.');
+                return $this->redirectToRoute('admin_newsletter_compose');
+            }
+            if ($content === '' || strlen($content) > 200000) {
+                $this->addFlash('danger', 'Le contenu est obligatoire et ne doit pas dépasser 200 000 caractères.');
+                return $this->redirectToRoute('admin_newsletter_compose');
+            }
 
             $subscribers = $em->getRepository(NewsletterSubscriber::class)->findBy(['isConfirmed' => true]);
             $count = 0;
@@ -106,7 +124,7 @@ class AdminNewsletterController extends AbstractController
 
                 $unsubscribeUrl = $urlGenerator->generate(
                     'newsletter_unsubscribe',
-                    ['id' => $subscriber->getId()],
+                    ['token' => $subscriber->getUnsubscribeToken()],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 );
 
@@ -152,7 +170,7 @@ class AdminNewsletterController extends AbstractController
                 $personalizedContent .= $trackingPixel;
 
                 $email = (new Email())
-                    ->from('no-reply@monsite.com')
+                    ->from('no-reply@chm-saleux.fr')
                     ->to($subscriber->getEmail())
                     ->subject($subject)
                     ->html($personalizedContent);
