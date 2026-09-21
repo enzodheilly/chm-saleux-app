@@ -84,7 +84,7 @@
 
 						{# ── Colonne gauche : image ── #}
 						<div class="lp-img-col">
-							<img
+							<img loading="lazy"
 								src="{{ lastCompetition.image ? asset('uploads/competitions/' ~ lastCompetition.image) : asset('images/defaults/competition-placeholder.jpg') }}"
 								alt="{{ lastCompetition.title }}"
 								draggable="false">

@@ -13,13 +13,13 @@
 			] %}
 			{% for logo in logos %}
 				<div class="hm-partner-item">
-					<img src="{{ asset(logo.src) }}" alt="{{ logo.alt }}" class="hm-partner-logo">
+					<img loading="lazy" src="{{ asset(logo.src) }}" alt="{{ logo.alt }}" class="hm-partner-logo">
 				</div>
 			{% endfor %}
 			{# Duplication invisible nécessaire pour la boucle seamless #}
 			{% for logo in logos %}
 				<div class="hm-partner-item" aria-hidden="true">
-					<img src="{{ asset(logo.src) }}" alt="" class="hm-partner-logo">
+					<img loading="lazy" src="{{ asset(logo.src) }}" alt="" class="hm-partner-logo">
 				</div>
 			{% endfor %}
 		</div>
