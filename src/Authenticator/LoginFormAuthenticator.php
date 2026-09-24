@@ -173,12 +173,12 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
             $this->em->flush();
         }
 
-        $this->logger->add('Échec Connexion', sprintf(
+        $this->logger->add(SystemLoggerService::TYPE_CONNEXION, sprintf(
             'Pour: %s (IP: %s) - Raison: %s',
             $email ?: 'Inconnu',
             $ip,
             $msg
-        ));
+        ), null, false);
 
         /**
          * ✅ Retour au formulaire de login standard

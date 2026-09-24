@@ -5,11 +5,13 @@ namespace App\EventListener;
 use App\Entity\SecurityLog;
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Security\GoogleAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
+use Scheb\TwoFactorBundle\Security\Http\Authenticator\TwoFactorAuthenticator;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\Event\LoginFailureEvent;
+use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 
 class LoginAttemptListener
 {
@@ -88,18 +90,22 @@ class LoginAttemptListener
     /**
      * 🟢 Connexion réussie (log + empreinte session)
      */
-    public function onInteractiveLogin(InteractiveLoginEvent $event): void
+    public function onLoginSuccess(LoginSuccessEvent $event): void
     {
-        $request = $this->requestStack->getCurrentRequest();
-        if (!$request) {
+        // Google OAuth est loggé par GoogleAuthenticator::onAuthenticationSuccess()
+        // 2FA est une étape intermédiaire, pas une connexion distincte
+        if ($event->getAuthenticator() instanceof GoogleAuthenticator
+            || $event->getAuthenticator() instanceof TwoFactorAuthenticator) {
             return;
         }
+
+        $request = $event->getRequest();
 
         $ip = $request->getClientIp() ?? '0.0.0.0';
         $userAgent = (string) $request->headers->get('User-Agent', '');
         $ua = $this->parseUserAgent($userAgent);
 
-        $user = $event->getAuthenticationToken()->getUser();
+        $user = $event->getAuthenticatedToken()->getUser();
         if (!$user instanceof User) {
             return;
         }

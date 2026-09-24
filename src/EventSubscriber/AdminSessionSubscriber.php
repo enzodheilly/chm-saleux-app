@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class AdminSessionSubscriber implements EventSubscriberInterface
 {
-    private const ADMIN_SESSION_LIFETIME = 7200; // 2 heures en secondes
+    public const ADMIN_SESSION_LIFETIME = 7200; // 2 heures en secondes
 
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
@@ -59,8 +59,12 @@ class AdminSessionSubscriber implements EventSubscriberInterface
             // Session expirée — déconnexion forcée
             $this->tokenStorage->setToken(null);
             $session->invalidate();
-            $session->getFlashBag()->add('warning', 'Votre session admin a expiré après 2h d\'inactivité.');
-            $event->setResponse(new RedirectResponse($this->router->generate('app_login')));
+            if ($session instanceof \Symfony\Component\HttpFoundation\Session\Flash\FlashBagAwareSessionInterface) {
+                $session->getFlashBag()->add('warning', 'Votre session admin a expiré après 2h d\'inactivité.');
+            }
+            $response = new RedirectResponse($this->router->generate('app_login'));
+            $response->headers->clearCookie('REMEMBERME');
+            $event->setResponse($response);
             return;
         }
 

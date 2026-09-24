@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Service\SystemLoggerService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -17,6 +18,7 @@ class GeoBlocker implements EventSubscriberInterface
         private readonly Security $security,
         private readonly HttpClientInterface $httpClient,
         private readonly CacheInterface $cache,
+        private readonly SystemLoggerService $logger,
         private readonly string $allowedCountry = 'FR',
         private readonly bool $blockVpn = true,
     ) {}
@@ -59,11 +61,24 @@ class GeoBlocker implements EventSubscriberInterface
 
         // Blocage par pays
         if (($ipData['country'] ?? null) !== $this->allowedCountry) {
+            $country = $ipData['country'] ?? 'inconnu';
+            $this->logger->add(
+                SystemLoggerService::TYPE_SECURITE,
+                sprintf('Accès admin bloqué — pays non autorisé : %s (IP : %s)', $country, $ip),
+                null,
+                false
+            );
             throw new AccessDeniedHttpException('Accès restreint à la France.');
         }
 
         // Blocage VPN / Proxy / Tor / Datacenter
         if ($this->blockVpn && $this->isVpnOrProxy($ipData)) {
+            $this->logger->add(
+                SystemLoggerService::TYPE_SECURITE,
+                sprintf('Accès admin bloqué — VPN/proxy détecté (IP : %s)', $ip),
+                null,
+                false
+            );
             throw new AccessDeniedHttpException('Accès via VPN ou proxy non autorisé.');
         }
     }

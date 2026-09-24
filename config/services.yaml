@@ -26,6 +26,8 @@ services:
             $setPasswordLimiter: "@limiter.set_password"
             $googleOauthCheckLimiter: "@limiter.google_oauth_check"
             $uploadPhotoLimiter: "@limiter.upload_photo"
+            $boiteAIdeesLimiter: "@limiter.boite_a_idees"
+            $licenceLinkLimiter: "@limiter.licence_link"
 
     App\:
         resource: "../src/"
@@ -45,8 +47,8 @@ services:
               }
             - {
                   name: kernel.event_listener,
-                  event: Symfony\Component\Security\Http\Event\InteractiveLoginEvent,
-                  method: onInteractiveLogin,
+                  event: Symfony\Component\Security\Http\Event\LoginSuccessEvent,
+                  method: onLoginSuccess,
               }
             - {
                   name: kernel.event_listener,

@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 #[IsGranted('ROLE_STAFF')]
 class AdminNewsletterController extends AbstractController
 {
-    #[Route('/', name: 'index')]
+    #[Route('/', name: 'index', methods: ['GET'])]
     public function index(EntityManagerInterface $em): Response
     {
         $subscribers = $em->getRepository(NewsletterSubscriber::class)->findAll();
@@ -196,7 +196,7 @@ class AdminNewsletterController extends AbstractController
         ]);
     }
 
-    #[Route('/history', name: 'history')]
+    #[Route('/history', name: 'history', methods: ['GET'])]
     public function history(EntityManagerInterface $em): Response
     {
         $messages = $em->getRepository(NewsletterCampaign::class)->findBy([], ['sentAt' => 'DESC']);

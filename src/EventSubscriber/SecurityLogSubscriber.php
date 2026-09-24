@@ -3,8 +3,6 @@
 namespace App\EventSubscriber;
 
 use App\Entity\SecurityLog;
-use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
-use Doctrine\ORM\Events;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
@@ -28,7 +26,7 @@ class SecurityLogSubscriber
             $user    = htmlspecialchars((string) $log->getUser(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
             $message = htmlspecialchars((string) $log->getMessage(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
             $ip      = htmlspecialchars((string) $log->getIp(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-            $logsUrl = htmlspecialchars($this->adminSiteUrl . '/admin/security/logs', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+            $logsUrl = htmlspecialchars($this->adminSiteUrl . '/gestion-chm-secrete-92x/security/logs', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
             $date    = $log->getCreatedAt()->format('d/m/Y H:i:s');
 
             $email = (new Email())

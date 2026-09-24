@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('ROLE_STAFF')]
 class AdminContactController extends AbstractController
 {
-    #[Route('/', name: 'index')]
+    #[Route('/', name: 'index', methods: ['GET'])]
     public function index(ContactMessageRepository $repo): Response
     {
         $messages = $repo->findBy([], ['createdAt' => 'DESC']);

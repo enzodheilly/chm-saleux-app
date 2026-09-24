@@ -70,6 +70,8 @@ class AdminMembershipPlanController extends AbstractController
             $em->remove($plan);
             $em->flush();
             $this->addFlash('success', '🗑️ Plan supprimé avec succès.');
+        } else {
+            $this->addFlash('danger', 'Token CSRF invalide.');
         }
 
         return $this->redirectToRoute('admin_membership_plan_index');

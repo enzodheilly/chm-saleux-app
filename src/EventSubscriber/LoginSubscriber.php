@@ -4,7 +4,6 @@ namespace App\EventSubscriber;
 
 use App\Service\SystemLoggerService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
 
 class LoginSubscriber implements EventSubscriberInterface
@@ -14,21 +13,8 @@ class LoginSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            LoginSuccessEvent::class => 'onLoginSuccess',
-            LogoutEvent::class       => 'onLogout',
+            LogoutEvent::class => 'onLogout',
         ];
-    }
-
-    public function onLoginSuccess(LoginSuccessEvent $event): void
-    {
-        $user = $event->getUser();
-        if (method_exists($user, 'getUserIdentifier')) {
-            $pseudo = $this->logger->pseudonymizeEmail($user->getUserIdentifier());
-            $this->logger->add(
-                'Connexion réussie',
-                sprintf('L\'utilisateur %s s\'est connecté avec succès.', $pseudo)
-            );
-        }
     }
 
     public function onLogout(LogoutEvent $event): void
@@ -37,8 +23,8 @@ class LoginSubscriber implements EventSubscriberInterface
         if ($user && method_exists($user, 'getUserIdentifier')) {
             $pseudo = $this->logger->pseudonymizeEmail($user->getUserIdentifier());
             $this->logger->add(
-                'Déconnexion',
-                sprintf('L\'utilisateur %s s\'est déconnecté.', $pseudo)
+                SystemLoggerService::TYPE_SESSION,
+                sprintf('Déconnexion : %s', $pseudo)
             );
         }
     }

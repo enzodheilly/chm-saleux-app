@@ -48,7 +48,14 @@ class ForceSetPasswordSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $currentRoute = $event->getRequest()->attributes->get('_route');
+        $request = $event->getRequest();
+
+        // Les routes API reçoivent une 403 JSON, pas une redirection HTML
+        if (str_starts_with($request->getPathInfo(), '/api/')) {
+            return;
+        }
+
+        $currentRoute = $request->attributes->get('_route');
 
         if (in_array($currentRoute, self::ALLOWED_ROUTES, true)) {
             return;
