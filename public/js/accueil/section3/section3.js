@@ -31,12 +31,35 @@ document.addEventListener('DOMContentLoaded', function () {
 		wrap.scrollBy({ left: ACTIVE_W, behavior: 'smooth' });
 	});
 
-	/* ── Molette → scroll horizontal ── */
+	/* ── Molette → scroll horizontal (délai d'intention 500ms) ──
+	 * Par défaut le scroll vertical de la page passe librement.
+	 * Le mode horizontal ne s'active qu'après que la souris soit
+	 * restée immobile sur la galerie pendant 500ms sans scroller.
+	 */
+	var hScrollActive = false;
+	var intentTimer   = null;
+
+	wrap.addEventListener('mouseenter', function () {
+		intentTimer = setTimeout(function () {
+			hScrollActive = true;
+		}, 500);
+	});
+
+	wrap.addEventListener('mouseleave', function () {
+		clearTimeout(intentTimer);
+		hScrollActive = false;
+	});
+
 	wrap.addEventListener('wheel', function (e) {
-		if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+		/* Scroll horizontal natif (trackpad) : toujours laisser passer */
+		if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+
+		if (hScrollActive) {
+			/* Mode actif : convertit la molette verticale en scroll horizontal */
 			e.preventDefault();
 			wrap.scrollLeft += e.deltaY * 1.2;
 		}
+		/* Sinon : event non intercepté → scroll vertical normal de la page */
 	}, { passive: false });
 
 	/* ── Drag souris ── */

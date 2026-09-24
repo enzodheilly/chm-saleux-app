@@ -9,10 +9,16 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class LicenceController extends AbstractController
 {
+    public function __construct(
+        private readonly RateLimiterFactory $licenceLinkLimiter
+    ) {}
+
     #[Route('/api/licences/me', name: 'api_licence_me', methods: ['GET'])]
     public function myLicence(LicenceRepository $licenceRepository): JsonResponse
     {
@@ -36,6 +42,7 @@ class LicenceController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_USER')]
     #[Route('/api/licences/{number}', name: 'api_licence_show', methods: ['GET'])]
     public function show(string $number, LicenceRepository $licenceRepository): JsonResponse
     {
@@ -58,6 +65,11 @@ class LicenceController extends AbstractController
         $user = $this->getUser();
         if (!$user instanceof User) {
             return new JsonResponse(['success' => false, 'message' => 'Utilisateur non authentifié.'], 401);
+        }
+
+        $limiterKey = 'licence_link_' . ($request->getClientIp() ?? 'unknown') . '_' . $user->getId();
+        if (!$this->licenceLinkLimiter->create($limiterKey)->consume(1)->isAccepted()) {
+            return new JsonResponse(['success' => false, 'message' => 'Trop de tentatives. Réessayez dans quelques minutes.'], 429);
         }
 
         $data = json_decode($request->getContent(), true) ?? [];

@@ -18,29 +18,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const heroSection = document.querySelector("#accueil");
     if (!heroSection) return;
 
-    const isLogged = heroSection.classList.contains("hero-logged");
-
     /* ──────────────────────────────────────────────
-       VUE CONNECTÉE — animations existantes
-    ────────────────────────────────────────────── */
-    if (isLogged) {
-        const userWelcome = document.querySelector(".user-welcome");
-        if (userWelcome) userWelcome.classList.add("animate");
-
-        const userSubtitle = document.querySelector(".user-subtitle");
-        if (userSubtitle) userSubtitle.classList.add("animate");
-
-        const clubDate = document.querySelector(".club-date");
-        if (clubDate) clubDate.classList.add("show");
-
-        document.querySelectorAll(".hero-stat-card").forEach((el, i) => {
-            setTimeout(() => el.classList.add("animate"), i * 120);
-        });
-        return;
-    }
-
-    /* ──────────────────────────────────────────────
-       VUE VISITEUR — SLIDER
+       SLIDER — commun aux deux vues (connecté / visiteur)
     ────────────────────────────────────────────── */
 
     const slides = document.querySelectorAll(".slide");
@@ -102,6 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
             count++;
             adherentsEl.textContent = count + "+";
             if (count >= target) clearInterval(iv);
-        }, 22);
+        }, 32);
     }
 });

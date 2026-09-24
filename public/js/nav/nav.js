@@ -63,30 +63,60 @@ document.addEventListener("DOMContentLoaded", () => {
     handleScroll();
 
     /* ──────────────────────────────────────────────
-       MEGA MENU DESKTOP — hover avec délai de fermeture
+       MEGA MENU DESKTOP — hover robuste
+       Fermeture sur : quitter la navbar (si pas
+       vers un menu) ou quitter le panneau du menu
     ────────────────────────────────────────────── */
-    const dropTrigger = document.getElementById("clubDropdownTrigger");
-    const dropMenu    = document.getElementById("clubDropdown");
+    const allDropdownTriggers = [];
+    const allDropdownMenus    = [];
+    let globalCloseTimer = null;
 
-    if (dropTrigger && dropMenu) {
-        let closeTimer = null;
+    const cancelClose = () => clearTimeout(globalCloseTimer);
 
-        function openDrop() {
-            clearTimeout(closeTimer);
-            dropTrigger.classList.add("is-open");
-        }
+    const scheduleClose = (delay = 200) => {
+        clearTimeout(globalCloseTimer);
+        globalCloseTimer = setTimeout(() => {
+            allDropdownTriggers.forEach(t => t.classList.remove("is-open"));
+        }, delay);
+    };
 
-        function closeDrop() {
-            closeTimer = setTimeout(() => {
-                dropTrigger.classList.remove("is-open");
-            }, 180);
-        }
+    function initDropdown(triggerId, menuId) {
+        const trigger = document.getElementById(triggerId);
+        const menu    = document.getElementById(menuId);
+        if (!trigger || !menu) return;
 
-        dropTrigger.addEventListener("mouseenter", openDrop);
-        dropTrigger.addEventListener("mouseleave", closeDrop);
-        dropMenu.addEventListener("mouseenter", openDrop);
-        dropMenu.addEventListener("mouseleave", closeDrop);
+        allDropdownTriggers.push(trigger);
+        allDropdownMenus.push(menu);
+
+        trigger.addEventListener("mouseenter", () => {
+            cancelClose();
+            allDropdownTriggers.forEach(t => { if (t !== trigger) t.classList.remove("is-open"); });
+            trigger.classList.add("is-open");
+        });
+
+        menu.addEventListener("mouseenter", cancelClose);
+        menu.addEventListener("mouseleave", () => scheduleClose(200));
     }
+
+    // Ferme quand la souris quitte la navbar,
+    // SAUF si elle entre directement dans un panneau de menu
+    nav.addEventListener("mouseleave", (e) => {
+        const goingIntoMenu = allDropdownMenus.some(
+            m => m === e.relatedTarget || m.contains(e.relatedTarget)
+        );
+        if (!goingIntoMenu) scheduleClose(120);
+    });
+
+    // Ferme au clic en dehors
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".nav-has-dropdown") && !e.target.closest(".nav-dropdown")) {
+            cancelClose();
+            allDropdownTriggers.forEach(t => t.classList.remove("is-open"));
+        }
+    });
+
+    initDropdown("clubDropdownTrigger",  "clubDropdown");
+    initDropdown("aboutDropdownTrigger", "aboutDropdown");
 
     /* ──────────────────────────────────────────────
        ACCORDÉON MOBILE

@@ -6,6 +6,7 @@ use App\Entity\RoutineTemplate;
 use App\Repository\RoutineTemplateRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -13,9 +14,10 @@ class ProgramController extends AbstractController
 {
     // --- 1. LISTE DE TOUS LES PROGRAMMES ---
     #[Route('/api/programs', name: 'api_programs_list', methods: ['GET'])]
-    public function list(RoutineTemplateRepository $repository, SerializerInterface $serializer): JsonResponse
+    public function list(Request $request, RoutineTemplateRepository $repository, SerializerInterface $serializer): JsonResponse
     {
-        $programs = $repository->findAll();
+        $limit = max(1, min((int) $request->query->get('limit', 50), 200));
+        $programs = $repository->findBy([], null, $limit);
         $json = $serializer->serialize($programs, 'json', ['groups' => 'template:read']);
         return new JsonResponse($json, 200, [], true);
     }

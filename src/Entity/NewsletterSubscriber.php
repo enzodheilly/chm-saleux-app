@@ -132,7 +132,11 @@ class NewsletterSubscriber
 
     public function getUnsubscribeUrl(): string
     {
-        return sprintf('%s/newsletter/unsubscribe/%s', $_ENV['ADMIN_SITE_URL'] ?? 'https://ton-domaine.com', $this->unsubscribeToken);
+        // Note: utiliser AdminNewsletterController + UrlGenerator pour générer cette URL
+        // depuis un service plutôt que depuis l'entité. Cette méthode est conservée pour
+        // les emails de confirmation envoyés depuis NewsletterController::sendConfirmationEmail.
+        $base = rtrim((string) ($_ENV['ADMIN_SITE_URL'] ?? ''), '/');
+        return sprintf('%s/newsletter/unsubscribe/%s', $base, $this->unsubscribeToken ?? '');
     }
 
     public function __toString(): string

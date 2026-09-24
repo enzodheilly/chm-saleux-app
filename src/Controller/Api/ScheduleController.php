@@ -44,7 +44,11 @@ class ScheduleController extends AbstractController
         $schedule = new WorkoutSchedule();
         $schedule->setUser($user);
         $schedule->setRoutineTemplate($routine);
-        $schedule->setScheduledDate(new \DateTime($dateString));
+        $parsedDate = \DateTime::createFromFormat('Y-m-d', $dateString);
+        if (!$parsedDate || $parsedDate->format('Y-m-d') !== $dateString) {
+            return new JsonResponse(['error' => 'Format de date invalide (YYYY-MM-DD attendu)'], 400);
+        }
+        $schedule->setScheduledDate($parsedDate);
         $schedule->setIsCompleted(false);
 
         $em->persist($schedule);

@@ -36,10 +36,11 @@ class WorkoutSessionController extends AbstractController
 
         $session = new WorkoutSession();
         $session->setUser($user);
-        $session->setDurationSeconds($data['duration_seconds'] ?? 0);
-        $session->setTotalVolume($data['total_volume'] ?? 0);
-        $session->setTotalCompletedSets($data['total_completed_sets'] ?? 0);
-        $session->setRoutineName($data['routine_name'] ?? null);
+        $session->setDurationSeconds(max(0, min((int) ($data['duration_seconds'] ?? 0), 86400)));
+        $session->setTotalVolume(max(0, min((float) ($data['total_volume'] ?? 0), 100000)));
+        $session->setTotalCompletedSets(max(0, min((int) ($data['total_completed_sets'] ?? 0), 1000)));
+        $routineName = isset($data['routine_name']) ? mb_substr((string) $data['routine_name'], 0, 255) : null;
+        $session->setRoutineName($routineName);
 
         // ✅ On tente de lier la UserRoutine si l'id correspond
         if (!empty($data['routine_id'])) {
@@ -50,10 +51,15 @@ class WorkoutSessionController extends AbstractController
         }
 
         if (!empty($data['performed_at'])) {
-            try {
-                $session->setPerformedAt(new \DateTime($data['performed_at']));
-            } catch (\Exception $e) {
-                $session->setPerformedAt(new \DateTime());
+            $parsedAt = \DateTime::createFromFormat(\DateTime::ATOM, $data['performed_at'])
+                ?: \DateTime::createFromFormat('Y-m-d H:i:s', $data['performed_at'])
+                ?: \DateTime::createFromFormat('Y-m-d', $data['performed_at']);
+            $now = new \DateTime();
+            // Refuse les dates futures et les dates > 30 jours dans le passé
+            if (!$parsedAt || $parsedAt > $now || $parsedAt < (new \DateTime())->modify('-30 days')) {
+                $session->setPerformedAt($now);
+            } else {
+                $session->setPerformedAt($parsedAt);
             }
         } else {
             $session->setPerformedAt(new \DateTime());
@@ -92,7 +98,7 @@ class WorkoutSessionController extends AbstractController
             return $this->json(['error' => 'User not found'], 401);
         }
 
-        $range = (int)($request->query->get('range', 30));
+        $range = max(0, min((int) $request->query->get('range', 30), 365));
 
         $qb = $repo->createQueryBuilder('ws')
             ->andWhere('ws.user = :user')
@@ -132,7 +138,7 @@ class WorkoutSessionController extends AbstractController
             return $this->json(['error' => 'User not found'], 401);
         }
 
-        $range = (int)($request->query->get('range', 30));
+        $range = max(0, min((int) $request->query->get('range', 30), 365));
 
         $qb = $repo->createQueryBuilder('ws')
             ->select('

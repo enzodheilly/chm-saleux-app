@@ -14,8 +14,11 @@ document.addEventListener('DOMContentLoaded', function () {
     observer.observe(section);
 
     /* ── Carousel ── */
-    var slides  = Array.from(section.querySelectorAll('.app-slide'));
-    var dots    = Array.from(section.querySelectorAll('.app-dot'));
+    var slides    = Array.from(section.querySelectorAll('.app-slide'));
+    var dotGroups = [
+        Array.from(section.querySelectorAll('.app-bottom-row .app-dot')),
+        Array.from(section.querySelectorAll('.app-dots--mobile .app-dot'))
+    ];
     if (!slides.length) return;
 
     var N         = slides.length;
@@ -80,8 +83,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        dots.forEach(function (d, i) {
-            d.classList.toggle('app-dot--active', i === current);
+        dotGroups.forEach(function (group) {
+            group.forEach(function (d, i) {
+                d.classList.toggle('app-dot--active', i === current);
+            });
         });
 
         setTimeout(function () { animating = false; }, 580);
@@ -99,10 +104,12 @@ document.addEventListener('DOMContentLoaded', function () {
     slides.forEach(function (slide, i) { applyClass(slide, getPos(i)); });
 
     /* Dots */
-    dots.forEach(function (dot) {
-        dot.addEventListener('click', function () {
-            goTo(parseInt(dot.dataset.index, 10));
-            resetAuto();
+    dotGroups.forEach(function (group) {
+        group.forEach(function (dot) {
+            dot.addEventListener('click', function () {
+                goTo(parseInt(dot.dataset.index, 10));
+                resetAuto();
+            });
         });
     });
 

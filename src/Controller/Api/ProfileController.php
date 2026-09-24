@@ -108,8 +108,18 @@ class ProfileController extends AbstractController
             return $this->json(['message' => 'Aucune image reçue'], 400);
         }
 
+        if ($file->getSize() > 2 * 1024 * 1024) {
+            return $this->json(['message' => 'Image trop volumineuse (max 2 Mo)'], 400);
+        }
+
+        $allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
+        $imageInfo = @getimagesize($file->getPathname());
+        if (!$imageInfo || !in_array($imageInfo['mime'], $allowedMimes, true)) {
+            return $this->json(['message' => 'Format non autorisé (JPEG, PNG ou WebP uniquement)'], 400);
+        }
+
         $binary = file_get_contents($file->getPathname());
-        $mime = $file->getMimeType();
+        $mime = $imageInfo['mime'];
 
         $user->setProfileImage($binary);
         $user->setProfileImageMime($mime);
@@ -121,40 +131,11 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    // ✅ NOUVELLE ROUTE DÉDIÉE À LA MISE À JOUR DE L'XP
     #[Route('/api/profile/xp', name: 'api_profile_xp_update', methods: ['PUT', 'PATCH'])]
-    public function updateXp(Request $request, EntityManagerInterface $em): JsonResponse
+    public function updateXp(): JsonResponse
     {
-        $user = $this->getUser();
-
-        if (!$user instanceof User) {
-            return $this->json(['message' => 'Utilisateur non authentifié'], 401);
-        }
-
-        $payload = json_decode($request->getContent(), true);
-
-        if (!is_array($payload) || !isset($payload['total_xp'])) {
-            return $this->json(['message' => 'Payload JSON invalide ou total_xp manquant'], 400);
-        }
-
-        // On s'assure que c'est bien un entier
-        $newTotalXp = (int) $payload['total_xp'];
-
-        // Sécurité basique : on ne peut pas avoir un XP négatif
-        if ($newTotalXp < 0) {
-            return $this->json(['message' => 'L\'XP ne peut pas être négatif'], 422);
-        }
-
-        // Mise à jour de l'utilisateur
-        if (method_exists($user, 'setTotalXp')) {
-            $user->setTotalXp($newTotalXp);
-        }
-
-        $em->flush();
-
         return $this->json([
-            'message' => 'XP mis à jour avec succès',
-            'total_xp' => $user->getTotalXp()
-        ], 200); // Code 200 OK
+            'message' => 'La gestion de l\'XP n\'est pas encore implémentée côté serveur.',
+        ], 501);
     }
 }

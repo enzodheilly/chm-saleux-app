@@ -40,7 +40,37 @@
       "Bash(git -C /Users/dheillyenzo/ChmSaleuxApp/projet-chm log --oneline -3)",
       "Bash(git -C /Users/dheillyenzo/ChmSaleuxApp/projet-chm add public/css/accueil/home.css public/css/nav/nav.css public/js/nav/nav.js templates/1_accueil/section4/section4.html.twig templates/1_accueil/section_cours_co/section_cours_co.html.twig templates/1_accueil/section_cta/section_cta.html.twig templates/1_accueil/section1/section1.html.twig)",
       "Bash(git -C /Users/dheillyenzo/ChmSaleuxApp/projet-chm commit -m ' *)",
-      "Bash(xargs sed -i '' '/<div class=\"deco-left-wrap\">/,/<\\\\/div>/d')"
+      "Bash(xargs sed -i '' '/<div class=\"deco-left-wrap\">/,/<\\\\/div>/d')",
+      "Bash(git commit -m 'fix: supprime bande noire en haut de la page auth *)",
+      "Bash(git commit -m 'fix: remplace SVG Apple approximatif par fa-brands fa-apple *)",
+      "Bash(git commit -m 'feat: alternance clair/sombre sur zone-haltérophilie *)",
+      "Bash(php bin/console twig:lint templates/partenaire/index.html.twig)",
+      "Bash(php bin/console lint:twig templates/partenaire/index.html.twig)",
+      "Bash(php bin/console lint:twig templates/menu_dropdown/a_propos_de_notre_club/horaires/index.html.twig)",
+      "Bash(php bin/console lint:twig templates/menu_dropdown/a_propos_de_notre_club/labels/index.html.twig)",
+      "Bash(git log *)",
+      "Bash(composer audit *)",
+      "Bash(composer show *)",
+      "Bash(composer why *)",
+      "Bash(php bin/console cache:clear)",
+      "Bash(php bin/console doctrine:schema:validate)",
+      "Bash(php bin/console lint:twig templates/admin/security/logs.html.twig)",
+      "Bash(php bin/console lint:container)",
+      "Bash(php bin/console cache:warmup)",
+      "Bash(php bin/console doctrine:query:sql \"SELECT COUNT\\(*\\) as total FROM security_log\")",
+      "Bash(php bin/console doctrine:query:sql \"DELETE FROM security_log\")",
+      "Bash(php bin/console debug:router --env=dev)",
+      "Bash(php bin/console debug:event-dispatcher Symfony\\\\\\\\Component\\\\\\\\Security\\\\\\\\Http\\\\\\\\Event\\\\\\\\LoginSuccessEvent)",
+      "Bash(php bin/console lint:yaml config/services.yaml)",
+      "Bash(php -r 'require '\\\\''vendor/autoload.php'\\\\''; $r = new ReflectionClass\\('\\\\''Symfony\\\\Component\\\\Security\\\\Http\\\\Event\\\\LoginSuccessEvent'\\\\''\\); echo implode\\('\\\\'', '\\\\'', array_map\\(fn\\($m\\)=>$m->name, $r->getMethods\\(\\)\\)\\);')",
+      "Bash(php bin/console debug:firewall main)",
+      "Bash(php bin/console lint:twig templates/)",
+      "Bash(php bin/console lint:twig templates/admin/newsletter/history.html.twig)",
+      "Bash(php -l src/Security/UserChecker.php src/Security/GoogleAuthenticator.php src/EventSubscriber/ForceSetPasswordSubscriber.php src/EventSubscriber/AdminSessionSubscriber.php src/Controller/Api/WorkoutSessionController.php src/Controller/Api/ScheduleController.php)",
+      "Bash(xargs php -l)"
+    ],
+    "additionalDirectories": [
+      "/private/tmp/claude-501/-Users-dheillyenzo-ChmSaleuxApp-projet-chm/scratchpad"
     ]
   }
 }

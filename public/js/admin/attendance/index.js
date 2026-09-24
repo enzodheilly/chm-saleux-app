@@ -27,7 +27,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 responsive: true,
                 plugins: { legend: { display: false } },
                 scales: {
-                    y: { beginAtZero: true, ticks: { color: textColor } },
+                    y: {
+                        beginAtZero: true,
+                        suggestedMax: 5,
+                        ticks: { color: textColor, precision: 0, stepSize: 1 },
+                        grid: { color: 'rgba(255,255,255,0.04)' },
+                        border: { display: false }
+                    },
                     x: { grid: { display: false }, ticks: { color: textColor } }
                 }
             }

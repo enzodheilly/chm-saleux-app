@@ -1,85 +1,81 @@
 // public/js/admin/security/logs.js
 
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput  = document.getElementById('searchLogs');
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const tableRows    = document.querySelectorAll('.log-row');
-    const noResultsMsg = document.getElementById('noResults');
+document.addEventListener('DOMContentLoaded', function () {
 
-    function applyFilters() {
-        const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
-        const searchText   = searchInput.value.toLowerCase();
-        let visibleCount   = 0;
+    // --- Recherche client-side (filtre le texte dans la table) ---
+    var searchInput = document.getElementById('searchLogs');
+    var tableRows   = document.querySelectorAll('.log-row');
+    var noResults   = document.getElementById('noResults');
+
+    function applySearch() {
+        var term = searchInput ? searchInput.value.toLowerCase() : '';
+        var visible = 0;
 
         tableRows.forEach(function (row) {
-            const status        = row.dataset.status;
-            const text          = row.innerText.toLowerCase();
-            const matchesFilter = (activeFilter === 'all') || (status === activeFilter);
-            const matchesSearch = text.includes(searchText);
-
-            if (matchesFilter && matchesSearch) {
-                row.style.display = '';
-                visibleCount++;
-            } else {
-                row.style.display = 'none';
-            }
+            var match = !term || row.innerText.toLowerCase().includes(term);
+            row.style.display = match ? '' : 'none';
+            if (match) visible++;
         });
 
-        noResultsMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
+        if (noResults) {
+            noResults.style.display = (visible === 0 && term) ? 'block' : 'none';
+        }
     }
 
-    filterButtons.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            filterButtons.forEach(function (b) { b.classList.remove('active'); });
-            btn.classList.add('active');
-            applyFilters();
+    if (searchInput) {
+        searchInput.addEventListener('input', applySearch);
+    }
+
+    // --- Confirmation avant action destructive ---
+    document.querySelectorAll('[data-confirm]').forEach(function (el) {
+        el.addEventListener('click', function (e) {
+            if (!confirm(this.dataset.confirm)) {
+                e.preventDefault();
+            }
         });
     });
 
-    searchInput.addEventListener('input', applyFilters);
-
     // --- Géolocalisation IP ---
-    const ipElements = document.querySelectorAll('.ip-lookup');
-    const uniqueIps  = [...new Set(Array.from(ipElements).map(function (el) { return el.dataset.ip; }))]
-        .filter(function (ip) { return ip && !['127.0.0.1', '::1', '—'].includes(ip); });
+    var ipElements = document.querySelectorAll('.ip-lookup');
+    var uniqueIps  = [];
+
+    ipElements.forEach(function (el) {
+        var ip = el.dataset.ip;
+        if (ip && !['127.0.0.1', '::1', '—', ''].includes(ip) && !uniqueIps.includes(ip)) {
+            uniqueIps.push(ip);
+        }
+    });
 
     uniqueIps.forEach(function (ip) {
         fetch('https://ipapi.co/' + ip + '/json/')
             .then(function (res) { return res.json(); })
             .then(function (data) {
                 document.querySelectorAll('.ip-lookup[data-ip="' + ip + '"]').forEach(function (el) {
-                    const container = el.nextElementSibling;
-                    container.innerHTML = '';
+                    var geo = el.nextElementSibling;
+                    if (!geo || !geo.classList.contains('ip-geo')) return;
+                    geo.innerHTML = '';
 
                     if (data.city) {
-                        const info = data.city + ', ' + data.country_name;
-
                         if (data.country_code) {
-                            const img = document.createElement('img');
+                            var img = document.createElement('img');
                             img.src = 'https://flagcdn.com/16x12/' + data.country_code.toLowerCase() + '.png';
                             img.style.cssText = 'vertical-align:middle; margin-right:4px;';
                             img.alt = data.country_code;
-                            container.appendChild(img);
+                            geo.appendChild(img);
                         }
-
-                        container.appendChild(document.createTextNode(info));
+                        geo.appendChild(document.createTextNode(data.city + ', ' + data.country_name));
                     } else {
-                        container.innerText = 'Origine inconnue';
+                        geo.innerText = 'Origine inconnue';
                     }
                 });
             })
             .catch(function () {
                 document.querySelectorAll('.ip-lookup[data-ip="' + ip + '"]').forEach(function (el) {
-                    el.nextElementSibling.innerText = 'Non localisable';
+                    var geo = el.nextElementSibling;
+                    if (geo && geo.classList.contains('ip-geo')) {
+                        geo.innerText = 'Non localisable';
+                    }
                 });
             });
-    });
-});
-
-document.querySelectorAll('[data-confirm]').forEach(function (el) {
-    el.addEventListener('click', function (e) {
-        if (!confirm(this.dataset.confirm)) {
-            e.preventDefault();
-        }
     });
 });

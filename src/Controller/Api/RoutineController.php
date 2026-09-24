@@ -163,6 +163,10 @@ class RoutineController extends AbstractController
             return new JsonResponse(['error' => 'Ajoute au moins un exercice'], 422);
         }
 
+        if (count($exercises) > 50) {
+            return new JsonResponse(['error' => 'Maximum 50 exercices par routine'], 422);
+        }
+
         $routine = new UserRoutine();
         $routine->setUser($user);
         $routine->setName($name);
@@ -223,6 +227,10 @@ class RoutineController extends AbstractController
 
         if (!is_array($exercises) || count($exercises) === 0) {
             return new JsonResponse(['error' => 'Ajoute au moins un exercice'], 422);
+        }
+
+        if (count($exercises) > 50) {
+            return new JsonResponse(['error' => 'Maximum 50 exercices par routine'], 422);
         }
 
         // Supprime les anciens exos de la routine
