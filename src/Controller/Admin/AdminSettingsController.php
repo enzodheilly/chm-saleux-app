@@ -18,11 +18,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class AdminSettingsController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(MaintenanceSettingService $maintenanceService): Response
+    public function index(): Response
     {
         return $this->render('admin/settings/index.html.twig', [
-            'title'               => 'Mon compte',
-            'maintenanceEnabled'  => $maintenanceService->isEnabled(),
+            'title' => 'Mon compte',
         ]);
     }
 
@@ -161,15 +160,25 @@ class AdminSettingsController extends AbstractController
         return $this->redirectToRoute('admin_settings_banner_index');
     }
 
+    #[Route('/maintenance', name: 'maintenance_index', methods: ['GET'])]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
+    public function maintenanceIndex(MaintenanceSettingService $maintenanceService): Response
+    {
+        return $this->render('admin/settings/maintenance.html.twig', [
+            'title'              => 'Mode maintenance',
+            'maintenanceEnabled' => $maintenanceService->isEnabled(),
+        ]);
+    }
+
     #[Route('/maintenance/toggle', name: 'maintenance_toggle', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
     public function maintenanceToggle(
         Request $request,
         MaintenanceSettingService $maintenanceService
     ): Response {
         if (!$this->isCsrfTokenValid('maintenance_toggle', $request->request->get('_token'))) {
             $this->addFlash('error', 'Jeton CSRF invalide.');
-            return $this->redirectToRoute('admin_settings_index');
+            return $this->redirectToRoute('admin_settings_maintenance_index');
         }
 
         $newState = !$maintenanceService->isEnabled();
@@ -182,7 +191,7 @@ class AdminSettingsController extends AbstractController
                 : 'Mode maintenance désactivé — le site est de nouveau en ligne.'
         );
 
-        return $this->redirectToRoute('admin_settings_index');
+        return $this->redirectToRoute('admin_settings_maintenance_index');
     }
 
     #[Route('/change-password', name: 'change_password', methods: ['POST'])]

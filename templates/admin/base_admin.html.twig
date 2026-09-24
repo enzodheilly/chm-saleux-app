@@ -175,6 +175,13 @@
 						Mon compte
 					</a>
 				</div>
+				{% if is_granted('ROLE_SUPER_ADMIN') %}
+				<div class="nav-item">
+					<a href="{{ path('admin_settings_maintenance_index') }}" class="nav-link {% if app.request.get('_route') starts with 'admin_settings_maintenance' %}active{% endif %}">
+						Maintenance
+					</a>
+				</div>
+				{% endif %}
 
 			</div>
 
