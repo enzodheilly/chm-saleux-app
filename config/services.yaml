@@ -16,7 +16,6 @@ services:
         bind:
             $projectDir: "%kernel.project_dir%"
             $faqs: "%faq%"
-            $maintenanceMode: "%env(MAINTENANCE_MODE)%"
             $maintenanceBypassToken: "%env(MAINTENANCE_BYPASS_TOKEN)%"
 
             $registerLimiter: "@limiter.register"

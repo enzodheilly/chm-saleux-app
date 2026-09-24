@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\SiteBannerMessage;
 use App\Repository\SiteBannerMessageRepository;
+use App\Service\MaintenanceSettingService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,10 +18,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class AdminSettingsController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(MaintenanceSettingService $maintenanceService): Response
     {
         return $this->render('admin/settings/index.html.twig', [
-            'title' => 'Mon compte',
+            'title'               => 'Mon compte',
+            'maintenanceEnabled'  => $maintenanceService->isEnabled(),
         ]);
     }
 
@@ -157,6 +159,30 @@ class AdminSettingsController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_settings_banner_index');
+    }
+
+    #[Route('/maintenance/toggle', name: 'maintenance_toggle', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function maintenanceToggle(
+        Request $request,
+        MaintenanceSettingService $maintenanceService
+    ): Response {
+        if (!$this->isCsrfTokenValid('maintenance_toggle', $request->request->get('_token'))) {
+            $this->addFlash('error', 'Jeton CSRF invalide.');
+            return $this->redirectToRoute('admin_settings_index');
+        }
+
+        $newState = !$maintenanceService->isEnabled();
+        $maintenanceService->set($newState);
+
+        $this->addFlash(
+            $newState ? 'warning' : 'success',
+            $newState
+                ? 'Mode maintenance activé — le site est maintenant inaccessible au public.'
+                : 'Mode maintenance désactivé — le site est de nouveau en ligne.'
+        );
+
+        return $this->redirectToRoute('admin_settings_index');
     }
 
     #[Route('/change-password', name: 'change_password', methods: ['POST'])]

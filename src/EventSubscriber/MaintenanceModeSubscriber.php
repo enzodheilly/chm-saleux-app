@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
+use App\Service\MaintenanceSettingService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -14,7 +15,7 @@ class MaintenanceModeSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly Environment $twig,
-        private readonly string $maintenanceMode,
+        private readonly MaintenanceSettingService $maintenanceService,
         private readonly string $maintenanceBypassToken,
     ) {}
 
@@ -31,7 +32,7 @@ class MaintenanceModeSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($this->maintenanceMode !== 'true') {
+        if (!$this->maintenanceService->isEnabled()) {
             return;
         }
 
