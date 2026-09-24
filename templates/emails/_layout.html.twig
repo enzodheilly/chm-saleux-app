@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>
+			{% block title %}CHM Saleux
+			{% endblock %}
+		</title>
+	</head>
+	<body style="margin:0; padding:0; background-color:#f4f5f7; font-family:'Helvetica Neue', Arial, sans-serif;">
+		<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f5f7; padding:32px 16px;">
+			<tr>
+				<td align="center">
+					<table
+						role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px; background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+
+						<!-- Header -->
+						<tr>
+							<td style="background-color:#0d1420; padding:32px 40px; text-align:center;">
+								<img src="{{ logo_url|default('https://chm-saleux.fr/images/logo.png') }}" alt="CHM Saleux" width="64" height="64" style="display:block; margin:0 auto 12px auto; border-radius:8px;">
+								<p style="margin:0; color:#e8871e; font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">Club d'Haltérophilie &amp; Musculation</p>
+								<p style="margin:4px 0 0 0; color:#ffffff; font-size:18px; font-weight:700; letter-spacing:0.5px;">CHM SALEUX</p>
+							</td>
+						</tr>
+
+						<!-- Accent bar -->
+						<tr>
+							<td style="background-color:{% block accent_color %}#F57706{% endblock %}; height:4px; line-height:4px; font-size:0;">&nbsp;</td>
+						</tr>
+
+						<!-- Body -->
+						<tr>
+							<td style="padding:40px;"> {% block body %}{% endblock %}
+								</td>
+							</tr>
+
+							<!-- Footer -->
+							<tr>
+								<td style="background-color:#f9fafb; padding:24px 40px; text-align:center; border-top:1px solid #eef0f2;">
+									<p style="margin:0 0 8px 0; color:#8a8f98; font-size:12px;">
+										CHM Saleux · Saleux, France
+									</p>
+									<p style="margin:0; color:#b0b4bb; font-size:11px;">
+										Vous recevez cet email suite à une action sur votre compte CHM Saleux.<br>
+										©
+										{{ "now"|date("Y") }}
+										CHM Saleux. Tous droits réservés.
+									</p>
+								</td>
+							</tr>
+
+						</table>
+					</td>
+				</tr>
+			</table>
+		</body>
+	</html>
