@@ -1,0 +1,33 @@
+{% extends 'emails/_layout.html.twig' %}
+
+{% block title %}Votre message a bien été reçu — CHM Saleux{% endblock %}
+
+{% block body %}
+    <h1 style="margin:0 0 20px; color:#111827; font-size:22px; font-weight:800; line-height:1.3;">
+        Message bien reçu
+    </h1>
+
+    <p style="margin:0 0 12px; color:#4b5563; font-size:15px; line-height:1.7;">
+        Bonjour <strong>{{ firstName }}</strong>,
+    </p>
+    <p style="margin:0 0 16px; color:#4b5563; font-size:15px; line-height:1.7;">
+        Nous avons bien reçu votre message et nous vous en remercions.
+    </p>
+    <p style="margin:0 0 32px; color:#4b5563; font-size:15px; line-height:1.7;">
+        Notre équipe vous répondra dans un délai de <strong style="color:#111827;">24 à 48h</strong>.
+    </p>
+
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom:32px;">
+        <tr>
+            <td style="background:#f9fafb; border-left:3px solid #e5e7eb; padding:16px 20px; border-radius:0 6px 6px 0;">
+                <p style="margin:0 0 6px; color:#9ca3af; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em;">Votre message</p>
+                <p style="margin:0; color:#374151; font-size:14px; line-height:1.7; white-space:pre-line;">{{ content }}</p>
+            </td>
+        </tr>
+    </table>
+
+    <p style="margin:0; color:#64748b; font-size:14px; line-height:1.8;">
+        Cordialement,<br>
+        L'équipe <strong style="color:#374151;">CHM Saleux</strong>
+    </p>
+{% endblock %}

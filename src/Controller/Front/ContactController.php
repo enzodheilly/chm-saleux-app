@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ContactController extends AbstractController
@@ -26,7 +28,8 @@ class ContactController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         SystemLoggerService $logger,
-        TurnstileVerifierService $turnstile
+        TurnstileVerifierService $turnstile,
+        MailerInterface $mailer,
     ): Response {
         // 1. Validation CSRF
         if (!$this->isCsrfTokenValid('contact_submit', (string) $request->request->get('_token', ''))) {
@@ -83,7 +86,23 @@ class ContactController extends AbstractController
         $em->persist($contact);
         $em->flush();
 
-        // 5. Log & Flash
+        // 5. Accusé de réception par email
+        try {
+            $ack = (new Email())
+                ->from('support@chm-saleux.fr')
+                ->to($email)
+                ->subject('Votre message a bien été reçu — CHM Saleux')
+                ->html($this->renderView('emails/contact_received.html.twig', [
+                    'firstName' => $firstName,
+                    'content'   => $content,
+                ]));
+            $ack->getHeaders()->addTextHeader('X-Transport', 'support');
+            $mailer->send($ack);
+        } catch (\Throwable) {
+            // non-blocking: log but don't fail the form submission
+        }
+
+        // 6. Log & Flash
         $logger->add(
             'Contact message',
             sprintf('New message from %s %s (%s). Subject: %s.', $firstName, $lastName, $email, $subject ?: 'N/A')
