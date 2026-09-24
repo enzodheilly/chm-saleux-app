@@ -81,7 +81,7 @@ class AdminContactController extends AbstractController
 
         if ($clientEmail) {
             $email = (new Email())
-                ->from('no-reply@chm-saleux.fr')
+                ->from('support@chm-saleux.fr')
                 ->to($clientEmail)
                 ->subject('Réponse à votre demande de contact')
                 ->html($this->renderView('emails/contact_response.html.twig', [

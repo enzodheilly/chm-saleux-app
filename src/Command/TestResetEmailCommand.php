@@ -68,6 +68,10 @@ class TestResetEmailCommand extends Command
         $transport = $input->getOption('transport');
         if ($transport !== null) {
             $email->getHeaders()->addTextHeader('X-Transport', $transport);
+            // Mettre à jour le From pour correspondre à l'expéditeur du transport choisi
+            if ($transport === 'support') {
+                $email->from('support@chm-saleux.fr');
+            }
         }
 
         $this->mailer->send($email);
