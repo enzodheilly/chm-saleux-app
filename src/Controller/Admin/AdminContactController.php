@@ -89,6 +89,8 @@ class AdminContactController extends AbstractController
                     'adminName'    => $adminName,
                 ]));
 
+            $email->getHeaders()->addTextHeader('X-Transport', 'support');
+
             try {
                 $mailer->send($email);
             } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
