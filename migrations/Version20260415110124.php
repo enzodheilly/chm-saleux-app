@@ -19,6 +19,7 @@ final class Version20260415110124 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+        $this->addSql('ALTER TABLE workout_session CHANGE routine_id user_routine_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE workout_session ADD CONSTRAINT FK_AC82B97C551D522B FOREIGN KEY (user_routine_id) REFERENCES user_routine (id) ON DELETE SET NULL');
         $this->addSql('CREATE INDEX IDX_AC82B97C551D522B ON workout_session (user_routine_id)');
     }
