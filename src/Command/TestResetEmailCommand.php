@@ -31,7 +31,9 @@ class TestResetEmailCommand extends Command
 
     protected function configure(): void
     {
-        $this->addArgument('email', InputArgument::REQUIRED, 'Adresse de destination');
+        $this
+            ->addArgument('email', InputArgument::REQUIRED, 'Adresse de destination')
+            ->addOption('transport', null, \Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED, 'Transport à utiliser (ex: support). Sans cette option, le transport main est utilisé.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -63,10 +65,14 @@ class TestResetEmailCommand extends Command
             ->subject('[TEST] Réinitialisation de votre mot de passe — CHM Saleux')
             ->html($html);
 
-        // Transport main (MAILER_DSN_NOREPLY) — pas de X-Transport = transport par défaut = main
+        $transport = $input->getOption('transport');
+        if ($transport !== null) {
+            $email->getHeaders()->addTextHeader('X-Transport', $transport);
+        }
+
         $this->mailer->send($email);
 
-        $io->success("Email envoyé vers $to via le transport main.");
+        $io->success(sprintf('Email envoyé vers %s via le transport %s.', $to, $transport ?? 'main'));
         $io->note('Le lien de réinitialisation dans le mail est factice (token TEST-TOKEN-NON-FONCTIONNEL) — il ne fonctionne pas.');
 
         return Command::SUCCESS;
