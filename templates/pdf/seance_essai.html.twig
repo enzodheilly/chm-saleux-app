@@ -29,7 +29,7 @@
 
   .content { padding: 7mm 16mm 0 16mm; }
 
-  .section-title-table { margin: 0 0 2.5mm 0; }
+  .section-title-table { margin: 0 0 2.5mm 0; table-layout: auto; width: auto; }
   .section-title-table td { vertical-align: middle; }
   .num {
     width: 6mm; height: 6mm; border-radius: 50%; border: 1.1pt solid #1a1a1a; color: #1a1a1a;
@@ -120,15 +120,15 @@
     <td>
       <label class="f">Sport pratiqué</label>
       <div class="line" style="height:6mm; padding-top:0.8mm;">
-        <span class="checkbox">{{ sport == 'Haltérophilie' ? '✓' : '' }}</span><span class="opt-label">Haltérophilie</span>
-        <span class="checkbox">{{ sport == 'Musculation' ? '✓' : '' }}</span><span class="opt-label">Musculation</span>
+        <span class="checkbox">{{ sport == 'Haltérophilie' ? 'X' : '' }}</span><span class="opt-label">Haltérophilie</span>
+        <span class="checkbox">{{ sport == 'Musculation' ? 'X' : '' }}</span><span class="opt-label">Musculation</span>
       </div>
     </td>
     <td>
       <label class="f">Sexe</label>
       <div class="line" style="height:6mm; padding-top:0.8mm;">
-        <span class="checkbox">{{ sexe == 'F' ? '✓' : '' }}</span><span class="opt-label">Féminin</span>
-        <span class="checkbox">{{ sexe == 'M' ? '✓' : '' }}</span><span class="opt-label">Masculin</span>
+        <span class="checkbox">{{ sexe == 'F' ? 'X' : '' }}</span><span class="opt-label">Féminin</span>
+        <span class="checkbox">{{ sexe == 'M' ? 'X' : '' }}</span><span class="opt-label">Masculin</span>
       </div>
     </td>
   </tr></table>
@@ -225,16 +225,8 @@
     </td>
   </tr></table>
 
-  <table style="margin-top:3mm;" class="field-table"><tr>
-    <td>
-      <label class="f">Signature du pratiquant (ou responsable légal)</label>
-      <div class="sign-box"><div class="approved">Lu et approuvé</div></div>
-    </td>
-    <td>
-      <label class="f">Cachet / Visa de l'encadrant</label>
-      <div class="sign-box"></div>
-    </td>
-  </tr></table>
+  <label class="f">Signature du pratiquant (ou responsable légal)</label>
+  <div class="sign-box"><span class="approved">« Lu et approuvé »</span></div>
 
 </div>
 
