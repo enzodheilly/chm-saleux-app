@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #1a1a1a;
+    font-size: 10.3pt;
+  }
+  table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+  td { vertical-align: top; padding: 0; }
+
+  .header-table td { vertical-align: middle; }
+  .header-table {
+    padding: 8mm 16mm 5mm 16mm;
+    width: 100%;
+    border-bottom: 1.4pt solid #1a1a1a;
+  }
+  .header-table img { width: 18mm; height: 18mm; }
+  .club-name { font-size: 10pt; letter-spacing: 2px; color: #1a1a1a; font-weight: 700; text-transform: uppercase; margin: 0 0 1mm 0; }
+  .club-sub { font-size: 8pt; color: #6b6b6b; margin: 0; }
+  .title-block { text-align: right; }
+  .title-block h1 { font-size: 13pt; white-space: nowrap; margin: 0; font-weight: 700; color: #1a1a1a; }
+  .title-block p { margin: 2mm 0 0 0; font-size: 8.5pt; color: #6b6b6b; letter-spacing: 0.6px; text-transform: uppercase; }
+
+  .content { padding: 7mm 16mm 0 16mm; }
+
+  .section-title-table { margin: 0 0 2.5mm 0; }
+  .section-title-table td { vertical-align: middle; }
+  .num {
+    width: 6mm; height: 6mm; border-radius: 50%; border: 1.1pt solid #1a1a1a; color: #1a1a1a;
+    font-size: 9pt; font-weight: 700; text-align: center; line-height: 5.6mm;
+  }
+  .section-title-table h2 { font-size: 11.5pt; margin: 0 0 0 3mm; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
+
+  .field-table { margin-bottom: 2.5mm; }
+  .field-table td { padding-right: 8mm; width: 50%; }
+  .field-table td:last-child { padding-right: 0; }
+  label.f {
+    display: block; font-size: 8pt; color: #6b6b6b; text-transform: uppercase;
+    letter-spacing: 0.4px; margin-bottom: 1.3mm; font-weight: 600;
+  }
+  .line { border-bottom: 0.6pt solid #b0b0b0; height: 5mm; font-size: 10pt; padding-bottom: 0.5mm; }
+  .line-value { color: #1a1a1a; font-size: 10pt; }
+
+  .checkbox {
+    display: inline-block; width: 3.6mm; height: 3.6mm; border: 1.1pt solid #1a1a1a;
+    text-align: center; line-height: 3.2mm; font-size: 8pt; font-weight: 700; color: #1a1a1a;
+    vertical-align: middle;
+  }
+  .opt-label { font-size: 9.5pt; vertical-align: middle; padding-left: 2mm; padding-right: 6mm; }
+
+  .date-cell { font-size: 9.5pt; }
+  .date-box { display: inline-block; border-bottom: 0.6pt solid #b0b0b0; height: 5mm; width: 12mm; text-align: center; }
+  .date-box.year { width: 18mm; }
+  .date-sep { color: #6b6b6b; padding: 0 1.5mm; }
+
+  .divider { height: 0.5pt; background: #d8d8d8; margin: 3.5mm 0; }
+
+  .declaration-box {
+    background: #ffffff; border: 0.8pt solid #1a1a1a; padding: 3.5mm 5mm;
+    font-size: 9pt; line-height: 1.4; color: #1a1a1a;
+  }
+  .declaration-box p { margin: 0 0 3mm 0; }
+  .declaration-box p:last-child { margin-bottom: 0; }
+  .signee-line { border-bottom: 0.6pt solid #b0b0b0; display: inline-block; min-width: 90mm; }
+
+  .sign-box {
+    margin-top: 3mm; height: 18mm; border: 0.8pt solid #1a1a1a; border-radius: 1mm; background: #ffffff;
+    position: relative;
+  }
+  .approved { position: absolute; bottom: 3mm; right: 4mm; font-size: 8pt; font-style: italic; color: #9a9a9a; }
+
+  .footer {
+    position: fixed; bottom: 0; left: 0; right: 0; width: 100%;
+    background: #ffffff; border-top: 1pt solid #1a1a1a; padding: 3.5mm 16mm; text-align: center;
+  }
+  .footer .name { font-weight: 700; font-size: 9.5pt; color: #1a1a1a; letter-spacing: 1px; margin: 0 0 1.5mm 0; text-transform: uppercase; }
+  .footer p { margin: 0.6mm 0; font-size: 8pt; color: #6b6b6b; }
+</style>
+</head>
+<body>
+
+<table class="header-table"><tr>
+  <td style="width:58%;">
+    <table><tr>
+      <td style="width:18mm;"><img src="{{ logoDataUri }}" alt="CHM Saleux"></td>
+      <td style="padding-left:5mm;">
+        <p class="club-name">CHM Saleux</p>
+        <p class="club-sub">Club d'Haltérophilie &amp; Musculation</p>
+      </td>
+    </tr></table>
+  </td>
+  <td class="title-block" style="width:42%;">
+    <h1>Séance découverte</h1>
+    <p>Formulaire d'inscription</p>
+  </td>
+</tr></table>
+
+<div class="content">
+
+  <!-- Section 1 -->
+  <table class="section-title-table"><tr>
+    <td style="width:6mm;"><div class="num">1</div></td>
+    <td><h2>Informations du pratiquant</h2></td>
+  </tr></table>
+
+  <table class="field-table"><tr>
+    <td colspan="2">
+      <label class="f">Nom &amp; Prénom</label>
+      <div class="line line-value">{{ fullName }}</div>
+    </td>
+  </tr></table>
+
+  <table class="field-table"><tr>
+    <td>
+      <label class="f">Discipline</label>
+      <div class="line" style="height:6mm; padding-top:0.8mm;">
+        <span class="checkbox">{{ discipline == 'Haltérophilie' ? '✓' : '' }}</span><span class="opt-label">Haltérophilie</span>
+        <span class="checkbox">{{ discipline == 'Musculation' ? '✓' : '' }}</span><span class="opt-label">Musculation</span>
+      </div>
+    </td>
+    <td>
+      <label class="f">Sexe</label>
+      <div class="line" style="height:6mm; padding-top:0.8mm;">
+        <span class="checkbox">{{ sex == 'F' ? '✓' : '' }}</span><span class="opt-label">Féminin</span>
+        <span class="checkbox">{{ sex == 'M' ? '✓' : '' }}</span><span class="opt-label">Masculin</span>
+      </div>
+    </td>
+  </tr></table>
+
+  <table class="field-table"><tr>
+    <td>
+      <label class="f">Date de naissance</label>
+      <div class="line date-cell" style="height:6mm; padding-top:0.8mm;">
+        <span class="date-box">{{ birthDay }}</span>
+        <span class="date-sep">/</span>
+        <span class="date-box">{{ birthMonth }}</span>
+        <span class="date-sep">/</span>
+        <span class="date-box year">{{ birthYear }}</span>
+      </div>
+    </td>
+    <td>
+      <label class="f">Téléphone</label>
+      <div class="line line-value">{{ phone }}</div>
+    </td>
+  </tr></table>
+
+  <table class="field-table"><tr>
+    <td colspan="2">
+      <label class="f">Adresse</label>
+      <div class="line line-value">{{ address }}</div>
+    </td>
+  </tr></table>
+
+  <table class="field-table"><tr>
+    <td colspan="2">
+      <label class="f">Adresse email</label>
+      <div class="line line-value">{{ email }}</div>
+    </td>
+  </tr></table>
+
+  <div class="divider"></div>
+
+  <!-- Section 2 -->
+  <table class="section-title-table"><tr>
+    <td style="width:6mm;"><div class="num">2</div></td>
+    <td><h2>Responsable légal <span style="font-size:8.5pt; font-weight:400; text-transform:none; letter-spacing:0; color:#6b6b6b;">(si pratiquant mineur)</span></h2></td>
+  </tr></table>
+
+  <table class="field-table"><tr>
+    <td>
+      <label class="f">Nom &amp; Prénom du responsable</label>
+      <div class="line line-value">{{ legalName }}</div>
+    </td>
+    <td>
+      <label class="f">Lien de parenté</label>
+      <div class="line line-value">{{ legalRelation }}</div>
+    </td>
+  </tr></table>
+
+  <table class="field-table"><tr>
+    <td>
+      <label class="f">Téléphone</label>
+      <div class="line line-value">{{ legalPhone }}</div>
+    </td>
+    <td>
+      <label class="f">Email</label>
+      <div class="line line-value">{{ legalEmail }}</div>
+    </td>
+  </tr></table>
+
+  <div class="divider"></div>
+
+  <!-- Section 3 -->
+  <table class="section-title-table"><tr>
+    <td style="width:6mm;"><div class="num">3</div></td>
+    <td><h2>Décharge de responsabilité</h2></td>
+  </tr></table>
+
+  <div class="declaration-box">
+    <p>Je soussigné(e) <span class="signee-line">{{ signeeName }}</span>, reconnais avoir pris connaissance du règlement intérieur du CHM Saleux et m'engage à le respecter.</p>
+    <p>Je certifie sur l'honneur être apte à pratiquer une activité sportive et ne pas avoir de contre-indication médicale connue. Je déclare participer à cette séance découverte sous ma propre responsabilité, en pleine connaissance des risques inhérents à la pratique sportive.</p>
+    <p>Je décharge le Club d'Haltérophilie &amp; Musculation de Saleux (CHM Saleux) de toute responsabilité en cas d'accident survenu du fait de ma propre négligence ou du non-respect des consignes données par les encadrants.</p>
+  </div>
+
+  <table style="margin-top:4mm;" class="field-table"><tr>
+    <td>
+      <label class="f">Fait à</label>
+      <div class="line line-value">{{ signPlace }}</div>
+    </td>
+    <td>
+      <label class="f">Le</label>
+      <div class="line date-cell" style="height:6mm; padding-top:0.8mm;">
+        <span class="date-box">{{ signDay }}</span>
+        <span class="date-sep">/</span>
+        <span class="date-box">{{ signMonth }}</span>
+        <span class="date-sep">/</span>
+        <span class="date-box year">{{ signYear }}</span>
+      </div>
+    </td>
+  </tr></table>
+
+  <table style="margin-top:3mm;" class="field-table"><tr>
+    <td>
+      <label class="f">Signature du pratiquant (ou responsable légal)</label>
+      <div class="sign-box"><div class="approved">Lu et approuvé</div></div>
+    </td>
+    <td>
+      <label class="f">Cachet / Visa de l'encadrant</label>
+      <div class="sign-box"></div>
+    </td>
+  </tr></table>
+
+</div>
+
+<div class="footer">
+  <p class="name">CHM Saleux</p>
+  <p>8 rue Marx Dormoy, 80480 Saleux &nbsp;·&nbsp; chm-saleux.fr &nbsp;·&nbsp; contact@chm-saleux.fr</p>
+</div>
+
+</body>
+</html>
