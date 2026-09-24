@@ -11,12 +11,13 @@
 
         :root {
             --orange: #F57706;
-            --orange-dim: rgba(245,119,6,0.12);
+            --orange-dim: rgba(245,119,6,0.10);
             --bg: #0a0a0a;
             --surface: #111;
             --border: rgba(255,255,255,0.07);
             --text: #fff;
-            --muted: rgba(255,255,255,0.38);
+            --muted: rgba(255,255,255,0.35);
+            --very-muted: rgba(255,255,255,0.15);
         }
 
         html, body {
@@ -38,7 +39,7 @@
             overflow: hidden;
         }
 
-        /* Watermark */
+        /* Filigrane discret */
         .wm {
             position: absolute;
             top: 50%;
@@ -48,23 +49,12 @@
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: -0.04em;
-            color: rgba(255,255,255,0.025);
+            color: rgba(255,255,255,0.022);
             white-space: nowrap;
             pointer-events: none;
             user-select: none;
             line-height: 1;
             z-index: 0;
-        }
-
-        /* Accent bar */
-        .accent-top {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--orange);
-            z-index: 10;
         }
 
         .card {
@@ -73,35 +63,33 @@
             background: var(--surface);
             border: 1px solid var(--border);
             padding: 56px 52px;
-            max-width: 520px;
+            max-width: 480px;
             width: 100%;
             text-align: center;
         }
 
-        /* Logo */
+        /* Logo — centré, sans halo ni bordure */
         .logo-wrap {
+            display: flex;
+            justify-content: center;
             margin-bottom: 36px;
         }
 
         .logo-wrap img {
-            width: 80px;
-            height: 80px;
+            width: 72px;
+            height: 72px;
             object-fit: contain;
-            border-radius: 50%;
-            border: 2px solid var(--orange);
+            display: block;
         }
 
-        /* Eyebrow */
-        .eyebrow {
-            display: inline-block;
-            font-size: 0.65rem;
-            font-weight: 800;
-            letter-spacing: 0.18em;
+        /* Pré-titre sobre — pas de fond, pas de pilule */
+        .pre-title {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: var(--orange);
-            background: var(--orange-dim);
-            padding: 4px 12px;
-            margin-bottom: 20px;
+            color: var(--muted);
+            margin-bottom: 18px;
         }
 
         h1 {
@@ -111,18 +99,16 @@
             letter-spacing: -0.02em;
             line-height: 1.1;
             color: var(--text);
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         h1 span { color: var(--orange); }
 
         .subtitle {
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             color: var(--muted);
-            line-height: 1.7;
+            line-height: 1.75;
             margin-bottom: 36px;
-            max-width: 380px;
-            margin-inline: auto;
         }
 
         /* Divider */
@@ -134,18 +120,18 @@
 
         /* Social */
         .social-label {
-            font-size: 0.65rem;
+            font-size: 0.62rem;
             font-weight: 700;
-            letter-spacing: 0.14em;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
-            color: var(--muted);
+            color: var(--very-muted);
             margin-bottom: 14px;
         }
 
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .social-link {
@@ -154,50 +140,47 @@
             gap: 8px;
             padding: 9px 18px;
             border: 1px solid var(--border);
-            background: rgba(255,255,255,0.03);
             color: var(--muted);
             text-decoration: none;
-            font-size: 0.78rem;
-            font-weight: 700;
+            font-size: 0.75rem;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
-            transition: border-color 0.2s, color 0.2s, background 0.2s;
+            letter-spacing: 0.07em;
+            transition: border-color 0.2s, color 0.2s;
         }
 
         .social-link:hover {
-            border-color: var(--orange);
+            border-color: rgba(245,119,6,0.4);
             color: var(--orange);
-            background: var(--orange-dim);
         }
 
         .social-link svg {
-            width: 14px;
-            height: 14px;
+            width: 13px;
+            height: 13px;
             fill: currentColor;
             flex-shrink: 0;
         }
 
-        /* Footer line */
+        /* Pied de page */
         .footer-line {
             position: absolute;
             bottom: 24px;
             left: 0;
             right: 0;
             text-align: center;
-            font-size: 0.7rem;
-            color: rgba(255,255,255,0.15);
-            letter-spacing: 0.06em;
+            font-size: 0.68rem;
+            color: rgba(255,255,255,0.12);
+            letter-spacing: 0.05em;
         }
 
         @media (max-width: 560px) {
-            .card { padding: 36px 24px; }
+            .card { padding: 36px 22px; }
             h1 { font-size: 1.6rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="accent-top"></div>
     <div class="wm" aria-hidden="true">CHM</div>
 
     <div class="card">
@@ -205,13 +188,13 @@
             <img src="/images/favicon/icon-192.png" alt="CHM Saleux">
         </div>
 
-        <div class="eyebrow">Maintenance en cours</div>
+        <p class="pre-title">En rénovation</p>
 
-        <h1>Site en<br><span>rénovation</span></h1>
+        <h1>Site bientôt<br>de <span>retour</span></h1>
 
         <p class="subtitle">
             Nous préparons du nouveau contenu.<br>
-            Le site sera de retour <strong style="color:#fff;">très bientôt</strong> — merci pour votre patience.
+            Merci pour votre patience.
         </p>
 
         <div class="divider"></div>
