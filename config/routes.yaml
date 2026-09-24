@@ -10,3 +10,11 @@ controllers:
 api_login_check:
     path: /api/login_check
     methods: ["POST"]
+
+# Redirection ancienne URL séance d'essai → nouvelle URL
+admin_seance_essai_legacy:
+    path: /gestion-chm-secrete-92x/seances-essai
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+    defaults:
+        route: admin_seance_essai_index
+        permanent: true

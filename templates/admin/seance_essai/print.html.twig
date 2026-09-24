@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Séance d'initiation – {{ seance.prenom }} {{ seance.nom }}</title>
+    <style nonce="{{ csp_nonce('style') }}">
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11pt;
+            color: #111;
+            background: #e8e8ec;
+            min-height: 100vh;
+        }
+
+        /* ── Barre de contrôle ── */
+        .ctrl-bar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 52px;
+            background: #18181c;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 16px;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .ctrl-back {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: rgba(255,255,255,0.55);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: color 0.15s;
+        }
+        .ctrl-back:hover { color: #fff; }
+        .ctrl-back svg { flex-shrink: 0; }
+
+        .ctrl-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .ctrl-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .ctrl-sub {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.35);
+        }
+
+        .ctrl-spacer { flex: 1; }
+
+        .ctrl-info {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.35);
+        }
+
+        .ctrl-print-btn {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: #e8720c;
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s;
+        }
+        .ctrl-print-btn:hover { background: #c96209; }
+
+        /* ── Zone page ── */
+        .page-shell {
+            padding: 72px 24px 48px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* ── Page A4 ── */
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            background: #fff;
+            padding: 16mm 16mm 14mm;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.12);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            position: relative;
+        }
+
+        /* ── Filigrane ── */
+        .page-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-35deg);
+            font-size: 64pt;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(0,0,0,0.03);
+            pointer-events: none;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        /* ── En-tête ── */
+        .doc-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #e8720c;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-logo {
+            height: 38px;
+            width: auto;
+        }
+
+        .header-club-name {
+            font-size: 15pt;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #111;
+            line-height: 1.1;
+        }
+
+        .header-club-sport {
+            font-size: 7.5pt;
+            color: #e8720c;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-top: 2px;
+        }
+
+        .header-right {
+            text-align: right;
+        }
+
+        .header-doc-num {
+            font-size: 9pt;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .header-doc-date {
+            font-size: 7.5pt;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        /* ── Titre ── */
+        .doc-title {
+            text-align: center;
+            padding: 4px 0 2px;
+        }
+
+        .doc-title h1 {
+            font-size: 13pt;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #111;
+            display: inline-block;
+            border-bottom: 2px solid #111;
+            padding-bottom: 5px;
+        }
+
+        /* ── Blocs ── */
+        .doc-section {
+            border: 1px solid #d8d8d8;
+            border-radius: 2px;
+        }
+
+        .doc-section-head {
+            background: #f4f4f6;
+            border-bottom: 1px solid #d8d8d8;
+            padding: 5px 12px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .doc-section-head-bar {
+            width: 3px;
+            height: 14px;
+            background: #e8720c;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .doc-section-title {
+            font-size: 7pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.13em;
+            color: #555;
+        }
+
+        .doc-section-body {
+            padding: 12px 14px;
+        }
+
+        /* ── Grille infos ── */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 28px;
+        }
+
+        .info-field { display: flex; flex-direction: column; gap: 2px; }
+
+        .info-label {
+            font-size: 7pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #999;
+        }
+
+        .info-value {
+            font-size: 11.5pt;
+            font-weight: 700;
+            color: #111;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 3px;
+            min-height: 22px;
+            line-height: 1.2;
+        }
+
+        .sport-chip {
+            display: inline-block;
+            background: #fff5ed;
+            border: 1.5px solid #e8720c;
+            color: #c65a00;
+            padding: 1px 9px;
+            font-size: 10pt;
+            font-weight: 700;
+            border-radius: 2px;
+        }
+
+        /* ── Décharge ── */
+        .disclaimer-text {
+            font-size: 10pt;
+            line-height: 1.8;
+            color: #1a1a1a;
+            text-align: justify;
+        }
+
+        .disclaimer-text strong {
+            font-weight: 900;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+        }
+
+        .disclaimer-note {
+            font-size: 7pt;
+            color: #bbb;
+            font-style: italic;
+            margin-top: 8px;
+        }
+
+        /* ── Signatures ── */
+        .sign-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+        }
+
+        .sign-block { display: flex; flex-direction: column; gap: 5px; }
+
+        .sign-label {
+            font-size: 7pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #999;
+        }
+
+        .sign-area { height: 52px; border-bottom: 1px solid #aaa; }
+
+        .sign-hint {
+            font-size: 7pt;
+            color: #ccc;
+            font-style: italic;
+        }
+
+        /* ── Pied de page ── */
+        .doc-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .doc-footer-text {
+            font-size: 7pt;
+            color: #ccc;
+            font-style: italic;
+        }
+
+        /* ── Mobile ── */
+        @media (max-width: 720px) {
+            .page-shell { padding: 64px 0 32px; }
+
+            .page {
+                width: 100%;
+                min-height: auto;
+                padding: 20px 16px;
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            .page-watermark { display: none; }
+
+            .ctrl-bar { padding: 0 14px; gap: 10px; }
+            .ctrl-info { display: none; }
+            .ctrl-sub  { display: none; }
+
+            .doc-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .header-right { text-align: left; }
+
+            .info-grid { grid-template-columns: 1fr; gap: 8px; }
+
+            .sign-grid { grid-template-columns: 1fr; gap: 20px; }
+
+            .doc-footer { flex-direction: column; gap: 4px; align-items: flex-start; }
+        }
+
+        /* ── @media print ── */
+        @media print {
+            .ctrl-bar { display: none !important; }
+
+            body { background: #fff; }
+
+            .page-shell {
+                padding: 0;
+                display: block;
+            }
+
+            .page {
+                width: 100%;
+                min-height: auto;
+                padding: 10mm 13mm 10mm;
+                box-shadow: none;
+            }
+
+            .doc-section-head {
+                background: #efefef !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .sport-chip {
+                background: transparent !important;
+                color: #333 !important;
+                border-color: #888 !important;
+            }
+
+            .doc-section-head-bar {
+                background: #888 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ctrl-bar">
+        <a href="{{ path('admin_seance_essai_index') }}" class="ctrl-back">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            Retour
+        </a>
+        <div class="ctrl-divider"></div>
+        <div>
+            <div class="ctrl-label">{{ seance.prenom }} {{ seance.nom|upper }}</div>
+            <div class="ctrl-sub">{{ seance.sport }} · {{ seance.dateSeance|date('d/m/Y') }}</div>
+        </div>
+        <div class="ctrl-spacer"></div>
+        <span class="ctrl-info">Faire signer puis archiver</span>
+        <button id="btn-print" class="ctrl-print-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            Imprimer
+        </button>
+    </div>
+
+    <div class="page-shell">
+        <div class="page">
+
+            <div class="page-watermark">CHM</div>
+
+            {# ── En-tête ── #}
+            <div class="doc-header">
+                <div class="header-left">
+                    <img src="{{ absolute_url(asset('images/favicon/icon2.png')) }}" alt="Logo CHM" class="header-logo">
+                    <div>
+                        <div class="header-club-name">CHM Saleux</div>
+                        <div class="header-club-sport">Haltérophilie &amp; Musculation</div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-doc-num">Fiche n°{{ seance.id }}</div>
+                    <div class="header-doc-date">{{ seance.createdAt|date('d/m/Y à H:i') }}</div>
+                </div>
+            </div>
+
+            {# ── Titre ── #}
+            <div class="doc-title">
+                <h1>Fiche de séance d'initiation</h1>
+            </div>
+
+            {# ── Informations participant ── #}
+            <div class="doc-section">
+                <div class="doc-section-head">
+                    <div class="doc-section-head-bar"></div>
+                    <span class="doc-section-title">Informations du participant</span>
+                </div>
+                <div class="doc-section-body">
+                    <div class="info-grid">
+                        <div class="info-field">
+                            <span class="info-label">Nom</span>
+                            <span class="info-value">{{ seance.nom|upper }}</span>
+                        </div>
+                        <div class="info-field">
+                            <span class="info-label">Prénom</span>
+                            <span class="info-value">{{ seance.prenom }}</span>
+                        </div>
+                        <div class="info-field">
+                            <span class="info-label">Date de naissance</span>
+                            <span class="info-value">&nbsp;</span>
+                        </div>
+                        <div class="info-field">
+                            <span class="info-label">Téléphone</span>
+                            <span class="info-value">&nbsp;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# ── Détails séance ── #}
+            <div class="doc-section">
+                <div class="doc-section-head">
+                    <div class="doc-section-head-bar"></div>
+                    <span class="doc-section-title">Détails de la séance</span>
+                </div>
+                <div class="doc-section-body">
+                    <div class="info-grid">
+                        <div class="info-field">
+                            <span class="info-label">Sport pratiqué</span>
+                            <span class="info-value"><span class="sport-chip">{{ seance.sport }}</span></span>
+                        </div>
+                        <div class="info-field">
+                            <span class="info-label">Date</span>
+                            <span class="info-value">{{ seance.dateSeance|date('d/m/Y') }}</span>
+                        </div>
+                        <div class="info-field">
+                            <span class="info-label">Encadrant(e)</span>
+                            <span class="info-value">&nbsp;</span>
+                        </div>
+                        <div class="info-field">
+                            <span class="info-label">Créneau horaire</span>
+                            <span class="info-value">&nbsp;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# ── Décharge ── #}
+            <div class="doc-section">
+                <div class="doc-section-head">
+                    <div class="doc-section-head-bar"></div>
+                    <span class="doc-section-title">Décharge de responsabilité</span>
+                </div>
+                <div class="doc-section-body">
+                    <p class="disclaimer-text">
+                        Je soussigné(e) <strong>{{ seance.prenom }} {{ seance.nom|upper }}</strong>
+                        déclare avoir été informé(e) des risques liés à la pratique de
+                        <strong>{{ seance.sport }}</strong>
+                        et certifie ne pas avoir de contre-indication médicale à la pratique d'une activité
+                        physique intense. Je dégage le club <strong>CHM Saleux</strong> et ses encadrants
+                        de toute responsabilité en cas d'accident ou de blessure survenu(e) pendant cette
+                        séance d'initiation, résultant de ma propre négligence ou du non-respect des
+                        consignes de sécurité. Je reconnais avoir pris connaissance du règlement intérieur
+                        du club.
+                    </p>
+                    <p class="disclaimer-note">⚠ Texte provisoire — à remplacer par la version définitive validée par le président du club.</p>
+                </div>
+            </div>
+
+            {# ── Signatures ── #}
+            <div class="doc-section">
+                <div class="doc-section-head">
+                    <div class="doc-section-head-bar"></div>
+                    <span class="doc-section-title">Signatures</span>
+                </div>
+                <div class="doc-section-body">
+                    <div class="sign-grid">
+                        <div class="sign-block">
+                            <span class="sign-label">Signature du participant</span>
+                            <div class="sign-area"></div>
+                            <span class="sign-hint">Précéder de « Lu et approuvé »</span>
+                        </div>
+                        <div class="sign-block">
+                            <span class="sign-label">Signature de l'encadrant(e)</span>
+                            <div class="sign-area"></div>
+                            <span class="sign-hint">&nbsp;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# ── Pied de page ── #}
+            <div class="doc-footer">
+                <span class="doc-footer-text">Document provisoire · à archiver après signature</span>
+                <span class="doc-footer-text">CHM Saleux · {{ seance.dateSeance|date('Y') }}</span>
+            </div>
+
+        </div>
+    </div>
+
+    <script nonce="{{ csp_nonce('script') }}">
+        document.getElementById('btn-print').addEventListener('click', function () {
+            window.print();
+        });
+
+        window.onload = function () {
+            setTimeout(function () { window.print(); }, 500);
+        };
+    </script>
+
+</body>
+</html>

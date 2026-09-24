@@ -22,6 +22,19 @@ class LicenceRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function searchByName(string $term): array
+    {
+        $like = '%' . addcslashes($term, '%_') . '%';
+
+        return $this->createQueryBuilder('l')
+            ->where('l.firstName LIKE :term OR l.lastName LIKE :term OR CONCAT(l.firstName, \' \', l.lastName) LIKE :term OR CONCAT(l.lastName, \' \', l.firstName) LIKE :term')
+            ->setParameter('term', $like)
+            ->orderBy('l.id', 'DESC')
+            ->setMaxResults(20)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function recoverByIdentity(
         ?string $firstName,
         ?string $lastName,
