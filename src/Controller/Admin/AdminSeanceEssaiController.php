@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\SeanceEssai;
 use App\Repository\LicenceRepository;
 use App\Repository\SeanceEssaiRepository;
+use App\Service\SeanceEssaiPdfService;
 use App\Service\SystemLoggerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -97,6 +98,29 @@ class AdminSeanceEssaiController extends AbstractController
             ->setSport($sport)
             ->setDateSeance($date);
 
+        $sexe = trim((string) $request->request->get('sexe', ''));
+        if (in_array($sexe, ['F', 'M'], true)) {
+            $seance->setSexe($sexe);
+        }
+
+        $dateNaissanceRaw = trim((string) $request->request->get('date_naissance', ''));
+        if ($dateNaissanceRaw !== '') {
+            try {
+                $seance->setDateNaissance(new \DateTimeImmutable($dateNaissanceRaw));
+            } catch (\Exception) {
+            }
+        }
+
+        $seance->setAdresse($this->nullIfEmpty($request->request->get('adresse', '')));
+        $seance->setTelephone($this->nullIfEmpty($request->request->get('telephone', '')));
+        $seance->setEmail($this->nullIfEmpty($request->request->get('email', '')));
+        $seance->setResponsableNom($this->nullIfEmpty($request->request->get('responsable_nom', '')));
+        $seance->setResponsableLien($this->nullIfEmpty($request->request->get('responsable_lien', '')));
+        $seance->setResponsableTelephone($this->nullIfEmpty($request->request->get('responsable_telephone', '')));
+        $seance->setResponsableEmail($this->nullIfEmpty($request->request->get('responsable_email', '')));
+        $seance->setLieuSignature($this->nullIfEmpty($request->request->get('lieu_signature', '')) ?? 'Saleux');
+        $seance->setDateSignature($date);
+
         $em->persist($seance);
         $em->flush();
 
@@ -111,5 +135,28 @@ class AdminSeanceEssaiController extends AbstractController
         return $this->render('admin/seance_essai/print.html.twig', [
             'seance' => $seance,
         ]);
+    }
+
+    #[Route('/{id}/pdf', name: 'pdf', methods: ['GET'])]
+    public function pdf(SeanceEssai $seance, SeanceEssaiPdfService $pdfService): Response
+    {
+        $pdf = $pdfService->generate($seance);
+
+        $filename = sprintf(
+            'seance-initiation-%s-%s.pdf',
+            $seance->getDateSeance()->format('Ymd'),
+            preg_replace('/[^a-z0-9]+/', '-', strtolower($seance->getPrenom() . '-' . $seance->getNom()))
+        );
+
+        return new Response($pdf, 200, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
+    }
+
+    private function nullIfEmpty(mixed $value): ?string
+    {
+        $value = trim((string) $value);
+        return $value === '' ? null : $value;
     }
 }

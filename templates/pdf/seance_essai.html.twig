@@ -96,8 +96,8 @@
     </tr></table>
   </td>
   <td class="title-block" style="width:42%;">
-    <h1>Séance découverte</h1>
-    <p>Formulaire d'inscription</p>
+    <h1>Séance d'initiation</h1>
+    <p>Fiche d'inscription</p>
   </td>
 </tr></table>
 
@@ -112,23 +112,23 @@
   <table class="field-table"><tr>
     <td colspan="2">
       <label class="f">Nom &amp; Prénom</label>
-      <div class="line line-value">{{ fullName }}</div>
+      <div class="line line-value">{{ prenom }} {{ nom|upper }}</div>
     </td>
   </tr></table>
 
   <table class="field-table"><tr>
     <td>
-      <label class="f">Discipline</label>
+      <label class="f">Sport pratiqué</label>
       <div class="line" style="height:6mm; padding-top:0.8mm;">
-        <span class="checkbox">{{ discipline == 'Haltérophilie' ? '✓' : '' }}</span><span class="opt-label">Haltérophilie</span>
-        <span class="checkbox">{{ discipline == 'Musculation' ? '✓' : '' }}</span><span class="opt-label">Musculation</span>
+        <span class="checkbox">{{ sport == 'Haltérophilie' ? '✓' : '' }}</span><span class="opt-label">Haltérophilie</span>
+        <span class="checkbox">{{ sport == 'Musculation' ? '✓' : '' }}</span><span class="opt-label">Musculation</span>
       </div>
     </td>
     <td>
       <label class="f">Sexe</label>
       <div class="line" style="height:6mm; padding-top:0.8mm;">
-        <span class="checkbox">{{ sex == 'F' ? '✓' : '' }}</span><span class="opt-label">Féminin</span>
-        <span class="checkbox">{{ sex == 'M' ? '✓' : '' }}</span><span class="opt-label">Masculin</span>
+        <span class="checkbox">{{ sexe == 'F' ? '✓' : '' }}</span><span class="opt-label">Féminin</span>
+        <span class="checkbox">{{ sexe == 'M' ? '✓' : '' }}</span><span class="opt-label">Masculin</span>
       </div>
     </td>
   </tr></table>
@@ -146,14 +146,14 @@
     </td>
     <td>
       <label class="f">Téléphone</label>
-      <div class="line line-value">{{ phone }}</div>
+      <div class="line line-value">{{ telephone }}</div>
     </td>
   </tr></table>
 
   <table class="field-table"><tr>
     <td colspan="2">
       <label class="f">Adresse</label>
-      <div class="line line-value">{{ address }}</div>
+      <div class="line line-value">{{ adresse }}</div>
     </td>
   </tr></table>
 
@@ -175,22 +175,22 @@
   <table class="field-table"><tr>
     <td>
       <label class="f">Nom &amp; Prénom du responsable</label>
-      <div class="line line-value">{{ legalName }}</div>
+      <div class="line line-value">{{ responsableNom }}</div>
     </td>
     <td>
       <label class="f">Lien de parenté</label>
-      <div class="line line-value">{{ legalRelation }}</div>
+      <div class="line line-value">{{ responsableLien }}</div>
     </td>
   </tr></table>
 
   <table class="field-table"><tr>
     <td>
       <label class="f">Téléphone</label>
-      <div class="line line-value">{{ legalPhone }}</div>
+      <div class="line line-value">{{ responsableTelephone }}</div>
     </td>
     <td>
       <label class="f">Email</label>
-      <div class="line line-value">{{ legalEmail }}</div>
+      <div class="line line-value">{{ responsableEmail }}</div>
     </td>
   </tr></table>
 
@@ -203,15 +203,15 @@
   </tr></table>
 
   <div class="declaration-box">
-    <p>Je soussigné(e) <span class="signee-line">{{ signeeName }}</span>, reconnais avoir pris connaissance du règlement intérieur du CHM Saleux et m'engage à le respecter.</p>
-    <p>Je certifie sur l'honneur être apte à pratiquer une activité sportive et ne pas avoir de contre-indication médicale connue. Je déclare participer à cette séance découverte sous ma propre responsabilité, en pleine connaissance des risques inhérents à la pratique sportive.</p>
+    <p>Je soussigné(e) <span class="signee-line">{{ prenom }} {{ nom|upper }}</span>, reconnais avoir pris connaissance du règlement intérieur du CHM Saleux et m'engage à le respecter.</p>
+    <p>Je certifie sur l'honneur être apte à pratiquer une activité sportive et ne pas avoir de contre-indication médicale connue. Je déclare participer à cette séance d'initiation sous ma propre responsabilité, en pleine connaissance des risques inhérents à la pratique sportive.</p>
     <p>Je décharge le Club d'Haltérophilie &amp; Musculation de Saleux (CHM Saleux) de toute responsabilité en cas d'accident survenu du fait de ma propre négligence ou du non-respect des consignes données par les encadrants.</p>
   </div>
 
   <table style="margin-top:4mm;" class="field-table"><tr>
     <td>
       <label class="f">Fait à</label>
-      <div class="line line-value">{{ signPlace }}</div>
+      <div class="line line-value">{{ lieuSignature }}</div>
     </td>
     <td>
       <label class="f">Le</label>
