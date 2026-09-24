@@ -1,257 +1,350 @@
-/* ============================================================
-   BOÎTE À IDÉES — QR HERO  (à ajouter dans index.css)
-   ============================================================ */
+/* =========================================================
+   BOÎTE À IDÉES — PAGE SPECIFIQUE
+   Thème clair (#f8f7f5 / #0a0a0a / #F57706)
+   ========================================================= */
 
-/* ---- HERO CONTAINER ---- */
-.bai-hero {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3rem;
-    padding: 1rem 0 2rem;
+.bai-root {
+  background: #0a0a0a;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
 }
 
-/* ---- ÉTAPES HORIZONTALES ---- */
-.bai-steps-row {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
+.bai-root .page-container {
+  max-width: 1280px !important;
 }
 
-.bai-step {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    background: var(--color-card-bg, rgba(255,255,255,0.04));
-    border: 1px solid var(--color-border, rgba(255,255,255,0.1));
-    border-radius: 50px;
-    padding: 0.65rem 1.25rem 0.65rem 0.65rem;
+/* =========================================
+   HEADER IMAGE
+   ========================================= */
+.boite-a-idees-header-bg {
+  --bg-image: url('/images/menu_dropdown/a_propos_de_notre_club/presentation_club/2.jpg');
+}
+
+/* =========================================
+   HEADINGS COMMUNS
+   ========================================= */
+.bai-section-head {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.bai-section-head--light { color: #fff; }
+
+.bai-eyebrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #F57706;
+  margin-bottom: 14px;
+}
+
+.bai-eyebrow--light { color: rgba(255,255,255,0.5); }
+
+.bai-title {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: #0a0a0a;
+  margin: 0 0 1rem;
+  line-height: 1.1;
+}
+
+.bai-title span { color: #F57706; }
+.bai-title--light { color: #fff; }
+.bai-title--light span { color: #F57706; }
+.text-outline-light { -webkit-text-stroke: 1.5px rgba(255,255,255,0.55); color: transparent; }
+
+.bai-sub {
+  color: rgba(0,0,0,0.5);
+  max-width: 580px;
+  margin: 0 auto;
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+.bai-sub--light { color: rgba(255,255,255,0.5); }
+
+/* =========================================
+   SECTION QR + ÉTAPES
+   ========================================= */
+.bai-qr-section {
+  padding-top: 100px;
+  padding-bottom: 90px;
+}
+
+.bai-layout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 64px;
+  align-items: center;
+}
+
+/* ---- Étapes ---- */
+.bai-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.bai-step-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 18px;
+  padding: 24px 28px;
+  transition: border-color 0.22s, box-shadow 0.22s;
+}
+
+.bai-step-card:hover {
+  border-color: rgba(245,119,6,0.3);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
 }
 
 .bai-step-num {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: var(--color-accent, #F57706);
-    color: #fff;
-    font-weight: 700;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #F57706;
+  color: #fff;
+  font-weight: 900;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.bai-step-body {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.2;
+.bai-step-body h4 {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0a0a0a;
+  margin: 0 0 6px;
 }
 
-.bai-step-body strong {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--color-text-primary, #fff);
+.bai-step-body p {
+  font-size: 0.9rem;
+  color: rgba(0,0,0,0.5);
+  margin: 0;
+  line-height: 1.6;
 }
 
-.bai-step-body span {
-    font-size: 0.78rem;
-    opacity: 0.6;
-    color: var(--color-text-primary, #fff);
+.bai-step-connector {
+  width: 2px;
+  height: 28px;
+  background: rgba(245,119,6,0.2);
+  margin-left: 19px;
 }
 
-.bai-step-arrow {
-    font-size: 0.75rem;
-    opacity: 0.35;
-    padding: 0 0.25rem;
-    color: var(--color-text-primary, #fff);
+/* ---- QR Block ---- */
+.bai-qr-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
 
-/* ---- QR STAGE ---- */
-.bai-qr-stage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    position: relative;
-}
-
-/* Anneau décoratif flou derrière le QR */
-.bai-qr-glow-ring {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 340px;
-    height: 340px;
-    border-radius: 50%;
-    border: 1px solid var(--color-accent, #e63946);
-    opacity: 0.15;
-    pointer-events: none;
-    animation: bai-pulse 3s ease-in-out infinite;
-}
-
-.bai-qr-glow-ring::before {
-    content: '';
-    position: absolute;
-    inset: 24px;
-    border-radius: 50%;
-    border: 1px solid var(--color-accent, #F57706);
-    opacity: 0.5;
-}
-
-@keyframes bai-pulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.15; }
-    50%       { transform: translate(-50%, -50%) scale(1.06); opacity: 0.25; }
-}
-
-/* ---- CADRE QR ---- */
 .bai-qr-frame {
-    position: relative;
-    padding: 1.5rem;
-    background: #ffffff;
-    border-radius: 20px;
-    box-shadow:
-        0 0  0 1px rgba(0,0,0,0.06),
-        0 20px 60px rgba(0,0,0,0.25);
-    display: inline-flex;
-    z-index: 1;
+  position: relative;
+  padding: 20px;
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.06), 0 20px 56px rgba(0,0,0,0.1);
+  display: inline-flex;
 }
 
-/* Coins décoratifs accent */
+/* Coins décoratifs */
 .qr-corner {
-    position: absolute;
-    width: 22px;
-    height: 22px;
-    border-color: var(--color-accent, #F57706);
-    border-style: solid;
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-color: #F57706;
+  border-style: solid;
 }
-.qr-corner.tl { top: -1px;  left: -1px;  border-width: 3px 0 0 3px; border-radius: 6px 0 0 0; }
-.qr-corner.tr { top: -1px;  right: -1px; border-width: 3px 3px 0 0; border-radius: 0 6px 0 0; }
-.qr-corner.bl { bottom: -1px; left: -1px;  border-width: 0 0 3px 3px; border-radius: 0 0 0 6px; }
-.qr-corner.br { bottom: -1px; right: -1px; border-width: 0 3px 3px 0; border-radius: 0 0 6px 0; }
 
-/* Image QR */
+.qr-corner.tl { top: -1px;    left: -1px;   border-width: 3px 0 0 3px; border-radius: 6px 0 0 0; }
+.qr-corner.tr { top: -1px;    right: -1px;  border-width: 3px 3px 0 0; border-radius: 0 6px 0 0; }
+.qr-corner.bl { bottom: -1px; left: -1px;   border-width: 0 0 3px 3px; border-radius: 0 0 0 6px; }
+.qr-corner.br { bottom: -1px; right: -1px;  border-width: 0 3px 3px 0; border-radius: 0 0 6px 0; }
+
 .bai-qr-img {
-    width: 220px;
-    height: 220px;
-    display: block;
-    object-fit: contain;
+  width: 220px;
+  height: 220px;
+  display: block;
+  object-fit: contain;
 }
 
-/* Label sous le QR */
 .bai-qr-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.88rem;
-    opacity: 0.55;
-    margin: 0;
-    color: var(--color-text-primary, #fff);
-    letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: rgba(0,0,0,0.45);
+  font-weight: 600;
+  margin: 0;
 }
 
-/* ---- BADGES GARANTIES ---- */
-.bai-badges-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.65rem;
+.bai-qr-label i { color: #F57706; }
+
+.bai-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .bai-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.45rem 1rem;
-    border-radius: 50px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    border: 1px solid var(--color-border, rgba(255,255,255,0.12));
-    background: var(--color-card-bg, rgba(255,255,255,0.04));
-    color: var(--color-text-primary, #fff);
-    letter-spacing: 0.01em;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  color: #0a0a0a;
 }
 
 .bai-badge i {
-    color: var(--color-accent, #F57706);
-    font-size: 0.85rem;
+  color: #F57706;
+  font-size: 0.8rem;
 }
 
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
-@media (max-width: 640px) {
-    .bai-steps-row {
-        flex-direction: column;
-        align-items: stretch;
-        width: 100%;
-        max-width: 280px;
-    }
-    .bai-step-arrow {
-        transform: rotate(90deg);
-        align-self: center;
-    }
-    .bai-qr-img {
-        width: 180px;
-        height: 180px;
-    }
-    .bai-qr-glow-ring {
-        width: 270px;
-        height: 270px;
-    }
-    .bai-badges-row {
-        flex-direction: column;
-        align-items: center;
-    }
-}
 /* =========================================
-   THÈME CLAIR
+   SECTION POURQUOI
    ========================================= */
-.bai-root {
-  --text-white: #0a0a0a;
-  --text-black: #0a0a0a;
-  --text-muted: rgba(0,0,0,0.5);
-  --text-muted-1: rgba(0,0,0,0.45);
-  --text-muted-2: rgba(0,0,0,0.55);
-  --bg-card: #fff;
-  --bg-section: #f8f7f5;
-  --border-soft: rgba(0,0,0,0.08);
-  --border-soft-2: rgba(0,0,0,0.06);
-  --color-card-bg: #fff;
-  --color-border: rgba(0,0,0,0.1);
-  --color-text-primary: #0a0a0a;
-  --title-color: #0a0a0a;
+.bai-why-section {
+  background: #111;
+  padding-top: 90px;
+  padding-bottom: 90px;
+}
 
-  background: #f8f7f5;
-  color: #0a0a0a;
+.bai-why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
-.bai-root .section-heading { color: #0a0a0a; }
-.bai-root .idea-card,
-.bai-root .step-card,
-.bai-root .qr-card {
-  background: #fff;
-  border-color: rgba(0,0,0,0.08);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+
+.bai-why-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 22px;
+  padding: 36px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: background 0.22s, border-color 0.22s, transform 0.22s;
 }
-.bai-root .idea-card p,
-.bai-root .step-card p { color: rgba(0,0,0,0.55); }
-.bai-root .idea-card h3,
-.bai-root .step-card h3 { color: #0a0a0a; }
-.bai-root .form-card,
-.bai-root form {
-  --color-card-bg: #fff;
-  --color-border: rgba(0,0,0,0.1);
-  --color-text-primary: #0a0a0a;
+
+.bai-why-card:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.13);
+  transform: translateY(-4px);
 }
-.bai-root input,
-.bai-root textarea,
-.bai-root select {
-  background: #fff;
-  border-color: rgba(0,0,0,0.12);
-  color: #0a0a0a;
+
+.bai-why-icon {
+  width: 52px;
+  height: 52px;
+  background: rgba(245,119,6,0.12);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: #F57706;
 }
-.bai-root label { color: rgba(0,0,0,0.6); }
+
+.bai-why-card h3 {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #fff;
+  margin: 0;
+}
+
+.bai-why-card p {
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 1000px) {
+  .bai-layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .bai-qr-block {
+    order: -1;
+  }
+}
+
+@media (max-width: 800px) {
+  .bai-why-grid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 500px) {
+  .bai-qr-img {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+/* =========================================
+   THÈME DARK
+   ========================================= */
+.bai-wm {
+  position: absolute;
+  top: 40px;
+  left: 6.5%;
+  font-size: clamp(2rem, 14vw, 170px);
+  font-weight: 900;
+  text-transform: uppercase;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.07);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  line-height: 0.9;
+}
+
+.bai-root .bai-title { color: #fff; }
+.bai-root .bai-sub { color: rgba(255,255,255,0.45); }
+.bai-root .bai-step-card {
+  background: #141414;
+  border-color: rgba(255,255,255,0.07);
+  border-radius: 0;
+  box-shadow: none;
+}
+.bai-root .bai-step-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+.bai-root .bai-step-num { border-radius: 0; }
+.bai-root .bai-step-body h4 { color: #fff; }
+.bai-root .bai-step-body p { color: rgba(255,255,255,0.45); }
+.bai-root .bai-qr-frame {
+  background: #141414;
+  border-radius: 0;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.07), 0 20px 56px rgba(0,0,0,0.5);
+}
+.bai-root .bai-qr-label { color: rgba(255,255,255,0.45); }
+.bai-root .bai-badge {
+  background: #1a1a1a;
+  border-color: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.8);
+  border-radius: 0;
+}
+.bai-root .bai-why-card { border-radius: 0; }
+.bai-root .bai-why-icon { border-radius: 0; }

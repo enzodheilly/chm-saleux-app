@@ -27,7 +27,7 @@
 .split-image{ flex: 1; }
 
 .image-frame{
-  border-radius: 20px;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: var(--shadow-lg, 0 10px 30px rgba(0,0,0,0.5));
   transition: transform var(--transition-fast, .25s ease);
@@ -79,7 +79,7 @@
   gap: 15px;
   background: var(--bg-card);
   padding: 15px;
-  border-radius: 10px;
+  border-radius: 0;
   box-shadow: var(--shadow-md, 0 8px 20px rgba(0,0,0,0.25));
   border: 1px solid var(--border-soft);
 }
@@ -106,7 +106,7 @@
   border-left: 4px solid var(--primary-color);
   padding: 15px 20px;
   margin-bottom: 20px;
-  border-radius: 0 8px 8px 0;
+  border-radius: 0;
 }
 
 .info-box h3{
@@ -125,7 +125,7 @@
 .full-width-section{
   background: var(--bg-alt, #0d0d0d);
   padding: 60px 0;
-  border-radius: var(--radius-md, 12px);
+  border-radius: 0;
   box-shadow: var(--shadow-lg, 0 10px 30px rgba(0,0,0,0.5));
   border: 1px solid var(--border-soft);
 }
@@ -153,7 +153,7 @@
 .sport-card{
   background: var(--bg-card);
   padding: 25px;
-  border-radius: 10px;
+  border-radius: 0;
   border: 1px solid var(--border-soft);
   text-align: center;
   transition: transform var(--transition-fast, .2s ease), border-color var(--transition-fast, .2s ease);
@@ -181,7 +181,7 @@
   background: #1a1a1a;
   color: #fff;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 0;
   text-align: center;
   border: 1px solid var(--border-soft);
 }
@@ -221,40 +221,59 @@
   }
 }
 /* =========================================
-   THÈME CLAIR
+   THÈME DARK
    ========================================= */
 .musculation-root {
-  --text-white: #0a0a0a;
-  --text-black: #0a0a0a;
-  --text-muted: rgba(0,0,0,0.5);
-  --text-muted-1: rgba(0,0,0,0.45);
-  --text-muted-2: rgba(0,0,0,0.55);
-  --bg-card: #fff;
-  --bg-section: #f8f7f5;
-  --border-soft: rgba(0,0,0,0.08);
-  --border-soft-2: rgba(0,0,0,0.06);
-  --color-card-bg: #fff;
-  --color-border: rgba(0,0,0,0.1);
-  --color-text-primary: #0a0a0a;
-  --title-color: #0a0a0a;
+  --text-white: #fff;
+  --text-black: #fff;
+  --text-muted: rgba(255,255,255,0.5);
+  --text-muted-1: rgba(255,255,255,0.45);
+  --text-muted-2: rgba(255,255,255,0.55);
+  --bg-card: #141414;
+  --bg-section: #111;
+  --border-soft: rgba(255,255,255,0.07);
+  --border-soft-2: rgba(255,255,255,0.05);
+  --color-card-bg: #141414;
+  --color-border: rgba(255,255,255,0.08);
+  --color-text-primary: #fff;
+  --title-color: #fff;
+  --bg-alt: #111;
 
-  background: #f8f7f5;
-  color: #0a0a0a;
+  background: #0a0a0a;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
 }
-.musculation-root .section-heading { color: #0a0a0a; }
+
+.muscu-wm {
+  position: absolute;
+  top: 40px;
+  left: 6.5%;
+  font-size: clamp(2rem, 14vw, 170px);
+  font-weight: 900;
+  text-transform: uppercase;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.07);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  line-height: 0.9;
+}
+
+.musculation-root .section-heading { color: #fff; }
 .musculation-root .desc-text,
-.musculation-root p { color: rgba(0,0,0,0.55); }
+.musculation-root p { color: rgba(255,255,255,0.5); }
 .musculation-root [class*="-card"] {
-  background: #fff;
-  border-color: rgba(0,0,0,0.08);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  background: #141414;
+  border-color: rgba(255,255,255,0.07);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 .musculation-root [class*="-card"] h3,
-.musculation-root [class*="-card"] h4 { color: #0a0a0a; }
-.musculation-root [class*="-card"] p { color: rgba(0,0,0,0.5); }
-.musculation-root .bg-alt { background: #fff; border-top: 1px solid rgba(0,0,0,0.06); border-bottom: 1px solid rgba(0,0,0,0.06); }
-.musculation-root .cta-section { background: #111; }
-.musculation-root { --bg-alt: #f0ede8; }
-.musculation-root .ffhm-note { background: #fff; color: #0a0a0a; border-color: rgba(0,0,0,0.08); box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
-.musculation-root .ffhm-note p { color: rgba(0,0,0,0.6); }
-.musculation-root .full-width-section { background: #f0ede8; border-color: rgba(0,0,0,0.07); box-shadow: none; }
+.musculation-root [class*="-card"] h4 { color: #fff; }
+.musculation-root [class*="-card"] p { color: rgba(255,255,255,0.5); }
+.musculation-root .ffhm-note { background: #141414; color: #fff; border-color: rgba(255,255,255,0.07); box-shadow: none; }
+.musculation-root .ffhm-note p { color: rgba(255,255,255,0.5); }
+.musculation-root .full-width-section { background: #111; border-color: rgba(255,255,255,0.06); box-shadow: none; }
+.musculation-root .image-frame { background: #101010; border-color: rgba(255,255,255,0.07); }
+.musculation-root .info-box { background: rgba(245,119,6,0.06); }

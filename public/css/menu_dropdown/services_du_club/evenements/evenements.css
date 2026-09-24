@@ -1,298 +1,387 @@
 /* =========================================================
    ÉVÉNEMENTS — PAGE SPÉCIFIQUE
-   (root + header + container + titres globaux gérés globalement)
    ========================================================= */
 
-/* Petit badge local (intro) */
-.badge-outline{
-  display: inline-block;
-  padding: 6px 14px;
-  border: 1px solid var(--border-soft);
-  border-radius: 999px;
-  color: var(--primary-color);
-  font-weight: 800;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 1rem;
-  background: rgba(255,255,255,0.02);
-}
 .evenements-page-header {
-    --bg-image: url('/images/menu_dropdown/services_du_club/evenements/1.jpg');
+  --bg-image: url('/images/menu_dropdown/services_du_club/evenements/1.jpg');
+  --bg-position: center 30%;
 }
 
-.intro-centered-box{
-  text-align: center;
-  max-width: 860px;
-  margin: 0 auto;
-}
-
-.intro-centered-box .desc-text-large{
-  max-width: 760px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-/* =========================================
-   EVENTS GRID
-   ========================================= */
-.events-grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.6rem;
-}
-
-.event-card{
-  background: var(--bg-card);
-  border-radius: 18px;
-  padding: 32px;
+/* ── Root ── */
+.events-root {
+  background: #0a0a0a;
+  color: #fff;
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--border-soft);
-  transition: transform .25s ease, border-color .25s ease;
 }
 
-.event-card:hover{
-  transform: translateY(-8px);
-  border-color: rgba(245, 119, 6, 0.35);
+/* ── Sections communes ── */
+.ev-section {
+  padding: 72px 0;
 }
 
-.event-glow{
-  position: absolute;
-  inset: -60%;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.035) 0%, transparent 70%);
-  pointer-events: none;
+.events-root > .ev-section:first-child,
+.ev-intro {
+  padding-top: 100px !important;
 }
 
-.event-content{
-  position: relative;
-  z-index: 1;
+.ev-section-head {
+  text-align: center;
+  margin-bottom: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
-.event-date{
-  display: block;
+.ev-label {
+  font-size: 0.72rem;
   font-weight: 900;
   text-transform: uppercase;
-  font-size: 0.75rem;
-  color: var(--primary-color);
-  letter-spacing: 2px;
-  margin-bottom: 1.2rem;
+  letter-spacing: 1.5px;
+  color: #F57706;
 }
 
-.event-icon{
-  font-size: 2.3rem;
-  margin-bottom: 1.2rem;
-  color: #fff;
-}
-
-.event-card h3{
-  font-size: 1.35rem;
+.ev-h2 {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
   font-weight: 900;
   text-transform: uppercase;
-  margin: 0 0 .8rem;
-  color: #fff;
-  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #0a0a0a;
+  margin: 0;
+  line-height: 1.1;
 }
 
-.event-card p{
-  color: var(--text-muted);
-  line-height: 1.6;
+.ev-h2 span { color: #F57706; }
+
+.ev-desc {
   font-size: 0.95rem;
+  color: rgba(0,0,0,0.48);
+  line-height: 1.7;
+  max-width: 580px;
   margin: 0;
 }
 
-/* Bords colorés thématiques */
-.border-gold{ border-top: 4px solid #d4af37; }
-.border-blue{ border-top: 4px solid #3498db; }
-.border-red{ border-top: 4px solid #e63946; }
-.border-green{ border-top: 4px solid #2ecc71; }
+/* ── Piliers ── */
+.ev-intro { background: #f8f7f5; }
 
-/* =========================================
-   WHATSAPP SECTION
-   ========================================= */
-.whatsapp-connect-card{
-  background: linear-gradient(145deg, #0f0f0f, #050505);
-  border: 1px solid var(--border-soft);
-  border-radius: 22px;
-  padding: 56px;
+.ev-pillars {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 3rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.ev-pillar {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 18px;
+  padding: 36px 32px;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+
+.ev-pillar:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  border-color: rgba(245,119,6,0.25);
+}
+
+.ev-pillar-icon {
+  width: 52px;
+  height: 52px;
+  background: rgba(245,119,6,0.1);
+  border-radius: 14px;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: #F57706;
+  margin-bottom: 20px;
 }
 
-.wa-info p{
-  color: var(--text-muted);
-  margin: .2rem 0 2rem;
-  font-size: 1.05rem;
-  line-height: 1.6;
-}
-
-/* ✅ évite de casser le style global de .section-heading */
-.wa-info .section-heading{
-  margin-bottom: .8rem;
-}
-
-.btn-wa{
-  background: #25d366;
-  color: white;
-  padding: 16px 30px;
-  border-radius: 50px;
-  text-decoration: none;
+.ev-pillar h4 {
+  font-size: 1rem;
   font-weight: 900;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  margin: 0 0 10px;
+}
+
+.ev-pillar p {
+  color: rgba(0,0,0,0.5);
+  line-height: 1.65;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* ── Calendrier ── */
+.ev-calendar {
+  background: #fff;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.ev-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.ev-card {
+  background: #f8f7f5;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.ev-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+}
+
+.ev-card-top {
+  padding: 24px 24px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.ev-card-top--gold  { background: rgba(212,175,55,0.1); }
+.ev-card-top--blue  { background: rgba(59,130,246,0.1); }
+.ev-card-top--red   { background: rgba(239,68,68,0.1); }
+.ev-card-top--green { background: rgba(34,197,94,0.1); }
+
+.ev-card-date {
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(0,0,0,0.4);
+}
+
+.ev-card-icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(245,119,6,0.12);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  color: #F57706;
+}
+
+.ev-card-icon--blue  { background: rgba(59,130,246,0.12);  color: #3b82f6; }
+.ev-card-icon--red   { background: rgba(239,68,68,0.12);   color: #ef4444; }
+.ev-card-icon--green { background: rgba(34,197,94,0.12);   color: #22c55e; }
+
+.ev-card-body {
+  padding: 24px;
+  flex: 1;
+}
+
+.ev-card-body h3 {
+  font-size: 1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  margin: 0 0 10px;
+}
+
+.ev-card-body p {
+  color: rgba(0,0,0,0.5);
+  line-height: 1.65;
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+/* ── WhatsApp ── */
+.ev-wa-section { background: #f8f7f5; }
+
+.ev-wa-card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 24px;
+  padding: 52px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 40px;
+  align-items: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+}
+
+.ev-wa-icon {
+  width: 72px;
+  height: 72px;
+  background: #25d366;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.ev-wa-content .ev-label { display: block; margin-bottom: 10px; }
+
+.ev-wa-content h3 {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  margin: 0 0 14px;
+  line-height: 1.1;
+}
+
+.ev-wa-content h3 span { color: #F57706; }
+
+.ev-wa-content p {
+  color: rgba(0,0,0,0.5);
+  line-height: 1.7;
+  font-size: 0.95rem;
+  margin: 0 0 24px;
+  max-width: 480px;
+}
+
+.ev-btn-wa {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  transition: var(--transition-base, all .3s ease);
+  gap: 10px;
+  background: #25d366;
+  color: #fff;
+  padding: 14px 26px;
+  border-radius: 50px;
+  font-weight: 800;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: transform 0.22s, box-shadow 0.22s;
+  white-space: nowrap;
 }
 
-.btn-wa:hover{
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.25);
+.ev-btn-wa:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(37,211,102,0.3);
 }
 
-.wa-visual{
-  position: relative;
-  height: 200px;
+.ev-wa-bubbles {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
-.wa-bubble{
-  background: #202c33;
-  padding: 14px 20px;
-  border-radius: 15px 15px 15px 0;
-  position: absolute;
-  top: 10px;
-  left: 0;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+.ev-bubble {
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 0.82rem;
   font-weight: 600;
-  font-size: .9rem;
-  border: 1px solid rgba(255,255,255,0.05);
+  max-width: 200px;
+  line-height: 1.4;
 }
 
-.wa-bubble.alt{
-  background: #005c4b;
-  border-radius: 15px 15px 0 15px;
-  top: 90px;
-  right: 0;
-  left: auto;
-}
-
-/* =========================================
-   RESPONSIVE (PAGE ONLY)
-   ========================================= */
-@media (max-width: 992px){
-  .event-card{
-    padding: 26px;
-    border-radius: 16px;
-  }
-
-  .event-card h3{
-    font-size: 1.25rem;
-  }
-
-  .whatsapp-connect-card{
-    grid-template-columns: 1fr;
-    padding: 40px;
-    text-align: center;
-  }
-
-  .wa-info{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .wa-info .section-heading{
-    align-items: center; /* si .section-heading.centered n'est pas utilisé */
-  }
-
-  .wa-visual{
-    display: none;
-  }
-
-  .btn-wa{
-    justify-content: center;
-  }
-}
-
-@media (max-width: 768px){
-  .events-grid{
-    gap: 1.2rem;
-  }
-
-  .event-card{
-    padding: 22px;
-  }
-
-  .event-icon{
-    font-size: 2.1rem;
-  }
-
-  .whatsapp-connect-card{
-    padding: 24px 18px;
-    border-radius: 18px;
-  }
-
-  .wa-info .section-heading{
-    font-size: 1.8rem;
-  }
-
-  .wa-info p{
-    font-size: 1rem;
-    margin-bottom: 1.6rem;
-  }
-
-  .btn-wa{
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-@media (max-width: 480px){
-  .event-card{
-    padding: 18px;
-  }
-
-  .event-card h3{
-    font-size: 1.15rem;
-  }
-
-  .wa-info .section-heading{
-    font-size: 1.6rem;
-  }
-}
-/* =========================================
-   THÈME CLAIR
-   ========================================= */
-.events-root {
-  --text-white: #0a0a0a;
-  --text-black: #0a0a0a;
-  --text-muted: rgba(0,0,0,0.5);
-  --text-muted-1: rgba(0,0,0,0.45);
-  --text-muted-2: rgba(0,0,0,0.55);
-  --bg-card: #fff;
-  --bg-section: #f8f7f5;
-  --border-soft: rgba(0,0,0,0.08);
-  --border-soft-2: rgba(0,0,0,0.06);
-  --color-card-bg: #fff;
-  --color-border: rgba(0,0,0,0.1);
-  --color-text-primary: #0a0a0a;
-  --title-color: #0a0a0a;
-
-  background: #f8f7f5;
+.ev-bubble--received {
+  background: #f0f0f0;
   color: #0a0a0a;
+  border-radius: 16px 16px 16px 4px;
+  align-self: flex-start;
 }
-.events-root .section-heading { color: #0a0a0a; }
-.events-root .section-subtext { color: rgba(0,0,0,0.5); }
-.events-root .event-card,
-.events-root [class*="-card"] {
-  background: #fff;
-  border-color: rgba(0,0,0,0.08);
-  box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+
+.ev-bubble--sent {
+  background: #dcf8c6;
+  color: #0a0a0a;
+  border-radius: 16px 16px 4px 16px;
+  align-self: flex-end;
 }
-.events-root .event-title,
-.events-root [class*="-card"] h3 { color: #0a0a0a; }
-.events-root .event-desc,
-.events-root [class*="-card"] p { color: rgba(0,0,0,0.5); }
-.events-root .event-meta { color: rgba(0,0,0,0.4); }
-.events-root .event-date { color: var(--primary-color); }
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .ev-cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .ev-pillars { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+  .ev-wa-card { grid-template-columns: 1fr; gap: 24px; padding: 36px 28px; text-align: center; }
+  .ev-wa-icon { margin: 0 auto; }
+  .ev-wa-content p { max-width: 100%; }
+  .ev-wa-bubbles { display: none; }
+  .ev-btn-wa { justify-content: center; }
+}
+
+@media (max-width: 680px) {
+  .ev-section { padding: 52px 0; }
+  .ev-cards { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+  .ev-wa-card { padding: 28px 20px; border-radius: 0; }
+}
+
+/* =========================================
+   THÈME DARK
+   ========================================= */
+.ev-wm {
+  position: absolute;
+  top: 40px;
+  left: 6.5%;
+  font-size: clamp(2rem, 14vw, 170px);
+  font-weight: 900;
+  text-transform: uppercase;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.07);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  line-height: 0.9;
+}
+
+.events-root .ev-h2 { color: #fff; }
+.events-root .ev-desc { color: rgba(255,255,255,0.45); }
+.events-root .ev-intro { background: #0a0a0a; }
+.events-root .ev-pillar {
+  background: #141414;
+  border-color: rgba(255,255,255,0.07);
+  border-radius: 0;
+}
+.events-root .ev-pillar:hover { box-shadow: 0 10px 28px rgba(0,0,0,0.5); }
+.events-root .ev-pillar-icon { border-radius: 0; }
+.events-root .ev-pillar h4 { color: #fff; }
+.events-root .ev-pillar p { color: rgba(255,255,255,0.45); }
+.events-root .ev-calendar {
+  background: #111;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.events-root .ev-card {
+  background: #141414;
+  border-color: rgba(255,255,255,0.07);
+  border-radius: 0;
+}
+.events-root .ev-card:hover { box-shadow: 0 10px 28px rgba(0,0,0,0.5); }
+.events-root .ev-card-top { border-bottom: 1px solid rgba(255,255,255,0.06); }
+.events-root .ev-card-date { color: rgba(255,255,255,0.4); }
+.events-root .ev-card-icon { border-radius: 0; }
+.events-root .ev-card-body h3 { color: #fff; }
+.events-root .ev-card-body p { color: rgba(255,255,255,0.45); }
+.events-root .ev-wa-section { background: #0a0a0a; }
+.events-root .ev-wa-card {
+  background: #141414;
+  border-color: rgba(255,255,255,0.07);
+  border-radius: 0;
+  box-shadow: none;
+}
+.events-root .ev-wa-icon { border-radius: 0; }
+.events-root .ev-wa-content h3 { color: #fff; }
+.events-root .ev-wa-content p { color: rgba(255,255,255,0.45); }
+.events-root .ev-btn-wa { border-radius: 0; }
+.events-root .ev-bubble--received {
+  background: #1e1e1e;
+  color: rgba(255,255,255,0.7);
+  border-radius: 12px 12px 12px 3px;
+}
+.events-root .ev-bubble--sent {
+  background: rgba(37,211,102,0.15);
+  color: rgba(255,255,255,0.8);
+  border-radius: 12px 12px 3px 12px;
+}

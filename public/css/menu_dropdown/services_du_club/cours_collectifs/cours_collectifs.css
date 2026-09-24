@@ -1,406 +1,540 @@
 /* =========================================================
    COURS COLLECTIFS — PAGE SPECIFIQUE
-   (header + page-shell + page-container + typo globale gérés globalement)
+   Thème clair (#f8f7f5 / #0a0a0a / #F57706)
    ========================================================= */
 
-/* =========================================
-   LAYOUT & INFOS
-   ========================================= */
-.intro-block {
-    width: 100%;
-    margin-bottom: 3rem;
-}
-
-.split-layout{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
-}
-.cours-collectifs-page-header {
-    --bg-image: url('/images/menu_dropdown/services_du_club/cours_collectifs/cours-co.jpg');
-}
-/* IMPORTANT :
-   .section-heading (font-size / uppercase / couleur / span orange)
-   est géré globalement.
-   Ici on garde seulement la mise en page du titre custom.
-*/
-.title-with-bar {
-  display: flex;
-  text-align: center;
-  flex-direction: column;
-  gap: 0;
-}
-
-.desc-text{
-  color: var(--text-muted);
-  line-height: 1.7;
-  font-size: 1.05rem;
-  text-align: center;
-}
-
-/* --- Key facts --- */
-.key-facts-grid{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-}
-
-.fact-card{
-  background: var(--bg-card);
-  padding: 1.5rem;
-  border-radius: 10px;
-  border: 1px solid var(--border-soft);
-  text-align: center;
-}
-
-.fact-card i{
-  color: var(--primary-color);
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  display: block;
-}
-
-.fact-card strong{
-  display: block;
+.collectif-root {
+  background: #0a0a0a;
   color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.cc-wm {
+  position: absolute;
+  top: 40px;
+  left: 6.5%;
+  font-size: clamp(2rem, 14vw, 170px);
+  font-weight: 900;
+  text-transform: uppercase;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.07);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  line-height: 0.9;
+}
+
+/* =========================================
+   HEADER IMAGE
+   ========================================= */
+.cours-collectifs-page-header {
+  --bg-image: url('/images/menu_dropdown/services_du_club/cours_collectifs/cours-co.jpg');
+}
+
+/* =========================================
+   HEADINGS COMMUNS
+   ========================================= */
+.cc-section-head {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.cc-section-head--light { color: #fff; }
+
+.cc-eyebrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #F57706;
+  margin-bottom: 14px;
+}
+
+.cc-eyebrow--light { color: rgba(255,255,255,0.5); }
+
+.cc-title {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0 0 1rem;
+  line-height: 1.1;
+}
+
+.cc-title span { color: var(--primary-color); }
+.cc-title--light { color: #fff; }
+.cc-title--light span { color: var(--primary-color); }
+.text-outline-light { -webkit-text-stroke: 1.5px rgba(255,255,255,0.55); color: transparent; }
+
+.cc-sub {
+  color: rgba(255,255,255,0.45);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.7;
   font-size: 1rem;
 }
 
-.fact-card span{
+.cc-sub--light { color: rgba(255,255,255,0.5); }
+
+/* =========================================
+   SECTION INTRO + INFOS CLÉS
+   ========================================= */
+.cc-intro-section {
+  padding-top: 100px;
+  padding-bottom: 90px;
+}
+
+.cc-facts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.cc-fact-card {
+  background: #141414;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 0;
+  padding: 32px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
+}
+
+.cc-fact-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(245,119,6,0.3);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.4);
+}
+
+.cc-fact-icon {
+  width: 52px;
+  height: 52px;
+  background: rgba(245,119,6,0.1);
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: #F57706;
+  margin-bottom: 6px;
+}
+
+.cc-fact-card strong {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+}
+
+.cc-fact-card span {
   font-size: 0.8rem;
-  color: var(--text-muted);
+  font-weight: 600;
+  color: rgba(255,255,255,0.35);
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* =========================================
-   ACTIVITÉS GRID
+   SECTION ACTIVITÉS
    ========================================= */
+.cc-activities-section {
+  background: #111;
+  padding-top: 90px;
+  padding-bottom: 90px;
+}
 
-.activities-grid{
+.cc-activities-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
-.activity-card{
-  background: var(--bg-card);
-  padding: 2.5rem;
-  border-radius: 12px;
-  border: 1px solid var(--border-soft);
-  transition: var(--transition);
-}
-
-.activity-card:hover{
-  border-color: rgba(245, 119, 6, 0.35);
-  transform: translateY(-5px);
-}
-
-.card-icon{
-  font-size: 2.5rem;
-  color: var(--primary-color);
-  margin-bottom: 1.5rem;
-}
-
-.activity-card h3{
-  font-size: 1.4rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-  color: #fff;
-}
-
-.activity-card p{
-  color: #ccc;
-  font-size: 0.95rem;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-}
-
-.tags-row{
+.cc-activity-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 0;
+  padding: 36px 30px;
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 16px;
+  transition: background 0.22s, border-color 0.22s, transform 0.22s;
 }
 
-.tags-row span{
-  background: rgba(255,255,255,0.05);
-  padding: 4px 10px;
-  border-radius: 6px;
+.cc-activity-card:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(245,119,6,0.3);
+  transform: translateY(-4px);
+}
+
+.cc-activity-icon {
+  width: 52px;
+  height: 52px;
+  background: rgba(245,119,6,0.12);
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: #F57706;
+}
+
+.cc-activity-icon--green {
+  background: rgba(52,199,89,0.12);
+  color: #34c759;
+}
+
+.cc-activity-card h3 {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #fff;
+  margin: 0;
+}
+
+.cc-activity-card p {
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+  font-size: 0.92rem;
+  margin: 0;
+  flex: 1;
+}
+
+.cc-tags {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.cc-tags span {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 4px 12px;
+  border-radius: 0;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: var(--text-muted);
-  border: 1px solid rgba(255,255,255,0.04);
+  letter-spacing: 0.3px;
+  color: rgba(255,255,255,0.5);
 }
 
 /* =========================================
-   COACH SPOTLIGHT
+   SECTION COACH EMA
    ========================================= */
-.coach-spotlight-wrapper{
+.cc-coach-section {
+  background: #0a0a0a;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.cc-coach-grid {
   display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  gap: 4rem;
-  align-items: center;
+  grid-template-columns: 1.1fr 0.9fr;
+  min-height: 620px;
 }
 
-.framed-image{
+/* ── Photo ── */
+.cc-coach-photo {
   position: relative;
-  border: 1px solid var(--border-soft);
-  padding: 10px;
-  border-radius: 12px;
-  background: var(--bg-card);
+  overflow: hidden;
 }
 
-.framed-image img{
+.cc-coach-photo img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
   display: block;
-  border-radius: 8px;
-  filter: grayscale(20%);
+  filter: grayscale(25%);
+  transition: transform 0.7s ease, filter 0.4s;
 }
 
-.coach-quote{
-  margin-top: 2rem;
-  padding: 1.25rem;
-  background: rgba(255,255,255,0.02);
-  border-left: 3px solid var(--primary-color);
-  border-radius: 8px;
+.cc-coach-section:hover .cc-coach-photo img {
+  transform: scale(1.04);
+  filter: grayscale(0%);
 }
 
-.coach-quote i{
-  color: var(--primary-color);
+.cc-coach-photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0,0,0,0.1) 50%, #0a0a0a 100%);
+  pointer-events: none;
+}
+
+.cc-coach-photo-name {
+  position: absolute;
+  bottom: 24px;
+  left: 28px;
+  font-size: clamp(4rem, 9vw, 8rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.22);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Panel texte ── */
+.cc-coach-panel {
+  display: flex;
+  align-items: center;
+  border-left: 1px solid rgba(255,255,255,0.06);
+}
+
+.cc-coach-panel-inner {
+  padding: 56px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.cc-coach-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #F57706;
+}
+
+.cc-coach-heading {
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0;
+  line-height: 1.05;
+}
+
+.cc-coach-heading strong { color: #F57706; font-weight: 900; }
+
+.cc-coach-lead {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.75;
+  margin: 0;
+}
+
+.cc-coach-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.cc-coach-stat {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.75);
+}
+
+.cc-coach-stat i {
+  color: #F57706;
+  font-size: 0.85rem;
+  width: 18px;
+  flex-shrink: 0;
+}
+
+.cc-chips {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.cc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  background: #141414;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.cc-chip i {
+  color: #F57706;
+  font-size: 0.75rem;
+}
+
+.cc-quote {
+  margin: 0;
+  padding: 20px 24px;
+  background: rgba(245,119,6,0.06);
+  border-left: 3px solid #F57706;
+  border-radius: 0;
+}
+
+.cc-quote i {
+  color: #F57706;
+  font-size: 1rem;
+  display: block;
   margin-bottom: 10px;
 }
 
-.coach-quote p{
+.cc-quote p {
   font-style: italic;
+  color: rgba(255,255,255,0.65);
+  margin: 0;
+  line-height: 1.65;
+  font-size: 0.97rem;
+}
+
+/* =========================================
+   CTA PLANNING
+   ========================================= */
+.cc-cta-section {
+  background: #0a0a0a;
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+.cc-cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.cc-cta-text h3 {
+  font-size: 1.6rem;
+  font-weight: 900;
   color: #fff;
+  margin: 0 0 10px;
+}
+
+.cc-cta-text p {
+  color: rgba(255,255,255,0.5);
   margin: 0;
   line-height: 1.6;
+  max-width: 480px;
 }
 
-/* =========================================
-   CTA & PLANNING
-   ========================================= */
-.cta-card{
-  background: linear-gradient(145deg, #1a1a1a, #080808);
-  padding: 4rem 2rem;
-  border-radius: 12px;
-  border: 1px solid var(--border-soft);
-}
+.cc-cta-text strong { color: rgba(255,255,255,0.8); }
 
-/* On laisse .section-heading gérer le style du h2 */
-.cta-card .section-heading{
-  margin-bottom: 1rem;
-}
-
-.cta-card .lead{
-  color: #ccc;
-  max-width: 720px;
-  margin: 0 auto;
-  line-height: 1.6;
-}
-
-.cta-actions{
+.cc-cta-actions {
   display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 2rem;
+  gap: 12px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
-.btn-whatsapp{
-  background: #25D366;
-  color: #fff;
-  padding: 15px 30px;
-  font-weight: 800;
-  border-radius: 8px;
-  text-decoration: none;
+.cc-btn-whatsapp {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  transition: transform .25s ease, box-shadow .25s ease;
-}
-
-.btn-whatsapp:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(37, 211, 102, 0.25);
-}
-
-.btn-trial-white{
-  border: 1px solid #fff;
+  gap: 9px;
+  background: #25d366;
   color: #fff;
-  padding: 15px 30px;
+  padding: 15px 26px;
+  border-radius: 0;
   font-weight: 800;
-  border-radius: 8px;
   text-decoration: none;
-  transition: background .25s ease, color .25s ease;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: transform 0.22s, box-shadow 0.22s;
 }
 
-.btn-trial-white:hover{
-  background: #fff;
-  color: #000;
+.cc-btn-whatsapp:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(37,211,102,0.35);
 }
 
-.cta-footer-note{
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin-top: 1.4rem;
+.cc-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: #F57706;
+  color: #fff;
+  padding: 15px 26px;
+  border-radius: 0;
+  font-weight: 800;
+  text-decoration: none;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: transform 0.22s, box-shadow 0.22s;
+}
+
+.cc-btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(245,119,6,0.4);
 }
 
 /* =========================================
-   RESPONSIVE (BODY ONLY)
+   RESPONSIVE
    ========================================= */
-   
-@media (max-width: 992px){
-  .split-layout,
-  .coach-spotlight-wrapper{
+@media (max-width: 1000px) {
+  .cc-coach-grid {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    min-height: unset;
   }
 
-  .key-facts-grid{
+  .cc-coach-photo {
+    height: 420px;
+  }
+
+  .cc-coach-photo-overlay {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1) 50%, #0a0a0a 100%);
+  }
+
+  .cc-coach-panel {
+    border-left: none;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .cc-coach-panel-inner {
+    padding: 44px 28px;
+  }
+}
+
+@media (max-width: 900px) {
+  .cc-activities-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    max-width: 500px;
+    margin: 0 auto;
   }
 
-  .activities-grid{
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .activity-card{
-    padding: 2rem;
-  }
-
-  .cta-card{
-    padding: 3rem 1.5rem;
-  }
-
-  .cta-actions{
+  .cc-cta-inner {
     flex-direction: column;
-    align-items: stretch;
+    text-align: center;
+    gap: 28px;
   }
 
-  .btn-whatsapp,
-  .btn-trial-white{
+  .cc-cta-text p { max-width: 100%; }
+
+  .cc-cta-actions {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .cc-facts-grid {
+    grid-template-columns: 1fr;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+
+  .cc-btn-whatsapp,
+  .cc-btn-primary {
     width: 100%;
     justify-content: center;
+    max-width: 360px;
   }
 }
-
-@media (max-width: 768px){
-  .split-layout,
-  .coach-spotlight-wrapper{
-    gap: 2.5rem;
-  }
-
-  .title-with-bar{
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .desc-text{
-    font-size: 1rem;
-  }
-
-  .activities-grid{
-    grid-template-columns: 1fr;
-  }
-
-  .activity-card{
-    padding: 1.6rem;
-    border-radius: 10px;
-  }
-
-  .card-icon{
-    font-size: 2.2rem;
-    margin-bottom: 1rem;
-  }
-
-  .activity-card h3{
-    font-size: 1.2rem;
-  }
-
-  .framed-image{
-    padding: 8px;
-  }
-
-  .coach-quote{
-    padding: 1rem;
-  }
-
-  .cta-card{
-    padding: 2.4rem 1.2rem;
-  }
-
-  .cta-footer-note{
-    font-size: 0.78rem;
-  }
-}
-
-@media (max-width: 480px){
-  .fact-card{
-    padding: 1.1rem;
-  }
-
-  .fact-card strong{
-    font-size: 0.95rem;
-  }
-
-  .fact-card span{
-    font-size: 0.75rem;
-  }
-
-  .activity-card p{
-    font-size: 0.92rem;
-  }
-
-  .btn-whatsapp,
-  .btn-trial-white{
-    padding: 14px 18px;
-  }
-}
-/* =========================================
-   THÈME CLAIR
-   ========================================= */
-.collectif-root {
-  --text-white: #0a0a0a;
-  --text-black: #0a0a0a;
-  --text-muted: rgba(0,0,0,0.5);
-  --text-muted-1: rgba(0,0,0,0.45);
-  --text-muted-2: rgba(0,0,0,0.55);
-  --bg-card: #fff;
-  --bg-section: #f8f7f5;
-  --border-soft: rgba(0,0,0,0.08);
-  --border-soft-2: rgba(0,0,0,0.06);
-  --color-card-bg: #fff;
-  --color-border: rgba(0,0,0,0.1);
-  --color-text-primary: #0a0a0a;
-  --title-color: #0a0a0a;
-
-  background: #f8f7f5;
-  color: #0a0a0a;
-}
-.collectif-root .section-heading { color: #0a0a0a; }
-.collectif-root .section-subtext { color: rgba(0,0,0,0.5); }
-.collectif-root .course-card,
-.collectif-root [class*="-card"] {
-  background: #fff;
-  border-color: rgba(0,0,0,0.08);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-}
-.collectif-root .course-card h3,
-.collectif-root [class*="-card"] h3 { color: #0a0a0a; }
-.collectif-root .course-card p,
-.collectif-root [class*="-card"] p { color: rgba(0,0,0,0.5); }
-.collectif-root .schedule-info { color: #0a0a0a; }
-.collectif-root .schedule-time { color: var(--primary-color); }
-.collectif-root .instructor-name { color: #0a0a0a; }
-.collectif-root .instructor-role { color: rgba(0,0,0,0.45); }
-.collectif-root .cta-section { background: #111; }
-.collectif-root .cta-card { background: #fff; border-color: rgba(0,0,0,0.08); box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
-.collectif-root .cta-card h2,
-.collectif-root .cta-card h3 { color: #0a0a0a; }
-.collectif-root .cta-card p { color: rgba(0,0,0,0.55); }
-.collectif-root .tags-row span { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.07); }
-.collectif-root .coach-quote { background: rgba(245,119,6,0.04); }

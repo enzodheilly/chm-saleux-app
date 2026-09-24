@@ -181,6 +181,7 @@ class CompetitionController extends AbstractController
             'gender'       => $gender,
             'currentPage'  => $page,
             'totalPages'   => $totalPages,
+            'total'        => $total,
         ]);
     }
 

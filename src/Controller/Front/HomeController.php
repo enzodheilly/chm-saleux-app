@@ -6,6 +6,7 @@ use App\Repository\ArticleRepository;
 use App\Repository\NewEquipmentRepository;
 use App\Repository\MembershipPlanRepository;
 use App\Repository\NewsletterSubscriberRepository;
+use App\Service\FaqService;
 use App\Service\MemberProgressService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,12 +22,9 @@ class HomeController extends AbstractController
         MembershipPlanRepository $membershipPlanRepository,
         NewsletterSubscriberRepository $subscriberRepository,
         MemberProgressService $progressService,
+        FaqService $faqService,
         Request $request
     ): Response {
-        if ($this->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('admin_dashboard');
-        }
-
         $user = $this->getUser();
 
         $subscriber = null;
@@ -56,6 +54,19 @@ class HomeController extends AbstractController
             ];
         }
 
+        $allFaqs = $faqService->getAll();
+        $byCategory = [];
+        foreach ($allFaqs as $f) {
+            $byCategory[$f['categorie']][] = $f;
+        }
+        $faqHome = array_values(array_filter([
+            $byCategory['questions'][2] ?? null,
+            $byCategory['questions'][3] ?? null,
+            $byCategory['abonnement'][0] ?? null,
+            $byCategory['abonnement'][2] ?? null,
+            $byCategory['entrainement'][3] ?? null,
+        ]));
+
         return $this->render('0_home/index.html.twig', [
             'articles'             => $articleRepository->findLatest(3),
             'newEquipments'        => $newEquipmentRepository->findLatest(),
@@ -63,6 +74,8 @@ class HomeController extends AbstractController
             'isSubscribed'         => $isSubscribed,
             'subscriber'           => $subscriber,
             'heroStats'            => $heroStats,
+            'faqHome'              => $faqHome,
+            'faqCount'             => count($allFaqs),
             'showSetPasswordModal' => (bool) $request->query->get('showSetPasswordModal', false),
         ]);
     }

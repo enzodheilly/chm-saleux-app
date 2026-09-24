@@ -15,6 +15,8 @@
 .membre-bureau-page-header {
     --bg-image: url('/images/menu_dropdown/services_du_club/evenements/2.jpg');
 }
+
+.membre-bureau-root > .section-spacer:first-child { padding-top: 72px; }
 .profile-grid {
   display: grid;
   grid-template-columns: 0.8fr 1.2fr;

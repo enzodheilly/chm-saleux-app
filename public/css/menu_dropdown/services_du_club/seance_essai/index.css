@@ -1,422 +1,444 @@
 /* =========================================================
-   SÉANCE D'ESSAI — PAGE SPECIFIQUE
-   (root + header + container + body + titres gérés globalement)
+   SÉANCE D'ESSAI — PAGE SPÉCIFIQUE
    ========================================================= */
 
-.container-narrow{
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
-  padding: 0 20px;
+/* ── Header ── */
+.se-page-header {
+  background: #111214;
+  padding-top: calc(60px + 40px);
+  padding-bottom: 48px;
 }
 
+.se-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 24px;
+}
+
+.se-breadcrumb a {
+  color: rgba(255,255,255,0.4);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.se-breadcrumb a:hover { color: #fff; }
+
+.se-breadcrumb i {
+  font-size: 0.6rem;
+  color: #F57706;
+}
+
+.se-breadcrumb span { color: rgba(255,255,255,0.55); }
+
+.se-header-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 760px;
+}
+
+.se-badge {
+  display: inline-block;
+  background: #F57706;
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  width: fit-content;
+}
+
+.se-title {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: #fff;
+  margin: 0;
+}
+
+.se-title span { color: rgba(255,255,255,0.25); }
+
+.se-lead {
+  font-size: 0.97rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 600px;
+}
+
+/* ── Header original avec photo ── */
 .seance-essai-page-header {
   --bg-image: url('/images/menu_dropdown/services_du_club/journee_essai/13.jpg');
 }
 
-/* On cible le ::before pour descendre l'image */
 .seance-essai-page-header::before {
-  background-position: center 25% !important; /* Ajuste le pourcentage selon tes besoins */
-}
-/* --- REASSURANCE --- */
-.intro-badge{
-  color: var(--primary-color);
-  font-weight: 800;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-  margin-bottom: 1rem;
+  background-position: center 25% !important;
 }
 
-.highlight-text{
-  -webkit-text-stroke: 1px white;
-  color: white!important;
-}
-
-/* ✅ on ne touche PAS aux h2 globaux (.section-heading) */
-.intro-desc{
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  line-height: 1.7;
-}
-
-/* --- REASONS GRID --- */
-.reasons-section{
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px 60px;
-}
-
-.reasons-grid{
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 30px;
-}
-
-.reason-card{
-  background: var(--bg-card);
-  padding: 40px;
-  border-radius: 15px;
-  border: 1px solid var(--border-soft);
-  transition: var(--transition);
-}
-
-.reason-card:hover{
-  transform: translateY(-10px);
-  border-color: rgba(255,255,255,0.2);
-}
-
-.reason-card:last-child{
-  grid-column: 1 / -1;
-  max-width: 560px;
-  width: 100%;
-  justify-self: center;
-}
-
-.card-icon{
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.card-icon.blue{ color: #3498db; }
-.card-icon.yellow{ color: #f1c40f; }
-.card-icon.green{ color: #2ecc71; }
-
-.reason-card h3{
-  font-size: 1.4rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
+/* ── Root ── */
+.seance-essai-root {
+  background: #0a0a0a;
   color: #fff;
+  position: relative;
+  overflow: hidden;
 }
 
-.reason-card p{
-  color: var(--text-muted);
+/* ── Sections communes ── */
+.se-section {
+  padding: 72px 0;
+}
+
+.seance-essai-root > .se-section:first-child,
+.se-reasons {
+  padding-top: 100px !important;
+}
+
+.se-section-head {
+  text-align: center;
+  margin-bottom: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.se-label {
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #F57706;
+}
+
+.se-h2 {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: #0a0a0a;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.se-h2 span { color: #F57706; }
+
+.se-desc {
   font-size: 0.95rem;
-  line-height: 1.6;
+  color: rgba(0,0,0,0.48);
+  line-height: 1.7;
+  max-width: 580px;
   margin: 0;
 }
 
-/* --- TIMELINE --- */
-.how-it-works-section{
-  background: var(--bg-alt);
-  padding: 100px 20px;
-  border-top: 1px solid var(--border-soft);
-  border-bottom: 1px solid var(--border-soft);
+/* ── Cards raisons ── */
+.se-reasons { background: #f8f7f5; }
+
+.se-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
 }
 
-.section-header{
-  text-align: center;
-  margin-bottom: 60px;
+.se-card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 18px;
+  padding: 36px 32px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* ✅ le h2 ici doit porter .section-heading dans le HTML */
-.section-header p,
-.section-header .desc-text-large{
-  color: var(--text-muted);
+.se-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+}
+
+.se-card-icon {
+  width: 52px;
+  height: 52px;
+  background: rgba(245,119,6,0.1);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: #F57706;
+  margin-bottom: 20px;
+}
+
+.se-card h3 {
+  font-size: 1.05rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  margin: 0 0 10px;
+}
+
+.se-card p {
+  font-size: 0.9rem;
+  color: rgba(0,0,0,0.5);
+  line-height: 1.65;
   margin: 0;
 }
 
-/* Si tu utilises <p class="desc-text-large"> global, on recentre */
-.section-header .desc-text-large{
-  text-align: center;
-  max-width: 700px;
-  margin: 0 auto;
+/* ── Steps ── */
+.se-steps-section {
+  background: #fff;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
-.steps-container{
-  max-width: 900px;
-  margin: 0 auto;
+.se-steps {
   display: flex;
   flex-direction: column;
   gap: 0;
+  max-width: 680px;
+  margin: 0 auto;
 }
 
-.step-item{
+.se-step {
   display: flex;
-  gap: 30px;
+  gap: 28px;
   align-items: flex-start;
+  padding: 28px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
-.step-number{
-  width: 50px;
-  height: 50px;
-  background: var(--primary-color);
-  color: white;
+.se-step:last-child { border-bottom: none; }
+
+.se-step-num {
+  font-size: 2rem;
+  font-weight: 900;
+  color: rgba(0,0,0,0.08);
+  line-height: 1;
+  flex-shrink: 0;
+  min-width: 52px;
+}
+
+.se-step-body h3 {
+  font-size: 1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  margin: 0 0 6px;
+}
+
+.se-step-body p {
+  font-size: 0.9rem;
+  color: rgba(0,0,0,0.5);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── CTA ── */
+.se-cta-card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 20px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+.se-cta-left {
+  padding: 48px;
+}
+
+.se-cta-left .se-label {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.se-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.se-checklist li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0a0a0a;
+}
+
+.se-checklist i {
+  width: 22px;
+  height: 22px;
+  background: rgba(46,204,113,0.12);
+  color: #27ae60;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 900;
-  font-size: 1.2rem;
+  font-size: 0.65rem;
   flex-shrink: 0;
 }
 
-.step-content h3{
-  font-size: 1.3rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
-  color: #fff;
+.se-cta-divider {
+  width: 1px;
+  height: 180px;
+  background: rgba(0,0,0,0.08);
+  flex-shrink: 0;
+}
+
+.se-cta-right {
+  padding: 48px;
+}
+
+.se-cta-right h3 {
+  font-size: 1.5rem;
+  font-weight: 900;
   text-transform: uppercase;
-  line-height: 1.2;
-}
-
-.step-content p{
-  color: var(--text-muted);
-  margin: 0;
-  line-height: 1.6;
-}
-
-.step-connector{
-  width: 2px;
-  height: 50px;
-  background: var(--border-soft);
-  margin-left: 25px;
-}
-
-/* --- FINAL CTA --- */
-.final-cta-section{
-  padding: 100px 20px;
-}
-
-.cta-card{
-  max-width: 1000px;
-  margin: 0 auto;
-  background: linear-gradient(145deg, #1a1a1a, #080808);
-  border: 1px solid var(--border-soft);
-  border-radius: 20px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  overflow: hidden;
-}
-
-.cta-left{
-  background: rgba(255,255,255,0.02);
-  padding: 50px;
-}
-
-.cta-right{
-  padding: 50px;
-  border-left: 1px solid var(--border-soft);
-}
-
-.cta-left h3,
-.cta-right h3{
+  color: #0a0a0a;
   margin: 0 0 10px;
-  font-size: 1.35rem;
-  font-weight: 800;
-  color: #fff;
-  text-transform: uppercase;
 }
 
-.cta-right p{
-  color: var(--text-muted);
-  margin: 0;
-  line-height: 1.6;
+.se-cta-right p {
+  font-size: 0.9rem;
+  color: rgba(0,0,0,0.5);
+  line-height: 1.65;
+  margin: 0 0 24px;
 }
 
-.checklist{
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
-}
-
-.checklist li{
+.se-cta-btns {
   display: flex;
-  align-items: center;
   gap: 12px;
-  margin-bottom: 12px;
-  color: #ccc;
+  flex-wrap: wrap;
 }
 
-.checklist i{
-  color: #2ecc71;
-}
-
-.action-buttons{
-  display: flex;
-  gap: 15px;
-  margin-top: 25px;
-}
-
-.btn-contact{
-  background: var(--primary-color);
-  color: white;
-  padding: 12px 25px;
-  border-radius: 8px;
+.se-btn-primary {
+  background: #F57706;
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 10px;
   text-decoration: none;
   font-weight: 800;
+  font-size: 0.88rem;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  transition: transform .25s ease;
+  gap: 8px;
+  transition: opacity 0.2s, transform 0.2s;
 }
 
-.btn-map{
-  border: 1px solid white;
-  color: white;
-  padding: 12px 25px;
-  border-radius: 8px;
+.se-btn-primary:hover { opacity: 0.88; transform: translateY(-2px); }
+
+.se-btn-outline {
+  background: #fff;
+  color: #0a0a0a;
+  border: 1.5px solid rgba(0,0,0,0.15);
+  padding: 12px 22px;
+  border-radius: 10px;
   text-decoration: none;
   font-weight: 800;
+  font-size: 0.88rem;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  transition: background .25s ease, color .25s ease;
+  gap: 8px;
+  transition: border-color 0.2s, transform 0.2s;
 }
 
-.btn-contact:hover{
-  transform: scale(1.05);
+.se-btn-outline:hover { border-color: #F57706; color: #F57706; transform: translateY(-2px); }
+
+/* ── Responsive ── */
+@media (max-width: 992px) {
+  .se-cards { grid-template-columns: repeat(2, 1fr); }
 }
 
-.btn-map:hover{
-  background: white;
-  color: black;
-}
+@media (max-width: 768px) {
+  .se-page-header { padding-top: calc(60px + 24px); padding-bottom: 32px; }
+  .se-section { padding: 52px 0; }
+  .se-cards { grid-template-columns: 1fr; gap: 16px; }
+  .se-card { padding: 24px; }
 
-/* --- RESPONSIVE (SPECIFIQUE PAGE) --- */
-@media (max-width: 900px){
-  .cta-card{
+  .se-cta-card {
     grid-template-columns: 1fr;
   }
-
-  .cta-right{
-    border-left: none;
-    border-top: 1px solid var(--border-soft);
+  .se-cta-divider {
+    width: 100%;
+    height: 1px;
   }
+  .se-cta-left, .se-cta-right { padding: 28px 24px; }
 
-  .action-buttons{
-    flex-direction: column;
-  }
-
-  .reassurance-section .section-heading,
-  .section-header .section-heading{
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 768px){
-  .container-narrow{
-    padding: 0 14px;
-  }
-
-  .reasons-section{
-    padding: 0 14px 32px;
-  }
-
-  .reasons-grid{
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  .reason-card{
-    padding: 24px;
-    border-radius: 12px;
-  }
-
-  .reason-card:last-child{
-    grid-column: auto;
-    max-width: 100%;
-    justify-self: stretch;
-  }
-
-  .how-it-works-section{
-    padding: 70px 14px;
-  }
-
-  .section-header{
-    margin-bottom: 40px;
-  }
-
-  .step-item{
-    gap: 16px;
-  }
-
-  .step-number{
-    width: 42px;
-    height: 42px;
-    font-size: 1rem;
-  }
-
-  .step-connector{
-    margin-left: 20px;
-    height: 34px;
-  }
-
-  .step-content h3{
-    font-size: 1.05rem;
-  }
-
-  .final-cta-section{
-    padding: 70px 14px;
-  }
-
-  .cta-left,
-  .cta-right{
-    padding: 24px 18px;
-  }
-
-  .btn-contact,
-  .btn-map{
+  .se-btn-primary, .se-btn-outline {
     width: 100%;
     justify-content: center;
   }
 }
 
-@media (max-width: 480px){
-  .reassurance-section .section-heading,
-  .section-header .section-heading{
-    font-size: 1.6rem;
-  }
-
-  .highlight-text{
-    -webkit-text-stroke: 0.8px white;
-  }
-
-  .intro-desc{
-    font-size: 1rem;
-  }
-
-  .card-icon{
-    font-size: 2rem;
-  }
-}
 /* =========================================
-   THÈME CLAIR
+   THÈME DARK
    ========================================= */
-.seance-essai-root {
-  --text-white: #0a0a0a;
-  --text-black: #0a0a0a;
-  --text-muted: rgba(0,0,0,0.5);
-  --text-muted-1: rgba(0,0,0,0.45);
-  --text-muted-2: rgba(0,0,0,0.55);
-  --bg-card: #fff;
-  --bg-section: #f8f7f5;
-  --border-soft: rgba(0,0,0,0.08);
-  --border-soft-2: rgba(0,0,0,0.06);
-  --color-card-bg: #fff;
-  --color-border: rgba(0,0,0,0.1);
-  --color-text-primary: #0a0a0a;
-  --title-color: #0a0a0a;
+.se-wm {
+  position: absolute;
+  top: 40px;
+  left: 6.5%;
+  font-size: clamp(2rem, 14vw, 170px);
+  font-weight: 900;
+  text-transform: uppercase;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.07);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  line-height: 0.9;
+}
 
-  background: #f8f7f5;
-  color: #0a0a0a;
+.seance-essai-root .se-h2 { color: #fff; }
+.seance-essai-root .se-desc { color: rgba(255,255,255,0.45); }
+.seance-essai-root .se-badge { border-radius: 0; }
+.seance-essai-root .se-reasons { background: #0a0a0a; }
+.seance-essai-root .se-card {
+  background: #141414;
+  border-color: rgba(255,255,255,0.07);
+  border-radius: 0;
+  box-shadow: none;
 }
-.seance-essai-root .section-heading { color: #0a0a0a; }
-.seance-essai-root h2, .seance-essai-root h3 { color: #0a0a0a; }
-.seance-essai-root p { color: rgba(0,0,0,0.55); }
-.seance-essai-root [class*="-card"] {
-  background: #fff;
-  border-color: rgba(0,0,0,0.08);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+.seance-essai-root .se-card:hover { box-shadow: 0 10px 28px rgba(0,0,0,0.5); }
+.seance-essai-root .se-card-icon { border-radius: 0; }
+.seance-essai-root .se-card h3 { color: #fff; }
+.seance-essai-root .se-card p { color: rgba(255,255,255,0.45); }
+.seance-essai-root .se-steps-section {
+  background: #111;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
-.seance-essai-root .bg-alt,
-.seance-essai-root .bg-dark-alt { background: #111; }
-.seance-essai-root .step-number { color: var(--primary-color); }
-.seance-essai-root .step-title { color: #0a0a0a; }
-.seance-essai-root .step-desc { color: rgba(0,0,0,0.5); }
-.seance-essai-root { --bg-alt: #f0ede8; }
-.seance-essai-root .cta-card { background: #fff; border-color: rgba(0,0,0,0.08); box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
-.seance-essai-root .cta-card h2,
-.seance-essai-root .cta-card h3 { color: #0a0a0a; }
-.seance-essai-root .cta-card p { color: rgba(0,0,0,0.55); }
+.seance-essai-root .se-step { border-bottom: 1px solid rgba(255,255,255,0.06); }
+.seance-essai-root .se-step-num { color: rgba(255,255,255,0.12); }
+.seance-essai-root .se-step-body h3 { color: #fff; }
+.seance-essai-root .se-step-body p { color: rgba(255,255,255,0.45); }
+.seance-essai-root .se-cta-card {
+  background: #141414;
+  border-color: rgba(255,255,255,0.07);
+  border-radius: 0;
+  box-shadow: none;
+}
+.seance-essai-root .se-checklist li { color: rgba(255,255,255,0.8); }
+.seance-essai-root .se-checklist i { border-radius: 0; }
+.seance-essai-root .se-cta-divider { background: rgba(255,255,255,0.07); }
+.seance-essai-root .se-cta-right h3 { color: #fff; }
+.seance-essai-root .se-cta-right p { color: rgba(255,255,255,0.45); }
+.seance-essai-root .se-btn-primary { border-radius: 0; }
+.seance-essai-root .se-btn-outline {
+  background: transparent;
+  color: rgba(255,255,255,0.75);
+  border-color: rgba(255,255,255,0.2);
+  border-radius: 0;
+}
+.seance-essai-root .se-btn-outline:hover { border-color: #F57706; color: #F57706; }

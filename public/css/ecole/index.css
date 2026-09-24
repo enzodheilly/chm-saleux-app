@@ -420,13 +420,12 @@
 }
 
 .valeurs-athlete-img {
-  height: 480px;
+  height: 540px;
   width: auto;
   display: block;
   object-fit: contain;
   object-position: bottom;
-  filter: drop-shadow(-12px 0 48px rgba(245,119,6,0.15));
-  margin-bottom: -2rem;
+  margin-bottom: 1rem;
 }
 
 /* =========================================

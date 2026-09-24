@@ -5,7 +5,7 @@
 /* ── Header background ── */
 .pricing-header-bg {
   --bg-image: url('/images/tarifs/img.jpg');
-  --bg-position: center 30%;
+  --bg-position: center 15%;
 }
 
 /* ── Root ── */

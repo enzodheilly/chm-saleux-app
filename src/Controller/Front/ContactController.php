@@ -41,13 +41,26 @@ class ContactController extends AbstractController
             return $this->redirectToRoute('contact');
         }
 
-        // 3. Récupération des données
+        // 3. Récupération et validation des données
         $lastName  = trim((string) $request->request->get('lastName', ''));
         $firstName = trim((string) $request->request->get('firstName', ''));
         $email     = trim((string) $request->request->get('email', ''));
         $phone     = trim((string) $request->request->get('phone', ''));
         $subject   = trim((string) $request->request->get('subject', ''));
         $content   = trim((string) $request->request->get('content', ''));
+
+        if ($lastName === '' || $firstName === '' || $email === '' || $content === '') {
+            $this->addFlash('danger', 'Tous les champs obligatoires doivent être remplis.');
+            return $this->redirectToRoute('contact');
+        }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->addFlash('danger', 'Adresse email invalide.');
+            return $this->redirectToRoute('contact');
+        }
+        if (strlen($content) < 10 || strlen($content) > 5000) {
+            $this->addFlash('danger', 'Le message doit contenir entre 10 et 5000 caractères.');
+            return $this->redirectToRoute('contact');
+        }
 
         $allowedSubjects = array_values(ContactMessage::getSubjectChoices());
         if (!in_array($subject, $allowedSubjects, true)) {

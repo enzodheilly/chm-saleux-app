@@ -6,15 +6,32 @@
 /* =========================================
    THÈME CLAIR — ROOT
    ========================================= */
-.partner-root {
-  --text-white: #0a0a0a;
-  --text-black: #0a0a0a;
-  --text-muted: rgba(0,0,0,0.5);
-  --bg-card: #fff;
-  --border-soft: rgba(0,0,0,0.08);
+.partner-page-header {
+  --bg-image: url('/images/partenaires/header.jpg');
+  --bg-position: center 35%;
+}
 
-  background: #f8f7f5;
-  color: #0a0a0a;
+@media (max-width: 768px) {
+  .partner-page-header {
+    --bg-position: center 20%;
+  }
+}
+
+.partner-root {
+  --text-white: #fff;
+  --text-black: #fff;
+  --text-muted: rgba(255,255,255,0.5);
+  --bg-card: #141414;
+  --border-soft: rgba(255,255,255,0.07);
+
+  background: #0a0a0a;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.partner-root .page-container {
+  max-width: 1280px !important;
 }
 
 /* =========================================
@@ -35,7 +52,7 @@
   background: #F57706;
   color: #fff;
   padding: 14px 28px;
-  border-radius: 50px;
+  border-radius: 0;
   font-weight: 800;
   text-decoration: none;
   font-size: 0.95rem;
@@ -85,7 +102,7 @@
    SECTION ARGUMENTS
    ========================================= */
 .partner-args-section {
-  padding-top: 90px;
+  padding-top: 100px;
   padding-bottom: 80px;
 }
 
@@ -99,7 +116,7 @@
 .arg-card {
   background: #fff;
   border: 1px solid rgba(0,0,0,0.07);
-  border-radius: 20px;
+  border-radius: 0;
   padding: 32px 28px;
   display: flex;
   flex-direction: column;
@@ -117,7 +134,7 @@
   width: 52px;
   height: 52px;
   background: rgba(245,119,6,0.08);
-  border-radius: 14px;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -153,7 +170,7 @@
 .tax-card {
   background: #fff;
   border: 1px solid rgba(0,0,0,0.07);
-  border-radius: 28px;
+  border-radius: 0;
   padding: 64px;
   display: flex;
   align-items: center;
@@ -199,7 +216,7 @@
   color: #F57706;
   border: 1px solid rgba(245,119,6,0.25);
   padding: 6px 16px;
-  border-radius: 50px;
+  border-radius: 0;
   font-size: 0.72rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -230,7 +247,7 @@
   gap: 20px;
   background: #f8f7f5;
   border: 1px solid rgba(0,0,0,0.07);
-  border-radius: 14px;
+  border-radius: 0;
   padding: 20px 28px;
   margin-bottom: 16px;
   width: fit-content;
@@ -288,7 +305,7 @@
 .support-card {
   background: #fff;
   border: 1px solid rgba(0,0,0,0.07);
-  border-radius: 20px;
+  border-radius: 0;
   padding: 36px 30px;
   position: relative;
   overflow: hidden;
@@ -315,7 +332,7 @@
   width: 48px;
   height: 48px;
   background: rgba(245,119,6,0.08);
-  border-radius: 12px;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -360,7 +377,7 @@
 .partner-logo-item {
   background: #fff;
   border: 1px solid rgba(0,0,0,0.07);
-  border-radius: 16px;
+  border-radius: 0;
   padding: 20px 32px;
   display: flex;
   align-items: center;
@@ -396,8 +413,8 @@
 }
 
 .partner-cta-card {
-  background: #0a0a0a;
-  border-radius: 32px;
+  background: #111;
+  border-radius: 0;
   padding: 70px 64px;
   position: relative;
   overflow: hidden;
@@ -471,7 +488,7 @@
   background: #F57706;
   color: #fff;
   padding: 16px 32px;
-  border-radius: 14px;
+  border-radius: 0;
   font-weight: 800;
   text-decoration: none;
   font-size: 0.95rem;
@@ -491,7 +508,7 @@
   background: rgba(255,255,255,0.06);
   color: rgba(255,255,255,0.8);
   padding: 14px 28px;
-  border-radius: 14px;
+  border-radius: 0;
   font-weight: 700;
   text-decoration: none;
   font-size: 0.95rem;
@@ -602,3 +619,65 @@
     height: 68px;
   }
 }
+
+/* =========================================
+   THÈME SOMBRE — DARK OVERRIDE
+   ========================================= */
+.part-wm {
+  position: absolute;
+  top: 40px;
+  left: 6.5%;
+  font-size: clamp(2rem, 14vw, 170px);
+  font-weight: 900;
+  text-transform: uppercase;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.07);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  line-height: 0.9;
+}
+
+.partner-root .section-heading { color: #fff; }
+.partner-root .section-sub { color: rgba(255,255,255,0.5); }
+.partner-root .partner-section-head p { color: rgba(255,255,255,0.5); }
+
+.partner-root .arg-card {
+  background: #141414;
+  border-color: rgba(255,255,255,0.07);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.partner-root .arg-body h3 { color: #fff; }
+.partner-root .arg-body p { color: rgba(255,255,255,0.5); }
+
+.partner-root .tax-card {
+  background: #141414;
+  border-color: rgba(255,255,255,0.07);
+  box-shadow: none;
+}
+.partner-root .tax-content h2 { color: #fff; }
+.partner-root .tax-content p { color: rgba(255,255,255,0.5); }
+.partner-root .tax-content p strong { color: #fff; }
+.partner-root .tax-example {
+  background: #1e1e1e;
+  border-color: rgba(255,255,255,0.07);
+}
+.partner-root .tax-ex-label { color: rgba(255,255,255,0.4); }
+.partner-root .tax-ex-val { color: #fff; }
+.partner-root .tax-legal { color: rgba(255,255,255,0.3); }
+
+.partner-root .support-card {
+  background: #141414;
+  border-color: rgba(255,255,255,0.07);
+}
+.partner-root .support-num-badge { color: rgba(255,255,255,0.04); }
+.partner-root .support-card h4 { color: #fff; }
+.partner-root .support-card p { color: rgba(255,255,255,0.5); }
+
+.partner-root .partner-logo-item {
+  background: #1e1e1e;
+  border-color: rgba(255,255,255,0.07);
+}
+
+.partner-root .cta-reassure { color: rgba(255,255,255,0.3); }

@@ -23,146 +23,148 @@
 		</div>
 		</header>
 
-	<main
-		class="contact-root page-shell">
+	<main class="contact-root page-shell">
 
 		{# Flash messages #}
 		<div class="page-container flash-container">
 			{% for label, messages in app.flashes %}
 				{% for message in messages %}
-					<div class="alert-flash flash-{{ label }}">
-						{{ message }}
-					</div>
+					<div class="alert-flash flash-{{ label }}">{{ message }}</div>
 				{% endfor %}
 			{% endfor %}
 		</div>
 
-		<section class="contact-section page-container">
+		<section class="contact-section">
 			<div class="contact-wm page-wm" aria-hidden="true">CONTACT</div>
-			<div
-				class="contact-grid">
 
-				{# ── Formulaire ── #}
-				<div class="contact-form-container form-area">
-					<div class="form-header">
-						<h2 class="contact-form-title">Envoyez-nous<br>un
-							<span>message</span>
-						</h2>
-						<p class="contact-form-sub">Notre équipe vous répond sous 48h.</p>
+			<div class="page-container">
+
+				{# ── Bande d'infos ── #}
+				<div class="contact-info-strip">
+					<div class="contact-info-tile">
+						<div class="cit-icon"><i class="fa-solid fa-location-dot"></i></div>
+						<div class="cit-body">
+							<p class="cit-label">Localisation</p>
+							<p class="cit-val">8 rue Marx Dormoy — 80480 Saleux</p>
+							<p class="cit-val cit-val--muted">À seulement 10 min d'Amiens et à 5 min de l'hôpital Sud et de l'IUT !</p>
+						</div>
 					</div>
-
-					<form action="{{ path('contact_submit') }}" method="POST" class="elite-form">
-						<input type="hidden" name="_token" value="{{ csrf_token('contact_submit') }}">
-
-						<div class="form-row">
-							<div class="input-group">
-								<label for="contact-last-name">Nom</label>
-								<input id="contact-last-name" type="text" name="lastName" required placeholder="Ex: Dupont">
-							</div>
-							<div class="input-group">
-								<label for="contact-first-name">Prénom</label>
-								<input id="contact-first-name" type="text" name="firstName" required placeholder="Ex: Jean">
-							</div>
+					<div class="contact-info-tile">
+						<div class="cit-icon"><i class="fa-solid fa-phone"></i></div>
+						<div class="cit-body">
+							<p class="cit-label">Téléphone</p>
+							<p class="cit-val"><a href="tel:0322897257">03 22 89 72 57</a></p>
+							<p class="cit-val cit-val--muted">Disponible aux heures d'ouverture</p>
 						</div>
-
-						<div class="input-group">
-							<label for="contact-email">Email</label>
-							<input id="contact-email" type="email" name="email" required placeholder="jean.dupont@mail.com">
+					</div>
+					<a href="mailto:chm.saleux@orange.fr" class="contact-info-tile contact-info-tile--link">
+						<div class="cit-icon"><i class="fa-solid fa-envelope"></i></div>
+						<div class="cit-body">
+							<p class="cit-label">Email</p>
+							<p class="cit-val">chm.saleux@orange.fr</p>
+							<p class="cit-val cit-val--muted">Réponse sous 48h en semaine</p>
 						</div>
-
-						<div class="input-group">
-							<label for="contact-subject">Sujet</label>
-							<select id="contact-subject" name="subject" required>
-								<option value="">Choisissez un sujet</option>
-								{% for label, value in subjectChoices %}
-									<option value="{{ value }}">{{ label }}</option>
-								{% endfor %}
-							</select>
+					</a>
+					<div class="contact-info-tile">
+						<div class="cit-icon"><i class="fa-regular fa-clock"></i></div>
+						<div class="cit-body">
+							<p class="cit-label">Horaires d'ouverture</p>
+							<p class="cit-val">Lu · Me · Ve — 10h/12h &amp; 16h/20h</p>
+							<p class="cit-val">Ma · Je — 10h/12h &amp; 16h/19h30</p>
 						</div>
-
-						<div class="input-group">
-							<label for="contact-content">Message</label>
-							<textarea id="contact-content" name="content" rows="5" required placeholder="Votre message..."></textarea>
-						</div>
-
-						<div class="turnstile-wrapper">
-							<div class="cf-turnstile" data-sitekey="0x4AAAAAACvankHbbJ6UuueH" data-theme="light"></div>
-						</div>
-
-						<button type="submit" class="btn-elite-submit btn-modern">
-							<span class="btn-text">Soumettre</span>
-							<span class="spinner">
-								<i class="fa-solid fa-circle-notch fa-spin"></i>
-							</span>
-						</button>
-					</form>
+					</div>
 				</div>
 
-				{# ── Sidebar ── #}
-				<aside
-					class="contact-sidebar">
+				{# ── Corps : formulaire + colonne droite ── #}
+				<div class="contact-grid">
 
-					{# Infos rapides #}
-					<div class="sidebar-box sidebar-info">
-						<span class="sidebar-eyebrow">Nous trouver</span>
-						<div class="info-items">
-							<div class="info-item">
-								<div class="info-item-body">
-									<span class="info-item-label">Téléphone</span>
-									<span class="info-item-val">03.22.89.72.57</span>
+					{# Formulaire #}
+					<div class="contact-form-container">
+						<h2 class="contact-form-title">Envoyez-nous<br>un <span>message</span></h2>
+						<p class="contact-form-sub">Nous vous répondons sous 48h en semaine.</p>
+
+						<form action="{{ path('contact_submit') }}" method="POST" class="elite-form">
+							<input type="hidden" name="_token" value="{{ csrf_token('contact_submit') }}">
+
+							<div class="form-row">
+								<div class="input-group">
+									<label for="contact-last-name">Nom</label>
+									<input id="contact-last-name" type="text" name="lastName" required placeholder="Ex: Dupont">
+								</div>
+								<div class="input-group">
+									<label for="contact-first-name">Prénom</label>
+									<input id="contact-first-name" type="text" name="firstName" required placeholder="Ex: Jean">
 								</div>
 							</div>
-							<a href="mailto:chm.saleux@orange.fr" class="info-item">
-								<div class="info-item-body">
-									<span class="info-item-label">Email</span>
-									<span class="info-item-val">chm.saleux@orange.fr</span>
+
+							<div class="input-group">
+								<label for="contact-email">Email</label>
+								<input id="contact-email" type="email" name="email" required placeholder="jean.dupont@mail.com">
+							</div>
+
+							<div class="input-group">
+								<label for="contact-subject">Sujet</label>
+								<select id="contact-subject" name="subject" required>
+									<option value="">Choisissez un sujet</option>
+									{% for label, value in subjectChoices %}
+										<option value="{{ value }}">{{ label }}</option>
+									{% endfor %}
+								</select>
+							</div>
+
+							<div class="input-group">
+								<label for="contact-content">Message</label>
+								<textarea id="contact-content" name="content" rows="6" required placeholder="Votre message..."></textarea>
+							</div>
+
+							<div class="turnstile-wrapper">
+								<div class="cf-turnstile" data-sitekey="0x4AAAAAACvankHbbJ6UuueH" data-theme="light"></div>
+							</div>
+
+							<button type="submit" class="btn-elite-submit btn-modern">
+								<span class="btn-text">Envoyer le message</span>
+								<span class="spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
+							</button>
+						</form>
+					</div>
+
+					{# Colonne droite : carte + FAQ #}
+					<aside class="contact-sidebar">
+
+						<div class="map-card">
+							<div class="map-head">
+								<div class="map-title">
+									<h3>CHM Saleux</h3>
+									<p>8 rue Marx Dormoy, 80480 Saleux</p>
 								</div>
-							</a>
-							<div class="info-item">
-								<div class="info-item-body">
-									<span class="info-item-label">Horaires salle</span>
-									<span class="info-item-val">Lun - Mer - Ven · 10h–12h & 16h–20h</span>
-									<span class="info-item-val">Mar - Jeu · 10h–12h & 16h–19h30</span>
-								</div>
+								<a class="map-cta" target="_blank" rel="noopener" href="https://maps.google.com/?q=8+rue+Marx+Dormoy+80480+Saleux">
+									Itinéraire <i class="fa-solid fa-arrow-up-right-from-square"></i>
+								</a>
+							</div>
+							<div class="map-frame">
+								<iframe src="https://www.google.com/maps?q=CHM%20Saleux%2C%208%20rue%20Marx%20Dormoy%2C%2080480%20Saleux&output=embed" loading="lazy"></iframe>
 							</div>
 						</div>
-					</div>
 
-					{# FAQ mini #}
-					<div class="sidebar-box">
-						<span class="sidebar-eyebrow">FAQ Rapide</span>
-						<details class="faq-mini">
-							<summary>Séance d'essai gratuite ?</summary>
-							<p>Oui ! Précisez vos disponibilités dans le message, on vous rappellera pour confirmer un créneau.</p>
-						</details>
-						<details class="faq-mini">
-							<summary>Quel équipement prévoir ?</summary>
-							<p>Tenue de sport et chaussures fermées suffisent pour une première séance. On s'occupe du reste.</p>
-						</details>
-						<details class="faq-mini">
-							<summary>Délai de réponse ?</summary>
-							<p>Nous répondons sous 48h en semaine. Pour une urgence, appelez-nous directement.</p>
-						</details>
-					</div>
-
-					{# Carte #}
-					<div class="map-card">
-						<div class="map-head">
-							<div class="map-title">
-								<h3>CHM Saleux</h3>
-								<p>8 rue Marx Dormoy, 80480 Saleux</p>
-							</div>
-							<a class="map-cta" target="_blank" rel="noopener" href="https://maps.google.com/?q=8+rue+Marx+Dormoy+80480+Saleux">
-								Itinéraire
-								<i class="fa-solid fa-arrow-up-right-from-square"></i>
-							</a>
+						<div class="sidebar-box">
+							<span class="sidebar-eyebrow">Questions fréquentes</span>
+							<details class="faq-mini">
+								<summary>Séance d'essai gratuite ?</summary>
+								<p>Oui ! Précisez vos disponibilités dans le message, on vous rappellera pour confirmer un créneau.</p>
+							</details>
+							<details class="faq-mini">
+								<summary>Quel équipement prévoir ?</summary>
+								<p>Tenue de sport et chaussures fermées suffisent pour une première séance. On s'occupe du reste.</p>
+							</details>
+							<details class="faq-mini">
+								<summary>Délai de réponse ?</summary>
+								<p>Nous répondons sous 48h en semaine. Pour une urgence, appelez-nous directement.</p>
+							</details>
 						</div>
-						<div class="map-frame">
-							<iframe src="https://www.google.com/maps?q=CHM%20Saleux%2C%208%20rue%20Marx%20Dormoy%2C%2080480%20Saleux&output=embed" loading="lazy"></iframe>
-						</div>
-					</div>
 
-				</aside>
+					</aside>
+				</div>
+
 			</div>
 		</section>
 

@@ -80,7 +80,7 @@
   gap: 15px;
   background: #111;
   padding: 15px;
-  border-radius: 12px;
+  border-radius: 0;
   border: 1px solid var(--border-elite);
 }
 
@@ -130,7 +130,7 @@
 .tag-cloud span {
   background: #1a1a1a;
   padding: 8px 18px;
-  border-radius: 50px;
+  border-radius: 0;
   font-size: 0.85rem;
   font-weight: 700;
   border: 1px solid var(--border-elite);
@@ -146,7 +146,7 @@
 
 .img-frame-elite {
   position: relative;
-  border-radius: 24px;
+  border-radius: 0;
   overflow: hidden;
   border: 1px solid var(--border-elite);
   z-index: 2;
@@ -192,7 +192,7 @@
 
 .cta-box {
   background: #111;
-  border-radius: 30px;
+  border-radius: 0;
   padding: 60px;
   display: flex;
   justify-content: space-between;
@@ -237,7 +237,7 @@
   background: var(--primary-color);
   color: #fff;
   padding: 18px 30px;
-  border-radius: 14px;
+  border-radius: 0;
   text-decoration: none;
   font-weight: var(--fw-black);
   text-transform: uppercase;
@@ -332,7 +332,7 @@
     text-align: center;
     gap: 26px;
     padding: 46px 34px;
-    border-radius: 26px;
+    border-radius: 0;
   }
 
   .cta-title {
@@ -355,7 +355,7 @@
   }
 
   .img-frame-elite {
-    border-radius: 18px;
+    border-radius: 0;
   }
 
   .section-heading-xl {
@@ -399,7 +399,7 @@
 
   .cta-box {
     padding: 36px 18px;
-    border-radius: 22px;
+    border-radius: 0;
   }
 
   .cta-content p {
@@ -410,7 +410,7 @@
     width: 100%;
     max-width: 420px;
     padding: 16px 18px;
-    border-radius: 14px;
+    border-radius: 0;
   }
 }
 
@@ -436,86 +436,60 @@
 }
 
 /* =========================================
-   ALTERNANCE CLAIR / SOMBRE
+   THÈME DARK UNIFIÉ
    ========================================= */
-
-/* --- Base globale --- */
 .elite-main {
-  background: #f8f7f5;
-  color: #0a0a0a;
-  --bg-card: #fff;
-  --bg-section: #f8f7f5;
-  --border-soft: rgba(0,0,0,0.08);
-  --color-text-primary: #0a0a0a;
-  --title-color: #0a0a0a;
+  background: #0a0a0a;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
 }
 
-/* --- Sections CLAIRES --- */
-.elite-main .feature-section:not(.alt-bg) { background: #f8f7f5; }
+.elite-wm {
+  position: absolute;
+  top: 40px;
+  left: 6.5%;
+  font-size: clamp(2rem, 14vw, 170px);
+  font-weight: 900;
+  text-transform: uppercase;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.07);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  line-height: 0.9;
+}
 
+.elite-main .feature-section:not(.alt-bg) { background: #0a0a0a; }
 .elite-main .feature-section:not(.alt-bg) .section-heading,
 .elite-main .feature-section:not(.alt-bg) h2,
-.elite-main .feature-section:not(.alt-bg) h3 { color: #0a0a0a; }
+.elite-main .feature-section:not(.alt-bg) h3 { color: #fff; }
+.elite-main .feature-section:not(.alt-bg) .text-side p { color: rgba(255,255,255,0.5); }
+.elite-main .feature-section:not(.alt-bg) .spec-item { background: #141414; border-color: rgba(255,255,255,0.07); }
+.elite-main .feature-section:not(.alt-bg) .spec-item strong { color: #fff; }
+.elite-main .feature-section:not(.alt-bg) .spec-item small { color: rgba(255,255,255,0.4); }
+.elite-main .feature-section:not(.alt-bg) .elite-check-list li { color: rgba(255,255,255,0.85); }
+.elite-main .feature-section:not(.alt-bg) .tag-cloud span { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); color: #fff; }
+.elite-main .feature-section:not(.alt-bg) .img-frame-elite { background: #101010; border-color: rgba(255,255,255,0.07); }
+.elite-main .feature-section:not(.alt-bg) .frame-glow { background: rgba(255,255,255,0.03); }
 
-.elite-main .feature-section:not(.alt-bg) .text-side p { color: rgba(0,0,0,0.55); }
-
-.elite-main .feature-section:not(.alt-bg) .spec-item {
-  background: #fff;
-  border-color: rgba(0,0,0,0.08);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-.elite-main .feature-section:not(.alt-bg) .spec-item strong { color: #0a0a0a; }
-.elite-main .feature-section:not(.alt-bg) .spec-item small  { color: rgba(0,0,0,0.45); }
-
-.elite-main .feature-section:not(.alt-bg) .elite-check-list li { color: #0a0a0a; }
-
-.elite-main .feature-section:not(.alt-bg) .tag-cloud span {
-  background: rgba(0,0,0,0.05);
-  border-color: rgba(0,0,0,0.1);
-  color: #0a0a0a;
-}
-
-.elite-main .feature-section:not(.alt-bg) .img-frame-elite {
-  background: #e8e4de;
-  border-color: rgba(0,0,0,0.08);
-}
-.elite-main .feature-section:not(.alt-bg) .frame-glow { background: rgba(0,0,0,0.02); }
-
-/* --- Sections SOMBRES (.alt-bg) --- */
 .elite-main .alt-bg {
   background: #111;
   border-top: 1px solid rgba(255,255,255,0.04);
   border-bottom: 1px solid rgba(255,255,255,0.04);
 }
-
 .elite-main .alt-bg .section-heading,
 .elite-main .alt-bg h2,
 .elite-main .alt-bg h3 { color: #fff; }
-
-.elite-main .alt-bg .text-side p  { color: rgba(255,255,255,0.6); }
-.elite-main .alt-bg .side-badge   { color: var(--brand-orange); }
-
+.elite-main .alt-bg .text-side p { color: rgba(255,255,255,0.6); }
 .elite-main .alt-bg .elite-check-list li { color: rgba(255,255,255,0.85); }
-
-.elite-main .alt-bg .spec-item {
-  background: rgba(255,255,255,0.05);
-  border-color: rgba(255,255,255,0.08);
-}
+.elite-main .alt-bg .spec-item { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); }
 .elite-main .alt-bg .spec-item strong { color: #fff; }
-.elite-main .alt-bg .spec-item small  { color: rgba(255,255,255,0.45); }
-
-.elite-main .alt-bg .tag-cloud span {
-  background: rgba(255,255,255,0.07);
-  border-color: rgba(255,255,255,0.1);
-  color: #fff;
-}
-
-.elite-main .alt-bg .img-frame-elite {
-  background: #0a0a0a;
-  border-color: rgba(255,255,255,0.08);
-}
+.elite-main .alt-bg .spec-item small { color: rgba(255,255,255,0.45); }
+.elite-main .alt-bg .tag-cloud span { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.1); color: #fff; }
+.elite-main .alt-bg .img-frame-elite { background: #0a0a0a; border-color: rgba(255,255,255,0.08); }
 .elite-main .alt-bg .frame-glow { background: rgba(245,119,6,0.12); }
 
-/* CTA box — reste sombre */
 .elite-main .cta-box h2 { color: #fff; }
-.elite-main .cta-box p  { color: rgba(255,255,255,0.65); }
+.elite-main .cta-box p { color: rgba(255,255,255,0.65); }

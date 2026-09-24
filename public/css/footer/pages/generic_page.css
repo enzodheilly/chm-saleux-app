@@ -36,16 +36,15 @@
   /* LE DÉGRADÉ CORRIGÉ : 
      On commence à 0% en noir, et on reste noir jusqu'à 60% 
      pour que la couleur dominante soit le sombre. */
-  background: 
-    radial-gradient(rgba(255, 255, 255, 0.1) 1.2px, transparent 1.2px), 
-    linear-gradient(to right, 
-        #0a0a0a 0%, 
-        #0a0a0a 78.5%,     /* Reste noir sur toute la partie texte */
-        #854103 100%,     /* Transition douce vers un orange sombre */
-        var(--primary-color) 100% /* Orange vif uniquement au bord droit */
+  background:
+    linear-gradient(to right,
+        #0a0a0a 0%,
+        #0a0a0a 78.5%,
+        #854103 100%,
+        var(--primary-color) 100%
     ) !important;
-  
-  background-size: 30px 30px, cover !important;
+
+  background-size: cover !important;
   opacity: 1;
 }
 

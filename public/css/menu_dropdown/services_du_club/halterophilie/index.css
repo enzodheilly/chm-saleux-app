@@ -27,7 +27,7 @@
 .split-image{ flex: 1; }
 
 .image-frame{
-  border-radius: 20px;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: var(--shadow-lg, 0 10px 30px rgba(0,0,0,0.5));
   transition: transform var(--transition-fast, .25s ease);
@@ -69,7 +69,7 @@
 .benefits-list li{
   background: var(--bg-card);
   padding: 15px 20px;
-  border-radius: 8px;
+  border-radius: 0;
   margin-bottom: 10px;
   border-left: 4px solid var(--primary-color);
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
@@ -113,7 +113,7 @@
 
 .movement-card{
   background: var(--bg-card);
-  border-radius: var(--radius-md, 12px);
+  border-radius: 0;
   padding: 40px;
   box-shadow: var(--shadow-lg, 0 10px 30px rgba(0,0,0,0.5));
   position: relative;
@@ -129,7 +129,7 @@
   font-size: 0.75rem;
   font-weight: var(--fw-bold, 700);
   padding: 5px 12px;
-  border-radius: 20px;
+  border-radius: 0;
   text-transform: uppercase;
 }
 
@@ -164,7 +164,7 @@
   color: #fff;
   width: 25px;
   height: 25px;
-  border-radius: 50%;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -203,36 +203,65 @@
   }
 }
 /* =========================================
-   THÈME CLAIR
+   THÈME DARK
    ========================================= */
 .haltero-root {
-  --text-white: #0a0a0a;
-  --text-black: #0a0a0a;
-  --text-muted: rgba(0,0,0,0.5);
-  --text-muted-1: rgba(0,0,0,0.45);
-  --text-muted-2: rgba(0,0,0,0.55);
-  --bg-card: #fff;
-  --bg-section: #f8f7f5;
-  --border-soft: rgba(0,0,0,0.08);
-  --border-soft-2: rgba(0,0,0,0.06);
-  --color-card-bg: #fff;
-  --color-border: rgba(0,0,0,0.1);
-  --color-text-primary: #0a0a0a;
-  --title-color: #0a0a0a;
+  --text-white: #fff;
+  --text-black: #fff;
+  --text-muted: rgba(255,255,255,0.5);
+  --text-muted-1: rgba(255,255,255,0.45);
+  --text-muted-2: rgba(255,255,255,0.55);
+  --bg-card: #141414;
+  --bg-section: #111;
+  --border-soft: rgba(255,255,255,0.07);
+  --border-soft-2: rgba(255,255,255,0.05);
+  --color-card-bg: #141414;
+  --color-border: rgba(255,255,255,0.08);
+  --color-text-primary: #fff;
+  --title-color: #fff;
 
-  background: #f8f7f5;
-  color: #0a0a0a;
+  background: #0a0a0a;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
 }
-.haltero-root .section-heading { color: #0a0a0a; }
+
+.haltero-wm {
+  position: absolute;
+  top: 40px;
+  left: 6.5%;
+  font-size: clamp(2rem, 14vw, 170px);
+  font-weight: 900;
+  text-transform: uppercase;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.07);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  line-height: 0.9;
+}
+
+.haltero-root .section-heading { color: #fff; }
 .haltero-root .desc-text,
-.haltero-root p { color: rgba(0,0,0,0.55); }
+.haltero-root p { color: rgba(255,255,255,0.5); }
+.haltero-root .tech-header p { color: rgba(255,255,255,0.5); }
 .haltero-root [class*="-card"] {
-  background: #fff;
-  border-color: rgba(0,0,0,0.08);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  background: #141414;
+  border-color: rgba(255,255,255,0.07);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 .haltero-root [class*="-card"] h3,
-.haltero-root [class*="-card"] h4 { color: #0a0a0a; }
-.haltero-root [class*="-card"] p { color: rgba(0,0,0,0.5); }
-.haltero-root .bg-alt { background: #fff; border-top: 1px solid rgba(0,0,0,0.06); border-bottom: 1px solid rgba(0,0,0,0.06); }
-.haltero-root .cta-section { background: #111; }
+.haltero-root [class*="-card"] h4 { color: #fff; }
+.haltero-root [class*="-card"] p { color: rgba(255,255,255,0.5); }
+.haltero-root .benefits-list li {
+  background: #141414;
+  border-color: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.75);
+}
+.haltero-root .audience-item h3 { color: #F57706; }
+.haltero-root .audience-item p { color: rgba(255,255,255,0.5); }
+.haltero-root .image-frame {
+  background: #101010;
+  border-color: rgba(255,255,255,0.07);
+}
