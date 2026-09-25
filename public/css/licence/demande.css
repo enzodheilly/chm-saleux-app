@@ -1,0 +1,270 @@
+/* =========================================================
+   DEMANDE DE LICENCE — DARK THEME (aligné sur contact.css)
+   ========================================================= */
+
+.dl-root {
+  background: #0a0a0a;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+.dl-root .page-container {
+  max-width: 900px !important;
+}
+
+.dl-page-header {
+  background: #111214;
+  padding-top: 40px;
+  padding-bottom: 36px;
+}
+
+.dl-header-body { max-width: 640px; }
+
+.dl-page-header h1 {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0 0 16px;
+  line-height: 1.05;
+}
+
+.dl-page-header h1 span { color: #F57706; }
+
+.dl-header-lead {
+  color: rgba(255,255,255,0.45);
+  font-size: 1rem;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 560px;
+}
+
+.dl-section { padding: 3.5rem 0 5rem; }
+
+/* ── Flash messages ── */
+.flash-container { padding: 0 0 12px; }
+.alert-flash {
+  padding: 14px 20px;
+  margin-bottom: 12px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+}
+.flash-success { background: rgba(40,167,69,0.08); border: 1px solid rgba(40,167,69,0.3); color: #4ade80; }
+.flash-danger  { background: rgba(220,53,69,0.08); border: 1px solid rgba(220,53,69,0.3); color: #f87171; }
+
+/* ── Cards ── */
+.dl-card {
+  background: #141414;
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 32px;
+  margin-bottom: 20px;
+}
+
+.dl-card-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin: 0 0 20px;
+}
+
+.dl-card-subtitle {
+  font-size: 0.78rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: rgba(255,255,255,0.35);
+}
+
+.dl-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid #F57706;
+  color: #F57706;
+  font-size: 0.85rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.dl-hint {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+
+/* ── Fields ── */
+.dl-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.dl-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.dl-row .dl-field { margin-bottom: 0; }
+
+.dl-field label,
+.dl-check {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.35);
+}
+
+.dl-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 0.85rem;
+}
+
+.dl-check input { width: 16px; height: 16px; accent-color: #F57706; }
+
+.dl-input,
+.dl-field input,
+.dl-field select {
+  display: block;
+  width: 100%;
+  background: #1e1e1e;
+  border: 1px solid rgba(255,255,255,0.09);
+  padding: 13px 16px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.92rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  border-radius: 0;
+}
+
+.dl-field input:focus,
+.dl-field select:focus {
+  border-color: rgba(245,119,6,0.5);
+  box-shadow: 0 0 0 3px rgba(245,119,6,0.06);
+  background: #222;
+}
+
+.dl-field select {
+  color: #fff;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23888' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5.5l6.5 6 6.5-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px;
+  cursor: pointer;
+}
+
+.dl-field select option { background: #1e1e1e; color: #fff; }
+
+.dl-field input[type="file"] {
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+/* ── Formules (radio cards) ── */
+.dl-formules {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.dl-formule-option { position: relative; display: block; cursor: pointer; }
+.dl-formule-option input { position: absolute; opacity: 0; }
+
+.dl-formule-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #1a1a1a;
+  border: 1.5px solid rgba(255,255,255,0.09);
+  padding: 16px 18px;
+  transition: border-color 0.15s, background 0.15s;
+  min-height: 56px;
+  justify-content: center;
+}
+
+.dl-formule-name { font-size: 0.92rem; font-weight: 700; color: #fff; }
+.dl-formule-sub { font-size: 0.74rem; color: rgba(255,255,255,0.35); }
+
+.dl-formule-option input:checked + .dl-formule-card {
+  border-color: #F57706;
+  background: rgba(245,119,6,0.08);
+}
+
+.dl-formule-option--disabled .dl-formule-sub { color: rgba(255,255,255,0.25); }
+
+/* ── Submit ── */
+.turnstile-wrapper { margin: 8px 0 24px; }
+
+.dl-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: #F57706;
+  color: #111;
+  border: none;
+  padding: 16px 24px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.dl-submit:hover { background: #ff8a1f; }
+
+/* ── Page merci ── */
+.dl-merci {
+  text-align: center;
+  max-width: 520px !important;
+  padding-top: 4rem;
+}
+
+.dl-merci-icon { font-size: 3rem; color: #4ade80; margin-bottom: 16px; }
+.dl-merci h1 { font-size: 1.9rem; font-weight: 900; text-transform: uppercase; margin: 0 0 14px; }
+
+.dl-merci-card { text-align: left; margin: 24px 0; }
+.dl-merci-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-size: 0.9rem;
+}
+.dl-merci-row:last-child { border-bottom: none; }
+.dl-merci-row strong { color: #F57706; }
+
+.dl-merci-back { margin-top: 12px; }
+
+/* ── Responsive ── */
+@media (max-width: 720px) {
+  .dl-row { grid-template-columns: 1fr; }
+  .dl-formules { grid-template-columns: 1fr; }
+  .dl-card { padding: 22px; }
+}

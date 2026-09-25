@@ -1,0 +1,40 @@
+{% extends 'emails/_layout.html.twig' %}
+
+{% block title %}Votre demande de licence a bien été reçue — CHM Saleux{% endblock %}
+
+{% block body %}
+    <h1 style="margin:0 0 20px; color:#111827; font-size:22px; font-weight:800; line-height:1.3;">
+        Demande de licence bien reçue
+    </h1>
+
+    <p style="margin:0 0 12px; color:#4b5563; font-size:15px; line-height:1.7;">
+        Bonjour <strong>{{ prenom }}</strong>,
+    </p>
+    <p style="margin:0 0 16px; color:#4b5563; font-size:15px; line-height:1.7;">
+        Nous avons bien reçu votre demande de licence <strong style="color:#111827;">{{ formule }}</strong> et nous vous en remercions.
+    </p>
+
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom:24px;">
+        <tr>
+            <td style="background:#f9fafb; border-left:3px solid #e8720c; padding:16px 20px; border-radius:0 6px 6px 0;">
+                <p style="margin:0 0 6px; color:#9ca3af; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em;">Montant calculé</p>
+                <p style="margin:0; color:#111827; font-size:20px; font-weight:800;">{{ montant|number_format(2, ',', ' ') }} €</p>
+            </td>
+        </tr>
+    </table>
+
+    {% if modePaiement == 'au_club' %}
+        <p style="margin:0 0 16px; color:#4b5563; font-size:15px; line-height:1.7;">
+            Vous avez choisi de régler votre licence directement au club. Un membre du bureau vous contactera pour finaliser votre inscription.
+        </p>
+    {% else %}
+        <p style="margin:0 0 16px; color:#4b5563; font-size:15px; line-height:1.7;">
+            Vous avez choisi de régler votre licence en ligne. Le paiement en ligne n'est pas encore disponible — un membre du bureau vous contactera prochainement pour finaliser le règlement.
+        </p>
+    {% endif %}
+
+    <p style="margin:0; color:#64748b; font-size:14px; line-height:1.8;">
+        Cordialement,<br>
+        L'équipe <strong style="color:#374151;">CHM Saleux</strong>
+    </p>
+{% endblock %}

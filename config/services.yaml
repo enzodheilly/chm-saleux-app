@@ -7,6 +7,9 @@ parameters:
     images_directory: "%kernel.project_dir%/public/uploads"
     machines_directory: "%kernel.project_dir%/public/uploads/machines"
     uploads_directory: "%kernel.project_dir%/public/uploads"
+    # Documents sensibles (certificats médicaux, justificatifs) : HORS du dossier public,
+    # servis uniquement via une route admin protégée (voir AdminDemandeLicenceController).
+    licence_documents_dir: "%kernel.project_dir%/var/private_uploads/licences"
     env(TURNSTILE_SITE_KEY): ""
 
 services:
@@ -17,6 +20,7 @@ services:
             $projectDir: "%kernel.project_dir%"
             $faqs: "%faq%"
             $maintenanceBypassToken: "%env(MAINTENANCE_BYPASS_TOKEN)%"
+            $licenceDocumentsDir: "%licence_documents_dir%"
 
             $registerLimiter: "@limiter.register"
             $loginLimiter: "@limiter.login"

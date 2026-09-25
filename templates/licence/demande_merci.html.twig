@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demande envoyée · CHM Saleux{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/licence/demande.css') }}">
+{% endblock %}
+
+{% block body %}
+	<main class="dl-root page-shell">
+		<section class="dl-section page-container dl-merci">
+			<div class="dl-merci-icon"><i class="fa-solid fa-circle-check"></i></div>
+			<h1>Demande envoyée !</h1>
+			<p class="dl-header-lead">
+				Merci <strong>{{ demande.prenom }}</strong>, votre demande de licence <strong>{{ formuleLabel }}</strong> a bien été enregistrée.
+			</p>
+
+			<div class="dl-card dl-merci-card">
+				<div class="dl-merci-row">
+					<span>Montant calculé</span>
+					<strong>{{ demande.montantCalcule|number_format(2, ',', ' ') }} €</strong>
+				</div>
+				<div class="dl-merci-row">
+					<span>Mode de règlement</span>
+					<strong>{{ demande.modePaiement == 'au_club' ? 'Au club' : 'En ligne (bientôt disponible)' }}</strong>
+				</div>
+			</div>
+
+			<p class="dl-hint">
+				{% if demande.modePaiement == 'au_club' %}
+					Un membre du bureau vous contactera pour finaliser votre inscription et récupérer votre règlement.
+				{% else %}
+					Le paiement en ligne n'est pas encore actif — un membre du bureau vous recontactera prochainement pour finaliser le règlement.
+				{% endif %}
+				Un email de confirmation vous a été envoyé à <strong>{{ demande.email }}</strong>.
+			</p>
+
+			<a href="{{ path('home') }}" class="dl-submit dl-merci-back">Retour à l'accueil</a>
+		</section>
+	</main>
+{% endblock %}

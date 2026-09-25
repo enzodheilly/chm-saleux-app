@@ -1,0 +1,72 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Demandes de licence{% endblock %}
+
+{% block body %}
+	<div class="page-header">
+		<div>
+			<h1>Demandes de licence</h1>
+			<p>Demandes envoyées via le formulaire public — à traiter puis transmettre à la FFHM.</p>
+		</div>
+	</div>
+
+	<div class="table-wrapper">
+		<div class="table-scroll">
+			<table class="admin-table">
+				<thead>
+					<tr>
+						<th width="80">ID</th>
+						<th>Demandeur</th>
+						<th>Formule</th>
+						<th>Montant</th>
+						<th>Paiement</th>
+						<th>FFHM</th>
+						<th>Reçue le</th>
+						<th class="th-right">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for demande in demandes %}
+						<tr>
+							<td><span class="td-mono">#{{ demande.id }}</span></td>
+							<td>
+								<div class="identity-cell">
+									<span class="sender-name">{{ demande.prenom }} {{ demande.nom|upper }}</span>
+									<span class="td-mono-sm sender-email">{{ demande.email|pseudonymize_email }}</span>
+								</div>
+							</td>
+							<td><span class="badge badge-neutral">{{ demande.formule|capitalize }}</span></td>
+							<td class="td-mono-sm">{{ demande.montantCalcule|number_format(2, ',', ' ') }} €</td>
+							<td>
+								{% if demande.statutPaiement == 'payee' %}
+									<span class="badge badge-active">Payée</span>
+								{% elseif demande.statutPaiement == 'a_encaisser_club' %}
+									<span class="badge badge-neutral">À encaisser au club</span>
+								{% else %}
+									<span class="badge badge-danger">En attente</span>
+								{% endif %}
+							</td>
+							<td>
+								{% if demande.statutFfhm == 'transferee' %}
+									<span class="badge badge-active">Transférée</span>
+								{% else %}
+									<span class="badge badge-danger">À transférer</span>
+								{% endif %}
+							</td>
+							<td class="td-mono-sm">{{ demande.createdAt|date('d/m/Y H:i') }}</td>
+							<td>
+								<div class="actions">
+									<a href="{{ path('admin_demande_licence_show', {id: demande.id}) }}" class="act-link">Détails</a>
+								</div>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="8" class="td-empty">Aucune demande de licence pour le moment.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

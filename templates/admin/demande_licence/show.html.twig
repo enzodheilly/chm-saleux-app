@@ -1,0 +1,117 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Demande de licence #{{ demande.id }}{% endblock %}
+
+{% block body %}
+	<div class="page-header">
+		<div>
+			<h1>{{ demande.prenom }} {{ demande.nom|upper }}</h1>
+			<p>Demande #{{ demande.id }} — reçue le {{ demande.createdAt|date('d/m/Y à H:i') }}</p>
+		</div>
+		<div class="toolbar">
+			<a href="{{ path('admin_demande_licence_index') }}" class="btn-outline">Retour</a>
+		</div>
+	</div>
+
+	<div class="table-wrapper">
+		<div class="card-body">
+			<span class="tool-label">Formule &amp; tarification</span>
+			<div class="form-grid" style="margin-top: 10px;">
+				<div><strong>Formule :</strong> {{ demande.formule|capitalize }}</div>
+				<div><strong>Montant calculé :</strong> {{ demande.montantCalcule|number_format(2, ',', ' ') }} €</div>
+				<div><strong>Tarif réduit :</strong> {{ demande.tarifReduit ? 'Oui' : 'Non' }}</div>
+				<div><strong>Rang licence foyer :</strong> {{ demande.foyerRang }}{{ demande.foyerRang > 1 ? 'ème' : 'ère' }}</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="table-wrapper" style="margin-top: 1.5rem;">
+		<div class="card-body">
+			<span class="tool-label">Informations du pratiquant</span>
+			<div class="form-grid" style="margin-top: 10px;">
+				<div><strong>Nom :</strong> {{ demande.prenom }} {{ demande.nom|upper }}</div>
+				<div><strong>Sexe :</strong> {{ demande.sexe ?? '—' }}</div>
+				<div><strong>Date de naissance :</strong> {{ demande.dateNaissance ? demande.dateNaissance|date('d/m/Y') : '—' }} {% if demande.isMineur %}<span class="badge badge-danger">Mineur</span>{% endif %}</div>
+				<div><strong>Email :</strong> {{ demande.email }}</div>
+				<div><strong>Téléphone :</strong> {{ demande.telephone ?? '—' }}</div>
+				<div><strong>Adresse :</strong> {{ demande.adresse ?? '—' }}</div>
+			</div>
+		</div>
+	</div>
+
+	{% if demande.responsableNom or demande.isMineur %}
+		<div class="table-wrapper" style="margin-top: 1.5rem;">
+			<div class="card-body">
+				<span class="tool-label">Responsable légal</span>
+				<div class="form-grid" style="margin-top: 10px;">
+					<div><strong>Nom :</strong> {{ demande.responsableNom ?? '—' }}</div>
+					<div><strong>Lien :</strong> {{ demande.responsableLien ?? '—' }}</div>
+					<div><strong>Téléphone :</strong> {{ demande.responsableTelephone ?? '—' }}</div>
+					<div><strong>Email :</strong> {{ demande.responsableEmail ?? '—' }}</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+
+	<div class="table-wrapper" style="margin-top: 1.5rem;">
+		<div class="card-body">
+			<span class="tool-label">Documents</span>
+			<div class="form-grid" style="margin-top: 10px;">
+				<div>
+					<a href="{{ path('admin_demande_licence_document', {id: demande.id, field: 'certificat'}) }}" class="btn-outline" target="_blank" rel="noopener">
+						<i class="fa-solid fa-file-medical"></i> Certificat médical
+					</a>
+				</div>
+				{% if demande.justificatifReduitPath %}
+					<div>
+						<a href="{{ path('admin_demande_licence_document', {id: demande.id, field: 'justificatif'}) }}" class="btn-outline" target="_blank" rel="noopener">
+							<i class="fa-solid fa-id-card"></i> Justificatif tarif réduit
+						</a>
+					</div>
+				{% endif %}
+			</div>
+			<p class="form-help" style="margin-top:10px;">Documents privés — jamais accessibles publiquement, uniquement depuis ce panel admin.</p>
+		</div>
+	</div>
+
+	<div class="table-wrapper" style="margin-top: 1.5rem;">
+		<div class="card-body">
+			<span class="tool-label">Paiement</span>
+			<form method="post" action="{{ path('admin_demande_licence_statut_paiement', {id: demande.id}) }}" style="margin-top: 10px; display:flex; gap:10px; align-items:center;">
+				<input type="hidden" name="_token" value="{{ csrf_token('demande_statut_' ~ demande.id) }}">
+				<select name="statut_paiement" class="input" style="max-width:260px;">
+					<option value="en_attente" {{ demande.statutPaiement == 'en_attente' ? 'selected' }}>En attente</option>
+					<option value="a_encaisser_club" {{ demande.statutPaiement == 'a_encaisser_club' ? 'selected' }}>À encaisser au club</option>
+					<option value="payee" {{ demande.statutPaiement == 'payee' ? 'selected' }}>Payée</option>
+				</select>
+				<button type="submit" class="btn-outline">Mettre à jour</button>
+			</form>
+			<p class="form-help" style="margin-top:10px;">Mode choisi par le demandeur : {{ demande.modePaiement == 'au_club' ? 'au club' : 'en ligne' }}.</p>
+		</div>
+	</div>
+
+	<div class="table-wrapper" style="margin-top: 1.5rem;">
+		<div class="card-body">
+			<span class="tool-label">Transfert FFHM</span>
+			{% if demande.statutFfhm == 'transferee' %}
+				<p class="form-help" style="margin-top:10px;"><span class="badge badge-active">Transférée</span> — la licence a été saisie sur le portail FFHM.</p>
+			{% else %}
+				<form method="post" action="{{ path('admin_demande_licence_statut_ffhm', {id: demande.id}) }}" style="margin-top: 10px;">
+					<input type="hidden" name="_token" value="{{ csrf_token('demande_ffhm_' ~ demande.id) }}">
+					<button type="submit" class="btn-outline" onclick="return confirm('Confirmer que cette licence a bien été saisie sur le portail FFHM ?');">Marquer comme transférée à la FFHM</button>
+				</form>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="table-wrapper" style="margin-top: 1.5rem;">
+		<div class="card-body">
+			<span class="tool-label">Notes internes</span>
+			<form method="post" action="{{ path('admin_demande_licence_notes', {id: demande.id}) }}" style="margin-top: 10px;">
+				<input type="hidden" name="_token" value="{{ csrf_token('demande_notes_' ~ demande.id) }}">
+				<textarea name="notes_admin" class="input" rows="3" style="width:100%; resize:vertical;">{{ demande.notesAdmin }}</textarea>
+				<button type="submit" class="btn-outline" style="margin-top:10px;">Enregistrer les notes</button>
+			</form>
+		</div>
+	</div>
+{% endblock %}
