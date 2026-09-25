@@ -365,6 +365,92 @@
   line-height: 1.7;
 }
 
+/* ── Wizard : progression ── */
+.dl-progress { margin-bottom: 20px; }
+
+.dl-progress-track {
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.dl-progress-fill {
+  height: 100%;
+  background: #F57706;
+  transition: width 0.25s ease;
+}
+
+.dl-progress-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.4);
+}
+.dl-progress-label #dl-progress-step { color: #F57706; }
+
+/* ── Wizard : étapes ── */
+.dl-step { display: none; }
+.dl-step.active { display: block; animation: dl-fade-in 0.2s ease; }
+
+@keyframes dl-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dl-step-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.dl-btn-next,
+.dl-btn-prev {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  color: #fff;
+  padding: 12px 22px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
+}
+.dl-btn-next { border-color: #F57706; color: #F57706; margin-left: auto; }
+.dl-btn-next:hover { background: rgba(245,119,6,0.1); }
+.dl-btn-prev:hover { background: rgba(255,255,255,0.05); }
+
+/* ── Wizard : récapitulatif ── */
+.dl-recap { margin-bottom: 20px; }
+
+.dl-recap-group {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #F57706;
+  margin: 20px 0 8px;
+}
+.dl-recap-group:first-child { margin-top: 0; }
+
+.dl-recap-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-size: 0.85rem;
+}
+.dl-recap-row span { color: rgba(255,255,255,0.45); }
+.dl-recap-row strong { color: #fff; text-align: right; font-weight: 600; }
+
 /* ── Submit ── */
 .turnstile-wrapper { margin: 8px 0 24px; }
 
@@ -372,7 +458,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  margin-left: auto;
   background: #F57706;
   color: #111;
   border: none;
@@ -424,4 +510,8 @@
   .dl-formules { grid-template-columns: 1fr; }
   .dl-card { padding: 22px; }
   .dl-trust-strip { grid-template-columns: 1fr; }
+  .dl-step-actions { flex-wrap: wrap; gap: 10px; }
+  .dl-btn-next, .dl-btn-prev, .dl-submit { width: 100%; justify-content: center; margin-left: 0; }
+  .dl-recap-row { flex-direction: column; gap: 2px; }
+  .dl-recap-row strong { text-align: left; }
 }

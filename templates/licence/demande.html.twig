@@ -58,11 +58,17 @@
 
 			<div class="dl-layout">
 
-				<form method="post" action="{{ path('demande_licence_submit') }}" enctype="multipart/form-data" class="dl-form">
+				<form method="post" action="{{ path('demande_licence_submit') }}" enctype="multipart/form-data" class="dl-form dl-wizard" novalidate>
 					<input type="hidden" name="_token" value="{{ csrf_token('demande_licence_submit') }}">
 
-					{# ── Formule ── #}
-					<div class="dl-card">
+					{# ── Barre de progression ── #}
+					<div class="dl-progress">
+						<div class="dl-progress-track"><div class="dl-progress-fill" id="dl-progress-fill"></div></div>
+						<div class="dl-progress-label"><span id="dl-progress-step">1</span> / 6 — <span id="dl-progress-title">Choix de la formule</span></div>
+					</div>
+
+					{# ── Étape 1 : Formule ── #}
+					<div class="dl-card dl-step active" data-step="1" data-title="Choix de la formule">
 						<h2 class="dl-card-title"><span class="dl-num">1</span>Choix de la formule</h2>
 						<div class="dl-formules">
 							{% for key, label in formules %}
@@ -96,10 +102,15 @@
 								<option value="4">4ème licence et + du foyer — -20%</option>
 							</select>
 						</div>
+
+						<div class="dl-step-actions">
+							<span></span>
+							<button type="button" class="dl-btn-next">Suivant<i class="fa-solid fa-arrow-right"></i></button>
+						</div>
 					</div>
 
-					{# ── Pratiquant ── #}
-					<div class="dl-card">
+					{# ── Étape 2 : Pratiquant ── #}
+					<div class="dl-card dl-step" data-step="2" data-title="Informations du pratiquant">
 						<h2 class="dl-card-title"><span class="dl-num">2</span>Informations du pratiquant</h2>
 
 						<div class="dl-row">
@@ -143,10 +154,15 @@
 							<label for="adresse">Adresse</label>
 							<input type="text" name="adresse" id="adresse" class="dl-input" maxlength="255">
 						</div>
+
+						<div class="dl-step-actions">
+							<button type="button" class="dl-btn-prev"><i class="fa-solid fa-arrow-left"></i>Précédent</button>
+							<button type="button" class="dl-btn-next">Suivant<i class="fa-solid fa-arrow-right"></i></button>
+						</div>
 					</div>
 
-					{# ── Responsable légal ── #}
-					<div class="dl-card">
+					{# ── Étape 3 : Responsable légal ── #}
+					<div class="dl-card dl-step" data-step="3" data-title="Responsable légal">
 						<h2 class="dl-card-title"><span class="dl-num">3</span>Responsable légal <span class="dl-card-subtitle">(si pratiquant mineur)</span></h2>
 
 						<div class="dl-row">
@@ -169,10 +185,15 @@
 								<input type="email" name="responsable_email" id="responsable_email" class="dl-input" maxlength="180">
 							</div>
 						</div>
+
+						<div class="dl-step-actions">
+							<button type="button" class="dl-btn-prev"><i class="fa-solid fa-arrow-left"></i>Précédent</button>
+							<button type="button" class="dl-btn-next">Suivant<i class="fa-solid fa-arrow-right"></i></button>
+						</div>
 					</div>
 
-					{# ── Certificat médical ── #}
-					<div class="dl-card">
+					{# ── Étape 4 : Certificat médical ── #}
+					<div class="dl-card dl-step" data-step="4" data-title="Justificatif médical">
 						<h2 class="dl-card-title"><span class="dl-num">4</span>Justificatif médical</h2>
 						<p class="dl-hint">Certificat médical de non contre-indication à la pratique de l'haltérophilie/musculation, ou questionnaire de santé signé (formulaire officiel FFHM). Formats acceptés : PDF, JPG, PNG — 8 Mo max.</p>
 						<div class="dl-field">
@@ -181,12 +202,17 @@
 						</div>
 						<div class="dl-notice">
 							<i class="fa-solid fa-shield-halved"></i>
-							<span>Ce document contient des données de santé. Il est chiffré au repos, stocké hors de tout accès public et consultable uniquement par le bureau du club, dans le seul but d'instruire votre dossier de licence puis de le transmettre à la FFHM.</span>
+							<span>Ce document contient des données de santé. Il est stocké hors de tout accès public et consultable uniquement par le bureau du club, dans le seul but d'instruire votre dossier de licence puis de le transmettre à la FFHM.</span>
+						</div>
+
+						<div class="dl-step-actions">
+							<button type="button" class="dl-btn-prev"><i class="fa-solid fa-arrow-left"></i>Précédent</button>
+							<button type="button" class="dl-btn-next">Suivant<i class="fa-solid fa-arrow-right"></i></button>
 						</div>
 					</div>
 
-					{# ── Paiement ── #}
-					<div class="dl-card">
+					{# ── Étape 5 : Paiement ── #}
+					<div class="dl-card dl-step" data-step="5" data-title="Mode de règlement">
 						<h2 class="dl-card-title"><span class="dl-num">5</span>Mode de règlement</h2>
 						<div class="dl-formules">
 							<label class="dl-formule-option">
@@ -204,23 +230,39 @@
 								</span>
 							</label>
 						</div>
+
+						<div class="dl-step-actions">
+							<button type="button" class="dl-btn-prev"><i class="fa-solid fa-arrow-left"></i>Précédent</button>
+							<button type="button" class="dl-btn-next">Suivant<i class="fa-solid fa-arrow-right"></i></button>
+						</div>
 					</div>
 
-					{# ── Consentement RGPD ── #}
-					<div class="dl-card dl-card--consent">
-						<label class="dl-check dl-check--consent">
-							<input type="checkbox" name="consentement_rgpd" id="consentement_rgpd" value="1" required>
-							<span>
-								J'accepte que les informations renseignées dans ce formulaire, y compris les données de santé transmises via le certificat médical, soient collectées par CHM Saleux et transmises à la <strong>Fédération Française d'Haltérophilie Musculation (FFHM)</strong> aux seules fins de délivrance de ma licence sportive, conformément au <a href="{{ path('legal_page_show', {slug: 'confidentialite'}) }}" target="_blank" class="dl-link">RGPD et à notre politique de confidentialité</a>. Je peux exercer mes droits d'accès, de rectification et de suppression en écrivant à <a href="mailto:chm.saleux@orange.fr" class="dl-link">chm.saleux@orange.fr</a>.
-							</span>
-						</label>
+					{# ── Étape 6 : Récapitulatif & envoi ── #}
+					<div class="dl-card dl-step" data-step="6" data-title="Récapitulatif">
+						<h2 class="dl-card-title"><span class="dl-num">6</span>Récapitulatif</h2>
+						<p class="dl-hint">Vérifiez vos informations avant l'envoi. Vous pouvez encore revenir en arrière pour corriger un champ.</p>
+
+						<div class="dl-recap" id="dl-recap"></div>
+
+						<div class="dl-card dl-card--consent">
+							<label class="dl-check dl-check--consent">
+								<input type="checkbox" name="consentement_rgpd" id="consentement_rgpd" value="1" required>
+								<span>
+									J'accepte que les informations renseignées dans ce formulaire, y compris les données de santé transmises via le certificat médical, soient collectées par CHM Saleux et transmises à la <strong>Fédération Française d'Haltérophilie Musculation (FFHM)</strong> aux seules fins de délivrance de ma licence sportive, conformément au <a href="{{ path('legal_page_show', {slug: 'confidentialite'}) }}" target="_blank" class="dl-link">RGPD et à notre politique de confidentialité</a>. Je peux exercer mes droits d'accès, de rectification et de suppression en écrivant à <a href="mailto:chm.saleux@orange.fr" class="dl-link">chm.saleux@orange.fr</a>.
+								</span>
+							</label>
+						</div>
+
+						<div class="turnstile-wrapper">
+							<div class="cf-turnstile" data-sitekey="0x4AAAAAACvankHbbJ6UuueH" data-theme="light"></div>
+						</div>
+
+						<div class="dl-step-actions">
+							<button type="button" class="dl-btn-prev"><i class="fa-solid fa-arrow-left"></i>Précédent</button>
+							<button type="submit" class="dl-submit">Envoyer ma demande de licence</button>
+						</div>
 					</div>
 
-					<div class="turnstile-wrapper">
-						<div class="cf-turnstile" data-sitekey="0x4AAAAAACvankHbbJ6UuueH" data-theme="light"></div>
-					</div>
-
-					<button type="submit" class="dl-submit">Envoyer ma demande de licence</button>
 				</form>
 
 				{# ── Sidebar ── #}
@@ -239,7 +281,7 @@
 						<h3 class="dl-side-title">Nos formules</h3>
 						<div class="dl-side-tarif"><span>Jeune</span><strong>70 € / an</strong></div>
 						<div class="dl-side-tarif"><span>Compétition</span><strong>90 € / an</strong></div>
-						<div class="dl-side-tarif"><span>Loisir &amp; Muscu</span><strong>dès 30 €</strong></div>
+						<div class="dl-side-tarif"><span>Loisir &amp; Muscu</span><strong>200 € / an</strong></div>
 						<p class="dl-hint" style="margin:12px 0 0;">Tarif Loisir &amp; Muscu dégressif selon le mois d'inscription. Détail complet sur la page <a href="{{ path('app_pricing') }}" class="dl-link">Tarifs</a>.</p>
 					</div>
 
@@ -262,8 +304,141 @@
 	{{ parent() }}
 	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer nonce="{{ csp_nonce('script') }}"></script>
 	<script nonce="{{ csp_nonce('script') }}">
+	(function () {
 		document.getElementById('dl-tarif-reduit').addEventListener('change', function () {
 			document.getElementById('dl-justificatif-wrap').style.display = this.checked ? 'block' : 'none';
 		});
+
+		var form     = document.querySelector('.dl-wizard');
+		var steps    = Array.prototype.slice.call(form.querySelectorAll('.dl-step'));
+		var fillEl   = document.getElementById('dl-progress-fill');
+		var stepEl   = document.getElementById('dl-progress-step');
+		var titleEl  = document.getElementById('dl-progress-title');
+		var current  = 0;
+
+		function labelFor(select) {
+			var opt = select.options[select.selectedIndex];
+			return opt ? opt.textContent.trim() : '';
+		}
+
+		function radioLabel(name) {
+			var checked = form.querySelector('input[name="' + name + '"]:checked');
+			if (!checked) return null;
+			var nameEl = checked.closest('.dl-formule-option');
+			return {
+				value: checked.value,
+				label: nameEl ? nameEl.querySelector('.dl-formule-name').textContent.trim() : checked.value,
+			};
+		}
+
+		function addRow(container, label, value) {
+			if (!value) return;
+			var row = document.createElement('div');
+			row.className = 'dl-recap-row';
+			var l = document.createElement('span');
+			l.textContent = label;
+			var v = document.createElement('strong');
+			v.textContent = value;
+			row.appendChild(l);
+			row.appendChild(v);
+			container.appendChild(row);
+		}
+
+		function addGroupTitle(container, title) {
+			var h = document.createElement('div');
+			h.className = 'dl-recap-group';
+			h.textContent = title;
+			container.appendChild(h);
+		}
+
+		function fillRecap() {
+			var recap = document.getElementById('dl-recap');
+			recap.innerHTML = '';
+
+			var formule = radioLabel('formule');
+			addGroupTitle(recap, 'Formule');
+			addRow(recap, 'Formule choisie', formule ? formule.label : '—');
+			addRow(recap, 'Tarif réduit', document.getElementById('dl-tarif-reduit').checked ? 'Oui' : 'Non');
+			addRow(recap, 'Réduction familiale', labelFor(document.getElementById('foyer_rang')));
+
+			addGroupTitle(recap, 'Pratiquant');
+			var prenom = document.getElementById('prenom').value;
+			var nom = document.getElementById('nom').value;
+			addRow(recap, 'Nom complet', (prenom + ' ' + nom).trim());
+			addRow(recap, 'Sexe', labelFor(document.getElementById('sexe')));
+			addRow(recap, 'Date de naissance', document.getElementById('date_naissance').value);
+			addRow(recap, 'Email', document.getElementById('email').value);
+			addRow(recap, 'Téléphone', document.getElementById('telephone').value);
+			addRow(recap, 'Adresse', document.getElementById('adresse').value);
+
+			var respNom = document.getElementById('responsable_nom').value;
+			if (respNom) {
+				addGroupTitle(recap, 'Responsable légal');
+				addRow(recap, 'Nom', respNom);
+				addRow(recap, 'Lien de parenté', document.getElementById('responsable_lien').value);
+				addRow(recap, 'Téléphone', document.getElementById('responsable_telephone').value);
+				addRow(recap, 'Email', document.getElementById('responsable_email').value);
+			}
+
+			addGroupTitle(recap, 'Documents');
+			var certFiles = document.getElementById('certificat_medical').files;
+			addRow(recap, 'Certificat médical', certFiles.length ? certFiles[0].name : 'Non fourni');
+			var justifFiles = document.getElementById('justificatif_reduit').files;
+			if (justifFiles.length) addRow(recap, 'Justificatif tarif réduit', justifFiles[0].name);
+
+			addGroupTitle(recap, 'Règlement');
+			var modePaiement = radioLabel('mode_paiement');
+			addRow(recap, 'Mode choisi', modePaiement ? modePaiement.label : '—');
+		}
+
+		function show(index) {
+			steps.forEach(function (step, i) {
+				step.classList.toggle('active', i === index);
+			});
+			var step = steps[index];
+			stepEl.textContent = index + 1;
+			titleEl.textContent = step.getAttribute('data-title');
+			fillEl.style.width = (((index + 1) / steps.length) * 100) + '%';
+			if (index === steps.length - 1) fillRecap();
+			current = index;
+			form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		}
+
+		function validateStep(index) {
+			var invalid = steps[index].querySelector(':invalid');
+			if (invalid) {
+				invalid.reportValidity();
+				return false;
+			}
+			return true;
+		}
+
+		form.querySelectorAll('.dl-btn-next').forEach(function (btn) {
+			btn.addEventListener('click', function () {
+				if (!validateStep(current)) return;
+				if (current < steps.length - 1) show(current + 1);
+			});
+		});
+
+		form.querySelectorAll('.dl-btn-prev').forEach(function (btn) {
+			btn.addEventListener('click', function () {
+				if (current > 0) show(current - 1);
+			});
+		});
+
+		form.addEventListener('submit', function (e) {
+			for (var i = 0; i < steps.length; i++) {
+				var invalid = steps[i].querySelector(':invalid');
+				if (invalid) {
+					e.preventDefault();
+					show(i);
+					window.setTimeout(function () { invalid.reportValidity(); }, 300);
+					return;
+				}
+			}
+		});
+
+		show(0);
+	})();
 	</script>
 {% endblock %}
