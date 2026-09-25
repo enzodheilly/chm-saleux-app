@@ -315,7 +315,7 @@
   flex-direction: column;
   gap: 4px;
   background: #1a1a1a;
-  border: 1.5px solid rgba(255,255,255,0.09);
+  border: 1px solid rgba(255,255,255,0.09);
   padding: 16px 18px;
   transition: border-color 0.15s, background 0.15s;
   min-height: 56px;
@@ -327,25 +327,18 @@
 
 .dl-formule-option input:checked + .dl-formule-card {
   border-color: #F57706;
-  background: rgba(245,119,6,0.08);
+  background: #000;
 }
 
 .dl-formule-option--disabled .dl-formule-sub { color: rgba(255,255,255,0.25); }
 
 /* ── Notice sécurité (certificat médical) ── */
 .dl-notice {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  background: rgba(245,119,6,0.05);
-  border: 1px solid rgba(245,119,6,0.2);
-  padding: 14px 16px;
   margin-top: 4px;
   font-size: 0.78rem;
-  color: rgba(255,255,255,0.55);
+  color: #fff;
   line-height: 1.6;
 }
-.dl-notice i { color: #F57706; margin-top: 2px; flex-shrink: 0; }
 
 /* ── Consentement RGPD ── */
 .dl-card--consent { background: #111; }
@@ -412,7 +405,7 @@
   align-items: center;
   gap: 8px;
   background: transparent;
-  border: 1.5px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.15);
   color: #fff;
   padding: 12px 22px;
   font-size: 0.82rem;
@@ -455,21 +448,10 @@
 .turnstile-wrapper { margin: 8px 0 24px; }
 
 .dl-submit {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: auto;
   background: #F57706;
   color: #111;
-  border: none;
-  padding: 16px 24px;
-  font-size: 0.95rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  cursor: pointer;
+  border: 1px solid #F57706;
   text-decoration: none;
-  transition: background 0.15s;
 }
 
 .dl-submit:hover { background: #ff8a1f; }

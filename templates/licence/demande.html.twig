@@ -105,7 +105,7 @@
 
 						<div class="dl-step-actions">
 							<span></span>
-							<button type="button" class="dl-btn-next">Suivant<i class="fa-solid fa-arrow-right"></i></button>
+							<button type="button" class="dl-btn-next">Suivant</button>
 						</div>
 					</div>
 
@@ -126,16 +126,16 @@
 
 						<div class="dl-row">
 							<div class="dl-field">
-								<label for="sexe">Sexe</label>
-								<select name="sexe" id="sexe" class="dl-input">
+								<label for="sexe">Sexe *</label>
+								<select name="sexe" id="sexe" class="dl-input" required>
 									<option value="">—</option>
 									<option value="F">Féminin</option>
 									<option value="M">Masculin</option>
 								</select>
 							</div>
 							<div class="dl-field">
-								<label for="date_naissance">Date de naissance</label>
-								<input type="date" name="date_naissance" id="date_naissance" class="dl-input">
+								<label for="date_naissance">Date de naissance *</label>
+								<input type="date" name="date_naissance" id="date_naissance" class="dl-input" required>
 							</div>
 						</div>
 
@@ -145,39 +145,39 @@
 								<input type="email" name="email" id="email" class="dl-input" maxlength="180" required>
 							</div>
 							<div class="dl-field">
-								<label for="telephone">Téléphone</label>
-								<input type="tel" name="telephone" id="telephone" class="dl-input" maxlength="30">
+								<label for="telephone">Téléphone *</label>
+								<input type="tel" name="telephone" id="telephone" class="dl-input" maxlength="30" required>
 							</div>
 						</div>
 
 						<div class="dl-field">
-							<label for="adresse">Adresse</label>
-							<input type="text" name="adresse" id="adresse" class="dl-input" maxlength="255">
+							<label for="adresse">Adresse *</label>
+							<input type="text" name="adresse" id="adresse" class="dl-input" maxlength="255" required>
 						</div>
 
 						<div class="dl-step-actions">
-							<button type="button" class="dl-btn-prev"><i class="fa-solid fa-arrow-left"></i>Précédent</button>
-							<button type="button" class="dl-btn-next">Suivant<i class="fa-solid fa-arrow-right"></i></button>
+							<button type="button" class="dl-btn-prev">Précédent</button>
+							<button type="button" class="dl-btn-next">Suivant</button>
 						</div>
 					</div>
 
 					{# ── Étape 3 : Responsable légal ── #}
 					<div class="dl-card dl-step" data-step="3" data-title="Responsable légal">
-						<h2 class="dl-card-title"><span class="dl-num">3</span>Responsable légal <span class="dl-card-subtitle">(si pratiquant mineur)</span></h2>
+						<h2 class="dl-card-title"><span class="dl-num">3</span>Responsable légal <span class="dl-card-subtitle" id="dl-resp-subtitle">(si pratiquant mineur)</span></h2>
 
 						<div class="dl-row">
 							<div class="dl-field">
-								<label for="responsable_nom">Nom &amp; prénom du responsable</label>
+								<label for="responsable_nom">Nom &amp; prénom du responsable <span class="dl-req-star" id="dl-star-resp-nom" style="display:none;">*</span></label>
 								<input type="text" name="responsable_nom" id="responsable_nom" class="dl-input" maxlength="150">
 							</div>
 							<div class="dl-field">
-								<label for="responsable_lien">Lien de parenté</label>
+								<label for="responsable_lien">Lien de parenté <span class="dl-req-star" id="dl-star-resp-lien" style="display:none;">*</span></label>
 								<input type="text" name="responsable_lien" id="responsable_lien" class="dl-input" maxlength="100">
 							</div>
 						</div>
 						<div class="dl-row">
 							<div class="dl-field">
-								<label for="responsable_telephone">Téléphone du responsable</label>
+								<label for="responsable_telephone">Téléphone du responsable <span class="dl-req-star" id="dl-star-resp-tel" style="display:none;">*</span></label>
 								<input type="tel" name="responsable_telephone" id="responsable_telephone" class="dl-input" maxlength="30">
 							</div>
 							<div class="dl-field">
@@ -187,8 +187,8 @@
 						</div>
 
 						<div class="dl-step-actions">
-							<button type="button" class="dl-btn-prev"><i class="fa-solid fa-arrow-left"></i>Précédent</button>
-							<button type="button" class="dl-btn-next">Suivant<i class="fa-solid fa-arrow-right"></i></button>
+							<button type="button" class="dl-btn-prev">Précédent</button>
+							<button type="button" class="dl-btn-next">Suivant</button>
 						</div>
 					</div>
 
@@ -200,14 +200,11 @@
 							<label for="certificat_medical">Certificat médical / questionnaire de santé *</label>
 							<input type="file" name="certificat_medical" id="certificat_medical" accept=".pdf,.jpg,.jpeg,.png" required>
 						</div>
-						<div class="dl-notice">
-							<i class="fa-solid fa-shield-halved"></i>
-							<span>Ce document contient des données de santé. Il est stocké hors de tout accès public et consultable uniquement par le bureau du club, dans le seul but d'instruire votre dossier de licence puis de le transmettre à la FFHM.</span>
-						</div>
+						<p class="dl-notice">Ce document contient des données de santé. Il est stocké hors de tout accès public et consultable uniquement par le bureau du club, dans le seul but d'instruire votre dossier de licence puis de le transmettre à la FFHM.</p>
 
 						<div class="dl-step-actions">
-							<button type="button" class="dl-btn-prev"><i class="fa-solid fa-arrow-left"></i>Précédent</button>
-							<button type="button" class="dl-btn-next">Suivant<i class="fa-solid fa-arrow-right"></i></button>
+							<button type="button" class="dl-btn-prev">Précédent</button>
+							<button type="button" class="dl-btn-next">Suivant</button>
 						</div>
 					</div>
 
@@ -232,8 +229,8 @@
 						</div>
 
 						<div class="dl-step-actions">
-							<button type="button" class="dl-btn-prev"><i class="fa-solid fa-arrow-left"></i>Précédent</button>
-							<button type="button" class="dl-btn-next">Suivant<i class="fa-solid fa-arrow-right"></i></button>
+							<button type="button" class="dl-btn-prev">Précédent</button>
+							<button type="button" class="dl-btn-next">Suivant</button>
 						</div>
 					</div>
 
@@ -258,8 +255,8 @@
 						</div>
 
 						<div class="dl-step-actions">
-							<button type="button" class="dl-btn-prev"><i class="fa-solid fa-arrow-left"></i>Précédent</button>
-							<button type="submit" class="dl-submit">Envoyer ma demande de licence</button>
+							<button type="button" class="dl-btn-prev">Précédent</button>
+							<button type="submit" class="dl-btn-next dl-submit">Envoyer ma demande de licence</button>
 						</div>
 					</div>
 
@@ -308,6 +305,35 @@
 		document.getElementById('dl-tarif-reduit').addEventListener('change', function () {
 			document.getElementById('dl-justificatif-wrap').style.display = this.checked ? 'block' : 'none';
 		});
+
+		// ── Responsable légal obligatoire si pratiquant mineur ──
+		var dateNaissanceInput = document.getElementById('date_naissance');
+		var respFields = ['responsable_nom', 'responsable_lien', 'responsable_telephone'];
+		var respStars  = { responsable_nom: 'dl-star-resp-nom', responsable_lien: 'dl-star-resp-lien', responsable_telephone: 'dl-star-resp-tel' };
+
+		function isMineur(dateStr) {
+			if (!dateStr) return false;
+			var naissance = new Date(dateStr);
+			if (isNaN(naissance.getTime())) return false;
+			var aujourdhui = new Date();
+			var age = aujourdhui.getFullYear() - naissance.getFullYear();
+			var m = aujourdhui.getMonth() - naissance.getMonth();
+			if (m < 0 || (m === 0 && aujourdhui.getDate() < naissance.getDate())) age--;
+			return age < 18;
+		}
+
+		function updateResponsableRequirement() {
+			var mineur = isMineur(dateNaissanceInput.value);
+			respFields.forEach(function (fieldId) {
+				var field = document.getElementById(fieldId);
+				var star  = document.getElementById(respStars[fieldId]);
+				field.required = mineur;
+				if (star) star.style.display = mineur ? 'inline' : 'none';
+			});
+		}
+
+		dateNaissanceInput.addEventListener('change', updateResponsableRequirement);
+		updateResponsableRequirement();
 
 		var form     = document.querySelector('.dl-wizard');
 		var steps    = Array.prototype.slice.call(form.querySelectorAll('.dl-step'));
