@@ -485,15 +485,36 @@
   .dl-layout { grid-template-columns: 1fr; }
   .dl-sidebar { position: static; order: -1; }
   .dl-trust-strip { grid-template-columns: repeat(2, 1fr); }
+  .dl-formules { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 720px) {
-  .dl-row { grid-template-columns: 1fr; }
+  .dl-section { padding: 2.2rem 0 3.5rem; }
+  .dl-page-header { padding-top: 28px; padding-bottom: 26px; }
+  .dl-wm { display: none; }
+  .dl-trust-strip { grid-template-columns: 1fr; margin-bottom: 24px; }
+  .dl-trust-tile { padding: 16px 18px; }
+  .dl-row { grid-template-columns: 1fr; gap: 0; }
   .dl-formules { grid-template-columns: 1fr; }
-  .dl-card { padding: 22px; }
-  .dl-trust-strip { grid-template-columns: 1fr; }
-  .dl-step-actions { flex-wrap: wrap; gap: 10px; }
+  .dl-card { padding: 20px; margin-bottom: 16px; }
+  .dl-card-title { font-size: 1rem; gap: 10px; flex-wrap: wrap; }
+  .dl-side-card { padding: 18px; }
+  .dl-progress-label { font-size: 0.7rem; }
+  .dl-step-actions { flex-wrap: wrap-reverse; gap: 10px; }
   .dl-btn-next, .dl-btn-prev, .dl-submit { width: 100%; justify-content: center; margin-left: 0; }
   .dl-recap-row { flex-direction: column; gap: 2px; }
   .dl-recap-row strong { text-align: left; }
+  .dl-merci-row { flex-direction: column; align-items: flex-start; gap: 2px; }
+}
+
+@media (max-width: 480px) {
+  .dl-page-header h1 { font-size: 1.6rem; }
+  .dl-header-lead { font-size: 0.9rem; }
+  .dl-card { padding: 16px; }
+  .dl-card-title { font-size: 0.92rem; }
+  .dl-num { width: 24px; height: 24px; font-size: 0.75rem; }
+  .dl-input, .dl-field input, .dl-field select { padding: 11px 14px; font-size: 0.88rem; }
+  .dl-formule-card { padding: 14px 16px; min-height: 48px; }
+  .dl-btn-next, .dl-btn-prev, .dl-submit { padding: 12px 16px; font-size: 0.78rem; }
+  .dl-trust-tile { padding: 14px 16px; }
 }
