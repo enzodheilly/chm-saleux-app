@@ -20,7 +20,8 @@
     width: 100%;
     border-bottom: 1.4pt solid #1a1a1a;
   }
-  .header-table img { width: 18mm; height: 18mm; }
+  .header-table img { width: 13mm; height: 13mm; }
+  .logo-table { table-layout: auto; width: auto; }
   .club-name { font-size: 10pt; letter-spacing: 2px; color: #1a1a1a; font-weight: 700; text-transform: uppercase; margin: 0 0 1mm 0; }
   .club-sub { font-size: 8pt; color: #6b6b6b; margin: 0; }
   .title-block { text-align: right; }
@@ -87,9 +88,9 @@
 
 <table class="header-table"><tr>
   <td style="width:58%;">
-    <table><tr>
-      <td style="width:18mm;"><img src="{{ logoDataUri }}" alt="CHM Saleux"></td>
-      <td style="padding-left:5mm;">
+    <table class="logo-table"><tr>
+      <td style="width:13mm;"><img src="{{ logoDataUri }}" alt="CHM Saleux"></td>
+      <td style="padding-left:4mm; white-space:nowrap;">
         <p class="club-name">CHM Saleux</p>
         <p class="club-sub">Club d'Haltérophilie &amp; Musculation</p>
       </td>
