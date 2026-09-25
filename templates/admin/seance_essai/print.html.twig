@@ -5,391 +5,157 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Séance d'initiation – {{ seance.prenom }} {{ seance.nom }}</title>
     <style nonce="{{ csp_nonce('style') }}">
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+        * { box-sizing: border-box; }
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 11pt;
-            color: #111;
+            margin: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #1a1a1a;
+            font-size: 10.3pt;
             background: #e8e8ec;
-            min-height: 100vh;
         }
 
-        /* ── Barre de contrôle ── */
+        /* ── Barre de contrôle (non imprimée) ── */
         .ctrl-bar {
             position: fixed;
             top: 0; left: 0; right: 0;
             height: 52px;
-            background: #18181c;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
             display: flex;
             align-items: center;
             padding: 0 24px;
             gap: 16px;
             z-index: 100;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
         }
-
         .ctrl-back {
             display: flex;
             align-items: center;
             gap: 7px;
-            color: rgba(255,255,255,0.55);
+            color: #6b6b6b;
             text-decoration: none;
             font-size: 0.8rem;
             font-weight: 600;
-            transition: color 0.15s;
         }
-        .ctrl-back:hover { color: #fff; }
-        .ctrl-back svg { flex-shrink: 0; }
-
-        .ctrl-divider {
-            width: 1px;
-            height: 20px;
-            background: rgba(255,255,255,0.1);
-        }
-
-        .ctrl-label {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .ctrl-sub {
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.35);
-        }
-
+        .ctrl-back:hover { color: #1a1a1a; }
+        .ctrl-divider { width: 1px; height: 20px; background: #e0e0e0; }
+        .ctrl-label { font-size: 0.8rem; font-weight: 700; color: #1a1a1a; }
+        .ctrl-sub { font-size: 0.75rem; color: #9a9a9a; }
         .ctrl-spacer { flex: 1; }
-
-        .ctrl-info {
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.35);
-        }
-
-        .ctrl-print-btn {
+        .ctrl-info { font-size: 0.75rem; color: #9a9a9a; }
+        .ctrl-btn {
             display: flex;
             align-items: center;
             gap: 7px;
-            background: #e8720c;
-            color: #fff;
-            border: none;
+            border: 1pt solid #1a1a1a;
+            background: #ffffff;
+            color: #1a1a1a;
             padding: 8px 18px;
             font-size: 0.78rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.07em;
-            border-radius: 4px;
+            letter-spacing: 0.06em;
+            border-radius: 3px;
             cursor: pointer;
             font-family: inherit;
-            transition: background 0.15s;
+            text-decoration: none;
         }
-        .ctrl-print-btn:hover { background: #c96209; }
+        .ctrl-btn:hover { background: #f4f4f4; }
+        .ctrl-btn.primary { background: #1a1a1a; color: #ffffff; }
+        .ctrl-btn.primary:hover { background: #333333; }
 
-        /* ── Zone page ── */
-        .page-shell {
-            padding: 72px 24px 48px;
-            display: flex;
-            justify-content: center;
-        }
+        .page-shell { padding: 72px 24px 40px; display: flex; justify-content: center; }
 
-        /* ── Page A4 ── */
+        /* ── Page A4 (identique au PDF) ── */
         .page {
             width: 210mm;
             min-height: 297mm;
             background: #fff;
-            padding: 16mm 16mm 14mm;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.12);
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+            padding-bottom: 26mm;
+        }
+
+        table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+        td { vertical-align: top; padding: 0; }
+
+        .header-table td { vertical-align: middle; }
+        .header-table { padding: 8mm 16mm 5mm 16mm; width: 100%; border-bottom: 1.4pt solid #1a1a1a; }
+        .header-table img { width: 18mm; height: 18mm; }
+        .club-name { font-size: 10pt; letter-spacing: 2px; color: #1a1a1a; font-weight: 700; text-transform: uppercase; margin: 0 0 1mm 0; }
+        .club-sub { font-size: 8pt; color: #6b6b6b; margin: 0; }
+        .title-block { text-align: right; }
+        .title-block h1 { font-size: 13pt; white-space: nowrap; margin: 0; font-weight: 700; color: #1a1a1a; }
+        .title-block p { margin: 2mm 0 0 0; font-size: 8.5pt; color: #6b6b6b; letter-spacing: 0.6px; text-transform: uppercase; }
+
+        .content { padding: 7mm 16mm 0 16mm; }
+
+        .section-title-table { margin: 0 0 2.5mm 0; table-layout: auto; width: auto; }
+        .section-title-table td { vertical-align: middle; }
+        .num {
+            width: 6mm; height: 6mm; border-radius: 50%; border: 1.1pt solid #1a1a1a; color: #1a1a1a;
+            font-size: 9pt; font-weight: 700; text-align: center; line-height: 5.6mm;
+        }
+        .section-title-table h2 { font-size: 11.5pt; margin: 0 0 0 3mm; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
+
+        .field-table { margin-bottom: 2.5mm; }
+        .field-table td { padding-right: 8mm; width: 50%; }
+        .field-table td:last-child { padding-right: 0; }
+        label.f {
+            display: block; font-size: 8pt; color: #6b6b6b; text-transform: uppercase;
+            letter-spacing: 0.4px; margin-bottom: 1.3mm; font-weight: 600;
+        }
+        .line { border-bottom: 0.6pt solid #b0b0b0; height: 5mm; font-size: 10pt; padding-bottom: 0.5mm; }
+        .line-value { color: #1a1a1a; font-size: 10pt; }
+
+        .checkbox {
+            display: inline-block; width: 3.6mm; height: 3.6mm; border: 1.1pt solid #1a1a1a;
+            text-align: center; line-height: 3.2mm; font-size: 8pt; font-weight: 700; color: #1a1a1a;
+            vertical-align: middle;
+        }
+        .opt-label { font-size: 9.5pt; vertical-align: middle; padding-left: 2mm; padding-right: 6mm; }
+
+        .date-cell { font-size: 9.5pt; }
+        .date-box { display: inline-block; border-bottom: 0.6pt solid #b0b0b0; height: 5mm; width: 12mm; text-align: center; }
+        .date-box.year { width: 18mm; }
+        .date-sep { color: #6b6b6b; padding: 0 1.5mm; }
+
+        .divider { height: 0.5pt; background: #d8d8d8; margin: 3.5mm 0; }
+
+        .declaration-box {
+            background: #ffffff; border: 0.8pt solid #1a1a1a; padding: 3.5mm 5mm;
+            font-size: 9pt; line-height: 1.4; color: #1a1a1a;
+        }
+        .declaration-box p { margin: 0 0 3mm 0; }
+        .declaration-box p:last-child { margin-bottom: 0; }
+        .signee-line { border-bottom: 0.6pt solid #b0b0b0; display: inline-block; min-width: 90mm; }
+        .declaration-note { font-size: 7pt; color: #bbb; font-style: italic; margin-top: 2mm; }
+
+        .sign-box {
+            margin-top: 3mm; height: 18mm; border: 0.8pt solid #1a1a1a; border-radius: 1mm; background: #ffffff;
             position: relative;
         }
+        .approved { position: absolute; bottom: 3mm; right: 4mm; font-size: 8pt; font-style: italic; color: #9a9a9a; }
 
-        /* ── Filigrane ── */
-        .page-watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-35deg);
-            font-size: 64pt;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: rgba(0,0,0,0.03);
-            pointer-events: none;
-            user-select: none;
-            white-space: nowrap;
+        .footer {
+            border-top: 1pt solid #1a1a1a; padding: 3.5mm 16mm; text-align: center; margin-top: 6mm;
         }
-
-        /* ── En-tête ── */
-        .doc-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-bottom: 12px;
-            border-bottom: 3px solid #e8720c;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .header-logo {
-            height: 38px;
-            width: auto;
-        }
-
-        .header-club-name {
-            font-size: 15pt;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: #111;
-            line-height: 1.1;
-        }
-
-        .header-club-sport {
-            font-size: 7.5pt;
-            color: #e8720c;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            margin-top: 2px;
-        }
-
-        .header-right {
-            text-align: right;
-        }
-
-        .header-doc-num {
-            font-size: 9pt;
-            font-weight: 700;
-            color: #333;
-        }
-
-        .header-doc-date {
-            font-size: 7.5pt;
-            color: #888;
-            margin-top: 2px;
-        }
-
-        /* ── Titre ── */
-        .doc-title {
-            text-align: center;
-            padding: 4px 0 2px;
-        }
-
-        .doc-title h1 {
-            font-size: 13pt;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #111;
-            display: inline-block;
-            border-bottom: 2px solid #111;
-            padding-bottom: 5px;
-        }
-
-        /* ── Blocs ── */
-        .doc-section {
-            border: 1px solid #d8d8d8;
-            border-radius: 2px;
-        }
-
-        .doc-section-head {
-            background: #f4f4f6;
-            border-bottom: 1px solid #d8d8d8;
-            padding: 5px 12px;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
-
-        .doc-section-head-bar {
-            width: 3px;
-            height: 14px;
-            background: #e8720c;
-            border-radius: 2px;
-            flex-shrink: 0;
-        }
-
-        .doc-section-title {
-            font-size: 7pt;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.13em;
-            color: #555;
-        }
-
-        .doc-section-body {
-            padding: 12px 14px;
-        }
-
-        /* ── Grille infos ── */
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px 28px;
-        }
-
-        .info-field { display: flex; flex-direction: column; gap: 2px; }
-
-        .info-label {
-            font-size: 7pt;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #999;
-        }
-
-        .info-value {
-            font-size: 11.5pt;
-            font-weight: 700;
-            color: #111;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 3px;
-            min-height: 22px;
-            line-height: 1.2;
-        }
-
-        .sport-chip {
-            display: inline-block;
-            background: #fff5ed;
-            border: 1.5px solid #e8720c;
-            color: #c65a00;
-            padding: 1px 9px;
-            font-size: 10pt;
-            font-weight: 700;
-            border-radius: 2px;
-        }
-
-        /* ── Décharge ── */
-        .disclaimer-text {
-            font-size: 10pt;
-            line-height: 1.8;
-            color: #1a1a1a;
-            text-align: justify;
-        }
-
-        .disclaimer-text strong {
-            font-weight: 900;
-            text-decoration: underline;
-            text-decoration-thickness: 1px;
-        }
-
-        .disclaimer-note {
-            font-size: 7pt;
-            color: #bbb;
-            font-style: italic;
-            margin-top: 8px;
-        }
-
-        /* ── Signatures ── */
-        .sign-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 28px;
-        }
-
-        .sign-block { display: flex; flex-direction: column; gap: 5px; }
-
-        .sign-label {
-            font-size: 7pt;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #999;
-        }
-
-        .sign-area { height: 52px; border-bottom: 1px solid #aaa; }
-
-        .sign-hint {
-            font-size: 7pt;
-            color: #ccc;
-            font-style: italic;
-        }
-
-        /* ── Pied de page ── */
-        .doc-footer {
-            margin-top: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 10px;
-            border-top: 1px dashed #ddd;
-        }
-
-        .doc-footer-text {
-            font-size: 7pt;
-            color: #ccc;
-            font-style: italic;
-        }
+        .footer .name { font-weight: 700; font-size: 9.5pt; color: #1a1a1a; letter-spacing: 1px; margin: 0 0 1.5mm 0; text-transform: uppercase; }
+        .footer p { margin: 0.6mm 0; font-size: 8pt; color: #6b6b6b; }
 
         /* ── Mobile ── */
         @media (max-width: 720px) {
-            .page-shell { padding: 64px 0 32px; }
-
-            .page {
-                width: 100%;
-                min-height: auto;
-                padding: 20px 16px;
-                box-shadow: none;
-                border-radius: 0;
-            }
-
-            .page-watermark { display: none; }
-
-            .ctrl-bar { padding: 0 14px; gap: 10px; }
+            .page-shell { padding: 64px 0 24px; }
+            .page { width: 100%; min-height: auto; box-shadow: none; }
             .ctrl-info { display: none; }
-            .ctrl-sub  { display: none; }
-
-            .doc-header { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .header-right { text-align: left; }
-
-            .info-grid { grid-template-columns: 1fr; gap: 8px; }
-
-            .sign-grid { grid-template-columns: 1fr; gap: 20px; }
-
-            .doc-footer { flex-direction: column; gap: 4px; align-items: flex-start; }
+            .ctrl-sub { display: none; }
         }
 
         /* ── @media print ── */
         @media print {
             .ctrl-bar { display: none !important; }
-
             body { background: #fff; }
-
-            .page-shell {
-                padding: 0;
-                display: block;
-            }
-
-            .page {
-                width: 100%;
-                min-height: auto;
-                padding: 10mm 13mm 10mm;
-                box-shadow: none;
-            }
-
-            .doc-section-head {
-                background: #efefef !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            .sport-chip {
-                background: transparent !important;
-                color: #333 !important;
-                border-color: #888 !important;
-            }
-
-            .doc-section-head-bar {
-                background: #888 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
+            .page-shell { padding: 0; display: block; }
+            .page { width: 100%; min-height: auto; box-shadow: none; padding-bottom: 0; }
+            .footer { position: static; }
         }
     </style>
 </head>
@@ -407,11 +173,11 @@
         </div>
         <div class="ctrl-spacer"></div>
         <span class="ctrl-info">Faire signer puis archiver</span>
-        <a href="{{ path('admin_seance_essai_pdf', {id: seance.id}) }}" class="ctrl-print-btn" style="background:#3a3a42; text-decoration:none;">
+        <a href="{{ path('admin_seance_essai_pdf', {id: seance.id}) }}" class="ctrl-btn">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
             Télécharger le PDF
         </a>
-        <button id="btn-print" class="ctrl-print-btn">
+        <button id="btn-print" class="ctrl-btn primary">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
             Imprimer
         </button>
@@ -420,162 +186,157 @@
     <div class="page-shell">
         <div class="page">
 
-            <div class="page-watermark">CHM</div>
+            <table class="header-table"><tr>
+                <td style="width:58%;">
+                    <table><tr>
+                        <td style="width:18mm;"><img src="{{ asset('images/favicon/icon2.png') }}" alt="CHM Saleux"></td>
+                        <td style="padding-left:5mm;">
+                            <p class="club-name">CHM Saleux</p>
+                            <p class="club-sub">Club d'Haltérophilie &amp; Musculation</p>
+                        </td>
+                    </tr></table>
+                </td>
+                <td class="title-block" style="width:42%;">
+                    <h1>Séance d'initiation</h1>
+                    <p>Fiche d'inscription</p>
+                </td>
+            </tr></table>
 
-            {# ── En-tête ── #}
-            <div class="doc-header">
-                <div class="header-left">
-                    <img src="{{ absolute_url(asset('images/favicon/icon2.png')) }}" alt="Logo CHM" class="header-logo">
-                    <div>
-                        <div class="header-club-name">CHM Saleux</div>
-                        <div class="header-club-sport">Haltérophilie &amp; Musculation</div>
-                    </div>
+            <div class="content">
+
+                {# ── Section 1 ── #}
+                <table class="section-title-table"><tr>
+                    <td style="width:6mm;"><div class="num">1</div></td>
+                    <td><h2>Informations du pratiquant</h2></td>
+                </tr></table>
+
+                <table class="field-table"><tr>
+                    <td colspan="2">
+                        <label class="f">Nom &amp; Prénom</label>
+                        <div class="line line-value">{{ seance.prenom }} {{ seance.nom|upper }}</div>
+                    </td>
+                </tr></table>
+
+                <table class="field-table"><tr>
+                    <td>
+                        <label class="f">Sport pratiqué</label>
+                        <div class="line" style="height:6mm; padding-top:0.8mm;">
+                            <span class="checkbox">{{ seance.sport == 'Haltérophilie' ? 'X' : '' }}</span><span class="opt-label">Haltérophilie</span>
+                            <span class="checkbox">{{ seance.sport == 'Musculation' ? 'X' : '' }}</span><span class="opt-label">Musculation</span>
+                        </div>
+                    </td>
+                    <td>
+                        <label class="f">Sexe</label>
+                        <div class="line" style="height:6mm; padding-top:0.8mm;">
+                            <span class="checkbox">{{ seance.sexe == 'F' ? 'X' : '' }}</span><span class="opt-label">Féminin</span>
+                            <span class="checkbox">{{ seance.sexe == 'M' ? 'X' : '' }}</span><span class="opt-label">Masculin</span>
+                        </div>
+                    </td>
+                </tr></table>
+
+                <table class="field-table"><tr>
+                    <td>
+                        <label class="f">Date de naissance</label>
+                        <div class="line date-cell" style="height:6mm; padding-top:0.8mm;">
+                            <span class="date-box">{{ seance.dateNaissance ? seance.dateNaissance|date('d') : '' }}</span>
+                            <span class="date-sep">/</span>
+                            <span class="date-box">{{ seance.dateNaissance ? seance.dateNaissance|date('m') : '' }}</span>
+                            <span class="date-sep">/</span>
+                            <span class="date-box year">{{ seance.dateNaissance ? seance.dateNaissance|date('Y') : '' }}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <label class="f">Téléphone</label>
+                        <div class="line line-value">{{ seance.telephone }}</div>
+                    </td>
+                </tr></table>
+
+                <table class="field-table"><tr>
+                    <td colspan="2">
+                        <label class="f">Adresse</label>
+                        <div class="line line-value">{{ seance.adresse }}</div>
+                    </td>
+                </tr></table>
+
+                <table class="field-table"><tr>
+                    <td colspan="2">
+                        <label class="f">Adresse email</label>
+                        <div class="line line-value">{{ seance.email }}</div>
+                    </td>
+                </tr></table>
+
+                <div class="divider"></div>
+
+                {# ── Section 2 ── #}
+                <table class="section-title-table"><tr>
+                    <td style="width:6mm;"><div class="num">2</div></td>
+                    <td><h2>Responsable légal <span style="font-size:8.5pt; font-weight:400; text-transform:none; letter-spacing:0; color:#6b6b6b;">(si pratiquant mineur)</span></h2></td>
+                </tr></table>
+
+                <table class="field-table"><tr>
+                    <td>
+                        <label class="f">Nom &amp; Prénom du responsable</label>
+                        <div class="line line-value">{{ seance.responsableNom }}</div>
+                    </td>
+                    <td>
+                        <label class="f">Lien de parenté</label>
+                        <div class="line line-value">{{ seance.responsableLien }}</div>
+                    </td>
+                </tr></table>
+
+                <table class="field-table"><tr>
+                    <td>
+                        <label class="f">Téléphone</label>
+                        <div class="line line-value">{{ seance.responsableTelephone }}</div>
+                    </td>
+                    <td>
+                        <label class="f">Email</label>
+                        <div class="line line-value">{{ seance.responsableEmail }}</div>
+                    </td>
+                </tr></table>
+
+                <div class="divider"></div>
+
+                {# ── Section 3 ── #}
+                <table class="section-title-table"><tr>
+                    <td style="width:6mm;"><div class="num">3</div></td>
+                    <td><h2>Décharge de responsabilité</h2></td>
+                </tr></table>
+
+                <div class="declaration-box">
+                    <p>Je soussigné(e) <span class="signee-line">{{ seance.prenom }} {{ seance.nom|upper }}</span>, reconnais avoir pris connaissance du règlement intérieur du CHM Saleux et m'engage à le respecter.</p>
+                    <p>Je certifie sur l'honneur être apte à pratiquer une activité sportive et ne pas avoir de contre-indication médicale connue. Je déclare participer à cette séance d'initiation sous ma propre responsabilité, en pleine connaissance des risques inhérents à la pratique sportive.</p>
+                    <p>Je décharge le Club d'Haltérophilie &amp; Musculation de Saleux (CHM Saleux) de toute responsabilité en cas d'accident survenu du fait de ma propre négligence ou du non-respect des consignes données par les encadrants.</p>
+                    <p class="declaration-note">⚠ Texte provisoire — à remplacer par la version définitive validée par le président du club.</p>
                 </div>
-                <div class="header-right">
-                    <div class="header-doc-num">Fiche n°{{ seance.id }}</div>
-                    <div class="header-doc-date">{{ seance.createdAt|date('d/m/Y à H:i') }}</div>
-                </div>
+
+                <table style="margin-top:4mm;" class="field-table"><tr>
+                    <td>
+                        <label class="f">Fait à</label>
+                        <div class="line line-value">{{ seance.lieuSignature ?: 'Saleux' }}</div>
+                    </td>
+                    <td>
+                        <label class="f">Le</label>
+                        <div class="line date-cell" style="height:6mm; padding-top:0.8mm;">
+                            <span class="date-box">{{ (seance.dateSignature ?: seance.dateSeance)|date('d') }}</span>
+                            <span class="date-sep">/</span>
+                            <span class="date-box">{{ (seance.dateSignature ?: seance.dateSeance)|date('m') }}</span>
+                            <span class="date-sep">/</span>
+                            <span class="date-box year">{{ (seance.dateSignature ?: seance.dateSeance)|date('Y') }}</span>
+                        </div>
+                    </td>
+                </tr></table>
+
+                <label class="f">Signature du pratiquant (ou responsable légal)</label>
+                <div class="sign-box"><span class="approved">« Lu et approuvé »</span></div>
+
             </div>
 
-            {# ── Titre ── #}
-            <div class="doc-title">
-                <h1>Fiche de séance d'initiation</h1>
-            </div>
-
-            {# ── Informations participant ── #}
-            <div class="doc-section">
-                <div class="doc-section-head">
-                    <div class="doc-section-head-bar"></div>
-                    <span class="doc-section-title">Informations du participant</span>
-                </div>
-                <div class="doc-section-body">
-                    <div class="info-grid">
-                        <div class="info-field">
-                            <span class="info-label">Nom</span>
-                            <span class="info-value">{{ seance.nom|upper }}</span>
-                        </div>
-                        <div class="info-field">
-                            <span class="info-label">Prénom</span>
-                            <span class="info-value">{{ seance.prenom }}</span>
-                        </div>
-                        <div class="info-field">
-                            <span class="info-label">Date de naissance</span>
-                            <span class="info-value">{{ seance.dateNaissance ? seance.dateNaissance|date('d/m/Y') : '&nbsp;'|raw }}</span>
-                        </div>
-                        <div class="info-field">
-                            <span class="info-label">Téléphone</span>
-                            <span class="info-value">{{ seance.telephone ?: '&nbsp;'|raw }}</span>
-                        </div>
-                        <div class="info-field">
-                            <span class="info-label">Email</span>
-                            <span class="info-value">{{ seance.email ?: '&nbsp;'|raw }}</span>
-                        </div>
-                        <div class="info-field">
-                            <span class="info-label">Adresse</span>
-                            <span class="info-value">{{ seance.adresse ?: '&nbsp;'|raw }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {# ── Détails séance ── #}
-            <div class="doc-section">
-                <div class="doc-section-head">
-                    <div class="doc-section-head-bar"></div>
-                    <span class="doc-section-title">Détails de la séance</span>
-                </div>
-                <div class="doc-section-body">
-                    <div class="info-grid">
-                        <div class="info-field">
-                            <span class="info-label">Sport pratiqué</span>
-                            <span class="info-value"><span class="sport-chip">{{ seance.sport }}</span></span>
-                        </div>
-                        <div class="info-field">
-                            <span class="info-label">Date</span>
-                            <span class="info-value">{{ seance.dateSeance|date('d/m/Y') }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {# ── Responsable légal (si mineur) ── #}
-            {% if seance.responsableNom %}
-            <div class="doc-section">
-                <div class="doc-section-head">
-                    <div class="doc-section-head-bar"></div>
-                    <span class="doc-section-title">Responsable légal (pratiquant mineur)</span>
-                </div>
-                <div class="doc-section-body">
-                    <div class="info-grid">
-                        <div class="info-field">
-                            <span class="info-label">Nom &amp; prénom</span>
-                            <span class="info-value">{{ seance.responsableNom }}</span>
-                        </div>
-                        <div class="info-field">
-                            <span class="info-label">Lien de parenté</span>
-                            <span class="info-value">{{ seance.responsableLien ?: '&nbsp;'|raw }}</span>
-                        </div>
-                        <div class="info-field">
-                            <span class="info-label">Téléphone</span>
-                            <span class="info-value">{{ seance.responsableTelephone ?: '&nbsp;'|raw }}</span>
-                        </div>
-                        <div class="info-field">
-                            <span class="info-label">Email</span>
-                            <span class="info-value">{{ seance.responsableEmail ?: '&nbsp;'|raw }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-
-            {# ── Décharge ── #}
-            <div class="doc-section">
-                <div class="doc-section-head">
-                    <div class="doc-section-head-bar"></div>
-                    <span class="doc-section-title">Décharge de responsabilité</span>
-                </div>
-                <div class="doc-section-body">
-                    <p class="disclaimer-text">
-                        Je soussigné(e) <strong>{{ seance.prenom }} {{ seance.nom|upper }}</strong>
-                        déclare avoir été informé(e) des risques liés à la pratique de
-                        <strong>{{ seance.sport }}</strong>
-                        et certifie ne pas avoir de contre-indication médicale à la pratique d'une activité
-                        physique intense. Je dégage le club <strong>CHM Saleux</strong> et ses encadrants
-                        de toute responsabilité en cas d'accident ou de blessure survenu(e) pendant cette
-                        séance d'initiation, résultant de ma propre négligence ou du non-respect des
-                        consignes de sécurité. Je reconnais avoir pris connaissance du règlement intérieur
-                        du club.
-                    </p>
-                    <p class="disclaimer-note">⚠ Texte provisoire — à remplacer par la version définitive validée par le président du club.</p>
-                </div>
-            </div>
-
-            {# ── Signatures ── #}
-            <div class="doc-section">
-                <div class="doc-section-head">
-                    <div class="doc-section-head-bar"></div>
-                    <span class="doc-section-title">Signatures</span>
-                </div>
-                <div class="doc-section-body">
-                    <div class="sign-grid">
-                        <div class="sign-block">
-                            <span class="sign-label">Signature du participant</span>
-                            <div class="sign-area"></div>
-                            <span class="sign-hint">Précéder de « Lu et approuvé »</span>
-                        </div>
-                        <div class="sign-block">
-                            <span class="sign-label">Signature de l'encadrant(e)</span>
-                            <div class="sign-area"></div>
-                            <span class="sign-hint">&nbsp;</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {# ── Pied de page ── #}
-            <div class="doc-footer">
-                <span class="doc-footer-text">Document provisoire · à archiver après signature</span>
-                <span class="doc-footer-text">CHM Saleux · {{ seance.dateSeance|date('Y') }}</span>
+            <div class="footer">
+                <p class="name">CHM Saleux</p>
+                <p>8 Rue Max Dormoy, Complexe multisports de la Grenouillère, 80480 Saleux</p>
+                <p>Tél. club : 03 22 89 72 57 &nbsp;·&nbsp; chm.saleux@orange.fr &nbsp;·&nbsp; chm-saleux.fr</p>
+                <p style="margin-top:1.5mm; color:#9a9a9a;">Agréé Jeunesse et Sports — Association Loi 1901</p>
             </div>
 
         </div>
