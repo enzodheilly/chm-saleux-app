@@ -68,6 +68,11 @@ class DemandeLicenceController extends AbstractController
             return $this->redirectToRoute('demande_licence');
         }
 
+        if (!$request->request->getBoolean('consentement_rgpd')) {
+            $this->addFlash('danger', 'Vous devez accepter la transmission de vos données à la FFHM pour poursuivre.');
+            return $this->redirectToRoute('demande_licence');
+        }
+
         /** @var UploadedFile|null $certificatMedical */
         $certificatMedical = $request->files->get('certificat_medical');
         if (!$certificatMedical instanceof UploadedFile) {
@@ -87,6 +92,7 @@ class DemandeLicenceController extends AbstractController
         $demande->setPrenom($prenom);
         $demande->setEmail($email);
         $demande->setCertificatMedicalPath($certificatPath);
+        $demande->setConsentementRgpdAt(new \DateTimeImmutable());
 
         $sexe = trim((string) $request->request->get('sexe', ''));
         if (in_array($sexe, ['F', 'M'], true)) {

@@ -35,6 +35,7 @@
 				<div><strong>Email :</strong> {{ demande.email }}</div>
 				<div><strong>Téléphone :</strong> {{ demande.telephone ?? '—' }}</div>
 				<div><strong>Adresse :</strong> {{ demande.adresse ?? '—' }}</div>
+				<div><strong>Consentement RGPD :</strong> {{ demande.consentementRgpdAt ? demande.consentementRgpdAt|date('d/m/Y à H:i') : '—' }}</div>
 			</div>
 		</div>
 	</div>

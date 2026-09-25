@@ -18,7 +18,7 @@
 				<h1>DEMANDE DE
 					<span>LICENCE</span>
 				</h1>
-				<p class="dl-header-lead">Remplissez votre demande de licence en ligne — plus besoin de papier. Une fois validée, votre licence sera transmise à la FFHM par le club.</p>
+				<p class="dl-header-lead">Le club CHM Saleux, affilié à la Fédération Française d'Haltérophilie Musculation (FFHM), dématérialise sa procédure d'adhésion. Remplissez ce formulaire une fois : nous transmettons ensuite votre dossier à la FFHM pour l'édition de votre licence officielle.</p>
 			</div>
 		</div>
 	</header>
@@ -34,157 +34,224 @@
 		</div>
 
 		<section class="dl-section page-container">
+			<div class="dl-wm" aria-hidden="true">LICENCE</div>
 
-			<form method="post" action="{{ path('demande_licence_submit') }}" enctype="multipart/form-data" class="dl-form">
-				<input type="hidden" name="_token" value="{{ csrf_token('demande_licence_submit') }}">
-
-				{# ── Formule ── #}
-				<div class="dl-card">
-					<h2 class="dl-card-title"><span class="dl-num">1</span>Choix de la formule</h2>
-					<div class="dl-formules">
-						{% for key, label in formules %}
-							<label class="dl-formule-option">
-								<input type="radio" name="formule" value="{{ key }}" {% if key == 'loisir' %}checked{% endif %} required>
-								<span class="dl-formule-card">
-									<span class="dl-formule-name">{{ label }}</span>
-								</span>
-							</label>
-						{% endfor %}
-					</div>
-					<p class="dl-hint">Le montant exact (dégressif pour Loisir & Muscu selon le mois, réductions familiales, tarif réduit) sera calculé automatiquement et confirmé après l'envoi du formulaire.</p>
-
-					<div class="dl-row">
-						<label class="dl-check">
-							<input type="checkbox" name="tarif_reduit" id="dl-tarif-reduit" value="1">
-							Je bénéficie du tarif réduit (Carte Génération HDF, carte étudiante, etc.)
-						</label>
-					</div>
-					<div class="dl-field" id="dl-justificatif-wrap" style="display:none;">
-						<label for="justificatif_reduit">Justificatif du tarif réduit</label>
-						<input type="file" name="justificatif_reduit" id="justificatif_reduit" accept=".pdf,.jpg,.jpeg,.png">
-					</div>
-
-					<div class="dl-field">
-						<label for="foyer_rang">Réduction familiale — rang de cette licence dans votre foyer</label>
-						<select name="foyer_rang" id="foyer_rang" class="dl-input">
-							<option value="1">1ère licence du foyer — plein tarif</option>
-							<option value="2">2ème licence du foyer — -10%</option>
-							<option value="3">3ème licence du foyer — -15%</option>
-							<option value="4">4ème licence et + du foyer — -20%</option>
-						</select>
-					</div>
+			{# ── Bande de confiance ── #}
+			<div class="dl-trust-strip">
+				<div class="dl-trust-tile">
+					<div class="dl-trust-label">Affiliation</div>
+					<div class="dl-trust-val">Club affilié FFHM — agréé Jeunesse &amp; Sports</div>
 				</div>
+				<div class="dl-trust-tile">
+					<div class="dl-trust-label">Localisation</div>
+					<div class="dl-trust-val">8 Rue Max Dormoy, 80480 Saleux</div>
+				</div>
+				<div class="dl-trust-tile">
+					<div class="dl-trust-label">Téléphone</div>
+					<div class="dl-trust-val"><a href="tel:0322897257">03 22 89 72 57</a></div>
+				</div>
+				<div class="dl-trust-tile">
+					<div class="dl-trust-label">Email</div>
+					<div class="dl-trust-val"><a href="mailto:chm.saleux@orange.fr">chm.saleux@orange.fr</a></div>
+				</div>
+			</div>
 
-				{# ── Pratiquant ── #}
-				<div class="dl-card">
-					<h2 class="dl-card-title"><span class="dl-num">2</span>Informations du pratiquant</h2>
+			<div class="dl-layout">
 
-					<div class="dl-row">
-						<div class="dl-field">
-							<label for="prenom">Prénom *</label>
-							<input type="text" name="prenom" id="prenom" class="dl-input" maxlength="100" required>
+				<form method="post" action="{{ path('demande_licence_submit') }}" enctype="multipart/form-data" class="dl-form">
+					<input type="hidden" name="_token" value="{{ csrf_token('demande_licence_submit') }}">
+
+					{# ── Formule ── #}
+					<div class="dl-card">
+						<h2 class="dl-card-title"><span class="dl-num">1</span>Choix de la formule</h2>
+						<div class="dl-formules">
+							{% for key, label in formules %}
+								<label class="dl-formule-option">
+									<input type="radio" name="formule" value="{{ key }}" {% if key == 'loisir' %}checked{% endif %} required>
+									<span class="dl-formule-card">
+										<span class="dl-formule-name">{{ label }}</span>
+									</span>
+								</label>
+							{% endfor %}
 						</div>
-						<div class="dl-field">
-							<label for="nom">Nom *</label>
-							<input type="text" name="nom" id="nom" class="dl-input" maxlength="100" required>
-						</div>
-					</div>
+						<p class="dl-hint">Le montant exact (dégressif pour Loisir &amp; Muscu selon le mois, réductions familiales, tarif réduit) est calculé automatiquement et confirmé après l'envoi du formulaire. Grille tarifaire complète sur la page <a href="{{ path('app_pricing') }}" class="dl-link">Tarifs</a>.</p>
 
-					<div class="dl-row">
+						<div class="dl-row">
+							<label class="dl-check">
+								<input type="checkbox" name="tarif_reduit" id="dl-tarif-reduit" value="1">
+								Je bénéficie du tarif réduit (Carte Génération HDF, carte étudiante, etc.)
+							</label>
+						</div>
+						<div class="dl-field" id="dl-justificatif-wrap" style="display:none;">
+							<label for="justificatif_reduit">Justificatif du tarif réduit</label>
+							<input type="file" name="justificatif_reduit" id="justificatif_reduit" accept=".pdf,.jpg,.jpeg,.png">
+						</div>
+
 						<div class="dl-field">
-							<label for="sexe">Sexe</label>
-							<select name="sexe" id="sexe" class="dl-input">
-								<option value="">—</option>
-								<option value="F">Féminin</option>
-								<option value="M">Masculin</option>
+							<label for="foyer_rang">Réduction familiale — rang de cette licence dans votre foyer</label>
+							<select name="foyer_rang" id="foyer_rang" class="dl-input">
+								<option value="1">1ère licence du foyer — plein tarif</option>
+								<option value="2">2ème licence du foyer — -10%</option>
+								<option value="3">3ème licence du foyer — -15%</option>
+								<option value="4">4ème licence et + du foyer — -20%</option>
 							</select>
 						</div>
+					</div>
+
+					{# ── Pratiquant ── #}
+					<div class="dl-card">
+						<h2 class="dl-card-title"><span class="dl-num">2</span>Informations du pratiquant</h2>
+
+						<div class="dl-row">
+							<div class="dl-field">
+								<label for="prenom">Prénom *</label>
+								<input type="text" name="prenom" id="prenom" class="dl-input" maxlength="100" required>
+							</div>
+							<div class="dl-field">
+								<label for="nom">Nom *</label>
+								<input type="text" name="nom" id="nom" class="dl-input" maxlength="100" required>
+							</div>
+						</div>
+
+						<div class="dl-row">
+							<div class="dl-field">
+								<label for="sexe">Sexe</label>
+								<select name="sexe" id="sexe" class="dl-input">
+									<option value="">—</option>
+									<option value="F">Féminin</option>
+									<option value="M">Masculin</option>
+								</select>
+							</div>
+							<div class="dl-field">
+								<label for="date_naissance">Date de naissance</label>
+								<input type="date" name="date_naissance" id="date_naissance" class="dl-input">
+							</div>
+						</div>
+
+						<div class="dl-row">
+							<div class="dl-field">
+								<label for="email">Email *</label>
+								<input type="email" name="email" id="email" class="dl-input" maxlength="180" required>
+							</div>
+							<div class="dl-field">
+								<label for="telephone">Téléphone</label>
+								<input type="tel" name="telephone" id="telephone" class="dl-input" maxlength="30">
+							</div>
+						</div>
+
 						<div class="dl-field">
-							<label for="date_naissance">Date de naissance</label>
-							<input type="date" name="date_naissance" id="date_naissance" class="dl-input">
+							<label for="adresse">Adresse</label>
+							<input type="text" name="adresse" id="adresse" class="dl-input" maxlength="255">
 						</div>
 					</div>
 
-					<div class="dl-row">
-						<div class="dl-field">
-							<label for="email">Email *</label>
-							<input type="email" name="email" id="email" class="dl-input" maxlength="180" required>
+					{# ── Responsable légal ── #}
+					<div class="dl-card">
+						<h2 class="dl-card-title"><span class="dl-num">3</span>Responsable légal <span class="dl-card-subtitle">(si pratiquant mineur)</span></h2>
+
+						<div class="dl-row">
+							<div class="dl-field">
+								<label for="responsable_nom">Nom &amp; prénom du responsable</label>
+								<input type="text" name="responsable_nom" id="responsable_nom" class="dl-input" maxlength="150">
+							</div>
+							<div class="dl-field">
+								<label for="responsable_lien">Lien de parenté</label>
+								<input type="text" name="responsable_lien" id="responsable_lien" class="dl-input" maxlength="100">
+							</div>
 						</div>
-						<div class="dl-field">
-							<label for="telephone">Téléphone</label>
-							<input type="tel" name="telephone" id="telephone" class="dl-input" maxlength="30">
+						<div class="dl-row">
+							<div class="dl-field">
+								<label for="responsable_telephone">Téléphone du responsable</label>
+								<input type="tel" name="responsable_telephone" id="responsable_telephone" class="dl-input" maxlength="30">
+							</div>
+							<div class="dl-field">
+								<label for="responsable_email">Email du responsable</label>
+								<input type="email" name="responsable_email" id="responsable_email" class="dl-input" maxlength="180">
+							</div>
 						</div>
 					</div>
 
-					<div class="dl-field">
-						<label for="adresse">Adresse</label>
-						<input type="text" name="adresse" id="adresse" class="dl-input" maxlength="255">
-					</div>
-				</div>
-
-				{# ── Responsable légal ── #}
-				<div class="dl-card">
-					<h2 class="dl-card-title"><span class="dl-num">3</span>Responsable légal <span class="dl-card-subtitle">(si pratiquant mineur)</span></h2>
-
-					<div class="dl-row">
+					{# ── Certificat médical ── #}
+					<div class="dl-card">
+						<h2 class="dl-card-title"><span class="dl-num">4</span>Justificatif médical</h2>
+						<p class="dl-hint">Certificat médical de non contre-indication à la pratique de l'haltérophilie/musculation, ou questionnaire de santé signé (formulaire officiel FFHM). Formats acceptés : PDF, JPG, PNG — 8 Mo max.</p>
 						<div class="dl-field">
-							<label for="responsable_nom">Nom &amp; prénom du responsable</label>
-							<input type="text" name="responsable_nom" id="responsable_nom" class="dl-input" maxlength="150">
+							<label for="certificat_medical">Certificat médical / questionnaire de santé *</label>
+							<input type="file" name="certificat_medical" id="certificat_medical" accept=".pdf,.jpg,.jpeg,.png" required>
 						</div>
-						<div class="dl-field">
-							<label for="responsable_lien">Lien de parenté</label>
-							<input type="text" name="responsable_lien" id="responsable_lien" class="dl-input" maxlength="100">
+						<div class="dl-notice">
+							<i class="fa-solid fa-shield-halved"></i>
+							<span>Ce document contient des données de santé. Il est chiffré au repos, stocké hors de tout accès public et consultable uniquement par le bureau du club, dans le seul but d'instruire votre dossier de licence puis de le transmettre à la FFHM.</span>
 						</div>
 					</div>
-					<div class="dl-row">
-						<div class="dl-field">
-							<label for="responsable_telephone">Téléphone du responsable</label>
-							<input type="tel" name="responsable_telephone" id="responsable_telephone" class="dl-input" maxlength="30">
-						</div>
-						<div class="dl-field">
-							<label for="responsable_email">Email du responsable</label>
-							<input type="email" name="responsable_email" id="responsable_email" class="dl-input" maxlength="180">
+
+					{# ── Paiement ── #}
+					<div class="dl-card">
+						<h2 class="dl-card-title"><span class="dl-num">5</span>Mode de règlement</h2>
+						<div class="dl-formules">
+							<label class="dl-formule-option">
+								<input type="radio" name="mode_paiement" value="au_club" checked>
+								<span class="dl-formule-card">
+									<span class="dl-formule-name">Je règle au club</span>
+									<span class="dl-formule-sub">Sur place, en espèces ou par carte</span>
+								</span>
+							</label>
+							<label class="dl-formule-option dl-formule-option--disabled">
+								<input type="radio" name="mode_paiement" value="en_ligne">
+								<span class="dl-formule-card">
+									<span class="dl-formule-name">Je règle en ligne</span>
+									<span class="dl-formule-sub">Bientôt disponible (HelloAsso) — le club vous recontactera</span>
+								</span>
+							</label>
 						</div>
 					</div>
-				</div>
 
-				{# ── Certificat médical ── #}
-				<div class="dl-card">
-					<h2 class="dl-card-title"><span class="dl-num">4</span>Justificatif médical</h2>
-					<p class="dl-hint">Certificat médical de non contre-indication ou questionnaire de santé signé. Formats acceptés : PDF, JPG, PNG (8 Mo max). Ce document est confidentiel et n'est consultable que par le bureau du club.</p>
-					<div class="dl-field">
-						<label for="certificat_medical">Certificat médical / questionnaire de santé *</label>
-						<input type="file" name="certificat_medical" id="certificat_medical" accept=".pdf,.jpg,.jpeg,.png" required>
-					</div>
-				</div>
-
-				{# ── Paiement ── #}
-				<div class="dl-card">
-					<h2 class="dl-card-title"><span class="dl-num">5</span>Mode de règlement</h2>
-					<div class="dl-formules">
-						<label class="dl-formule-option">
-							<input type="radio" name="mode_paiement" value="au_club" checked>
-							<span class="dl-formule-card">
-								<span class="dl-formule-name">Je règle au club</span>
-								<span class="dl-formule-sub">Sur place, en espèces ou par carte</span>
+					{# ── Consentement RGPD ── #}
+					<div class="dl-card dl-card--consent">
+						<label class="dl-check dl-check--consent">
+							<input type="checkbox" name="consentement_rgpd" id="consentement_rgpd" value="1" required>
+							<span>
+								J'accepte que les informations renseignées dans ce formulaire, y compris les données de santé transmises via le certificat médical, soient collectées par CHM Saleux et transmises à la <strong>Fédération Française d'Haltérophilie Musculation (FFHM)</strong> aux seules fins de délivrance de ma licence sportive, conformément au <a href="{{ path('legal_page_show', {slug: 'confidentialite'}) }}" target="_blank" class="dl-link">RGPD et à notre politique de confidentialité</a>. Je peux exercer mes droits d'accès, de rectification et de suppression en écrivant à <a href="mailto:chm.saleux@orange.fr" class="dl-link">chm.saleux@orange.fr</a>.
 							</span>
 						</label>
-						<label class="dl-formule-option dl-formule-option--disabled">
-							<input type="radio" name="mode_paiement" value="en_ligne">
-							<span class="dl-formule-card">
-								<span class="dl-formule-name">Je règle en ligne</span>
-								<span class="dl-formule-sub">Bientôt disponible (HelloAsso) — le club vous recontactera</span>
-							</span>
-						</label>
 					</div>
-				</div>
 
-				<div class="turnstile-wrapper">
-					<div class="cf-turnstile" data-sitekey="0x4AAAAAACvankHbbJ6UuueH" data-theme="light"></div>
-				</div>
+					<div class="turnstile-wrapper">
+						<div class="cf-turnstile" data-sitekey="0x4AAAAAACvankHbbJ6UuueH" data-theme="light"></div>
+					</div>
 
-				<button type="submit" class="dl-submit">Envoyer ma demande de licence</button>
-			</form>
+					<button type="submit" class="dl-submit">Envoyer ma demande de licence</button>
+				</form>
+
+				{# ── Sidebar ── #}
+				<aside class="dl-sidebar">
+					<div class="dl-side-card">
+						<h3 class="dl-side-title">Comment ça marche ?</h3>
+						<ol class="dl-steps">
+							<li><strong>Vous remplissez</strong> le formulaire en ligne, avec votre certificat médical.</li>
+							<li><strong>Nous calculons</strong> le tarif exact selon votre formule et votre situation.</li>
+							<li><strong>Vous réglez</strong> au club ou bientôt en ligne.</li>
+							<li><strong>Nous transmettons</strong> votre dossier à la FFHM, qui édite votre licence officielle.</li>
+						</ol>
+					</div>
+
+					<div class="dl-side-card">
+						<h3 class="dl-side-title">Nos formules</h3>
+						<div class="dl-side-tarif"><span>Jeune</span><strong>70 € / an</strong></div>
+						<div class="dl-side-tarif"><span>Compétition</span><strong>90 € / an</strong></div>
+						<div class="dl-side-tarif"><span>Loisir &amp; Muscu</span><strong>dès 30 €</strong></div>
+						<p class="dl-hint" style="margin:12px 0 0;">Tarif Loisir &amp; Muscu dégressif selon le mois d'inscription. Détail complet sur la page <a href="{{ path('app_pricing') }}" class="dl-link">Tarifs</a>.</p>
+					</div>
+
+					<div class="dl-side-card">
+						<h3 class="dl-side-title">Une question ?</h3>
+						<p class="dl-hint" style="margin:0 0 10px;">Notre bureau est disponible pour vous accompagner dans votre inscription.</p>
+						<a href="{{ path('contact') }}" class="dl-side-link"><i class="fa-solid fa-envelope"></i> Contacter le club</a>
+						<a href="tel:0322897257" class="dl-side-link"><i class="fa-solid fa-phone"></i> 03 22 89 72 57</a>
+					</div>
+				</aside>
+
+			</div>
 
 		</section>
 	</main>

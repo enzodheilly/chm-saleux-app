@@ -93,6 +93,9 @@ class DemandeLicence
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $createdAt;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $consentementRgpdAt = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -164,6 +167,9 @@ class DemandeLicence
     public function setNotesAdmin(?string $notesAdmin): self { $this->notesAdmin = $notesAdmin; return $this; }
 
     public function getCreatedAt(): \DateTimeImmutable { return $this->createdAt; }
+
+    public function getConsentementRgpdAt(): ?\DateTimeImmutable { return $this->consentementRgpdAt; }
+    public function setConsentementRgpdAt(?\DateTimeImmutable $at): self { $this->consentementRgpdAt = $at; return $this; }
 
     public function isMineur(): bool
     {

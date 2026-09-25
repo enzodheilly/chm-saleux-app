@@ -10,7 +10,7 @@
 }
 
 .dl-root .page-container {
-  max-width: 900px !important;
+  max-width: 1140px !important;
 }
 
 .dl-page-header {
@@ -41,7 +41,124 @@
   max-width: 560px;
 }
 
-.dl-section { padding: 3.5rem 0 5rem; }
+.dl-section { padding: 3.5rem 0 5rem; position: relative; overflow: hidden; }
+
+/* ── Watermark ── */
+.dl-wm {
+  position: absolute;
+  top: -10px;
+  left: -6px;
+  font-size: clamp(2rem, 10vw, 130px);
+  font-weight: 900;
+  text-transform: uppercase;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.035);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  line-height: 0.9;
+}
+
+/* ── Bande de confiance ── */
+.dl-trust-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.04);
+  gap: 1px;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.dl-trust-tile {
+  background: #111;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dl-trust-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #F57706;
+}
+
+.dl-trust-val { font-size: 0.85rem; font-weight: 700; color: #fff; line-height: 1.4; }
+.dl-trust-val a { color: inherit; text-decoration: none; }
+.dl-trust-val a:hover { color: #F57706; }
+
+/* ── Layout formulaire + sidebar ── */
+.dl-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 28px;
+  position: relative;
+  z-index: 1;
+  align-items: start;
+}
+
+.dl-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 24px;
+}
+
+.dl-side-card {
+  background: #141414;
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 24px;
+}
+
+.dl-side-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #fff;
+  margin: 0 0 16px;
+}
+
+.dl-steps { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 12px; }
+.dl-steps li { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.5; }
+.dl-steps li strong { color: #fff; }
+
+.dl-side-tarif {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-size: 0.85rem;
+}
+.dl-side-tarif:last-of-type { border-bottom: none; }
+.dl-side-tarif span { color: rgba(255,255,255,0.5); }
+.dl-side-tarif strong { color: #F57706; }
+
+.dl-side-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  transition: color 0.15s;
+}
+.dl-side-link:last-child { border-bottom: none; }
+.dl-side-link:hover { color: #F57706; }
+.dl-side-link i { color: #F57706; width: 16px; text-align: center; }
+
+.dl-link { color: #F57706; text-decoration: underline; text-underline-offset: 2px; }
+.dl-link:hover { color: #ff8a1f; }
 
 /* ── Flash messages ── */
 .flash-container { padding: 0 0 12px; }
@@ -215,6 +332,39 @@
 
 .dl-formule-option--disabled .dl-formule-sub { color: rgba(255,255,255,0.25); }
 
+/* ── Notice sécurité (certificat médical) ── */
+.dl-notice {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: rgba(245,119,6,0.05);
+  border: 1px solid rgba(245,119,6,0.2);
+  padding: 14px 16px;
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.6;
+}
+.dl-notice i { color: #F57706; margin-top: 2px; flex-shrink: 0; }
+
+/* ── Consentement RGPD ── */
+.dl-card--consent { background: #111; }
+
+.dl-check--consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: 0.01em;
+}
+.dl-check--consent input { width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; accent-color: #F57706; }
+.dl-check--consent span {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.7;
+}
+
 /* ── Submit ── */
 .turnstile-wrapper { margin: 8px 0 24px; }
 
@@ -263,8 +413,15 @@
 .dl-merci-back { margin-top: 12px; }
 
 /* ── Responsive ── */
+@media (max-width: 980px) {
+  .dl-layout { grid-template-columns: 1fr; }
+  .dl-sidebar { position: static; order: -1; }
+  .dl-trust-strip { grid-template-columns: repeat(2, 1fr); }
+}
+
 @media (max-width: 720px) {
   .dl-row { grid-template-columns: 1fr; }
   .dl-formules { grid-template-columns: 1fr; }
   .dl-card { padding: 22px; }
+  .dl-trust-strip { grid-template-columns: 1fr; }
 }
