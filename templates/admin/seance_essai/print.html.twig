@@ -11,7 +11,7 @@
             font-family: 'Helvetica Neue', Arial, sans-serif;
             color: #1a1a1a;
             font-size: 10.3pt;
-            background: #e8e8ec;
+            background: #0f0f12;
         }
 
         /* ── Barre de contrôle (non imprimée) ── */
@@ -19,11 +19,11 @@
             position: fixed;
             top: 0; left: 0; right: 0;
             height: 52px;
-            background: #ffffff;
-            border-bottom: 1px solid #e0e0e0;
+            background: #0f0f12;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
             display: flex;
             align-items: center;
-            padding: 0 24px;
+            padding: 0 2rem;
             gap: 16px;
             z-index: 100;
         }
@@ -31,24 +31,24 @@
             display: flex;
             align-items: center;
             gap: 7px;
-            color: #6b6b6b;
+            color: #9696a8;
             text-decoration: none;
             font-size: 0.8rem;
             font-weight: 600;
         }
-        .ctrl-back:hover { color: #1a1a1a; }
-        .ctrl-divider { width: 1px; height: 20px; background: #e0e0e0; }
-        .ctrl-label { font-size: 0.8rem; font-weight: 700; color: #1a1a1a; }
-        .ctrl-sub { font-size: 0.75rem; color: #9a9a9a; }
+        .ctrl-back:hover { color: #e2e2eb; }
+        .ctrl-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.07); }
+        .ctrl-label { font-size: 0.8rem; font-weight: 700; color: #e2e2eb; }
+        .ctrl-sub { font-size: 0.75rem; color: #5c5c70; }
         .ctrl-spacer { flex: 1; }
-        .ctrl-info { font-size: 0.75rem; color: #9a9a9a; }
+        .ctrl-info { font-size: 0.75rem; color: #5c5c70; }
         .ctrl-btn {
             display: flex;
             align-items: center;
             gap: 7px;
-            border: 1pt solid #1a1a1a;
-            background: #ffffff;
-            color: #1a1a1a;
+            border: 1px solid rgba(255,255,255,0.13);
+            background: #1a1a1f;
+            color: #e2e2eb;
             padding: 8px 18px;
             font-size: 0.78rem;
             font-weight: 700;
@@ -59,9 +59,9 @@
             font-family: inherit;
             text-decoration: none;
         }
-        .ctrl-btn:hover { background: #f4f4f4; }
-        .ctrl-btn.primary { background: #1a1a1a; color: #ffffff; }
-        .ctrl-btn.primary:hover { background: #333333; }
+        .ctrl-btn:hover { background: #21212a; }
+        .ctrl-btn.primary { background: #e8720c; border-color: #e8720c; color: #ffffff; }
+        .ctrl-btn.primary:hover { background: #f08228; border-color: #f08228; }
 
         .page-shell { padding: 72px 24px 40px; display: flex; justify-content: center; }
 

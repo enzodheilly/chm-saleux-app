@@ -186,16 +186,6 @@
 							</div>
 						</div>
 
-						<div class="si-form-preview">
-							<p class="si-preview-label">Aperçu de la décharge</p>
-							<p class="si-preview-text">
-								Je soussigné(e) <strong id="preview-prenom">Prénom</strong> <strong id="preview-nom">NOM</strong>
-								déclare avoir été informé(e) des risques liés à la pratique de
-								<strong id="preview-sport">Haltérophilie</strong>
-								et dégage le club CHM Saleux de toute responsabilité en cas d'accident survenu pendant cette séance d'initiation.
-							</p>
-						</div>
-
 						<button type="submit" class="btn-si-print">
 							<i class="fa-solid fa-print"></i>
 							Enregistrer &amp; Imprimer le formulaire
@@ -272,27 +262,6 @@
 {{ parent() }}
 <script nonce="{{ csp_nonce('script') }}">
 (function () {
-    var nomInput    = document.querySelector('input[name="nom"]');
-    var prenomInput = document.querySelector('input[name="prenom"]');
-    var sportSelect = document.querySelector('select[name="sport"]');
-    var pNom   = document.getElementById('preview-nom');
-    var pPren  = document.getElementById('preview-prenom');
-    var pSport = document.getElementById('preview-sport');
-
-    function sync(input, el) {
-        if (!input || !el) return;
-        input.addEventListener('input', function () { el.textContent = input.value; });
-    }
-
-    sync(nomInput,    pNom);
-    sync(prenomInput, pPren);
-
-    if (sportSelect && pSport) {
-        sportSelect.addEventListener('change', function () {
-            pSport.textContent = sportSelect.value;
-        });
-    }
-
     // ── Historique : filtrage ──
     var histSearch  = document.getElementById('si-history-search');
     var periodBtns  = document.querySelectorAll('.si-period-btn');
