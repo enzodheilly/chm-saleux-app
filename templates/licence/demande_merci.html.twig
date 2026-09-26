@@ -27,15 +27,7 @@
 				</div>
 				<div class="dl-merci-row">
 					<span>Statut paiement</span>
-					<strong>
-						{% if demande.statutPaiement == 'payee' %}
-							Payée ✅
-						{% elseif demande.statutPaiement == 'a_encaisser_club' %}
-							À encaisser au club
-						{% else %}
-							En attente de confirmation
-						{% endif %}
-					</strong>
+					<strong>{{ demande.statutPaiement == 'payee' ? 'Réglé' : 'À régler au club' }}</strong>
 				</div>
 			</div>
 

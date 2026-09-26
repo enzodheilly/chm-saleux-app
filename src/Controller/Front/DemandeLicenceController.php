@@ -155,11 +155,10 @@ class DemandeLicenceController extends AbstractController
             $modePaiement = DemandeLicence::MODE_PAIEMENT_EN_LIGNE;
         }
         $demande->setModePaiement($modePaiement);
-        $demande->setStatutPaiement(
-            $modePaiement === DemandeLicence::MODE_PAIEMENT_AU_CLUB
-                ? DemandeLicence::STATUT_PAIEMENT_A_ENCAISSER
-                : DemandeLicence::STATUT_PAIEMENT_EN_ATTENTE
-        );
+        // Un seul statut "pas payé" quel que soit le mode choisi : "à encaisser au club".
+        // Le paiement en ligne HelloAsso le fait basculer sur "payée" dès confirmation
+        // (webhook ou retour utilisateur) — il n'y a pas de 3e état "en attente" à gérer.
+        $demande->setStatutPaiement(DemandeLicence::STATUT_PAIEMENT_A_ENCAISSER);
 
         // ── Gratuité "Benjamin" : automatique si un parent (même nom de famille) est
         // déjà licencié au club pour la saison en cours — voir page "avantages". ──

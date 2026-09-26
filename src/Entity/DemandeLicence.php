@@ -15,7 +15,6 @@ class DemandeLicence
     public const MODE_PAIEMENT_AU_CLUB  = 'au_club';
     public const MODES_PAIEMENT = [self::MODE_PAIEMENT_EN_LIGNE, self::MODE_PAIEMENT_AU_CLUB];
 
-    public const STATUT_PAIEMENT_EN_ATTENTE     = 'en_attente';
     public const STATUT_PAIEMENT_A_ENCAISSER    = 'a_encaisser_club';
     public const STATUT_PAIEMENT_PAYEE          = 'payee';
 
@@ -85,7 +84,7 @@ class DemandeLicence
     private string $modePaiement = self::MODE_PAIEMENT_AU_CLUB;
 
     #[ORM\Column(length: 20)]
-    private string $statutPaiement = self::STATUT_PAIEMENT_EN_ATTENTE;
+    private string $statutPaiement = self::STATUT_PAIEMENT_A_ENCAISSER;
 
     #[ORM\Column(length: 20)]
     private string $statutFfhm = self::STATUT_FFHM_A_TRANSFERER;

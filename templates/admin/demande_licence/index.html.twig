@@ -55,7 +55,6 @@
 			<div class="dlx-filter active" data-statut="all">Toutes</div>
 			<div class="dlx-filter" data-statut="payee">Payées</div>
 			<div class="dlx-filter" data-statut="a_encaisser_club">À encaisser au club</div>
-			<div class="dlx-filter" data-statut="en_attente">En attente</div>
 		</div>
 
 		<div class="table-wrapper">
@@ -93,10 +92,8 @@
 								<td>
 									{% if demande.statutPaiement == 'payee' %}
 										<span class="badge badge-active">Payée</span>
-									{% elseif demande.statutPaiement == 'a_encaisser_club' %}
-										<span class="badge badge-neutral">À encaisser au club</span>
 									{% else %}
-										<span class="badge badge-danger">En attente</span>
+										<span class="badge badge-neutral">À encaisser au club</span>
 									{% endif %}
 								</td>
 								<td>

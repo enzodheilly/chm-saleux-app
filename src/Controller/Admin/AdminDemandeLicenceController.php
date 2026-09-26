@@ -79,7 +79,6 @@ class AdminDemandeLicenceController extends AbstractController
 
         $statut = (string) $request->request->get('statut_paiement');
         $allowed = [
-            DemandeLicence::STATUT_PAIEMENT_EN_ATTENTE,
             DemandeLicence::STATUT_PAIEMENT_A_ENCAISSER,
             DemandeLicence::STATUT_PAIEMENT_PAYEE,
         ];

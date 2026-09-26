@@ -93,7 +93,6 @@
 			<form method="post" action="{{ path('admin_demande_licence_statut_paiement', {id: demande.id}) }}" style="margin-top: 10px; display:flex; gap:10px; align-items:center;">
 				<input type="hidden" name="_token" value="{{ csrf_token('demande_statut_' ~ demande.id) }}">
 				<select name="statut_paiement" class="input" style="max-width:260px;">
-					<option value="en_attente" {{ demande.statutPaiement == 'en_attente' ? 'selected' }}>En attente</option>
 					<option value="a_encaisser_club" {{ demande.statutPaiement == 'a_encaisser_club' ? 'selected' }}>À encaisser au club</option>
 					<option value="payee" {{ demande.statutPaiement == 'payee' ? 'selected' }}>Payée</option>
 				</select>
