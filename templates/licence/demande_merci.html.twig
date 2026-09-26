@@ -2,49 +2,53 @@
 
 {% block title %}{{ paiementConfirme ? 'Paiement confirmé !' : 'Demande envoyée !' }} · CHM Saleux{% endblock %}
 
+{% block main_class %}page-top-offset dl-main{% endblock %}
+
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('css/licence/demande.css') }}">
 {% endblock %}
 
 {% block body %}
-	<main class="dl-root page-shell">
-		<section class="dl-section page-container dl-merci">
-			<div class="dl-merci-icon"><i class="fa-solid fa-circle-check"></i></div>
-			<h1>{{ paiementConfirme ? 'Paiement confirmé !' : 'Demande envoyée !' }}</h1>
-			<p class="dl-header-lead">
-				Merci <strong>{{ demande.prenom }}</strong>, votre demande de licence <strong>{{ formuleLabel }}</strong> a bien été enregistrée.
-			</p>
+	<div class="dl-root">
+		<div class="dl-shell dl-shell--center">
+			<div class="dl-merci">
+				<div class="dl-merci-icon"><i class="fa-solid fa-circle-check"></i></div>
+				<h1>{{ paiementConfirme ? 'Paiement confirmé !' : 'Demande envoyée !' }}</h1>
+				<p class="dl-intro-sub">
+					Merci <strong>{{ demande.prenom }}</strong>, votre demande de licence <strong>{{ formuleLabel }}</strong> a bien été enregistrée.
+				</p>
 
-			<div class="dl-card dl-merci-card">
-				<div class="dl-merci-row">
-					<span>Montant {{ paiementConfirme ? 'réglé' : 'calculé' }}</span>
-					<strong>{{ demande.montantCalcule|number_format(2, ',', ' ') }} €</strong>
+				<div class="dl-card dl-merci-card">
+					<div class="dl-merci-row">
+						<span>Montant {{ paiementConfirme ? 'réglé' : 'calculé' }}</span>
+						<strong>{{ demande.montantCalcule|number_format(2, ',', ' ') }} €</strong>
+					</div>
+					<div class="dl-merci-row">
+						<span>Mode de règlement</span>
+						<strong>{{ demande.modePaiement == 'au_club' ? 'Au club' : 'En ligne (HelloAsso)' }}</strong>
+					</div>
+					<div class="dl-merci-row">
+						<span>Statut paiement</span>
+						<strong>{{ demande.statutPaiement == 'payee' ? 'Réglé' : 'À régler au club' }}</strong>
+					</div>
 				</div>
-				<div class="dl-merci-row">
-					<span>Mode de règlement</span>
-					<strong>{{ demande.modePaiement == 'au_club' ? 'Au club' : 'En ligne (HelloAsso)' }}</strong>
-				</div>
-				<div class="dl-merci-row">
-					<span>Statut paiement</span>
-					<strong>{{ demande.statutPaiement == 'payee' ? 'Réglé' : 'À régler au club' }}</strong>
-				</div>
+
+				<p class="dl-hint">
+					{% if demande.gratuiteAppliquee %}
+						Cette licence Benjamin est <strong>gratuite</strong> (un parent est déjà licencié au club). Le bureau va transmettre votre dossier à la FFHM pour l'édition de la licence officielle.
+					{% elseif paiementConfirme %}
+						Votre paiement a bien été enregistré. Le bureau va maintenant transmettre votre dossier à la FFHM pour l'édition de votre licence officielle.
+					{% elseif demande.modePaiement == 'au_club' %}
+						Un membre du bureau vous contactera pour finaliser votre inscription et récupérer votre règlement.
+					{% else %}
+						Votre demande est enregistrée. Vous recevrez un email de confirmation dès que le paiement HelloAsso sera validé.
+					{% endif %}
+					Un email de confirmation vous a été envoyé à <strong>{{ demande.email }}</strong>.
+				</p>
+
+				<a href="{{ path('home') }}" class="dl-btn-next dl-submit dl-merci-back">Retour à l'accueil</a>
 			</div>
-
-			<p class="dl-hint">
-				{% if demande.gratuiteAppliquee %}
-					Cette licence Benjamin est <strong>gratuite</strong> (un parent est déjà licencié au club). Le bureau va transmettre votre dossier à la FFHM pour l'édition de la licence officielle.
-				{% elseif paiementConfirme %}
-					Votre paiement a bien été enregistré. Le bureau va maintenant transmettre votre dossier à la FFHM pour l'édition de votre licence officielle.
-				{% elseif demande.modePaiement == 'au_club' %}
-					Un membre du bureau vous contactera pour finaliser votre inscription et récupérer votre règlement.
-				{% else %}
-					Votre demande est enregistrée. Vous recevrez un email de confirmation dès que le paiement HelloAsso sera validé.
-				{% endif %}
-				Un email de confirmation vous a été envoyé à <strong>{{ demande.email }}</strong>.
-			</p>
-
-			<a href="{{ path('home') }}" class="dl-submit dl-merci-back">Retour à l'accueil</a>
-		</section>
-	</main>
+		</div>
+	</div>
 {% endblock %}

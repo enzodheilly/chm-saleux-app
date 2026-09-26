@@ -1,161 +1,63 @@
 /* =========================================================
-   DEMANDE DE LICENCE — DARK THEME (aligné sur contact.css)
+   DEMANDE DE LICENCE — DARK THEME (version compacte)
    ========================================================= */
 
 .dl-root {
   background: #0a0a0a;
   color: #fff;
-  position: relative;
-  z-index: 1;
+  min-height: calc(100vh - var(--nav-height, 82px));
 }
 
-.dl-root .page-container {
-  max-width: 1140px !important;
+/* ── Shell centré ── */
+.dl-shell {
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 4rem;
 }
 
-.dl-page-header {
-  background: #111214;
-  padding-top: 40px;
-  padding-bottom: 36px;
+.dl-shell--center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--nav-height, 82px));
 }
 
-.dl-header-body { max-width: 640px; }
+/* ── En-tête compact ── */
+.dl-intro {
+  margin-bottom: 24px;
+}
 
-.dl-page-header h1 {
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
+.dl-intro h1 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: -0.02em;
   color: #fff;
-  margin: 0 0 16px;
-  line-height: 1.05;
+  margin: 0 0 10px;
+  line-height: 1.1;
 }
 
-.dl-page-header h1 span { color: #F57706; }
+.dl-intro h1 span { color: #F57706; }
 
-.dl-header-lead {
+.dl-intro-sub {
   color: rgba(255,255,255,0.45);
-  font-size: 1rem;
-  line-height: 1.65;
+  font-size: 0.9rem;
+  line-height: 1.6;
   margin: 0;
-  max-width: 560px;
 }
 
-.dl-section { padding: 3.5rem 0 5rem; position: relative; overflow: hidden; }
-
-/* ── Watermark ── */
-.dl-wm {
-  position: absolute;
-  top: -10px;
-  left: -6px;
-  font-size: clamp(2rem, 10vw, 130px);
-  font-weight: 900;
-  text-transform: uppercase;
-  white-space: nowrap;
-  letter-spacing: -0.02em;
-  color: rgba(255,255,255,0.035);
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
-  line-height: 0.9;
+/* ── Pied de page compact ── */
+.dl-footline {
+  margin-top: 20px;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.3);
+  text-align: center;
 }
-
-/* ── Bande de confiance ── */
-.dl-trust-strip {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border: 1px solid rgba(255,255,255,0.07);
-  background: rgba(255,255,255,0.04);
-  gap: 1px;
-  margin-bottom: 40px;
-  position: relative;
-  z-index: 1;
-}
-
-.dl-trust-tile {
-  background: #111;
-  padding: 20px 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.dl-trust-label {
-  font-size: 0.65rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #F57706;
-}
-
-.dl-trust-val { font-size: 0.85rem; font-weight: 700; color: #fff; line-height: 1.4; }
-.dl-trust-val a { color: inherit; text-decoration: none; }
-.dl-trust-val a:hover { color: #F57706; }
-
-/* ── Layout formulaire + sidebar ── */
-.dl-layout {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 28px;
-  position: relative;
-  z-index: 1;
-  align-items: start;
-}
-
-.dl-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  position: sticky;
-  top: 24px;
-}
-
-.dl-side-card {
-  background: #141414;
-  border: 1px solid rgba(255,255,255,0.07);
-  padding: 24px;
-}
-
-.dl-side-title {
-  font-size: 0.85rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: #fff;
-  margin: 0 0 16px;
-}
-
-.dl-steps { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 12px; }
-.dl-steps li { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.5; }
-.dl-steps li strong { color: #fff; }
-
-.dl-side-tarif {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 9px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
-  font-size: 0.85rem;
-}
-.dl-side-tarif:last-of-type { border-bottom: none; }
-.dl-side-tarif span { color: rgba(255,255,255,0.5); }
-.dl-side-tarif strong { color: #F57706; }
-
-.dl-side-link {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #fff;
-  text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
-  transition: color 0.15s;
-}
-.dl-side-link:last-child { border-bottom: none; }
-.dl-side-link:hover { color: #F57706; }
-.dl-side-link i { color: #F57706; width: 16px; text-align: center; }
+.dl-footline a { color: rgba(255,255,255,0.5); text-decoration: underline; text-underline-offset: 2px; }
+.dl-footline a:hover { color: #F57706; }
 
 .dl-link { color: #F57706; text-decoration: underline; text-underline-offset: 2px; }
 .dl-link:hover { color: #ff8a1f; }
@@ -168,6 +70,7 @@
   font-weight: 700;
   font-size: 0.85rem;
   letter-spacing: 0.03em;
+  border-radius: 9px;
 }
 .flash-success { background: rgba(40,167,69,0.08); border: 1px solid rgba(40,167,69,0.3); color: #4ade80; }
 .flash-danger  { background: rgba(220,53,69,0.08); border: 1px solid rgba(220,53,69,0.3); color: #f87171; }
@@ -176,20 +79,22 @@
 .dl-card {
   background: #141414;
   border: 1px solid rgba(255,255,255,0.07);
-  padding: 32px;
-  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+  padding: 28px;
+  margin-bottom: 16px;
 }
 
 .dl-card-title {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   color: #fff;
-  margin: 0 0 20px;
+  margin: 0 0 18px;
 }
 
 .dl-card-subtitle {
@@ -225,15 +130,15 @@
 .dl-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 14px;
+  margin-bottom: 14px;
 }
 
 .dl-field {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .dl-row .dl-field { margin-bottom: 0; }
@@ -266,13 +171,13 @@
   width: 100%;
   background: #1e1e1e;
   border: 1px solid rgba(255,255,255,0.09);
-  padding: 13px 16px;
+  border-radius: 9px;
+  padding: 12px 15px;
   color: #fff;
   font-family: inherit;
   font-size: 0.92rem;
   transition: border-color 0.2s, box-shadow 0.2s;
   outline: none;
-  border-radius: 0;
 }
 
 .dl-field input:focus,
@@ -303,8 +208,8 @@
 .dl-formules {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 14px;
 }
 
 .dl-formule-option { position: relative; display: block; cursor: pointer; }
@@ -316,27 +221,26 @@
   gap: 4px;
   background: #1a1a1a;
   border: 1px solid rgba(255,255,255,0.09);
-  padding: 16px 18px;
+  border-radius: 9px;
+  padding: 14px 16px;
   transition: border-color 0.15s, background 0.15s;
-  min-height: 56px;
+  min-height: 52px;
   justify-content: center;
 }
 
-.dl-formule-name { font-size: 0.92rem; font-weight: 700; color: #fff; }
-.dl-formule-sub { font-size: 0.74rem; color: rgba(255,255,255,0.35); }
+.dl-formule-name { font-size: 0.88rem; font-weight: 700; color: #fff; }
+.dl-formule-sub { font-size: 0.72rem; color: rgba(255,255,255,0.35); }
 
 .dl-formule-option input:checked + .dl-formule-card {
   border-color: #F57706;
   background: #000;
 }
 
-.dl-formule-option--disabled .dl-formule-sub { color: rgba(255,255,255,0.25); }
-
-/* ── Notice sécurité (certificat médical) ── */
+/* ── Notice sécurité ── */
 .dl-notice {
   margin-top: 4px;
   font-size: 0.78rem;
-  color: #fff;
+  color: rgba(255,255,255,0.45);
   line-height: 1.6;
 }
 
@@ -359,23 +263,25 @@
 }
 
 /* ── Wizard : progression ── */
-.dl-progress { margin-bottom: 20px; }
+.dl-progress { margin-bottom: 18px; }
 
 .dl-progress-track {
-  height: 4px;
+  height: 3px;
   background: rgba(255,255,255,0.08);
-  margin-bottom: 10px;
+  border-radius: 2px;
+  margin-bottom: 8px;
   overflow: hidden;
 }
 
 .dl-progress-fill {
   height: 100%;
   background: #F57706;
+  border-radius: 2px;
   transition: width 0.25s ease;
 }
 
 .dl-progress-label {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -406,8 +312,9 @@
   gap: 8px;
   background: transparent;
   border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 9px;
   color: #fff;
-  padding: 12px 22px;
+  padding: 11px 20px;
   font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -421,7 +328,7 @@
 .dl-btn-prev:hover { background: rgba(255,255,255,0.05); }
 
 /* ── Wizard : récapitulatif ── */
-.dl-recap { margin-bottom: 20px; }
+.dl-recap { margin-bottom: 18px; }
 
 .dl-recap-group {
   font-size: 0.68rem;
@@ -429,7 +336,7 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #F57706;
-  margin: 20px 0 8px;
+  margin: 18px 0 6px;
 }
 .dl-recap-group:first-child { margin-top: 0; }
 
@@ -437,84 +344,65 @@
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  padding: 9px 0;
+  padding: 8px 0;
   border-bottom: 1px solid rgba(255,255,255,0.07);
-  font-size: 0.85rem;
+  font-size: 0.84rem;
 }
 .dl-recap-row span { color: rgba(255,255,255,0.45); }
 .dl-recap-row strong { color: #fff; text-align: right; font-weight: 600; }
 
 /* ── Submit ── */
-.turnstile-wrapper { margin: 8px 0 24px; }
+.turnstile-wrapper { margin: 8px 0 20px; }
 
 .dl-submit {
   background: #F57706;
   color: #111;
   border: 1px solid #F57706;
+  border-radius: 9px;
   text-decoration: none;
 }
 
 .dl-submit:hover { background: #ff8a1f; }
 
-/* ── Page merci ── */
+/* ── Page merci / attente / échec ── */
 .dl-merci {
   text-align: center;
-  max-width: 520px !important;
-  padding-top: 4rem;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 3rem 0;
 }
 
-.dl-merci-icon { font-size: 3rem; color: #4ade80; margin-bottom: 16px; }
-.dl-merci h1 { font-size: 1.9rem; font-weight: 900; text-transform: uppercase; margin: 0 0 14px; }
+.dl-merci-icon { font-size: 2.8rem; color: #4ade80; margin-bottom: 14px; }
+.dl-merci h1 { font-size: 1.7rem; font-weight: 900; text-transform: uppercase; margin: 0 0 12px; }
 
-.dl-merci-card { text-align: left; margin: 24px 0; }
+.dl-merci-card { text-align: left; margin: 20px 0; }
 .dl-merci-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: 9px 0;
   border-bottom: 1px solid rgba(255,255,255,0.07);
   font-size: 0.9rem;
 }
 .dl-merci-row:last-child { border-bottom: none; }
 .dl-merci-row strong { color: #F57706; }
 
-.dl-merci-back { margin-top: 12px; }
+.dl-merci-back { margin-top: 10px; }
 
 /* ── Responsive ── */
-@media (max-width: 980px) {
-  .dl-layout { grid-template-columns: 1fr; }
-  .dl-sidebar { position: static; order: -1; }
-  .dl-trust-strip { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 680px) {
+  .dl-shell { padding: 1.8rem 1rem 3rem; }
   .dl-formules { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media (max-width: 720px) {
-  .dl-section { padding: 2.2rem 0 3.5rem; }
-  .dl-page-header { padding-top: 28px; padding-bottom: 26px; }
-  .dl-wm { display: none; }
-  .dl-trust-strip { grid-template-columns: 1fr; margin-bottom: 24px; }
-  .dl-trust-tile { padding: 16px 18px; }
+@media (max-width: 480px) {
+  .dl-intro h1 { font-size: 1.35rem; }
+  .dl-card { padding: 18px; }
   .dl-row { grid-template-columns: 1fr; gap: 0; }
   .dl-formules { grid-template-columns: 1fr; }
-  .dl-card { padding: 20px; margin-bottom: 16px; }
-  .dl-card-title { font-size: 1rem; gap: 10px; flex-wrap: wrap; }
-  .dl-side-card { padding: 18px; }
-  .dl-progress-label { font-size: 0.7rem; }
-  .dl-step-actions { flex-wrap: wrap-reverse; gap: 10px; }
+  .dl-step-actions { flex-wrap: wrap-reverse; gap: 8px; }
   .dl-btn-next, .dl-btn-prev, .dl-submit { width: 100%; justify-content: center; margin-left: 0; }
   .dl-recap-row { flex-direction: column; gap: 2px; }
   .dl-recap-row strong { text-align: left; }
   .dl-merci-row { flex-direction: column; align-items: flex-start; gap: 2px; }
-}
-
-@media (max-width: 480px) {
-  .dl-page-header h1 { font-size: 1.6rem; }
-  .dl-header-lead { font-size: 0.9rem; }
-  .dl-card { padding: 16px; }
-  .dl-card-title { font-size: 0.92rem; }
-  .dl-num { width: 24px; height: 24px; font-size: 0.75rem; }
-  .dl-input, .dl-field input, .dl-field select { padding: 11px 14px; font-size: 0.88rem; }
-  .dl-formule-card { padding: 14px 16px; min-height: 48px; }
-  .dl-btn-next, .dl-btn-prev, .dl-submit { padding: 12px 16px; font-size: 0.78rem; }
-  .dl-trust-tile { padding: 14px 16px; }
 }
