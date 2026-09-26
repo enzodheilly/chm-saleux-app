@@ -24,215 +24,233 @@
 
 			<div class="dl-intro">
 				<h1>DEMANDE DE <span>LICENCE</span></h1>
-				<p class="dl-intro-sub">Remplissez ce formulaire en ligne — nous transmettons votre dossier à la FFHM pour l'édition de votre licence officielle.</p>
+				<p class="dl-intro-sub">CHM Saleux — club affilié FFHM. Un seul formulaire : nous calculons le tarif et transmettons votre dossier à la fédération.</p>
 			</div>
 
-			<form method="post" action="{{ path('demande_licence_submit') }}" enctype="multipart/form-data" class="dl-form dl-wizard" novalidate>
-				<input type="hidden" name="_token" value="{{ csrf_token('demande_licence_submit') }}">
+			<div class="dl-layout">
 
-				{# ── Barre de progression ── #}
-				<div class="dl-progress">
-					<div class="dl-progress-track"><div class="dl-progress-fill" id="dl-progress-fill"></div></div>
-					<div class="dl-progress-label"><span id="dl-progress-step">1</span> / 6 — <span id="dl-progress-title">Choix de la formule</span></div>
-				</div>
+				<form method="post" action="{{ path('demande_licence_submit') }}" enctype="multipart/form-data" class="dl-form dl-wizard" novalidate>
+					<input type="hidden" name="_token" value="{{ csrf_token('demande_licence_submit') }}">
 
-				{# ── Étape 1 : Formule ── #}
-				<div class="dl-card dl-step active" data-step="1" data-title="Choix de la formule">
-					<h2 class="dl-card-title"><span class="dl-num">1</span>Choix de la formule</h2>
-					<div class="dl-formules">
-						{% for key, label in formules %}
-							<label class="dl-formule-option">
-								<input type="radio" name="formule" value="{{ key }}" {% if key == 'loisir' %}checked{% endif %} required>
-								<span class="dl-formule-card">
-									<span class="dl-formule-name">{{ label }}</span>
-								</span>
+					{# ── Barre de progression ── #}
+					<div class="dl-progress">
+						<div class="dl-progress-track"><div class="dl-progress-fill" id="dl-progress-fill"></div></div>
+						<div class="dl-progress-label"><span id="dl-progress-step">1</span> / 6 — <span id="dl-progress-title">Choix de la formule</span></div>
+					</div>
+
+					{# ── Étape 1 : Formule ── #}
+					<div class="dl-card dl-step active" data-step="1" data-title="Choix de la formule">
+						<h2 class="dl-card-title"><span class="dl-num">1</span>Choix de la formule</h2>
+						<div class="dl-formules">
+							{% for key, label in formules %}
+								<label class="dl-formule-option">
+									<input type="radio" name="formule" value="{{ key }}" {% if key == 'loisir' %}checked{% endif %} required>
+									<span class="dl-formule-card">
+										<span class="dl-formule-name">{{ label }}</span>
+										{% set g = grillePublic[key] %}
+										{% if g.type == 'fixe' %}
+											<span class="dl-formule-prix">{{ g.prix|number_format(0) }} € / an</span>
+										{% elseif g.type == 'age' %}
+											<span class="dl-formule-prix">{{ g.prixMin|number_format(0) }} à {{ g.prixMax|number_format(0) }} € / an <em>selon l'âge</em></span>
+										{% else %}
+											<span class="dl-formule-prix">dès {{ g.prixMin|number_format(0) }} € / an <em>dégressif</em></span>
+										{% endif %}
+									</span>
+								</label>
+							{% endfor %}
+						</div>
+						<p class="dl-hint">Le montant exact (dégressif pour Loisir &amp; Muscu selon le mois, réductions familiales, tarif réduit) est calculé automatiquement après l'envoi. Grille tarifaire complète sur la page <a href="{{ path('app_pricing') }}" class="dl-link">Tarifs</a>.</p>
+
+						<div class="dl-row">
+							<label class="dl-check">
+								<input type="checkbox" name="tarif_reduit" id="dl-tarif-reduit" value="1">
+								Je bénéficie du tarif réduit (Carte Génération HDF, carte étudiante, etc.)
 							</label>
-						{% endfor %}
-					</div>
-					<p class="dl-hint">Le montant exact (dégressif pour Loisir &amp; Muscu selon le mois, réductions familiales, tarif réduit) est calculé automatiquement et confirmé après l'envoi du formulaire. Grille tarifaire complète sur la page <a href="{{ path('app_pricing') }}" class="dl-link">Tarifs</a>.</p>
-
-					<div class="dl-row">
-						<label class="dl-check">
-							<input type="checkbox" name="tarif_reduit" id="dl-tarif-reduit" value="1">
-							Je bénéficie du tarif réduit (Carte Génération HDF, carte étudiante, etc.)
-						</label>
-					</div>
-					<div class="dl-field" id="dl-justificatif-wrap" style="display:none;">
-						<label for="justificatif_reduit">Justificatif du tarif réduit</label>
-						<input type="file" name="justificatif_reduit" id="justificatif_reduit" accept=".pdf,.jpg,.jpeg,.png">
-					</div>
-
-					<div class="dl-field">
-						<label for="foyer_rang">Réduction familiale — rang de cette licence dans votre foyer</label>
-						<select name="foyer_rang" id="foyer_rang" class="dl-input">
-							<option value="1">1ère licence du foyer — plein tarif</option>
-							<option value="2">2ème licence du foyer — -10%</option>
-							<option value="3">3ème licence du foyer — -15%</option>
-							<option value="4">4ème licence et + du foyer — -20%</option>
-						</select>
-					</div>
-
-					<div class="dl-step-actions">
-						<span></span>
-						<button type="button" class="dl-btn-next">Suivant</button>
-					</div>
-				</div>
-
-				{# ── Étape 2 : Pratiquant ── #}
-				<div class="dl-card dl-step" data-step="2" data-title="Informations du pratiquant">
-					<h2 class="dl-card-title"><span class="dl-num">2</span>Informations du pratiquant</h2>
-
-					<div class="dl-row">
-						<div class="dl-field">
-							<label for="prenom">Prénom *</label>
-							<input type="text" name="prenom" id="prenom" class="dl-input" maxlength="100" required>
 						</div>
-						<div class="dl-field">
-							<label for="nom">Nom *</label>
-							<input type="text" name="nom" id="nom" class="dl-input" maxlength="100" required>
+						<div class="dl-field" id="dl-justificatif-wrap" style="display:none;">
+							<label for="justificatif_reduit">Justificatif du tarif réduit</label>
+							<input type="file" name="justificatif_reduit" id="justificatif_reduit" accept=".pdf,.jpg,.jpeg,.png">
 						</div>
-					</div>
 
-					<div class="dl-row">
 						<div class="dl-field">
-							<label for="sexe">Sexe *</label>
-							<select name="sexe" id="sexe" class="dl-input" required>
-								<option value="">—</option>
-								<option value="F">Féminin</option>
-								<option value="M">Masculin</option>
+							<label for="foyer_rang">Réduction familiale — rang de cette licence dans votre foyer</label>
+							<select name="foyer_rang" id="foyer_rang" class="dl-input">
+								<option value="1">1ère licence du foyer — plein tarif</option>
+								<option value="2">2ème licence du foyer — -10%</option>
+								<option value="3">3ème licence du foyer — -15%</option>
+								<option value="4">4ème licence et + du foyer — -20%</option>
 							</select>
 						</div>
+					</div>
+
+					{# ── Étape 2 : Pratiquant ── #}
+					<div class="dl-card dl-step" data-step="2" data-title="Informations du pratiquant">
+						<h2 class="dl-card-title"><span class="dl-num">2</span>Informations du pratiquant</h2>
+
+						<div class="dl-row">
+							<div class="dl-field">
+								<label for="prenom">Prénom *</label>
+								<input type="text" name="prenom" id="prenom" class="dl-input" maxlength="100" required>
+							</div>
+							<div class="dl-field">
+								<label for="nom">Nom *</label>
+								<input type="text" name="nom" id="nom" class="dl-input" maxlength="100" required>
+							</div>
+						</div>
+
+						<div class="dl-row">
+							<div class="dl-field">
+								<label for="sexe">Sexe *</label>
+								<select name="sexe" id="sexe" class="dl-input" required>
+									<option value="">—</option>
+									<option value="F">Féminin</option>
+									<option value="M">Masculin</option>
+								</select>
+							</div>
+							<div class="dl-field">
+								<label for="date_naissance">Date de naissance *</label>
+								<input type="date" name="date_naissance" id="date_naissance" class="dl-input" required>
+							</div>
+						</div>
+
+						<p class="dl-hint dl-hint--accent" id="dl-prix-estime-competition" style="display:none;"></p>
+
+						<div class="dl-row">
+							<div class="dl-field">
+								<label for="email">Email *</label>
+								<input type="email" name="email" id="email" class="dl-input" maxlength="180" required>
+							</div>
+							<div class="dl-field">
+								<label for="telephone">Téléphone *</label>
+								<input type="tel" name="telephone" id="telephone" class="dl-input" maxlength="30" required>
+							</div>
+						</div>
+
 						<div class="dl-field">
-							<label for="date_naissance">Date de naissance *</label>
-							<input type="date" name="date_naissance" id="date_naissance" class="dl-input" required>
+							<label for="adresse">Adresse *</label>
+							<input type="text" name="adresse" id="adresse" class="dl-input" maxlength="255" required>
 						</div>
 					</div>
 
-					<div class="dl-row">
-						<div class="dl-field">
-							<label for="email">Email *</label>
-							<input type="email" name="email" id="email" class="dl-input" maxlength="180" required>
-						</div>
-						<div class="dl-field">
-							<label for="telephone">Téléphone *</label>
-							<input type="tel" name="telephone" id="telephone" class="dl-input" maxlength="30" required>
-						</div>
-					</div>
+					{# ── Étape 3 : Responsable légal ── #}
+					<div class="dl-card dl-step" data-step="3" data-title="Responsable légal">
+						<h2 class="dl-card-title"><span class="dl-num">3</span>Responsable légal <span class="dl-card-subtitle" id="dl-resp-subtitle">(si pratiquant mineur)</span></h2>
 
-					<div class="dl-field">
-						<label for="adresse">Adresse *</label>
-						<input type="text" name="adresse" id="adresse" class="dl-input" maxlength="255" required>
-					</div>
-
-					<div class="dl-step-actions">
-						<button type="button" class="dl-btn-prev">Précédent</button>
-						<button type="button" class="dl-btn-next">Suivant</button>
-					</div>
-				</div>
-
-				{# ── Étape 3 : Responsable légal ── #}
-				<div class="dl-card dl-step" data-step="3" data-title="Responsable légal">
-					<h2 class="dl-card-title"><span class="dl-num">3</span>Responsable légal <span class="dl-card-subtitle" id="dl-resp-subtitle">(si pratiquant mineur)</span></h2>
-
-					<div class="dl-row">
-						<div class="dl-field">
-							<label for="responsable_nom">Nom &amp; prénom du responsable <span class="dl-req-star" id="dl-star-resp-nom" style="display:none;">*</span></label>
-							<input type="text" name="responsable_nom" id="responsable_nom" class="dl-input" maxlength="150">
+						<div class="dl-row">
+							<div class="dl-field">
+								<label for="responsable_nom">Nom &amp; prénom du responsable <span class="dl-req-star" id="dl-star-resp-nom" style="display:none;">*</span></label>
+								<input type="text" name="responsable_nom" id="responsable_nom" class="dl-input" maxlength="150">
+							</div>
+							<div class="dl-field">
+								<label for="responsable_lien">Lien de parenté <span class="dl-req-star" id="dl-star-resp-lien" style="display:none;">*</span></label>
+								<input type="text" name="responsable_lien" id="responsable_lien" class="dl-input" maxlength="100">
+							</div>
 						</div>
-						<div class="dl-field">
-							<label for="responsable_lien">Lien de parenté <span class="dl-req-star" id="dl-star-resp-lien" style="display:none;">*</span></label>
-							<input type="text" name="responsable_lien" id="responsable_lien" class="dl-input" maxlength="100">
-						</div>
-					</div>
-					<div class="dl-row">
-						<div class="dl-field">
-							<label for="responsable_telephone">Téléphone du responsable <span class="dl-req-star" id="dl-star-resp-tel" style="display:none;">*</span></label>
-							<input type="tel" name="responsable_telephone" id="responsable_telephone" class="dl-input" maxlength="30">
-						</div>
-						<div class="dl-field">
-							<label for="responsable_email">Email du responsable</label>
-							<input type="email" name="responsable_email" id="responsable_email" class="dl-input" maxlength="180">
+						<div class="dl-row">
+							<div class="dl-field">
+								<label for="responsable_telephone">Téléphone du responsable <span class="dl-req-star" id="dl-star-resp-tel" style="display:none;">*</span></label>
+								<input type="tel" name="responsable_telephone" id="responsable_telephone" class="dl-input" maxlength="30">
+							</div>
+							<div class="dl-field">
+								<label for="responsable_email">Email du responsable</label>
+								<input type="email" name="responsable_email" id="responsable_email" class="dl-input" maxlength="180">
+							</div>
 						</div>
 					</div>
 
-					<div class="dl-step-actions">
-						<button type="button" class="dl-btn-prev">Précédent</button>
-						<button type="button" class="dl-btn-next">Suivant</button>
-					</div>
-				</div>
-
-				{# ── Étape 4 : Certificat médical ── #}
-				<div class="dl-card dl-step" data-step="4" data-title="Justificatif médical">
-					<h2 class="dl-card-title"><span class="dl-num">4</span>Justificatif médical</h2>
-					<p class="dl-hint">Certificat médical de non contre-indication à la pratique de l'haltérophilie/musculation, ou questionnaire de santé signé (formulaire officiel FFHM). Formats acceptés : PDF, JPG, PNG — 8 Mo max.</p>
-					<div class="dl-field">
-						<label for="certificat_medical">Certificat médical / questionnaire de santé *</label>
-						<input type="file" name="certificat_medical" id="certificat_medical" accept=".pdf,.jpg,.jpeg,.png" required>
-					</div>
-					<p class="dl-notice">Ce document contient des données de santé. Il est stocké hors de tout accès public et consultable uniquement par le bureau du club, dans le seul but d'instruire votre dossier de licence puis de le transmettre à la FFHM.</p>
-
-					<div class="dl-step-actions">
-						<button type="button" class="dl-btn-prev">Précédent</button>
-						<button type="button" class="dl-btn-next">Suivant</button>
-					</div>
-				</div>
-
-				{# ── Étape 5 : Paiement ── #}
-				<div class="dl-card dl-step" data-step="5" data-title="Mode de règlement">
-					<h2 class="dl-card-title"><span class="dl-num">5</span>Mode de règlement</h2>
-					<div class="dl-formules">
-						<label class="dl-formule-option">
-							<input type="radio" name="mode_paiement" value="en_ligne" checked>
-							<span class="dl-formule-card">
-								<span class="dl-formule-name">Je règle en ligne</span>
-								<span class="dl-formule-sub">Paiement sécurisé via HelloAsso (CB, PayPal…)</span>
-							</span>
-						</label>
-						<label class="dl-formule-option">
-							<input type="radio" name="mode_paiement" value="au_club">
-							<span class="dl-formule-card">
-								<span class="dl-formule-name">Je règle au club</span>
-								<span class="dl-formule-sub">Sur place, en espèces ou par carte</span>
-							</span>
-						</label>
+					{# ── Étape 4 : Certificat médical ── #}
+					<div class="dl-card dl-step" data-step="4" data-title="Justificatif médical">
+						<h2 class="dl-card-title"><span class="dl-num">4</span>Justificatif médical</h2>
+						<p class="dl-hint">Certificat médical de non contre-indication à la pratique de l'haltérophilie/musculation, ou questionnaire de santé signé (formulaire officiel FFHM). Formats acceptés : PDF, JPG, PNG — 8 Mo max.</p>
+						<div class="dl-field">
+							<label for="certificat_medical">Certificat médical / questionnaire de santé *</label>
+							<input type="file" name="certificat_medical" id="certificat_medical" accept=".pdf,.jpg,.jpeg,.png" required>
+						</div>
+						<p class="dl-notice">Ce document contient des données de santé. Il est stocké hors de tout accès public et consultable uniquement par le bureau du club, dans le seul but d'instruire votre dossier de licence puis de le transmettre à la FFHM.</p>
 					</div>
 
-					<div class="dl-step-actions">
-						<button type="button" class="dl-btn-prev">Précédent</button>
-						<button type="button" class="dl-btn-next">Suivant</button>
-					</div>
-				</div>
-
-				{# ── Étape 6 : Récapitulatif & envoi ── #}
-				<div class="dl-card dl-step" data-step="6" data-title="Récapitulatif">
-					<h2 class="dl-card-title"><span class="dl-num">6</span>Récapitulatif</h2>
-					<p class="dl-hint">Vérifiez vos informations avant l'envoi. Vous pouvez encore revenir en arrière pour corriger un champ.</p>
-
-					<div class="dl-recap" id="dl-recap"></div>
-
-					<div class="dl-card dl-card--consent">
-						<label class="dl-check dl-check--consent">
-							<input type="checkbox" name="consentement_rgpd" id="consentement_rgpd" value="1" required>
-							<span>
-								J'accepte que les informations renseignées dans ce formulaire, y compris les données de santé transmises via le certificat médical, soient collectées par CHM Saleux et transmises à la <strong>Fédération Française d'Haltérophilie Musculation (FFHM)</strong> aux seules fins de délivrance de ma licence sportive, conformément au <a href="{{ path('legal_page_show', {slug: 'confidentialite'}) }}" target="_blank" class="dl-link">RGPD et à notre politique de confidentialité</a>. Je peux exercer mes droits d'accès, de rectification et de suppression en écrivant à <a href="mailto:chm.saleux@orange.fr" class="dl-link">chm.saleux@orange.fr</a>.
-							</span>
-						</label>
-					</div>
-
-					<div class="turnstile-wrapper">
-						<div class="cf-turnstile" data-sitekey="0x4AAAAAACvankHbbJ6UuueH" data-theme="light"></div>
+					{# ── Étape 5 : Paiement ── #}
+					<div class="dl-card dl-step" data-step="5" data-title="Mode de règlement">
+						<h2 class="dl-card-title"><span class="dl-num">5</span>Mode de règlement</h2>
+						<div class="dl-formules">
+							<label class="dl-formule-option">
+								<input type="radio" name="mode_paiement" value="en_ligne" checked>
+								<span class="dl-formule-card">
+									<span class="dl-formule-name">Je règle en ligne</span>
+									<span class="dl-formule-sub">Paiement sécurisé via HelloAsso (CB, PayPal…)</span>
+								</span>
+							</label>
+							<label class="dl-formule-option">
+								<input type="radio" name="mode_paiement" value="au_club">
+								<span class="dl-formule-card">
+									<span class="dl-formule-name">Je règle au club</span>
+									<span class="dl-formule-sub">Sur place, en espèces ou par carte</span>
+								</span>
+							</label>
+						</div>
 					</div>
 
-					<div class="dl-step-actions">
-						<button type="button" class="dl-btn-prev">Précédent</button>
-						<button type="submit" class="dl-btn-next dl-submit">Envoyer ma demande de licence</button>
+					{# ── Étape 6 : Récapitulatif & envoi ── #}
+					<div class="dl-card dl-step" data-step="6" data-title="Récapitulatif">
+						<h2 class="dl-card-title"><span class="dl-num">6</span>Récapitulatif</h2>
+						<p class="dl-hint">Vérifiez vos informations avant l'envoi. Vous pouvez encore revenir en arrière pour corriger un champ.</p>
+
+						<div class="dl-recap" id="dl-recap"></div>
+
+						<div class="dl-card dl-card--consent">
+							<label class="dl-check dl-check--consent">
+								<input type="checkbox" name="consentement_rgpd" id="consentement_rgpd" value="1" required>
+								<span>
+									J'accepte que les informations renseignées dans ce formulaire, y compris les données de santé transmises via le certificat médical, soient collectées par CHM Saleux et transmises à la <strong>Fédération Française d'Haltérophilie Musculation (FFHM)</strong> aux seules fins de délivrance de ma licence sportive, conformément au <a href="{{ path('legal_page_show', {slug: 'confidentialite'}) }}" target="_blank" class="dl-link">RGPD et à notre politique de confidentialité</a>. Je peux exercer mes droits d'accès, de rectification et de suppression en écrivant à <a href="mailto:chm.saleux@orange.fr" class="dl-link">chm.saleux@orange.fr</a>.
+								</span>
+							</label>
+						</div>
+
+						<div class="turnstile-wrapper">
+							<div class="cf-turnstile" data-sitekey="0x4AAAAAACvankHbbJ6UuueH" data-theme="light"></div>
+						</div>
 					</div>
-				</div>
 
-			</form>
+					{# ── Barre de navigation (hors du container formulaire) ── #}
+					<div class="dl-nav">
+						<button type="button" class="dl-btn-prev" id="dl-btn-prev" style="display:none;">Précédent</button>
+						<button type="button" class="dl-btn-next" id="dl-btn-next">Suivant</button>
+						<button type="submit" class="dl-submit dl-btn-submit" id="dl-btn-submit" style="display:none;">
+							<span class="dl-btn-label">Envoyer</span>
+							<span class="dl-spinner" aria-hidden="true"></span>
+						</button>
+					</div>
 
-			<p class="dl-footline">Une question ? <a href="mailto:chm.saleux@orange.fr">chm.saleux@orange.fr</a> · <a href="tel:0322897257">03 22 89 72 57</a></p>
+				</form>
 
+				<aside class="dl-aside">
+					<div class="dl-aside-block">
+						<h3 class="dl-aside-title">Comment ça marche ?</h3>
+						<ol class="dl-aside-steps">
+							<li><strong>Vous remplissez</strong> le formulaire en ligne, avec votre certificat médical.</li>
+							<li><strong>Nous calculons</strong> le tarif exact selon votre formule et votre situation.</li>
+							<li><strong>Vous réglez</strong> au club ou en ligne.</li>
+							<li><strong>Nous transmettons</strong> votre dossier à la FFHM, qui édite votre licence officielle.</li>
+						</ol>
+					</div>
+
+					<div class="dl-aside-block">
+						<h3 class="dl-aside-title">Une question ?</h3>
+						<a href="{{ path('contact') }}" class="dl-aside-link"><i class="fa-solid fa-envelope"></i> Contacter le club</a>
+						<a href="tel:0322897257" class="dl-aside-link"><i class="fa-solid fa-phone"></i> 03 22 89 72 57</a>
+					</div>
+				</aside>
+
+			</div>
+
+		</div>
+	</div>
+
+	{# ── Overlay plein écran affiché lors de l'envoi ── #}
+	<div class="dl-submit-overlay" id="dl-submit-overlay" aria-hidden="true">
+		<div class="dl-submit-overlay-inner">
+			<div class="dl-spinner-lg" aria-hidden="true"></div>
+			<p>Transfert de vos informations vers notre équipe…</p>
 		</div>
 	</div>
 
@@ -241,6 +259,9 @@
 {% block javascripts %}
 	{{ parent() }}
 	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer nonce="{{ csp_nonce('script') }}"></script>
+	<script nonce="{{ csp_nonce('script') }}">
+	var DL_GRILLE = {{ grillePublic|json_encode|raw }};
+	</script>
 	<script nonce="{{ csp_nonce('script') }}">
 	(function () {
 		document.getElementById('dl-tarif-reduit').addEventListener('change', function () {
@@ -276,12 +297,63 @@
 		dateNaissanceInput.addEventListener('change', updateResponsableRequirement);
 		updateResponsableRequirement();
 
-		var form     = document.querySelector('.dl-wizard');
-		var steps    = Array.prototype.slice.call(form.querySelectorAll('.dl-step'));
-		var fillEl   = document.getElementById('dl-progress-fill');
-		var stepEl   = document.getElementById('dl-progress-step');
-		var titleEl  = document.getElementById('dl-progress-title');
-		var current  = 0;
+		// ── Estimation du tarif Compétition selon la catégorie d'âge ──
+		var prixEstimeEl = document.getElementById('dl-prix-estime-competition');
+
+		function categorieCompetitionPour(anneeNaissance) {
+			var categories = (DL_GRILLE.competition || {}).categories || [];
+			for (var i = 0; i < categories.length; i++) {
+				var c = categories[i];
+				if (c.anneeMin !== null && anneeNaissance < c.anneeMin) continue;
+				if (c.anneeMax !== null && anneeNaissance > c.anneeMax) continue;
+				return c;
+			}
+			return null;
+		}
+
+		function updatePrixEstime() {
+			if (!prixEstimeEl) return;
+			var formuleChecked = document.querySelector('input[name="formule"]:checked');
+			var isCompetition = formuleChecked && formuleChecked.value === 'competition';
+			var dateStr = dateNaissanceInput.value;
+
+			if (!isCompetition || !dateStr) {
+				prixEstimeEl.style.display = 'none';
+				return;
+			}
+
+			var naissance = new Date(dateStr);
+			if (isNaN(naissance.getTime())) {
+				prixEstimeEl.style.display = 'none';
+				return;
+			}
+
+			var categorie = categorieCompetitionPour(naissance.getFullYear());
+			if (!categorie) {
+				prixEstimeEl.style.display = 'none';
+				return;
+			}
+
+			prixEstimeEl.textContent = 'Tarif Compétition estimé pour la catégorie ' + categorie.label + ' : ' + categorie.prix + ' € / an (avant réductions éventuelles).';
+			prixEstimeEl.style.display = 'block';
+		}
+
+		dateNaissanceInput.addEventListener('change', updatePrixEstime);
+		document.querySelectorAll('input[name="formule"]').forEach(function (radio) {
+			radio.addEventListener('change', updatePrixEstime);
+		});
+		updatePrixEstime();
+
+		var form      = document.querySelector('.dl-wizard');
+		var steps     = Array.prototype.slice.call(form.querySelectorAll('.dl-step'));
+		var fillEl    = document.getElementById('dl-progress-fill');
+		var stepEl    = document.getElementById('dl-progress-step');
+		var titleEl   = document.getElementById('dl-progress-title');
+		var btnPrev   = document.getElementById('dl-btn-prev');
+		var btnNext   = document.getElementById('dl-btn-next');
+		var btnSubmit = document.getElementById('dl-btn-submit');
+		var submitOverlay = document.getElementById('dl-submit-overlay');
+		var current   = 0;
 
 		function labelFor(select) {
 			var opt = select.options[select.selectedIndex];
@@ -366,9 +438,15 @@
 			stepEl.textContent = index + 1;
 			titleEl.textContent = step.getAttribute('data-title');
 			fillEl.style.width = (((index + 1) / steps.length) * 100) + '%';
-			if (index === steps.length - 1) fillRecap();
+			var isLast = index === steps.length - 1;
+			if (isLast) fillRecap();
 			current = index;
-			form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+			btnPrev.style.display = index === 0 ? 'none' : '';
+			btnNext.style.display = isLast ? 'none' : '';
+			btnSubmit.style.display = isLast ? '' : 'none';
+
+			form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 		}
 
 		function validateStep(index) {
@@ -380,17 +458,13 @@
 			return true;
 		}
 
-		form.querySelectorAll('.dl-btn-next').forEach(function (btn) {
-			btn.addEventListener('click', function () {
-				if (!validateStep(current)) return;
-				if (current < steps.length - 1) show(current + 1);
-			});
+		btnNext.addEventListener('click', function () {
+			if (!validateStep(current)) return;
+			if (current < steps.length - 1) show(current + 1);
 		});
 
-		form.querySelectorAll('.dl-btn-prev').forEach(function (btn) {
-			btn.addEventListener('click', function () {
-				if (current > 0) show(current - 1);
-			});
+		btnPrev.addEventListener('click', function () {
+			if (current > 0) show(current - 1);
 		});
 
 		form.addEventListener('submit', function (e) {
@@ -403,6 +477,11 @@
 					return;
 				}
 			}
+
+			// Validation OK : overlay de transfert + spinner
+			btnSubmit.disabled = true;
+			btnSubmit.classList.add('is-loading');
+			submitOverlay.classList.add('active');
 		});
 
 		show(0);

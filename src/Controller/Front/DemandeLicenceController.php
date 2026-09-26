@@ -30,7 +30,8 @@ class DemandeLicenceController extends AbstractController
     public function index(LicenceTarifService $tarifService): Response
     {
         return $this->render('licence/demande.html.twig', [
-            'formules' => $tarifService->getFormules(),
+            'formules'     => $tarifService->getFormules(),
+            'grillePublic' => $tarifService->getGrilleAffichagePublic(),
         ]);
     }
 

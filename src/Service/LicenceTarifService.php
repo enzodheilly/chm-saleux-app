@@ -97,6 +97,40 @@ class LicenceTarifService
     }
 
     /**
+     * Grille tarifaire destinée à l'affichage public (page de demande de
+     * licence) : prix fixe pour Jeune, plage min/max + catégories d'âge pour
+     * Compétition (le prix exact dépend de la date de naissance, calculée
+     * côté client une fois l'étape "pratiquant" remplie), plage dégressive
+     * pour Loisir & Muscu. Source unique de vérité = les constantes
+     * ci-dessus, pour ne jamais désynchroniser l'affichage du calcul réel.
+     */
+    public function getGrilleAffichagePublic(): array
+    {
+        return [
+            self::FORMULE_JEUNE => [
+                'type' => 'fixe',
+                'prix' => self::TARIF_JEUNE,
+            ],
+            self::FORMULE_COMPETITION => [
+                'type' => 'age',
+                'categories' => array_map(static fn (array $c): array => [
+                    'label'    => $c['label'],
+                    'anneeMin' => $c['annee_min'],
+                    'anneeMax' => $c['annee_max'],
+                    'prix'     => self::TARIFS_COMPETITION[$c['tier']],
+                ], self::CATEGORIES_COMPETITION),
+                'prixMin' => min(self::TARIFS_COMPETITION),
+                'prixMax' => max(self::TARIFS_COMPETITION),
+            ],
+            self::FORMULE_LOISIR => [
+                'type'    => 'degressif',
+                'prixMin' => min(array_column(self::GRILLE_LOISIR, 0)),
+                'prixMax' => max(array_column(self::GRILLE_LOISIR, 0)),
+            ],
+        ];
+    }
+
+    /**
      * Détermine la catégorie d'âge FFHM (Benjamin, Minime, ..., Sénior) d'un
      * pratiquant pour la formule Compétition, à partir de sa date de naissance.
      * Un pratiquant sans date de naissance connue est classé "Sénior" par

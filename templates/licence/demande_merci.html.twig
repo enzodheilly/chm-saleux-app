@@ -16,23 +16,8 @@
 				<div class="dl-merci-icon"><i class="fa-solid fa-circle-check"></i></div>
 				<h1>{{ paiementConfirme ? 'Paiement confirmé !' : 'Demande envoyée !' }}</h1>
 				<p class="dl-intro-sub">
-					Merci <strong>{{ demande.prenom }}</strong>, votre demande de licence <strong>{{ formuleLabel }}</strong> a bien été enregistrée.
+					Merci <strong>{{ demande.prenom }}</strong>, votre demande de licence <strong>{{ formuleLabel }}</strong> a bien été prise en compte et transmise au club.
 				</p>
-
-				<div class="dl-card dl-merci-card">
-					<div class="dl-merci-row">
-						<span>Montant {{ paiementConfirme ? 'réglé' : 'calculé' }}</span>
-						<strong>{{ demande.montantCalcule|number_format(2, ',', ' ') }} €</strong>
-					</div>
-					<div class="dl-merci-row">
-						<span>Mode de règlement</span>
-						<strong>{{ demande.modePaiement == 'au_club' ? 'Au club' : 'En ligne (HelloAsso)' }}</strong>
-					</div>
-					<div class="dl-merci-row">
-						<span>Statut paiement</span>
-						<strong>{{ demande.statutPaiement == 'payee' ? 'Réglé' : 'À régler au club' }}</strong>
-					</div>
-				</div>
 
 				<p class="dl-hint">
 					{% if demande.gratuiteAppliquee %}
@@ -44,10 +29,10 @@
 					{% else %}
 						Votre demande est enregistrée. Vous recevrez un email de confirmation dès que le paiement HelloAsso sera validé.
 					{% endif %}
-					Un email de confirmation vous a été envoyé à <strong>{{ demande.email }}</strong>.
+					Un email récapitulatif vous a été envoyé à <strong>{{ demande.email }}</strong>.
 				</p>
 
-				<a href="{{ path('home') }}" class="dl-btn-next dl-submit dl-merci-back">Retour à l'accueil</a>
+				<a href="{{ path('home') }}" class="dl-submit dl-merci-back">Retour à l'accueil</a>
 			</div>
 		</div>
 	</div>
