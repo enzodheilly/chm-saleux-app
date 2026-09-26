@@ -19,18 +19,50 @@ class LicenceRepository extends ServiceEntityRepository
      * récentes en premier. Sert à isoler les licences FFHM des licences
      * salle/abonnement classiques dans la même table générale.
      */
-    public function findByTypes(array $types): array
+    public function findByTypes(array $types, ?bool $activee = null, ?int $saisonFinAnnee = null): array
     {
         if ($types === []) {
             return [];
         }
 
-        return $this->createQueryBuilder('l')
+        $qb = $this->createQueryBuilder('l')
             ->andWhere('l.type IN (:types)')
-            ->setParameter('types', $types)
-            ->orderBy('l.id', 'DESC')
+            ->setParameter('types', $types);
+
+        if ($activee !== null) {
+            $qb->andWhere('l.activee = :activee')
+               ->setParameter('activee', $activee);
+        }
+
+        if ($saisonFinAnnee !== null) {
+            $qb->andWhere('YEAR(l.expiryDate) = :saisonFinAnnee')
+               ->setParameter('saisonFinAnnee', $saisonFinAnnee);
+        }
+
+        return $qb
+            ->orderBy('l.lastName', 'ASC')
+            ->addOrderBy('l.firstName', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    /** Retourne les années de fin de saison distinctes (pour le filtre). */
+    public function findDistinctSaisonFinAnnees(array $types): array
+    {
+        if ($types === []) {
+            return [];
+        }
+
+        $rows = $this->createQueryBuilder('l')
+            ->select('YEAR(l.expiryDate) as annee')
+            ->andWhere('l.type IN (:types)')
+            ->setParameter('types', $types)
+            ->groupBy('annee')
+            ->orderBy('annee', 'DESC')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_column($rows, 'annee');
     }
 
     public function findOneByNumber(string $number): ?Licence

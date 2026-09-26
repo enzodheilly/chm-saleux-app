@@ -113,8 +113,20 @@
 			<span class="tool-label">Transfert FFHM</span>
 			{% if demande.statutFfhm == 'transferee' %}
 				<p class="form-help" style="margin-top:10px;"><span class="badge badge-active">Transférée</span> — la licence a été saisie sur le portail FFHM.</p>
-				{% if demande.licenceCreeeId %}
-					<p class="form-help" style="margin-top:4px;">Licence interne créée automatiquement : <a href="{{ path('admin_licence_edit', {id: demande.licenceCreeeId}) }}" class="dl-link">voir / compléter la fiche</a> (numéro provisoire — à remplacer par le vrai numéro FFHM dès réception).</p>
+				{% if licenceCreee %}
+					<p class="form-help" style="margin-top:4px;">
+						Licence interne : <a href="{{ path('admin_licence_edit', {id: licenceCreee.id}) }}" class="dl-link">voir / compléter la fiche</a>
+						— n° <strong>{{ licenceCreee.number }}</strong>
+						{% if licenceCreee.activee %}
+							<span class="badge badge-active" style="margin-left:6px;">Activée</span>
+						{% else %}
+							<span class="badge badge-pending" style="margin-left:6px;">En attente d'activation</span>
+							<form method="post" action="{{ path('admin_demande_licence_activer_licence', {id: licenceCreee.id}) }}" style="display:inline; margin-left:10px;">
+								<input type="hidden" name="_token" value="{{ csrf_token('activer_licence_' ~ licenceCreee.id) }}">
+								<button type="submit" class="btn-outline" style="padding:4px 12px; font-size:0.8rem;" onclick="return confirm('Activer cette licence ? Le numéro FFHM officiel doit être renseigné d\'abord.');">Activer</button>
+							</form>
+						{% endif %}
+					</p>
 				{% endif %}
 			{% else %}
 				<form method="post" action="{{ path('admin_demande_licence_statut_ffhm', {id: demande.id}) }}" style="margin-top: 10px;">

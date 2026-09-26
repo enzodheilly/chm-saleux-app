@@ -29,17 +29,24 @@ class AdminDemandeLicenceController extends AbstractController
     #[Route('', name: 'index', methods: ['GET'])]
     public function index(DemandeLicenceRepository $repo, LicenceRepository $licenceRepository, LicenceTarifService $tarifService): Response
     {
+        $formuleTypes = array_values($tarifService->getFormules());
         return $this->render('admin/demande_licence/index.html.twig', [
-            'demandes'        => $repo->findAllOrderedByDate(),
-            'licencesActives' => $licenceRepository->findByTypes(array_values($tarifService->getFormules())),
+            'demandes'          => $repo->findNonTransferees(),
+            'licencesEnAttente' => $licenceRepository->findByTypes($formuleTypes, false),
+            'licencesActives'   => $licenceRepository->findByTypes($formuleTypes, true),
         ]);
     }
 
     #[Route('/{id}', name: 'show', methods: ['GET'])]
-    public function show(DemandeLicence $demande): Response
+    public function show(DemandeLicence $demande, LicenceRepository $licenceRepository): Response
     {
+        $licenceCreee = $demande->getLicenceCreeeId() !== null
+            ? $licenceRepository->find($demande->getLicenceCreeeId())
+            : null;
+
         return $this->render('admin/demande_licence/show.html.twig', [
-            'demande' => $demande,
+            'demande'      => $demande,
+            'licenceCreee' => $licenceCreee,
         ]);
     }
 
@@ -146,15 +153,37 @@ class AdminDemandeLicenceController extends AbstractController
             $demande->getNom()
         ));
 
-        $this->addFlash('success', 'Demande marquée comme transférée à la FFHM. Licence interne créée automatiquement.');
+        $this->addFlash('success', 'Demande marquée comme transférée à la FFHM. Licence interne créée — à activer dès réception du numéro FFHM.');
         return $this->redirectToRoute('admin_demande_licence_show', ['id' => $demande->getId()]);
+    }
+
+    /** Activation d'une licence interne créée après transfert FFHM. */
+    #[Route('/licence/{id}/activer', name: 'activer_licence', methods: ['POST'])]
+    public function activerLicence(Licence $licence, Request $request, EntityManagerInterface $em, SystemLoggerService $logger): Response
+    {
+        if (!$this->isCsrfTokenValid('activer_licence_' . $licence->getId(), (string) $request->request->get('_token'))) {
+            $this->addFlash('danger', 'Token CSRF invalide.');
+            return $this->redirectToRoute('admin_demande_licence_index');
+        }
+
+        $licence->setActivee(true);
+        $em->flush();
+
+        $logger->add(SystemLoggerService::TYPE_ADMIN, sprintf(
+            'Licence #%d (%s %s) activée',
+            $licence->getId(),
+            $licence->getFirstName(),
+            $licence->getLastName()
+        ));
+
+        $this->addFlash('success', 'Licence activée avec succès.');
+        return $this->redirectToRoute('admin_demande_licence_index');
     }
 
     /**
      * Construit la licence interne (table générale Licence, avec QR code) à
-     * partir d'une demande validée. Le numéro est une référence interne — à
-     * remplacer manuellement par le vrai numéro FFHM depuis /gestion-chm-secrete-92x/licences
-     * dès que le club le reçoit de la fédération.
+     * partir d'une demande validée. Créée inactive (activee=false) — le bureau
+     * doit l'activer manuellement dès réception du numéro FFHM officiel.
      */
     private function creerLicenceDepuisDemande(DemandeLicence $demande, LicenceTarifService $tarifService, UserRepository $userRepository): Licence
     {
@@ -187,6 +216,7 @@ class AdminDemandeLicenceController extends AbstractController
         $licence->setLastName($demande->getNom());
         $licence->setEmail($demande->getEmail());
         $licence->setBenefits($benefits);
+        $licence->setActivee(false);
         $licence->setUser($userRepository->findOneBy(['email' => $demande->getEmail()]));
 
         return $licence;

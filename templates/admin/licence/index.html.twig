@@ -1,18 +1,46 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Licences{% endblock %}
+{% block title %}Archives licences FFHM{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		.saison-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+		.saison-tab {
+			padding: 6px 16px;
+			font-size: 0.8rem;
+			font-weight: 700;
+			color: var(--text-secondary);
+			background: var(--bg-card);
+			border: 1px solid var(--border-color);
+			text-decoration: none;
+		}
+		.saison-tab.active { color: #111; background: var(--accent); border-color: var(--accent); }
+		.badge-pending { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+	</style>
+{% endblock %}
 
 {% block body %}
 	<div class="page-header">
 		<div>
-			<h1>Licences</h1>
-			<p>Suivi des licences sportives et dates d'expiration.</p>
+			<h1>Archives licences FFHM</h1>
+			<p>Toutes les licences créées depuis les demandes — actives et en attente d'activation.</p>
 		</div>
 		<div class="toolbar">
-			<input type="text" id="searchLicence" class="search-input" placeholder="Nom ou numéro...">
 			<a href="{{ path('admin_licence_new') }}" class="btn-create">Créer une licence</a>
 		</div>
 	</div>
+
+	{% if saisons is not empty %}
+		<div class="saison-tabs">
+			<a href="{{ path('admin_licence_index') }}" class="saison-tab {{ saisonActive is null ? 'active' : '' }}">Toutes</a>
+			{% for saison in saisons %}
+				<a href="{{ path('admin_licence_index', {saison: saison}) }}" class="saison-tab {{ saisonActive == saison ? 'active' : '' }}">
+					Saison {{ (saison - 1) ~ '/' ~ saison }}
+				</a>
+			{% endfor %}
+		</div>
+	{% endif %}
 
 	<div class="table-wrapper">
 		<div class="table-scroll">
@@ -23,7 +51,7 @@
 						<th>Numéro</th>
 						<th>Titulaire</th>
 						<th>Type</th>
-						<th>Validité</th>
+						<th>Saison</th>
 						<th>Statut</th>
 						<th width="70">QR</th>
 						<th class="th-right">Actions</th>
@@ -31,30 +59,21 @@
 				</thead>
 				<tbody>
 					{% for licence in licences %}
-						{# Logique Twig conservée, mais styles déportés #}
-						{% set isExpired = licence.expiryDate < date() %}
 						<tr>
-							<td>
-								<span class="td-mono">#{{ licence.id }}</span>
-							</td>
-							<td>
-								{# La classe licence-number remplace le style inline #}
-								<span class="td-mono licence-number">{{ licence.number }}</span>
-							</td>
+							<td><span class="td-mono">#{{ licence.id }}</span></td>
+							<td><span class="td-mono licence-number">{{ licence.number }}</span></td>
 							<td>
 								<div class="identity-cell">
-									<span class="sender-name">{{ licence.firstName }}
-										{{ licence.lastName|upper }}</span>
+									<span class="sender-name">{{ licence.firstName }} {{ licence.lastName|upper }}</span>
 									<span class="td-mono-sm sender-email">{{ licence.email|pseudonymize_email }}</span>
 								</div>
 							</td>
+							<td><span class="badge badge-neutral">{{ licence.type|capitalize }}</span></td>
+							<td class="td-mono-sm">{{ licence.saisonLabel }}</td>
 							<td>
-								{# On réutilise badge-neutral #}
-								<span class="badge badge-neutral">{{ licence.type|capitalize }}</span>
-							</td>
-							<td class="td-mono-sm">{{ licence.expiryDate ? licence.expiryDate|date('d/m/Y') : '—' }}</td>
-							<td>
-								{% if isExpired %}
+								{% if not licence.activee %}
+									<span class="badge badge-pending">En attente</span>
+								{% elseif licence.expiryDate < date() %}
 									<span class="badge badge-danger">Expirée</span>
 								{% else %}
 									<span class="badge badge-active">Active</span>
@@ -72,8 +91,6 @@
 							<td>
 								<div class="actions">
 									<a href="{{ path('admin_licence_edit', {id: licence.id}) }}" class="act-link">Modifier</a>
-
-									{# MODIFICATION : Suppression du JS inline #}
 									<form method="post" action="{{ path('admin_licence_delete', {id: licence.id}) }}" class="js-confirm-form" data-confirm="🪪 Supprimer la licence n°{{ licence.number }} appartenant à {{ licence.firstName }} {{ licence.lastName|upper }} ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ licence.id) }}">
 										<button type="submit" class="act-link act-del">Supprimer</button>
@@ -83,7 +100,7 @@
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="8" class="td-empty">Aucune licence enregistrée.</td>
+							<td colspan="8" class="td-empty">Aucune licence FFHM enregistrée{% if saisonActive %} pour cette saison{% endif %}.</td>
 						</tr>
 					{% endfor %}
 				</tbody>

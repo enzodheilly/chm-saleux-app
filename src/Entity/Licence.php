@@ -51,6 +51,9 @@ class Licence
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $qrCodeUpdatedAt = null;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $activee = true;
+
     #[ORM\OneToMany(mappedBy: 'licence', targetEntity: CheckIn::class, cascade: ['remove'], orphanRemoval: true)]
     private Collection $checkIns;
 
@@ -197,6 +200,18 @@ class Licence
     {
         $this->qrCodeUpdatedAt = $qrCodeUpdatedAt;
         return $this;
+    }
+
+    public function isActivee(): bool { return $this->activee; }
+    public function setActivee(bool $activee): self { $this->activee = $activee; return $this; }
+
+    public function getSaisonLabel(): string
+    {
+        if (!$this->expiryDate) {
+            return '—';
+        }
+        $annee = (int) $this->expiryDate->format('Y');
+        return ($annee - 1) . '/' . $annee;
     }
 
     public function getCheckIns(): Collection

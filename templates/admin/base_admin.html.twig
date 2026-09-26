@@ -50,8 +50,7 @@
 						{% if is_granted('ROLE_SUPER_ADMIN') %}
 							<a href="{{ path('admin_users_new_admin') }}" class="nav-link-accent">+ Ajouter un staff</a>
 						{% endif %}
-						<a href="{{ path('admin_licence_index') }}">Gestion des Licences</a>
-					</div>
+						</div>
 				</div>
 
 				<div class="nav-item">
@@ -66,10 +65,15 @@
 					</a>
 				</div>
 
-				<div class="nav-item">
-					<a href="{{ path('admin_demande_licence_index') }}" class="nav-link {% if app.request.get('_route') starts with 'admin_demande_licence' %}active{% endif %}">
-						Licences FFHM
-					</a>
+				<div class="nav-item" id="menu-licences-ffhm">
+					<div class="nav-link" data-submenu="menu-licences-ffhm">
+						<span>Licences FFHM</span>
+						<span class="caret"></span>
+					</div>
+					<div class="submenu">
+						<a href="{{ path('admin_demande_licence_index') }}">Demandes &amp; licences</a>
+						<a href="{{ path('admin_licence_index') }}">Archives licences</a>
+					</div>
 				</div>
 
 				<div class="nav-group-label">Sport & Abonnements</div>

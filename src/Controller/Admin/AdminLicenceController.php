@@ -6,6 +6,7 @@ use App\Entity\Licence;
 use App\Form\LicenceType;
 use App\Repository\LicenceRepository;
 use App\Repository\MembershipPlanRepository;
+use App\Service\LicenceTarifService;
 use App\Service\QrCodeService;
 use App\Service\SystemLoggerService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,9 +22,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminLicenceController extends AbstractController
 {
     #[Route('/', name: 'admin_licence_index', methods: ['GET'])]
-    public function index(LicenceRepository $licenceRepository, QrCodeService $qrCodeService): Response
+    public function index(Request $request, LicenceRepository $licenceRepository, QrCodeService $qrCodeService, LicenceTarifService $tarifService): Response
     {
-        $licences = $licenceRepository->findAll();
+        $formuleTypes   = array_values($tarifService->getFormules());
+        $saisons        = $licenceRepository->findDistinctSaisonFinAnnees($formuleTypes);
+        $saisonFinAnnee = $request->query->get('saison') ? (int) $request->query->get('saison') : null;
+        $licences       = $licenceRepository->findByTypes($formuleTypes, null, $saisonFinAnnee);
 
         $qrCodeImages = [];
         foreach ($licences as $licence) {
@@ -33,8 +37,10 @@ class AdminLicenceController extends AbstractController
         }
 
         return $this->render('admin/licence/index.html.twig', [
-            'licences' => $licences,
+            'licences'     => $licences,
             'qrCodeImages' => $qrCodeImages,
+            'saisons'      => $saisons,
+            'saisonActive' => $saisonFinAnnee,
         ]);
     }
 

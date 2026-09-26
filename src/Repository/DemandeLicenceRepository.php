@@ -25,6 +25,17 @@ class DemandeLicenceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /** Demandes pas encore transférées à la FFHM (onglet "Demandes"). */
+    public function findNonTransferees(): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.statutFfhm != :transferee')
+            ->setParameter('transferee', DemandeLicence::STATUT_FFHM_TRANSFEREE)
+            ->orderBy('d.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     /** Demandes dont le paiement ou le transfert FFHM restent à traiter. */
     public function findEnAttente(): array
     {

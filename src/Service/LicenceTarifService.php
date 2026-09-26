@@ -156,6 +156,17 @@ class LicenceTarifService
         return $tarifReduit ? max(0.0, self::TARIF_JEUNE - self::REDUCTION_FIXE) : self::TARIF_JEUNE;
     }
 
+    /**
+     * Retourne le libellé de saison pour une date de référence.
+     * Ex : référence en septembre 2026 → "2026/2027".
+     */
+    public function getSaisonLabel(\DateTimeInterface $reference): string
+    {
+        $finDeSaison = $this->getFinDeSaison($reference);
+        $anneeFin = (int) $finDeSaison->format('Y');
+        return ($anneeFin - 1) . '/' . $anneeFin;
+    }
+
     /** Applique la réduction familiale (rang 1 à 4+) au prix de base. */
     public function appliquerReductionFamiliale(float $prixBase, int $foyerRang): float
     {
