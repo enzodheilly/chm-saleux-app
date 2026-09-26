@@ -6,7 +6,7 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('css/licence/demande.css') }}?v=6">
+	<link rel="stylesheet" href="{{ asset('css/licence/demande.css') }}?v=8">
 {% endblock %}
 
 {% block body %}
@@ -49,11 +49,11 @@
 										<span class="dl-formule-name">{{ label }}</span>
 										{% set g = grillePublic[key] %}
 										{% if g.type == 'fixe' %}
-											<span class="dl-formule-prix">{{ g.prix|number_format(0) }} € / an</span>
+											<span class="dl-formule-prix" title="{{ g.prix|number_format(0) }} € / an">{{ g.prix|number_format(0) }}€</span>
 										{% elseif g.type == 'age' %}
-											<span class="dl-formule-prix">{{ g.prixMin|number_format(0) }} à {{ g.prixMax|number_format(0) }} € / an <em>selon l'âge</em></span>
+											<span class="dl-formule-prix" title="Selon l'âge, de {{ g.prixMin|number_format(0) }} à {{ g.prixMax|number_format(0) }} € / an">{{ g.prixMin|number_format(0) }}-{{ g.prixMax|number_format(0) }}€ <small>âge</small></span>
 										{% else %}
-											<span class="dl-formule-prix">dès {{ g.prixMin|number_format(0) }} € / an <em>dégressif</em></span>
+											<span class="dl-formule-prix" title="Tarif dégressif selon le mois d'inscription, à partir de {{ g.prixMin|number_format(0) }} € / an">dès {{ g.prixMin|number_format(0) }}€</span>
 										{% endif %}
 									</span>
 								</label>

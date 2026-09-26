@@ -23,7 +23,7 @@ body.has-banner .dl-root {
 .dl-shell {
   flex: 1;
   width: 100%;
-  max-width: 960px;
+  max-width: 1160px;
   margin: 0 auto;
   padding: 28px 20px 40px;
   display: flex;
@@ -75,8 +75,8 @@ body.has-banner .dl-root {
 /* ── Layout 2 colonnes : formulaire + explications ── */
 .dl-layout {
   display: grid;
-  grid-template-columns: 1fr 260px;
-  gap: 48px;
+  grid-template-columns: 1fr 280px;
+  gap: 72px;
   align-items: start;
 }
 
@@ -230,21 +230,36 @@ body.has-banner .dl-root {
 
 .dl-formule-card {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   background: #1a1a1a;
   border: 1px solid rgba(255,255,255,0.09);
   border-radius: 8px;
-  padding: 14px 16px;
+  padding: 14px 14px;
   transition: border-color 0.15s, background 0.15s;
-  min-height: 60px;
-  justify-content: center;
+  min-height: 48px;
 }
 
-.dl-formule-name { font-size: 0.9rem; font-weight: 700; color: #fff; }
+.dl-formule-name { font-size: 0.88rem; font-weight: 700; color: #fff; }
 .dl-formule-sub { font-size: 0.74rem; color: rgba(255,255,255,0.35); }
-.dl-formule-prix { font-size: 0.74rem; color: #F57706; font-weight: 700; }
-.dl-formule-prix em { font-style: normal; color: rgba(255,255,255,0.35); font-weight: 500; }
+
+.dl-formule-prix {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  background: rgba(245,119,6,0.12);
+  color: #F57706;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  padding: 3px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.dl-formule-prix small { font-size: 0.62rem; font-weight: 700; opacity: 0.75; }
 
 .dl-formule-option input:checked + .dl-formule-card {
   border-color: #F57706;
@@ -444,8 +459,8 @@ body.has-banner .dl-root {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  border-left: 1px solid rgba(255,255,255,0.1);
-  padding-left: 32px;
+  border-left: 1px solid rgba(255,255,255,0.16);
+  padding-left: 36px;
 }
 
 .dl-aside-block {
