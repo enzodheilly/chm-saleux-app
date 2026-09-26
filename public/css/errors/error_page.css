@@ -1,4 +1,4 @@
-/* Pages d'erreur 404 / 500 — design autonome, cohérent avec l'identité CHM Saleux */
+/* Pages d'erreur 404 / 500 — design minimal */
 
 body.error-body {
 	min-height: 100vh;
@@ -14,155 +14,50 @@ body.error-body .app-main {
 }
 
 .error-page {
-	position: relative;
 	width: 100%;
-	padding: 2rem 1.5rem;
-}
-
-.error-page-inner {
-	position: relative;
-	z-index: 1;
-	max-width: 560px;
-	width: 100%;
+	max-width: 480px;
 	margin: 0 auto;
+	padding: 2rem 1.5rem;
 	text-align: center;
 }
 
-.error-page-brand {
-	display: inline-flex;
-	align-items: center;
-	gap: 10px;
-	text-decoration: none;
-	margin-bottom: 2.75rem;
-	opacity: 0.9;
-}
-
-.error-page-brand img {
-	width: 34px;
-	height: 34px;
-}
-
-.error-page-brand span {
-	font-weight: 800;
-	font-size: 1rem;
-	letter-spacing: 0.03em;
-	color: #f1f5f9;
-	text-transform: uppercase;
-}
-
-.error-page-eyebrow {
-	font-size: 0.78rem;
-	font-weight: 700;
-	text-transform: uppercase;
-	letter-spacing: 0.14em;
-	color: #F57706;
-	margin: 0 0 0.4rem;
-}
-
 .error-page-code {
-	font-size: clamp(5rem, 16vw, 9rem);
+	font-size: clamp(4.5rem, 14vw, 7rem);
 	font-weight: 900;
-	line-height: 0.95;
-	letter-spacing: -0.02em;
-	background: linear-gradient(180deg, #ffffff 0%, #F57706 140%);
-	-webkit-background-clip: text;
-	background-clip: text;
-	color: transparent;
+	line-height: 1;
+	color: #F57706;
 	margin: 0;
 }
 
 .error-page-title {
-	font-size: clamp(1.4rem, 2.6vw, 1.85rem);
+	font-size: clamp(1.3rem, 2.4vw, 1.6rem);
 	font-weight: 800;
 	color: #f1f5f9;
-	margin: 0.9rem 0 0.75rem;
+	margin: 1rem 0 0.6rem;
 }
 
 .error-page-message {
 	color: #94a3b8;
 	font-size: 1rem;
-	max-width: 420px;
-	margin: 0 auto 2.25rem;
-	line-height: 1.65;
-}
-
-.error-page-actions {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 12px;
-	flex-wrap: wrap;
-	margin-bottom: 2.5rem;
+	line-height: 1.6;
+	margin: 0 0 2rem;
 }
 
 .error-page-btn {
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	padding: 12px 26px;
-	border-radius: 8px;
-	font-weight: 700;
-	font-size: 0.95rem;
-	text-decoration: none;
-	border: 1px solid transparent;
-	cursor: pointer;
-	transition: opacity 0.2s, background-color 0.2s, border-color 0.2s;
-	font-family: inherit;
-}
-
-.error-page-btn--primary {
+	display: inline-block;
+	padding: 12px 28px;
 	background: #F57706;
 	color: #fff;
-}
-
-.error-page-btn--primary:hover {
-	opacity: 0.88;
-}
-
-.error-page-btn--ghost {
-	background: transparent;
-	color: #e2e8f0;
-	border-color: rgba(255, 255, 255, 0.18);
-}
-
-.error-page-btn--ghost:hover {
-	background: rgba(255, 255, 255, 0.06);
-	border-color: rgba(255, 255, 255, 0.3);
-}
-
-.error-page-links {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 1.75rem;
-	flex-wrap: wrap;
-	padding-top: 1.75rem;
-	border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.error-page-links a {
-	display: inline-flex;
-	align-items: center;
-	gap: 7px;
-	color: #cbd5e1;
 	text-decoration: none;
-	font-size: 0.85rem;
-	font-weight: 600;
-	transition: color 0.2s;
+	border-radius: 8px;
+	font-weight: 700;
+	font-size: 1rem;
+	border: none;
+	cursor: pointer;
+	font-family: inherit;
+	transition: opacity 0.2s;
 }
 
-.error-page-links a i {
-	color: #F57706;
-	font-size: 0.8rem;
-}
-
-.error-page-links a:hover {
-	color: #ffffff;
-}
-
-@media (max-width: 480px) {
-	.error-page-links {
-		flex-direction: column;
-		gap: 0.9rem;
-	}
+.error-page-btn:hover {
+	opacity: 0.85;
 }

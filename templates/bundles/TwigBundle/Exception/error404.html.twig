@@ -15,8 +15,7 @@
 {% block body %}
 	{% include 'components/error_page.html.twig' with {
 		code: '404',
-		eyebrow: 'Erreur 404',
-		title: 'Cette page n\'existe pas',
-		message: "La page que vous cherchez n'existe pas, a été déplacée, ou l'adresse comporte une erreur. Vérifiez le lien ou repartez de l'accueil.",
+		title: 'Page introuvable',
+		message: 'La page que vous cherchez n\'existe pas ou a été déplacée.',
 	} %}
 {% endblock %}

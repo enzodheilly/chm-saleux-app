@@ -15,9 +15,7 @@
 {% block body %}
 	{% include 'components/error_page.html.twig' with {
 		code: '500',
-		eyebrow: 'Erreur 500',
-		title: 'Une erreur inattendue s\'est produite',
-		message: "Quelque chose s'est mal passé de notre côté. Ce n'est pas vous, c'est nous — essayez de recharger la page dans un instant, ou revenez à l'accueil.",
-		showRetry: true,
+		title: 'Erreur serveur',
+		message: 'Une erreur inattendue s\'est produite. Nous faisons le nécessaire pour la résoudre.',
 	} %}
 {% endblock %}

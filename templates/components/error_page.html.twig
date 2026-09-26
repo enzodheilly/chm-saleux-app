@@ -1,40 +1,14 @@
 {#
-	Composant partagé pour les pages d'erreur (404 / 500).
+	Composant partagé pour les pages d'erreur (404 / 500) — design minimal.
 	Variables attendues :
-	  - code        : "404" | "500"
-	  - eyebrow     : petit texte au-dessus du code (ex. "Erreur 404")
-	  - title       : titre principal
-	  - message     : texte d'explication
-	  - showRetry   : bool — affiche un bouton "Réessayer" (rechargement) en plus de l'accueil
+	  - code    : "404" | "500"
+	  - title   : titre sous le code
+	  - message : texte d'explication
 #}
 
 <main class="error-page">
-	<div class="error-page-inner">
-		<a href="{{ path('home') }}" class="error-page-brand">
-			<img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo CHM Saleux">
-			<span>CHM Saleux</span>
-		</a>
-
-		<p class="error-page-eyebrow">{{ eyebrow }}</p>
-		<div class="error-page-code">{{ code }}</div>
-		<h1 class="error-page-title">{{ title }}</h1>
-		<p class="error-page-message">{{ message }}</p>
-
-		<div class="error-page-actions">
-			<a href="{{ path('home') }}" class="error-page-btn error-page-btn--primary">
-				<i class="fa-solid fa-house"></i> Retour à l'accueil
-			</a>
-			{% if showRetry|default(false) %}
-				<button type="button" class="error-page-btn error-page-btn--ghost" onclick="window.location.reload()">
-					<i class="fa-solid fa-rotate-right"></i> Réessayer
-				</button>
-			{% endif %}
-		</div>
-
-		<nav class="error-page-links" aria-label="Liens utiles">
-			<a href="{{ path('app_pricing') }}"><i class="fa-solid fa-tags"></i> Tarifs &amp; adhésions</a>
-			<a href="{{ path('demande_licence') }}"><i class="fa-solid fa-id-card"></i> Demande de licence</a>
-			<a href="{{ path('contact') }}"><i class="fa-solid fa-envelope"></i> Nous contacter</a>
-		</nav>
-	</div>
+	<div class="error-page-code">{{ code }}</div>
+	<h1 class="error-page-title">{{ title }}</h1>
+	<p class="error-page-message">{{ message }}</p>
+	<a href="{{ path('home') }}" class="error-page-btn">Retour à l'accueil</a>
 </main>
