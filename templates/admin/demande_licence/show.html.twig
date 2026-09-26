@@ -21,6 +21,13 @@
 				<div><strong>Montant calculé :</strong> {{ demande.montantCalcule|number_format(2, ',', ' ') }} €</div>
 				<div><strong>Tarif réduit :</strong> {{ demande.tarifReduit ? 'Oui' : 'Non' }}</div>
 				<div><strong>Rang licence foyer :</strong> {{ demande.foyerRang }}{{ demande.foyerRang > 1 ? 'ème' : 'ère' }}</div>
+				<div><strong>Type d'inscription :</strong>
+					{% if demande.typeInscription == 'renouvellement' %}
+						<span class="badge badge-active">Renouvellement</span>
+					{% else %}
+						<span class="badge">Nouvelle licence</span>
+					{% endif %}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -99,14 +106,23 @@
 
 	<div class="table-wrapper" style="margin-top: 1.5rem;">
 		<div class="card-body">
-			<span class="tool-label">Transfert FFHM</span>
+			<span class="tool-label">Transfert FFHM &amp; licence interne</span>
 			{% if demande.statutFfhm == 'transferee' %}
 				<p class="form-help" style="margin-top:10px;"><span class="badge badge-active">Transférée</span> — la licence a été saisie sur le portail FFHM.</p>
 			{% else %}
 				<form method="post" action="{{ path('admin_demande_licence_statut_ffhm', {id: demande.id}) }}" style="margin-top: 10px;">
 					<input type="hidden" name="_token" value="{{ csrf_token('demande_ffhm_' ~ demande.id) }}">
-					<button type="submit" class="btn-outline" onclick="return confirm('Confirmer que cette licence a bien été saisie sur le portail FFHM ?');">Marquer comme transférée à la FFHM</button>
+					<button type="submit" class="btn-outline" onclick="return confirm('Confirmer que cette licence a bien été saisie sur le portail FFHM ? La licence interne sera créée automatiquement.');">Marquer comme transférée à la FFHM</button>
 				</form>
+			{% endif %}
+			{% if demande.licence %}
+				<p class="form-help" style="margin-top:10px;">
+					Licence interne créée : <strong>{{ demande.licence.number }}</strong>
+					(expire le {{ demande.licence.expiryDate|date('d/m/Y') }})
+					— <a href="{{ path('admin_licence_edit', {id: demande.licence.id}) }}" class="btn-outline" style="display:inline-flex;">
+						<i class="fa-solid fa-id-card"></i>&nbsp;Voir / modifier la licence
+					</a>
+				</p>
 			{% endif %}
 		</div>
 	</div>

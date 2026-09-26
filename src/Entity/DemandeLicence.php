@@ -105,6 +105,13 @@ class DemandeLicence
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $datePaiement = null;
 
+    #[ORM\Column(length: 20)]
+    private string $typeInscription = 'nouvelle';
+
+    #[ORM\OneToOne(targetEntity: Licence::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private ?Licence $licence = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -188,6 +195,12 @@ class DemandeLicence
 
     public function getDatePaiement(): ?\DateTimeImmutable { return $this->datePaiement; }
     public function setDatePaiement(?\DateTimeImmutable $date): self { $this->datePaiement = $date; return $this; }
+
+    public function getTypeInscription(): string { return $this->typeInscription; }
+    public function setTypeInscription(string $type): self { $this->typeInscription = $type; return $this; }
+
+    public function getLicence(): ?Licence { return $this->licence; }
+    public function setLicence(?Licence $licence): self { $this->licence = $licence; return $this; }
 
     public function isMineur(): bool
     {

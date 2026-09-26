@@ -4,6 +4,7 @@ namespace App\Controller\Front;
 
 use App\Entity\DemandeLicence;
 use App\Repository\DemandeLicenceRepository;
+use App\Repository\LicenceRepository;
 use App\Service\HelloAssoService;
 use App\Service\LicenceTarifService;
 use App\Service\SystemLoggerService;
@@ -42,6 +43,7 @@ class DemandeLicenceController extends AbstractController
         SystemLoggerService $logger,
         MailerInterface $mailer,
         HelloAssoService $helloAsso,
+        LicenceRepository $licenceRepository,
     ): Response {
         if (!$this->isCsrfTokenValid('demande_licence_submit', (string) $request->request->get('_token', ''))) {
             $this->addFlash('danger', 'Jeton CSRF invalide. Merci de réessayer.');
@@ -98,6 +100,10 @@ class DemandeLicenceController extends AbstractController
         $demande->setEmail($email);
         $demande->setCertificatMedicalPath($certificatPath);
         $demande->setConsentementRgpdAt(new \DateTimeImmutable());
+
+        // Détection nouveau/renouvellement : email déjà présent dans les licences actives ?
+        $existingLicence = $licenceRepository->findOneBy(['email' => $email]);
+        $demande->setTypeInscription($existingLicence !== null ? 'renouvellement' : 'nouvelle');
 
         $sexe = trim((string) $request->request->get('sexe', ''));
         if (in_array($sexe, ['F', 'M'], true)) {

@@ -3,7 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\DemandeLicence;
+use App\Entity\Licence;
+use App\Entity\User;
 use App\Repository\DemandeLicenceRepository;
+use App\Service\LicenceTarifService;
 use App\Service\SystemLoggerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -99,14 +102,67 @@ class AdminDemandeLicenceController extends AbstractController
     }
 
     #[Route('/{id}/statut-ffhm', name: 'statut_ffhm', methods: ['POST'])]
-    public function updateStatutFfhm(DemandeLicence $demande, Request $request, EntityManagerInterface $em, SystemLoggerService $logger): Response
-    {
+    public function updateStatutFfhm(
+        DemandeLicence $demande,
+        Request $request,
+        EntityManagerInterface $em,
+        SystemLoggerService $logger,
+        LicenceTarifService $tarifService,
+    ): Response {
         if (!$this->isCsrfTokenValid('demande_ffhm_' . $demande->getId(), (string) $request->request->get('_token'))) {
             $this->addFlash('danger', 'Token CSRF invalide.');
             return $this->redirectToRoute('admin_demande_licence_show', ['id' => $demande->getId()]);
         }
 
         $demande->setStatutFfhm(DemandeLicence::STATUT_FFHM_TRANSFEREE);
+
+        // Création automatique de la licence interne si elle n'existe pas encore
+        if ($demande->getLicence() === null) {
+            $now       = new \DateTime();
+            $expiryYear = (int) $now->format('n') >= 9
+                ? (int) $now->format('Y') + 1
+                : (int) $now->format('Y');
+            $expiryDate = new \DateTime($expiryYear . '-08-31 23:59:59');
+
+            $formules   = $tarifService->getFormules();
+            $formuleLabel = $formules[$demande->getFormule()] ?? ucfirst($demande->getFormule());
+
+            $benefits = ['Formule ' . $formuleLabel];
+            if ($demande->isTarifReduit()) {
+                $benefits[] = 'Tarif réduit';
+            }
+            if ($demande->getFoyerRang() > 1) {
+                $benefits[] = sprintf('Réduction familiale (rang %d)', $demande->getFoyerRang());
+            }
+            if ($demande->getTypeInscription() === 'renouvellement') {
+                $benefits[] = 'Renouvellement';
+            }
+
+            $licence = new Licence();
+            $licence->setType($demande->getFormule());
+            $licence->setNumber(sprintf('LIC-%d-%06d', $expiryYear, $demande->getId()));
+            $licence->setExpiryDate($expiryDate);
+            $licence->setBenefits($benefits);
+            $licence->setFirstName($demande->getPrenom());
+            $licence->setLastName($demande->getNom());
+            $licence->setEmail($demande->getEmail());
+
+            // Rattachement au compte utilisateur si l'email correspond
+            $user = $em->getRepository(User::class)->findOneBy(['email' => $demande->getEmail()]);
+            if ($user instanceof User) {
+                $licence->setUser($user);
+            }
+
+            $em->persist($licence);
+            $demande->setLicence($licence);
+
+            $logger->add(SystemLoggerService::TYPE_ADMIN, sprintf(
+                'Licence interne provisoire créée pour la demande #%d : %s',
+                $demande->getId(),
+                $licence->getNumber()
+            ));
+        }
+
         $em->flush();
 
         $logger->add(SystemLoggerService::TYPE_ADMIN, sprintf(
@@ -116,7 +172,7 @@ class AdminDemandeLicenceController extends AbstractController
             $demande->getNom()
         ));
 
-        $this->addFlash('success', 'Demande marquée comme transférée à la FFHM.');
+        $this->addFlash('success', 'Demande marquée comme transférée à la FFHM. La licence interne a été créée.');
         return $this->redirectToRoute('admin_demande_licence_show', ['id' => $demande->getId()]);
     }
 
