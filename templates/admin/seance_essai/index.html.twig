@@ -1,313 +1,301 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Séance d'initiation{% endblock %}
 {% block page_title %}Séance d'initiation{% endblock %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/admin/dashboard.css') }}">
-	<link rel="stylesheet" href="{{ asset('css/admin/seance_essai/index.css') }}">
+	{{ parent() }}
+	<style>
+		.si-pill-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+		.si-pill {
+			padding: 6px 14px;
+			font-size: 0.75rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.03em;
+			color: var(--text-secondary);
+			background: var(--bg-card);
+			border: 1px solid var(--border-color);
+			cursor: pointer;
+		}
+		.si-pill.active { color: #111; background: var(--accent); border-color: var(--accent); }
+		.si-alert { display: flex; gap: 14px; padding: 16px 18px; border-radius: 0; margin-top: 20px; }
+		.si-alert--danger { background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); }
+		.si-alert--success { background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.3); align-items: center; }
+		.si-alert-icon { font-size: 1.2rem; flex-shrink: 0; }
+		.si-alert--danger .si-alert-icon { color: var(--danger); }
+		.si-alert--success .si-alert-icon { color: var(--success); }
+		.si-alert-title { font-weight: 700; font-size: 0.9rem; margin: 0 0 4px; color: var(--danger); }
+		.si-alert--success .si-alert-title { color: var(--success); margin: 0; }
+		.si-alert-sub { font-size: 0.82rem; color: var(--text-secondary); margin: 0 0 10px; }
+		.si-found-item { display: flex; gap: 8px; align-items: flex-start; font-size: 0.85rem; color: var(--text-main); margin-bottom: 6px; line-height: 1.5; }
+		.si-found-item i { flex-shrink: 0; margin-top: 4px; font-size: 0.55rem; }
+		.badge-accent { color: var(--accent); background: var(--accent-soft); border-color: rgba(232, 114, 12, 0.35); }
+		.badge-info { color: #60a5fa; background: rgba(96, 165, 250, 0.12); border-color: rgba(96, 165, 250, 0.3); }
+	</style>
 {% endblock %}
 
 {% block body %}
-<div class="si-wrap">
-
-	<div class="card si-card-search">
-		<div class="card-header">
-			<h3 class="card-title">Vérification avant séance d'initiation</h3>
+	<div class="page-header">
+		<div>
+			<h1>Séance d'initiation</h1>
+			<p>Vérifiez si la personne est déjà connue du système avant de faire remplir le formulaire papier.</p>
 		</div>
-		<div class="card-body">
-			<p class="si-intro">
-				Avant de faire remplir le formulaire papier, vérifiez si la personne est déjà connue du système (séance précédente ou licenciée).
-			</p>
+	</div>
 
-			<form method="GET" action="{{ path('admin_seance_essai_index') }}" class="si-search-form">
-				<div class="si-search-row">
-					<input
-						type="search"
-						name="q"
-						value="{{ query|e('html_attr') }}"
-						placeholder="Nom ou prénom de la personne…"
-						autocomplete="off"
-						class="si-search-input"
-						autofocus
-					>
-					<button type="submit" class="btn-si-primary">
-						<i class="fa-solid fa-magnifying-glass"></i>
-						Vérifier
-					</button>
-					{% if query %}
-						<a href="{{ path('admin_seance_essai_index') }}" class="btn-si-ghost" title="Effacer la recherche">
-							<i class="fa-solid fa-xmark"></i>
-						</a>
-					{% endif %}
-				</div>
+	<div class="table-wrapper">
+		<div class="card-body">
+			<span class="tool-label">Vérification avant séance</span>
+
+			<form method="GET" action="{{ path('admin_seance_essai_index') }}" style="margin-top: 10px; display:flex; gap:10px; align-items:center;">
+				<input type="search" name="q" value="{{ query|e('html_attr') }}" placeholder="Nom ou prénom de la personne…" autocomplete="off" class="input" style="flex:1;" autofocus>
+				<button type="submit" class="btn-outline"><i class="fa-solid fa-magnifying-glass"></i> Vérifier</button>
+				{% if query %}
+					<a href="{{ path('admin_seance_essai_index') }}" class="act-link" title="Effacer la recherche"><i class="fa-solid fa-xmark"></i> Effacer</a>
+				{% endif %}
 			</form>
 
 			{# ── Résultats de recherche ── #}
 			{% if searched %}
-
 				{% set totalResults = searchEssais|length + searchLicences|length %}
 
 				{% if totalResults > 0 %}
-
 					{# BLOQUÉ : résultats trouvés #}
-					<div class="si-block-warning">
-						<div class="si-block-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-						<div class="si-block-content">
-							<p class="si-block-title">Accès au formulaire bloqué</p>
-							<p class="si-block-sub">Cette personne est déjà connue dans le système :</p>
+					<div class="si-alert si-alert--danger">
+						<div class="si-alert-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+						<div>
+							<p class="si-alert-title">Accès au formulaire bloqué</p>
+							<p class="si-alert-sub">Cette personne est déjà connue dans le système :</p>
 
 							{% for essai in searchEssais %}
 								<div class="si-found-item">
-									<i class="fa-solid fa-circle-dot si-dot-orange"></i>
+									<i class="fa-solid fa-circle badge-accent" style="border:none;padding:0;"></i>
 									<span>
 										<strong>{{ essai.prenom }} {{ essai.nom }}</strong>
 										a déjà effectué une séance d'initiation <strong>{{ essai.sport }}</strong>
-										le <strong>{{ essai.dateSeance|date('d/m/Y') }}</strong>.
+										le {{ essai.dateSeance|date('d/m/Y') }}.
 									</span>
 								</div>
 							{% endfor %}
 
 							{% for licence in searchLicences %}
 								<div class="si-found-item">
-									<i class="fa-solid fa-circle-dot si-dot-blue"></i>
+									<i class="fa-solid fa-circle badge-info" style="border:none;padding:0;"></i>
 									<span>
 										<strong>{{ licence.firstName }} {{ licence.lastName }}</strong>
 										est licencié(e) — licence n°&nbsp;<strong>{{ licence.number }}</strong>,
-										expire le <strong>{{ licence.expiryDate|date('d/m/Y') }}</strong>.
+										expire le {{ licence.expiryDate|date('d/m/Y') }}.
 									</span>
 								</div>
 							{% endfor %}
 						</div>
 					</div>
-
 				{% else %}
-
 					{# LIBRE : aucun résultat → formulaire #}
-					<div class="si-clear-badge">
-						<i class="fa-solid fa-circle-check"></i>
-						Aucun enregistrement trouvé — vous pouvez procéder à la séance d'initiation.
+					<div class="si-alert si-alert--success">
+						<div class="si-alert-icon"><i class="fa-solid fa-circle-check"></i></div>
+						<p class="si-alert-title">Aucun enregistrement trouvé — vous pouvez procéder à la séance d'initiation.</p>
 					</div>
 
-					<p class="si-form-hint">
-						Recherche effectuée pour : <strong>{{ query }}</strong>. Remplissez les champs ci-dessous.
-					</p>
+					<p class="form-help" style="margin-top:14px;">Recherche effectuée pour : <strong>{{ query }}</strong>. Remplissez les champs ci-dessous.</p>
 
-					<form method="POST" action="{{ path('admin_seance_essai_new') }}" class="si-form">
+					<form method="POST" action="{{ path('admin_seance_essai_new') }}" style="margin-top: 16px;">
 						<input type="hidden" name="_token" value="{{ csrf_token('seance_essai_new') }}">
 
-						<div class="si-form-row">
-							<div class="si-field">
-								<label>Nom <span class="si-req">*</span></label>
-								<input type="text" name="nom" value="" required maxlength="100" class="si-input" autocomplete="off" placeholder="NOM de famille">
+						<div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+							<div>
+								<span class="tool-label">Nom *</span>
+								<input type="text" name="nom" value="" required maxlength="100" class="input" autocomplete="off" placeholder="NOM de famille">
 							</div>
-							<div class="si-field">
-								<label>Prénom <span class="si-req">*</span></label>
-								<input type="text" name="prenom" value="" required maxlength="100" class="si-input" autocomplete="off" placeholder="Prénom">
+							<div>
+								<span class="tool-label">Prénom *</span>
+								<input type="text" name="prenom" value="" required maxlength="100" class="input" autocomplete="off" placeholder="Prénom">
 							</div>
 						</div>
 
-						<div class="si-form-row">
-							<div class="si-field">
-								<label>Sport pratiqué</label>
-								<select name="sport" required class="si-input">
+						<div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-top: 14px;">
+							<div>
+								<span class="tool-label">Sport pratiqué</span>
+								<select name="sport" required class="input">
 									{% for sport in sports %}
 										<option value="{{ sport }}">{{ sport }}</option>
 									{% endfor %}
 								</select>
 							</div>
-							<div class="si-field">
-								<label>Date de la séance</label>
-								<input type="date" name="date_seance" value="{{ "now"|date("Y-m-d") }}" required class="si-input">
+							<div>
+								<span class="tool-label">Date de la séance</span>
+								<input type="date" name="date_seance" value="{{ "now"|date("Y-m-d") }}" required class="input">
 							</div>
 						</div>
 
-						<div class="si-form-row">
-							<div class="si-field">
-								<label>Sexe</label>
-								<select name="sexe" class="si-input">
+						<div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-top: 14px;">
+							<div>
+								<span class="tool-label">Sexe</span>
+								<select name="sexe" class="input">
 									<option value="">—</option>
 									<option value="F">Féminin</option>
 									<option value="M">Masculin</option>
 								</select>
 							</div>
-							<div class="si-field">
-								<label>Date de naissance</label>
-								<input type="date" name="date_naissance" class="si-input">
+							<div>
+								<span class="tool-label">Date de naissance</span>
+								<input type="date" name="date_naissance" class="input">
 							</div>
 						</div>
 
-						<div class="si-form-row">
-							<div class="si-field">
-								<label>Téléphone</label>
-								<input type="tel" name="telephone" maxlength="30" class="si-input" autocomplete="off">
+						<div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-top: 14px;">
+							<div>
+								<span class="tool-label">Téléphone</span>
+								<input type="tel" name="telephone" maxlength="30" class="input" autocomplete="off">
 							</div>
-							<div class="si-field">
-								<label>Email</label>
-								<input type="email" name="email" maxlength="180" class="si-input" autocomplete="off">
-							</div>
-						</div>
-
-						<div class="si-form-row">
-							<div class="si-field" style="grid-column: 1 / -1;">
-								<label>Adresse</label>
-								<input type="text" name="adresse" maxlength="255" class="si-input" autocomplete="off">
+							<div>
+								<span class="tool-label">Email</span>
+								<input type="email" name="email" maxlength="180" class="input" autocomplete="off">
 							</div>
 						</div>
 
-						<p class="si-form-hint" style="margin-top:6px;">Responsable légal — à remplir uniquement si le pratiquant est mineur.</p>
+						<div style="margin-top: 14px;">
+							<span class="tool-label">Adresse</span>
+							<input type="text" name="adresse" maxlength="255" class="input" autocomplete="off">
+						</div>
 
-						<div class="si-form-row">
-							<div class="si-field">
-								<label>Nom &amp; prénom du responsable</label>
-								<input type="text" name="responsable_nom" maxlength="150" class="si-input" autocomplete="off">
+						<p class="form-help" style="margin-top:18px;">Responsable légal — à remplir uniquement si le pratiquant est mineur.</p>
+
+						<div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-top: 10px;">
+							<div>
+								<span class="tool-label">Nom &amp; prénom du responsable</span>
+								<input type="text" name="responsable_nom" maxlength="150" class="input" autocomplete="off">
 							</div>
-							<div class="si-field">
-								<label>Lien de parenté</label>
-								<input type="text" name="responsable_lien" maxlength="100" class="si-input" autocomplete="off">
+							<div>
+								<span class="tool-label">Lien de parenté</span>
+								<input type="text" name="responsable_lien" maxlength="100" class="input" autocomplete="off">
 							</div>
 						</div>
 
-						<div class="si-form-row">
-							<div class="si-field">
-								<label>Téléphone du responsable</label>
-								<input type="tel" name="responsable_telephone" maxlength="30" class="si-input" autocomplete="off">
+						<div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-top: 14px;">
+							<div>
+								<span class="tool-label">Téléphone du responsable</span>
+								<input type="tel" name="responsable_telephone" maxlength="30" class="input" autocomplete="off">
 							</div>
-							<div class="si-field">
-								<label>Email du responsable</label>
-								<input type="email" name="responsable_email" maxlength="180" class="si-input" autocomplete="off">
-							</div>
-						</div>
-
-						<div class="si-form-row">
-							<div class="si-field">
-								<label>Lieu de signature</label>
-								<input type="text" name="lieu_signature" value="Saleux" maxlength="100" class="si-input" autocomplete="off">
+							<div>
+								<span class="tool-label">Email du responsable</span>
+								<input type="email" name="responsable_email" maxlength="180" class="input" autocomplete="off">
 							</div>
 						</div>
 
-						<button type="submit" class="btn-si-print">
-							<i class="fa-solid fa-print"></i>
-							Enregistrer &amp; Imprimer le formulaire
+						<div style="margin-top: 14px; max-width: 260px;">
+							<span class="tool-label">Lieu de signature</span>
+							<input type="text" name="lieu_signature" value="Saleux" maxlength="100" class="input" autocomplete="off">
+						</div>
+
+						<button type="submit" class="btn-create" style="margin-top: 20px;">
+							<i class="fa-solid fa-print"></i> Enregistrer &amp; imprimer le formulaire
 						</button>
 					</form>
-
 				{% endif %}
-
 			{% endif %}
 		</div>
 	</div>
 
 	{# ── Historique ── #}
-	<div class="card si-history-card">
-		<div class="card-header si-history-header">
-			<h3 class="card-title">
-				Historique des séances enregistrées
-				<span class="si-count-badge">{{ seances|length }}</span>
-			</h3>
-			<div class="si-history-controls">
-				<input type="text" id="si-history-search" placeholder="Rechercher un nom…" class="si-search-input si-history-search-input" autocomplete="off">
-				<div class="si-period-btns">
-					<button class="si-period-btn active" data-days="30">30 jours</button>
-					<button class="si-period-btn" data-days="90">3 mois</button>
-					<button class="si-period-btn" data-days="365">1 an</button>
-					<button class="si-period-btn" data-days="0">Tout</button>
+	<div class="table-wrapper" style="margin-top: 1.5rem;">
+		<div class="card-body" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
+			<span class="tool-label" style="margin:0;">Historique des séances <span class="badge badge-neutral" style="margin-left:6px;">{{ seances|length }}</span></span>
+			<div class="si-pill-row">
+				<input type="text" id="si-history-search" class="input" placeholder="Rechercher un nom…" style="max-width:220px;" autocomplete="off">
+				<div class="si-pill-row">
+					<div class="si-pill active" data-days="30">30 jours</div>
+					<div class="si-pill" data-days="90">3 mois</div>
+					<div class="si-pill" data-days="365">1 an</div>
+					<div class="si-pill" data-days="0">Tout</div>
 				</div>
 			</div>
 		</div>
-		<div class="card-body no-padding">
-			{% if seances is empty %}
-				<div class="si-empty">
-					<i class="fa-solid fa-clipboard-list"></i>
-					<p>Aucune séance enregistrée pour l'instant.</p>
-				</div>
-			{% else %}
-				<div class="table-scroll">
-					<table class="clean-table" id="si-history-table">
-						<thead>
-							<tr>
-								<th>Date</th>
-								<th>Nom</th>
-								<th>Prénom</th>
-								<th>Sport</th>
-								<th>Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for seance in seances %}
-								<tr data-date="{{ seance.dateSeance|date('Y-m-d') }}" data-search="{{ (seance.nom ~ ' ' ~ seance.prenom)|lower }}">
-									<td class="si-td-date">{{ seance.dateSeance|date('d/m/Y') }}</td>
-									<td><strong>{{ seance.nom|upper }}</strong></td>
-									<td>{{ seance.prenom }}</td>
-									<td><span class="si-sport-tag si-sport-{{ seance.sport == 'Haltérophilie' ? 'halte' : 'muscu' }}">{{ seance.sport }}</span></td>
-									<td>
-										<a href="{{ path('admin_seance_essai_print', {id: seance.id}) }}" class="si-reprint-btn" title="Réimprimer la fiche">
-											<i class="fa-solid fa-file-lines"></i> Détails
-										</a>
-									</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-				<p class="si-no-result-history" style="display:none;padding:20px 24px;font-size:0.85rem;color:var(--text-muted);">Aucun résultat pour ce filtre.</p>
-			{% endif %}
-		</div>
-	</div>
 
-</div>
+		{% if seances is empty %}
+			<div class="td-empty"><i class="fa-solid fa-clipboard-list" style="display:block; font-size:1.6rem; margin-bottom:10px; opacity:0.4;"></i>Aucune séance enregistrée pour l'instant.</div>
+		{% else %}
+			<div class="table-scroll">
+				<table class="admin-table" id="si-history-table">
+					<thead>
+						<tr>
+							<th>Date</th>
+							<th>Nom</th>
+							<th>Prénom</th>
+							<th>Sport</th>
+							<th class="th-right">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for seance in seances %}
+							<tr data-date="{{ seance.dateSeance|date('Y-m-d') }}" data-search="{{ (seance.nom ~ ' ' ~ seance.prenom)|lower }}">
+								<td class="td-mono-sm">{{ seance.dateSeance|date('d/m/Y') }}</td>
+								<td><strong>{{ seance.nom|upper }}</strong></td>
+								<td>{{ seance.prenom }}</td>
+								<td><span class="badge {{ seance.sport == 'Haltérophilie' ? 'badge-accent' : 'badge-info' }}">{{ seance.sport }}</span></td>
+								<td>
+									<div class="actions">
+										<a href="{{ path('admin_seance_essai_print', {id: seance.id}) }}" class="act-link"><i class="fa-solid fa-file-lines"></i> Détails</a>
+									</div>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			<p class="si-no-result-history td-empty" style="display:none;">Aucun résultat pour ce filtre.</p>
+		{% endif %}
+	</div>
 {% endblock %}
 
 {% block javascripts %}
-{{ parent() }}
-<script nonce="{{ csp_nonce('script') }}">
-(function () {
-    // ── Historique : filtrage ──
-    var histSearch  = document.getElementById('si-history-search');
-    var periodBtns  = document.querySelectorAll('.si-period-btn');
-    var histTable   = document.getElementById('si-history-table');
-    var noResultMsg = document.querySelector('.si-no-result-history');
+	{{ parent() }}
+	<script nonce="{{ csp_nonce('script') }}">
+	(function () {
+		var histSearch  = document.getElementById('si-history-search');
+		var periodBtns  = document.querySelectorAll('.si-pill[data-days]');
+		var histTable   = document.getElementById('si-history-table');
+		var noResultMsg = document.querySelector('.si-no-result-history');
 
-    var activeDays = 30;
+		var activeDays = 30;
 
-    function filterHistory() {
-        if (!histTable) return;
-        var term  = histSearch ? histSearch.value.toLowerCase().trim() : '';
-        var now   = new Date();
-        var rows  = histTable.querySelectorAll('tbody tr');
-        var visible = 0;
+		function filterHistory() {
+			if (!histTable) return;
+			var term  = histSearch ? histSearch.value.toLowerCase().trim() : '';
+			var now   = new Date();
+			var rows  = histTable.querySelectorAll('tbody tr');
+			var visible = 0;
 
-        rows.forEach(function (row) {
-            var rowDate   = new Date(row.dataset.date);
-            var rowSearch = row.dataset.search || '';
-            var daysDiff  = (now - rowDate) / (1000 * 60 * 60 * 24);
+			rows.forEach(function (row) {
+				var rowDate   = new Date(row.dataset.date);
+				var rowSearch = row.dataset.search || '';
+				var daysDiff  = (now - rowDate) / (1000 * 60 * 60 * 24);
 
-            var matchPeriod = activeDays === 0 || daysDiff <= activeDays;
-            var matchTerm   = term === '' || rowSearch.indexOf(term) !== -1;
+				var matchPeriod = activeDays === 0 || daysDiff <= activeDays;
+				var matchTerm   = term === '' || rowSearch.indexOf(term) !== -1;
 
-            if (matchPeriod && matchTerm) {
-                row.style.display = '';
-                visible++;
-            } else {
-                row.style.display = 'none';
-            }
-        });
+				if (matchPeriod && matchTerm) {
+					row.style.display = '';
+					visible++;
+				} else {
+					row.style.display = 'none';
+				}
+			});
 
-        if (noResultMsg) noResultMsg.style.display = visible === 0 ? 'block' : 'none';
-    }
+			if (noResultMsg) noResultMsg.style.display = visible === 0 ? 'block' : 'none';
+		}
 
-    if (histSearch) histSearch.addEventListener('input', filterHistory);
+		if (histSearch) histSearch.addEventListener('input', filterHistory);
 
-    periodBtns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            periodBtns.forEach(function (b) { b.classList.remove('active'); });
-            btn.classList.add('active');
-            activeDays = parseInt(btn.dataset.days, 10);
-            filterHistory();
-        });
-    });
+		periodBtns.forEach(function (btn) {
+			btn.addEventListener('click', function () {
+				periodBtns.forEach(function (b) { b.classList.remove('active'); });
+				btn.classList.add('active');
+				activeDays = parseInt(btn.dataset.days, 10);
+				filterHistory();
+			});
+		});
 
-    filterHistory();
-})();
-</script>
+		filterHistory();
+	})();
+	</script>
 {% endblock %}
