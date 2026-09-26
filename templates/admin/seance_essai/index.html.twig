@@ -5,6 +5,8 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<style>
+		.dlx-toolbar { display: flex; gap: 10px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; justify-content: space-between; }
+		.dlx-search { min-width: 240px; }
 		.si-pill-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 		.si-pill {
 			padding: 6px 14px;
@@ -42,25 +44,26 @@
 		</div>
 	</div>
 
-	<div class="table-wrapper">
-		<div class="card-body">
-			<span class="tool-label">Vérification avant séance</span>
+	<div class="dlx-toolbar">
+		<span class="tool-label" style="margin:0;">Vérification avant séance</span>
+		<form method="GET" action="{{ path('admin_seance_essai_index') }}" style="display:flex; gap:10px; align-items:center;">
+			<input type="search" name="q" value="{{ query|e('html_attr') }}" placeholder="Nom ou prénom de la personne…" autocomplete="off" class="input dlx-search" autofocus>
+			<button type="submit" class="btn-outline"><i class="fa-solid fa-magnifying-glass"></i> Vérifier</button>
+			{% if query %}
+				<a href="{{ path('admin_seance_essai_index') }}" class="act-link" title="Effacer la recherche"><i class="fa-solid fa-xmark"></i> Effacer</a>
+			{% endif %}
+		</form>
+	</div>
 
-			<form method="GET" action="{{ path('admin_seance_essai_index') }}" style="margin-top: 10px; display:flex; gap:10px; align-items:center;">
-				<input type="search" name="q" value="{{ query|e('html_attr') }}" placeholder="Nom ou prénom de la personne…" autocomplete="off" class="input" style="flex:1;" autofocus>
-				<button type="submit" class="btn-outline"><i class="fa-solid fa-magnifying-glass"></i> Vérifier</button>
-				{% if query %}
-					<a href="{{ path('admin_seance_essai_index') }}" class="act-link" title="Effacer la recherche"><i class="fa-solid fa-xmark"></i> Effacer</a>
-				{% endif %}
-			</form>
-
-			{# ── Résultats de recherche ── #}
-			{% if searched %}
+	{# ── Résultats de recherche ── #}
+	{% if searched %}
+		<div class="table-wrapper" style="margin-top: 1.5rem;">
+			<div class="card-body">
 				{% set totalResults = searchEssais|length + searchLicences|length %}
 
 				{% if totalResults > 0 %}
 					{# BLOQUÉ : résultats trouvés #}
-					<div class="si-alert si-alert--danger">
+					<div class="si-alert si-alert--danger" style="margin-top:0;">
 						<div class="si-alert-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
 						<div>
 							<p class="si-alert-title">Accès au formulaire bloqué</p>
@@ -91,7 +94,7 @@
 					</div>
 				{% else %}
 					{# LIBRE : aucun résultat → formulaire #}
-					<div class="si-alert si-alert--success">
+					<div class="si-alert si-alert--success" style="margin-top:0;">
 						<div class="si-alert-icon"><i class="fa-solid fa-circle-check"></i></div>
 						<p class="si-alert-title">Aucun enregistrement trouvé — vous pouvez procéder à la séance d'initiation.</p>
 					</div>
@@ -192,25 +195,25 @@
 						</button>
 					</form>
 				{% endif %}
-			{% endif %}
+			</div>
+		</div>
+	{% endif %}
+
+	{# ── Historique ── #}
+	<div class="dlx-toolbar" style="margin-top: 2rem;">
+		<span class="tool-label" style="margin:0;">Historique des séances <span class="badge badge-neutral" style="margin-left:6px;">{{ seances|length }}</span></span>
+		<div class="si-pill-row">
+			<input type="text" id="si-history-search" class="input dlx-search" placeholder="Rechercher un nom…" autocomplete="off">
+			<div class="si-pill-row">
+				<div class="si-pill active" data-days="30">30 jours</div>
+				<div class="si-pill" data-days="90">3 mois</div>
+				<div class="si-pill" data-days="365">1 an</div>
+				<div class="si-pill" data-days="0">Tout</div>
+			</div>
 		</div>
 	</div>
 
-	{# ── Historique ── #}
-	<div class="table-wrapper" style="margin-top: 1.5rem;">
-		<div class="card-body" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
-			<span class="tool-label" style="margin:0;">Historique des séances <span class="badge badge-neutral" style="margin-left:6px;">{{ seances|length }}</span></span>
-			<div class="si-pill-row">
-				<input type="text" id="si-history-search" class="input" placeholder="Rechercher un nom…" style="max-width:220px;" autocomplete="off">
-				<div class="si-pill-row">
-					<div class="si-pill active" data-days="30">30 jours</div>
-					<div class="si-pill" data-days="90">3 mois</div>
-					<div class="si-pill" data-days="365">1 an</div>
-					<div class="si-pill" data-days="0">Tout</div>
-				</div>
-			</div>
-		</div>
-
+	<div class="table-wrapper">
 		{% if seances is empty %}
 			<div class="td-empty"><i class="fa-solid fa-clipboard-list" style="display:block; font-size:1.6rem; margin-bottom:10px; opacity:0.4;"></i>Aucune séance enregistrée pour l'instant.</div>
 		{% else %}
