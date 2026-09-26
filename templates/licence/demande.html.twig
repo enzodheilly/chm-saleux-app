@@ -6,7 +6,7 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('css/licence/demande.css') }}?v=9">
+	<link rel="stylesheet" href="{{ asset('css/licence/demande.css') }}?v=10">
 {% endblock %}
 
 {% block body %}
@@ -45,7 +45,7 @@
 							{% for key, label in formules %}
 								<label class="dl-formule-option">
 									<input type="radio" name="formule" value="{{ key }}" {% if key == 'loisir' %}checked{% endif %} required>
-									<span class="dl-formule-card">
+									<span class="dl-formule-card dl-formule-card--prix">
 										<span class="dl-formule-name">{{ label }}</span>
 										{% set g = grillePublic[key] %}
 										{% if g.type == 'fixe' %}

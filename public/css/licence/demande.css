@@ -230,15 +230,23 @@ body.has-banner .dl-root {
 
 .dl-formule-card {
   display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 8px;
+  padding: 14px 16px;
+  transition: border-color 0.15s, background 0.15s;
+  min-height: 52px;
+}
+
+/* ── Variante avec prix (étape 1, choix de la formule) : nom + badge sur une seule ligne ── */
+.dl-formule-card--prix {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  background: #1a1a1a;
-  border: 1px solid rgba(255,255,255,0.09);
-  border-radius: 8px;
-  padding: 14px 14px;
-  transition: border-color 0.15s, background 0.15s;
   min-height: 48px;
 }
 
