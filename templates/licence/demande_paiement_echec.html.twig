@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement non abouti · CHM Saleux{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/licence/demande.css') }}">
+{% endblock %}
+
+{% block body %}
+	<main class="dl-root page-shell">
+		<section class="dl-section page-container dl-merci">
+			<div class="dl-merci-icon" style="color:#f87171;"><i class="fa-solid fa-circle-xmark"></i></div>
+			<h1>Le paiement n'a pas abouti</h1>
+			<p class="dl-header-lead">
+				Pas d'inquiétude : votre demande de licence <strong>{{ formuleLabel }}</strong> reste bien enregistrée. Seul le paiement en ligne a été refusé ou annulé.
+			</p>
+
+			<p class="dl-hint">
+				Le bureau du club va vous recontacter pour convenir d'un autre moyen de règlement (au club, en espèces ou par carte). Vous pouvez aussi nous écrire directement à <a href="mailto:chm.saleux@orange.fr" class="dl-link">chm.saleux@orange.fr</a> ou au <a href="tel:0322897257" class="dl-link">03 22 89 72 57</a>.
+			</p>
+
+			<a href="{{ path('home') }}" class="dl-submit dl-merci-back">Retour à l'accueil</a>
+		</section>
+	</main>
+{% endblock %}

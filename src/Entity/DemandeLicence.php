@@ -96,6 +96,15 @@ class DemandeLicence
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $consentementRgpdAt = null;
 
+    #[ORM\Column(length: 64, nullable: true)]
+    private ?string $helloAssoCheckoutIntentId = null;
+
+    #[ORM\Column(length: 64, nullable: true, unique: true)]
+    private ?string $paiementToken = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $datePaiement = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -170,6 +179,15 @@ class DemandeLicence
 
     public function getConsentementRgpdAt(): ?\DateTimeImmutable { return $this->consentementRgpdAt; }
     public function setConsentementRgpdAt(?\DateTimeImmutable $at): self { $this->consentementRgpdAt = $at; return $this; }
+
+    public function getHelloAssoCheckoutIntentId(): ?string { return $this->helloAssoCheckoutIntentId; }
+    public function setHelloAssoCheckoutIntentId(?string $id): self { $this->helloAssoCheckoutIntentId = $id; return $this; }
+
+    public function getPaiementToken(): ?string { return $this->paiementToken; }
+    public function setPaiementToken(?string $token): self { $this->paiementToken = $token; return $this; }
+
+    public function getDatePaiement(): ?\DateTimeImmutable { return $this->datePaiement; }
+    public function setDatePaiement(?\DateTimeImmutable $date): self { $this->datePaiement = $date; return $this; }
 
     public function isMineur(): bool
     {

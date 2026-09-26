@@ -1,0 +1,34 @@
+{% extends 'emails/_layout.html.twig' %}
+
+{% block title %}Paiement confirmé — Votre licence CHM Saleux{% endblock %}
+
+{% block body %}
+    <h1 style="margin:0 0 20px; color:#111827; font-size:22px; font-weight:800; line-height:1.3;">
+        Paiement confirmé ✅
+    </h1>
+
+    <p style="margin:0 0 12px; color:#4b5563; font-size:15px; line-height:1.7;">
+        Bonjour <strong>{{ demande.prenom }}</strong>,
+    </p>
+    <p style="margin:0 0 16px; color:#4b5563; font-size:15px; line-height:1.7;">
+        Nous confirmons la bonne réception de votre paiement en ligne pour votre demande de licence <strong style="color:#111827;">{{ formuleLabel }}</strong>. Merci !
+    </p>
+
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom:24px;">
+        <tr>
+            <td style="background:#f9fafb; border-left:3px solid #e8720c; padding:16px 20px; border-radius:0 6px 6px 0;">
+                <p style="margin:0 0 6px; color:#9ca3af; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em;">Montant réglé</p>
+                <p style="margin:0; color:#111827; font-size:20px; font-weight:800;">{{ demande.montantCalcule|number_format(2, ',', ' ') }} €</p>
+            </td>
+        </tr>
+    </table>
+
+    <p style="margin:0 0 16px; color:#4b5563; font-size:15px; line-height:1.7;">
+        Le bureau du club va maintenant transmettre votre dossier à la Fédération Française d'Haltérophilie Musculation (FFHM) pour l'édition de votre licence officielle. Aucune autre démarche n'est nécessaire de votre côté.
+    </p>
+
+    <p style="margin:0; color:#64748b; font-size:14px; line-height:1.8;">
+        Cordialement,<br>
+        L'équipe <strong style="color:#374151;">CHM Saleux</strong>
+    </p>
+{% endblock %}

@@ -11,6 +11,10 @@ parameters:
     # servis uniquement via une route admin protégée (voir AdminDemandeLicenceController).
     licence_documents_dir: "%kernel.project_dir%/var/private_uploads/licences"
     env(TURNSTILE_SITE_KEY): ""
+    env(HELLOASSO_CLIENT_ID): ""
+    env(HELLOASSO_CLIENT_SECRET): ""
+    env(HELLOASSO_ORGANIZATION_SLUG): ""
+    env(HELLOASSO_API_BASE_URL): "https://api.helloasso.com"
 
 services:
     _defaults:
@@ -87,3 +91,13 @@ services:
         arguments:
             $adminEmail: "%env(ADMIN_ALERT_EMAIL)%"
             $adminSiteUrl: "%env(ADMIN_SITE_URL)%"
+
+    # ============================================================
+    # HELLOASSO (paiement en ligne des licences)
+    # ============================================================
+    App\Service\HelloAssoService:
+        arguments:
+            $clientId: "%env(HELLOASSO_CLIENT_ID)%"
+            $clientSecret: "%env(HELLOASSO_CLIENT_SECRET)%"
+            $organizationSlug: "%env(HELLOASSO_ORGANIZATION_SLUG)%"
+            $apiBaseUrl: "%env(HELLOASSO_API_BASE_URL)%"

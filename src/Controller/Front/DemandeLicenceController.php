@@ -3,17 +3,21 @@
 namespace App\Controller\Front;
 
 use App\Entity\DemandeLicence;
+use App\Repository\DemandeLicenceRepository;
+use App\Service\HelloAssoService;
 use App\Service\LicenceTarifService;
 use App\Service\SystemLoggerService;
 use App\Service\TurnstileVerifierService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DemandeLicenceController extends AbstractController
 {
@@ -37,6 +41,7 @@ class DemandeLicenceController extends AbstractController
         TurnstileVerifierService $turnstile,
         SystemLoggerService $logger,
         MailerInterface $mailer,
+        HelloAssoService $helloAsso,
     ): Response {
         if (!$this->isCsrfTokenValid('demande_licence_submit', (string) $request->request->get('_token', ''))) {
             $this->addFlash('danger', 'Jeton CSRF invalide. Merci de réessayer.');
@@ -133,20 +138,25 @@ class DemandeLicenceController extends AbstractController
         $demande->setFoyerRang(max(1, min(4, $foyerRang)));
 
         // ── Mode de paiement ──
-        $modePaiement = trim((string) $request->request->get('mode_paiement', DemandeLicence::MODE_PAIEMENT_AU_CLUB));
+        $modePaiement = trim((string) $request->request->get('mode_paiement', DemandeLicence::MODE_PAIEMENT_EN_LIGNE));
         if (!in_array($modePaiement, DemandeLicence::MODES_PAIEMENT, true)) {
-            $modePaiement = DemandeLicence::MODE_PAIEMENT_AU_CLUB;
+            $modePaiement = DemandeLicence::MODE_PAIEMENT_EN_LIGNE;
         }
         $demande->setModePaiement($modePaiement);
         $demande->setStatutPaiement(
             $modePaiement === DemandeLicence::MODE_PAIEMENT_AU_CLUB
                 ? DemandeLicence::STATUT_PAIEMENT_A_ENCAISSER
-                : DemandeLicence::STATUT_PAIEMENT_EN_ATTENTE // paiement en ligne : module HelloAsso à venir
+                : DemandeLicence::STATUT_PAIEMENT_EN_ATTENTE
         );
 
         // ── Calcul du montant ──
         $montant = $tarifService->calculerMontant($formule, new \DateTimeImmutable(), $tarifReduit, $demande->getFoyerRang());
         $demande->setMontantCalcule($montant);
+
+        // ── HelloAsso : génération du token anti-énumération ──
+        if ($modePaiement === DemandeLicence::MODE_PAIEMENT_EN_LIGNE) {
+            $demande->setPaiementToken(bin2hex(random_bytes(24)));
+        }
 
         $em->persist($demande);
         $em->flush();
@@ -160,15 +170,142 @@ class DemandeLicenceController extends AbstractController
             $modePaiement === DemandeLicence::MODE_PAIEMENT_AU_CLUB ? 'au club' : 'en ligne'
         ));
 
+        // ── Redirection HelloAsso si paiement en ligne ──
+        if ($modePaiement === DemandeLicence::MODE_PAIEMENT_EN_LIGNE && $helloAsso->isConfigured()) {
+            try {
+                $returnUrl = $this->generateUrl('demande_licence_retour', [
+                    'id'    => $demande->getId(),
+                    'token' => $demande->getPaiementToken(),
+                ], UrlGeneratorInterface::ABSOLUTE_URL);
+                $errorUrl  = $this->generateUrl('demande_licence_retour', [
+                    'id'    => $demande->getId(),
+                    'token' => $demande->getPaiementToken(),
+                ], UrlGeneratorInterface::ABSOLUTE_URL);
+                $backUrl   = $this->generateUrl('demande_licence', [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+                $formuleLabel = $tarifService->getFormules()[$formule] ?? $formule;
+                $result = $helloAsso->createCheckoutIntent(
+                    (int) round($montant * 100),
+                    'Licence ' . $formuleLabel . ' — CHM Saleux',
+                    ['firstName' => $prenom, 'lastName' => $nom, 'email' => $email],
+                    $backUrl,
+                    $errorUrl,
+                    $returnUrl,
+                    ['demande_licence_id' => (string) $demande->getId()]
+                );
+
+                $demande->setHelloAssoCheckoutIntentId($result['id']);
+                $em->flush();
+
+                $this->sendAckEmail($mailer, $email, $prenom, $tarifService->getFormules()[$formule] ?? $formule, $montant, $modePaiement);
+
+                return new RedirectResponse($result['redirectUrl']);
+            } catch (\Throwable $e) {
+                $logger->add('HelloAsso', 'Échec createCheckoutIntent pour demande #' . $demande->getId() . ' : ' . $e->getMessage());
+                // Fallback silencieux : on bascule en paiement au club
+                $demande->setModePaiement(DemandeLicence::MODE_PAIEMENT_AU_CLUB);
+                $demande->setStatutPaiement(DemandeLicence::STATUT_PAIEMENT_A_ENCAISSER);
+                $demande->setPaiementToken(null);
+                $em->flush();
+                $this->addFlash('warning', 'Le paiement en ligne est temporairement indisponible. Votre demande a bien été enregistrée — le bureau vous contactera pour le règlement.');
+                $modePaiement = DemandeLicence::MODE_PAIEMENT_AU_CLUB;
+            }
+        }
+
+        $this->sendAckEmail($mailer, $email, $prenom, $tarifService->getFormules()[$formule] ?? $formule, $montant, $modePaiement);
+
+        return $this->render('licence/demande_merci.html.twig', [
+            'demande'          => $demande,
+            'formuleLabel'     => $tarifService->getFormules()[$formule] ?? $formule,
+            'paiementConfirme' => false,
+        ]);
+    }
+
+    #[Route('/inscription-licence/retour/{id}', name: 'demande_licence_retour', methods: ['GET'])]
+    public function retourPaiement(
+        int $id,
+        Request $request,
+        DemandeLicenceRepository $repository,
+        EntityManagerInterface $em,
+        HelloAssoService $helloAsso,
+        LicenceTarifService $tarifService,
+        MailerInterface $mailer,
+        SystemLoggerService $logger,
+    ): Response {
+        $token   = (string) $request->query->get('token', '');
+        $demande = $repository->find($id);
+
+        if (!$demande instanceof DemandeLicence
+            || $demande->getPaiementToken() === null
+            || !hash_equals($demande->getPaiementToken(), $token)
+        ) {
+            throw $this->createNotFoundException();
+        }
+
+        $formuleLabel = $tarifService->getFormules()[$demande->getFormule()] ?? $demande->getFormule();
+
+        // Déjà traité (webhook arrivé avant le retour)
+        if ($demande->getStatutPaiement() === DemandeLicence::STATUT_PAIEMENT_PAYEE) {
+            return $this->render('licence/demande_merci.html.twig', [
+                'demande'          => $demande,
+                'formuleLabel'     => $formuleLabel,
+                'paiementConfirme' => true,
+            ]);
+        }
+
+        if ($demande->getHelloAssoCheckoutIntentId() === null) {
+            return $this->render('licence/demande_paiement_attente.html.twig', [
+                'formuleLabel' => $formuleLabel,
+            ]);
+        }
+
+        try {
+            $intent = $helloAsso->getCheckoutIntent($demande->getHelloAssoCheckoutIntentId());
+        } catch (\Throwable $e) {
+            $logger->add('HelloAsso', 'Retour paiement : échec vérification API pour demande #' . $demande->getId() . ' : ' . $e->getMessage());
+            return $this->render('licence/demande_paiement_attente.html.twig', [
+                'formuleLabel' => $formuleLabel,
+            ]);
+        }
+
+        if ($helloAsso->isCheckoutIntentPaid($intent)) {
+            $demande->setStatutPaiement(DemandeLicence::STATUT_PAIEMENT_PAYEE);
+            $demande->setDatePaiement(new \DateTimeImmutable());
+            $em->flush();
+
+            $logger->add('HelloAsso', 'Paiement confirmé via retour URL pour la demande #' . $demande->getId());
+
+            $this->sendPaiementConfirmeEmail($mailer, $demande, $formuleLabel);
+
+            return $this->render('licence/demande_merci.html.twig', [
+                'demande'          => $demande,
+                'formuleLabel'     => $formuleLabel,
+                'paiementConfirme' => true,
+            ]);
+        }
+
+        if ($helloAsso->isCheckoutIntentRefused($intent)) {
+            return $this->render('licence/demande_paiement_echec.html.twig', [
+                'formuleLabel' => $formuleLabel,
+            ]);
+        }
+
+        return $this->render('licence/demande_paiement_attente.html.twig', [
+            'formuleLabel' => $formuleLabel,
+        ]);
+    }
+
+    private function sendAckEmail(MailerInterface $mailer, string $to, string $prenom, string $formuleLabel, float|string $montant, string $modePaiement): void
+    {
         try {
             $ack = (new Email())
                 ->from('support@chm-saleux.fr')
-                ->to($email)
+                ->to($to)
                 ->subject('Votre demande de licence a bien été reçue — CHM Saleux')
                 ->html($this->renderView('emails/demande_licence_received.html.twig', [
-                    'prenom'  => $prenom,
-                    'formule' => $tarifService->getFormules()[$formule] ?? $formule,
-                    'montant' => $montant,
+                    'prenom'       => $prenom,
+                    'formule'      => $formuleLabel,
+                    'montant'      => $montant,
                     'modePaiement' => $modePaiement,
                 ]));
             $ack->getHeaders()->addTextHeader('X-Transport', 'support');
@@ -176,11 +313,24 @@ class DemandeLicenceController extends AbstractController
         } catch (\Throwable) {
             // non-bloquant
         }
+    }
 
-        return $this->render('licence/demande_merci.html.twig', [
-            'demande' => $demande,
-            'formuleLabel' => $tarifService->getFormules()[$formule] ?? $formule,
-        ]);
+    private function sendPaiementConfirmeEmail(MailerInterface $mailer, DemandeLicence $demande, string $formuleLabel): void
+    {
+        try {
+            $email = (new Email())
+                ->from('support@chm-saleux.fr')
+                ->to($demande->getEmail())
+                ->subject('Paiement confirmé — Votre licence CHM Saleux')
+                ->html($this->renderView('emails/demande_licence_paiement_confirme.html.twig', [
+                    'demande'      => $demande,
+                    'formuleLabel' => $formuleLabel,
+                ]));
+            $email->getHeaders()->addTextHeader('X-Transport', 'support');
+            $mailer->send($email);
+        } catch (\Throwable) {
+            // non-bloquant
+        }
     }
 
     private function storeDocument(UploadedFile $file): ?string

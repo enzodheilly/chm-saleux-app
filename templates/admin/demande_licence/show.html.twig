@@ -87,7 +87,13 @@
 				</select>
 				<button type="submit" class="btn-outline">Mettre à jour</button>
 			</form>
-			<p class="form-help" style="margin-top:10px;">Mode choisi par le demandeur : {{ demande.modePaiement == 'au_club' ? 'au club' : 'en ligne' }}.</p>
+			<p class="form-help" style="margin-top:10px;">Mode choisi par le demandeur : {{ demande.modePaiement == 'au_club' ? 'au club' : 'en ligne (HelloAsso)' }}.</p>
+			{% if demande.helloAssoCheckoutIntentId %}
+				<p class="form-help" style="margin-top:6px;">Checkout Intent HelloAsso : <code>{{ demande.helloAssoCheckoutIntentId }}</code></p>
+			{% endif %}
+			{% if demande.datePaiement %}
+				<p class="form-help" style="margin-top:6px;">Paiement confirmé le : {{ demande.datePaiement|date('d/m/Y à H:i') }}</p>
+			{% endif %}
 		</div>
 	</div>
 
