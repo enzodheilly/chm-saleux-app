@@ -161,9 +161,24 @@ class DemandeLicenceController extends AbstractController
                 : DemandeLicence::STATUT_PAIEMENT_EN_ATTENTE
         );
 
+        // ── Gratuité "Benjamin" : automatique si un parent (même nom de famille) est
+        // déjà licencié au club pour la saison en cours — voir page "avantages". ──
+        $finDeSaison = $tarifService->getFinDeSaison(new \DateTimeImmutable());
+        $gratuit = $formule === LicenceTarifService::FORMULE_COMPETITION
+            && $tarifService->isCategorieBenjamin($demande->getDateNaissance())
+            && $licenceRepository->existeDejaLicenceMemeFamilleSaison($nom, $email, $finDeSaison);
+        $demande->setGratuiteAppliquee($gratuit);
+
         // ── Calcul du montant ──
-        $montant = $tarifService->calculerMontant($formule, new \DateTimeImmutable(), $tarifReduit, $demande->getFoyerRang());
+        $montant = $tarifService->calculerMontant($formule, new \DateTimeImmutable(), $tarifReduit, $demande->getFoyerRang(), $demande->getDateNaissance(), $gratuit);
         $demande->setMontantCalcule($montant);
+
+        if ($gratuit) {
+            // Rien à payer : licence gratuite, pas de paiement en ligne à initier.
+            $modePaiement = DemandeLicence::MODE_PAIEMENT_AU_CLUB;
+            $demande->setModePaiement($modePaiement);
+            $demande->setStatutPaiement(DemandeLicence::STATUT_PAIEMENT_PAYEE);
+        }
 
         // ── HelloAsso : génération du token anti-énumération ──
         if ($modePaiement === DemandeLicence::MODE_PAIEMENT_EN_LIGNE) {

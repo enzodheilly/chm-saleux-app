@@ -162,6 +162,9 @@ class AdminDemandeLicenceController extends AbstractController
         $formuleLabel = $tarifService->getFormules()[$demande->getFormule()] ?? $demande->getFormule();
 
         $benefits = [];
+        if ($demande->isGratuiteAppliquee()) {
+            $benefits[] = 'Gratuité Benjamin (parent déjà licencié)';
+        }
         if ($demande->isTarifReduit()) {
             $benefits[] = 'Tarif réduit';
         }

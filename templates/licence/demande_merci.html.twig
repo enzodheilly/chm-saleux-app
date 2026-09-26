@@ -40,7 +40,9 @@
 			</div>
 
 			<p class="dl-hint">
-				{% if paiementConfirme %}
+				{% if demande.gratuiteAppliquee %}
+					Cette licence Benjamin est <strong>gratuite</strong> (un parent est déjà licencié au club). Le bureau va transmettre votre dossier à la FFHM pour l'édition de la licence officielle.
+				{% elseif paiementConfirme %}
 					Votre paiement a bien été enregistré. Le bureau va maintenant transmettre votre dossier à la FFHM pour l'édition de votre licence officielle.
 				{% elseif demande.modePaiement == 'au_club' %}
 					Un membre du bureau vous contactera pour finaliser votre inscription et récupérer votre règlement.

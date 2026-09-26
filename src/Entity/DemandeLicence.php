@@ -117,6 +117,9 @@ class DemandeLicence
     #[ORM\Column(nullable: true)]
     private ?int $licenceCreeeId = null;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $gratuiteAppliquee = false;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -210,6 +213,9 @@ class DemandeLicence
 
     public function getLicenceCreeeId(): ?int { return $this->licenceCreeeId; }
     public function setLicenceCreeeId(?int $id): self { $this->licenceCreeeId = $id; return $this; }
+
+    public function isGratuiteAppliquee(): bool { return $this->gratuiteAppliquee; }
+    public function setGratuiteAppliquee(bool $gratuite): self { $this->gratuiteAppliquee = $gratuite; return $this; }
 
     public function isMineur(): bool
     {

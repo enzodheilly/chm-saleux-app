@@ -86,7 +86,10 @@
 								</td>
 								<td><span class="badge badge-neutral">{{ demande.formule|capitalize }}</span></td>
 								<td>{{ demande.renouvellement ? 'Renouvellement' : 'Nouvelle' }}</td>
-								<td class="td-mono-sm">{{ demande.montantCalcule|number_format(2, ',', ' ') }} €</td>
+								<td class="td-mono-sm">
+									{{ demande.montantCalcule|number_format(2, ',', ' ') }} €
+									{% if demande.gratuiteAppliquee %}<span class="badge badge-active" title="Gratuité Benjamin — parent déjà licencié">Gratuite</span>{% endif %}
+								</td>
 								<td>
 									{% if demande.statutPaiement == 'payee' %}
 										<span class="badge badge-active">Payée</span>

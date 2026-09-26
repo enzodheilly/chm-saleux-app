@@ -18,14 +18,33 @@ class LicenceTarifService
     public const FORMULE_COMPETITION = 'competition';
     public const FORMULE_LOISIR      = 'loisir';
 
-    /** Formules à tarif fixe (pas de dégressivité mensuelle). */
-    private const TARIFS_FIXES = [
-        self::FORMULE_JEUNE       => 70.0,
-        self::FORMULE_COMPETITION => 90.0,
-    ];
+    /** Formule Jeune : tarif fixe (pas de dégressivité mensuelle). */
+    private const TARIF_JEUNE = 70.0;
 
     /** Réduction "tarif réduit" appliquée aux formules à tarif fixe. */
     private const REDUCTION_FIXE = 15.0;
+
+    /**
+     * Catégories d'âge FFHM pour la formule Compétition (par année de naissance),
+     * saison 2025/2026 — voir la page "avantages" du site (tableau des naissances).
+     * À décaler d'un an à chaque nouvelle saison.
+     * Ordre important : la première plage qui correspond est retenue.
+     */
+    private const CATEGORIES_COMPETITION = [
+        ['label' => 'Benjamin', 'tier' => 'benjamins',       'annee_min' => 2016, 'annee_max' => 2019],
+        ['label' => 'Minime',   'tier' => 'benjamins',       'annee_min' => 2013, 'annee_max' => 2015],
+        ['label' => 'Cadet 1',  'tier' => 'cadets_juniors',  'annee_min' => 2011, 'annee_max' => 2012],
+        ['label' => 'Cadet 2',  'tier' => 'cadets_juniors',  'annee_min' => 2009, 'annee_max' => 2010],
+        ['label' => 'Junior',   'tier' => 'cadets_juniors',  'annee_min' => 2006, 'annee_max' => 2008],
+        ['label' => 'Sénior',   'tier' => 'seniors',         'annee_min' => null, 'annee_max' => 2005],
+    ];
+
+    /** Tarif de la formule Compétition selon la catégorie d'âge (tier ci-dessus). */
+    private const TARIFS_COMPETITION = [
+        'benjamins'      => 50.0,
+        'cadets_juniors' => 75.0,
+        'seniors'        => 95.0,
+    ];
 
     /**
      * Grille dégressive mensuelle de la formule Loisir & Muscu.
@@ -78,10 +97,49 @@ class LicenceTarifService
     }
 
     /**
-     * Calcule le prix de base (avant réduction familiale) pour une formule,
-     * une date d'inscription et un éventuel tarif réduit.
+     * Détermine la catégorie d'âge FFHM (Benjamin, Minime, ..., Sénior) d'un
+     * pratiquant pour la formule Compétition, à partir de sa date de naissance.
+     * Un pratiquant sans date de naissance connue est classé "Sénior" par
+     * défaut (tarif le plus élevé, jamais un sous-tarif non mérité).
+     *
+     * @return array{label: string, tier: string}
      */
-    public function calculerPrixBase(string $formule, \DateTimeInterface $dateInscription, bool $tarifReduit): float
+    public function getCategorieCompetition(?\DateTimeInterface $dateNaissance): array
+    {
+        if ($dateNaissance !== null) {
+            $anneeNaissance = (int) $dateNaissance->format('Y');
+            foreach (self::CATEGORIES_COMPETITION as $categorie) {
+                if ($categorie['annee_min'] !== null && $anneeNaissance < $categorie['annee_min']) {
+                    continue;
+                }
+                if ($categorie['annee_max'] !== null && $anneeNaissance > $categorie['annee_max']) {
+                    continue;
+                }
+                return ['label' => $categorie['label'], 'tier' => $categorie['tier']];
+            }
+        }
+
+        return ['label' => 'Sénior', 'tier' => 'seniors'];
+    }
+
+    /**
+     * Un pratiquant né en 2016-2019 (catégorie Benjamin, saison 2025/2026) est
+     * éligible à la gratuité "Benjamin" si un parent est déjà licencié au club
+     * — voir page "avantages". À décaler d'un an à chaque nouvelle saison, comme
+     * CATEGORIES_COMPETITION.
+     */
+    public function isCategorieBenjamin(?\DateTimeInterface $dateNaissance): bool
+    {
+        return $dateNaissance !== null && $this->getCategorieCompetition($dateNaissance)['label'] === 'Benjamin';
+    }
+
+    /**
+     * Calcule le prix de base (avant réduction familiale) pour une formule,
+     * une date d'inscription et un éventuel tarif réduit. La date de naissance
+     * n'est utilisée (et nécessaire) que pour la formule Compétition, dont le
+     * tarif dépend de la catégorie d'âge.
+     */
+    public function calculerPrixBase(string $formule, \DateTimeInterface $dateInscription, bool $tarifReduit, ?\DateTimeInterface $dateNaissance = null): float
     {
         if ($formule === self::FORMULE_LOISIR) {
             $mois = (int) $dateInscription->format('n');
@@ -89,8 +147,13 @@ class LicenceTarifService
             return $tarifReduit ? $reduit : $standard;
         }
 
-        $base = self::TARIFS_FIXES[$formule] ?? self::TARIFS_FIXES[self::FORMULE_JEUNE];
-        return $tarifReduit ? max(0.0, $base - self::REDUCTION_FIXE) : $base;
+        if ($formule === self::FORMULE_COMPETITION) {
+            $tier = $this->getCategorieCompetition($dateNaissance)['tier'];
+            $base = self::TARIFS_COMPETITION[$tier];
+            return $tarifReduit ? max(0.0, $base - self::REDUCTION_FIXE) : $base;
+        }
+
+        return $tarifReduit ? max(0.0, self::TARIF_JEUNE - self::REDUCTION_FIXE) : self::TARIF_JEUNE;
     }
 
     /** Applique la réduction familiale (rang 1 à 4+) au prix de base. */
@@ -101,10 +164,17 @@ class LicenceTarifService
         return round($prixBase * (1 - $taux), 2);
     }
 
-    /** Calcule le montant final (prix de base + réduction familiale). */
-    public function calculerMontant(string $formule, \DateTimeInterface $dateInscription, bool $tarifReduit, int $foyerRang): float
+    /**
+     * Calcule le montant final (prix de base + réduction familiale). Si
+     * $gratuit est vrai (gratuité Benjamin détectée), retourne 0 directement.
+     */
+    public function calculerMontant(string $formule, \DateTimeInterface $dateInscription, bool $tarifReduit, int $foyerRang, ?\DateTimeInterface $dateNaissance = null, bool $gratuit = false): float
     {
-        $prixBase = $this->calculerPrixBase($formule, $dateInscription, $tarifReduit);
+        if ($gratuit) {
+            return 0.0;
+        }
+
+        $prixBase = $this->calculerPrixBase($formule, $dateInscription, $tarifReduit, $dateNaissance);
         return $this->appliquerReductionFamiliale($prixBase, $foyerRang);
     }
 }

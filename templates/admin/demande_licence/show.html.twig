@@ -21,6 +21,9 @@
 				<div><strong>Montant calculé :</strong> {{ demande.montantCalcule|number_format(2, ',', ' ') }} €</div>
 				<div><strong>Tarif réduit :</strong> {{ demande.tarifReduit ? 'Oui' : 'Non' }}</div>
 				<div><strong>Rang licence foyer :</strong> {{ demande.foyerRang }}{{ demande.foyerRang > 1 ? 'ème' : 'ère' }}</div>
+				{% if demande.gratuiteAppliquee %}
+					<div><strong>Gratuité :</strong> <span class="badge badge-active">Benjamin — parent déjà licencié (auto)</span> <span class="form-help">à vérifier si homonymie</span></div>
+				{% endif %}
 				<div>
 					<strong>Type de demande :</strong>
 					{% if demande.renouvellement %}

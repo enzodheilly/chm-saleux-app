@@ -96,6 +96,34 @@ class LicenceRepository extends ServiceEntityRepository
         return $licence?->getExpiryDate();
     }
 
+    /**
+     * Vrai s'il existe déjà, pour la saison en cours (même date d'expiration),
+     * une licence au même nom de famille et à une autre adresse email — utilisé
+     * pour la gratuité "Benjamin" automatique (parent déjà licencié au club).
+     * Correspondance sur le nom de famille uniquement : à vérifier ponctuellement
+     * par le bureau en cas d'homonymie.
+     */
+    public function existeDejaLicenceMemeFamilleSaison(string $lastName, string $emailExclu, \DateTimeInterface $finDeSaison): bool
+    {
+        $lastName = trim($lastName);
+        if ($lastName === '') {
+            return false;
+        }
+
+        $count = (int) $this->createQueryBuilder('l')
+            ->select('COUNT(l.id)')
+            ->andWhere('LOWER(l.lastName) = LOWER(:lastName)')
+            ->andWhere('LOWER(l.email) != LOWER(:email)')
+            ->andWhere('l.expiryDate = :finDeSaison')
+            ->setParameter('lastName', $lastName)
+            ->setParameter('email', trim($emailExclu))
+            ->setParameter('finDeSaison', $finDeSaison)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $count > 0;
+    }
+
     public function recoverByIdentity(
         ?string $firstName,
         ?string $lastName,
