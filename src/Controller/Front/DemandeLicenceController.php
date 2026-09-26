@@ -44,6 +44,7 @@ class DemandeLicenceController extends AbstractController
         MailerInterface $mailer,
         HelloAssoService $helloAsso,
         LicenceRepository $licenceRepository,
+        DemandeLicenceRepository $demandeLicenceRepository,
     ): Response {
         if (!$this->isCsrfTokenValid('demande_licence_submit', (string) $request->request->get('_token', ''))) {
             $this->addFlash('danger', 'Jeton CSRF invalide. Merci de réessayer.');
@@ -77,6 +78,14 @@ class DemandeLicenceController extends AbstractController
 
         if (!$request->request->getBoolean('consentement_rgpd')) {
             $this->addFlash('danger', 'Vous devez accepter la transmission de vos données à la FFHM pour poursuivre.');
+            return $this->redirectToRoute('demande_licence');
+        }
+
+        // ── Anti-doublon : une demande avec la même identité est-elle déjà en cours ? ──
+        $telephoneBrut = $this->nullIfEmpty($request->request->get('telephone', ''));
+        $doublon = $demandeLicenceRepository->findDoublonEnCours($email, $nom, $prenom, $telephoneBrut);
+        if ($doublon !== null) {
+            $this->addFlash('danger', 'Une demande de licence est déjà en cours de traitement pour cette identité (envoyée le ' . $doublon->getCreatedAt()->format('d/m/Y') . '). Si vous pensez qu\'il s\'agit d\'une erreur, contactez le club à chm.saleux@orange.fr.');
             return $this->redirectToRoute('demande_licence');
         }
 
@@ -236,6 +245,18 @@ class DemandeLicenceController extends AbstractController
                 $this->addFlash('warning', 'Le paiement en ligne est temporairement indisponible. Votre demande a bien été enregistrée — le bureau vous contactera pour le règlement.');
                 $modePaiement = DemandeLicence::MODE_PAIEMENT_AU_CLUB;
             }
+        } elseif ($modePaiement === DemandeLicence::MODE_PAIEMENT_EN_LIGNE && !$helloAsso->isConfigured()) {
+            // HelloAsso n'est pas configuré (identifiants API manquants côté serveur) : on ne
+            // doit jamais faire croire que le paiement en ligne a démarré. On bascule
+            // explicitement sur "au club" et on prévient l'utilisateur, au lieu de laisser
+            // passer silencieusement une demande "en_ligne" jamais réellement payée.
+            $logger->add('HelloAsso', 'Demande #' . $demande->getId() . ' : paiement en ligne demandé mais HelloAssoService non configuré (identifiants API manquants).');
+            $demande->setModePaiement(DemandeLicence::MODE_PAIEMENT_AU_CLUB);
+            $demande->setStatutPaiement(DemandeLicence::STATUT_PAIEMENT_A_ENCAISSER);
+            $demande->setPaiementToken(null);
+            $em->flush();
+            $this->addFlash('warning', 'Le paiement en ligne est temporairement indisponible. Votre demande a bien été enregistrée — le bureau vous contactera pour le règlement.');
+            $modePaiement = DemandeLicence::MODE_PAIEMENT_AU_CLUB;
         }
 
         $this->sendAckEmail($mailer, $email, $prenom, $tarifService->getFormules()[$formule] ?? $formule, $montant, $modePaiement);
