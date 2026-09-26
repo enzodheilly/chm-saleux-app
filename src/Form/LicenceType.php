@@ -43,8 +43,8 @@ class LicenceType extends AbstractType
                         $membershipPlan->getPrice()
                     );
                 },
-                'placeholder' => 'Sélectionnez un forfait',
-                'required' => true,
+                'placeholder' => 'Sélectionnez un forfait (facultatif — licences FFHM générées automatiquement : laisser vide)',
+                'required' => false,
             ])
             ->add('expiryDate', DateType::class, [
                 'label' => 'Date d’expiration',

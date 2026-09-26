@@ -22,6 +22,9 @@ class DemandeLicence
     public const STATUT_FFHM_A_TRANSFERER = 'a_transferer';
     public const STATUT_FFHM_TRANSFEREE   = 'transferee';
 
+    public const TYPE_DEMANDE_NOUVELLE       = 'nouvelle';
+    public const TYPE_DEMANDE_RENOUVELLEMENT = 'renouvellement';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -106,11 +109,13 @@ class DemandeLicence
     private ?\DateTimeImmutable $datePaiement = null;
 
     #[ORM\Column(length: 20)]
-    private string $typeInscription = 'nouvelle';
+    private string $typeDemande = self::TYPE_DEMANDE_NOUVELLE;
 
-    #[ORM\OneToOne(targetEntity: Licence::class)]
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
-    private ?Licence $licence = null;
+    #[ORM\Column(type: 'date_immutable', nullable: true)]
+    private ?\DateTimeImmutable $derniereLicenceConnueLe = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $licenceCreeeId = null;
 
     public function __construct()
     {
@@ -196,11 +201,15 @@ class DemandeLicence
     public function getDatePaiement(): ?\DateTimeImmutable { return $this->datePaiement; }
     public function setDatePaiement(?\DateTimeImmutable $date): self { $this->datePaiement = $date; return $this; }
 
-    public function getTypeInscription(): string { return $this->typeInscription; }
-    public function setTypeInscription(string $type): self { $this->typeInscription = $type; return $this; }
+    public function getTypeDemande(): string { return $this->typeDemande; }
+    public function setTypeDemande(string $typeDemande): self { $this->typeDemande = $typeDemande; return $this; }
+    public function isRenouvellement(): bool { return $this->typeDemande === self::TYPE_DEMANDE_RENOUVELLEMENT; }
 
-    public function getLicence(): ?Licence { return $this->licence; }
-    public function setLicence(?Licence $licence): self { $this->licence = $licence; return $this; }
+    public function getDerniereLicenceConnueLe(): ?\DateTimeImmutable { return $this->derniereLicenceConnueLe; }
+    public function setDerniereLicenceConnueLe(?\DateTimeImmutable $date): self { $this->derniereLicenceConnueLe = $date; return $this; }
+
+    public function getLicenceCreeeId(): ?int { return $this->licenceCreeeId; }
+    public function setLicenceCreeeId(?int $id): self { $this->licenceCreeeId = $id; return $this; }
 
     public function isMineur(): bool
     {

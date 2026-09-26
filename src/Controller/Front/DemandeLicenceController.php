@@ -101,9 +101,15 @@ class DemandeLicenceController extends AbstractController
         $demande->setCertificatMedicalPath($certificatPath);
         $demande->setConsentementRgpdAt(new \DateTimeImmutable());
 
-        // Détection nouveau/renouvellement : email déjà présent dans les licences actives ?
-        $existingLicence = $licenceRepository->findOneBy(['email' => $email]);
-        $demande->setTypeInscription($existingLicence !== null ? 'renouvellement' : 'nouvelle');
+        // Détection nouveau/renouvellement : email déjà présent dans la table des licences ?
+        $ancienneLicence = $licenceRepository->findOneByEmail($email);
+        if ($ancienneLicence !== null) {
+            $demande->setTypeDemande(DemandeLicence::TYPE_DEMANDE_RENOUVELLEMENT);
+            $ancienneDate = $licenceRepository->findOldestExpiryDateByEmail($email);
+            if ($ancienneDate !== null) {
+                $demande->setDerniereLicenceConnueLe(\DateTimeImmutable::createFromInterface($ancienneDate));
+            }
+        }
 
         $sexe = trim((string) $request->request->get('sexe', ''));
         if (in_array($sexe, ['F', 'M'], true)) {

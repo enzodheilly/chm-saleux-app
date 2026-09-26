@@ -4,8 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\DemandeLicence;
 use App\Entity\Licence;
-use App\Entity\User;
 use App\Repository\DemandeLicenceRepository;
+use App\Repository\UserRepository;
 use App\Service\LicenceTarifService;
 use App\Service\SystemLoggerService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -108,6 +108,7 @@ class AdminDemandeLicenceController extends AbstractController
         EntityManagerInterface $em,
         SystemLoggerService $logger,
         LicenceTarifService $tarifService,
+        UserRepository $userRepository,
     ): Response {
         if (!$this->isCsrfTokenValid('demande_ffhm_' . $demande->getId(), (string) $request->request->get('_token'))) {
             $this->addFlash('danger', 'Token CSRF invalide.');
@@ -116,50 +117,22 @@ class AdminDemandeLicenceController extends AbstractController
 
         $demande->setStatutFfhm(DemandeLicence::STATUT_FFHM_TRANSFEREE);
 
-        // Création automatique de la licence interne si elle n'existe pas encore
-        if ($demande->getLicence() === null) {
-            $now       = new \DateTime();
-            $expiryYear = (int) $now->format('n') >= 9
-                ? (int) $now->format('Y') + 1
-                : (int) $now->format('Y');
-            $expiryDate = new \DateTime($expiryYear . '-08-31 23:59:59');
-
-            $formules   = $tarifService->getFormules();
-            $formuleLabel = $formules[$demande->getFormule()] ?? ucfirst($demande->getFormule());
-
-            $benefits = ['Formule ' . $formuleLabel];
-            if ($demande->isTarifReduit()) {
-                $benefits[] = 'Tarif réduit';
-            }
-            if ($demande->getFoyerRang() > 1) {
-                $benefits[] = sprintf('Réduction familiale (rang %d)', $demande->getFoyerRang());
-            }
-            if ($demande->getTypeInscription() === 'renouvellement') {
-                $benefits[] = 'Renouvellement';
-            }
-
-            $licence = new Licence();
-            $licence->setType($demande->getFormule());
-            $licence->setNumber(sprintf('LIC-%d-%06d', $expiryYear, $demande->getId()));
-            $licence->setExpiryDate($expiryDate);
-            $licence->setBenefits($benefits);
-            $licence->setFirstName($demande->getPrenom());
-            $licence->setLastName($demande->getNom());
-            $licence->setEmail($demande->getEmail());
-
-            // Rattachement au compte utilisateur si l'email correspond
-            $user = $em->getRepository(User::class)->findOneBy(['email' => $demande->getEmail()]);
-            if ($user instanceof User) {
-                $licence->setUser($user);
-            }
-
+        // Phase 3 : création automatique de la licence interne (QR code / check-in).
+        // On ne recrée jamais deux fois la même licence si l'admin clique plusieurs fois.
+        if ($demande->getLicenceCreeeId() === null) {
+            $licence = $this->creerLicenceDepuisDemande($demande, $tarifService, $userRepository);
             $em->persist($licence);
-            $demande->setLicence($licence);
+            $em->flush(); // nécessaire pour obtenir l'id généré de $licence
+
+            $demande->setLicenceCreeeId($licence->getId());
 
             $logger->add(SystemLoggerService::TYPE_ADMIN, sprintf(
-                'Licence interne provisoire créée pour la demande #%d : %s',
+                'Licence #%d (n°%s) créée automatiquement pour la demande #%d (%s %s)',
+                $licence->getId(),
+                $licence->getNumber(),
                 $demande->getId(),
-                $licence->getNumber()
+                $demande->getPrenom(),
+                $demande->getNom()
             ));
         }
 
@@ -172,8 +145,47 @@ class AdminDemandeLicenceController extends AbstractController
             $demande->getNom()
         ));
 
-        $this->addFlash('success', 'Demande marquée comme transférée à la FFHM. La licence interne a été créée.');
+        $this->addFlash('success', 'Demande marquée comme transférée à la FFHM. Licence interne créée automatiquement.');
         return $this->redirectToRoute('admin_demande_licence_show', ['id' => $demande->getId()]);
+    }
+
+    /**
+     * Construit la licence interne (table générale Licence, avec QR code) à
+     * partir d'une demande validée. Le numéro est une référence interne — à
+     * remplacer manuellement par le vrai numéro FFHM depuis /gestion-chm-secrete-92x/licences
+     * dès que le club le reçoit de la fédération.
+     */
+    private function creerLicenceDepuisDemande(DemandeLicence $demande, LicenceTarifService $tarifService, UserRepository $userRepository): Licence
+    {
+        $formuleLabel = $tarifService->getFormules()[$demande->getFormule()] ?? $demande->getFormule();
+
+        $benefits = [];
+        if ($demande->isTarifReduit()) {
+            $benefits[] = 'Tarif réduit';
+        }
+        if ($demande->getFoyerRang() > 1) {
+            $taux = match (min(4, $demande->getFoyerRang())) {
+                2 => '-10%',
+                3 => '-15%',
+                default => '-20%',
+            };
+            $benefits[] = sprintf('Réduction familiale (%s licence du foyer, %s)', $demande->getFoyerRang() . 'ème', $taux);
+        }
+        if ($demande->isRenouvellement()) {
+            $benefits[] = 'Renouvellement';
+        }
+
+        $licence = new Licence();
+        $licence->setType($formuleLabel);
+        $licence->setNumber(sprintf('LIC-%s-%06d', (new \DateTimeImmutable())->format('Y'), $demande->getId()));
+        $licence->setExpiryDate($tarifService->getFinDeSaison(new \DateTimeImmutable()));
+        $licence->setFirstName($demande->getPrenom());
+        $licence->setLastName($demande->getNom());
+        $licence->setEmail($demande->getEmail());
+        $licence->setBenefits($benefits);
+        $licence->setUser($userRepository->findOneBy(['email' => $demande->getEmail()]));
+
+        return $licence;
     }
 
     #[Route('/{id}/notes', name: 'notes', methods: ['POST'])]

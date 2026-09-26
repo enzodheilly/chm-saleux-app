@@ -35,6 +35,47 @@ class LicenceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * Licence la plus récente pour un email donné (insensible à la casse).
+     * Sert à détecter automatiquement un renouvellement lors d'une nouvelle demande.
+     */
+    public function findOneByEmail(string $email): ?Licence
+    {
+        $email = trim($email);
+        if ($email === '') {
+            return null;
+        }
+
+        return $this->createQueryBuilder('l')
+            ->andWhere('LOWER(l.email) = LOWER(:email)')
+            ->setParameter('email', $email)
+            ->orderBy('l.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * Date d'expiration de la licence la plus ancienne connue pour cet email.
+     */
+    public function findOldestExpiryDateByEmail(string $email): ?\DateTimeInterface
+    {
+        $email = trim($email);
+        if ($email === '') {
+            return null;
+        }
+
+        $licence = $this->createQueryBuilder('l')
+            ->andWhere('LOWER(l.email) = LOWER(:email)')
+            ->setParameter('email', $email)
+            ->orderBy('l.expiryDate', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $licence?->getExpiryDate();
+    }
+
     public function recoverByIdentity(
         ?string $firstName,
         ?string $lastName,

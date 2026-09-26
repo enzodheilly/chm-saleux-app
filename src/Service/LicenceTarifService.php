@@ -54,6 +54,20 @@ class LicenceTarifService
         4 => 0.20, // 4ème licence et plus
     ];
 
+    /**
+     * Date de fin de la saison en cours (31 août) pour une date de référence donnée.
+     * La saison va du 1er septembre au 31 août suivant.
+     */
+    public function getFinDeSaison(\DateTimeInterface $reference): \DateTimeImmutable
+    {
+        $annee = (int) $reference->format('Y');
+        $mois  = (int) $reference->format('n');
+
+        $anneeFin = $mois >= 9 ? $annee + 1 : $annee;
+
+        return new \DateTimeImmutable(sprintf('%d-08-31 23:59:59', $anneeFin));
+    }
+
     public function getFormules(): array
     {
         return [
