@@ -3,7 +3,7 @@
 body.error-body {
 	min-height: 100vh;
 	margin: 0;
-	background: radial-gradient(ellipse 900px 600px at 50% -10%, rgba(245, 119, 6, 0.14), transparent 60%), #0b0b0d;
+	background: #0b0b0d;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -17,19 +17,6 @@ body.error-body .app-main {
 	position: relative;
 	width: 100%;
 	padding: 2rem 1.5rem;
-	overflow: hidden;
-}
-
-.error-page-glow {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	width: 640px;
-	height: 640px;
-	transform: translate(-50%, -50%);
-	background: radial-gradient(circle, rgba(245, 119, 6, 0.16) 0%, rgba(245, 119, 6, 0) 70%);
-	pointer-events: none;
-	z-index: 0;
 }
 
 .error-page-inner {
