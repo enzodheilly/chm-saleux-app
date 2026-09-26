@@ -323,13 +323,15 @@ body.has-banner .dl-root {
 }
 
 .dl-btn-next,
-.dl-btn-prev {
+.dl-btn-prev,
+.dl-submit {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   background: transparent;
   border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 10px;
+  border-radius: 0;
   color: #fff;
   padding: 12px 22px;
   font-size: 0.82rem;
@@ -338,6 +340,7 @@ body.has-banner .dl-root {
   letter-spacing: 0.04em;
   cursor: pointer;
   font-family: inherit;
+  text-decoration: none;
   transition: border-color 0.15s, background 0.15s;
 }
 .dl-btn-next { border-color: #F57706; color: #F57706; margin-left: auto; }
@@ -372,15 +375,9 @@ body.has-banner .dl-root {
 .turnstile-wrapper { margin: 8px 0 20px; }
 
 .dl-submit {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
   background: #F57706;
   color: #111;
   border: 1px solid #F57706;
-  border-radius: 10px;
-  text-decoration: none;
   margin-left: auto;
   min-width: 140px;
   position: relative;

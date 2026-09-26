@@ -6,7 +6,7 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('css/licence/demande.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/licence/demande.css') }}?v=4">
 {% endblock %}
 
 {% block body %}
@@ -25,11 +25,11 @@
 					{% elseif paiementConfirme %}
 						Votre paiement a bien été enregistré. Le bureau va maintenant transmettre votre dossier à la FFHM pour l'édition de votre licence officielle.
 					{% elseif demande.modePaiement == 'au_club' %}
-						Un membre du bureau vous contactera pour finaliser votre inscription et récupérer votre règlement.
+						Il ne vous reste plus qu'à venir régler votre licence directement au club : dès votre règlement effectué, votre dossier sera transmis à la FFHM pour l'édition de votre licence officielle.
 					{% else %}
-						Votre demande est enregistrée. Vous recevrez un email de confirmation dès que le paiement HelloAsso sera validé.
+						Votre demande est enregistrée. Dès que le paiement HelloAsso sera validé, votre dossier sera transmis à la FFHM pour l'édition de votre licence officielle.
 					{% endif %}
-					Un email récapitulatif vous a été envoyé à <strong>{{ demande.email }}</strong>.
+					Un email récapitulatif vous a été envoyé.
 				</p>
 
 				<a href="{{ path('home') }}" class="dl-submit dl-merci-back">Retour à l'accueil</a>
