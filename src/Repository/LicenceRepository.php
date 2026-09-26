@@ -35,8 +35,11 @@ class LicenceRepository extends ServiceEntityRepository
         }
 
         if ($saisonFinAnnee !== null) {
-            $qb->andWhere('YEAR(l.expiryDate) = :saisonFinAnnee')
-               ->setParameter('saisonFinAnnee', $saisonFinAnnee);
+            // YEAR() n'est pas une fonction DQL enregistrée dans ce projet — on
+            // filtre par plage de dates plutôt que d'extraire l'année en DQL.
+            $qb->andWhere('l.expiryDate BETWEEN :saisonDebut AND :saisonFin')
+               ->setParameter('saisonDebut', new \DateTimeImmutable($saisonFinAnnee . '-01-01 00:00:00'))
+               ->setParameter('saisonFin',   new \DateTimeImmutable($saisonFinAnnee . '-12-31 23:59:59'));
         }
 
         return $qb
@@ -46,23 +49,25 @@ class LicenceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /** Retourne les années de fin de saison distinctes (pour le filtre). */
+    /**
+     * Retourne les années de fin de saison distinctes (pour le filtre).
+     * Utilise SQL natif — YEAR() n'est pas une fonction DQL enregistrée ici.
+     */
     public function findDistinctSaisonFinAnnees(array $types): array
     {
         if ($types === []) {
             return [];
         }
 
-        $rows = $this->createQueryBuilder('l')
-            ->select('YEAR(l.expiryDate) as annee')
-            ->andWhere('l.type IN (:types)')
-            ->setParameter('types', $types)
-            ->groupBy('annee')
-            ->orderBy('annee', 'DESC')
-            ->getQuery()
-            ->getScalarResult();
+        $conn         = $this->getEntityManager()->getConnection();
+        $placeholders = implode(',', array_fill(0, count($types), '?'));
 
-        return array_column($rows, 'annee');
+        $rows = $conn->executeQuery(
+            "SELECT DISTINCT YEAR(expiry_date) AS annee FROM licence WHERE type IN ($placeholders) ORDER BY annee DESC",
+            $types
+        )->fetchFirstColumn();
+
+        return array_map('intval', $rows);
     }
 
     public function findOneByNumber(string $number): ?Licence
