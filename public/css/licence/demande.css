@@ -75,8 +75,8 @@ body.has-banner .dl-root {
 /* ── Layout 2 colonnes : formulaire + explications ── */
 .dl-layout {
   display: grid;
-  grid-template-columns: 1fr 280px;
-  gap: 72px;
+  grid-template-columns: 1fr 340px;
+  gap: 64px;
   align-items: start;
 }
 
