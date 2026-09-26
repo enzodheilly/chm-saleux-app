@@ -13,6 +13,26 @@ class LicenceRepository extends ServiceEntityRepository
         parent::__construct($registry, Licence::class);
     }
 
+    /**
+     * Licences dont le type correspond à une des formules données (ex. les
+     * formules FFHM "Jeune", "Compétition", "Loisir & Muscu"), les plus
+     * récentes en premier. Sert à isoler les licences FFHM des licences
+     * salle/abonnement classiques dans la même table générale.
+     */
+    public function findByTypes(array $types): array
+    {
+        if ($types === []) {
+            return [];
+        }
+
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.type IN (:types)')
+            ->setParameter('types', $types)
+            ->orderBy('l.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findOneByNumber(string $number): ?Licence
     {
         return $this->createQueryBuilder('l')

@@ -1,72 +1,201 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Demandes de licence{% endblock %}
+{% block title %}Licences FFHM{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		.dlx-tabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); }
+		.dlx-tab {
+			padding: 10px 18px;
+			font-size: 0.85rem;
+			font-weight: 700;
+			color: var(--text-secondary);
+			cursor: pointer;
+			border-bottom: 2px solid transparent;
+			user-select: none;
+		}
+		.dlx-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+		.dlx-tab .count { color: var(--text-muted); font-weight: 600; margin-left: 4px; }
+		.dlx-tab.active .count { color: var(--accent); }
+		.dlx-panel { display: none; }
+		.dlx-panel.active { display: block; }
+		.dlx-filters { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+		.dlx-filter {
+			padding: 6px 14px;
+			font-size: 0.75rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.03em;
+			color: var(--text-secondary);
+			background: var(--bg-card);
+			border: 1px solid var(--border-color);
+			cursor: pointer;
+		}
+		.dlx-filter.active { color: #111; background: var(--accent); border-color: var(--accent); }
+	</style>
+{% endblock %}
 
 {% block body %}
 	<div class="page-header">
 		<div>
-			<h1>Demandes de licence</h1>
-			<p>Demandes envoyées via le formulaire public — à traiter puis transmettre à la FFHM.</p>
+			<h1>Licences FFHM</h1>
+			<p>Demandes envoyées via le formulaire public, et licences déjà créées et fonctionnelles (QR code / check-in).</p>
 		</div>
 	</div>
 
-	<div class="table-wrapper">
-		<div class="table-scroll">
-			<table class="admin-table">
-				<thead>
-					<tr>
-						<th width="80">ID</th>
-						<th>Demandeur</th>
-						<th>Formule</th>
-						<th>Montant</th>
-						<th>Paiement</th>
-						<th>FFHM</th>
-						<th>Reçue le</th>
-						<th class="th-right">Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for demande in demandes %}
+	<div class="dlx-tabs">
+		<div class="dlx-tab active" data-panel="dlx-demandes">Demandes<span class="count">({{ demandes|length }})</span></div>
+		<div class="dlx-tab" data-panel="dlx-licences">Licences actives<span class="count">({{ licencesActives|length }})</span></div>
+	</div>
+
+	{# ── Panneau 1 : demandes (à traiter / suivre) ── #}
+	<div class="dlx-panel active" id="dlx-demandes">
+		<div class="dlx-filters">
+			<div class="dlx-filter active" data-statut="all">Toutes</div>
+			<div class="dlx-filter" data-statut="payee">Payées</div>
+			<div class="dlx-filter" data-statut="a_encaisser_club">À encaisser au club</div>
+			<div class="dlx-filter" data-statut="en_attente">En attente</div>
+		</div>
+
+		<div class="table-wrapper">
+			<div class="table-scroll">
+				<table class="admin-table">
+					<thead>
 						<tr>
-							<td><span class="td-mono">#{{ demande.id }}</span></td>
-							<td>
-								<div class="identity-cell">
-									<span class="sender-name">{{ demande.prenom }} {{ demande.nom|upper }}</span>
-									<span class="td-mono-sm sender-email">{{ demande.email|pseudonymize_email }}</span>
-								</div>
-							</td>
-							<td><span class="badge badge-neutral">{{ demande.formule|capitalize }}</span></td>
-							<td class="td-mono-sm">{{ demande.montantCalcule|number_format(2, ',', ' ') }} €</td>
-							<td>
-								{% if demande.statutPaiement == 'payee' %}
-									<span class="badge badge-active">Payée</span>
-								{% elseif demande.statutPaiement == 'a_encaisser_club' %}
-									<span class="badge badge-neutral">À encaisser au club</span>
-								{% else %}
-									<span class="badge badge-danger">En attente</span>
-								{% endif %}
-							</td>
-							<td>
-								{% if demande.statutFfhm == 'transferee' %}
-									<span class="badge badge-active">Transférée</span>
-								{% else %}
-									<span class="badge badge-danger">À transférer</span>
-								{% endif %}
-							</td>
-							<td class="td-mono-sm">{{ demande.createdAt|date('d/m/Y H:i') }}</td>
-							<td>
-								<div class="actions">
-									<a href="{{ path('admin_demande_licence_show', {id: demande.id}) }}" class="act-link">Détails</a>
-								</div>
-							</td>
+							<th width="80">ID</th>
+							<th>Demandeur</th>
+							<th>Formule</th>
+							<th>Type</th>
+							<th>Montant</th>
+							<th>Paiement</th>
+							<th>FFHM</th>
+							<th>Reçue le</th>
+							<th class="th-right">Actions</th>
 						</tr>
-					{% else %}
-						<tr>
-							<td colspan="8" class="td-empty">Aucune demande de licence pour le moment.</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{% for demande in demandes %}
+							<tr data-statut="{{ demande.statutPaiement }}">
+								<td><span class="td-mono">#{{ demande.id }}</span></td>
+								<td>
+									<div class="identity-cell">
+										<span class="sender-name">{{ demande.prenom }} {{ demande.nom|upper }}</span>
+										<span class="td-mono-sm sender-email">{{ demande.email|pseudonymize_email }}</span>
+									</div>
+								</td>
+								<td><span class="badge badge-neutral">{{ demande.formule|capitalize }}</span></td>
+								<td>{{ demande.renouvellement ? 'Renouvellement' : 'Nouvelle' }}</td>
+								<td class="td-mono-sm">{{ demande.montantCalcule|number_format(2, ',', ' ') }} €</td>
+								<td>
+									{% if demande.statutPaiement == 'payee' %}
+										<span class="badge badge-active">Payée</span>
+									{% elseif demande.statutPaiement == 'a_encaisser_club' %}
+										<span class="badge badge-neutral">À encaisser au club</span>
+									{% else %}
+										<span class="badge badge-danger">En attente</span>
+									{% endif %}
+								</td>
+								<td>
+									{% if demande.statutFfhm == 'transferee' %}
+										<span class="badge badge-active">Transférée</span>
+									{% else %}
+										<span class="badge badge-danger">À transférer</span>
+									{% endif %}
+								</td>
+								<td class="td-mono-sm">{{ demande.createdAt|date('d/m/Y H:i') }}</td>
+								<td>
+									<div class="actions">
+										<a href="{{ path('admin_demande_licence_show', {id: demande.id}) }}" class="act-link">Détails</a>
+									</div>
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="9" class="td-empty">Aucune demande de licence pour le moment.</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
+
+	{# ── Panneau 2 : licences déjà créées et fonctionnelles ── #}
+	<div class="dlx-panel" id="dlx-licences">
+		<div class="table-wrapper">
+			<div class="table-scroll">
+				<table class="admin-table">
+					<thead>
+						<tr>
+							<th>Numéro</th>
+							<th>Titulaire</th>
+							<th>Formule</th>
+							<th>Avantages</th>
+							<th>Expire le</th>
+							<th class="th-right">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for licence in licencesActives %}
+							<tr>
+								<td><span class="td-mono">{{ licence.number }}</span></td>
+								<td>
+									<div class="identity-cell">
+										<span class="sender-name">{{ licence.firstName }} {{ licence.lastName|upper }}</span>
+										<span class="td-mono-sm sender-email">{{ licence.email|pseudonymize_email }}</span>
+									</div>
+								</td>
+								<td><span class="badge badge-neutral">{{ licence.type }}</span></td>
+								<td>
+									{% for avantage in licence.benefits %}
+										<span class="badge badge-active" style="margin: 2px;">{{ avantage }}</span>
+									{% else %}
+										<span class="td-mono-sm">—</span>
+									{% endfor %}
+								</td>
+								<td class="td-mono-sm">{{ licence.expiryDate ? licence.expiryDate|date('d/m/Y') : '—' }}</td>
+								<td>
+									<div class="actions">
+										<a href="{{ path('admin_licence_edit', {id: licence.id}) }}" class="act-link">Modifier</a>
+									</div>
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="6" class="td-empty">Aucune licence FFHM active pour le moment — elles apparaissent ici dès qu'une demande est marquée "transférée à la FFHM".</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script nonce="{{ csp_nonce('script') }}">
+	(function () {
+		document.querySelectorAll('.dlx-tab').forEach(function (tab) {
+			tab.addEventListener('click', function () {
+				document.querySelectorAll('.dlx-tab').forEach(function (t) { t.classList.remove('active'); });
+				document.querySelectorAll('.dlx-panel').forEach(function (p) { p.classList.remove('active'); });
+				tab.classList.add('active');
+				document.getElementById(tab.getAttribute('data-panel')).classList.add('active');
+			});
+		});
+
+		document.querySelectorAll('.dlx-filter').forEach(function (filter) {
+			filter.addEventListener('click', function () {
+				document.querySelectorAll('.dlx-filter').forEach(function (f) { f.classList.remove('active'); });
+				filter.classList.add('active');
+				var statut = filter.getAttribute('data-statut');
+				document.querySelectorAll('#dlx-demandes tbody tr[data-statut]').forEach(function (row) {
+					row.style.display = (statut === 'all' || row.getAttribute('data-statut') === statut) ? '' : 'none';
+				});
+			});
+		});
+	})();
+	</script>
 {% endblock %}

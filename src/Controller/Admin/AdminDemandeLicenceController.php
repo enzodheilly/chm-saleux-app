@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\DemandeLicence;
 use App\Entity\Licence;
 use App\Repository\DemandeLicenceRepository;
+use App\Repository\LicenceRepository;
 use App\Repository\UserRepository;
 use App\Service\LicenceTarifService;
 use App\Service\SystemLoggerService;
@@ -26,10 +27,11 @@ class AdminDemandeLicenceController extends AbstractController
     ) {}
 
     #[Route('', name: 'index', methods: ['GET'])]
-    public function index(DemandeLicenceRepository $repo): Response
+    public function index(DemandeLicenceRepository $repo, LicenceRepository $licenceRepository, LicenceTarifService $tarifService): Response
     {
         return $this->render('admin/demande_licence/index.html.twig', [
-            'demandes' => $repo->findAllOrderedByDate(),
+            'demandes'        => $repo->findAllOrderedByDate(),
+            'licencesActives' => $licenceRepository->findByTypes(array_values($tarifService->getFormules())),
         ]);
     }
 
