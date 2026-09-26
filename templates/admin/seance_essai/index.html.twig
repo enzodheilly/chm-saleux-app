@@ -5,10 +5,8 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<style>
-		.dlx-toolbar { display: flex; gap: 10px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; justify-content: space-between; }
-		.dlx-search { min-width: 240px; }
-		.si-pill-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-		.si-pill {
+		.dlx-filters { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+		.dlx-filter {
 			padding: 6px 14px;
 			font-size: 0.75rem;
 			font-weight: 700;
@@ -19,7 +17,8 @@
 			border: 1px solid var(--border-color);
 			cursor: pointer;
 		}
-		.si-pill.active { color: #111; background: var(--accent); border-color: var(--accent); }
+		.dlx-filter.active { color: #111; background: var(--accent); border-color: var(--accent); }
+		.dlx-search { padding: 6px 12px; font-size: 0.82rem; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); min-width: 200px; margin-left: auto; }
 		.si-alert { display: flex; gap: 14px; padding: 16px 18px; border-radius: 0; margin-top: 20px; }
 		.si-alert--danger { background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); }
 		.si-alert--success { background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.3); align-items: center; }
@@ -44,11 +43,11 @@
 		</div>
 	</div>
 
-	<div class="dlx-toolbar">
-		<span class="tool-label" style="margin:0;">Vérification avant séance</span>
-		<form method="GET" action="{{ path('admin_seance_essai_index') }}" style="display:flex; gap:10px; align-items:center;">
-			<input type="search" name="q" value="{{ query|e('html_attr') }}" placeholder="Nom ou prénom de la personne…" autocomplete="off" class="input dlx-search" autofocus>
-			<button type="submit" class="btn-outline"><i class="fa-solid fa-magnifying-glass"></i> Vérifier</button>
+	<div class="dlx-filters">
+		<div class="subsection-title" style="margin:0 4px 0 0;">Vérification avant séance</div>
+		<form method="GET" action="{{ path('admin_seance_essai_index') }}" style="display:contents;">
+			<input type="search" name="q" value="{{ query|e('html_attr') }}" placeholder="Nom ou prénom de la personne…" autocomplete="off" class="dlx-search" style="min-width:260px;">
+			<button type="submit" class="btn-outline" style="margin-left:0;"><i class="fa-solid fa-magnifying-glass"></i> Vérifier</button>
 			{% if query %}
 				<a href="{{ path('admin_seance_essai_index') }}" class="act-link" title="Effacer la recherche"><i class="fa-solid fa-xmark"></i> Effacer</a>
 			{% endif %}
@@ -200,17 +199,13 @@
 	{% endif %}
 
 	{# ── Historique ── #}
-	<div class="dlx-toolbar" style="margin-top: 2rem;">
-		<span class="tool-label" style="margin:0;">Historique des séances <span class="badge badge-neutral" style="margin-left:6px;">{{ seances|length }}</span></span>
-		<div class="si-pill-row">
-			<input type="text" id="si-history-search" class="input dlx-search" placeholder="Rechercher un nom…" autocomplete="off">
-			<div class="si-pill-row">
-				<div class="si-pill active" data-days="30">30 jours</div>
-				<div class="si-pill" data-days="90">3 mois</div>
-				<div class="si-pill" data-days="365">1 an</div>
-				<div class="si-pill" data-days="0">Tout</div>
-			</div>
-		</div>
+	<div class="subsection-title" style="margin-top: 2rem; margin-bottom: 0.6rem;">Historique des séances <span class="badge badge-neutral" style="margin-left:6px;">{{ seances|length }}</span></div>
+	<div class="dlx-filters">
+		<div class="dlx-filter active" data-days="30">30 jours</div>
+		<div class="dlx-filter" data-days="90">3 mois</div>
+		<div class="dlx-filter" data-days="365">1 an</div>
+		<div class="dlx-filter" data-days="0">Tout</div>
+		<input type="text" id="si-history-search" class="dlx-search" placeholder="Rechercher un nom…" autocomplete="off">
 	</div>
 
 	<div class="table-wrapper">
@@ -255,7 +250,7 @@
 	<script nonce="{{ csp_nonce('script') }}">
 	(function () {
 		var histSearch  = document.getElementById('si-history-search');
-		var periodBtns  = document.querySelectorAll('.si-pill[data-days]');
+		var periodBtns  = document.querySelectorAll('.dlx-filter[data-days]');
 		var histTable   = document.getElementById('si-history-table');
 		var noResultMsg = document.querySelector('.si-no-result-history');
 
