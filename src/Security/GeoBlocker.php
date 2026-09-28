@@ -48,7 +48,8 @@ class GeoBlocker implements EventSubscriberInterface
         }
 
         $user = $this->security->getUser();
-        if ($user && in_array('ROLE_ADMIN', method_exists($user, 'getRoles') ? $user->getRoles() : [], true)) {
+        $roles = ($user && method_exists($user, 'getRoles')) ? $user->getRoles() : [];
+        if (in_array('ROLE_STAFF', $roles, true) || in_array('ROLE_SUPER_ADMIN', $roles, true)) {
             return;
         }
 

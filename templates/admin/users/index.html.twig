@@ -48,8 +48,10 @@
 								</div>
 							</td>
 							<td>
-								{% if 'ROLE_ADMIN' in user.roles %}
-									<span class="badge badge-active">Administrateur</span>
+								{% if 'ROLE_SUPER_ADMIN' in user.roles %}
+									<span class="badge badge-active">Super admin</span>
+								{% elseif 'ROLE_STAFF' in user.roles %}
+									<span class="badge badge-active">Staff</span>
 								{% else %}
 									<span class="badge badge-neutral">Membre</span>
 								{% endif %}

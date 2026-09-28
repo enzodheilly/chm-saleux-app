@@ -10,6 +10,10 @@ class TwoFactorCondition implements TwoFactorConditionInterface
     public function shouldPerformTwoFactorAuthentication(AuthenticationContextInterface $context): bool
     {
         $user = $context->getUser();
-        return $user && in_array('ROLE_ADMIN', $user->getRoles(), true);
+        if (!$user) {
+            return false;
+        }
+        $roles = $user->getRoles();
+        return in_array('ROLE_STAFF', $roles, true) || in_array('ROLE_SUPER_ADMIN', $roles, true);
     }
 }

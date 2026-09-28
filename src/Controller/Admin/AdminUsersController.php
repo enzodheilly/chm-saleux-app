@@ -55,10 +55,31 @@ class AdminUsersController extends AbstractController
     #[Route('/{id}/edit', name: 'edit')]
     public function edit(Request $request, User $user, EntityManagerInterface $em, UserPasswordHasherInterface $hasher, SystemLoggerService $logger): Response
     {
+        // Cet écran est prévu pour gérer les comptes "utilisateurs" classiques.
+        // Il ne doit jamais permettre à un simple ROLE_STAFF de modifier (et donc
+        // de changer le mot de passe, voire d'écraser les rôles réels) un compte
+        // qui a lui-même un accès staff/super-admin — seul un ROLE_SUPER_ADMIN
+        // peut le faire (et doit passer par la gestion staff dédiée pour les
+        // rôles admin, pas par ce formulaire qui ne connaît que ROLE_USER/ROLE_ADMIN).
+        $targetRoles = $user->getRoles();
+        $isTargetPrivileged = in_array('ROLE_STAFF', $targetRoles, true) || in_array('ROLE_SUPER_ADMIN', $targetRoles, true);
+        if ($isTargetPrivileged && !$this->isGranted('ROLE_SUPER_ADMIN')) {
+            throw $this->createAccessDeniedException('Seul un super-administrateur peut modifier un compte staff/admin.');
+        }
+
+        // UserType ne connaît que ROLE_USER/ROLE_ADMIN : sans précaution, soumettre
+        // ce formulaire écraserait le tableau de rôles et ferait perdre ROLE_STAFF/
+        // ROLE_SUPER_ADMIN à un compte qui les avait. On les préserve explicitement.
+        $privilegedRolesBefore = array_intersect($targetRoles, ['ROLE_STAFF', 'ROLE_SUPER_ADMIN']);
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!empty($privilegedRolesBefore)) {
+                $user->setRoles(array_values(array_unique([...$user->getRoles(), ...$privilegedRolesBefore])));
+            }
+
             $newPassword = $form->get('password')->getData();
             if ($newPassword) {
                 $hashed = $hasher->hashPassword($user, $newPassword);
@@ -81,6 +102,12 @@ class AdminUsersController extends AbstractController
     #[Route('/{id}/delete', name: 'delete', methods: ['POST'])]
     public function delete(User $user, Request $request, EntityManagerInterface $em, SystemLoggerService $logger): Response
     {
+        $targetRoles = $user->getRoles();
+        $isTargetPrivileged = in_array('ROLE_STAFF', $targetRoles, true) || in_array('ROLE_SUPER_ADMIN', $targetRoles, true);
+        if ($isTargetPrivileged && !$this->isGranted('ROLE_SUPER_ADMIN')) {
+            throw $this->createAccessDeniedException('Seul un super-administrateur peut supprimer un compte staff/admin.');
+        }
+
         if (!$this->isCsrfTokenValid('delete' . $user->getId(), (string) $request->request->get('_token', ''))) {
             $this->addFlash('error', 'Jeton CSRF invalide.');
             return $this->redirectToRoute('admin_users_index');

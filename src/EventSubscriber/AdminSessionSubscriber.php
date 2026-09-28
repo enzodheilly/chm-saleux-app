@@ -47,7 +47,8 @@ class AdminSessionSubscriber implements EventSubscriberInterface
         }
 
         $user = $token->getUser();
-        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        $roles = $user ? $user->getRoles() : [];
+        if (!in_array('ROLE_STAFF', $roles, true) && !in_array('ROLE_SUPER_ADMIN', $roles, true)) {
             return;
         }
 

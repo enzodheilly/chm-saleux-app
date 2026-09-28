@@ -34,7 +34,7 @@
 
 		<div class="slider-cta">
 			{% if app.user and not is_preview_mode %}
-				<a href="{{ path(is_granted('ROLE_ADMIN') ? 'admin_dashboard' : 'dashboard') }}" class="hero-cta-primary">
+				<a href="{{ path(is_granted('ROLE_STAFF') ? 'admin_dashboard' : 'dashboard') }}" class="hero-cta-primary">
 					MON TABLEAU DE BORD
 				</a>
 			{% else %}
