@@ -25,7 +25,11 @@ class GoogleController extends AbstractController
     #[Route('/connexion/google/callback', name: 'oauth_google_check')]
     public function connectCheck(): Response
     {
-        // gestion du retour Google
-        return $this->redirectToRoute('dashboard');
+        // Cette action n'est en réalité jamais exécutée : GoogleAuthenticator::supports()
+        // intercepte cette route et gère toute la logique d'authentification + la
+        // redirection finale dans onAuthenticationSuccess(). Ce contrôleur ne sert qu'à
+        // déclarer la route pour le bundle OAuth2 (redirect_route dans
+        // knpu_oauth2_client.yaml) et satisfaire le routing Symfony.
+        return $this->redirectToRoute('app_login');
     }
 }

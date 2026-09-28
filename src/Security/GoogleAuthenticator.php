@@ -80,10 +80,26 @@ class GoogleAuthenticator extends AbstractAuthenticator
                         if (!$user->getLastName() && $lastName)  $user->setLastName($lastName);
 
                         if (!$user->isVerified()) {
+                            // Compte jamais vérifié : la connexion Google est en train de
+                            // prouver la propriété de cet email à l'instant présent (OAuth).
+                            // On ne peut PAS faire confiance à un mot de passe déjà défini sur
+                            // ce compte, car il a pu être choisi par quelqu'un d'autre que le
+                            // vrai propriétaire de l'email (pré-inscription classique jamais
+                            // confirmée, dans le but de "squatter" l'adresse en attendant que
+                            // le vrai propriétaire se connecte via Google — technique connue
+                            // de pré-prise de contrôle de compte / "account pre-hijacking").
+                            // On invalide donc ce mot de passe et on renvoie ce compte dans le
+                            // même état "à finaliser" qu'un compte Google tout neuf.
+                            if ($user->getPassword() !== null) {
+                                $user->setPassword(null);
+                                $user->setNeedsPassword(true);
+                                $this->logger->add(
+                                    'Sécurité',
+                                    sprintf('Compte %s réclamé via Google après pré-inscription jamais vérifiée : mot de passe existant invalidé.', $pseudo)
+                                );
+                            }
                             $user->setIsVerified(true);
-                        }
-
-                        if ($user->getPassword() !== null) {
+                        } elseif ($user->getPassword() !== null) {
                             $user->setNeedsPassword(false);
                         }
 
