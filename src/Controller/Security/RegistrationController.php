@@ -83,7 +83,7 @@ class RegistrationController extends AbstractController
                 $existingUser = $userRepo->findOneByEmailCaseInsensitive($user->getEmail());
                 if ($existingUser instanceof User) {
                     $errors[] = $existingUser->getPassword() === null
-                        ? "Cette adresse email est déjà utilisée avec une connexion Google. Utilisez le bouton \"Continuer avec Google\" pour vous connecter."
+                        ? "Cette adresse email utilise déjà une autre méthode de connexion. Utilisez le bouton \"Continuer avec Google\" pour accéder à votre compte."
                         : "Cette adresse email est déjà utilisée.";
                 }
                 if ($password1 !== $password2) {
