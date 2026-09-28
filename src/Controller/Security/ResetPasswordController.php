@@ -66,7 +66,7 @@ class ResetPasswordController extends AbstractController
         }
 
         /** @var User|null $user */
-        $user = $em->getRepository(User::class)->findOneBy(['email' => $email]);
+        $user = $em->getRepository(User::class)->findOneByEmailCaseInsensitive($email);
 
         if ($user) {
             $now = new \DateTimeImmutable();

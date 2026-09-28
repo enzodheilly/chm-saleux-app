@@ -69,9 +69,13 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
             new UserBadge($email, function (string $userIdentifier): User {
                 $user = $this->userRepository->findOneBy(['email' => $userIdentifier]);
 
-                // ✅ message neutre (anti enumeration)
+                // ✅ message neutre (anti énumération) : exactement le même texte que
+                // celui affiché pour un mauvais mot de passe (voir
+                // translations/security.fr.yaml, clé "Invalid credentials."), pour
+                // qu'on ne puisse pas deviner si une adresse email est inscrite ou
+                // non à partir du message d'erreur affiché.
                 if (!$user) {
-                    throw new CustomUserMessageAuthenticationException('Adresse e-mail ou mot de passe incorrect.');
+                    throw new CustomUserMessageAuthenticationException('Identifiant ou mot de passe incorrect.');
                 }
 
                 // 🔒 Compte verrouillé ?
@@ -158,7 +162,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
             ? $exception->getMessageKey()
             : 'Identifiants incorrects.';
 
-        if ($user && ($msg === 'Identifiants incorrects.' || $msg === 'Adresse e-mail ou mot de passe incorrect.')) {
+        if ($user && ($msg === 'Identifiants incorrects.' || $msg === 'Identifiant ou mot de passe incorrect.')) {
             $failed = ($user->getFailedAttempts() ?? 0) + 1;
             $user->setFailedAttempts($failed);
 
