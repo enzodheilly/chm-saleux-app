@@ -66,11 +66,7 @@ class GoogleAuthenticator extends AbstractAuthenticator
                     /** @var \App\Repository\UserRepository $repo */
                     $repo = $this->em->getRepository(User::class);
 
-                    $user = $repo->createQueryBuilder('u')
-                        ->where('LOWER(u.email) = :email')
-                        ->setParameter('email', $email)
-                        ->getQuery()
-                        ->getOneOrNullResult();
+                    $user = $repo->findOneByEmailCaseInsensitive($email);
 
                     $pseudo = $this->logger->pseudonymizeEmail($email);
 

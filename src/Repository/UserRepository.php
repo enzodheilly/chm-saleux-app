@@ -27,6 +27,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
+     * Recherche par email insensible à la casse et aux espaces superflus,
+     * pour être cohérent avec GoogleAuthenticator (qui normalise déjà
+     * l'email reçu de Google) et éviter les doublons de compte liés à une
+     * simple différence de casse entre inscription classique et Google.
+     */
+    public function findOneByEmailCaseInsensitive(string $email): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->where('LOWER(u.email) = :email')
+            ->setParameter('email', mb_strtolower(trim($email)))
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
      * @return User[]
      */
     public function findAccountsDueForPurge(\DateTimeImmutable $now): array

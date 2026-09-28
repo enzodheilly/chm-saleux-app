@@ -70,10 +70,21 @@ class RegistrationController extends AbstractController
                 $accepted = (bool) ($data['acceptedTerms'] ?? false);
 
                 // 4. Validations manuelles
+
+                // Normalisation de l'email (cohérent avec GoogleAuthenticator,
+                // qui normalise déjà l'email reçu de Google) : évite qu'une
+                // différence de casse ("Nom@Gmail.com" vs "nom@gmail.com")
+                // ne passe entre les mailles de la vérification de doublon.
+                $user->setEmail(mb_strtolower(trim($user->getEmail())));
+
                 $errors = [];
                 if (!$accepted) $errors[] = "Vous devez accepter les conditions générales.";
-                if ($userRepo->findOneBy(['email' => $user->getEmail()])) {
-                    $errors[] = "Cette adresse email est déjà utilisée.";
+
+                $existingUser = $userRepo->findOneByEmailCaseInsensitive($user->getEmail());
+                if ($existingUser instanceof User) {
+                    $errors[] = $existingUser->getPassword() === null
+                        ? "Cette adresse email est déjà utilisée avec une connexion Google. Utilisez le bouton \"Continuer avec Google\" pour vous connecter."
+                        : "Cette adresse email est déjà utilisée.";
                 }
                 if ($password1 !== $password2) {
                     $errors[] = "Les mots de passe ne correspondent pas.";
