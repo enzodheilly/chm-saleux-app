@@ -98,34 +98,20 @@ class LicenceController extends AbstractController
         ]);
     }
 
-    /**
-     * Dissocie la licence actuelle du compte connecté.
-     * Équivalent JWT/API de DashboardAdherentController::removeLicense (web).
-     */
+    // La dissociation d'une licence par l'adhérent lui-même a été retirée
+    // intentionnellement (17_licence_link_unlink) : une fois liée, une licence
+    // ne doit plus pouvoir être détachée depuis le compte. L'application
+    // mobile doit retirer tout appel à /api/licences/unlink et le bouton
+    // correspondant — cette route répond désormais 410 Gone si elle est
+    // encore appelée, pour que ce soit visible immédiatement côté mobile
+    // plutôt que de silencieusement échouer avec un 404 générique.
     #[Route('/api/licences/unlink', name: 'api_licence_unlink', methods: ['POST'])]
-    public function unlink(LicenceRepository $licenceRepository, EntityManagerInterface $em): JsonResponse
+    public function unlink(): JsonResponse
     {
-        $user = $this->getUser();
-        if (!$user instanceof User) {
-            return new JsonResponse(['success' => false, 'message' => 'Utilisateur non authentifié.'], 401);
-        }
-
-        $licence = $licenceRepository->createQueryBuilder('l')
-            ->andWhere('l.user = :user')
-            ->setParameter('user', $user)
-            ->orderBy('l.expiryDate', 'DESC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
-
-        if (!$licence) {
-            return new JsonResponse(['success' => false, 'message' => 'Aucune licence associée trouvée.'], 404);
-        }
-
-        $licence->setUser(null);
-        $em->flush();
-
-        return new JsonResponse(['success' => true]);
+        return new JsonResponse([
+            'success' => false,
+            'message' => 'La dissociation d\'une licence n\'est plus disponible. Contactez le club si besoin.',
+        ], 410);
     }
 
     private function normalizeLicence(Licence $licence): array

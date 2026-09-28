@@ -152,29 +152,11 @@ class DashboardAdherentController extends AbstractController
         return $this->json(['success' => true, 'message' => 'Licence synchronisée ✅']);
     }
 
-    #[Route('/espace-adherent/licence/remove', name: 'adherent_remove_license', methods: ['POST'])]
-    public function removeLicense(Request $request): JsonResponse
-    {
-        $user = $this->getUser();
-        if (!$user instanceof User) {
-            return $this->json(['success' => false], 401);
-        }
-
-        // ✅ CSRF
-        if (!$this->isCsrfTokenValid('remove_license', (string) $request->request->get('_token', ''))) {
-            return $this->json(['success' => false, 'message' => 'Jeton CSRF invalide.'], 400);
-        }
-
-        $licence = $this->getCurrentLicenceForUser($user);
-        if (!$licence) {
-            return $this->json(['success' => false, 'message' => 'Aucune licence associée trouvée.']);
-        }
-
-        $licence->setUser(null);
-        $this->em->flush();
-
-        return $this->json(['success' => true, 'message' => 'Licence retirée ✅']);
-    }
+    // La dissociation d'une licence par l'adhérent lui-même a été retirée
+    // intentionnellement (17_licence_link_unlink) : une fois liée — manuellement
+    // au premier lancement, ou automatiquement à chaque renouvellement validé
+    // par le bureau — une licence ne doit plus pouvoir être détachée depuis le
+    // compte adhérent, ce n'était pas cohérent avec un usage "officiel".
 
     #[Route('/profil/photo', name: 'profile_photo', methods: ['POST'])]
     public function uploadProfilePhoto(Request $request): JsonResponse
