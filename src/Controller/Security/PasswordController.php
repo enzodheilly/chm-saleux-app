@@ -36,10 +36,15 @@ class PasswordController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        // Sécurité : si pas de user ou pas besoin de mot de passe, on dégage
+        // Sécurité : si pas de user ou pas besoin de finaliser son compte, on dégage
         if (!$user || !$user->getNeedsPassword()) {
             return $this->redirectToRoute('home');
         }
+
+        // Compte créé via Google (aucun mot de passe local) : la finalisation
+        // se limite à l'acceptation des CGU, un mot de passe ne servirait à
+        // rien puisque l'utilisateur se connectera toujours via Google.
+        $passwordRequired = $user->getPassword() !== null;
 
         if ($request->isMethod('POST')) {
             $submittedToken = (string) $request->request->get('_token', '');
@@ -48,10 +53,7 @@ class PasswordController extends AbstractController
                 return $this->redirectToRoute('set_password');
             }
 
-            $password = (string) $request->request->get('password', '');
-            $confirmPassword = (string) $request->request->get('confirm_password', '');
             $acceptedTerms = $request->request->getBoolean('accepted_terms', false);
-
             $hasErrors = false;
 
             if (!$acceptedTerms) {
@@ -59,54 +61,73 @@ class PasswordController extends AbstractController
                 $hasErrors = true;
             }
 
-            if ($password === '' || $password !== $confirmPassword) {
-                $this->addFlash('error', 'Les mots de passe ne correspondent pas.');
-                $hasErrors = true;
-            }
+            if (!$passwordRequired) {
+                // Compte Google : seule l'acceptation des CGU est requise.
+                if (!$hasErrors) {
+                    $user->setNeedsPassword(false);
+                    $user->setAcceptedTerms(true);
 
-            if (!$this->isStrongPassword($password)) {
-                $this->addFlash('error', 'Le mot de passe doit contenir au moins 8 caractères, avec une majuscule, une minuscule, un chiffre et un caractère spécial.');
-                $hasErrors = true;
-            }
+                    $em->flush();
 
-            if (!$hasErrors) {
-                $hasher = $hasherFactory->getPasswordHasher($user);
+                    $logger->add('Sécurité', sprintf('CGU acceptées (compte Google) pour %s', $user->getEmail()));
+                    $this->addFlash('success', 'Votre compte est finalisé !');
 
-                // Vérification contre le mot de passe actuel (non encore archivé)
-                if ($user->getPassword() && $hasher->verify($user->getPassword(), $password)) {
-                    $this->addFlash('error', 'Ce mot de passe a déjà été utilisé récemment. Choisissez-en un différent.');
-                    return $this->redirectToRoute('set_password');
+                    return $this->redirectToRoute('home');
+                }
+            } else {
+                $password = (string) $request->request->get('password', '');
+                $confirmPassword = (string) $request->request->get('confirm_password', '');
+
+                if ($password === '' || $password !== $confirmPassword) {
+                    $this->addFlash('error', 'Les mots de passe ne correspondent pas.');
+                    $hasErrors = true;
                 }
 
-                // Vérification historique
-                $lastPasswords = $em->getRepository(PasswordHistory::class)->findBy(
-                    ['user' => $user],
-                    ['changedAt' => 'DESC'],
-                    5
-                );
+                if (!$this->isStrongPassword($password)) {
+                    $this->addFlash('error', 'Le mot de passe doit contenir au moins 8 caractères, avec une majuscule, une minuscule, un chiffre et un caractère spécial.');
+                    $hasErrors = true;
+                }
 
-                foreach ($lastPasswords as $history) {
-                    if ($hasher->verify($history->getPasswordHash(), $password)) {
+                if (!$hasErrors) {
+                    $hasher = $hasherFactory->getPasswordHasher($user);
+
+                    // Vérification contre le mot de passe actuel (non encore archivé)
+                    if ($user->getPassword() && $hasher->verify($user->getPassword(), $password)) {
                         $this->addFlash('error', 'Ce mot de passe a déjà été utilisé récemment. Choisissez-en un différent.');
                         return $this->redirectToRoute('set_password');
                     }
+
+                    // Vérification historique
+                    $lastPasswords = $em->getRepository(PasswordHistory::class)->findBy(
+                        ['user' => $user],
+                        ['changedAt' => 'DESC'],
+                        5
+                    );
+
+                    foreach ($lastPasswords as $history) {
+                        if ($hasher->verify($history->getPasswordHash(), $password)) {
+                            $this->addFlash('error', 'Ce mot de passe a déjà été utilisé récemment. Choisissez-en un différent.');
+                            return $this->redirectToRoute('set_password');
+                        }
+                    }
+
+                    // Sauvegarde du nouveau MDP
+                    $user->setPassword($passwordHasher->hashPassword($user, $password));
+                    $user->setNeedsPassword(false);
+                    $user->setAcceptedTerms(true);
+
+                    $em->flush();
+
+                    $logger->add('Sécurité', sprintf('MDP initial configuré pour %s', $user->getEmail()));
+                    $this->addFlash('success', 'Votre mot de passe est configuré !');
+
+                    return $this->redirectToRoute('home');
                 }
-
-                // Sauvegarde du nouveau MDP
-                $user->setPassword($passwordHasher->hashPassword($user, $password));
-                $user->setNeedsPassword(false);
-                $user->setAcceptedTerms(true);
-
-                $em->flush();
-
-                $logger->add('Sécurité', sprintf('MDP initial configuré pour %s', $user->getEmail()));
-                $this->addFlash('success', 'Votre mot de passe est configuré !');
-
-                return $this->redirectToRoute('home');
             }
         }
 
-        // 🚀 Au lieu de rendre '0_home/index.html.twig', on rend une page dédiée
-        return $this->render('security/set_password.html.twig');
+        return $this->render('security/set_password.html.twig', [
+            'passwordRequired' => $passwordRequired,
+        ]);
     }
 }
