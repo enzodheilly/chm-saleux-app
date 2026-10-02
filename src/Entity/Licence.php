@@ -38,8 +38,11 @@ class Licence
     #[ORM\Column(length: 100)]
     private ?string $lastName = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 180, nullable: true)]
     private ?string $email = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $adresse = null;
 
     #[ORM\ManyToOne(targetEntity: MembershipPlan::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
@@ -158,9 +161,20 @@ class Licence
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(?string $adresse): self
+    {
+        $this->adresse = $adresse;
         return $this;
     }
 
