@@ -68,6 +68,7 @@
 						<tr>
 							<th width="80">ID</th>
 							<th>Demandeur</th>
+							<th>Email</th>
 							<th>Formule</th>
 							<th>Type</th>
 							<th>Montant</th>
@@ -83,9 +84,9 @@
 								<td>
 									<div class="identity-cell">
 										<span class="sender-name">{{ demande.prenom }} {{ demande.nom|upper }}</span>
-										<span class="td-mono-sm sender-email">{{ demande.email|pseudonymize_email }}</span>
 									</div>
 								</td>
+								<td class="td-mono-sm sender-email">{{ demande.email|pseudonymize_email }}</td>
 								<td><span class="badge badge-neutral">{{ demande.formule|capitalize }}</span></td>
 								<td>{{ demande.renouvellement ? 'Renouvellement' : 'Nouvelle' }}</td>
 								<td class="td-mono-sm">
@@ -108,7 +109,7 @@
 							</tr>
 						{% else %}
 							<tr>
-								<td colspan="8" class="td-empty">Aucune demande de licence en attente de transfert FFHM.</td>
+								<td colspan="9" class="td-empty">Aucune demande de licence en attente de transfert FFHM.</td>
 							</tr>
 						{% endfor %}
 					</tbody>
@@ -126,6 +127,7 @@
 						<tr>
 							<th>Numéro provisoire</th>
 							<th>Titulaire</th>
+							<th>Email</th>
 							<th>Formule</th>
 							<th>Expire le</th>
 							<th class="th-right">Actions</th>
@@ -138,9 +140,9 @@
 								<td>
 									<div class="identity-cell">
 										<span class="sender-name">{{ licence.firstName }} {{ licence.lastName|upper }}</span>
-										<span class="td-mono-sm sender-email">{{ licence.email|pseudonymize_email }}</span>
 									</div>
 								</td>
+								<td class="td-mono-sm sender-email">{{ licence.email ? (licence.email|pseudonymize_email) : '—' }}</td>
 								<td><span class="badge badge-neutral">{{ licence.type }}</span></td>
 								<td class="td-mono-sm">{{ licence.expiryDate ? licence.expiryDate|date('d/m/Y') : '—' }}</td>
 								<td>
@@ -155,7 +157,7 @@
 							</tr>
 						{% else %}
 							<tr>
-								<td colspan="5" class="td-empty">Aucune licence en attente d'activation.</td>
+								<td colspan="6" class="td-empty">Aucune licence en attente d'activation.</td>
 							</tr>
 						{% endfor %}
 					</tbody>
@@ -173,6 +175,7 @@
 						<tr>
 							<th>Numéro</th>
 							<th>Titulaire</th>
+							<th>Email</th>
 							<th>Formule</th>
 							<th>Avantages</th>
 							<th>Expire le</th>
@@ -186,9 +189,9 @@
 								<td>
 									<div class="identity-cell">
 										<span class="sender-name">{{ licence.firstName }} {{ licence.lastName|upper }}</span>
-										<span class="td-mono-sm sender-email">{{ licence.email|pseudonymize_email }}</span>
 									</div>
 								</td>
+								<td class="td-mono-sm sender-email">{{ licence.email ? (licence.email|pseudonymize_email) : '—' }}</td>
 								<td><span class="badge badge-neutral">{{ licence.type }}</span></td>
 								<td>
 									{% for avantage in licence.benefits %}
@@ -206,7 +209,7 @@
 							</tr>
 						{% else %}
 							<tr>
-								<td colspan="6" class="td-empty">Aucune licence FFHM active pour le moment.</td>
+								<td colspan="7" class="td-empty">Aucune licence FFHM active pour le moment.</td>
 							</tr>
 						{% endfor %}
 					</tbody>

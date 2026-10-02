@@ -19,7 +19,7 @@ class LicenceRepository extends ServiceEntityRepository
      * récentes en premier. Sert à isoler les licences FFHM des licences
      * salle/abonnement classiques dans la même table générale.
      */
-    public function findByTypes(array $types, ?bool $activee = null, ?int $saisonFinAnnee = null): array
+    public function findByTypes(array $types, ?bool $activee = null, ?int $saisonFinAnnee = null, bool $excludeHistorique = false): array
     {
         if ($types === []) {
             return [];
@@ -32,6 +32,10 @@ class LicenceRepository extends ServiceEntityRepository
         if ($activee !== null) {
             $qb->andWhere('l.activee = :activee')
                ->setParameter('activee', $activee);
+        }
+
+        if ($excludeHistorique) {
+            $qb->andWhere('l.historique = false');
         }
 
         if ($saisonFinAnnee !== null) {

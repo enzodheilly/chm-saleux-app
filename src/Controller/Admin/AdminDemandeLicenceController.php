@@ -33,7 +33,9 @@ class AdminDemandeLicenceController extends AbstractController
         return $this->render('admin/demande_licence/index.html.twig', [
             'demandes'          => $repo->findNonTransferees(),
             'licencesEnAttente' => $licenceRepository->findByTypes($formuleTypes, false),
-            'licencesActives'   => $licenceRepository->findByTypes($formuleTypes, true),
+            // Les licences importées depuis l'historique (avant le formulaire en ligne)
+            // ne comptent pas comme des licences "actives" du nouveau système.
+            'licencesActives'   => $licenceRepository->findByTypes($formuleTypes, true, null, true),
         ]);
     }
 

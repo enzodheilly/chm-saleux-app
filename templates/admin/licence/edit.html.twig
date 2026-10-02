@@ -22,7 +22,12 @@
 		<div class="card-body" style="text-align: center;">
 			<span class="tool-label">QR code d'accès à la salle</span>
 
-			{% if qrCodeImage %}
+			{% if licence.historique %}
+				<div style="margin: 1rem 0; width: 180px; height: 180px; display: flex; align-items: center; justify-content: center; margin-left: auto; margin-right: auto; background: var(--bg-elevated); border: 1px dashed var(--border-color); opacity: 0.5;">
+					<span class="td-mono-sm">—</span>
+				</div>
+				<p class="form-help">Licence historique — importée depuis les archives (2020-2026). Aucun QR code d'accès n'a été créé pour cette licence.</p>
+			{% elseif qrCodeImage %}
 				<div style="margin: 1rem 0;">
 					<img src="{{ qrCodeImage }}" alt="QR code d'accès" width="180" height="180">
 				</div>
@@ -37,10 +42,12 @@
 				<p class="form-help">Aucun QR code généré pour l'instant.</p>
 			{% endif %}
 
-			<form method="post" action="{{ path('admin_licence_qrcode_regenerate', {'id': licence.id}) }}" onsubmit="return confirm('Régénérer le QR code de cette licence ? L\'ancien code ne fonctionnera plus.');" style="margin-top: 0.75rem;">
-				<input type="hidden" name="_token" value="{{ csrf_token('qrcode_regenerate_' ~ licence.id) }}">
-				<button type="submit" class="btn-outline">Régénérer le QR code</button>
-			</form>
+			{% if not licence.historique %}
+				<form method="post" action="{{ path('admin_licence_qrcode_regenerate', {'id': licence.id}) }}" onsubmit="return confirm('Régénérer le QR code de cette licence ? L\'ancien code ne fonctionnera plus.');" style="margin-top: 0.75rem;">
+					<input type="hidden" name="_token" value="{{ csrf_token('qrcode_regenerate_' ~ licence.id) }}">
+					<button type="submit" class="btn-outline">Régénérer le QR code</button>
+				</form>
+			{% endif %}
 		</div>
 	</div>
 

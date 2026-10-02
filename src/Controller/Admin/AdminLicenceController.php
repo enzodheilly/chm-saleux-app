@@ -29,9 +29,12 @@ class AdminLicenceController extends AbstractController
         $saisonFinAnnee = $request->query->get('saison') ? (int) $request->query->get('saison') : null;
         $licences       = $licenceRepository->findByTypes($formuleTypes, null, $saisonFinAnnee);
 
+        // Les licences historiques (import 2020-2026) ont un QR code généré
+        // automatiquement à la création de l'entité, mais ce système n'existait
+        // pas à l'époque : on ne l'affiche pas, il n'a jamais servi.
         $qrCodeImages = [];
         foreach ($licences as $licence) {
-            if ($licence->getQrCodeToken()) {
+            if (!$licence->isHistorique() && $licence->getQrCodeToken()) {
                 $qrCodeImages[$licence->getId()] = $qrCodeService->buildQrImageDataUri($licence->getQrCodeToken());
             }
         }
@@ -97,7 +100,9 @@ class AdminLicenceController extends AbstractController
         return $this->render('admin/licence/edit.html.twig', [
             'licence' => $licence,
             'form' => $form->createView(),
-            'qrCodeImage' => $licence->getQrCodeToken() ? $qrCodeService->buildQrImageDataUri($licence->getQrCodeToken()) : null,
+            'qrCodeImage' => (!$licence->isHistorique() && $licence->getQrCodeToken())
+                ? $qrCodeService->buildQrImageDataUri($licence->getQrCodeToken())
+                : null,
         ]);
     }
 
@@ -123,6 +128,11 @@ class AdminLicenceController extends AbstractController
     {
         if (!$this->isCsrfTokenValid('qrcode_regenerate_' . $licence->getId(), (string) $request->request->get('_token'))) {
             $this->addFlash('error', 'Jeton CSRF invalide.');
+            return $this->redirectToRoute('admin_licence_edit', ['id' => $licence->getId()]);
+        }
+
+        if ($licence->isHistorique()) {
+            $this->addFlash('error', 'Cette licence est une licence historique (importée depuis les archives) : elle n\'a pas de QR code d\'accès.');
             return $this->redirectToRoute('admin_licence_edit', ['id' => $licence->getId()]);
         }
 

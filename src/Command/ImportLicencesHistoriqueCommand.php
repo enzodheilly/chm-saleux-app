@@ -73,6 +73,7 @@ class ImportLicencesHistoriqueCommand extends Command
         $created = 0;
         $skippedExisting = 0;
         $skippedInvalid = 0;
+        $backfilled = 0;
         $line = 1;
 
         while (($row = fgetcsv($handle)) !== false) {
@@ -93,9 +94,16 @@ class ImportLicencesHistoriqueCommand extends Command
                 continue;
             }
 
-            // Idempotence : déjà importé ?
+            // Idempotence : déjà importé ? Si oui, on en profite pour rattraper
+            // le flag "historique" sur les lignes importées avant son ajout
+            // (voir Version20261003001500) plutôt que de les laisser comptées
+            // à tort comme des licences actives du nouveau système.
             $existing = $this->licenceRepository->findOneByNumber($numero);
             if ($existing !== null) {
+                if (!$existing->isHistorique()) {
+                    $existing->setHistorique(true);
+                    $backfilled++;
+                }
                 $skippedExisting++;
                 continue;
             }
@@ -114,6 +122,7 @@ class ImportLicencesHistoriqueCommand extends Command
             $licence->setAdresse($adresse !== '' ? $adresse : null);
             $licence->setExpiryDate(new \DateTimeImmutable(sprintf('%d-08-31 23:59:59', $saisonFinAnnee)));
             $licence->setActivee(true);
+            $licence->setHistorique(true);
             $licence->setBenefits($benefitNote !== '' ? [$benefitNote] : []);
 
             $this->em->persist($licence);
@@ -129,13 +138,20 @@ class ImportLicencesHistoriqueCommand extends Command
 
         $this->logger->add(
             SystemLoggerService::TYPE_ADMIN,
-            sprintf('Import historique des licences : %d créées, %d déjà présentes (ignorées), %d lignes invalides', $created, $skippedExisting, $skippedInvalid)
+            sprintf(
+                'Import historique des licences : %d créées, %d déjà présentes (ignorées, dont %d rattrapées avec le flag historique), %d lignes invalides',
+                $created,
+                $skippedExisting,
+                $backfilled,
+                $skippedInvalid
+            )
         );
 
         $io->success(sprintf(
-            '%d licence(s) créée(s). %d déjà présentes (ignorées). %d ligne(s) invalide(s) ignorée(s).',
+            '%d licence(s) créée(s). %d déjà présentes (ignorées, dont %d rattrapée(s) avec le flag historique). %d ligne(s) invalide(s) ignorée(s).',
             $created,
             $skippedExisting,
+            $backfilled,
             $skippedInvalid
         ));
 

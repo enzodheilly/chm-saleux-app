@@ -49,6 +49,7 @@
 						<th width="80">ID</th>
 						<th>Numéro</th>
 						<th>Titulaire</th>
+						<th>Email</th>
 						<th>Type</th>
 						<th>Saison</th>
 						<th>Statut</th>
@@ -64,9 +65,10 @@
 							<td>
 								<div class="identity-cell">
 									<span class="sender-name">{{ licence.firstName }} {{ licence.lastName|upper }}</span>
-									<span class="td-mono-sm sender-email">{{ licence.email|pseudonymize_email }}</span>
+									{% if licence.historique %}<span class="badge badge-neutral" style="font-size:0.65rem; margin-top:2px;">Historique</span>{% endif %}
 								</div>
 							</td>
+							<td class="td-mono-sm sender-email">{{ licence.email ? (licence.email|pseudonymize_email) : '—' }}</td>
 							<td><span class="badge badge-neutral">{{ licence.type|capitalize }}</span></td>
 							<td class="td-mono-sm">{{ licence.saisonLabel }}</td>
 							<td>
@@ -79,7 +81,9 @@
 								{% endif %}
 							</td>
 							<td>
-								{% if qrCodeImages[licence.id] is defined %}
+								{% if licence.historique %}
+									<span class="td-mono-sm" style="opacity:0.4;">—</span>
+								{% elseif qrCodeImages[licence.id] is defined %}
 									<a href="{{ path('admin_licence_edit', {id: licence.id}) }}#qrcode" title="Voir le QR code d'accès">
 										<img src="{{ qrCodeImages[licence.id] }}" alt="QR code" width="44" height="44" style="background: #fff; padding: 2px;">
 									</a>
@@ -99,7 +103,7 @@
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="8" class="td-empty">Aucune licence FFHM enregistrée{% if saisonActive %} pour cette saison{% endif %}.</td>
+							<td colspan="9" class="td-empty">Aucune licence FFHM enregistrée{% if saisonActive %} pour cette saison{% endif %}.</td>
 						</tr>
 					{% endfor %}
 				</tbody>

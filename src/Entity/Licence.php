@@ -57,6 +57,15 @@ class Licence
     #[ORM\Column(type: 'boolean')]
     private bool $activee = true;
 
+    /**
+     * Vrai pour les licences importées depuis l'historique papier/Excel du club
+     * (saisons 2020-2026, avant la mise en place du formulaire en ligne). Ces
+     * licences n'ont jamais eu de QR code d'accès réel et ne doivent pas compter
+     * comme des licences "actives" du nouveau système en ligne.
+     */
+    #[ORM\Column(type: 'boolean')]
+    private bool $historique = false;
+
     #[ORM\OneToMany(mappedBy: 'licence', targetEntity: CheckIn::class, cascade: ['remove'], orphanRemoval: true)]
     private Collection $checkIns;
 
@@ -218,6 +227,9 @@ class Licence
 
     public function isActivee(): bool { return $this->activee; }
     public function setActivee(bool $activee): self { $this->activee = $activee; return $this; }
+
+    public function isHistorique(): bool { return $this->historique; }
+    public function setHistorique(bool $historique): self { $this->historique = $historique; return $this; }
 
     public function getSaisonLabel(): string
     {
