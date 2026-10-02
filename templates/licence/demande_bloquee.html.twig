@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Prise de licence impossible · CHM Saleux{% endblock %}
+
+{% block main_class %}page-top-offset dl-main{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/licence/demande.css') }}?v=10">
+{% endblock %}
+
+{% block body %}
+	<div class="dl-root">
+		<div class="dl-shell dl-shell--center">
+			<div class="dl-merci">
+				<div class="dl-merci-icon" style="color:#f87171;"><i class="fa-solid fa-circle-exclamation"></i></div>
+				<h1>Prise de licence impossible</h1>
+				<p class="dl-intro-sub">
+					Votre demande de prise ou de renouvellement de licence ne peut pas être effectuée en ligne.
+				</p>
+
+				<p class="dl-hint">
+					Nous vous invitons à prendre contact directement avec le bureau du CHM Saleux afin de faire le point sur votre situation et, le cas échéant, sur les conditions permettant une nouvelle adhésion — par email à <a href="mailto:chm.saleux@orange.fr" class="dl-link">chm.saleux@orange.fr</a> ou au <a href="tel:0322897257" class="dl-link">03 22 89 72 57</a>.
+				</p>
+
+				<a href="{{ path('home') }}" class="dl-btn-next dl-submit dl-merci-back">Retour à l'accueil</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

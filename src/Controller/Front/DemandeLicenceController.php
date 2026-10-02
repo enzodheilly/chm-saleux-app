@@ -3,6 +3,7 @@
 namespace App\Controller\Front;
 
 use App\Entity\DemandeLicence;
+use App\Repository\BlockedMemberRepository;
 use App\Repository\DemandeLicenceRepository;
 use App\Repository\LicenceRepository;
 use App\Service\HelloAssoService;
@@ -46,6 +47,7 @@ class DemandeLicenceController extends AbstractController
         HelloAssoService $helloAsso,
         LicenceRepository $licenceRepository,
         DemandeLicenceRepository $demandeLicenceRepository,
+        BlockedMemberRepository $blockedMemberRepository,
     ): Response {
         if (!$this->isCsrfTokenValid('demande_licence_submit', (string) $request->request->get('_token', ''))) {
             $this->addFlash('danger', 'Jeton CSRF invalide. Merci de réessayer.');
@@ -75,6 +77,19 @@ class DemandeLicenceController extends AbstractController
         if (!in_array($formule, DemandeLicence::FORMULES, true)) {
             $this->addFlash('danger', 'Formule invalide.');
             return $this->redirectToRoute('demande_licence');
+        }
+
+        // ── Personnes interdites de prise de licence en ligne (bureau) ──
+        // Rapprochement sur nom + prénom (voir BlockedMemberRepository::isBlocked) :
+        // ce n'est qu'un premier filtre, le bureau garde la main en cas d'homonymie.
+        if ($blockedMemberRepository->isBlocked($nom, $prenom)) {
+            $logger->add('Demande de licence', sprintf(
+                'Tentative de demande de licence bloquée : %s %s (%s)',
+                $prenom,
+                $nom,
+                $email
+            ));
+            return $this->render('licence/demande_bloquee.html.twig');
         }
 
         if (!$request->request->getBoolean('consentement_rgpd')) {

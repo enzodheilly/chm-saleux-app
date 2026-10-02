@@ -1,0 +1,72 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Adhérents bloqués{% endblock %}
+
+{% block body %}
+	<div class="page-header">
+		<div>
+			<h1>Adhérents bloqués</h1>
+			<p>Personnes interdites de prise ou renouvellement de licence en ligne (mauvais payeurs, exclusions...). Le rapprochement se fait sur le nom + prénom saisis dans le formulaire public : en cas d'homonymie ou de changement de nom, vérifiez toujours le dossier avant de refuser une licence manuellement.</p>
+		</div>
+	</div>
+
+	<div class="table-wrapper" style="margin-bottom: 24px;">
+		<form method="post" action="{{ path('admin_blocked_members_create') }}" class="form-row-2" style="padding: 20px; gap: 16px; display: flex; flex-wrap: wrap; align-items: flex-end;">
+			<input type="hidden" name="_token" value="{{ csrf_token('blocked_member_create') }}">
+
+			<div class="form-group">
+				<label class="form-label">Nom</label>
+				<input type="text" name="nom" class="form-input" required placeholder="Nom">
+			</div>
+			<div class="form-group">
+				<label class="form-label">Prénom</label>
+				<input type="text" name="prenom" class="form-input" required placeholder="Prénom">
+			</div>
+			<div class="form-group" style="flex: 1; min-width: 220px;">
+				<label class="form-label">Raison (interne, non affichée à l'adhérent)</label>
+				<input type="text" name="raison" class="form-input" placeholder="Ex : impayés saison 2024/2025">
+			</div>
+			<button type="submit" class="btn-create">+ Bloquer</button>
+		</form>
+	</div>
+
+	<div class="table-wrapper">
+		<div class="table-scroll">
+			<table class="admin-table">
+				<thead>
+					<tr>
+						<th>Nom</th>
+						<th>Prénom</th>
+						<th>Raison</th>
+						<th>Bloqué le</th>
+						<th>Par</th>
+						<th class="th-right">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for blocked in blockedMembers %}
+						<tr>
+							<td><strong>{{ blocked.nom }}</strong></td>
+							<td>{{ blocked.prenom }}</td>
+							<td>{{ blocked.raison ?: '—' }}</td>
+							<td class="td-mono-sm">{{ blocked.blockedAt|date('d/m/Y') }}</td>
+							<td class="td-mono-sm">{{ blocked.blockedBy ?: '—' }}</td>
+							<td>
+								<div class="actions">
+									<form method="post" action="{{ path('admin_blocked_members_delete', {id: blocked.id}) }}" class="js-confirm-form" data-confirm="Retirer {{ blocked.prenom }} {{ blocked.nom }} de la liste des personnes bloquées ?">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ blocked.id) }}">
+										<button class="act-link act-del">Débloquer</button>
+									</form>
+								</div>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6" class="td-empty">Aucun adhérent bloqué actuellement.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
