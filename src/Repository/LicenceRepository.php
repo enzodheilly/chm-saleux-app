@@ -19,7 +19,7 @@ class LicenceRepository extends ServiceEntityRepository
      * récentes en premier. Sert à isoler les licences FFHM des licences
      * salle/abonnement classiques dans la même table générale.
      */
-    public function findByTypes(array $types, ?bool $activee = null, ?int $saisonFinAnnee = null, bool $excludeHistorique = false): array
+    public function findByTypes(array $types, ?bool $activee = null, ?int $saisonFinAnnee = null, bool $excludeHistorique = false, ?int $excludeAnnee = null): array
     {
         if ($types === []) {
             return [];
@@ -44,6 +44,12 @@ class LicenceRepository extends ServiceEntityRepository
             $qb->andWhere('l.expiryDate BETWEEN :saisonDebut AND :saisonFin')
                ->setParameter('saisonDebut', new \DateTimeImmutable($saisonFinAnnee . '-01-01 00:00:00'))
                ->setParameter('saisonFin',   new \DateTimeImmutable($saisonFinAnnee . '-12-31 23:59:59'));
+        }
+
+        if ($excludeAnnee !== null) {
+            $qb->andWhere('l.expiryDate NOT BETWEEN :excludeDebut AND :excludeFin')
+               ->setParameter('excludeDebut', new \DateTimeImmutable($excludeAnnee . '-01-01 00:00:00'))
+               ->setParameter('excludeFin',   new \DateTimeImmutable($excludeAnnee . '-12-31 23:59:59'));
         }
 
         return $qb

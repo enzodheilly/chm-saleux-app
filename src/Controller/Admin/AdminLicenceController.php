@@ -24,10 +24,25 @@ class AdminLicenceController extends AbstractController
     #[Route('/', name: 'admin_licence_index', methods: ['GET'])]
     public function index(Request $request, LicenceRepository $licenceRepository, QrCodeService $qrCodeService, LicenceTarifService $tarifService): Response
     {
-        $formuleTypes   = array_values($tarifService->getFormules());
-        $saisons        = $licenceRepository->findDistinctSaisonFinAnnees($formuleTypes);
+        $formuleTypes       = array_values($tarifService->getFormules());
+        $currentSaisonAnnee = (int) $tarifService->getFinDeSaison(new \DateTimeImmutable())->format('Y');
+
+        // Archives = saisons passées uniquement ; la saison en cours bascule
+        // automatiquement en archive à la saison suivante, sans toucher au code.
+        $saisons = array_values(array_filter(
+            $licenceRepository->findDistinctSaisonFinAnnees($formuleTypes),
+            fn(int $s) => $s !== $currentSaisonAnnee
+        ));
+
+        // Arriver directement sur la saison la plus récente plutôt que "Toutes".
+        if (!$request->query->has('saison') && !empty($saisons)) {
+            return $this->redirectToRoute('admin_licence_index', ['saison' => $saisons[0]]);
+        }
+
         $saisonFinAnnee = $request->query->get('saison') ? (int) $request->query->get('saison') : null;
-        $licences       = $licenceRepository->findByTypes($formuleTypes, null, $saisonFinAnnee);
+
+        // Onglet "Toutes" : exclut quand même la saison en cours (pas encore une archive).
+        $licences = $licenceRepository->findByTypes($formuleTypes, null, $saisonFinAnnee, false, $saisonFinAnnee === null ? $currentSaisonAnnee : null);
 
         // Les licences historiques (import 2020-2026) ont un QR code généré
         // automatiquement à la création de l'entité, mais ce système n'existait
