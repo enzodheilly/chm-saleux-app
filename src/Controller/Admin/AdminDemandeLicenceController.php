@@ -30,12 +30,16 @@ class AdminDemandeLicenceController extends AbstractController
     public function index(DemandeLicenceRepository $repo, LicenceRepository $licenceRepository, LicenceTarifService $tarifService): Response
     {
         $formuleTypes = array_values($tarifService->getFormules());
+
+        // "Licences actives" = licences validées FFHM pour la saison EN COURS
+        // uniquement (pas tout l'historique 2020-2026, et pas les saisons passées
+        // en général) — on filtre sur l'année de fin de la saison actuelle.
+        $saisonEnCoursAnnee = (int) $tarifService->getFinDeSaison(new \DateTimeImmutable())->format('Y');
+
         return $this->render('admin/demande_licence/index.html.twig', [
             'demandes'          => $repo->findNonTransferees(),
             'licencesEnAttente' => $licenceRepository->findByTypes($formuleTypes, false),
-            // Les licences importées depuis l'historique (avant le formulaire en ligne)
-            // ne comptent pas comme des licences "actives" du nouveau système.
-            'licencesActives'   => $licenceRepository->findByTypes($formuleTypes, true, null, true),
+            'licencesActives'   => $licenceRepository->findByTypes($formuleTypes, true, $saisonEnCoursAnnee, true),
         ]);
     }
 

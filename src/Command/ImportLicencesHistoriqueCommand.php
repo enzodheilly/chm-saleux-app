@@ -103,6 +103,12 @@ class ImportLicencesHistoriqueCommand extends Command
                 if (!$existing->isHistorique()) {
                     $existing->setHistorique(true);
                     $backfilled++;
+                    // Flush par lot ici aussi (pas seulement sur les créations) :
+                    // sur un rattrapage massif (ex. 292 lignes déjà présentes),
+                    // on ne veut pas attendre la toute fin pour persister.
+                    if ($backfilled % 50 === 0) {
+                        $this->em->flush();
+                    }
                 }
                 $skippedExisting++;
                 continue;
