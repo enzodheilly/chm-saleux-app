@@ -18,6 +18,8 @@
 
 		{# --- CÔTÉ GAUCHE : FORMULAIRE --- #}
 		<div class="auth-left">
+			<a href="{{ path('accueil') }}" class="back-link auth-back-top">← Accueil</a>
+
 			<div class="auth-content-wrapper">
 				<div class="auth-header">
 					<a href="{{ path('accueil') }}" class="auth-logo">
@@ -99,10 +101,6 @@
 					<p>Déjà membre ?
 						<a href="{{ path('app_connexion') }}">Se connecter</a>
 					</p>
-				</div>
-
-				<div class="auth-bottom">
-					<a href="{{ path('accueil') }}" class="back-link">← Accueil</a>
 				</div>
 			</div>
 		</div>

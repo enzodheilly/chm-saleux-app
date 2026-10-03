@@ -277,11 +277,14 @@ html, body {
 
 .register-hint a:hover { text-decoration: underline; }
 
-/* --- Bas de page --- */
-.auth-bottom {
-  margin-top: 24px;
-  width: 100%;
-  text-align: center;
+/* --- Lien retour (Accueil / connexion), coin haut gauche du panneau --- */
+.auth-back-top {
+  position: absolute;
+  top: 22px;
+  left: 28px;
+  z-index: 2;
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .back-link {
@@ -684,8 +687,9 @@ html, body {
 @media (max-width: 580px) {
   .auth-left {
     align-items: flex-start;
-    padding-top: 48px;
+    padding-top: 64px;
   }
+  .auth-back-top { top: 18px; left: 20px; }
   .auth-header h1 { font-size: 1.45rem; }
   .form-row { flex-direction: column; }
   .code-box { width: 44px; height: 52px; font-size: 1.3rem; }
