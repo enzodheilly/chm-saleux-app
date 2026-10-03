@@ -92,6 +92,7 @@ td.td-right, th.th-right { text-align: right; }
    sur blanc pour rester scannable quel que soit le thème de la page). */
 .qr-thumb { background: #fff; padding: 2px; display: block; }
 .qr-thumb-link { display: inline-block; }
+.qr-thumb-link[hidden] { display: none; }
 
 /* Bouton "Voir" qui révèle le QR code à la demande plutôt que de l'afficher
    en clair par défaut dans une liste (le QR donne un accès réel à la salle). */
