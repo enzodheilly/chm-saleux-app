@@ -1,0 +1,19 @@
+{# Macros partagées entre les pages admin de gestion des licences. #}
+
+{#
+	Badge coloré pour une formule de licence (Jeune / Compétition / Loisir & Muscu).
+	Fonctionne aussi bien avec le code brut stocké sur une demande ('loisir',
+	'competition', 'jeune') qu'avec le libellé complet stocké sur une licence
+	('Loisir & Muscu', 'Compétition', 'Jeune') : on détecte le type par simple
+	recherche de sous-chaîne, insensible à la casse.
+#}
+{% macro formule_badge(label) %}
+	{% set l = label|lower %}
+	{% if 'competition' in l or 'compétition' in l %}
+		<span class="badge badge-formule-competition">{{ label }}</span>
+	{% elseif 'jeune' in l %}
+		<span class="badge badge-formule-jeune">{{ label }}</span>
+	{% else %}
+		<span class="badge badge-formule-loisir">{{ label }}</span>
+	{% endif %}
+{% endmacro %}

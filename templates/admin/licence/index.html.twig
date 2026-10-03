@@ -1,4 +1,5 @@
 {% extends 'admin/base_admin.html.twig' %}
+{% import 'admin/_macros.html.twig' as m %}
 
 {% block title %}Archives licences FFHM{% endblock %}
 
@@ -16,7 +17,6 @@
 			text-decoration: none;
 		}
 		.saison-tab.active { color: #111; background: var(--accent); border-color: var(--accent); }
-		.badge-pending { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
 	</style>
 {% endblock %}
 
@@ -69,7 +69,7 @@
 								</div>
 							</td>
 							<td class="td-mono-sm sender-email">{{ licence.email ? (licence.email|pseudonymize_email) : '—' }}</td>
-							<td><span class="badge badge-neutral">{{ licence.type|capitalize }}</span></td>
+							<td>{{ m.formule_badge(licence.type) }}</td>
 							<td class="td-mono-sm">{{ licence.saisonLabel }}</td>
 							<td>
 								{% if not licence.activee %}
@@ -85,7 +85,7 @@
 									<span class="td-mono-sm" style="opacity:0.4;">—</span>
 								{% elseif qrCodeImages[licence.id] is defined %}
 									<a href="{{ path('admin_licence_edit', {id: licence.id}) }}#qrcode" title="Voir le QR code d'accès">
-										<img src="{{ qrCodeImages[licence.id] }}" alt="QR code" width="44" height="44" style="background: #fff; padding: 2px;">
+										<img src="{{ qrCodeImages[licence.id] }}" alt="QR code" width="44" height="44" class="qr-thumb">
 									</a>
 								{% else %}
 									<span class="td-mono-sm">—</span>

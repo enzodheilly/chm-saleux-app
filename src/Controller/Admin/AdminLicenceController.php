@@ -46,10 +46,12 @@ class AdminLicenceController extends AbstractController
 
         // Les licences historiques (import 2020-2026) ont un QR code généré
         // automatiquement à la création de l'entité, mais ce système n'existait
-        // pas à l'époque : on ne l'affiche pas, il n'a jamais servi.
+        // pas à l'époque sur les saisons passées : on ne l'affiche pas, il n'a
+        // jamais servi (voir isQrSupprime — les archives n'affichent de toute
+        // façon jamais la saison en cours).
         $qrCodeImages = [];
         foreach ($licences as $licence) {
-            if (!$licence->isHistorique() && $licence->getQrCodeToken()) {
+            if (!$this->isQrSupprime($licence, $tarifService) && $licence->getQrCodeToken()) {
                 $qrCodeImages[$licence->getId()] = $qrCodeService->buildQrImageDataUri($licence->getQrCodeToken());
             }
         }
@@ -92,7 +94,7 @@ class AdminLicenceController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'admin_licence_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Licence $licence, EntityManagerInterface $em, QrCodeService $qrCodeService, SystemLoggerService $logger): Response
+    public function edit(Request $request, Licence $licence, EntityManagerInterface $em, QrCodeService $qrCodeService, SystemLoggerService $logger, LicenceTarifService $tarifService): Response
     {
         $form = $this->createForm(LicenceType::class, $licence);
         $form->handleRequest($request);
@@ -115,7 +117,7 @@ class AdminLicenceController extends AbstractController
         return $this->render('admin/licence/edit.html.twig', [
             'licence' => $licence,
             'form' => $form->createView(),
-            'qrCodeImage' => (!$licence->isHistorique() && $licence->getQrCodeToken())
+            'qrCodeImage' => (!$this->isQrSupprime($licence, $tarifService) && $licence->getQrCodeToken())
                 ? $qrCodeService->buildQrImageDataUri($licence->getQrCodeToken())
                 : null,
         ]);
@@ -138,16 +140,36 @@ class AdminLicenceController extends AbstractController
         return $this->redirectToRoute('admin_licence_index');
     }
 
+    /**
+     * Une licence historique (import Excel/papier) n'a de QR code supprimé de
+     * l'affichage que si elle appartient à une saison déjà passée : elle n'a
+     * jamais eu de QR d'accès utilisé à l'époque. Une licence historique de la
+     * saison EN COURS (ex. membre payé au club avant la mise en place du
+     * formulaire en ligne) est une licence active comme une autre : son QR est
+     * valide et doit être affichable/régénérable normalement.
+     */
+    private function isQrSupprime(Licence $licence, LicenceTarifService $tarifService): bool
+    {
+        if (!$licence->isHistorique()) {
+            return false;
+        }
+
+        $currentSaisonAnnee = (int) $tarifService->getFinDeSaison(new \DateTimeImmutable())->format('Y');
+        $licenceSaisonAnnee = $licence->getExpiryDate() ? (int) $licence->getExpiryDate()->format('Y') : null;
+
+        return $licenceSaisonAnnee !== $currentSaisonAnnee;
+    }
+
     #[Route('/{id}/qrcode/regenerate', name: 'admin_licence_qrcode_regenerate', methods: ['POST'])]
-    public function regenerateQrCode(Licence $licence, Request $request, QrCodeService $qrCodeService, SystemLoggerService $logger): Response
+    public function regenerateQrCode(Licence $licence, Request $request, QrCodeService $qrCodeService, SystemLoggerService $logger, LicenceTarifService $tarifService): Response
     {
         if (!$this->isCsrfTokenValid('qrcode_regenerate_' . $licence->getId(), (string) $request->request->get('_token'))) {
             $this->addFlash('error', 'Jeton CSRF invalide.');
             return $this->redirectToRoute('admin_licence_edit', ['id' => $licence->getId()]);
         }
 
-        if ($licence->isHistorique()) {
-            $this->addFlash('error', 'Cette licence est une licence historique (importée depuis les archives) : elle n\'a pas de QR code d\'accès.');
+        if ($this->isQrSupprime($licence, $tarifService)) {
+            $this->addFlash('error', 'Cette licence est une licence historique d\'une saison passée (importée depuis les archives) : elle n\'a pas de QR code d\'accès.');
             return $this->redirectToRoute('admin_licence_edit', ['id' => $licence->getId()]);
         }
 
