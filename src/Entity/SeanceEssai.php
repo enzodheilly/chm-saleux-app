@@ -37,11 +37,15 @@ class SeanceEssai
     #[ORM\Column(type: 'date_immutable', nullable: true)]
     private ?\DateTimeImmutable $dateNaissance = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $adresse = null;
-
-    #[ORM\Column(length: 30, nullable: true)]
-    private ?string $telephone = null;
+    /**
+     * Adresse, téléphone et téléphone du responsable légal : données
+     * réellement sensibles, isolées dans leur propre table et chiffrées au
+     * repos (voir App\Entity\SeanceEssaiCoordonnees et
+     * App\Doctrine\EncryptedStringType). Toujours manipulées via les
+     * accesseurs ci-dessous, qui délèguent ici de façon transparente.
+     */
+    #[ORM\OneToOne(targetEntity: SeanceEssaiCoordonnees::class, mappedBy: 'seanceEssai', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private ?SeanceEssaiCoordonnees $coordonnees = null;
 
     #[ORM\Column(length: 180, nullable: true)]
     private ?string $email = null;
@@ -51,9 +55,6 @@ class SeanceEssai
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $responsableLien = null;
-
-    #[ORM\Column(length: 30, nullable: true)]
-    private ?string $responsableTelephone = null;
 
     #[ORM\Column(length: 180, nullable: true)]
     private ?string $responsableEmail = null;
@@ -92,11 +93,11 @@ class SeanceEssai
     public function getDateNaissance(): ?\DateTimeImmutable { return $this->dateNaissance; }
     public function setDateNaissance(?\DateTimeImmutable $dateNaissance): self { $this->dateNaissance = $dateNaissance; return $this; }
 
-    public function getAdresse(): ?string { return $this->adresse; }
-    public function setAdresse(?string $adresse): self { $this->adresse = $adresse; return $this; }
+    public function getAdresse(): ?string { return $this->coordonnees?->getAdresse(); }
+    public function setAdresse(?string $adresse): self { $this->coordonnees()->setAdresse($adresse); return $this; }
 
-    public function getTelephone(): ?string { return $this->telephone; }
-    public function setTelephone(?string $telephone): self { $this->telephone = $telephone; return $this; }
+    public function getTelephone(): ?string { return $this->coordonnees?->getTelephone(); }
+    public function setTelephone(?string $telephone): self { $this->coordonnees()->setTelephone($telephone); return $this; }
 
     public function getEmail(): ?string { return $this->email; }
     public function setEmail(?string $email): self { $this->email = $email; return $this; }
@@ -107,11 +108,27 @@ class SeanceEssai
     public function getResponsableLien(): ?string { return $this->responsableLien; }
     public function setResponsableLien(?string $responsableLien): self { $this->responsableLien = $responsableLien; return $this; }
 
-    public function getResponsableTelephone(): ?string { return $this->responsableTelephone; }
-    public function setResponsableTelephone(?string $responsableTelephone): self { $this->responsableTelephone = $responsableTelephone; return $this; }
+    public function getResponsableTelephone(): ?string { return $this->coordonnees?->getResponsableTelephone(); }
+    public function setResponsableTelephone(?string $responsableTelephone): self { $this->coordonnees()->setResponsableTelephone($responsableTelephone); return $this; }
 
     public function getResponsableEmail(): ?string { return $this->responsableEmail; }
     public function setResponsableEmail(?string $responsableEmail): self { $this->responsableEmail = $responsableEmail; return $this; }
+
+    /**
+     * Crée l'entité "coordonnées sensibles" à la demande, plutôt que de
+     * l'exiger dans le constructeur.
+     */
+    private function coordonnees(): SeanceEssaiCoordonnees
+    {
+        if ($this->coordonnees === null) {
+            $this->coordonnees = new SeanceEssaiCoordonnees();
+            $this->coordonnees->setSeanceEssai($this);
+        }
+
+        return $this->coordonnees;
+    }
+
+    public function getCoordonnees(): ?SeanceEssaiCoordonnees { return $this->coordonnees; }
 
     public function getLieuSignature(): ?string { return $this->lieuSignature; }
     public function setLieuSignature(?string $lieuSignature): self { $this->lieuSignature = $lieuSignature; return $this; }

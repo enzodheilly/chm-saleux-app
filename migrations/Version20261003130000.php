@@ -38,6 +38,17 @@ final class Version20261003130000 extends AbstractMigration
         return 'Isole adresse/téléphone (demandes de licence) et adresse (licences) dans des tables dédiées chiffrées';
     }
 
+    /**
+     * Cette migration contient des CREATE/ALTER TABLE (DDL), qui valident
+     * implicitement la transaction en cours sous MySQL — l'envelopper dans
+     * une transaction gérée par le framework de migration n'a donc aucun
+     * sens (et génère un avertissement de dépréciation à l'exécution).
+     */
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
     public function up(Schema $schema): void
     {
         $this->connection->executeStatement('CREATE TABLE demande_licence_coordonnees (id INT AUTO_INCREMENT NOT NULL, demande_licence_id INT NOT NULL, adresse LONGTEXT DEFAULT NULL, telephone LONGTEXT DEFAULT NULL, responsable_telephone LONGTEXT DEFAULT NULL, UNIQUE INDEX UNIQ_DLC_DEMANDE (demande_licence_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
