@@ -27,7 +27,7 @@
 				<option value="avance">Avancé</option>
 			</select>
 
-			<a href="{{ path('admin_routine_template_new') }}" class="btn-create">Créer</a>
+			<a href="{{ path('admin_routine_modele_new') }}" class="btn-create">Créer</a>
 		</div>
 	</div>
 
@@ -81,10 +81,10 @@
 							</td>
 							<td>
 								<div class="actions">
-									<a href="{{ path('admin_routine_template_edit', {id: tpl.id}) }}" class="act-link">Modifier</a>
+									<a href="{{ path('admin_routine_modele_edit', {id: tpl.id}) }}" class="act-link">Modifier</a>
 
 									{# MODIFICATION : Remplacement du confirm inline par le moteur V20 #}
-									<form method="post" action="{{ path('admin_routine_template_delete', {id: tpl.id}) }}" class="js-confirm-form" data-confirm="🗑️ Supprimer le template '{{ tpl.name }}' ? Cette action est irréversible.">
+									<form method="post" action="{{ path('admin_routine_modele_delete', {id: tpl.id}) }}" class="js-confirm-form" data-confirm="🗑️ Supprimer le template '{{ tpl.name }}' ? Cette action est irréversible.">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete_template_' ~ tpl.id) }}">
 										<button class="act-link act-del">Supprimer</button>
 									</form>

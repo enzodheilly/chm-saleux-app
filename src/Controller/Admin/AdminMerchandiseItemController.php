@@ -13,11 +13,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/gestion-chm-secrete-92x/merchandise')]
+#[Route('/gestion-chm-secrete-92x/boutique')]
 #[IsGranted('ROLE_STAFF')]
 class AdminMerchandiseItemController extends AbstractController
 {
-    #[Route('/', name: 'admin_merchandise_index')]
+    #[Route('/', name: 'admin_boutique_index')]
     public function index(EntityManagerInterface $em): Response
     {
         $items = $em->getRepository(MerchandiseItem::class)->findAll();
@@ -27,7 +27,7 @@ class AdminMerchandiseItemController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'admin_merchandise_new')]
+    #[Route('/new', name: 'admin_boutique_new')]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         $item = new MerchandiseItem();
@@ -41,11 +41,11 @@ class AdminMerchandiseItemController extends AbstractController
                 $allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
                 if (!in_array($imageFile->getMimeType(), $allowedMimes, true)) {
                     $this->addFlash('error', 'Format non autorisé (JPEG, PNG ou WebP uniquement).');
-                    return $this->redirectToRoute('admin_merchandise_new');
+                    return $this->redirectToRoute('admin_boutique_new');
                 }
                 if ($imageFile->getSize() > 2 * 1024 * 1024) {
                     $this->addFlash('error', 'Image trop volumineuse (max 2 Mo).');
-                    return $this->redirectToRoute('admin_merchandise_new');
+                    return $this->redirectToRoute('admin_boutique_new');
                 }
 
                 $newFilename = bin2hex(random_bytes(8)) . '.' . $imageFile->guessExtension();
@@ -57,7 +57,7 @@ class AdminMerchandiseItemController extends AbstractController
                     );
                 } catch (FileException $e) {
                     $this->addFlash('error', 'Erreur lors de l\'upload de l\'image.');
-                    return $this->redirectToRoute('admin_merchandise_new');
+                    return $this->redirectToRoute('admin_boutique_new');
                 }
 
                 $item->setImage($newFilename);
@@ -67,7 +67,7 @@ class AdminMerchandiseItemController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Article créé avec succès !');
-            return $this->redirectToRoute('admin_merchandise_index');
+            return $this->redirectToRoute('admin_boutique_index');
         }
 
         return $this->render('admin/merchandise/new.html.twig', [
@@ -75,7 +75,7 @@ class AdminMerchandiseItemController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'admin_merchandise_edit')]
+    #[Route('/{id}/edit', name: 'admin_boutique_edit')]
     public function edit(Request $request, EntityManagerInterface $em, MerchandiseItem $item): Response
     {
         $form = $this->createForm(MerchandiseItemType::class, $item);
@@ -88,11 +88,11 @@ class AdminMerchandiseItemController extends AbstractController
                 $allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
                 if (!in_array($imageFile->getMimeType(), $allowedMimes, true)) {
                     $this->addFlash('error', 'Format non autorisé (JPEG, PNG ou WebP uniquement).');
-                    return $this->redirectToRoute('admin_merchandise_edit', ['id' => $item->getId()]);
+                    return $this->redirectToRoute('admin_boutique_edit', ['id' => $item->getId()]);
                 }
                 if ($imageFile->getSize() > 2 * 1024 * 1024) {
                     $this->addFlash('error', 'Image trop volumineuse (max 2 Mo).');
-                    return $this->redirectToRoute('admin_merchandise_edit', ['id' => $item->getId()]);
+                    return $this->redirectToRoute('admin_boutique_edit', ['id' => $item->getId()]);
                 }
 
                 $newFilename = bin2hex(random_bytes(8)) . '.' . $imageFile->guessExtension();
@@ -104,7 +104,7 @@ class AdminMerchandiseItemController extends AbstractController
                     );
                 } catch (FileException $e) {
                     $this->addFlash('error', 'Erreur lors de l\'upload de l\'image.');
-                    return $this->redirectToRoute('admin_merchandise_edit', ['id' => $item->getId()]);
+                    return $this->redirectToRoute('admin_boutique_edit', ['id' => $item->getId()]);
                 }
 
                 $oldImage = $item->getImage();
@@ -121,7 +121,7 @@ class AdminMerchandiseItemController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Merchandise item updated successfully!');
-            return $this->redirectToRoute('admin_merchandise_index');
+            return $this->redirectToRoute('admin_boutique_index');
         }
 
         return $this->render('admin/merchandise/edit.html.twig', [
@@ -130,7 +130,7 @@ class AdminMerchandiseItemController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/delete', name: 'admin_merchandise_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'admin_boutique_delete', methods: ['POST'])]
     public function delete(Request $request, EntityManagerInterface $em, MerchandiseItem $item): Response
     {
         if ($this->isCsrfTokenValid('delete' . $item->getId(), $request->request->get('_token'))) {
@@ -139,6 +139,6 @@ class AdminMerchandiseItemController extends AbstractController
             $this->addFlash('success', 'Merchandise item deleted successfully!');
         }
 
-        return $this->redirectToRoute('admin_merchandise_index');
+        return $this->redirectToRoute('admin_boutique_index');
     }
 }

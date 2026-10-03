@@ -38,7 +38,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function supports(Request $request): bool
     {
-        return $request->attributes->get('_route') === 'app_login'
+        return $request->attributes->get('_route') === 'app_connexion'
             && $request->isMethod('POST');
     }
 
@@ -123,7 +123,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         // Déterminer la route de redirection
         $roles = $user->getRoles();
         $targetUrl = (in_array('ROLE_STAFF', $roles, true) || in_array('ROLE_SUPER_ADMIN', $roles, true))
-            ? $this->router->generate('admin_dashboard')
+            ? $this->router->generate('admin_accueil')
             : $this->router->generate('home');
 
         // 🚀 Redirection RÉELLE (pas de JSON)
@@ -148,10 +148,10 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
                 $ip
             ));
 
-            // On redirige vers ta route de vérification (ex: app_verify_code)
+            // On redirige vers ta route de vérification (ex: app_verifier_code)
             // On passe l'email en paramètre pour pré-remplir ou retrouver l'utilisateur
             return new \Symfony\Component\HttpFoundation\RedirectResponse(
-                $this->router->generate('app_verify_code', ['email' => $email])
+                $this->router->generate('app_verifier_code', ['email' => $email])
             );
         }
 
@@ -194,6 +194,6 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     protected function getLoginUrl(Request $request): string
     {
-        return $this->router->generate('app_login');
+        return $this->router->generate('app_connexion');
     }
 }

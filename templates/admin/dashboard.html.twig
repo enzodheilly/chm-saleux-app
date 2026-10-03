@@ -23,7 +23,7 @@
                 <input type="text" name="auth_code" class="gatekeeper-input" placeholder="000000" autofocus autocomplete="off" maxlength="6">
                 <button type="submit" class="btn-unlock">Accéder au Dashboard</button>
             </form>
-            <a href="{{ path('home') }}" class="gatekeeper-back">Retour au site</a>
+            <a href="{{ path('accueil') }}" class="gatekeeper-back">Retour au site</a>
         </div>
     </div>
 {% else %}
@@ -36,7 +36,7 @@
     </div>
     <div class="db-welcome-right">
         <div class="db-live-clock" id="liveClock"></div>
-        <a href="{{ path('admin_security_logs') }}" class="db-btn-outline">
+        <a href="{{ path('admin_securite_logs') }}" class="db-btn-outline">
             <i class="fa-solid fa-shield-halved"></i> Journal de sécurité
         </a>
     </div>
@@ -140,7 +140,7 @@
                 <span class="db-card-eyebrow">Actions récentes</span>
                 <h3 class="db-card-title">Opérations admin</h3>
             </div>
-            <a href="{{ path('admin_security_logs', {filter: 'admin'}) }}" class="db-link-more">Voir tout →</a>
+            <a href="{{ path('admin_securite_logs', {filter: 'admin'}) }}" class="db-link-more">Voir tout →</a>
         </div>
         <div class="db-card-body db-card-body--nopad">
             <table class="db-table">
@@ -173,7 +173,7 @@
                 <span class="db-card-eyebrow">Sécurité</span>
                 <h3 class="db-card-title">Derniers événements</h3>
             </div>
-            <a href="{{ path('admin_security_logs') }}" class="db-link-more">Voir tout →</a>
+            <a href="{{ path('admin_securite_logs') }}" class="db-link-more">Voir tout →</a>
         </div>
         <div class="db-card-body db-card-body--nopad">
             <table class="db-table">

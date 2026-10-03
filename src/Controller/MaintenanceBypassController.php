@@ -15,7 +15,7 @@ class MaintenanceBypassController extends AbstractController
         private readonly string $maintenanceBypassToken,
     ) {}
 
-    #[Route('/team-access/{token}', name: 'maintenance_bypass', methods: ['GET'])]
+    #[Route('/acces-equipe/{token}', name: 'maintenance_bypass', methods: ['GET'])]
     public function bypass(string $token): RedirectResponse
     {
         // Token incorrect → 404 discret

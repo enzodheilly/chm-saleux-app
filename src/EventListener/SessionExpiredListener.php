@@ -35,7 +35,7 @@ class SessionExpiredListener
             }
 
             $response = new RedirectResponse(
-                $this->router->generate('app_login')
+                $this->router->generate('app_connexion')
             );
 
             $event->setResponse($response);

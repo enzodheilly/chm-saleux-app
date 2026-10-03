@@ -20,7 +20,7 @@
 		<div class="auth-left">
 			<div class="auth-content-wrapper">
 				<div class="auth-header">
-					<a href="{{ path('home') }}" class="auth-logo">
+					<a href="{{ path('accueil') }}" class="auth-logo">
 						<img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo CHM">
 					</a>
 					<h1>BIENVENUE AU CLUB</h1>
@@ -44,19 +44,19 @@
 					</div>
 
 					<div class="auth-email-actions">
-						<a href="{{ path('app_login') }}" class="btn-auth login-btn">
+						<a href="{{ path('app_connexion') }}" class="btn-auth login-btn">
 							Se connecter
 						</a>
 
 						<div class="register-hint">
 							Pas encore de compte ?
-							<a href="{{ path('app_register') }}">S'inscrire</a>
+							<a href="{{ path('app_inscription') }}">S'inscrire</a>
 						</div>
 					</div>
 				</div>
 
 				<div class="auth-bottom">
-					<a href="{{ path('home') }}" class="back-link">← Accueil</a>
+					<a href="{{ path('accueil') }}" class="back-link">← Accueil</a>
 				</div>
 			</div>
 		</div>

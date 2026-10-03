@@ -51,7 +51,7 @@
 	{# ── Modifier le mot de passe ── #}
 	<div class="settings-card">
 		<h3 class="settings-card-title">Modifier le mot de passe</h3>
-		<form method="post" action="{{ path('admin_settings_change_password') }}" autocomplete="off">
+		<form method="post" action="{{ path('admin_parametres_changer_mot_de_passe') }}" autocomplete="off">
 			<input type="hidden" name="_token" value="{{ csrf_token('change_password') }}">
 			<div class="pw-grid">
 				<div class="form-group">
@@ -86,7 +86,7 @@
 					<span class="dot"></span>
 					2FA activée
 				</div>
-				<a href="{{ path('admin_security_2fa_setup') }}" class="btn-save" style="font-size:.82rem;padding:6px 14px;">
+				<a href="{{ path('admin_securite_2fa_setup') }}" class="btn-save" style="font-size:.82rem;padding:6px 14px;">
 					Reconfigurer
 				</a>
 			{% else %}
@@ -94,7 +94,7 @@
 					<span class="dot"></span>
 					2FA non configurée
 				</div>
-				<a href="{{ path('admin_security_2fa_setup') }}" class="btn-create" style="font-size:.82rem;padding:6px 14px;">
+				<a href="{{ path('admin_securite_2fa_setup') }}" class="btn-create" style="font-size:.82rem;padding:6px 14px;">
 					Configurer maintenant
 				</a>
 			{% endif %}

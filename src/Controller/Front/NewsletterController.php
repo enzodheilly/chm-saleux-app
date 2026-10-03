@@ -156,7 +156,7 @@ class NewsletterController extends AbstractController
 
         if (!$subscriber) {
             $this->addFlash('error', 'Lien de confirmation invalide ou expiré.');
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('accueil');
         }
 
         $subscriber->setIsConfirmed(true);
@@ -167,7 +167,7 @@ class NewsletterController extends AbstractController
         $logger->add('Newsletter', sprintf('Inscription confirmée pour %s', $subscriber->getEmail()));
         $this->addFlash('success', 'Votre abonnement à la newsletter a bien été confirmé !');
 
-        return $this->redirectToRoute('home');
+        return $this->redirectToRoute('accueil');
     }
 
     // =======================================================
@@ -185,7 +185,7 @@ class NewsletterController extends AbstractController
 
         if (!$subscriber) {
             $this->addFlash('error', 'Lien de désabonnement invalide ou expiré.');
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('accueil');
         }
 
         $email = $subscriber->getEmail();

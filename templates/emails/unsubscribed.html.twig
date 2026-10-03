@@ -21,7 +21,7 @@
 						<p>C'est fait ! L'adresse
 							<br><span class="email-tag">{{ subscriberEmail }}</span>
 							<br>ne recevra plus nos actualités.</p>
-						<a href="{{ path('home') }}" class="btn btn-home">Retour au site</a>
+						<a href="{{ path('accueil') }}" class="btn btn-home">Retour au site</a>
 					{% else %}
 						<h1>Désinscription</h1>
 						<p>Bonjour
@@ -34,7 +34,7 @@
 							<input type="hidden" name="_token" value="{{ csrf_token('newsletter_unsubscribe_' ~ subscriberId) }}">
 							<button type="submit" class="btn btn-confirm">Confirmer</button>
 						</form>
-						<a href="{{ path('home') }}" class="btn btn-home">Annuler</a>
+						<a href="{{ path('accueil') }}" class="btn btn-home">Annuler</a>
 					{% endif %}
 				</div>
 			</div>

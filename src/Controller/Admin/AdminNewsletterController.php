@@ -29,7 +29,7 @@ class AdminNewsletterController extends AbstractController
         ]);
     }
 
-    #[Route('/compose', name: 'compose')]
+    #[Route('/composer', name: 'composer')]
     public function compose(
         Request $request,
         MailerInterface $mailer,
@@ -91,7 +91,7 @@ class AdminNewsletterController extends AbstractController
             // ✅ CSRF pour l'envoi réel
             if (!$this->isCsrfTokenValid('newsletter_compose', (string) $request->request->get('_token', ''))) {
                 $this->addFlash('danger', 'Jeton CSRF invalide.');
-                return $this->redirectToRoute('admin_newsletter_compose');
+                return $this->redirectToRoute('admin_newsletter_composer');
             }
 
             $subject = trim((string) $request->request->get('subject', ''));
@@ -99,11 +99,11 @@ class AdminNewsletterController extends AbstractController
 
             if ($subject === '' || strlen($subject) > 200) {
                 $this->addFlash('danger', 'Le sujet est obligatoire et ne doit pas dépasser 200 caractères.');
-                return $this->redirectToRoute('admin_newsletter_compose');
+                return $this->redirectToRoute('admin_newsletter_composer');
             }
             if ($content === '' || strlen($content) > 200000) {
                 $this->addFlash('danger', 'Le contenu est obligatoire et ne doit pas dépasser 200 000 caractères.');
-                return $this->redirectToRoute('admin_newsletter_compose');
+                return $this->redirectToRoute('admin_newsletter_composer');
             }
 
             $subscribers = $em->getRepository(NewsletterSubscriber::class)->findBy(['isConfirmed' => true]);
@@ -196,7 +196,7 @@ class AdminNewsletterController extends AbstractController
         ]);
     }
 
-    #[Route('/history', name: 'history', methods: ['GET'])]
+    #[Route('/historique', name: 'historique', methods: ['GET'])]
     public function history(EntityManagerInterface $em): Response
     {
         $messages = $em->getRepository(NewsletterCampaign::class)->findBy([], ['sentAt' => 'DESC']);

@@ -34,15 +34,14 @@ class DashboardAdherentController extends AbstractController
         $this->uploadPhotoLimiter = $uploadPhotoLimiter;
     }
 
-    #[Route('/dashboard', name: 'dashboard')]
-    #[Route('/espace-adherent', name: 'adherent_dashboard', methods: ['GET'])]
+    #[Route('/espace-adherent', name: 'espace_adherent', methods: ['GET'])]
     public function index(Request $request): Response
     {
         /** @var User|null $user */
         $user = $this->getUser();
 
         if (!$user instanceof User) {
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_connexion');
         }
 
         $rangeDays = (int) $request->query->get('range', 30);
@@ -115,7 +114,7 @@ class DashboardAdherentController extends AbstractController
        🔷 2) Gestion de la Licence
        ============================================================ */
 
-    #[Route('/espace-adherent/licence', name: 'adherent_edit_license', methods: ['POST'])]
+    #[Route('/espace-adherent/licence', name: 'adherent_modifier_licence', methods: ['POST'])]
     public function editLicense(Request $request): JsonResponse
     {
         $user = $this->getUser();
@@ -158,7 +157,7 @@ class DashboardAdherentController extends AbstractController
     // par le bureau — une licence ne doit plus pouvoir être détachée depuis le
     // compte adhérent, ce n'était pas cohérent avec un usage "officiel".
 
-    #[Route('/profil/photo', name: 'profile_photo', methods: ['POST'])]
+    #[Route('/profil/photo', name: 'adherent_profil_photo', methods: ['POST'])]
     public function uploadProfilePhoto(Request $request): JsonResponse
     {
         $user = $this->getUser();
@@ -208,7 +207,7 @@ class DashboardAdherentController extends AbstractController
         ]);
     }
 
-    #[Route('/compte/change-password', name: 'change_password', methods: ['POST'])]
+    #[Route('/compte/changer-mot-de-passe', name: 'compte_changer_mot_de_passe', methods: ['POST'])]
     public function changePassword(
         Request $request,
         UserPasswordHasherInterface $passwordHasher
@@ -240,7 +239,7 @@ class DashboardAdherentController extends AbstractController
         return $this->json(['success' => true, 'message' => 'Mot de passe modifié avec succès !']);
     }
 
-    #[Route('/compte/supprimer', name: 'profile_delete_account', methods: ['POST'])]
+    #[Route('/compte/supprimer', name: 'compte_supprimer', methods: ['POST'])]
     public function deleteAccount(
         Security $security,
         SessionInterface $session,
@@ -265,10 +264,10 @@ class DashboardAdherentController extends AbstractController
         $security->logout(false);
         $session->invalidate();
 
-        return $this->json(['success' => true, 'redirect' => $this->generateUrl('account_goodbye')]);
+        return $this->json(['success' => true, 'redirect' => $this->generateUrl('compte_au_revoir')]);
     }
 
-    #[Route('/au-revoir', name: 'account_goodbye', methods: ['GET'])]
+    #[Route('/au-revoir', name: 'compte_au_revoir', methods: ['GET'])]
     public function goodbye(): Response
     {
         return $this->render('dashboard/goodbye.html.twig');
@@ -278,7 +277,7 @@ class DashboardAdherentController extends AbstractController
        🔷 5) Paramètres du compte
        ============================================================ */
 
-    #[Route('/espace-adherent/settings/update-email', name: 'adherent_settings_update_email', methods: ['POST'])]
+    #[Route('/espace-adherent/parametres/modifier-email', name: 'adherent_parametres_modifier_email', methods: ['POST'])]
     public function updateEmail(
         Request $request,
         UserRepository $userRepository,
@@ -345,7 +344,7 @@ class DashboardAdherentController extends AbstractController
         ]);
     }
 
-    #[Route('/espace-adherent/settings/update-password', name: 'adherent_settings_update_password', methods: ['POST'])]
+    #[Route('/espace-adherent/parametres/modifier-mot-de-passe', name: 'adherent_parametres_modifier_mot_de_passe', methods: ['POST'])]
     public function updatePassword(
         Request $request,
         UserPasswordHasherInterface $passwordHasher

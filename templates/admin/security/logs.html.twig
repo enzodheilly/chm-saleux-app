@@ -13,13 +13,13 @@
         <p>Toutes les actions critiques et événements d'authentification du système.</p>
     </div>
     <div class="toolbar">
-        <form method="POST" action="{{ path('admin_security_export_csv') }}" class="inline-form">
+        <form method="POST" action="{{ path('admin_securite_export_csv') }}" class="inline-form">
             <input type="hidden" name="_token" value="{{ csrf_token('export_csv') }}">
             <button type="submit" class="btn-tab">
                 <i class="fa-solid fa-file-arrow-down"></i> Exporter CSV
             </button>
         </form>
-        <form method="POST" action="{{ path('admin_security_purge_logs') }}" class="inline-form js-confirm-form" data-confirm="Purger tout l'historique ? Cette action est irréversible.">
+        <form method="POST" action="{{ path('admin_securite_purge_logs') }}" class="inline-form js-confirm-form" data-confirm="Purger tout l'historique ? Cette action est irréversible.">
             <input type="hidden" name="_token" value="{{ csrf_token('purge_logs') }}">
             <button type="submit" class="btn-danger-outline">
                 <i class="fa-solid fa-trash-can"></i> Purger
@@ -76,23 +76,23 @@
 {# ---- FILTRES + RECHERCHE ---- #}
 <div class="toolbar-container flex-between">
     <div class="actions group-left">
-        <a href="{{ path('admin_security_logs', {filter: 'all'}) }}"
+        <a href="{{ path('admin_securite_logs', {filter: 'all'}) }}"
            class="btn-tab filter-tab {{ filter == 'all' ? 'active' : '' }}">
             Tous
         </a>
-        <a href="{{ path('admin_security_logs', {filter: 'connexion'}) }}"
+        <a href="{{ path('admin_securite_logs', {filter: 'connexion'}) }}"
            class="btn-tab filter-tab {{ filter == 'connexion' ? 'active' : '' }}">
             <i class="fa-solid fa-circle-check"></i> Connexions
         </a>
-        <a href="{{ path('admin_security_logs', {filter: 'echec'}) }}"
+        <a href="{{ path('admin_securite_logs', {filter: 'echec'}) }}"
            class="btn-tab filter-tab {{ filter == 'echec' ? 'active' : '' }}">
             <i class="fa-solid fa-xmark"></i> Échecs
         </a>
-        <a href="{{ path('admin_security_logs', {filter: 'admin'}) }}"
+        <a href="{{ path('admin_securite_logs', {filter: 'admin'}) }}"
            class="btn-tab filter-tab {{ filter == 'admin' ? 'active' : '' }}">
             <i class="fa-solid fa-shield-halved"></i> Admin
         </a>
-        <a href="{{ path('admin_security_logs', {filter: 'securite'}) }}"
+        <a href="{{ path('admin_securite_logs', {filter: 'securite'}) }}"
            class="btn-tab filter-tab {{ filter == 'securite' ? 'active' : '' }}">
             <i class="fa-solid fa-lock"></i> Sécurité
         </a>
@@ -188,7 +188,7 @@
                         {# Bannir #}
                         <td class="td-right">
                             {% if log.ip and log.ip not in ['127.0.0.1', '::1', '—'] %}
-                                <form method="POST" action="{{ path('admin_security_ban_ip', {ip: log.ip}) }}" class="inline-form js-confirm-form" data-confirm="Bannir définitivement l'IP {{ log.ip }} ?">
+                                <form method="POST" action="{{ path('admin_securite_ban_ip', {ip: log.ip}) }}" class="inline-form js-confirm-form" data-confirm="Bannir définitivement l'IP {{ log.ip }} ?">
                                     <input type="hidden" name="_token" value="{{ csrf_token('ban_ip_' ~ log.ip) }}">
                                     <button type="submit" class="act-link act-del fs-large" title="Bannir cette IP">
                                         <i class="fa-solid fa-ban"></i>

@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/gestion-chm-secrete-92x/security', name: 'admin_security_')]
+#[Route('/gestion-chm-secrete-92x/securite', name: 'admin_securite_')]
 #[IsGranted('ROLE_SUPER_ADMIN')]
 class AdminSecurityController extends AbstractController
 {
@@ -102,14 +102,14 @@ class AdminSecurityController extends AbstractController
     {
         if (!$this->isCsrfTokenValid('unlock_user_' . $id, (string) $request->request->get('_token', ''))) {
             $this->addFlash('error', 'Jeton CSRF invalide.');
-            return $this->redirectToRoute('admin_security_blocklist');
+            return $this->redirectToRoute('admin_securite_blocklist');
         }
 
         $user = $userRepository->find($id);
 
         if (!$user) {
             $this->addFlash('error', 'Utilisateur introuvable.');
-            return $this->redirectToRoute('admin_security_blocklist');
+            return $this->redirectToRoute('admin_securite_blocklist');
         }
 
         $user->setLockedUntil(null);
@@ -123,7 +123,7 @@ class AdminSecurityController extends AbstractController
             htmlspecialchars($user->getEmail(), ENT_QUOTES, 'UTF-8')
         ));
 
-        return $this->redirectToRoute('admin_security_blocklist');
+        return $this->redirectToRoute('admin_securite_blocklist');
     }
 
     /**
@@ -134,7 +134,7 @@ class AdminSecurityController extends AbstractController
     {
         if (!$this->isCsrfTokenValid('purge_logs', (string) $request->request->get('_token', ''))) {
             $this->addFlash('error', 'Jeton CSRF invalide.');
-            return $this->redirectToRoute('admin_security_logs');
+            return $this->redirectToRoute('admin_securite_logs');
         }
 
         $repo->createQueryBuilder('l')
@@ -145,7 +145,7 @@ class AdminSecurityController extends AbstractController
         $logger->add(SystemLoggerService::TYPE_SECURITE, 'Purge complète de l\'historique des journaux de sécurité.');
 
         $this->addFlash('success', '🧹 Historique de sécurité réinitialisé avec succès.');
-        return $this->redirectToRoute('admin_security_logs');
+        return $this->redirectToRoute('admin_securite_logs');
     }
 
     /**
@@ -162,7 +162,7 @@ class AdminSecurityController extends AbstractController
         $user = $this->getUser();
 
         if ($user->isTotpConfirmed()) {
-            return $this->redirectToRoute('admin_dashboard');
+            return $this->redirectToRoute('admin_accueil');
         }
 
         if (!$user->getGoogleAuthenticatorSecret()) {
@@ -189,7 +189,7 @@ class AdminSecurityController extends AbstractController
             // ✅ CSRF
             if (!$this->isCsrfTokenValid('setup_2fa', (string) $request->request->get('_token', ''))) {
                 $this->addFlash('danger', 'Jeton CSRF invalide.');
-                return $this->redirectToRoute('admin_security_2fa_setup');
+                return $this->redirectToRoute('admin_securite_2fa_setup');
             }
 
             $authCode = $request->request->get('auth_code');
@@ -218,7 +218,7 @@ class AdminSecurityController extends AbstractController
 
                 $this->addFlash('success', 'Sécurité activée ! Notez bien vos codes de secours.');
 
-                return $this->redirectToRoute('admin_security_setup_success');
+                return $this->redirectToRoute('admin_securite_setup_success');
             }
 
             $this->addFlash('danger', 'Le code est incorrect.');
@@ -237,7 +237,7 @@ class AdminSecurityController extends AbstractController
 
         if (!$backupCodes) {
             $this->addFlash('warning', 'Les codes de secours ne sont affichés qu\'une seule fois pour votre sécurité.');
-            return $this->redirectToRoute('admin_dashboard');
+            return $this->redirectToRoute('admin_accueil');
         }
 
         return $this->render('admin/security/setup_success.html.twig', [
@@ -258,14 +258,14 @@ class AdminSecurityController extends AbstractController
     ): Response {
         if (!$this->isCsrfTokenValid('reset_2fa_' . $id, (string) $request->request->get('_token', ''))) {
             $this->addFlash('error', 'Jeton CSRF invalide.');
-            return $this->redirectToRoute('admin_security_blocklist');
+            return $this->redirectToRoute('admin_securite_blocklist');
         }
 
         $user = $userRepository->find($id);
 
         if (!$user) {
             $this->addFlash('error', 'Utilisateur introuvable.');
-            return $this->redirectToRoute('admin_security_blocklist');
+            return $this->redirectToRoute('admin_securite_blocklist');
         }
 
         $user->setGoogleAuthenticatorSecret(null);
@@ -280,7 +280,7 @@ class AdminSecurityController extends AbstractController
             htmlspecialchars($user->getEmail(), ENT_QUOTES, 'UTF-8')
         ));
 
-        return $this->redirectToRoute('admin_security_blocklist');
+        return $this->redirectToRoute('admin_securite_blocklist');
     }
 
     /**
@@ -296,12 +296,12 @@ class AdminSecurityController extends AbstractController
     ): Response {
         if (!$this->isCsrfTokenValid('ban_ip_' . $ip, (string) $request->request->get('_token', ''))) {
             $this->addFlash('error', 'Jeton CSRF invalide.');
-            return $this->redirectToRoute('admin_security_logs');
+            return $this->redirectToRoute('admin_securite_logs');
         }
 
         if (!filter_var($ip, FILTER_VALIDATE_IP)) {
             $this->addFlash('error', 'Adresse IP invalide.');
-            return $this->redirectToRoute('admin_security_logs');
+            return $this->redirectToRoute('admin_securite_logs');
         }
 
         $lastLog = $repo->findOneBy(['ip' => $ip], ['createdAt' => 'DESC']);
@@ -329,7 +329,7 @@ class AdminSecurityController extends AbstractController
             ));
         }
 
-        return $this->redirectToRoute('admin_security_logs');
+        return $this->redirectToRoute('admin_securite_logs');
     }
 
     /**
@@ -340,7 +340,7 @@ class AdminSecurityController extends AbstractController
     {
         if (!$this->isCsrfTokenValid('export_csv', (string) $request->request->get('_token', ''))) {
             $this->addFlash('error', 'Jeton CSRF invalide.');
-            return $this->redirectToRoute('admin_security_logs');
+            return $this->redirectToRoute('admin_securite_logs');
         }
 
         $logs = $repo->createQueryBuilder('l')

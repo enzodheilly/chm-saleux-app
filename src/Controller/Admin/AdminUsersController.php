@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-#[Route('/gestion-chm-secrete-92x/users', name: 'admin_users_')]
+#[Route('/gestion-chm-secrete-92x/utilisateurs', name: 'admin_utilisateurs_')]
 #[IsGranted('ROLE_STAFF')]
 class AdminUsersController extends AbstractController
 {
@@ -43,7 +43,7 @@ class AdminUsersController extends AbstractController
 
             $logger->add(SystemLoggerService::TYPE_ADMIN, 'Création utilisateur : ' . $user->getEmail());
             $this->addFlash('success', '✅ Utilisateur créé avec succès');
-            return $this->redirectToRoute('admin_users_index');
+            return $this->redirectToRoute('admin_utilisateurs_index');
         }
 
         return $this->render('admin/users/new.html.twig', [
@@ -90,7 +90,7 @@ class AdminUsersController extends AbstractController
 
             $logger->add(SystemLoggerService::TYPE_ADMIN, 'Modification utilisateur : ' . $user->getEmail());
             $this->addFlash('success', '✅ Utilisateur modifié avec succès.');
-            return $this->redirectToRoute('admin_users_index');
+            return $this->redirectToRoute('admin_utilisateurs_index');
         }
 
         return $this->render('admin/users/edit.html.twig', [
@@ -110,7 +110,7 @@ class AdminUsersController extends AbstractController
 
         if (!$this->isCsrfTokenValid('delete' . $user->getId(), (string) $request->request->get('_token', ''))) {
             $this->addFlash('error', 'Jeton CSRF invalide.');
-            return $this->redirectToRoute('admin_users_index');
+            return $this->redirectToRoute('admin_utilisateurs_index');
         }
 
         $email = $user->getEmail();
@@ -119,6 +119,6 @@ class AdminUsersController extends AbstractController
 
         $logger->add(SystemLoggerService::TYPE_ADMIN, 'Suppression utilisateur : ' . $email);
         $this->addFlash('success', 'Utilisateur supprimé avec succès.');
-        return $this->redirectToRoute('admin_users_index');
+        return $this->redirectToRoute('admin_utilisateurs_index');
     }
 }

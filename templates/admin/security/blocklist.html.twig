@@ -58,7 +58,7 @@
 								<div
 									class="actions">
 									{# MODIFICATION ICI : class ajoutée + data-confirm #}
-									<form method="POST" action="{{ path('admin_security_unlock_user', {id: row.id}) }}" class="inline-form js-confirm-form" data-confirm="🔓 Débloquer cet accès ?">
+									<form method="POST" action="{{ path('admin_securite_unlock_user', {id: row.id}) }}" class="inline-form js-confirm-form" data-confirm="🔓 Débloquer cet accès ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('unlock_user_' ~ row.id) }}">
 										<button type="submit" class="btn-unlock">DÉBLOQUER</button>
 									</form>

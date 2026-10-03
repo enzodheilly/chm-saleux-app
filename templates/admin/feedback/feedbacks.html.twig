@@ -78,7 +78,7 @@
 								{% if fb.status == 'done' %}
 									<span class="badge badge-active">✓ Traité</span>
 								{% else %}
-									<form action="{{ path('admin_feedbacks') }}" method="POST" class="reply-form">
+									<form action="{{ path('admin_avis') }}" method="POST" class="reply-form">
 										<input type="hidden" name="id" value="{{ fb.id }}">
 										<input
 										type="hidden" name="_token" value="{{ csrf_token('feedback_status_' ~ fb.id) }}">

@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route('/gestion-chm-secrete-92x/new-equipment', name: 'admin_new_equipment_')]
+#[Route('/gestion-chm-secrete-92x/nouveau-materiel', name: 'admin_nouveau_materiel_')]
 #[IsGranted('ROLE_STAFF')]
 class AdminNewEquipmentController extends AbstractController
 {
@@ -45,11 +45,11 @@ class AdminNewEquipmentController extends AbstractController
                 $allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
                 if (!in_array($imageFile->getMimeType(), $allowedMimes, true)) {
                     $this->addFlash('error', 'Format non autorisé (JPEG, PNG ou WebP uniquement).');
-                    return $this->redirectToRoute('admin_new_equipment_new');
+                    return $this->redirectToRoute('admin_nouveau_materiel_new');
                 }
                 if ($imageFile->getSize() > 5 * 1024 * 1024) {
                     $this->addFlash('error', 'Image trop volumineuse (max 5 Mo).');
-                    return $this->redirectToRoute('admin_new_equipment_new');
+                    return $this->redirectToRoute('admin_nouveau_materiel_new');
                 }
 
                 $safeName = $slugger->slug($equipment->getName());
@@ -66,7 +66,7 @@ class AdminNewEquipmentController extends AbstractController
             $em->persist($equipment);
             $em->flush();
 
-            return $this->redirectToRoute('admin_new_equipment_index');
+            return $this->redirectToRoute('admin_nouveau_materiel_index');
         }
 
         return $this->render('admin/new_equipment/new.html.twig', [
@@ -91,11 +91,11 @@ class AdminNewEquipmentController extends AbstractController
                 $allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
                 if (!in_array($imageFile->getMimeType(), $allowedMimes, true)) {
                     $this->addFlash('error', 'Format non autorisé (JPEG, PNG ou WebP uniquement).');
-                    return $this->redirectToRoute('admin_new_equipment_edit', ['id' => $equipment->getId()]);
+                    return $this->redirectToRoute('admin_nouveau_materiel_edit', ['id' => $equipment->getId()]);
                 }
                 if ($imageFile->getSize() > 5 * 1024 * 1024) {
                     $this->addFlash('error', 'Image trop volumineuse (max 5 Mo).');
-                    return $this->redirectToRoute('admin_new_equipment_edit', ['id' => $equipment->getId()]);
+                    return $this->redirectToRoute('admin_nouveau_materiel_edit', ['id' => $equipment->getId()]);
                 }
 
                 $safeName = $slugger->slug($equipment->getName());
@@ -120,7 +120,7 @@ class AdminNewEquipmentController extends AbstractController
             $em->persist($equipment);
             $em->flush();
 
-            return $this->redirectToRoute('admin_new_equipment_index');
+            return $this->redirectToRoute('admin_nouveau_materiel_index');
         }
 
         return $this->render('admin/new_equipment/edit.html.twig', [
@@ -152,6 +152,6 @@ class AdminNewEquipmentController extends AbstractController
         $em->remove($equipment);
         $em->flush();
 
-        return $this->redirectToRoute('admin_new_equipment_index');
+        return $this->redirectToRoute('admin_nouveau_materiel_index');
     }
 }

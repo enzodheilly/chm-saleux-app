@@ -4,7 +4,7 @@ Allow: /
 # Bloquer les zones privées
 Disallow: /admin/
 Disallow: /dashboard/
-Disallow: /login
+Disallow: /connexion
 Disallow: /register
 Disallow: /reset-password
 Disallow: /verify-code

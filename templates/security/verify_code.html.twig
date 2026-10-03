@@ -20,7 +20,7 @@
 		<div class="auth-left">
 			<div class="auth-content-wrapper">
 				<div class="auth-header">
-					<a href="{{ path('home') }}" class="auth-logo">
+					<a href="{{ path('accueil') }}" class="auth-logo">
 						<img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo CHM">
 					</a>
 					<h1>VÉRIFICATION</h1>
@@ -36,7 +36,7 @@
 					{% endfor %}
 				{% endfor %}
 
-				<form action="{{ path('app_verify_code') }}" method="post" class="auth-form">
+				<form action="{{ path('app_verifier_code') }}" method="post" class="auth-form">
 					<input type="hidden" name="_token" value="{{ csrf_token('verify_code') }}">
 
 					<div class="form-group">
@@ -59,7 +59,7 @@
 
 				<div class="register-hint">
 					<p>Vous n'avez pas reçu le code ?</p>
-					<form action="{{ path('app_resend_code') }}" method="post" id="resend-form">
+					<form action="{{ path('app_renvoyer_code') }}" method="post" id="resend-form">
 						<input type="hidden" name="_token" value="{{ csrf_token('resend_code') }}">
 						<button type="submit" class="btn-resend" id="btn-resend">
 							<span class="btn-text">Renvoyer le code</span>

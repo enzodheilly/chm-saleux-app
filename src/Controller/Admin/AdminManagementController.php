@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('ROLE_SUPER_ADMIN')]
 class AdminManagementController extends AbstractController
 {
-    #[Route('/gestion-chm-secrete-92x/new-admin', name: 'admin_users_new_admin')]
+    #[Route('/gestion-chm-secrete-92x/nouvel-administrateur', name: 'admin_utilisateurs_nouvel_administrateur')]
     public function newAdmin(
         Request $request,
         UserRepository $userRepo,
@@ -31,13 +31,13 @@ class AdminManagementController extends AbstractController
             $csrfToken = (string) $request->request->get('_token', '');
             if (!$this->isCsrfTokenValid('new_admin', $csrfToken)) {
                 $this->addFlash('danger', 'Token CSRF invalide.');
-                return $this->redirectToRoute('admin_users_new_admin');
+                return $this->redirectToRoute('admin_utilisateurs_nouvel_administrateur');
             }
 
             $emailInput = trim((string) $request->request->get('email', ''));
             if (!filter_var($emailInput, FILTER_VALIDATE_EMAIL)) {
                 $this->addFlash('danger', 'Adresse email invalide.');
-                return $this->redirectToRoute('admin_users_new_admin');
+                return $this->redirectToRoute('admin_utilisateurs_nouvel_administrateur');
             }
 
             $user = $userRepo->findOneBy(['email' => $emailInput]);
@@ -73,14 +73,14 @@ class AdminManagementController extends AbstractController
 
                 if (mb_strlen($rawPassword) < 10) {
                     $this->addFlash('danger', "Le mot de passe doit contenir au moins 10 caractères.");
-                    return $this->redirectToRoute('admin_users_new_admin');
+                    return $this->redirectToRoute('admin_utilisateurs_nouvel_administrateur');
                 }
 
                 $blacklist = ['password', 'azerty', '123456', 'motdepasse', 'chmsaleux', 'admin'];
                 foreach ($blacklist as $banned) {
                     if (str_contains(strtolower($rawPassword), $banned)) {
                         $this->addFlash('danger', "Ce mot de passe est trop facile à deviner.");
-                        return $this->redirectToRoute('admin_users_new_admin');
+                        return $this->redirectToRoute('admin_utilisateurs_nouvel_administrateur');
                     }
                 }
 
@@ -101,7 +101,7 @@ class AdminManagementController extends AbstractController
                 $this->addFlash('success', "Nouvel administrateur créé avec succès.");
             }
 
-            return $this->redirectToRoute('admin_users_index');
+            return $this->redirectToRoute('admin_utilisateurs_index');
         }
 
         return $this->render('admin/user/new_admin.html.twig', [

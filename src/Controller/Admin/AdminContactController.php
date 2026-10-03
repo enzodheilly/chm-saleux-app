@@ -39,7 +39,7 @@ class AdminContactController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/reply', name: 'reply', methods: ['POST'])]
+    #[Route('/{id}/repondre', name: 'repondre', methods: ['POST'])]
     public function reply(
         Request $request,
         ContactMessage $message,

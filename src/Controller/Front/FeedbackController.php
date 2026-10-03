@@ -13,7 +13,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class FeedbackController extends AbstractController
 {
     #[IsGranted('ROLE_USER')]
-    #[Route('/feedback/submit', name: 'feedback_submit', methods: ['POST'])]
+    #[Route('/avis/envoyer', name: 'avis_envoyer', methods: ['POST'])]
     public function submit(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);

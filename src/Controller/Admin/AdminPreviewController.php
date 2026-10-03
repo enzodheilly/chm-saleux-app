@@ -13,17 +13,17 @@ class AdminPreviewController extends AbstractController
 {
     public function __construct(private readonly RequestStack $requestStack) {}
 
-    #[Route('/admin/preview/on', name: 'admin_preview_on')]
+    #[Route('/admin/apercu/activer', name: 'admin_apercu_activer')]
     public function enablePreview(): RedirectResponse
     {
         $this->requestStack->getSession()->set('_admin_preview_mode', true);
         return $this->redirect('/');
     }
 
-    #[Route('/admin/preview/off', name: 'admin_preview_off')]
+    #[Route('/admin/apercu/desactiver', name: 'admin_apercu_desactiver')]
     public function disablePreview(): RedirectResponse
     {
         $this->requestStack->getSession()->remove('_admin_preview_mode');
-        return $this->redirectToRoute('admin_dashboard');
+        return $this->redirectToRoute('admin_accueil');
     }
 }

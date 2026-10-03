@@ -10,7 +10,7 @@
 		</div>
 		<div class="toolbar">
 			<input type="text" id="searchInput" class="search-input" placeholder="Nom ou email...">
-			<a href="{{ path('admin_users_new') }}" class="btn-create">+ Créer un compte</a>
+			<a href="{{ path('admin_utilisateurs_new') }}" class="btn-create">+ Créer un compte</a>
 		</div>
 	</div>
 
@@ -68,17 +68,17 @@
 								<div class="actions">
 									{% if user.isTotpConfirmed and user.id != app.user.id %}
 										{# MODIFICATION : Lien Reset 2FA #}
-										<form method="POST" action="{{ path('admin_security_reset_2fa', {'id': user.id}) }}" class="inline-form js-confirm-form" data-confirm="🔐 Réinitialiser le 2FA pour {{ user.firstname }} ? Cela l'obligera à scanner un nouveau QR code.">
+										<form method="POST" action="{{ path('admin_securite_reset_2fa', {'id': user.id}) }}" class="inline-form js-confirm-form" data-confirm="🔐 Réinitialiser le 2FA pour {{ user.firstname }} ? Cela l'obligera à scanner un nouveau QR code.">
 											<input type="hidden" name="_token" value="{{ csrf_token('reset_2fa_' ~ user.id) }}">
 											<button type="submit" class="act-link act-warn">Reset 2FA</button>
 										</form>
 									{% endif %}
 
-									<a href="{{ path('admin_users_edit', {'id': user.id}) }}" class="act-link">Éditer</a>
+									<a href="{{ path('admin_utilisateurs_edit', {'id': user.id}) }}" class="act-link">Éditer</a>
 
 									{% if user.id != app.user.id %}
 										{# MODIFICATION : Formulaire de suppression #}
-										<form method="post" action="{{ path('admin_users_delete', {'id': user.id}) }}" class="inline-form js-confirm-form" data-confirm="🚫 Supprimer définitivement le compte de {{ user.firstname }} {{ user.lastname|upper }} ?">
+										<form method="post" action="{{ path('admin_utilisateurs_delete', {'id': user.id}) }}" class="inline-form js-confirm-form" data-confirm="🚫 Supprimer définitivement le compte de {{ user.firstname }} {{ user.lastname|upper }} ?">
 											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
 											<button class="act-link act-del">Supprimer</button>
 										</form>

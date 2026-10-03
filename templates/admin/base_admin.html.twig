@@ -33,7 +33,7 @@
 			<div class="sidebar-content">
 
 				<div class="nav-item">
-					<a href="{{ path('admin_dashboard') }}" class="nav-link {% if app.request.get('_route') == 'admin_dashboard' %}active{% endif %}">
+					<a href="{{ path('admin_accueil') }}" class="nav-link {% if app.request.get('_route') == 'admin_accueil' %}active{% endif %}">
 						Tableau de bord
 					</a>
 				</div>
@@ -46,9 +46,9 @@
 						<span class="caret"></span>
 					</div>
 					<div class="submenu">
-						<a href="{{ path('admin_users_index') }}">Liste des utilisateurs</a>
+						<a href="{{ path('admin_utilisateurs_index') }}">Liste des utilisateurs</a>
 						{% if is_granted('ROLE_SUPER_ADMIN') %}
-							<a href="{{ path('admin_users_new_admin') }}" class="nav-link-accent">+ Ajouter un staff</a>
+							<a href="{{ path('admin_utilisateurs_nouvel_administrateur') }}" class="nav-link-accent">+ Ajouter un staff</a>
 						{% endif %}
 						</div>
 				</div>
@@ -73,7 +73,7 @@
 					<div class="submenu">
 						<a href="{{ path('admin_demande_licence_index') }}">Demandes &amp; licences</a>
 						<a href="{{ path('admin_licence_index') }}">Archives licences</a>
-						<a href="{{ path('admin_blocked_members_index') }}">Adhérents bloqués</a>
+						<a href="{{ path('admin_adherents_bloques_index') }}">Adhérents bloqués</a>
 					</div>
 				</div>
 
@@ -113,13 +113,13 @@
 				</div>
 
 				<div class="nav-item">
-					<a href="{{ path('admin_settings_banner_index') }}" class="nav-link {% if app.request.get('_route') starts with 'admin_settings_banner' %}active{% endif %}">
+					<a href="{{ path('admin_parametres_banniere_index') }}" class="nav-link {% if app.request.get('_route') starts with 'admin_parametres_banniere' %}active{% endif %}">
 						Bandeau d'annonce
 					</a>
 				</div>
 
 				<div class="nav-item">
-					<a href="{{ path('admin_new_equipment_index') }}" class="nav-link {% if app.request.get('_route') starts with 'admin_new_equipment' %}active{% endif %}">
+					<a href="{{ path('admin_nouveau_materiel_index') }}" class="nav-link {% if app.request.get('_route') starts with 'admin_nouveau_materiel' %}active{% endif %}">
 						Nouveaux Matériels
 					</a>
 				</div>
@@ -133,13 +133,13 @@
 						<span class="caret"></span>
 					</div>
 					<div class="submenu">
-						<a href="{{ path('admin_equipment_index') }}" class="{% if app.request.get('_route') starts with 'admin_equipment' %}active-sub{% endif %}">
+						<a href="{{ path('admin_materiel_index') }}" class="{% if app.request.get('_route') starts with 'admin_materiel' %}active-sub{% endif %}">
 							Équipements (base exercices)
 						</a>
-						<a href="{{ path('admin_exercise_index') }}" class="{% if app.request.get('_route') starts with 'admin_exercise' %}active-sub{% endif %}">
+						<a href="{{ path('admin_exercice_index') }}" class="{% if app.request.get('_route') starts with 'admin_exercice' %}active-sub{% endif %}">
 							Exercices
 						</a>
-						<a href="{{ path('admin_routine_template_index') }}" class="{% if app.request.get('_route') starts with 'admin_routine_template' %}active-sub{% endif %}">
+						<a href="{{ path('admin_routine_modele_index') }}" class="{% if app.request.get('_route') starts with 'admin_routine_modele' %}active-sub{% endif %}">
 							Routines
 						</a>
 					</div>
@@ -148,7 +148,7 @@
 
 				<div class="nav-group-label">Boutique</div>
 				<div class="nav-item">
-					<a href="{{ path('admin_merchandise_index') }}" class="nav-link">
+					<a href="{{ path('admin_boutique_index') }}" class="nav-link">
 						Produits & Stock
 					</a>
 				</div>
@@ -163,7 +163,7 @@
 						<a href="{{ path('admin_newsletter_index') }}">Newsletter</a>
 						<a href="{{ path('admin_contact_index') }}">Messages reçus</a>
 						{% if is_granted('ROLE_SUPER_ADMIN') %}
-							<a href="{{ path('admin_feedbacks') }}">Feedbacks site</a>
+							<a href="{{ path('admin_avis') }}">Feedbacks site</a>
 						{% endif %}
 					</div>
 				</div>
@@ -175,20 +175,20 @@
 						<span class="caret"></span>
 					</div>
 					<div class="submenu">
-						<a href="{{ path('admin_security_logs') }}">Journal des Logs</a>
-						<a href="{{ path('admin_security_blocklist') }}">Blocage IP (Blacklist)</a>
+						<a href="{{ path('admin_securite_logs') }}">Journal des Logs</a>
+						<a href="{{ path('admin_securite_blocklist') }}">Blocage IP (Blacklist)</a>
 					</div>
 				</div>
 
 				<div class="nav-group-label">Paramètres</div>
 				<div class="nav-item">
-					<a href="{{ path('admin_settings_index') }}" class="nav-link {% if app.request.get('_route') == 'admin_settings_index' %}active{% endif %}">
+					<a href="{{ path('admin_parametres_index') }}" class="nav-link {% if app.request.get('_route') == 'admin_parametres_index' %}active{% endif %}">
 						Mon compte
 					</a>
 				</div>
 				{% if is_granted('ROLE_SUPER_ADMIN') %}
 				<div class="nav-item">
-					<a href="{{ path('admin_settings_maintenance_index') }}" class="nav-link {% if app.request.get('_route') starts with 'admin_settings_maintenance' %}active{% endif %}">
+					<a href="{{ path('admin_parametres_maintenance_index') }}" class="nav-link {% if app.request.get('_route') starts with 'admin_parametres_maintenance' %}active{% endif %}">
 						Maintenance
 					</a>
 				</div>
@@ -197,11 +197,11 @@
 			</div>
 
 			<div class="sidebar-footer">
-				<a href="{{ path('admin_preview_on') }}" class="view-site-link">
+				<a href="{{ path('admin_apercu_activer') }}" class="view-site-link">
 					<i class="fa-solid fa-arrow-up-right-from-square"></i>
 					Voir le site
 				</a>
-				<a href="{{ path('app_logout') }}" class="logout-link">
+				<a href="{{ path('app_deconnexion') }}" class="logout-link">
 					Se déconnecter
 				</a>
 			</div>
@@ -260,7 +260,7 @@
 			var LIFETIME    = {{ constant('App\\EventSubscriber\\AdminSessionSubscriber::ADMIN_SESSION_LIFETIME') }};
 			var WARN_BEFORE = 120;
 			var PING_URL    = '{{ path('admin_session_ping') }}';
-			var LOGOUT_URL  = '{{ path('app_logout') }}';
+			var LOGOUT_URL  = '{{ path('app_deconnexion') }}';
 			var LS_KEY      = 'chm_admin_deadline';
 
 			var deadline    = Date.now() + LIFETIME * 1000;

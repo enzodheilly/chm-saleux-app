@@ -13,13 +13,13 @@
 			<p>Ajoute un nouvel exercice au catalogue</p>
 		</div>
 		<div class="toolbar">
-			<a href="{{ path('admin_exercise_index') }}" class="btn-outline">Retour</a>
+			<a href="{{ path('admin_exercice_index') }}" class="btn-outline">Retour</a>
 		</div>
 	</div>
 
 	<div class="table-wrapper">
 		<div class="card-body">
-			{{ form_start(form, { action: path('admin_exercise_new') }) }}
+			{{ form_start(form, { action: path('admin_exercice_new') }) }}
 
 			{# ✅ erreurs globales (sinon tu ne vois rien) #}
 			<div class="form-error">{{ form_errors(form) }}</div>
@@ -57,7 +57,7 @@
 
 				<div class="form-actions">
 					<button class="btn-create" type="submit">Créer</button>
-					<a href="{{ path('admin_exercise_index') }}" class="btn-outline">Annuler</a>
+					<a href="{{ path('admin_exercice_index') }}" class="btn-outline">Annuler</a>
 				</div>
 			</div>
 

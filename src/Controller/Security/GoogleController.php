@@ -30,6 +30,6 @@ class GoogleController extends AbstractController
         // redirection finale dans onAuthenticationSuccess(). Ce contrôleur ne sert qu'à
         // déclarer la route pour le bundle OAuth2 (redirect_route dans
         // knpu_oauth2_client.yaml) et satisfaire le routing Symfony.
-        return $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('app_connexion');
     }
 }

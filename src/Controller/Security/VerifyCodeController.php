@@ -18,7 +18,7 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 class VerifyCodeController extends AbstractController
 {
-    #[Route('/verification/email', name: 'app_verify_code', methods: ['GET', 'POST'])]
+    #[Route('/verification/email', name: 'app_verifier_code', methods: ['GET', 'POST'])]
     public function verifyCode(
         Request $request,
         SessionInterface $session,
@@ -36,7 +36,7 @@ class VerifyCodeController extends AbstractController
 
         if ($request->isMethod('GET')) {
             if (!$email) {
-                return $this->redirectToRoute('app_register');
+                return $this->redirectToRoute('app_inscription');
             }
             return $this->render('security/verify_code.html.twig');
         }
@@ -45,7 +45,7 @@ class VerifyCodeController extends AbstractController
         $csrf = (string) $request->request->get('_token', '');
         if (!$this->isCsrfTokenValid('verify_code', $csrf)) {
             $this->addFlash('error', 'Session invalide.');
-            return $this->redirectToRoute('app_verify_code');
+            return $this->redirectToRoute('app_verifier_code');
         }
 
         $code = trim((string) $request->request->get('code', ''));
@@ -54,17 +54,17 @@ class VerifyCodeController extends AbstractController
         $limit = $verify_codeLimiter->create($ip . '|' . ($email ?: 'no-email'))->consume(1);
         if (!$limit->isAccepted()) {
             $this->addFlash('error', 'Trop de tentatives. Réessayez plus tard.');
-            return $this->redirectToRoute('app_verify_code');
+            return $this->redirectToRoute('app_verifier_code');
         }
 
         if ($email === '') {
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('app_inscription');
         }
 
         $user = $userRepository->findOneBy(['email' => $email]);
         if (!$user) {
             $this->addFlash('error', 'Utilisateur introuvable.');
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('app_inscription');
         }
 
         // Vérification du code
@@ -72,13 +72,13 @@ class VerifyCodeController extends AbstractController
         if (!$expiresAt || $expiresAt < new \DateTimeImmutable()) {
             $logger->add(SystemLoggerService::TYPE_SECURITE, 'Code de vérification expiré pour : ' . $email, $email, false);
             $this->addFlash('error', 'Le code a expiré.');
-            return $this->redirectToRoute('app_verify_code');
+            return $this->redirectToRoute('app_verifier_code');
         }
 
         if ((string) $user->getVerificationCode() !== $code) {
             $logger->add(SystemLoggerService::TYPE_SECURITE, 'Code de vérification incorrect pour : ' . $email, $email, false);
             $this->addFlash('error', 'Code incorrect.');
-            return $this->redirectToRoute('app_verify_code');
+            return $this->redirectToRoute('app_verifier_code');
         }
 
         // Succès
@@ -94,7 +94,7 @@ class VerifyCodeController extends AbstractController
         return $userAuthenticator->authenticateUser($user, $authenticator, $request);
     }
 
-    #[Route('/verification/email/renvoyer', name: 'app_resend_code', methods: ['POST'])]
+    #[Route('/verification/email/renvoyer', name: 'app_renvoyer_code', methods: ['POST'])]
     public function resendCode(
         Request $request,
         SessionInterface $session,
@@ -109,11 +109,11 @@ class VerifyCodeController extends AbstractController
 
         if (!$this->isCsrfTokenValid('resend_code', (string) $request->request->get('_token'))) {
             $this->addFlash('error', 'Session invalide.');
-            return $this->redirectToRoute('app_verify_code');
+            return $this->redirectToRoute('app_verifier_code');
         }
 
         if ($email === '') {
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('app_inscription');
         }
 
         // Rate limit anti-spam
@@ -127,12 +127,12 @@ class VerifyCodeController extends AbstractController
                 $minutes,
                 $minutes > 1 ? 's' : ''
             ));
-            return $this->redirectToRoute('app_verify_code');
+            return $this->redirectToRoute('app_verifier_code');
         }
 
         $user = $userRepository->findOneBy(['email' => $email]);
         if (!$user) {
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('app_inscription');
         }
 
         // Génération nouveau code
@@ -157,6 +157,6 @@ class VerifyCodeController extends AbstractController
             $this->addFlash('error', "Erreur lors de l'envoi de l'email.");
         }
 
-        return $this->redirectToRoute('app_verify_code');
+        return $this->redirectToRoute('app_verifier_code');
     }
 }

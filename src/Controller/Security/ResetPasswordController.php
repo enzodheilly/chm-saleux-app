@@ -33,7 +33,7 @@ class ResetPasswordController extends AbstractController
     /**
      * ÉTAPE 1 : Demande de réinitialisation (Saisie de l'email)
      */
-    #[Route('/mot-de-passe-oublie', name: 'app_reset_password_request', methods: ['GET', 'POST'])]
+    #[Route('/mot-de-passe-oublie', name: 'app_mot_de_passe_oublie_demande', methods: ['GET', 'POST'])]
     public function request(
         Request $request,
         EntityManagerInterface $em,
@@ -55,14 +55,14 @@ class ResetPasswordController extends AbstractController
             !$turnstile->verify((string)$request->request->get('cf-turnstile-response', ''), $ip)
         ) {
             $this->addFlash('error', 'Validation de sécurité échouée.');
-            return $this->redirectToRoute('app_reset_password_request');
+            return $this->redirectToRoute('app_mot_de_passe_oublie_demande');
         }
 
         // ✅ Rate limit
         $limit = $reset_requestLimiter->create($ip)->consume(1);
         if (!$limit->isAccepted()) {
             $this->addFlash('error', 'Trop de demandes. Réessayez plus tard.');
-            return $this->redirectToRoute('app_reset_password_request');
+            return $this->redirectToRoute('app_mot_de_passe_oublie_demande');
         }
 
         /** @var User|null $user */
@@ -74,7 +74,7 @@ class ResetPasswordController extends AbstractController
             // Cooldown de 60s entre deux demandes
             if ($user->getLastResetRequestAt() && $user->getLastResetRequestAt() > $now->modify('-60 seconds')) {
                 $this->addFlash('error', 'Veuillez patienter avant une nouvelle demande.');
-                return $this->redirectToRoute('app_reset_password_request');
+                return $this->redirectToRoute('app_mot_de_passe_oublie_demande');
             }
 
             $resetToken = Uuid::v4()->toRfc4122();
@@ -87,7 +87,7 @@ class ResetPasswordController extends AbstractController
 
             // URL absolue pour l'email
             $resetUrl = $this->generateUrl(
-                'app_reset_password_confirm',
+                'app_mot_de_passe_oublie_confirmation',
                 ['token' => $resetToken],
                 UrlGeneratorInterface::ABSOLUTE_URL
             );
@@ -110,13 +110,13 @@ class ResetPasswordController extends AbstractController
 
         // Réponse neutre pour éviter l'énumération d'emails
         $this->addFlash('success', 'Si un compte existe, un email a été envoyé pour réinitialiser le mot de passe.');
-        return $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('app_connexion');
     }
 
     /**
      * ÉTAPE 2 : Saisie du nouveau mot de passe (via le lien de l'email)
      */
-    #[Route('/mot-de-passe-oublie/reinitialiser/{token}', name: 'app_reset_password_confirm', methods: ['GET', 'POST'])]
+    #[Route('/mot-de-passe-oublie/reinitialiser/{token}', name: 'app_mot_de_passe_oublie_confirmation', methods: ['GET', 'POST'])]
     public function reset(
         string $token,
         Request $request,
@@ -130,7 +130,7 @@ class ResetPasswordController extends AbstractController
         if (!$user || !$user->getResetTokenExpiresAt() || $user->getResetTokenExpiresAt() < new \DateTimeImmutable()) {
             $logger->add(SystemLoggerService::TYPE_SECURITE, 'Tentative reset MDP avec token invalide ou expiré.', null, false);
             $this->addFlash('error', 'Le lien est invalide ou a expiré.');
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_connexion');
         }
 
         if ($request->isMethod('GET')) {
@@ -140,7 +140,7 @@ class ResetPasswordController extends AbstractController
         // --- LOGIQUE POST ---
         if (!$this->isCsrfTokenValid('reset_final', (string)$request->request->get('_token'))) {
             $this->addFlash('error', 'Session invalide.');
-            return $this->redirectToRoute('app_reset_password_confirm', ['token' => $token]);
+            return $this->redirectToRoute('app_mot_de_passe_oublie_confirmation', ['token' => $token]);
         }
 
         $newPassword = (string)$request->request->get('password');
@@ -148,12 +148,12 @@ class ResetPasswordController extends AbstractController
 
         if ($newPassword !== $confirmPassword) {
             $this->addFlash('error', 'Les mots de passe ne correspondent pas.');
-            return $this->redirectToRoute('app_reset_password_confirm', ['token' => $token]);
+            return $this->redirectToRoute('app_mot_de_passe_oublie_confirmation', ['token' => $token]);
         }
 
         if (!$this->isStrongPassword($newPassword)) {
             $this->addFlash('error', 'Le mot de passe est trop faible.');
-            return $this->redirectToRoute('app_reset_password_confirm', ['token' => $token]);
+            return $this->redirectToRoute('app_mot_de_passe_oublie_confirmation', ['token' => $token]);
         }
 
         $hasher = $passwordHasherFactory->getPasswordHasher($user);
@@ -161,7 +161,7 @@ class ResetPasswordController extends AbstractController
         // Vérification contre le mot de passe actuel (non encore archivé)
         if ($user->getPassword() && $hasher->verify($user->getPassword(), $newPassword)) {
             $this->addFlash('error', 'Ce mot de passe a déjà été utilisé récemment. Choisissez-en un différent.');
-            return $this->redirectToRoute('app_reset_password_confirm', ['token' => $token]);
+            return $this->redirectToRoute('app_mot_de_passe_oublie_confirmation', ['token' => $token]);
         }
 
         // Vérification de l'historique (les 5 derniers)
@@ -169,7 +169,7 @@ class ResetPasswordController extends AbstractController
         foreach ($lastPasswords as $history) {
             if ($hasher->verify($history->getPasswordHash(), $newPassword)) {
                 $this->addFlash('error', 'Ce mot de passe a déjà été utilisé récemment. Choisissez-en un différent.');
-                return $this->redirectToRoute('app_reset_password_confirm', ['token' => $token]);
+                return $this->redirectToRoute('app_mot_de_passe_oublie_confirmation', ['token' => $token]);
             }
         }
 
@@ -191,6 +191,6 @@ class ResetPasswordController extends AbstractController
         $logger->add('Sécurité', "Mot de passe réinitialisé pour {$user->getEmail()}");
 
         $this->addFlash('success', 'Votre mot de passe a été modifié. Vous pouvez maintenant vous connecter.');
-        return $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('app_connexion');
     }
 }

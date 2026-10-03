@@ -14,8 +14,8 @@ class ForceSetPasswordSubscriber implements EventSubscriberInterface
 {
     // Routes autorisées sans avoir configuré son mot de passe
     private const ALLOWED_ROUTES = [
-        'set_password',
-        'app_logout',
+        'definir_mot_de_passe',
+        'app_deconnexion',
         'legal_page_show',
     ];
 
@@ -62,7 +62,7 @@ class ForceSetPasswordSubscriber implements EventSubscriberInterface
         }
 
         $event->setResponse(
-            new RedirectResponse($this->router->generate('set_password'))
+            new RedirectResponse($this->router->generate('definir_mot_de_passe'))
         );
     }
 }

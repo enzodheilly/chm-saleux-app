@@ -49,7 +49,7 @@ class TestResetEmailCommand extends Command
         };
 
         $fakeResetUrl = $this->urlGenerator->generate(
-            'app_reset_password_confirm',
+            'app_mot_de_passe_oublie_confirmation',
             ['token' => 'TEST-TOKEN-NON-FONCTIONNEL'],
             UrlGeneratorInterface::ABSOLUTE_URL
         );

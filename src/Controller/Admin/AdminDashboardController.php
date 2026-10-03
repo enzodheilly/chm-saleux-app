@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('ROLE_STAFF')]
 class AdminDashboardController extends AbstractController
 {
-    #[Route('/gestion-chm-secrete-92x', name: 'admin_dashboard')]
+    #[Route('/gestion-chm-secrete-92x', name: 'admin_accueil')]
     public function index(
         UserRepository $userRepo,
         SecurityLogRepository $logRepo,
@@ -23,11 +23,11 @@ class AdminDashboardController extends AbstractController
         $user = $this->getUser();
 
         if (!$user instanceof User) {
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_connexion');
         }
 
         if (!$user->isTotpConfirmed()) {
-            return $this->redirectToRoute('admin_security_2fa_setup');
+            return $this->redirectToRoute('admin_securite_2fa_setup');
         }
 
         $now24h = new \DateTimeImmutable('-24 hours');

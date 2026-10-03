@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'home')]
+    #[Route('/', name: 'accueil')]
     public function index(
         ArticleRepository $articleRepository,
         NewEquipmentRepository $newEquipmentRepository,

@@ -10,7 +10,7 @@
 		</div>
 		<div class="toolbar">
 			<input type="text" id="searchExercise" class="search-input" placeholder="Rechercher un exercice...">
-			<a href="{{ path('admin_exercise_new') }}" class="btn-create">+ Ajouter</a>
+			<a href="{{ path('admin_exercice_new') }}" class="btn-create">+ Ajouter</a>
 		</div>
 	</div>
 
@@ -40,10 +40,10 @@
 							</td>
 							<td>
 								<div class="actions">
-									<a href="{{ path('admin_exercise_edit', {id: exercise.id}) }}" class="act-link">Modifier</a>
+									<a href="{{ path('admin_exercice_edit', {id: exercise.id}) }}" class="act-link">Modifier</a>
 
 									{# MODIFICATION : Suppression du onsubmit inline #}
-									<form method="post" action="{{ path('admin_exercise_delete', {id: exercise.id}) }}" class="js-confirm-form" data-confirm="❓ Supprimer l'exercice '{{ exercise.name }}' ? Cela pourrait affecter les routines qui l'utilisent.">
+									<form method="post" action="{{ path('admin_exercice_delete', {id: exercise.id}) }}" class="js-confirm-form" data-confirm="❓ Supprimer l'exercice '{{ exercise.name }}' ? Cela pourrait affecter les routines qui l'utilisent.">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete_exercise_' ~ exercise.id) }}">
 										<button class="act-link act-del">Supprimer</button>
 									</form>

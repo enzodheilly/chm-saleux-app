@@ -139,27 +139,27 @@ class GoogleAuthenticator extends AbstractAuthenticator
         $user = $token->getUser();
 
         if (!$user instanceof User) {
-            return new RedirectResponse($this->router->generate('home'));
+            return new RedirectResponse($this->router->generate('accueil'));
         }
 
         $pseudo = $this->logger->pseudonymizeEmail($user->getEmail());
         $this->logger->add('Connexion', sprintf('Connexion Google OK : %s', $pseudo));
 
         if ($user->getNeedsPassword()) {
-            return new RedirectResponse($this->router->generate('set_password'));
+            return new RedirectResponse($this->router->generate('definir_mot_de_passe'));
         }
 
         $roles = $user->getRoles();
         if (in_array('ROLE_STAFF', $roles, true) || in_array('ROLE_SUPER_ADMIN', $roles, true)) {
-            return new RedirectResponse($this->router->generate('admin_dashboard'));
+            return new RedirectResponse($this->router->generate('admin_accueil'));
         }
 
-        return new RedirectResponse($this->router->generate('home'));
+        return new RedirectResponse($this->router->generate('accueil'));
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?RedirectResponse
     {
         $this->logger->add('Erreur Connexion', 'Échec connexion Google');
-        return new RedirectResponse($this->router->generate('app_login'));
+        return new RedirectResponse($this->router->generate('app_connexion'));
     }
 }

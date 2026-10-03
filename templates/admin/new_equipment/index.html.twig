@@ -9,7 +9,7 @@
 			<p>Gérez le catalogue de matériel disponible au club.</p>
 		</div>
 		<div class="toolbar">
-			<a href="{{ path('admin_new_equipment_new') }}" class="btn-create">+ Ajouter un équipement</a>
+			<a href="{{ path('admin_nouveau_materiel_new') }}" class="btn-create">+ Ajouter un équipement</a>
 		</div>
 	</div>
 
@@ -47,10 +47,10 @@
 
 							<td>
 								<div class="actions">
-									<a href="{{ path('admin_new_equipment_edit', {id: equipment.id}) }}" class="act-link">Modifier</a>
+									<a href="{{ path('admin_nouveau_materiel_edit', {id: equipment.id}) }}" class="act-link">Modifier</a>
 
 									{# MODIFICATION : Remplacement du onsubmit par js-confirm-form #}
-									<form method="post" action="{{ path('admin_new_equipment_delete', {id: equipment.id}) }}" class="js-confirm-form" data-confirm="⚙️ Confirmer la suppression de l'équipement : {{ equipment.name }} ?">
+									<form method="post" action="{{ path('admin_nouveau_materiel_delete', {id: equipment.id}) }}" class="js-confirm-form" data-confirm="⚙️ Confirmer la suppression de l'équipement : {{ equipment.name }} ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ equipment.id) }}">
 										<button class="act-link act-del">Supprimer</button>
 									</form>

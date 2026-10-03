@@ -11,7 +11,7 @@
 	</div>
 
 	<div class="table-wrapper" style="margin-bottom: 24px;">
-		<form method="post" action="{{ path('admin_blocked_members_create') }}" class="form-row-2" style="padding: 20px; gap: 16px; display: flex; flex-wrap: wrap; align-items: flex-end;">
+		<form method="post" action="{{ path('admin_adherents_bloques_create') }}" class="form-row-2" style="padding: 20px; gap: 16px; display: flex; flex-wrap: wrap; align-items: flex-end;">
 			<input type="hidden" name="_token" value="{{ csrf_token('blocked_member_create') }}">
 
 			<div class="form-group">
@@ -57,7 +57,7 @@
 							<td class="td-mono-sm">{{ blocked.blockedBy ?: '—' }}</td>
 							<td>
 								<div class="actions">
-									<form method="post" action="{{ path('admin_blocked_members_delete', {id: blocked.id}) }}" class="js-confirm-form" data-confirm="Retirer {{ blocked.prenom }} {{ blocked.nom }} de la liste des personnes bloquées ?">
+									<form method="post" action="{{ path('admin_adherents_bloques_delete', {id: blocked.id}) }}" class="js-confirm-form" data-confirm="Retirer {{ blocked.prenom }} {{ blocked.nom }} de la liste des personnes bloquées ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ blocked.id) }}">
 										<button class="act-link act-del">Débloquer</button>
 									</form>

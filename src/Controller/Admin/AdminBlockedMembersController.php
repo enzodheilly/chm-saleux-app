@@ -17,7 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
  * payeurs, exclusions disciplinaires...). Voir BlockedMemberRepository::isBlocked
  * pour le rapprochement effectué côté formulaire public.
  */
-#[Route('/gestion-chm-secrete-92x/adherents-bloques', name: 'admin_blocked_members_')]
+#[Route('/gestion-chm-secrete-92x/adherents-bloques', name: 'admin_adherents_bloques_')]
 #[IsGranted('ROLE_STAFF')]
 class AdminBlockedMembersController extends AbstractController
 {
@@ -34,7 +34,7 @@ class AdminBlockedMembersController extends AbstractController
     {
         if (!$this->isCsrfTokenValid('blocked_member_create', (string) $request->request->get('_token', ''))) {
             $this->addFlash('danger', 'Token CSRF invalide.');
-            return $this->redirectToRoute('admin_blocked_members_index');
+            return $this->redirectToRoute('admin_adherents_bloques_index');
         }
 
         $nom = trim((string) $request->request->get('nom', ''));
@@ -43,7 +43,7 @@ class AdminBlockedMembersController extends AbstractController
 
         if ($nom === '' || $prenom === '') {
             $this->addFlash('danger', 'Le nom et le prénom sont obligatoires.');
-            return $this->redirectToRoute('admin_blocked_members_index');
+            return $this->redirectToRoute('admin_adherents_bloques_index');
         }
 
         $blocked = new BlockedMember();
@@ -62,7 +62,7 @@ class AdminBlockedMembersController extends AbstractController
         ));
 
         $this->addFlash('success', sprintf('%s %s a été ajouté à la liste des personnes bloquées.', $prenom, $nom));
-        return $this->redirectToRoute('admin_blocked_members_index');
+        return $this->redirectToRoute('admin_adherents_bloques_index');
     }
 
     #[Route('/{id}/supprimer', name: 'delete', methods: ['POST'])]
@@ -70,7 +70,7 @@ class AdminBlockedMembersController extends AbstractController
     {
         if (!$this->isCsrfTokenValid('delete' . $blockedMember->getId(), (string) $request->request->get('_token', ''))) {
             $this->addFlash('danger', 'Token CSRF invalide.');
-            return $this->redirectToRoute('admin_blocked_members_index');
+            return $this->redirectToRoute('admin_adherents_bloques_index');
         }
 
         $logger->add(SystemLoggerService::TYPE_ADMIN, sprintf(
@@ -83,6 +83,6 @@ class AdminBlockedMembersController extends AbstractController
         $em->flush();
 
         $this->addFlash('success', 'Retiré de la liste des personnes bloquées.');
-        return $this->redirectToRoute('admin_blocked_members_index');
+        return $this->redirectToRoute('admin_adherents_bloques_index');
     }
 }

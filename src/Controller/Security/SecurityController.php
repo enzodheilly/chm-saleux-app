@@ -9,12 +9,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    #[Route('/login', name: 'app_login', methods: ['GET', 'POST'])]
+    #[Route('/connexion', name: 'app_connexion', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // Si l'utilisateur est déjà connecté, on le dégage vers l'accueil
         if ($this->getUser()) {
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('accueil');
         }
 
         // Récupérer l'erreur de connexion s'il y en a une
@@ -28,7 +28,7 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    #[Route('/logout', name: 'app_logout')]
+    #[Route('/deconnexion', name: 'app_deconnexion')]
     public function logout(): void
     {
         throw new \LogicException('Ce point de déconnexion est intercepté par le firewall.');
@@ -38,7 +38,7 @@ class SecurityController extends AbstractController
     public function authChoice(): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('accueil');
         }
 
         return $this->render('security/auth_choice.html.twig');

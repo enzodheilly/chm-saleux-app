@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/gestion-chm-secrete-92x/equipment', name: 'admin_equipment_')]
+#[Route('/gestion-chm-secrete-92x/materiel', name: 'admin_materiel_')]
 #[IsGranted('ROLE_SUPER_ADMIN')]
 class AdminEquipmentController extends AbstractController
 {
@@ -38,7 +38,7 @@ class AdminEquipmentController extends AbstractController
 
             $logger->add(SystemLoggerService::TYPE_ADMIN, 'Ajout équipement : ' . $equipment->getName());
             $this->addFlash('success', 'Équipement ajouté avec succès.');
-            return $this->redirectToRoute('admin_equipment_index');
+            return $this->redirectToRoute('admin_materiel_index');
         }
 
         return $this->render('admin/equipment/index.html.twig', [
@@ -60,7 +60,7 @@ class AdminEquipmentController extends AbstractController
 
             $logger->add(SystemLoggerService::TYPE_ADMIN, 'Ajout équipement : ' . $equipment->getName());
             $this->addFlash('success', 'Équipement ajouté avec succès.');
-            return $this->redirectToRoute('admin_equipment_index');
+            return $this->redirectToRoute('admin_materiel_index');
         }
 
         return $this->render('admin/equipment/new.html.twig', [
@@ -79,7 +79,7 @@ class AdminEquipmentController extends AbstractController
 
             $logger->add(SystemLoggerService::TYPE_ADMIN, 'Modification équipement : ' . $equipment->getName());
             $this->addFlash('success', 'Équipement modifié avec succès.');
-            return $this->redirectToRoute('admin_equipment_index');
+            return $this->redirectToRoute('admin_materiel_index');
         }
 
         return $this->render('admin/equipment/edit.html.twig', [
@@ -102,6 +102,6 @@ class AdminEquipmentController extends AbstractController
             $this->addFlash('danger', 'Token CSRF invalide.');
         }
 
-        return $this->redirectToRoute('admin_equipment_index');
+        return $this->redirectToRoute('admin_materiel_index');
     }
 }

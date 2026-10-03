@@ -58,7 +58,7 @@
 											{{ message.resolvedBy }}</span>
 									</div>
 								{% else %}
-									<form action="{{ path('admin_contact_reply', {id: message.id}) }}" method="POST" class="reply-form">
+									<form action="{{ path('admin_contact_repondre', {id: message.id}) }}" method="POST" class="reply-form">
 										<input type="hidden" name="_token" value="{{ csrf_token('reply' ~ message.id) }}">
 										<textarea name="response" class="reply-textarea" placeholder="Réponse rapide..." required></textarea>
 										<button type="submit" class="btn-validate btn-reply">OK</button>

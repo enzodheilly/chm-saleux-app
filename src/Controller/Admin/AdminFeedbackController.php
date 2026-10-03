@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_SUPER_ADMIN')]
 class AdminFeedbackController extends AbstractController
 {
-    #[Route('/gestion-chm-secrete-92x/feedbacks', name: 'admin_feedbacks')]
+    #[Route('/gestion-chm-secrete-92x/avis', name: 'admin_avis')]
     public function adminList(FeedbackRepository $repo, Request $request, EntityManagerInterface $em): Response
     {
         // Mise à jour du statut via POST
@@ -24,7 +24,7 @@ class AdminFeedbackController extends AbstractController
 
             if (!$this->isCsrfTokenValid('feedback_status_' . $id, (string) $request->request->get('_token', ''))) {
                 $this->addFlash('error', 'Jeton CSRF invalide.');
-                return $this->redirectToRoute('admin_feedbacks');
+                return $this->redirectToRoute('admin_avis');
             }
 
             $fb     = $repo->find($id);
@@ -34,7 +34,7 @@ class AdminFeedbackController extends AbstractController
                 $em->flush();
             }
 
-            return $this->redirectToRoute('admin_feedbacks');
+            return $this->redirectToRoute('admin_avis');
         }
 
         return $this->render('admin/feedback/feedbacks.html.twig', [

@@ -10,7 +10,7 @@
 		</div>
 		<div class="toolbar">
 			<input type="text" id="searchItem" class="search-input" placeholder="Search an item...">
-			<a href="{{ path('admin_merchandise_new') }}" class="btn-create">+ New item</a>
+			<a href="{{ path('admin_boutique_new') }}" class="btn-create">+ New item</a>
 		</div>
 	</div>
 
@@ -55,10 +55,10 @@
 
 							<td>
 								<div class="actions">
-									<a href="{{ path('admin_merchandise_edit', {id: item.id}) }}" class="act-link">Edit</a>
+									<a href="{{ path('admin_boutique_edit', {id: item.id}) }}" class="act-link">Edit</a>
 
 									{# MODIFICATION : Remplacement du onsubmit par js-confirm-form #}
-									<form method="post" action="{{ path('admin_merchandise_delete', {id: item.id}) }}" class="js-confirm-form" data-confirm="🛒 Delete '{{ item.title }}' from the shop catalogue? This item will no longer be available for purchase.">
+									<form method="post" action="{{ path('admin_boutique_delete', {id: item.id}) }}" class="js-confirm-form" data-confirm="🛒 Delete '{{ item.title }}' from the shop catalogue? This item will no longer be available for purchase.">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
 										<button class="act-link act-del">Delete</button>
 									</form>

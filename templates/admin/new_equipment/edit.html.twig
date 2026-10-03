@@ -16,7 +16,7 @@
 		</div>
 
 		<div class="toolbar">
-			<a href="{{ path('admin_new_equipment_index') }}" class="btn-outline">Retour à l'inventaire</a>
+			<a href="{{ path('admin_nouveau_materiel_index') }}" class="btn-outline">Retour à l'inventaire</a>
 		</div>
 	</div>
 
@@ -61,7 +61,7 @@
 					</button>
 
 					<div class="form-actions-right">
-						<a href="{{ path('admin_new_equipment_index') }}" class="btn-outline">Annuler</a>
+						<a href="{{ path('admin_nouveau_materiel_index') }}" class="btn-outline">Annuler</a>
 						<button type="submit" class="btn-create">Mettre à jour</button>
 					</div>
 				</div>
@@ -71,7 +71,7 @@
 		</div>
 	</div>
 
-	<form id="delete-equipment-form" method="post" action="{{ path('admin_new_equipment_delete', {id: equipment.id}) }}" class="form-hidden">
+	<form id="delete-equipment-form" method="post" action="{{ path('admin_nouveau_materiel_delete', {id: equipment.id}) }}" class="form-hidden">
 		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ equipment.id) }}">
 	</form>
 {% endblock %}

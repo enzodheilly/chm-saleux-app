@@ -27,7 +27,7 @@ class SitemapSubscriber implements EventSubscriberInterface
         $urls = $event->getUrlContainer();
 
         // Pages principales
-        $this->addUrl($urls, 'home', [], 1.0, 'daily');
+        $this->addUrl($urls, 'accueil', [], 1.0, 'daily');
         $this->addUrl($urls, 'contact', [], 0.7, 'monthly');
         $this->addUrl($urls, 'ecole', [], 0.8, 'weekly');
         $this->addUrl($urls, 'faq', [], 0.7, 'weekly');

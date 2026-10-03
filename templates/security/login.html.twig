@@ -20,7 +20,7 @@
 		<div class="auth-left">
 			<div class="auth-content-wrapper">
 				<div class="auth-header">
-					<a href="{{ path('home') }}" class="auth-logo">
+					<a href="{{ path('accueil') }}" class="auth-logo">
 						<img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo CHM">
 					</a>
 					<h1>RAVI DE VOUS REVOIR</h1>
@@ -40,7 +40,7 @@
 					</div>
 				{% endfor %}
 
-				<form action="{{ path('app_login') }}" method="post" class="auth-form">
+				<form action="{{ path('app_connexion') }}" method="post" class="auth-form">
 
 					<div class="form-group">
 						<label for="inputEmail">Email</label>
@@ -82,14 +82,14 @@
 				</form>
 
 				<div class="register-hint">
-					<a href="{{ path('app_reset_password_request') }}" class="forgot-link">Mot de passe oublié ?</a>
+					<a href="{{ path('app_mot_de_passe_oublie_demande') }}" class="forgot-link">Mot de passe oublié ?</a>
 					<p>Pas encore de compte ?
-						<a href="{{ path('app_register') }}">S'inscrire</a>
+						<a href="{{ path('app_inscription') }}">S'inscrire</a>
 					</p>
 				</div>
 
 				<div class="auth-bottom">
-					<a href="{{ path('home') }}" class="back-link">← Accueil</a>
+					<a href="{{ path('accueil') }}" class="back-link">← Accueil</a>
 				</div>
 			</div>
 		</div>

@@ -9,10 +9,10 @@
     const dashboardRoot = document.getElementById('memberDashboard');
 
     const routes = {
-        updateEmail:    dashboardRoot?.dataset.routeUpdateEmail    || '/espace-adherent/settings/update-email',
-        updatePassword: dashboardRoot?.dataset.routeUpdatePassword || '/espace-adherent/settings/update-password',
+        updateEmail:    dashboardRoot?.dataset.routeUpdateEmail    || '/espace-adherent/parametres/modifier-email',
+        updatePassword: dashboardRoot?.dataset.routeUpdatePassword || '/espace-adherent/parametres/modifier-mot-de-passe',
         updateLicence:  dashboardRoot?.dataset.routeUpdateLicence  || '/espace-adherent/licence',
-        deleteAccount:  dashboardRoot?.dataset.routeDeleteAccount  || '/profile/delete-account',
+        deleteAccount:  dashboardRoot?.dataset.routeDeleteAccount  || '/compte/supprimer',
         uploadPhoto:    dashboardRoot?.dataset.routeUploadPhoto    || '/profil/photo'
     };
 

@@ -63,7 +63,7 @@ security:
                 check_path: 2fa_login_check
 
             logout:
-                path: app_logout
+                path: app_deconnexion
                 target: /
                 invalidate_session: true
                 delete_cookies:
@@ -96,6 +96,7 @@ security:
         # --- Web public ---
         - { path: ^/connexion/verification, roles: PUBLIC_ACCESS }
         - { path: ^/connexion/google, roles: PUBLIC_ACCESS }
+        - { path: ^/connexion$, roles: PUBLIC_ACCESS }
         - { path: ^/login$, roles: PUBLIC_ACCESS }
         - { path: ^/inscription$, roles: PUBLIC_ACCESS }
         - { path: ^/mot-de-passe-oublie, roles: PUBLIC_ACCESS }

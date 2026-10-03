@@ -25,7 +25,7 @@ class PasswordController extends AbstractController
         return true;
     }
 
-    #[Route('/compte/definir-mot-de-passe', name: 'set_password', methods: ['GET', 'POST'])]
+    #[Route('/compte/definir-mot-de-passe', name: 'definir_mot_de_passe', methods: ['GET', 'POST'])]
     public function setPassword(
         Request $request,
         UserPasswordHasherInterface $passwordHasher,
@@ -38,7 +38,7 @@ class PasswordController extends AbstractController
 
         // Sécurité : si pas de user ou pas besoin de finaliser son compte, on dégage
         if (!$user || !$user->getNeedsPassword()) {
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('accueil');
         }
 
         // Compte créé via Google (aucun mot de passe local) : la finalisation
@@ -48,9 +48,9 @@ class PasswordController extends AbstractController
 
         if ($request->isMethod('POST')) {
             $submittedToken = (string) $request->request->get('_token', '');
-            if (!$this->isCsrfTokenValid('set_password', $submittedToken)) {
+            if (!$this->isCsrfTokenValid('definir_mot_de_passe', $submittedToken)) {
                 $this->addFlash('error', 'Session expirée.');
-                return $this->redirectToRoute('set_password');
+                return $this->redirectToRoute('definir_mot_de_passe');
             }
 
             $acceptedTerms = $request->request->getBoolean('accepted_terms', false);
@@ -72,7 +72,7 @@ class PasswordController extends AbstractController
                     $logger->add('Sécurité', sprintf('CGU acceptées (compte Google) pour %s', $user->getEmail()));
                     $this->addFlash('success', 'Votre compte est finalisé !');
 
-                    return $this->redirectToRoute('home');
+                    return $this->redirectToRoute('accueil');
                 }
             } else {
                 $password = (string) $request->request->get('password', '');
@@ -94,7 +94,7 @@ class PasswordController extends AbstractController
                     // Vérification contre le mot de passe actuel (non encore archivé)
                     if ($user->getPassword() && $hasher->verify($user->getPassword(), $password)) {
                         $this->addFlash('error', 'Ce mot de passe a déjà été utilisé récemment. Choisissez-en un différent.');
-                        return $this->redirectToRoute('set_password');
+                        return $this->redirectToRoute('definir_mot_de_passe');
                     }
 
                     // Vérification historique
@@ -107,7 +107,7 @@ class PasswordController extends AbstractController
                     foreach ($lastPasswords as $history) {
                         if ($hasher->verify($history->getPasswordHash(), $password)) {
                             $this->addFlash('error', 'Ce mot de passe a déjà été utilisé récemment. Choisissez-en un différent.');
-                            return $this->redirectToRoute('set_password');
+                            return $this->redirectToRoute('definir_mot_de_passe');
                         }
                     }
 
@@ -121,7 +121,7 @@ class PasswordController extends AbstractController
                     $logger->add('Sécurité', sprintf('MDP initial configuré pour %s', $user->getEmail()));
                     $this->addFlash('success', 'Votre mot de passe est configuré !');
 
-                    return $this->redirectToRoute('home');
+                    return $this->redirectToRoute('accueil');
                 }
             }
         }

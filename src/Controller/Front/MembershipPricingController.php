@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MembershipPricingController extends AbstractController
 {
-    #[Route('/tarifs', name: 'app_pricing')]
+    #[Route('/tarifs', name: 'app_tarifs')]
     public function index(MembershipPlanRepository $membershipPlanRepository): Response
     {
         $plans = $membershipPlanRepository->findBy([], ['price' => 'ASC']);

@@ -20,7 +20,7 @@
 			</p>
 		</div>
 		<div class="toolbar">
-			<a href="{{ path('admin_users_index') }}" class="btn-outline">Retour</a>
+			<a href="{{ path('admin_utilisateurs_index') }}" class="btn-outline">Retour</a>
 		</div>
 	</div>
 
@@ -68,12 +68,12 @@
 
 				<div class="form-actions">
 					{% if user.id != app.user.id %}
-						<a href="{{ path('admin_users_delete', {'id': user.id}) }}" class="btn-danger-link" data-confirm="Attention, cette suppression est définitive.">
+						<a href="{{ path('admin_utilisateurs_delete', {'id': user.id}) }}" class="btn-danger-link" data-confirm="Attention, cette suppression est définitive.">
 							Supprimer ce compte
 						</a>
 					{% endif %}
 
-					<a href="{{ path('admin_users_index') }}" class="btn-outline">Annuler</a>
+					<a href="{{ path('admin_utilisateurs_index') }}" class="btn-outline">Annuler</a>
 					<button type="submit" class="btn-create">Mettre à jour</button>
 				</div>
 			</div>

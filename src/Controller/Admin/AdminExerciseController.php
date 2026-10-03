@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/gestion-chm-secrete-92x/exercise', name: 'admin_exercise_')]
+#[Route('/gestion-chm-secrete-92x/exercice', name: 'admin_exercice_')]
 #[IsGranted('ROLE_SUPER_ADMIN')]
 class AdminExerciseController extends AbstractController
 {
@@ -35,7 +35,7 @@ class AdminExerciseController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Exercice ajouté avec succès.');
-            return $this->redirectToRoute('admin_exercise_index');
+            return $this->redirectToRoute('admin_exercice_index');
         }
 
         return $this->render('admin/exercise/index.html.twig', [
@@ -56,7 +56,7 @@ class AdminExerciseController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Exercice ajouté avec succès.');
-            return $this->redirectToRoute('admin_exercise_index');
+            return $this->redirectToRoute('admin_exercice_index');
         }
 
         return $this->render('admin/exercise/new.html.twig', [
@@ -77,7 +77,7 @@ class AdminExerciseController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Exercice modifié avec succès.');
-            return $this->redirectToRoute('admin_exercise_index');
+            return $this->redirectToRoute('admin_exercice_index');
         }
 
         return $this->render('admin/exercise/edit.html.twig', [
@@ -100,6 +100,6 @@ class AdminExerciseController extends AbstractController
             $this->addFlash('danger', 'Token CSRF invalide.');
         }
 
-        return $this->redirectToRoute('admin_exercise_index');
+        return $this->redirectToRoute('admin_exercice_index');
     }
 }

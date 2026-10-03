@@ -44,7 +44,7 @@ class MaintenanceModeSubscriber implements EventSubscriberInterface
         }
 
         // La route de bypass laisse passer (le contrôleur pose le cookie)
-        if (str_starts_with($path, '/team-access/')) {
+        if (str_starts_with($path, '/acces-equipe/')) {
             return;
         }
 

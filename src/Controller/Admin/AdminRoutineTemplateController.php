@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/gestion-chm-secrete-92x/mobile/routines/templates', name: 'admin_routine_template_')]
+#[Route('/gestion-chm-secrete-92x/mobile/routines/modeles', name: 'admin_routine_modele_')]
 #[IsGranted('ROLE_SUPER_ADMIN')]
 class AdminRoutineTemplateController extends AbstractController
 {
@@ -54,7 +54,7 @@ class AdminRoutineTemplateController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Template créé avec succès.');
-            return $this->redirectToRoute('admin_routine_template_edit', ['id' => $template->getId()]);
+            return $this->redirectToRoute('admin_routine_modele_edit', ['id' => $template->getId()]);
         }
 
         return $this->render('admin/routine_template/new.html.twig', [
@@ -73,7 +73,7 @@ class AdminRoutineTemplateController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Template mis à jour.');
-            return $this->redirectToRoute('admin_routine_template_edit', ['id' => $template->getId()]);
+            return $this->redirectToRoute('admin_routine_modele_edit', ['id' => $template->getId()]);
         }
 
         return $this->render('admin/routine_template/edit.html.twig', [
@@ -94,10 +94,10 @@ class AdminRoutineTemplateController extends AbstractController
             $this->addFlash('danger', 'Token CSRF invalide.');
         }
 
-        return $this->redirectToRoute('admin_routine_template_index');
+        return $this->redirectToRoute('admin_routine_modele_index');
     }
 
-    #[Route('/{id}/exercise/new', name: 'exercise_new', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route('/{id}/exercice/nouveau', name: 'exercice_nouveau', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function addExercise(RoutineTemplate $template, Request $request, EntityManagerInterface $em): Response
     {
         $item = new RoutineTemplateExercise();
@@ -117,7 +117,7 @@ class AdminRoutineTemplateController extends AbstractController
             foreach ($template->getTemplateExercises() as $existing) {
                 if ($existing->getExercise()?->getId() === $item->getExercise()?->getId()) {
                     $this->addFlash('danger', 'Cet exercice est déjà présent dans ce template.');
-                    return $this->redirectToRoute('admin_routine_template_edit', ['id' => $template->getId()]);
+                    return $this->redirectToRoute('admin_routine_modele_edit', ['id' => $template->getId()]);
                 }
             }
 
@@ -125,7 +125,7 @@ class AdminRoutineTemplateController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Exercice ajouté au template.');
-            return $this->redirectToRoute('admin_routine_template_edit', ['id' => $template->getId()]);
+            return $this->redirectToRoute('admin_routine_modele_edit', ['id' => $template->getId()]);
         }
 
         return $this->render('admin/routine_template/exercise_new.html.twig', [
@@ -134,7 +134,7 @@ class AdminRoutineTemplateController extends AbstractController
         ]);
     }
 
-    #[Route('/exercise/{id}/delete', name: 'exercise_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[Route('/exercice/{id}/supprimer', name: 'exercice_supprimer', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deleteTemplateExercise(RoutineTemplateExercise $item, Request $request, EntityManagerInterface $em): Response
     {
         $templateId = $item->getRoutineTemplate()?->getId();
@@ -147,6 +147,6 @@ class AdminRoutineTemplateController extends AbstractController
             $this->addFlash('danger', 'Token CSRF invalide.');
         }
 
-        return $this->redirectToRoute('admin_routine_template_edit', ['id' => $templateId]);
+        return $this->redirectToRoute('admin_routine_modele_edit', ['id' => $templateId]);
     }
 }

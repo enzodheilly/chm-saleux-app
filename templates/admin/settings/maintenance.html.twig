@@ -41,7 +41,7 @@
             {% endif %}
         </p>
 
-        <form id="maintenance-form" method="post" action="{{ path('admin_settings_maintenance_toggle') }}">
+        <form id="maintenance-form" method="post" action="{{ path('admin_parametres_maintenance_toggle') }}">
             <input type="hidden" name="_token" value="{{ csrf_token('maintenance_toggle') }}">
             <button type="button" id="maintenance-btn"
                 class="{% if maintenanceEnabled %}btn-save{% else %}btn-delete{% endif %}"
@@ -63,7 +63,7 @@
             Un cookie signé (30 jours) sera posé automatiquement.
         </p>
         <code style="font-size:.8rem;background:var(--bg-input,#1a1a1a);padding:8px 14px;display:block;color:var(--accent);word-break:break-all;">
-            /team-access/<em style="color:var(--text-muted);">{MAINTENANCE_BYPASS_TOKEN}</em>
+            /acces-equipe/<em style="color:var(--text-muted);">{MAINTENANCE_BYPASS_TOKEN}</em>
         </code>
         <p style="font-size:.76rem;color:var(--text-muted);margin:10px 0 0;">
             Le token est défini dans <code>.env.local</code> sur le serveur (<code>MAINTENANCE_BYPASS_TOKEN</code>).

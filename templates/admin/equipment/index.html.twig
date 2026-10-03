@@ -9,7 +9,7 @@
 			<p>Gérez le catalogue de matériel disponible.</p>
 		</div>
 		<div class="toolbar">
-			<a href="{{ path('admin_equipment_new') }}" class="btn-create">+ Ajouter une machine</a>
+			<a href="{{ path('admin_materiel_new') }}" class="btn-create">+ Ajouter une machine</a>
 		</div>
 	</div>
 
@@ -42,10 +42,10 @@
 							</td>
 							<td>
 								<div class="actions">
-									<a href="{{ path('admin_equipment_edit', {id: equipment.id}) }}" class="act-link">Modifier</a>
+									<a href="{{ path('admin_materiel_edit', {id: equipment.id}) }}" class="act-link">Modifier</a>
 
 									{# MODIFICATION : Passage en V20 JS #}
-									<form method="post" action="{{ path('admin_equipment_delete', {id: equipment.id}) }}" class="js-confirm-form" data-confirm="🏋️‍♂️ Supprimer la machine '{{ equipment.name }}' {% if equipment.brand %}({{ equipment.brand }}){% endif %} ?">
+									<form method="post" action="{{ path('admin_materiel_delete', {id: equipment.id}) }}" class="js-confirm-form" data-confirm="🏋️‍♂️ Supprimer la machine '{{ equipment.name }}' {% if equipment.brand %}({{ equipment.brand }}){% endif %} ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete_equipment_' ~ equipment.id) }}">
 										<button class="act-link act-del">Supprimer</button>
 									</form>

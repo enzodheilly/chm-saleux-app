@@ -58,7 +58,7 @@ class RegistrationController extends AbstractController
         return checkdnsrr($domain, 'MX') || checkdnsrr($domain, 'A');
     }
 
-    #[Route('/inscription', name: 'app_register', methods: ['GET', 'POST'])]
+    #[Route('/inscription', name: 'app_inscription', methods: ['GET', 'POST'])]
     public function register(
         Request $request,
         UserPasswordHasherInterface $passwordHasher,
@@ -69,7 +69,7 @@ class RegistrationController extends AbstractController
         TurnstileVerifierService $turnstile
     ): Response {
         if ($this->getUser()) {
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('accueil');
         }
 
         $user = new User();
@@ -158,7 +158,7 @@ class RegistrationController extends AbstractController
                 $mailer->send($emailMessage);
 
                 $request->getSession()->set('verify_email', $user->getEmail());
-                return $this->redirectToRoute('app_verify_code');
+                return $this->redirectToRoute('app_verifier_code');
             } catch (\Throwable $e) {
                 $logger->add(SystemLoggerService::TYPE_SECURITE, 'Erreur inscription : ' . $e->getMessage(), null, false);
                 $this->addFlash('error', 'Une erreur serveur est survenue.');

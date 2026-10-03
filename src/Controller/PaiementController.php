@@ -21,7 +21,7 @@ class PaiementController extends AbstractController
 
         if (!array_key_exists($type, $urls)) {
             $this->addFlash('danger', 'Type de paiement invalide.');
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('accueil');
         }
 
         // ✅ Si l’utilisateur N’EST PAS connecté → affiche la page de connexion requise

@@ -63,7 +63,7 @@ class AdminSessionSubscriber implements EventSubscriberInterface
             if ($session instanceof \Symfony\Component\HttpFoundation\Session\Flash\FlashBagAwareSessionInterface) {
                 $session->getFlashBag()->add('warning', 'Votre session admin a expiré après 2h d\'inactivité.');
             }
-            $response = new RedirectResponse($this->router->generate('app_login'));
+            $response = new RedirectResponse($this->router->generate('app_connexion'));
             $response->headers->clearCookie('REMEMBERME');
             $event->setResponse($response);
             return;

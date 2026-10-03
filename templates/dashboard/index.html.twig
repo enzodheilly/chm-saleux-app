@@ -51,10 +51,10 @@
 
 	<div id="mobileOverlay" class="mobile-overlay"></div>
 
-	<div class="app-shell" id="memberDashboard" data-route-update-email="{{ path('adherent_settings_update_email') }}" data-route-update-password="{{ path('adherent_settings_update_password') }}" data-route-update-licence="{{ path('adherent_edit_license') }}" data-route-delete-account="{{ path('profile_delete_account') }}" data-route-upload-photo="{{ path('profile_photo') }}" data-sessions='{{ sessions|json_encode|e("html_attr") }}'>
+	<div class="app-shell" id="memberDashboard" data-route-update-email="{{ path('adherent_parametres_modifier_email') }}" data-route-update-password="{{ path('adherent_parametres_modifier_mot_de_passe') }}" data-route-update-licence="{{ path('adherent_modifier_licence') }}" data-route-delete-account="{{ path('compte_supprimer') }}" data-route-upload-photo="{{ path('adherent_profil_photo') }}" data-sessions='{{ sessions|json_encode|e("html_attr") }}'>
 		<nav class="sidebar" id="sidebar">
 			<div class="sidebar-top">
-				<a href="{{ path('home') }}" class="brand-badge" title="Retour au site">
+				<a href="{{ path('accueil') }}" class="brand-badge" title="Retour au site">
 					<img src="{{ asset('images/favicon/icon2.png') }}" alt="Logo CHM SALEUX">
 				</a>
 
@@ -82,7 +82,7 @@
 			</div>
 
 			<div class="sidebar-bottom">
-				<a href="{{ path('home') }}" class="sidebar-link" title="Retour au site">
+				<a href="{{ path('accueil') }}" class="sidebar-link" title="Retour au site">
 					<i class="fa-solid fa-arrow-left"></i>
 				</a>
 			</div>
@@ -781,7 +781,7 @@
 
 			{# Déconnexion — bas de page #}
 			<div class="sd-logout-footer">
-				<a href="{{ path('app_logout') }}" class="sd-logout-btn">
+				<a href="{{ path('app_deconnexion') }}" class="sd-logout-btn">
 					<i class="fa-solid fa-right-from-bracket"></i>
 					Se déconnecter
 				</a>

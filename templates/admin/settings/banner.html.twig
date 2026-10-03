@@ -34,8 +34,8 @@
                         <span class="banner-msg-text">{{ msg.text }}</span>
 
                         <div class="banner-msg-actions">
-                            <form method="post" action="{{ path('admin_settings_banner_toggle', {id: msg.id}) }}">
-                                <input type="hidden" name="_token" value="{{ csrf_token('banner_toggle_' ~ msg.id) }}">
+                            <form method="post" action="{{ path('admin_parametres_banniere_toggle', {id: msg.id}) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('banniere_toggle_' ~ msg.id) }}">
                                 <button type="submit" class="banner-btn banner-btn-toggle {% if msg.isActive %}is-active{% endif %}"
                                     title="{{ msg.isActive ? 'Désactiver' : 'Activer' }}">
                                     {{ msg.isActive ? 'ON' : 'OFF' }}
@@ -43,8 +43,8 @@
                             </form>
 
                             {% if not loop.first %}
-                                <form method="post" action="{{ path('admin_settings_banner_move', {id: msg.id, direction: 'up'}) }}">
-                                    <input type="hidden" name="_token" value="{{ csrf_token('banner_move_' ~ msg.id) }}">
+                                <form method="post" action="{{ path('admin_parametres_banniere_deplacer', {id: msg.id, direction: 'up'}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('banniere_deplacer_' ~ msg.id) }}">
                                     <button type="submit" class="banner-btn banner-btn-icon" title="Monter">↑</button>
                                 </form>
                             {% else %}
@@ -52,17 +52,17 @@
                             {% endif %}
 
                             {% if not loop.last %}
-                                <form method="post" action="{{ path('admin_settings_banner_move', {id: msg.id, direction: 'down'}) }}">
-                                    <input type="hidden" name="_token" value="{{ csrf_token('banner_move_' ~ msg.id) }}">
+                                <form method="post" action="{{ path('admin_parametres_banniere_deplacer', {id: msg.id, direction: 'down'}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('banniere_deplacer_' ~ msg.id) }}">
                                     <button type="submit" class="banner-btn banner-btn-icon" title="Descendre">↓</button>
                                 </form>
                             {% else %}
                                 <span class="banner-btn banner-btn-icon banner-btn-disabled">↓</span>
                             {% endif %}
 
-                            <form method="post" action="{{ path('admin_settings_banner_delete', {id: msg.id}) }}"
+                            <form method="post" action="{{ path('admin_parametres_banniere_delete', {id: msg.id}) }}"
                                 class="js-confirm-form" data-confirm="Supprimer ce message ?">
-                                <input type="hidden" name="_token" value="{{ csrf_token('banner_delete_' ~ msg.id) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('banniere_delete_' ~ msg.id) }}">
                                 <button type="submit" class="banner-btn banner-btn-delete" title="Supprimer">✕</button>
                             </form>
                         </div>
@@ -71,8 +71,8 @@
             </div>
         {% endif %}
 
-        <form method="post" action="{{ path('admin_settings_banner_add') }}" style="margin-top:16px;display:flex;gap:10px;align-items:center;">
-            <input type="hidden" name="_token" value="{{ csrf_token('banner_add') }}">
+        <form method="post" action="{{ path('admin_parametres_banniere_add') }}" style="margin-top:16px;display:flex;gap:10px;align-items:center;">
+            <input type="hidden" name="_token" value="{{ csrf_token('banniere_add') }}">
             <input type="text" name="text" class="input" maxlength="500"
                 placeholder="Nouveau message (max 500 caractères)…" style="flex:1;" required>
             <button type="submit" class="btn-create" style="white-space:nowrap;">+ Ajouter</button>

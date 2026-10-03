@@ -15,7 +15,7 @@
         }
 
         setTimeout(() => {
-            window.location.href = "/login";
+            window.location.href = "/connexion";
         }, 1200);
     }
 
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         send.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
 
         try {
-            const res = await fetch('/feedback/submit', {
+            const res = await fetch('/avis/envoyer', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

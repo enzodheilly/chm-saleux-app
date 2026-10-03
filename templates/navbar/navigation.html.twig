@@ -2,7 +2,7 @@
 	<div class="nav-inner">
 
 		{# ── LOGO ── #}
-		<a href="{{ path('home') }}" class="nav-brand">
+		<a href="{{ path('accueil') }}" class="nav-brand">
 			<img src="{{ asset('images/favicon/icon2.png') }}" alt="CHM Saleux" width="40" height="40">
 		</a>
 
@@ -10,7 +10,7 @@
 		<div class="nav-links" id="navLinks">
 
 			<a href="{{ path('ecole') }}" class="nav-link">Notre École</a>
-			<a href="{{ path('app_pricing') }}" class="nav-link">Tarifs</a>
+			<a href="{{ path('app_tarifs') }}" class="nav-link">Tarifs</a>
 
 			<div class="nav-link nav-has-dropdown" id="clubDropdownTrigger">
 				<span>Club & Activités</span>
@@ -104,11 +104,11 @@
 		{# ── ACTIONS DROITE ── #}
 		<div class="nav-end">
 			{% if app.user and not is_preview_mode %}
-				<a href="{{ path('dashboard') }}" class="nav-cta">
+				<a href="{{ path('espace_adherent') }}" class="nav-cta">
 					ESPACE ADHÉRENT
 				</a>
 			{% else %}
-				<a href="{{ path('app_login') }}" class="nav-cta nav-cta--outline">
+				<a href="{{ path('app_connexion') }}" class="nav-cta nav-cta--outline">
 					CONNEXION
 				</a>
 				<a href="{{ path('app_auth_choice') }}" class="nav-cta">
@@ -117,7 +117,7 @@
 			{% endif %}
 
 			{% if app.user and not is_preview_mode %}
-				<a href="{{ path('dashboard') }}" class="nav-cta-mobile">MON ESPACE</a>
+				<a href="{{ path('espace_adherent') }}" class="nav-cta-mobile">MON ESPACE</a>
 			{% else %}
 				<a href="{{ path('app_auth_choice') }}" class="nav-cta-mobile">S'INSCRIRE</a>
 			{% endif %}
@@ -139,7 +139,7 @@
 		<div class="nav-mobile-links">
 
 			<a href="{{ path('ecole') }}" class="nav-mobile-link">Notre École</a>
-			<a href="{{ path('app_pricing') }}" class="nav-mobile-link">Tarifs</a>
+			<a href="{{ path('app_tarifs') }}" class="nav-mobile-link">Tarifs</a>
 
 			<button type="button" class="nav-mobile-accordion">
 				Club & Activités
@@ -177,16 +177,16 @@
 
 		<div class="nav-mobile-footer">
 			{% if app.user and not is_preview_mode %}
-				<a href="{{ path('dashboard') }}" class="nav-mobile-footer-link">
+				<a href="{{ path('espace_adherent') }}" class="nav-mobile-footer-link">
 					<i class="fa-regular fa-user"></i>
 					Espace adhérent
 				</a>
-				<a href="{{ path('app_logout') }}" class="nav-mobile-footer-link">
+				<a href="{{ path('app_deconnexion') }}" class="nav-mobile-footer-link">
 					<i class="fa-solid fa-right-from-bracket"></i>
 					Déconnexion
 				</a>
 			{% else %}
-				<a href="{{ path('app_login') }}" class="nav-mobile-footer-link">
+				<a href="{{ path('app_connexion') }}" class="nav-mobile-footer-link">
 					<i class="fa-regular fa-user"></i>
 					Espace adhérent
 				</a>
