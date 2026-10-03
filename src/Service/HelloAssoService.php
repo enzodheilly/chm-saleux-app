@@ -32,6 +32,29 @@ class HelloAssoService
     }
 
     /**
+     * Récupère le corps de la réponse HTTP en erreur, pour le diagnostic.
+     * HelloAsso renvoie généralement un JSON {"code": "...", "message": "..."}
+     * qui explique précisément la raison du refus (ex: compte non activé pour
+     * le paiement en ligne, moyen de paiement non configuré, etc.).
+     */
+    private function extractErrorDetail(\Throwable $e): string
+    {
+        if (!$e instanceof HttpExceptionInterface || !method_exists($e, 'getResponse')) {
+            return $e->getMessage();
+        }
+
+        try {
+            $body = $e->getResponse()->getContent(false);
+        } catch (\Throwable) {
+            return $e->getMessage();
+        }
+
+        $body = mb_substr(trim($body), 0, 500);
+
+        return $body !== '' ? $e->getMessage() . ' — Réponse HelloAsso : ' . $body : $e->getMessage();
+    }
+
+    /**
      * Récupère (et met en cache) un access token OAuth2 valide.
      */
     private function getAccessToken(): string
@@ -105,7 +128,7 @@ class HelloAssoService
 
             return $data;
         } catch (HttpExceptionInterface|\Throwable $e) {
-            $this->logger->add('HelloAsso', 'Erreur création Checkout Intent : ' . $e->getMessage());
+            $this->logger->add('HelloAsso', 'Erreur création Checkout Intent : ' . $this->extractErrorDetail($e));
             throw new \RuntimeException('Impossible de contacter HelloAsso pour initialiser le paiement.', 0, $e);
         }
     }
@@ -132,7 +155,7 @@ class HelloAssoService
 
             return $response->toArray();
         } catch (HttpExceptionInterface|\Throwable $e) {
-            $this->logger->add('HelloAsso', 'Erreur lecture Checkout Intent ' . $checkoutIntentId . ' : ' . $e->getMessage());
+            $this->logger->add('HelloAsso', 'Erreur lecture Checkout Intent ' . $checkoutIntentId . ' : ' . $this->extractErrorDetail($e));
             throw new \RuntimeException('Impossible de vérifier le statut du paiement HelloAsso.', 0, $e);
         }
     }
