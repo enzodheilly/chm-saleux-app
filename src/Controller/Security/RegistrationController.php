@@ -29,6 +29,35 @@ class RegistrationController extends AbstractController
         return true;
     }
 
+    /**
+     * Vérifie que le domaine de l'email peut effectivement recevoir des
+     * emails (enregistrement DNS MX, ou à défaut un enregistrement A —
+     * RFC 5321 §5.1 autorise ce repli). Ça ne garantit pas que la boîte
+     * mail précise existe, mais ça élimine les domaines inventés
+     * (ex: "exemple@test.fr") qui passeraient la simple validation de
+     * format Assert\Email. checkdnsrr() nécessite un accès réseau sortant
+     * (DNS) : si ce n'est pas disponible (environnement de dev/CI isolé),
+     * on n'échoue pas la vérification pour ne pas bloquer les tests.
+     */
+    private function hasDeliverableEmailDomain(string $email): bool
+    {
+        $atPos = strrpos($email, '@');
+        if ($atPos === false) {
+            return false;
+        }
+
+        $domain = substr($email, $atPos + 1);
+        if ($domain === '') {
+            return false;
+        }
+
+        if (!function_exists('checkdnsrr')) {
+            return true;
+        }
+
+        return checkdnsrr($domain, 'MX') || checkdnsrr($domain, 'A');
+    }
+
     #[Route('/inscription', name: 'app_register', methods: ['GET', 'POST'])]
     public function register(
         Request $request,
@@ -79,6 +108,10 @@ class RegistrationController extends AbstractController
 
                 $errors = [];
                 if (!$accepted) $errors[] = "Vous devez accepter les conditions générales.";
+
+                if (!$this->hasDeliverableEmailDomain($user->getEmail())) {
+                    $errors[] = "L'adresse email saisie semble invalide : son domaine ne peut pas recevoir d'emails. Vérifiez qu'il n'y a pas de faute de frappe.";
+                }
 
                 $existingUser = $userRepo->findOneByEmailCaseInsensitive($user->getEmail());
                 if ($existingUser instanceof User) {
