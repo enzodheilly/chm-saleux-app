@@ -277,11 +277,12 @@ html, body {
 
 .register-hint a:hover { text-decoration: underline; }
 
-/* --- Lien retour : en tête de la colonne du formulaire, aligné sur son bord
-   gauche et détaché du logo par une marge --- */
+/* --- Lien retour : coin haut gauche du panneau, décollé des bords --- */
 .auth-back {
-  align-self: flex-start;
-  margin-bottom: 32px;
+  position: absolute;
+  top: 40px;
+  left: 48px;
+  z-index: 2;
   font-size: 0.85rem;
   font-weight: 600;
 }
@@ -686,9 +687,9 @@ html, body {
 @media (max-width: 580px) {
   .auth-left {
     align-items: flex-start;
-    padding-top: 32px;
+    padding-top: 80px;
   }
-  .auth-back { margin-bottom: 24px; }
+  .auth-back { top: 28px; left: 8%; }
   .auth-header h1 { font-size: 1.45rem; }
   .form-row { flex-direction: column; }
   .code-box { width: 44px; height: 52px; font-size: 1.3rem; }
