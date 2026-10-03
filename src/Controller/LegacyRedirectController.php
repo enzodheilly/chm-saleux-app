@@ -25,4 +25,18 @@ class LegacyRedirectController extends AbstractController
     {
         return $this->redirectToRoute('espace_adherent', [], 301);
     }
+
+    // Anciennes pages "installations" : leurs templates ont été supprimés lors de
+    // la refonte de l'accueil, le contenu vit désormais sous /nos-pratiques.
+    #[Route('/installations/halterophilie', name: 'legacy_redirect_installations_halterophilie', methods: ['GET'])]
+    public function installationsHalterophilie(): RedirectResponse
+    {
+        return $this->redirectToRoute('pratique_haltérophilie', [], 301);
+    }
+
+    #[Route('/installations/musculation', name: 'legacy_redirect_installations_musculation', methods: ['GET'])]
+    public function installationsMusculation(): RedirectResponse
+    {
+        return $this->redirectToRoute('pratique_musculation', [], 301);
+    }
 }
