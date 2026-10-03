@@ -21,6 +21,15 @@ use Doctrine\Migrations\AbstractMigration;
  * la migration échoue immédiatement (voir EncryptionKeyProvider). Faire une
  * sauvegarde de la base avant de lancer cette migration, comme pour toute
  * migration qui déplace des données existantes.
+ *
+ * Note technique : on utilise $this->connection->executeStatement() plutôt
+ * que $this->addSql() pour TOUTES les requêtes ici, parce que addSql() ne
+ * fait que mettre une requête en file — elle n'est réellement exécutée
+ * qu'une fois toute la méthode up()/down() terminée. Comme cette migration
+ * a besoin d'exécuter du SQL dans un ordre précis entrelacé avec de la
+ * logique PHP (créer les tables, PUIS seulement copier/chiffrer les données
+ * dedans, PUIS seulement supprimer les anciennes colonnes), il faut que
+ * chaque requête s'exécute immédiatement, dans l'ordre du code.
  */
 final class Version20261003130000 extends AbstractMigration
 {
@@ -31,10 +40,10 @@ final class Version20261003130000 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE demande_licence_coordonnees (id INT AUTO_INCREMENT NOT NULL, demande_licence_id INT NOT NULL, adresse LONGTEXT DEFAULT NULL, telephone LONGTEXT DEFAULT NULL, responsable_telephone LONGTEXT DEFAULT NULL, UNIQUE INDEX UNIQ_DLC_DEMANDE (demande_licence_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE licence_coordonnees (id INT AUTO_INCREMENT NOT NULL, licence_id INT NOT NULL, adresse LONGTEXT DEFAULT NULL, UNIQUE INDEX UNIQ_LC_LICENCE (licence_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE demande_licence_coordonnees ADD CONSTRAINT FK_DLC_DEMANDE FOREIGN KEY (demande_licence_id) REFERENCES demandes_licence (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE licence_coordonnees ADD CONSTRAINT FK_LC_LICENCE FOREIGN KEY (licence_id) REFERENCES licence (id) ON DELETE CASCADE');
+        $this->connection->executeStatement('CREATE TABLE demande_licence_coordonnees (id INT AUTO_INCREMENT NOT NULL, demande_licence_id INT NOT NULL, adresse LONGTEXT DEFAULT NULL, telephone LONGTEXT DEFAULT NULL, responsable_telephone LONGTEXT DEFAULT NULL, UNIQUE INDEX UNIQ_DLC_DEMANDE (demande_licence_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->connection->executeStatement('CREATE TABLE licence_coordonnees (id INT AUTO_INCREMENT NOT NULL, licence_id INT NOT NULL, adresse LONGTEXT DEFAULT NULL, UNIQUE INDEX UNIQ_LC_LICENCE (licence_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->connection->executeStatement('ALTER TABLE demande_licence_coordonnees ADD CONSTRAINT FK_DLC_DEMANDE FOREIGN KEY (demande_licence_id) REFERENCES demandes_licence (id) ON DELETE CASCADE');
+        $this->connection->executeStatement('ALTER TABLE licence_coordonnees ADD CONSTRAINT FK_LC_LICENCE FOREIGN KEY (licence_id) REFERENCES licence (id) ON DELETE CASCADE');
 
         // --- Migration des données existantes, chiffrées au vol ---
         $rows = $this->connection->fetchAllAssociative(
@@ -57,14 +66,14 @@ final class Version20261003130000 extends AbstractMigration
             ]);
         }
 
-        $this->addSql('ALTER TABLE demandes_licence DROP adresse, DROP telephone, DROP responsable_telephone');
-        $this->addSql('ALTER TABLE licence DROP adresse');
+        $this->connection->executeStatement('ALTER TABLE demandes_licence DROP adresse, DROP telephone, DROP responsable_telephone');
+        $this->connection->executeStatement('ALTER TABLE licence DROP adresse');
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE demandes_licence ADD adresse VARCHAR(255) DEFAULT NULL, ADD telephone VARCHAR(30) DEFAULT NULL, ADD responsable_telephone VARCHAR(30) DEFAULT NULL');
-        $this->addSql('ALTER TABLE licence ADD adresse VARCHAR(255) DEFAULT NULL');
+        $this->connection->executeStatement('ALTER TABLE demandes_licence ADD adresse VARCHAR(255) DEFAULT NULL, ADD telephone VARCHAR(30) DEFAULT NULL, ADD responsable_telephone VARCHAR(30) DEFAULT NULL');
+        $this->connection->executeStatement('ALTER TABLE licence ADD adresse VARCHAR(255) DEFAULT NULL');
 
         $rows = $this->connection->fetchAllAssociative('SELECT demande_licence_id, adresse, telephone, responsable_telephone FROM demande_licence_coordonnees');
         foreach ($rows as $row) {
@@ -84,7 +93,7 @@ final class Version20261003130000 extends AbstractMigration
             );
         }
 
-        $this->addSql('DROP TABLE demande_licence_coordonnees');
-        $this->addSql('DROP TABLE licence_coordonnees');
+        $this->connection->executeStatement('DROP TABLE demande_licence_coordonnees');
+        $this->connection->executeStatement('DROP TABLE licence_coordonnees');
     }
 }
