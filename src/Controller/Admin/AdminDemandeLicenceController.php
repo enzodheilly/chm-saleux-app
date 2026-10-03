@@ -7,6 +7,7 @@ use App\Entity\Licence;
 use App\Repository\DemandeLicenceRepository;
 use App\Repository\LicenceRepository;
 use App\Repository\UserRepository;
+use App\Service\CsvExportService;
 use App\Service\LicenceTarifService;
 use App\Service\QrCodeService;
 use App\Service\SystemLoggerService;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -58,6 +60,26 @@ class AdminDemandeLicenceController extends AbstractController
             'licencesActives'   => $licencesActives,
             'qrCodeImages'      => $qrCodeImages,
         ]);
+    }
+
+    #[Route('/actives/export', name: 'export_actives', methods: ['GET'])]
+    public function exportActives(LicenceRepository $licenceRepository, LicenceTarifService $tarifService, CsvExportService $csvExport): StreamedResponse
+    {
+        $formuleTypes       = array_values($tarifService->getFormules());
+        $saisonEnCoursAnnee = (int) $tarifService->getFinDeSaison(new \DateTimeImmutable())->format('Y');
+        $licencesActives    = $licenceRepository->findByTypes($formuleTypes, true, $saisonEnCoursAnnee);
+
+        $header = ['Numéro', 'Prénom', 'Nom', 'Email', 'Formule', 'Date expiration'];
+        $rows   = array_map(fn(Licence $l) => [
+            $l->getNumber(),
+            $l->getFirstName(),
+            $l->getLastName(),
+            $l->getEmail() ?? '',
+            $l->getType(),
+            $l->getExpiryDate()?->format('d/m/Y') ?? '',
+        ], $licencesActives);
+
+        return $csvExport->streamCsv('licences-actives.csv', $header, $rows);
     }
 
     #[Route('/{id}', name: 'show', methods: ['GET'])]
@@ -200,7 +222,7 @@ class AdminDemandeLicenceController extends AbstractController
         ));
 
         $this->addFlash('success', 'Licence activée avec succès.');
-        return $this->redirectToRoute('admin_demande_licence_index');
+        return $this->redirect($this->generateUrl('admin_demande_licence_index') . '#dlx-en-attente');
     }
 
     /**

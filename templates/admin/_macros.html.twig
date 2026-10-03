@@ -7,6 +7,17 @@
 	('Loisir & Muscu', 'Compétition', 'Jeune') : on détecte le type par simple
 	recherche de sous-chaîne, insensible à la casse.
 #}
+{% macro qr_reveal(licenceId, qrImage, editUrl) %}
+	{% if qrImage %}
+		<button type="button" class="qr-reveal-btn" data-target="qr-cell-{{ licenceId }}">Voir</button>
+		<a href="{{ editUrl }}#qrcode" title="Voir le QR code d'accès" class="qr-thumb-link" id="qr-cell-{{ licenceId }}" hidden>
+			<img src="{{ qrImage }}" alt="QR code" width="44" height="44" class="qr-thumb">
+		</a>
+	{% else %}
+		<span class="td-mono-sm">—</span>
+	{% endif %}
+{% endmacro %}
+
 {% macro formule_badge(label) %}
 	{% set l = label|lower %}
 	{% if 'competition' in l or 'compétition' in l %}

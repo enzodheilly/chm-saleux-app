@@ -28,6 +28,7 @@
 			<p>Toutes les licences créées depuis les demandes — actives et en attente d'activation.</p>
 		</div>
 		<div class="toolbar">
+			<a href="{{ path('admin_licence_export', saisonActive is not null ? {saison: saisonActive} : {}) }}" class="btn-outline">Exporter en CSV</a>
 		</div>
 	</div>
 
@@ -48,7 +49,7 @@
 			<table class="admin-table" id="licenceTable">
 				<thead>
 					<tr>
-						<th width="80">ID</th>
+						<th width="50">N°</th>
 						<th>Numéro</th>
 						<th>Titulaire</th>
 						<th>Email</th>
@@ -62,7 +63,7 @@
 				<tbody>
 					{% for licence in licences %}
 						<tr>
-							<td><span class="td-mono">#{{ licence.id }}</span></td>
+							<td class="td-mono-sm">{{ loop.index }}</td>
 							<td><span class="td-mono licence-number">{{ licence.number }}</span></td>
 							<td>
 								<div class="identity-cell">
@@ -85,17 +86,13 @@
 							<td>
 								{% if licence.historique %}
 									<span class="td-mono-sm" style="opacity:0.4;">—</span>
-								{% elseif qrCodeImages[licence.id] is defined %}
-									<a href="{{ path('admin_licence_edit', {id: licence.id}) }}#qrcode" title="Voir le QR code d'accès">
-										<img src="{{ qrCodeImages[licence.id] }}" alt="QR code" width="44" height="44" class="qr-thumb">
-									</a>
 								{% else %}
-									<span class="td-mono-sm">—</span>
+									{{ m.qr_reveal(licence.id, qrCodeImages[licence.id] ?? null, path('admin_licence_edit', {id: licence.id})) }}
 								{% endif %}
 							</td>
 							<td>
 								<div class="actions">
-									<a href="{{ path('admin_licence_edit', {id: licence.id}) }}" class="act-link">Modifier</a>
+									<a href="{{ path('admin_licence_edit', {id: licence.id, retour: app.request.requestUri}) }}" class="act-link">Modifier</a>
 									<form method="post" action="{{ path('admin_licence_delete', {id: licence.id}) }}" class="js-confirm-form" data-confirm="🪪 Supprimer la licence n°{{ licence.number }} appartenant à {{ licence.firstName }} {{ licence.lastName|upper }} ?">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ licence.id) }}">
 										<button type="submit" class="act-link act-del">Supprimer</button>

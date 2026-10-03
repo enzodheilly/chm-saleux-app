@@ -153,7 +153,7 @@
 								<td class="td-mono-sm">{{ licence.expiryDate ? licence.expiryDate|date('d/m/Y') : '—' }}</td>
 								<td>
 									<div class="actions">
-										<a href="{{ path('admin_licence_edit', {id: licence.id}) }}" class="act-link">Modifier</a>
+										<a href="{{ path('admin_licence_edit', {id: licence.id, retour: path('admin_demande_licence_index') ~ '#dlx-en-attente'}) }}" class="act-link">Modifier</a>
 										<form method="post" action="{{ path('admin_demande_licence_activer_licence', {id: licence.id}) }}" style="display:inline;">
 											<input type="hidden" name="_token" value="{{ csrf_token('activer_licence_' ~ licence.id) }}">
 											<button type="submit" class="act-link" onclick="return confirm('Confirmer l\'activation de cette licence ?');">Activer</button>
@@ -175,6 +175,7 @@
 	{# ── Panneau 3 : licences actives et fonctionnelles ── #}
 	<div class="dlx-panel" id="dlx-actives">
 		<div class="dlx-filters">
+			<a href="{{ path('admin_demande_licence_export_actives') }}" class="btn-outline" style="margin-right: auto;">Exporter en CSV</a>
 			<input type="text" class="dlx-search" id="dlx-search-actives" placeholder="Nom, prénom, email…">
 		</div>
 
@@ -205,19 +206,11 @@
 								</td>
 								<td class="td-mono-sm sender-email">{{ licence.email ? (licence.email|pseudonymize_email) : '—' }}</td>
 								<td>{{ m.formule_badge(licence.type) }}</td>
-								<td>
-									{% if qrCodeImages[licence.id] is defined %}
-										<a href="{{ path('admin_licence_edit', {id: licence.id}) }}#qrcode" title="Voir le QR code d'accès">
-											<img src="{{ qrCodeImages[licence.id] }}" alt="QR code" width="44" height="44" class="qr-thumb">
-										</a>
-									{% else %}
-										<span class="td-mono-sm">—</span>
-									{% endif %}
-								</td>
+								<td>{{ m.qr_reveal(licence.id, qrCodeImages[licence.id] ?? null, path('admin_licence_edit', {id: licence.id})) }}</td>
 								<td class="td-mono-sm">{{ licence.expiryDate ? licence.expiryDate|date('d/m/Y') : '—' }}</td>
 								<td>
 									<div class="actions">
-										<a href="{{ path('admin_licence_edit', {id: licence.id}) }}" class="act-link">Modifier</a>
+										<a href="{{ path('admin_licence_edit', {id: licence.id, retour: path('admin_demande_licence_index') ~ '#dlx-actives'}) }}" class="act-link">Modifier</a>
 									</div>
 								</td>
 							</tr>
@@ -238,14 +231,26 @@
 	<script nonce="{{ csp_nonce('script') }}">
 	(function () {
 		// Onglets
+		function activateTab(panelId) {
+			document.querySelectorAll('.dlx-tab').forEach(function (t) { t.classList.remove('active'); });
+			document.querySelectorAll('.dlx-panel').forEach(function (p) { p.classList.remove('active'); });
+			var tab = document.querySelector('[data-panel="' + panelId + '"]');
+			if (tab) tab.classList.add('active');
+			var panel = document.getElementById(panelId);
+			if (panel) panel.classList.add('active');
+		}
+
 		document.querySelectorAll('.dlx-tab').forEach(function (tab) {
 			tab.addEventListener('click', function () {
-				document.querySelectorAll('.dlx-tab').forEach(function (t) { t.classList.remove('active'); });
-				document.querySelectorAll('.dlx-panel').forEach(function (p) { p.classList.remove('active'); });
-				tab.classList.add('active');
-				document.getElementById(tab.getAttribute('data-panel')).classList.add('active');
+				activateTab(tab.getAttribute('data-panel'));
 			});
 		});
+
+		// Restaure l'onglet actif depuis le hash de l'URL (ex : retour depuis "Modifier")
+		var hash = window.location.hash.replace('#', '');
+		if (hash && document.getElementById(hash)) {
+			activateTab(hash);
+		}
 
 		// Filtres par statut (onglet Demandes)
 		document.querySelectorAll('.dlx-filter').forEach(function (filter) {

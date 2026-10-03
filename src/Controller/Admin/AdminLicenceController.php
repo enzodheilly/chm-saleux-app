@@ -8,6 +8,7 @@ use App\Repository\LicenceRepository;
 use App\Repository\MembershipPlanRepository;
 use App\Service\LicenceTarifService;
 use App\Service\QrCodeService;
+use App\Service\CsvExportService;
 use App\Service\SystemLoggerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/gestion-chm-secrete-92x/licences')]
@@ -62,6 +64,32 @@ class AdminLicenceController extends AbstractController
             'saisons'      => $saisons,
             'saisonActive' => $saisonFinAnnee,
         ]);
+    }
+
+    #[Route('/export', name: 'admin_licence_export', methods: ['GET'])]
+    public function export(Request $request, LicenceRepository $licenceRepository, LicenceTarifService $tarifService, CsvExportService $csvExport): StreamedResponse
+    {
+        $formuleTypes       = array_values($tarifService->getFormules());
+        $currentSaisonAnnee = (int) $tarifService->getFinDeSaison(new \DateTimeImmutable())->format('Y');
+        $saisonFinAnnee     = $request->query->get('saison') ? (int) $request->query->get('saison') : null;
+
+        $licences = $licenceRepository->findByTypes($formuleTypes, null, $saisonFinAnnee, false, $saisonFinAnnee === null ? $currentSaisonAnnee : null);
+
+        $header = ['Numéro', 'Prénom', 'Nom', 'Email', 'Formule', 'Saison', 'Statut', 'Date expiration'];
+        $rows   = array_map(fn(Licence $l) => [
+            $l->getNumber(),
+            $l->getFirstName(),
+            $l->getLastName(),
+            $l->getEmail() ?? '',
+            $l->getType(),
+            $l->getSaisonLabel(),
+            !$l->isActivee() ? 'En attente' : ($l->getExpiryDate() < new \DateTimeImmutable() ? 'Expirée' : 'Active'),
+            $l->getExpiryDate()?->format('d/m/Y') ?? '',
+        ], $licences);
+
+        $filename = 'licences-archives' . ($saisonFinAnnee ? '-' . ($saisonFinAnnee - 1) . '-' . $saisonFinAnnee : '') . '.csv';
+
+        return $csvExport->streamCsv($filename, $header, $rows);
     }
 
     #[Route('/new', name: 'admin_licence_new', methods: ['GET', 'POST'])]
@@ -114,12 +142,15 @@ class AdminLicenceController extends AbstractController
             return $this->redirectToRoute('admin_licence_index');
         }
 
+        $retourUrl = $this->safeRetourUrl($request->query->get('retour'));
+
         return $this->render('admin/licence/edit.html.twig', [
             'licence' => $licence,
             'form' => $form->createView(),
             'qrCodeImage' => (!$this->isQrSupprime($licence, $tarifService) && $licence->getQrCodeToken())
                 ? $qrCodeService->buildQrImageDataUri($licence->getQrCodeToken())
                 : null,
+            'retourUrl' => $retourUrl,
         ]);
     }
 
@@ -138,6 +169,15 @@ class AdminLicenceController extends AbstractController
         $this->addFlash('success', '🗑️ Licence supprimée avec succès.');
 
         return $this->redirectToRoute('admin_licence_index');
+    }
+
+    private function safeRetourUrl(?string $retour): ?string
+    {
+        if ($retour === null) {
+            return null;
+        }
+        // Chemin relatif uniquement (commence par / mais pas // ni /\)
+        return preg_match('#^/[^/\\\\].*#', $retour) ? $retour : null;
     }
 
     /**
