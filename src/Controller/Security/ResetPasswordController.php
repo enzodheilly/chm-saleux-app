@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Uid\Uuid;
@@ -40,7 +40,7 @@ class ResetPasswordController extends AbstractController
         MailerInterface $mailer,
         SystemLoggerService $logger,
         TurnstileVerifierService $turnstile,
-        RateLimiterFactory $reset_requestLimiter
+        RateLimiterFactoryInterface $reset_requestLimiter
     ): Response {
         if ($request->isMethod('GET')) {
             return $this->render('security/reset_password_request.html.twig');

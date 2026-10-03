@@ -7,13 +7,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class BoiteAIdeesController extends AbstractController
 {
     public function __construct(
-        private readonly RateLimiterFactory $boiteAIdeesLimiter
+        private readonly RateLimiterFactoryInterface $boiteAIdeesLimiter
     ) {}
 
     #[Route('/boite-a-idees', name: 'app_boite_a_idees')]

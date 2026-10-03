@@ -15,19 +15,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardAdherentController extends AbstractController
 {
     private EntityManagerInterface $em;
     private MemberProgressService $memberProgressService;
-    private RateLimiterFactory $uploadPhotoLimiter;
+    private RateLimiterFactoryInterface $uploadPhotoLimiter;
 
     public function __construct(
         EntityManagerInterface $em,
         MemberProgressService $memberProgressService,
-        RateLimiterFactory $uploadPhotoLimiter
+        RateLimiterFactoryInterface $uploadPhotoLimiter
     ) {
         $this->em = $em;
         $this->memberProgressService = $memberProgressService;

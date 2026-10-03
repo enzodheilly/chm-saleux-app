@@ -23,7 +23,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 
 class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -33,7 +33,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         private readonly EntityManagerInterface $em,
         private readonly SystemLoggerService $logger,
         private readonly TurnstileVerifierService $turnstileVerifier,
-        private readonly RateLimiterFactory $loginLimiter,
+        private readonly RateLimiterFactoryInterface $loginLimiter,
     ) {}
 
     public function supports(Request $request): bool

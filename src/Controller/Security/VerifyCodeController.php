@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 class VerifyCodeController extends AbstractController
@@ -25,7 +25,7 @@ class VerifyCodeController extends AbstractController
         UserRepository $userRepository,
         EntityManagerInterface $em,
         SystemLoggerService $logger,
-        RateLimiterFactory $verify_codeLimiter,
+        RateLimiterFactoryInterface $verify_codeLimiter,
         UserAuthenticatorInterface $userAuthenticator,
         LoginFormAuthenticator $authenticator
     ): Response {
@@ -102,7 +102,7 @@ class VerifyCodeController extends AbstractController
         EntityManagerInterface $em,
         MailerInterface $mailer,
         SystemLoggerService $logger,
-        RateLimiterFactory $resend_codeLimiter
+        RateLimiterFactoryInterface $resend_codeLimiter
     ): Response {
         // Email uniquement depuis la session
         $email = $session->get('verify_email', '');

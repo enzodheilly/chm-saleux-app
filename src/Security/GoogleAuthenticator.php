@@ -17,7 +17,7 @@ use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 
 class GoogleAuthenticator extends AbstractAuthenticator
 {
@@ -26,7 +26,7 @@ class GoogleAuthenticator extends AbstractAuthenticator
         private readonly EntityManagerInterface $em,
         private readonly RouterInterface $router,
         private readonly SystemLoggerService $logger,
-        private readonly RateLimiterFactory $googleOauthCheckLimiter,
+        private readonly RateLimiterFactoryInterface $googleOauthCheckLimiter,
     ) {}
 
     public function supports(Request $request): bool

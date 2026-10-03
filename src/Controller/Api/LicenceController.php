@@ -9,14 +9,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class LicenceController extends AbstractController
 {
     public function __construct(
-        private readonly RateLimiterFactory $licenceLinkLimiter
+        private readonly RateLimiterFactoryInterface $licenceLinkLimiter
     ) {}
 
     #[Route('/api/licences/me', name: 'api_licence_me', methods: ['GET'])]

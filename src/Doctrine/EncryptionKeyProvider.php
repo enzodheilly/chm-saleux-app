@@ -50,16 +50,7 @@ final class EncryptionKeyProvider
 
     public static function encrypt(string $plaintext): string
     {
-        $key = self::requireKey();
-
-        $iv = random_bytes(self::IV_LENGTH);
-        $tag = '';
-        $ciphertext = openssl_encrypt($plaintext, self::CIPHER, $key, OPENSSL_RAW_DATA, $iv, $tag, '', self::TAG_LENGTH);
-        if ($ciphertext === false) {
-            throw new \RuntimeException('Échec du chiffrement des données sensibles.');
-        }
-
-        return base64_encode($iv . $tag . $ciphertext);
+        return self::encryptWithKey($plaintext, self::requireKey());
     }
 
     /**
@@ -70,8 +61,33 @@ final class EncryptionKeyProvider
      */
     public static function decrypt(string $encoded): ?string
     {
-        $key = self::requireKey();
+        return self::decryptWithKey($encoded, self::requireKey());
+    }
 
+    /**
+     * Chiffre avec une clé brute (32 octets) explicite.
+     * Utilisé par RotateEncryptionKeyCommand, qui a besoin de chiffrer avec
+     * la NOUVELLE clé alors que requireKey() retourne encore l'ancienne.
+     */
+    public static function encryptWithKey(string $plaintext, string $rawKey): string
+    {
+        $iv = random_bytes(self::IV_LENGTH);
+        $tag = '';
+        $ciphertext = openssl_encrypt($plaintext, self::CIPHER, $rawKey, OPENSSL_RAW_DATA, $iv, $tag, '', self::TAG_LENGTH);
+        if ($ciphertext === false) {
+            throw new \RuntimeException('Échec du chiffrement des données sensibles.');
+        }
+
+        return base64_encode($iv . $tag . $ciphertext);
+    }
+
+    /**
+     * Déchiffre avec une clé brute (32 octets) explicite.
+     * Même usage que encryptWithKey() : permet à RotateEncryptionKeyCommand
+     * de déchiffrer avec l'ANCIENNE clé sans modifier la clé globale.
+     */
+    public static function decryptWithKey(string $encoded, string $rawKey): ?string
+    {
         $raw = base64_decode($encoded, true);
         if ($raw === false || strlen($raw) < self::IV_LENGTH + self::TAG_LENGTH) {
             return null;
@@ -81,9 +97,27 @@ final class EncryptionKeyProvider
         $tag = substr($raw, self::IV_LENGTH, self::TAG_LENGTH);
         $ciphertext = substr($raw, self::IV_LENGTH + self::TAG_LENGTH);
 
-        $plaintext = openssl_decrypt($ciphertext, self::CIPHER, $key, OPENSSL_RAW_DATA, $iv, $tag);
+        $plaintext = openssl_decrypt($ciphertext, self::CIPHER, $rawKey, OPENSSL_RAW_DATA, $iv, $tag);
 
         return $plaintext === false ? null : $plaintext;
+    }
+
+    /**
+     * Décode une clé base64 en octets bruts et valide sa longueur.
+     * Utilisé par RotateEncryptionKeyCommand pour valider les deux clés
+     * (ancienne et nouvelle) avant de commencer la rotation.
+     */
+    public static function decodeKey(string $base64Key): string
+    {
+        $raw = base64_decode($base64Key, true);
+        if ($raw === false || strlen($raw) !== 32) {
+            throw new \RuntimeException(sprintf(
+                'Clé de chiffrement invalide ("%s…") : il faut 32 octets encodés en base64 (générer avec "openssl rand -base64 32").',
+                substr($base64Key, 0, 8)
+            ));
+        }
+
+        return $raw;
     }
 
     private static function requireKey(): string
