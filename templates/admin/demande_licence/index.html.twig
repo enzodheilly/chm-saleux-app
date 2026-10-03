@@ -120,11 +120,16 @@
 
 	{# ── Panneau 2 : licences créées mais pas encore activées (en attente numéro FFHM) ── #}
 	<div class="dlx-panel" id="dlx-en-attente">
+		<div class="dlx-filters">
+			<input type="text" class="dlx-search" id="dlx-search-en-attente" placeholder="Nom, prénom, email…">
+		</div>
+
 		<div class="table-wrapper">
 			<div class="table-scroll">
-				<table class="admin-table">
+				<table class="admin-table" id="dlx-table-en-attente">
 					<thead>
 						<tr>
+							<th width="50">N°</th>
 							<th>Numéro provisoire</th>
 							<th>Titulaire</th>
 							<th>Email</th>
@@ -135,7 +140,8 @@
 					</thead>
 					<tbody>
 						{% for licence in licencesEnAttente %}
-							<tr>
+							<tr data-search="{{ (licence.firstName ~ ' ' ~ licence.lastName ~ ' ' ~ (licence.email ?: '') ~ ' ' ~ licence.number)|lower }}">
+								<td class="td-mono-sm">{{ loop.index }}</td>
 								<td><span class="td-mono">{{ licence.number }}</span></td>
 								<td>
 									<div class="identity-cell">
@@ -157,7 +163,7 @@
 							</tr>
 						{% else %}
 							<tr>
-								<td colspan="6" class="td-empty">Aucune licence en attente d'activation.</td>
+								<td colspan="7" class="td-empty">Aucune licence en attente d'activation.</td>
 							</tr>
 						{% endfor %}
 					</tbody>
@@ -168,11 +174,16 @@
 
 	{# ── Panneau 3 : licences actives et fonctionnelles ── #}
 	<div class="dlx-panel" id="dlx-actives">
+		<div class="dlx-filters">
+			<input type="text" class="dlx-search" id="dlx-search-actives" placeholder="Nom, prénom, email…">
+		</div>
+
 		<div class="table-wrapper">
 			<div class="table-scroll">
-				<table class="admin-table">
+				<table class="admin-table" id="dlx-table-actives">
 					<thead>
 						<tr>
+							<th width="50">N°</th>
 							<th>Numéro</th>
 							<th>Titulaire</th>
 							<th>Email</th>
@@ -184,7 +195,8 @@
 					</thead>
 					<tbody>
 						{% for licence in licencesActives %}
-							<tr>
+							<tr data-search="{{ (licence.firstName ~ ' ' ~ licence.lastName ~ ' ' ~ (licence.email ?: '') ~ ' ' ~ licence.number)|lower }}">
+								<td class="td-mono-sm">{{ loop.index }}</td>
 								<td><span class="td-mono">{{ licence.number }}</span></td>
 								<td>
 									<div class="identity-cell">
@@ -211,7 +223,7 @@
 							</tr>
 						{% else %}
 							<tr>
-								<td colspan="7" class="td-empty">Aucune licence FFHM active pour le moment.</td>
+								<td colspan="8" class="td-empty">Aucune licence FFHM active pour le moment.</td>
 							</tr>
 						{% endfor %}
 					</tbody>
@@ -261,6 +273,21 @@
 				row.style.display = (matchStatut && matchSearch) ? '' : 'none';
 			});
 		}
+
+		// Recherche simple (sans filtre par statut) pour les onglets "En attente"
+		// et "Licences actives" : filtre juste les lignes sur leur data-search.
+		function wireSimpleSearch(inputId, tableId) {
+			var input = document.getElementById(inputId);
+			if (!input) return;
+			input.addEventListener('input', function () {
+				var term = input.value.trim().toLowerCase();
+				document.querySelectorAll('#' + tableId + ' tbody tr[data-search]').forEach(function (row) {
+					row.style.display = (term === '' || (row.getAttribute('data-search') || '').indexOf(term) !== -1) ? '' : 'none';
+				});
+			});
+		}
+		wireSimpleSearch('dlx-search-en-attente', 'dlx-table-en-attente');
+		wireSimpleSearch('dlx-search-actives', 'dlx-table-actives');
 	})();
 	</script>
 {% endblock %}

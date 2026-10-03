@@ -17,6 +17,7 @@
 			text-decoration: none;
 		}
 		.saison-tab.active { color: #111; background: var(--accent); border-color: var(--accent); }
+		.archives-search { padding: 6px 12px; font-size: 0.82rem; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); min-width: 240px; margin-left: auto; }
 	</style>
 {% endblock %}
 
@@ -30,16 +31,17 @@
 		</div>
 	</div>
 
-	{% if saisons is not empty %}
-		<div class="saison-tabs">
+	<div class="saison-tabs">
+		{% if saisons is not empty %}
 			<a href="{{ path('admin_licence_index') }}" class="saison-tab {{ saisonActive is null ? 'active' : '' }}">Toutes</a>
 			{% for saison in saisons %}
 				<a href="{{ path('admin_licence_index', {saison: saison}) }}" class="saison-tab {{ saisonActive == saison ? 'active' : '' }}">
 					Saison {{ (saison - 1) ~ '/' ~ saison }}
 				</a>
 			{% endfor %}
-		</div>
-	{% endif %}
+		{% endif %}
+		<input type="text" class="archives-search" id="searchLicence" placeholder="Nom, prénom, email, numéro…">
+	</div>
 
 	<div class="table-wrapper">
 		<div class="table-scroll">
@@ -110,4 +112,9 @@
 			</table>
 		</div>
 	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ asset('js/admin/licence/index.js') }}" nonce="{{ csp_nonce('script') }}"></script>
 {% endblock %}

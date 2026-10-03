@@ -30,9 +30,13 @@
 		</form>
 	</div>
 
+	<div style="display: flex; justify-content: flex-end; margin-bottom: 14px;">
+		<input type="text" class="search-input" id="blocked-search" placeholder="Nom, prénom, raison…">
+	</div>
+
 	<div class="table-wrapper">
 		<div class="table-scroll">
-			<table class="admin-table">
+			<table class="admin-table" id="blocked-table">
 				<thead>
 					<tr>
 						<th>Nom</th>
@@ -45,7 +49,7 @@
 				</thead>
 				<tbody>
 					{% for blocked in blockedMembers %}
-						<tr>
+						<tr data-search="{{ (blocked.nom ~ ' ' ~ blocked.prenom ~ ' ' ~ (blocked.raison ?: ''))|lower }}">
 							<td><strong>{{ blocked.nom }}</strong></td>
 							<td>{{ blocked.prenom }}</td>
 							<td>{{ blocked.raison ?: '—' }}</td>
@@ -69,4 +73,20 @@
 			</table>
 		</div>
 	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script nonce="{{ csp_nonce('script') }}">
+	(function () {
+		var input = document.getElementById('blocked-search');
+		if (!input) return;
+		input.addEventListener('input', function () {
+			var term = input.value.trim().toLowerCase();
+			document.querySelectorAll('#blocked-table tbody tr[data-search]').forEach(function (row) {
+				row.style.display = (term === '' || (row.getAttribute('data-search') || '').indexOf(term) !== -1) ? '' : 'none';
+			});
+		});
+	})();
+	</script>
 {% endblock %}
