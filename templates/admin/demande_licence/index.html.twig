@@ -206,7 +206,7 @@
 								</td>
 								<td class="td-mono-sm sender-email">{{ licence.email ? (licence.email|pseudonymize_email) : '—' }}</td>
 								<td>{{ m.formule_badge(licence.type) }}</td>
-								<td>{{ m.qr_reveal(licence.id, qrCodeImages[licence.id] ?? null, path('admin_licence_edit', {id: licence.id})) }}</td>
+								<td>{{ m.qr_status(qrActive[licence.id] ?? false, path('admin_licence_edit', {id: licence.id, retour: path('admin_demande_licence_index') ~ '#dlx-actives'})) }}</td>
 								<td class="td-mono-sm">{{ licence.expiryDate ? licence.expiryDate|date('d/m/Y') : '—' }}</td>
 								<td>
 									<div class="actions">

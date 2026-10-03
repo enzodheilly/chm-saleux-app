@@ -87,7 +87,7 @@
 								{% if licence.historique %}
 									<span class="td-mono-sm" style="opacity:0.4;">—</span>
 								{% else %}
-									{{ m.qr_reveal(licence.id, qrCodeImages[licence.id] ?? null, path('admin_licence_edit', {id: licence.id})) }}
+									{{ m.qr_status(qrActive[licence.id] ?? false, path('admin_licence_edit', {id: licence.id, retour: app.request.requestUri})) }}
 								{% endif %}
 							</td>
 							<td>

@@ -9,7 +9,6 @@ use App\Repository\LicenceRepository;
 use App\Repository\UserRepository;
 use App\Service\CsvExportService;
 use App\Service\LicenceTarifService;
-use App\Service\QrCodeService;
 use App\Service\SystemLoggerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,7 +29,7 @@ class AdminDemandeLicenceController extends AbstractController
     ) {}
 
     #[Route('', name: 'index', methods: ['GET'])]
-    public function index(DemandeLicenceRepository $repo, LicenceRepository $licenceRepository, LicenceTarifService $tarifService, QrCodeService $qrCodeService): Response
+    public function index(DemandeLicenceRepository $repo, LicenceRepository $licenceRepository, LicenceTarifService $tarifService): Response
     {
         $formuleTypes = array_values($tarifService->getFormules());
 
@@ -43,22 +42,22 @@ class AdminDemandeLicenceController extends AbstractController
 
         $licencesActives = $licenceRepository->findByTypes($formuleTypes, true, $saisonEnCoursAnnee);
 
-        // Ces licences sont actives pour la saison en cours, qu'elles viennent
-        // du formulaire en ligne ou de l'historique (import Excel du club) :
-        // leur QR code est donc utilisable normalement, à la différence des
-        // licences historiques de saisons passées (voir Archives).
-        $qrCodeImages = [];
+        // La liste n'affiche plus qu'un statut "Actif"/"—" pour le QR (jamais
+        // l'image elle-même, qui reste consultable sur la fiche de la licence) :
+        // pas besoin de générer les QR en image ici, juste de savoir lesquels
+        // existent. Ces licences sont actives pour la saison en cours, qu'elles
+        // viennent du formulaire en ligne ou de l'historique (import Excel du
+        // club) : leur QR est donc utilisable normalement.
+        $qrActive = [];
         foreach ($licencesActives as $licence) {
-            if ($licence->getQrCodeToken()) {
-                $qrCodeImages[$licence->getId()] = $qrCodeService->buildQrImageDataUri($licence->getQrCodeToken());
-            }
+            $qrActive[$licence->getId()] = $licence->getQrCodeToken() !== null;
         }
 
         return $this->render('admin/demande_licence/index.html.twig', [
             'demandes'          => $repo->findNonTransferees(),
             'licencesEnAttente' => $licenceRepository->findByTypes($formuleTypes, false),
             'licencesActives'   => $licencesActives,
-            'qrCodeImages'      => $qrCodeImages,
+            'qrActive'          => $qrActive,
         ]);
     }
 

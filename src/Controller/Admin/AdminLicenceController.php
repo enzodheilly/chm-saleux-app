@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminLicenceController extends AbstractController
 {
     #[Route('/', name: 'admin_licence_index', methods: ['GET'])]
-    public function index(Request $request, LicenceRepository $licenceRepository, QrCodeService $qrCodeService, LicenceTarifService $tarifService): Response
+    public function index(Request $request, LicenceRepository $licenceRepository, LicenceTarifService $tarifService): Response
     {
         $formuleTypes       = array_values($tarifService->getFormules());
         $currentSaisonAnnee = (int) $tarifService->getFinDeSaison(new \DateTimeImmutable())->format('Y');
@@ -46,21 +46,20 @@ class AdminLicenceController extends AbstractController
         // Onglet "Toutes" : exclut quand même la saison en cours (pas encore une archive).
         $licences = $licenceRepository->findByTypes($formuleTypes, null, $saisonFinAnnee, false, $saisonFinAnnee === null ? $currentSaisonAnnee : null);
 
-        // Les licences historiques (import 2020-2026) ont un QR code généré
-        // automatiquement à la création de l'entité, mais ce système n'existait
-        // pas à l'époque sur les saisons passées : on ne l'affiche pas, il n'a
-        // jamais servi (voir isQrSupprime — les archives n'affichent de toute
-        // façon jamais la saison en cours).
-        $qrCodeImages = [];
+        // La liste n'affiche plus qu'un statut "Actif"/"—" pour le QR (jamais
+        // l'image elle-même — voir le changelog du patch) : pas besoin de
+        // générer les QR en image ici, juste de savoir lesquels existent.
+        // Les licences historiques (import 2020-2026) de saisons passées n'ont
+        // jamais eu de QR d'accès réel à l'époque (voir isQrSupprime — les
+        // archives n'affichent de toute façon jamais la saison en cours).
+        $qrActive = [];
         foreach ($licences as $licence) {
-            if (!$this->isQrSupprime($licence, $tarifService) && $licence->getQrCodeToken()) {
-                $qrCodeImages[$licence->getId()] = $qrCodeService->buildQrImageDataUri($licence->getQrCodeToken());
-            }
+            $qrActive[$licence->getId()] = !$this->isQrSupprime($licence, $tarifService) && $licence->getQrCodeToken() !== null;
         }
 
         return $this->render('admin/licence/index.html.twig', [
             'licences'     => $licences,
-            'qrCodeImages' => $qrCodeImages,
+            'qrActive'     => $qrActive,
             'saisons'      => $saisons,
             'saisonActive' => $saisonFinAnnee,
         ]);

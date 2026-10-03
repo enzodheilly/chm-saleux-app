@@ -7,17 +7,6 @@
 	('Loisir & Muscu', 'Compétition', 'Jeune') : on détecte le type par simple
 	recherche de sous-chaîne, insensible à la casse.
 #}
-{% macro qr_reveal(licenceId, qrImage, editUrl) %}
-	{% if qrImage %}
-		<button type="button" class="qr-reveal-btn" data-target="qr-cell-{{ licenceId }}">Voir</button>
-		<a href="{{ editUrl }}#qrcode" title="Voir le QR code d'accès" class="qr-thumb-link" id="qr-cell-{{ licenceId }}" hidden>
-			<img src="{{ qrImage }}" alt="QR code" width="44" height="44" class="qr-thumb">
-		</a>
-	{% else %}
-		<span class="td-mono-sm">—</span>
-	{% endif %}
-{% endmacro %}
-
 {% macro formule_badge(label) %}
 	{% set l = label|lower %}
 	{% if 'competition' in l or 'compétition' in l %}
@@ -26,5 +15,21 @@
 		<span class="badge badge-formule-jeune">{{ label }}</span>
 	{% else %}
 		<span class="badge badge-formule-loisir">{{ label }}</span>
+	{% endif %}
+{% endmacro %}
+
+{#
+	Cellule QR code d'une liste : un simple statut ("Actif"/"—"), jamais le
+	QR lui-même. Le QR donne un accès réel à la salle, donc l'afficher (même
+	caché derrière un clic) dans une liste reste une image valide présente
+	dans le HTML de la page = un risque inutile en cas de capture ou de
+	partage d'écran pendant l'administration. Pour voir ou régénérer le QR,
+	direction la fiche de la licence (le badge y renvoie directement).
+#}
+{% macro qr_status(hasQr, editUrl) %}
+	{% if hasQr %}
+		<a href="{{ editUrl }}#qrcode" class="badge badge-active" title="Voir le QR code sur la fiche de la licence">Actif</a>
+	{% else %}
+		<span class="td-mono-sm">—</span>
 	{% endif %}
 {% endmacro %}

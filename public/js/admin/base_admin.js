@@ -50,16 +50,6 @@ if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme) html.setAttribute('data-theme', savedTheme);
 
-// --- QR codes masqués par défaut dans les listes (bouton "Voir") ---
-document.addEventListener('click', function (e) {
-    const revealBtn = e.target.closest('.qr-reveal-btn');
-    if (!revealBtn) return;
-    const target = document.getElementById(revealBtn.getAttribute('data-target'));
-    if (!target) return;
-    target.hidden = false;
-    revealBtn.hidden = true;
-});
-
 // --- 🛡️ ENGINE DE SÉCURITÉ V20 (Confirmations) ---
 // On utilise la délégation d'événements pour que ça marche même sur les éléments chargés en AJAX
 document.addEventListener('click', function (e) {
