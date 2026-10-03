@@ -41,8 +41,15 @@ class Licence
     #[ORM\Column(length: 180, nullable: true)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $adresse = null;
+    /**
+     * Adresse postale : donnée réellement sensible, isolée dans sa propre
+     * table et chiffrée au repos (voir App\Entity\LicenceCoordonnees et
+     * App\Doctrine\EncryptedStringType). Toujours manipulée via
+     * getAdresse()/setAdresse() ci-dessous, qui délèguent ici de façon
+     * transparente.
+     */
+    #[ORM\OneToOne(targetEntity: LicenceCoordonnees::class, mappedBy: 'licence', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private ?LicenceCoordonnees $coordonnees = null;
 
     #[ORM\ManyToOne(targetEntity: MembershipPlan::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
@@ -178,13 +185,33 @@ class Licence
 
     public function getAdresse(): ?string
     {
-        return $this->adresse;
+        return $this->coordonnees?->getAdresse();
     }
 
     public function setAdresse(?string $adresse): self
     {
-        $this->adresse = $adresse;
+        $this->coordonnees()->setAdresse($adresse);
         return $this;
+    }
+
+    /**
+     * Crée l'entité "coordonnées sensibles" à la demande, plutôt que de
+     * l'exiger dans le constructeur (une licence sans adresse renseignée,
+     * cas courant, n'a pas besoin de ligne dans licence_coordonnees).
+     */
+    private function coordonnees(): LicenceCoordonnees
+    {
+        if ($this->coordonnees === null) {
+            $this->coordonnees = new LicenceCoordonnees();
+            $this->coordonnees->setLicence($this);
+        }
+
+        return $this->coordonnees;
+    }
+
+    public function getCoordonnees(): ?LicenceCoordonnees
+    {
+        return $this->coordonnees;
     }
 
     public function getMembershipPlan(): ?MembershipPlan

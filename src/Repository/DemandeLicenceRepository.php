@@ -40,28 +40,41 @@ class DemandeLicenceRepository extends ServiceEntityRepository
      * Recherche une demande déjà en cours (pas encore transférée à la FFHM)
      * correspondant à la même identité : même email, OU même nom+prénom,
      * OU même téléphone (si renseigné). Bloque les doubles envois du formulaire.
+     *
+     * Le téléphone est maintenant chiffré (voir DemandeLicenceCoordonnees /
+     * EncryptedStringType), avec un IV aléatoire à chaque écriture : deux
+     * lignes portant le même numéro n'ont jamais le même texte chiffré en
+     * base, donc une comparaison `=` en SQL est impossible. On compare donc
+     * en PHP après déchiffrement, sur l'ensemble des demandes "en cours" —
+     * un petit ensemble par nature (pas encore transférées à la FFHM), donc
+     * sans impact de performance pour un club de cette taille.
      */
     public function findDoublonEnCours(string $email, string $nom, string $prenom, ?string $telephone): ?DemandeLicence
     {
-        $qb = $this->createQueryBuilder('d')
+        $candidats = $this->createQueryBuilder('d')
+            ->leftJoin('d.coordonnees', 'c')->addSelect('c')
             ->andWhere('d.statutFfhm != :transferee')
             ->setParameter('transferee', DemandeLicence::STATUT_FFHM_TRANSFEREE)
-            ->andWhere(
-                '(LOWER(d.email) = :email) OR ' .
-                '(LOWER(d.nom) = :nom AND LOWER(d.prenom) = :prenom)' .
-                ($telephone !== null && $telephone !== '' ? ' OR (d.telephone = :telephone)' : '')
-            )
-            ->setParameter('email', mb_strtolower($email))
-            ->setParameter('nom', mb_strtolower($nom))
-            ->setParameter('prenom', mb_strtolower($prenom))
             ->orderBy('d.createdAt', 'DESC')
-            ->setMaxResults(1);
+            ->getQuery()
+            ->getResult();
 
-        if ($telephone !== null && $telephone !== '') {
-            $qb->setParameter('telephone', $telephone);
+        $emailLower = mb_strtolower($email);
+        $nomLower = mb_strtolower($nom);
+        $prenomLower = mb_strtolower($prenom);
+        $telephoneRenseigne = $telephone !== null && $telephone !== '';
+
+        foreach ($candidats as $candidat) {
+            $memeIdentite = mb_strtolower($candidat->getEmail()) === $emailLower
+                || (mb_strtolower($candidat->getNom()) === $nomLower && mb_strtolower($candidat->getPrenom()) === $prenomLower);
+            $memeTelephone = $telephoneRenseigne && $candidat->getTelephone() === $telephone;
+
+            if ($memeIdentite || $memeTelephone) {
+                return $candidat;
+            }
         }
 
-        return $qb->getQuery()->getOneOrNullResult();
+        return null;
     }
 
     /** Demandes dont le paiement ou le transfert FFHM restent à traiter. */

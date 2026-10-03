@@ -2,6 +2,11 @@ doctrine:
     dbal:
         url: "%env(resolve:DATABASE_URL)%"
 
+        # Type personnalisé pour les champs réellement sensibles (adresse,
+        # téléphone) : chiffrés de façon transparente, voir App\Doctrine\*.
+        types:
+            encrypted_string: App\Doctrine\EncryptedStringType
+
         # ✅ Support complet des emojis et des caractères étendus
         charset: utf8mb4
         default_table_options:

@@ -53,12 +53,6 @@ class DemandeLicence
     #[ORM\Column(type: 'date_immutable', nullable: true)]
     private ?\DateTimeImmutable $dateNaissance = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $adresse = null;
-
-    #[ORM\Column(length: 30, nullable: true)]
-    private ?string $telephone = null;
-
     #[ORM\Column(length: 180)]
     private string $email = '';
 
@@ -68,14 +62,22 @@ class DemandeLicence
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $responsableLien = null;
 
-    #[ORM\Column(length: 30, nullable: true)]
-    private ?string $responsableTelephone = null;
-
     #[ORM\Column(length: 180, nullable: true)]
     private ?string $responsableEmail = null;
 
     #[ORM\Column(length: 255)]
     private string $certificatMedicalPath = '';
+
+    /**
+     * Adresse, téléphone et téléphone du responsable légal : données
+     * réellement sensibles, isolées dans leur propre table et chiffrées au
+     * repos (voir App\Entity\DemandeLicenceCoordonnees et
+     * App\Doctrine\EncryptedStringType). Toujours manipulées via les
+     * accesseurs ci-dessous (getAdresse(), setTelephone()...), qui délèguent
+     * ici de façon transparente pour ne rien changer ailleurs dans le code.
+     */
+    #[ORM\OneToOne(targetEntity: DemandeLicenceCoordonnees::class, mappedBy: 'demandeLicence', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private ?DemandeLicenceCoordonnees $coordonnees = null;
 
     #[ORM\Column(type: 'decimal', precision: 7, scale: 2)]
     private string $montantCalcule = '0.00';
@@ -150,11 +152,11 @@ class DemandeLicence
     public function getDateNaissance(): ?\DateTimeImmutable { return $this->dateNaissance; }
     public function setDateNaissance(?\DateTimeImmutable $dateNaissance): self { $this->dateNaissance = $dateNaissance; return $this; }
 
-    public function getAdresse(): ?string { return $this->adresse; }
-    public function setAdresse(?string $adresse): self { $this->adresse = $adresse; return $this; }
+    public function getAdresse(): ?string { return $this->coordonnees?->getAdresse(); }
+    public function setAdresse(?string $adresse): self { $this->coordonnees()->setAdresse($adresse); return $this; }
 
-    public function getTelephone(): ?string { return $this->telephone; }
-    public function setTelephone(?string $telephone): self { $this->telephone = $telephone; return $this; }
+    public function getTelephone(): ?string { return $this->coordonnees?->getTelephone(); }
+    public function setTelephone(?string $telephone): self { $this->coordonnees()->setTelephone($telephone); return $this; }
 
     public function getEmail(): string { return $this->email; }
     public function setEmail(string $email): self { $this->email = $email; return $this; }
@@ -165,11 +167,29 @@ class DemandeLicence
     public function getResponsableLien(): ?string { return $this->responsableLien; }
     public function setResponsableLien(?string $v): self { $this->responsableLien = $v; return $this; }
 
-    public function getResponsableTelephone(): ?string { return $this->responsableTelephone; }
-    public function setResponsableTelephone(?string $v): self { $this->responsableTelephone = $v; return $this; }
+    public function getResponsableTelephone(): ?string { return $this->coordonnees?->getResponsableTelephone(); }
+    public function setResponsableTelephone(?string $v): self { $this->coordonnees()->setResponsableTelephone($v); return $this; }
 
     public function getResponsableEmail(): ?string { return $this->responsableEmail; }
     public function setResponsableEmail(?string $v): self { $this->responsableEmail = $v; return $this; }
+
+    /**
+     * Crée l'entité "coordonnées sensibles" à la demande (premier appel à un
+     * des setters ci-dessus), plutôt que de l'exiger dans le constructeur :
+     * une DemandeLicence sans aucune coordonnée renseignée (cas théorique)
+     * n'a pas besoin de ligne dans demande_licence_coordonnees.
+     */
+    private function coordonnees(): DemandeLicenceCoordonnees
+    {
+        if ($this->coordonnees === null) {
+            $this->coordonnees = new DemandeLicenceCoordonnees();
+            $this->coordonnees->setDemandeLicence($this);
+        }
+
+        return $this->coordonnees;
+    }
+
+    public function getCoordonnees(): ?DemandeLicenceCoordonnees { return $this->coordonnees; }
 
     public function getCertificatMedicalPath(): string { return $this->certificatMedicalPath; }
     public function setCertificatMedicalPath(string $path): self { $this->certificatMedicalPath = $path; return $this; }
